@@ -70,11 +70,11 @@ def main() -> None:
     if args.experiment == "A":
         cfg_path = os.path.join(ROOT, "configs", "confirmatory_a.yaml")
         outdir = os.path.join(ROOT, "outputs", "confirmatory_a")
-        seed_base = yaml.safe_load(open(cfg_path))["experiment"]["confirmatory_seed_base"]
+        seed_base = yaml.safe_load(open(cfg_path, encoding='utf-8'))["experiment"]["confirmatory_seed_base"]
     else:
         cfg_path = os.path.join(ROOT, "configs", "confirmatory_b.yaml")
         outdir = os.path.join(ROOT, "outputs", "confirmatory_b")
-        seed_base = yaml.safe_load(open(cfg_path))["experiment"]["confirmatory_seed_base"]
+        seed_base = yaml.safe_load(open(cfg_path, encoding='utf-8'))["experiment"]["confirmatory_seed_base"]
 
     info = git_info()
     if info["dirty"] and not args.force_dirty:
@@ -116,7 +116,7 @@ def main() -> None:
                 py, os.path.join(ROOT, "scripts", "experiment_b.py"),
                 "--stage", args.stage, "--pilot",
                 "--seeds", "1", "--algo", args.algo,
-                "--episodes", str(yaml.safe_load(open(cfg_path))["experiment"]["training_episodes"]),
+                "--episodes", str(yaml.safe_load(open(cfg_path, encoding='utf-8'))["experiment"]["training_episodes"]),
                 "--outdir", outdir,
             ]
         print(f"[confirmatory] seed {seed_idx}: " + " ".join(cmd[-6:]))
