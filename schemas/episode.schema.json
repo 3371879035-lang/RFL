@@ -1,0 +1,87 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "RFL-CausalChase-v0.1 Episode Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "run_id", "seed", "scenario_id", "experiment",
+    "algorithm", "condition", "environment", "factual", "feedback",
+    "learner", "evaluator_only", "metrics", "compute"
+  ],
+  "properties": {
+    "schema_version": { "type": "string" },
+    "run_id": { "type": "string" },
+    "seed": { "type": "integer" },
+    "scenario_id": { "type": "string" },
+    "experiment": { "type": "string" },
+    "algorithm": { "type": "string" },
+    "condition": { "type": "string" },
+    "environment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["noise_tape_hash", "monster_start_lane", "horizon"],
+      "properties": {
+        "noise_tape_hash": { "type": ["string", "null"] },
+        "monster_start_lane": { "type": ["integer", "null"] },
+        "horizon": { "type": "integer" }
+      }
+    },
+    "factual": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["option", "terminal_type", "discounted_return"],
+      "properties": {
+        "option": { "type": "integer" },
+        "terminal_type": { "type": ["string", "null"] },
+        "discounted_return": { "type": "number" }
+      }
+    },
+    "feedback": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["observed", "is_false"],
+      "properties": {
+        "observed": { "type": "string" },
+        "is_false": { "type": "boolean" }
+      }
+    },
+    "learner": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["q_seq", "q_pre", "responsibility"],
+      "properties": {
+        "q_seq": { "type": "object" },
+        "G": { "type": "object" },
+        "q_pre": { "type": "object" },
+        "cf_checked": { "type": "array", "items": { "type": "string" } },
+        "cf_delta": { "type": "object" },
+        "responsibility": { "type": "object" },
+        "rho_high": { "type": "number" },
+        "rho_low": { "type": "number" }
+      }
+    },
+    "evaluator_only": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["oracle_primary", "oracle_R"],
+      "properties": {
+        "oracle_primary": { "type": ["string", "null"] },
+        "oracle_R": { "type": ["object", "null"] },
+        "oracle_delta": { "type": "object" }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "compute": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "real_transitions": { "type": "integer" },
+        "cf_rollouts": { "type": "integer" },
+        "cf_transitions": { "type": "integer" }
+      }
+    }
+  }
+}

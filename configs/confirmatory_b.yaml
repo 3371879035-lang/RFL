@@ -1,0 +1,70 @@
+# RFL-CausalChase-v0.1 — Experiment B confirmatory 配置（50 全新 seeds，参数冻结）
+schema_version: "0.1.0"
+
+environment:
+  width: 9
+  height: 7
+  horizon: 30
+  gamma: 0.97
+  monster_move_period: 2
+  monster_dash_p: 0.10
+  rewards:
+    exit: 1.0
+    collision: -1.0
+    timeout: -0.5
+    step: -0.01
+
+scenarios:
+  acceptance:
+    delta_target_pos: 0.4
+    delta_leak: 0.1
+
+sequence:
+  beta_prior: 1.0
+  probability_floor: 0.01
+  adjacent_weight_eta: 0.50
+  temperature: 0.50
+
+feedback:
+  match_likelihood: 0.60
+  mismatch_likelihood: 0.20
+  feedback_weight: 0.50
+
+counterfactual:
+  top_k_causes: 2
+  low_level_window: 3
+  lambda_cf: 4.0
+  lambda_reject: 2.0
+  delta_reject: 0.05
+
+attribution:
+  tau_r: 1.0
+
+learning:
+  alpha_low: 0.20
+  alpha_high: 0.15
+  alpha_diag: 0.10
+  epsilon_start: 0.20
+  epsilon_end: 0.02
+  epsilon_decay_episodes: 3000
+
+replay:
+  ordinary_replay_k: 5
+  diag_lr_scale: 0.2
+
+experiment:
+  name: confirmatory_b
+  seeds: 50
+  confirmatory_seed_base: 1200000
+  training_episodes: 5000
+  eval_episodes: 100
+  eval_every: 500
+  feedback:
+    p_false_symmetric: 0.40
+  algorithms:
+    - standard
+    - immediate
+    - er5
+    - pe_seq
+    - full_rfl
+    - oracle_upper
