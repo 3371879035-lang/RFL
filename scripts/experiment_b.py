@@ -393,7 +393,7 @@ def main() -> None:
     ap.add_argument("--config", default="configs/smoke.yaml")
     ap.add_argument("--seeds", type=int, default=5)
     ap.add_argument("--episodes", type=int, default=None)
-    ap.add_argument("--algo", default=None, choices=B_ALGOS)
+    ap.add_argument("--algo", default=None, choices=B_ALGOS, nargs="*")
     ap.add_argument("--outdir", default=None)
     args = ap.parse_args()
 
@@ -414,7 +414,9 @@ def main() -> None:
         return
 
     use_scripted_low = args.stage in ("B1",)
-    algos = [args.algo] if args.algo else (["standard"] if args.stage in ("B0", "B3", "B4") else ["standard"])
+    algos = list(args.algo) if args.algo else (
+        ["standard"] if args.stage in ("B0", "B3", "B4") else ["standard"]
+    )
     # frozen sequence model：一次性校准，所有 seed/算法共享
     env_tmp = CausalChaseEnv(
         horizon=cfg["environment"]["horizon"],
