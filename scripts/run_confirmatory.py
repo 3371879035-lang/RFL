@@ -108,7 +108,7 @@ def main() -> None:
             cmd = [
                 py, os.path.join(ROOT, "scripts", "experiment_a.py"),
                 "--config", cfg_path,
-                "--seeds", "1", "--per-cause", "30",
+                "--seeds", "1", "--seed-index", str(seed_idx), "--per-cause", "30",
                 "--seed-base", str(seed_base + seed_idx * 10000),
                 "--outdir", outdir,
             ]

@@ -125,7 +125,8 @@ def run_experiment_a(cfg: dict, args) -> None:
     seed_rows = []
     t_start = time.time()
     for seed_idx in range(n_seeds):
-        base = seed_base + seed_idx * 10000
+        seed_idx_abs = args.seed_index + seed_idx
+        base = seed_base + seed_idx_abs * 10000
         # 2. 生成场景（H/L/E 各 per_cause 条）
         samples = []
         for c in CAUSES:
@@ -231,7 +232,7 @@ def run_experiment_a(cfg: dict, args) -> None:
                 n = len(samples)
                 seed_rows.append({
                     "run_id": run_id,
-                    "seed_idx": seed_idx,
+                    "seed_idx": seed_idx_abs,
                     "condition": cond,
                     "algorithm": algo_name,
                     "n_scenarios": n,
@@ -272,6 +273,7 @@ def main() -> None:
     ap.add_argument("--smoke", action="store_true")
     ap.add_argument("--config", default="configs/smoke.yaml")
     ap.add_argument("--seeds", type=int, default=None)
+    ap.add_argument("--seed-index", type=int, default=0)
     ap.add_argument("--per-cause", type=int, default=None)
     ap.add_argument("--seed-base", type=int, default=None)
     ap.add_argument("--outdir", default=None)
