@@ -248,9 +248,11 @@ def run_learning(
 
     agent = BAgent(algo, cfg, env, rng, seq_model, runner_rfl, runner_exhaustive)
     # FrozenQLowPolicy 需要引用 agent 的 q；runner 的 policy_for 用闭包修正
+    def policy_for(o):
+        return FrozenQLowPolicy(agent.std.q.low)
+
+    oracle = None
     if algo in ("pe_seq", "cf_only", "full_rfl"):
-        def policy_for(o):
-            return FrozenQLowPolicy(agent.std.q.low)
         cc = cfg["counterfactual"]
         runner_rfl = CounterfactualRunner(
             policy_for=policy_for, env=env, top_k=cc.get("top_k_causes", 2),
@@ -260,8 +262,9 @@ def run_learning(
             policy_for=policy_for, env=env, top_k=3, low_level_window=10**6,
         )
         agent.runner_rfl, agent.runner_exhaustive = runner_rfl, runner_exhaustive
-
-    oracle = OracleEvaluator(policy_for=policy_for, env=env) if algo != "standard" else None
+    if algo != "standard":
+        # feedback 的 true_primary 需要 evaluator（所有非 standard 算法共享）
+        oracle = OracleEvaluator(policy_for=policy_for, env=env)
     script = ScriptedRouteFollower(0)
     feedback_p = exp.get("feedback", {}).get("p_false_symmetric", 0.4)
     injector = FeedbackInjector(p_false=feedback_p, mode="symmetric",

@@ -21,3 +21,13 @@
   bootstrap、Cohen d_z、Holm）、plots、analyze。
 - 实现 pilot / confirmatory runner（resume、config/commit hash 记录）。
 - 新增 schemas/episode.schema.json，JSONL 日志分区 learner/evaluator。
+
+## 运行记录（2026-08-28）
+
+- Experiment A pilot（12 seeds）：symmetric AE Full-RFL−Immediate = −0.279 (p<0.001)。
+- Experiment A confirmatory（50 seeds）：symmetric AE diff = −0.272 (dz=−5.72, p<0.001,
+  CI 不跨 0)，预注册 AE 门槛 PASS；WUR diff = −0.026（幅度未达 −0.10，E-only mixed R*
+  稀释 + Immediate 不更新逃避，见 outputs/RESULTS.md）。
+- Experiment B sanity ladder：B0/B1/B2/B3/B4 全部 PASS（5000 episodes）。
+- 修复：confirmatory 多 seed 日志追加、seed_idx 绝对索引、yaml utf-8 编码、BFS 距离
+  预计算（env 55k steps/s、cf 101k steps/s）。
