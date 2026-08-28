@@ -252,11 +252,13 @@ def run_experiment_a(cfg: dict, args) -> None:
 
     import csv
     csv_path = os.path.join(outdir, "seed_metrics.csv")
-    with open(csv_path, "w", newline="", encoding="utf-8") as f:
+    new_file = not os.path.exists(csv_path)
+    with open(csv_path, "a", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=list(seed_rows[0].keys()))
-        w.writeheader()
+        if new_file:
+            w.writeheader()
         w.writerows(seed_rows)
-    print(f"[A] wrote {len(seed_rows)} seed-rows -> {csv_path}")
+    print(f"[A] appended {len(seed_rows)} seed-rows -> {csv_path}")
 
     # smoke 验收：AE/WUR 必须真实非零（不允许全部为 0 的伪装）
     if args.smoke:

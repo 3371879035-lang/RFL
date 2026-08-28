@@ -12,11 +12,11 @@ class EpisodeLogger:
         self.path = path
         self.events_path = events_path
         os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
-        self._f = open(path, "w", encoding="utf-8")
+        self._f = open(path, "a", encoding="utf-8")
         self._ef = None
         if events_path:
             os.makedirs(os.path.dirname(events_path) or ".", exist_ok=True)
-            self._ef = gzip.open(events_path, "wt", encoding="utf-8")
+            self._ef = gzip.open(events_path, "at", encoding="utf-8")
 
     def write_episode(self, record: dict) -> None:
         self._f.write(json.dumps(record, ensure_ascii=False) + "\n")
