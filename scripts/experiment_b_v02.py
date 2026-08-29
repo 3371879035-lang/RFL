@@ -38,7 +38,9 @@ def run_transfer(cfg: dict, outdir: str, seed: int) -> dict:
     q, _ = load_checkpoint(ck["checkpoint"], expected_config_hash="v02")
     before_hash = q.deep_hash()
     router = UpdateRouter(alpha_diag=cfg.get("learning", {}).get("alpha_diag", 0.1))
-    scenarios = make_low_protection(2, seed=seed + 100, max_attempts=300) + make_high_protection(2, seed=seed + 200, max_attempts=300)
+    n_shocks = int(cfg.get("experiment", {}).get("shocks", 4))
+    n_each = max(1, n_shocks // 2)
+    scenarios = make_low_protection(n_each, seed=seed + 100, max_attempts=300) + make_high_protection(n_each, seed=seed + 200, max_attempts=300)
     shocks = []
     for s in scenarios:
         tr = s.trace.transitions[-1]
