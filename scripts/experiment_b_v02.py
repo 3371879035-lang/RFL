@@ -26,12 +26,11 @@ def load_config(path: str) -> dict:
 
 
 def run_checkpoint(cfg: dict, outdir: str, seed: int) -> dict:
-    q = QTables()
-    # Deterministic Standard-HQ starting knowledge: safe option has margin .6.
-    q.high[0] = {0: 0.60, 1: 0.0}
     ckpt = Path(outdir) / f"seed_{seed}"
-    meta = save_checkpoint(q, ckpt, seed=seed, episodes=cfg.get("experiment", {}).get("pretrain_episodes", 200), config_hash="v02")
-    return {"seed": seed, "checkpoint": str(ckpt), "q_hash": meta["q_hash"], "pre_success": 1.0, "pre_safe_option": 1.0}
+    episodes = int(cfg.get("experiment", {}).get("pretrain_episodes", 200))
+    result = run_learning(cfg, "B4", "standard", seed=seed, episodes=episodes, eval_every=max(1, episodes // 8), use_scripted_low=False, outdir=outdir, run_id="B-v02-checkpoint", checkpoint_dir=str(ckpt))
+    _, meta = load_checkpoint(ckpt, expected_config_hash="v02")
+    return {"seed": seed, "checkpoint": str(ckpt), "q_hash": meta["q_hash"], "pre_success": result["final_success"], "pre_safe_option": result["final_safe_option"], "pretrain_result": result}
 
 
 def run_transfer(cfg: dict, outdir: str, seed: int) -> dict:
@@ -49,7 +48,7 @@ def run_transfer(cfg: dict, outdir: str, seed: int) -> dict:
         shocks.append({"scenario_id": s.scenario_id, "actual_update": m.actual_update_mass, "update_f1": m.f1, "actual_wur": m.actual_wur})
     margins = [0.2 + 0.4 * (i + 1) / max(1, cfg.get("experiment", {}).get("recovery_episodes", 50)) for i in range(cfg.get("experiment", {}).get("recovery_episodes", 50))]
     rec = recovery_episode(margins, initial_margin=0.6, fraction=0.95, consecutive=3, checkpoint_interval=1, horizon=len(margins))
-    result = {**ck, "pre_shock_hash": before_hash, "post_shock_hash": q.deep_hash(), "shocks": shocks, "recovery_episode": rec}
+    result = {**ck, "pre_shock_hash": before_hash, "post_shock_hash": q.deep_hash(), "shocks": shocks, "recovery_episode": rec, "pretrain_gate": bool(ck["pre_success"] >= 0.90 and ck["pre_safe_option"] >= 0.90)}
     Path(outdir).mkdir(parents=True, exist_ok=True)
     (Path(outdir) / f"transfer_seed{seed}.json").write_text(json.dumps(result, indent=2), encoding="utf-8")
     return result
@@ -88,9 +87,10 @@ def main(argv=None) -> int:
             result["episodes_to_90"] = to90
             results.append(result)
     Path(args.outdir).mkdir(parents=True, exist_ok=True)
-    (Path(args.outdir) / "run_meta.json").write_text(json.dumps({"schema_version": "0.2.0", "stage": args.stage, "results": results}, indent=2), encoding="utf-8")
-    print(json.dumps({"stage": args.stage, "n": len(results)}))
-    return 0
+    gate_ok = all(r.get("pretrain_gate", True) for r in results) if args.stage == "transfer" and seeds > 2 else True
+    (Path(args.outdir) / "run_meta.json").write_text(json.dumps({"schema_version": "0.2.0", "stage": args.stage, "results": results, "gate_ok": gate_ok}, indent=2), encoding="utf-8")
+    print(json.dumps({"stage": args.stage, "n": len(results), "gate_ok": gate_ok}))
+    return 0 if gate_ok else 2
 
 
 if __name__ == "__main__":

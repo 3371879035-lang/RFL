@@ -225,6 +225,7 @@ def _calibrate_sequence(cfg: dict, env: CausalChaseEnv) -> SequenceModel:
 def run_learning(
     cfg: dict, stage: str, algo: str, *, seed: int, episodes: int, eval_every: int,
     use_scripted_low: bool, outdir: str, run_id: str, seq_model=None,
+    checkpoint_dir: str | None = None,
 ) -> dict:
     env_cfg = cfg["environment"]
     over = STAGE_ENV[stage]
@@ -353,6 +354,9 @@ def run_learning(
     os.makedirs(outdir, exist_ok=True)
     with open(os.path.join(outdir, f"{stage}_{algo}_seed{seed}.json"), "w") as f:
         json.dump({"result": result, "eval_records": eval_records}, f, indent=2)
+    if checkpoint_dir is not None:
+        from rflcc.checkpoints import save_checkpoint
+        save_checkpoint(agent.std.q, checkpoint_dir, seed=seed, episodes=episodes, config_hash="v02")
     return result
 
 

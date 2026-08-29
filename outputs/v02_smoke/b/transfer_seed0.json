@@ -1,11 +1,26 @@
 {
   "seed": 0,
   "checkpoint": "D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.2\\outputs\\v02_smoke\\b\\seed_0",
-  "q_hash": "7e1d08db0b985d1db6a718f20088e0c18048fbf14daec4266c1afe9da7982cf2",
-  "pre_success": 1.0,
-  "pre_safe_option": 1.0,
-  "pre_shock_hash": "7e1d08db0b985d1db6a718f20088e0c18048fbf14daec4266c1afe9da7982cf2",
-  "post_shock_hash": "183ba75f3f9ff884902f176c907b786f80f78df1ededa031fad8a6f335caf074",
+  "q_hash": "74523389db951f3cdd092b489b021eafaf360facb59af6d8372c19f30a41ec5f",
+  "pre_success": 0.0,
+  "pre_safe_option": 0.46,
+  "pretrain_result": {
+    "run_id": "B-v02-checkpoint",
+    "stage": "B4",
+    "algo": "standard",
+    "seed": 0,
+    "episodes": 200,
+    "final_success": 0.0,
+    "final_safe_option": 0.46,
+    "final_return": -0.7821749402955541,
+    "visited_states": 1016,
+    "attributed": 0,
+    "collisions": 200,
+    "total_bellman": 2532,
+    "wall_s": 0.21
+  },
+  "pre_shock_hash": "74523389db951f3cdd092b489b021eafaf360facb59af6d8372c19f30a41ec5f",
+  "post_shock_hash": "87b9b2513428c94cca9b23c654225af043eccbddc260fe106a7f9caced0167d3",
   "shocks": [
     {
       "scenario_id": "H_000100",
@@ -19,11 +34,11 @@
     {
       "scenario_id": "H_100103",
       "actual_update": {
-        "H": 0.09890808557410835,
+        "H": 0.09890808557410846,
         "L": 0.0010919144258916195
       },
-      "update_f1": 0.9999999894999999,
-      "actual_wur": 0.021599832879140093
+      "update_f1": 0.9999999894999997,
+      "actual_wur": 0.021599832879140083
     },
     {
       "scenario_id": "L_000200",
@@ -44,5 +59,6 @@
       "actual_wur": 0.0
     }
   ],
-  "recovery_episode": 46
+  "recovery_episode": 46,
+  "pretrain_gate": false
 }
