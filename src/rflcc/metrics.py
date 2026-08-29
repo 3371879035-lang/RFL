@@ -9,6 +9,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 
 from .types import CAUSES
+from .router import AppliedUpdate
 
 UPDATE_EPS = 1e-9
 
@@ -23,6 +24,63 @@ class AttributionMetrics:
     false_feedback_compliance: bool | None = None  # 错误反馈下是否服从错误反馈
     cf_transitions: int = 0
     update_mass: dict[str, float] = field(default_factory=dict)
+
+
+@dataclass
+class UpdateMetrics:
+    """Metrics computed from actual Q-table write receipts."""
+
+    actual_update_mass: dict[str, float]
+    expected_update_mass: dict[str, float]
+    precision: float | None
+    recall: float | None
+    f1: float | None
+    actual_wur: float | None
+
+
+def actual_update_mass(receipts: list[AppliedUpdate] | tuple[AppliedUpdate, ...]) -> dict[str, float]:
+    mass = {"H": 0.0, "L": 0.0}
+    for receipt in receipts:
+        if receipt.module in mass:
+            mass[receipt.module] += abs(float(receipt.delta_q))
+    return mass
+
+
+def compute_update_metrics(
+    receipts: list[AppliedUpdate] | tuple[AppliedUpdate, ...],
+    oracle_r: dict[str, float] | None,
+    *,
+    alpha_diag: float = 0.10,
+    eps: float = 1e-9,
+) -> UpdateMetrics:
+    actual = actual_update_mass(receipts)
+    expected = {m: alpha_diag * float((oracle_r or {}).get(m, 0.0)) for m in ("H", "L")}
+    if oracle_r is None:
+        return UpdateMetrics(actual, expected, None, None, None, None)
+    tp = sum(min(actual[m], expected[m]) for m in ("H", "L"))
+    actual_total = sum(actual.values())
+    expected_total = sum(expected.values())
+    precision = tp / (actual_total + eps) if actual_total > eps else None
+    recall = tp / (expected_total + eps) if expected_total > eps else None
+    f1 = (2 * precision * recall / (precision + recall + eps)) if precision is not None and recall is not None else None
+    actual_wur = sum(actual[m] * (1.0 - float(oracle_r.get(m, 0.0))) for m in ("H", "L")) / (actual_total + eps) if actual_total > eps else None
+    return UpdateMetrics(actual, expected, precision, recall, f1, actual_wur)
+
+
+def update_precision(receipts, oracle_r, *, alpha_diag: float = 0.10, eps: float = 1e-9) -> float | None:
+    return compute_update_metrics(receipts, oracle_r, alpha_diag=alpha_diag, eps=eps).precision
+
+
+def update_recall(receipts, oracle_r, *, alpha_diag: float = 0.10, eps: float = 1e-9) -> float | None:
+    return compute_update_metrics(receipts, oracle_r, alpha_diag=alpha_diag, eps=eps).recall
+
+
+def update_f1(receipts, oracle_r, *, alpha_diag: float = 0.10, eps: float = 1e-9) -> float | None:
+    return compute_update_metrics(receipts, oracle_r, alpha_diag=alpha_diag, eps=eps).f1
+
+
+def actual_wrong_update_rate(receipts, oracle_r, *, eps: float = 1e-9) -> float | None:
+    return compute_update_metrics(receipts, oracle_r, eps=eps).actual_wur
 
 
 def attribution_error(R: dict[str, float] | None, R_star: dict[str, float] | None) -> float | None:

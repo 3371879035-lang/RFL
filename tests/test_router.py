@@ -79,7 +79,7 @@ def test_router_apply_updates_q():
         last_low=((1, 3, 6, 1, 0, 0), 2),
     )
     router.apply(q, routed)
-    assert q.high_get(0, 0) == pytest.approx(-1.0)
+    assert q.high_get(0, 0) == pytest.approx(-0.1)
     assert q.low_get((1, 3, 6, 1, 0, 0), 2) == pytest.approx(0.0)
 
 

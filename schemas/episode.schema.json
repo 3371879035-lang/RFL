@@ -57,7 +57,16 @@
         "cf_delta": { "type": "object" },
         "responsibility": { "type": "object" },
         "rho_high": { "type": "number" },
-        "rho_low": { "type": "number" }
+        "rho_low": { "type": "number" },
+        "q_margin_before": { "type": ["number", "null"] },
+        "q_margin_after": { "type": ["number", "null"] },
+        "actual_update": { "type": "object" },
+        "update_precision": { "type": ["number", "null"] },
+        "update_recall": { "type": ["number", "null"] },
+        "update_f1": { "type": ["number", "null"] },
+        "correct_knowledge_damage": { "type": ["number", "null"] },
+        "wrong_knowledge_reinforcement": { "type": ["number", "null"] },
+        "recovery_episode": { "type": ["integer", "null"] }
       }
     },
     "evaluator_only": {

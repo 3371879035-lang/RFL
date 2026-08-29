@@ -1,0 +1,19 @@
+schema_version: "0.2.0"
+diagnostic_update_semantics: scaled_additive
+environment:
+  width: 9
+  height: 7
+  horizon: 30
+  gamma: 0.97
+  monster_move_period: 2
+  monster_dash_p: 0.10
+  rewards: {exit: 1.0, collision: -1.0, timeout: -0.5, step: -0.01}
+scenarios: {acceptance: {delta_target_pos: 0.4, delta_leak: 0.1}, calibration_seed_offset: 1000000, search_attempts_per_trace: 300}
+sequence: {beta_prior: 1.0, probability_floor: 0.01, adjacent_weight_eta: 0.50, temperature: 0.50}
+feedback: {match_likelihood: 0.60, mismatch_likelihood: 0.20, feedback_weight: 0.50}
+counterfactual: {top_k_causes: 2, low_level_window: 3, lambda_cf: 4.0, lambda_reject: 2.0, delta_reject: 0.05}
+attribution: {tau_r: 1.0}
+learning: {alpha_low: 0.20, alpha_high: 0.15, alpha_diag: 0.10, epsilon_start: 0.20, epsilon_end: 0.02, epsilon_decay_episodes: 3000}
+routing: {primary: last_action, secondary_cf_critical: true}
+replay: {ordinary_replay_k: 5, diag_lr_scale: 0.2}
+experiment: {name: v02_pilot, seeds: 12, seed_base: 2000000, attribution_per_cause: 30, update_scenarios_per_type: 10, pretrain_episodes: 5000, shocks: 20, recovery_episodes: 500, online_episodes: 5000}

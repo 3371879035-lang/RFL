@@ -9,6 +9,29 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import Any
+
+
+@dataclass(frozen=True)
+class AppliedUpdate:
+    """Receipt for one diagnostic Q-table write.
+
+    ``delta_q`` is the *actual* post-write change, not the requested target.
+    Keeping the before/after values makes update metrics independent of the
+    router implementation and catches accidental extra scaling.
+    """
+
+    module: str
+    site: Any = None
+    action_or_option: int | None = None
+    q_before: float = 0.0
+    q_after: float = 0.0
+    delta_q: float = 0.0
+
+    @property
+    def state(self):
+        """Alias used by reports that call the update site ``state``."""
+        return self.site
 
 
 @dataclass
@@ -45,15 +68,30 @@ class UpdateRouter:
         u_l = self.alpha_diag * abs(rho_l)
         site = critical_low if (self.use_cf_critical and critical_low is not None) else last_low
         return RoutedUpdate(
+            # Keep the routed rho unscaled for backwards-compatible
+            # inspection; ``apply`` is the single place where alpha_diag is
+            # materialised into an actual Q-table delta.
             high=(s_h, option, rho_h),
             low=(site[0], site[1], rho_l) if site is not None else None,
             update_mass={"H": u_h, "L": u_l},
         )
 
-    def apply(self, q_tables, routed: RoutedUpdate) -> None:
+    def apply(self, q_tables, routed: RoutedUpdate) -> list[AppliedUpdate]:
+        receipts: list[AppliedUpdate] = []
         if routed.high is not None:
-            s_h, option, rho_h = routed.high
-            q_tables.high_update(s_h, option, q_tables.high_get(s_h, option) + rho_h, 1.0)
+            s_h, option, rho = routed.high
+            delta = self.alpha_diag * rho
+            if abs(delta) > 0.0:
+                before = q_tables.high_get(s_h, option)
+                q_tables.high_update(s_h, option, before + delta, 1.0)
+                after = q_tables.high_get(s_h, option)
+                receipts.append(AppliedUpdate("H", s_h, option, before, after, after - before))
         if routed.low is not None:
-            state, action, rho_l = routed.low
-            q_tables.low_update(state, action, q_tables.low_get(state, action) + rho_l, 1.0)
+            state, action, rho = routed.low
+            delta = self.alpha_diag * rho
+            if abs(delta) > 0.0:
+                before = q_tables.low_get(state, action)
+                q_tables.low_update(state, action, before + delta, 1.0)
+                after = q_tables.low_get(state, action)
+                receipts.append(AppliedUpdate("L", state, action, before, after, after - before))
+        return receipts
