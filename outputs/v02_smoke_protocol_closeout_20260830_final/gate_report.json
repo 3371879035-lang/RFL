@@ -1,0 +1,68 @@
+{
+  "schema_version": "0.2.1",
+  "tier": "smoke",
+  "status": "blocked_invalid_knowledge_probe",
+  "config_hash": "09e28a342df800f24addcc4bdcfd92000987a4379bf25338685fac98ed9aa896",
+  "config_file": "D:\\强化反馈学习\\RFL-CausalChase-v0.2-release\\configs\\v02_smoke.yaml",
+  "started_at_utc": "2026-08-30T11:21:34.468068+00:00",
+  "commands": [
+    {
+      "command": [
+        "D:\\强化反馈学习\\RFL-CausalChase-v0.2-release\\.venv-v02\\Scripts\\python.exe",
+        "scripts/benchmark.py",
+        "--steps",
+        "10000",
+        "--outdir",
+        "D:\\强化反馈学习\\RFL-CausalChase-v0.2-release\\outputs\\v02_smoke_protocol_closeout_20260830_final\\benchmark_raw"
+      ],
+      "returncode": 0,
+      "elapsed_s": 0.601
+    },
+    {
+      "command": [
+        "D:\\强化反馈学习\\RFL-CausalChase-v0.2-release\\.venv-v02\\Scripts\\python.exe",
+        "scripts/experiment_a_v02.py",
+        "--config",
+        "D:\\强化反馈学习\\RFL-CausalChase-v0.2-release\\configs\\v02_smoke.yaml",
+        "--stage",
+        "all",
+        "--outdir",
+        "D:\\强化反馈学习\\RFL-CausalChase-v0.2-release\\outputs\\v02_smoke_protocol_closeout_20260830_final\\a"
+      ],
+      "returncode": 0,
+      "elapsed_s": 3.247
+    },
+    {
+      "command": [
+        "D:\\强化反馈学习\\RFL-CausalChase-v0.2-release\\.venv-v02\\Scripts\\python.exe",
+        "scripts/experiment_b_v02.py",
+        "--config",
+        "D:\\强化反馈学习\\RFL-CausalChase-v0.2-release\\configs\\v02_smoke.yaml",
+        "--stage",
+        "transfer",
+        "--outdir",
+        "D:\\强化反馈学习\\RFL-CausalChase-v0.2-release\\outputs\\v02_smoke_protocol_closeout_20260830_final\\b_transfer"
+      ],
+      "returncode": 3,
+      "elapsed_s": 2.729
+    }
+  ],
+  "preflight": {
+    "status": "passed",
+    "project_root": "D:\\强化反馈学习\\RFL-CausalChase-v0.2-release",
+    "python_executable": "D:\\强化反馈学习\\RFL-CausalChase-v0.2-release\\.venv-v02\\Scripts\\python.exe",
+    "rflcc_file": "D:\\强化反馈学习\\RFL-CausalChase-v0.2-release\\src\\rflcc\\__init__.py",
+    "git_commit": "7e327ae5419d47f435a61ed90578882436efcfb4",
+    "config": "D:\\强化反馈学习\\RFL-CausalChase-v0.2-release\\configs\\v02_smoke.yaml"
+  },
+  "reproducibility": {
+    "outdir": "D:\\强化反馈学习\\RFL-CausalChase-v0.2-release\\outputs\\v02_smoke_protocol_closeout_20260830_final\\reproducibility",
+    "git_commit": "7e327ae5419d47f435a61ed90578882436efcfb4",
+    "configs": 1,
+    "planned_seed_rows": 8
+  },
+  "scientific_conclusion": "UNSUPPORTED_BY_CURRENT_ENVIRONMENT",
+  "conclusion_reason": "the frozen common checkpoint/environment could not identify the required low-protection probe within the fixed search budget",
+  "exit_code": 3,
+  "finished_at_utc": "2026-08-30T11:21:41.937376+00:00"
+}

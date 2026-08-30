@@ -19,8 +19,8 @@
 ### Fresh smoke：`v02_smoke_protocol_closeout_20260830_final`
 
 工程执行层级为 smoke；preflight 通过，正确解释器解析到 release worktree 的
-`src/rflcc`，完整 A-smoke 完成。真实 benchmark 为 10,000 步环境 56,292 steps/s、
-一次 Oracle CF 106,107 transitions/s。B 的两个 common checkpoints 均达到
+`src/rflcc`，完整 A-smoke 完成。真实 benchmark 为 10,000 步环境 35,390 steps/s、
+一次 Oracle CF 63,375 transitions/s。B 的两个 common checkpoints 均达到
 `pre_success=1.00`、`pre_safe_option=1.00`，所以不是 pretrain gate 阻断。
 
 | experiment seed | L-dominant + false-H（保护 H） | H-dominant + false-L（保护 L） | 结果 |
