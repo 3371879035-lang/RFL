@@ -16,6 +16,7 @@ import yaml
 from scripts.capture_v02_reproducibility import capture_reproducibility
 from scripts.experiment_a_v02 import run_update
 from scripts.experiment_b_v02 import main as experiment_b_main
+from scripts.run_v02 import EXIT_CONFIRMATORY_REFUSED, main as run_v02_main
 from scripts.v02_integrity import (
     OutputIntegrityError,
     prepare_fresh_v02_output_dir,
@@ -121,3 +122,12 @@ def test_reproducibility_capture_writes_required_envelope(tmp_path):
     manifest = list(__import__("csv").DictReader((outdir / "seed_manifest.csv").open(encoding="utf-8")))
     assert len(manifest) == 2 * _smoke_config()["experiment"]["seeds"]
     assert {row["status"] for row in manifest} == {"planned"}
+
+
+def test_confirmatory_is_refused_before_creating_artifacts_without_a_passing_pilot(tmp_path):
+    outdir = tmp_path / "outputs" / "v02_confirmatory_should_not_exist"
+    assert run_v02_main([
+        "--tier", "confirmatory", "--config", str(ROOT / "configs" / "v02_confirmatory.yaml"),
+        "--outdir", str(outdir), "--pilot-dir", str(tmp_path / "no_pilot"),
+    ]) == EXIT_CONFIRMATORY_REFUSED
+    assert not outdir.exists()

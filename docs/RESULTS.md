@@ -8,7 +8,7 @@
 | 旧 strict pilot A | H-A / H-U / H-K 为已执行的描述性历史证据。 |
 | 旧 strict pilot B H-L | `invalid_probe_semantics`：错误 low-level last action 被当成正确知识，CKD/WKR 无效。不是科学 FAIL。 |
 | Confirmatory | `blocked_not_run`。没有把旧文件补字段冒充 fresh rerun。 |
-| 当前科学结论 | `full_chain_not_supported`。必须由 fresh probe-feasibility 通过后的新 pilot 重新决定。 |
+| 当前科学结论 | `UNSUPPORTED_BY_CURRENT_ENVIRONMENT`：当前 checkpoint/环境无法识别 Low-protection；因此完整链条不受支持。 |
 
 原始 strict pilot 的状态和逐文件 SHA-256 在
 `outputs/v02_pilot_20260830_strict/STATUS.json` 与 `ARTIFACT_SHA256.csv`。六组不可用的
