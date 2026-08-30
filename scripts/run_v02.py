@@ -188,7 +188,15 @@ def run_tier(*, tier: str, config_path: Path, outdir: Path, pilot_dir: Path | No
         if transfer_code != 0:
             statuses["B-online"] = {}
             _write_execution_manifest(prepared, cfg, statuses)
-            report.update({"status": "blocked_invalid_knowledge_probe", "exit_code": EXIT_INVALID})
+            report.update({
+                "status": "blocked_invalid_knowledge_probe",
+                "scientific_conclusion": "UNSUPPORTED_BY_CURRENT_ENVIRONMENT",
+                "conclusion_reason": (
+                    "the frozen common checkpoint/environment could not identify the required "
+                    "low-protection probe within the fixed search budget"
+                ),
+                "exit_code": EXIT_INVALID,
+            })
             return EXIT_INVALID
         validate_b_transfer_output(prepared / "b_transfer", cfg)
 

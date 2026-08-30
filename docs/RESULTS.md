@@ -13,8 +13,25 @@
 原始 strict pilot 的状态和逐文件 SHA-256 在
 `outputs/v02_pilot_20260830_strict/STATUS.json` 与 `ARTIFACT_SHA256.csv`。六组不可用的
 旧输出在 `legacy/invalid_v02_outputs/`，每组原因见其 README。若冻结的 300 次搜索内
-无法形成每方向 10 个、初始 margin 至少 0.60 的合法 probe，正式结论应是
+无法形成每方向 10 个、初始 margin 至少 0.60 的合法 probe，正式结论是
 `UNSUPPORTED_BY_CURRENT_ENVIRONMENT`，不得改变 checkpoint 覆盖率或重新定义 correct action。
+
+### Fresh smoke：`v02_smoke_protocol_closeout_20260830_final`
+
+工程执行层级为 smoke；preflight 通过，正确解释器解析到 release worktree 的
+`src/rflcc`，完整 A-smoke 完成。真实 benchmark 为 10,000 步环境 56,292 steps/s、
+一次 Oracle CF 106,107 transitions/s。B 的两个 common checkpoints 均达到
+`pre_success=1.00`、`pre_safe_option=1.00`，所以不是 pretrain gate 阻断。
+
+| experiment seed | L-dominant + false-H（保护 H） | H-dominant + false-L（保护 L） | 结果 |
+|---:|---:|---:|---|
+| 2,000,000 | 2/2 probes | 0/2（300 次冻结搜索耗尽） | `blocked_invalid_knowledge_probe` |
+| 2,000,001 | 2/2 probes | 0/2（300 次冻结搜索耗尽） | `blocked_invalid_knowledge_probe` |
+
+`run_v02.py` 返回 **3**。B-online、12-seed pilot、50-seed confirmatory 均未创建；
+这不是科学 PASS/FAIL，而是当前 common checkpoint/环境下 Low-protection 不可识别，即
+`UNSUPPORTED_BY_CURRENT_ENVIRONMENT`。完整 raw、命令、双 config hash、benchmark、
+planned/actual manifests 见 `outputs/v02_smoke_protocol_closeout_20260830_final/`。
 
 # RFL-CausalChase-v0.1 — 历史结果（截至 2026-08-28）
 
