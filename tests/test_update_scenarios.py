@@ -14,3 +14,13 @@ def test_hl_mixed_preserves_proportional_responsibility():
     s = make_hl_mixed(1, seed=7, max_attempts=100)[0]
     assert s.oracle_r["H"] > 0.2 and s.oracle_r["L"] > 0.2
     assert s.oracle_r["H"] + s.oracle_r["L"] >= 0.7
+
+
+def test_update_scenarios_are_seed_deterministic():
+    for maker in (make_high_protection, make_low_protection, make_environment_mixed, make_hl_mixed):
+        first = maker(2, seed=1234, max_attempts=300)
+        second = maker(2, seed=1234, max_attempts=300)
+        assert [s.scenario_id for s in first] == [s.scenario_id for s in second]
+        assert [s.oracle_r for s in first] == [s.oracle_r for s in second]
+        assert [s.q_snapshot.deep_hash() for s in first] == [s.q_snapshot.deep_hash() for s in second]
+        assert [s.trace.noise_tape.sha256() for s in first] == [s.trace.noise_tape.sha256() for s in second]

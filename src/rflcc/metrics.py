@@ -60,10 +60,22 @@ def compute_update_metrics(
     tp = sum(min(actual[m], expected[m]) for m in ("H", "L"))
     actual_total = sum(actual.values())
     expected_total = sum(expected.values())
-    precision = tp / (actual_total + eps) if actual_total > eps else None
-    recall = tp / (expected_total + eps) if expected_total > eps else None
-    f1 = (2 * precision * recall / (precision + recall + eps)) if precision is not None and recall is not None else None
-    actual_wur = sum(actual[m] * (1.0 - float(oracle_r.get(m, 0.0))) for m in ("H", "L")) / (actual_total + eps) if actual_total > eps else None
+    if expected_total <= eps:
+        # A pure environmental responsibility has no internal update budget;
+        # recall (and therefore F1) is intentionally undefined rather than
+        # rewarding a method for doing nothing.
+        precision = 0.0 if actual_total > eps else None
+        recall = None
+        f1 = None
+    else:
+        # When an internal update *is* expected, doing nothing is a complete
+        # miss.  F1=0 keeps Standard/RFL-Observe and a feedback-E no-update
+        # event in the same preregistered seed/shock panel as every other
+        # method, instead of silently changing the H-U denominator.
+        precision = tp / actual_total if actual_total > eps else None
+        recall = tp / expected_total
+        f1 = 0.0 if actual_total <= eps else (2 * precision * recall / (precision + recall)) if precision + recall > eps else 0.0
+    actual_wur = sum(actual[m] * (1.0 - float(oracle_r.get(m, 0.0))) for m in ("H", "L")) / actual_total if actual_total > eps else None
     return UpdateMetrics(actual, expected, precision, recall, f1, actual_wur)
 
 

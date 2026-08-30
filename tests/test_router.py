@@ -45,7 +45,7 @@ def test_last_action_routing_used():
         s_h=1, option=0,
         last_low=((5, 5, 6, 1, 0, 1), 2),
     )
-    assert routed.low == ((5, 5, 6, 1, 0, 1), 2, -1.0)
+    assert routed.low == ((5, 5, 6, 1, 0, 1), 2, -0.1)
     assert routed.high == (1, 0, 0.0)
     assert routed.update_mass["L"] == pytest.approx(0.1)
 

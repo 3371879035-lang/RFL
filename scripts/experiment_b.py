@@ -34,6 +34,7 @@ from rflcc.baselines.cf_only import CFOnly
 from rflcc.baselines.er import ER5
 from rflcc.baselines.full_rfl import FullRFL
 from rflcc.baselines.immediate import Immediate
+from rflcc.baselines.pe_seq import PESeq
 from rflcc.baselines.standard import StandardHQ
 from rflcc.counterfactual import CounterfactualRunner
 from rflcc.env import CausalChaseEnv
@@ -73,7 +74,19 @@ STAGE_GATES = {
     "B4": {"threshold": 0.50, "metric": "success"},
 }
 
-B_ALGOS = ("standard", "immediate", "er5", "pe_seq", "cf_only", "full_rfl", "oracle_upper")
+
+def _seed32(value: int) -> int:
+    """Keep composed experiment seeds valid for NumPy's legacy RNG.
+
+    v0.2 uses disjoint million-scale seed bases; episode-derived seeds can
+    exceed ``RandomState``'s 32-bit input domain unless they are normalized.
+    """
+    return int(value % (2**32 - 1))
+
+B_ALGOS = (
+    "standard", "immediate", "er5", "pe_seq", "cf_only", "full_rfl",
+    "rfl_observe", "oracle_update", "oracle_upper", "full_rfl_cfcritical",
+)
 
 
 # ---------------------------------------------------------------------------
@@ -107,18 +120,20 @@ def run_b2(cfg: dict, *, seed: int, outdir: str) -> dict:
             )
             rows.append({
                 "scenario": s.scenario_id, "cause": cause, "r_star": r_star,
-                "rho_high": routed.high[2] if routed.high else 0.0,
-                "rho_low": routed.low[2] if routed.low else 0.0,
+                "delta_high": routed.high[2] if routed.high else 0.0,
+                "delta_low": routed.low[2] if routed.low else 0.0,
             })
     os.makedirs(outdir, exist_ok=True)
     with open(os.path.join(outdir, f"b2_seed{seed}.json"), "w") as f:
         json.dump(rows, f, indent=2)
-    # 验收：L-only 场景 rho_low 明显、H-only rho_high 明显
-    l_rho = [r["rho_low"] for r in rows if r["cause"] == "L"]
-    h_rho = [r["rho_high"] for r in rows if r["cause"] == "H"]
+    # 验收：L-only/H-only 的实际 diagnostic delta 必须可检测。
+    l_rho = [r["delta_low"] for r in rows if r["cause"] == "L"]
+    h_rho = [r["delta_high"] for r in rows if r["cause"] == "H"]
+    accepted_target = float(cfg.get("scenarios", {}).get("acceptance", {}).get("delta_target_pos", 0.4))
+    minimum_delta = cfg["learning"]["alpha_diag"] * accepted_target
     ok = (
-        bool(l_rho) and min(abs(x) for x in l_rho) > 0.5
-        and bool(h_rho) and min(abs(x) for x in h_rho) > 0.5
+        bool(l_rho) and min(abs(x) for x in l_rho) >= minimum_delta
+        and bool(h_rho) and min(abs(x) for x in h_rho) >= minimum_delta
     )
     return {"ok": ok, "n_rows": len(rows)}
 
@@ -138,7 +153,10 @@ class BAgent:
             alpha_low=lr["alpha_low"], alpha_high=lr["alpha_high"],
             gamma=cfg["environment"]["gamma"], rng=rng,
         )
-        self.router = UpdateRouter(alpha_diag=lr["alpha_diag"])
+        self.router = UpdateRouter(
+            alpha_diag=lr["alpha_diag"],
+            use_cf_critical=(algo == "full_rfl_cfcritical"),
+        )
         self.er5 = ER5(
             alpha_low=lr["alpha_low"], alpha_high=lr["alpha_high"],
             alpha_diag=lr["alpha_diag"], gamma=cfg["environment"]["gamma"],
@@ -148,6 +166,7 @@ class BAgent:
         self.runner_rfl = runner_rfl
         self.runner_exhaustive = runner_exhaustive
         self.attribution_counts = {"attributed": 0, "collisions": 0}
+        self.cf_transitions = 0
 
     # -- 委托 StandardHQ --------------------------------------------------
     def select_option(self, s_h, eps): return self.std.select_option(s_h, eps)
@@ -156,14 +175,30 @@ class BAgent:
     def update_high(self, s_h, o, g): return self.std.update_high(s_h, o, g)
 
     # -- 诊断归因（COLLISION 时）------------------------------------------
-    def on_collision(self, trace: EpisodeTrace, s_h, option, last_low,
-                     observed_feedback: str, oracle_r, oracle_primary,
-                     policy_snapshot) -> dict:
+    def on_collision(
+        self,
+        trace: EpisodeTrace,
+        s_h,
+        option,
+        last_low,
+        observed_feedback: str,
+        policy_snapshot,
+        *,
+        oracle_r_for_upper: dict | None = None,
+    ) -> dict:
+        """Learner update path.
+
+        Evaluator labels never enter this function except for the explicitly
+        named evaluator-only Oracle-Update upper bound.
+        """
         self.attribution_counts["collisions"] += 1
         if self.algo == "standard":
             return {"updated": False}
         self.attribution_counts["attributed"] += 1
         if self.algo == "immediate":
+            R = Immediate().attribute(trace, observed_feedback, None, None).responsibility
+            cf = 0
+        elif self.algo == "er5":
             R = Immediate().attribute(trace, observed_feedback, None, None).responsibility
             cf = 0
         elif self.algo == "pe_seq":
@@ -172,27 +207,35 @@ class BAgent:
         elif self.algo == "cf_only":
             out = CFOnly().attribute(trace, observed_feedback, self.seq_model, self.runner_exhaustive)
             R, cf = out.responsibility, out.cf_transitions
-        elif self.algo == "full_rfl":
+        elif self.algo in ("full_rfl", "rfl_observe", "full_rfl_cfcritical"):
             out = FullRFL().attribute(trace, observed_feedback, self.seq_model, self.runner_rfl)
             R, cf = out.responsibility, out.cf_transitions
-        elif self.algo == "oracle_upper":
-            R, cf = oracle_r, 0
+        elif self.algo in ("oracle_upper", "oracle_update"):
+            if oracle_r_for_upper is None:
+                # UNRESOLVED evaluator events receive no diagnostic update;
+                # fabricating a uniform label would violate the benchmark.
+                return {"updated": False, "R": None, "cf_transitions": 0, "update_mass": {"H": 0.0, "L": 0.0}, "receipts": []}
+            R, cf = oracle_r_for_upper, 0
         else:
             raise ValueError(self.algo)
 
+        self.cf_transitions += int(cf)
+
+        critical_low = None
+        if self.algo == "full_rfl_cfcritical":
+            check = self.runner_rfl.verify(trace, candidates=["L"])
+            if check.critical_low_t is not None:
+                critical = trace.transitions[check.critical_low_t]
+                critical_low = (critical.state, critical.action)
         routed = self.router.route(
             responsibility=R, s_h=s_h, option=option, last_low=last_low,
+            critical_low=critical_low,
         )
-        self.router.apply(self.std.q, routed)
-        metrics = compute_attribution_metrics(
-            responsibility=R, oracle_r=oracle_r,
-            proposed_update_mass=routed.update_mass,
-            observed_feedback=observed_feedback,
-            cf_transitions=cf,
-        )
+        receipts = [] if self.algo == "rfl_observe" else self.router.apply(self.std.q, routed)
         return {
-            "updated": True, "R": R, "metrics": metrics,
+            "updated": self.algo != "rfl_observe", "R": R,
             "cf_transitions": cf, "update_mass": routed.update_mass,
+            "receipts": receipts,
         }
 
     def replay(self) -> int:
@@ -226,6 +269,9 @@ def run_learning(
     cfg: dict, stage: str, algo: str, *, seed: int, episodes: int, eval_every: int,
     use_scripted_low: bool, outdir: str, run_id: str, seq_model=None,
     checkpoint_dir: str | None = None,
+    learn_low_while_scripted: bool = False,
+    checkpoint_config_hash: str = "v02",
+    include_initial_eval: bool = False,
 ) -> dict:
     env_cfg = cfg["environment"]
     over = STAGE_ENV[stage]
@@ -239,11 +285,11 @@ def run_learning(
     lr = cfg["learning"]
     gamma = env_cfg["gamma"]
     exp = cfg.get("experiment", {})
-    rng = np.random.RandomState(seed + 1000)
+    rng = np.random.RandomState(_seed32(seed + 1000))
 
     # 共享 calibration（由调用方传入，frozen）+ runner（所有算法）
     runner_rfl = runner_exhaustive = None
-    if algo in ("pe_seq", "cf_only", "full_rfl"):
+    if algo in ("pe_seq", "cf_only", "full_rfl", "rfl_observe", "full_rfl_cfcritical"):
         if seq_model is None:
             seq_model = _calibrate_sequence(cfg, env)
 
@@ -253,7 +299,7 @@ def run_learning(
         return FrozenQLowPolicy(agent.std.q.low)
 
     oracle = None
-    if algo in ("pe_seq", "cf_only", "full_rfl"):
+    if algo in ("pe_seq", "cf_only", "full_rfl", "rfl_observe", "full_rfl_cfcritical"):
         cc = cfg["counterfactual"]
         runner_rfl = CounterfactualRunner(
             policy_for=policy_for, env=env, top_k=cc.get("top_k_causes", 2),
@@ -266,21 +312,27 @@ def run_learning(
     if algo != "standard":
         # feedback 的 true_primary 需要 evaluator（所有非 standard 算法共享）
         oracle = OracleEvaluator(policy_for=policy_for, env=env)
-    script = ScriptedRouteFollower(0)
     feedback_p = exp.get("feedback", {}).get("p_false_symmetric", 0.4)
     injector = FeedbackInjector(p_false=feedback_p, mode="symmetric",
-                                rng=np.random.RandomState(seed + 2000))
+                                rng=np.random.RandomState(_seed32(seed + 2000)))
 
-    def select_low(obs, eps):
-        return script.act(obs) if use_scripted_low else agent.select_action(obs.low_state, eps)
+    def select_low(obs, eps, scripted_option: int):
+        """B1 must execute the route selected by Q_H, not a fixed route."""
+        if use_scripted_low:
+            return ScriptedRouteFollower(scripted_option).act(obs)
+        return agent.select_action(obs.low_state, eps)
 
     eval_records = []
+    if include_initial_eval:
+        # v0.2 learning curves define their AUC from episode zero.  This is
+        # evaluation only and is explicitly checked not to mutate Q.
+        eval_records.append(evaluate(env, agent, seed, 0, use_scripted_low=use_scripted_low))
     t0 = time.time()
     total_bellman = 0
     for ep in range(episodes):
         eps = linear_epsilon(ep, lr["epsilon_start"], lr["epsilon_end"],
                              lr["epsilon_decay_episodes"])
-        env_seed = seed * 100000 + ep
+        env_seed = _seed32(seed * 100000 + ep)
         obs, _ = env.reset(seed=env_seed)
         s_h = obs.monster_start_lane
         option = agent.select_option(s_h, eps)
@@ -292,12 +344,12 @@ def run_learning(
         rewards = []
         done = False
         while not done:
-            a = select_low(obs, eps)
+            a = select_low(obs, eps, option)
             state = obs.low_state
             obs2, r, term, trunc, info = env.step(a)
             state2 = obs2.low_state
             rewards.append(r)
-            if not use_scripted_low:
+            if not use_scripted_low or learn_low_while_scripted:
                 agent.update_low(state, a, r, state2, term or trunc)
                 if agent.er5 is not None:
                     agent.er5.add_transition(state, a, r, state2, term or trunc)
@@ -332,7 +384,8 @@ def run_learning(
             is_false = injector.is_false(observed, oracle_primary)
             policy_snap = agent.std.q.copy()
             aux = agent.on_collision(
-                trace, s_h, option, last_low, observed, oracle_r, oracle_primary, policy_snap,
+                trace, s_h, option, last_low, observed, policy_snap,
+                oracle_r_for_upper=(oracle_r if algo in ("oracle_upper", "oracle_update") else None),
             )
             agent.attribution_counts["last_feedback_false"] = is_false
 
@@ -348,6 +401,7 @@ def run_learning(
         "visited_states": agent.std.q.n_visited_states(),
         "attributed": agent.attribution_counts["attributed"],
         "collisions": agent.attribution_counts["collisions"],
+        "cf_transitions": agent.cf_transitions,
         "total_bellman": total_bellman,
         "wall_s": round(time.time() - t0, 2),
     }
@@ -356,17 +410,19 @@ def run_learning(
         json.dump({"result": result, "eval_records": eval_records}, f, indent=2)
     if checkpoint_dir is not None:
         from rflcc.checkpoints import save_checkpoint
-        save_checkpoint(agent.std.q, checkpoint_dir, seed=seed, episodes=episodes, config_hash="v02")
+        save_checkpoint(
+            agent.std.q, checkpoint_dir, seed=seed, episodes=episodes,
+            config_hash=checkpoint_config_hash,
+        )
     return result
 
 
 def evaluate(env, agent, seed, ep_done, n_eval=50, use_scripted_low=False) -> dict:
-    script = ScriptedRouteFollower(0)
     success = 0
     safe = 0
     returns = []
     for k in range(n_eval):
-        env_seed = seed * 1000000 + ep_done * 1000 + k
+        env_seed = _seed32(seed * 1000000 + ep_done * 1000 + k)
         obs, _ = env.reset(seed=env_seed)
         s_h = obs.monster_start_lane
         option = agent.select_option(s_h, 0.0)
@@ -376,7 +432,11 @@ def evaluate(env, agent, seed, ep_done, n_eval=50, use_scripted_low=False) -> di
         rewards = []
         done = False
         while not done:
-            a = script.act(obs) if use_scripted_low else agent.select_action(obs.low_state, 0.0)
+            a = (
+                ScriptedRouteFollower(option).act(obs)
+                if use_scripted_low
+                else agent.select_action(obs.low_state, 0.0)
+            )
             obs, r, term, trunc, _ = env.step(a)
             rewards.append(r)
             done = term or trunc

@@ -1,5 +1,4 @@
 schema_version: "0.2.0"
-diagnostic_update_semantics: scaled_additive
 environment:
   width: 9
   height: 7
@@ -9,11 +8,31 @@ environment:
   monster_dash_p: 0.10
   rewards: {exit: 1.0, collision: -1.0, timeout: -0.5, step: -0.01}
 scenarios: {acceptance: {delta_target_pos: 0.4, delta_leak: 0.1}, calibration_seed_offset: 1000000, search_attempts_per_trace: 300}
-sequence: {beta_prior: 1.0, probability_floor: 0.01, adjacent_weight_eta: 0.50, temperature: 0.50}
-feedback: {match_likelihood: 0.60, mismatch_likelihood: 0.20, feedback_weight: 0.50}
-counterfactual: {top_k_causes: 2, low_level_window: 3, lambda_cf: 4.0, lambda_reject: 2.0, delta_reject: 0.05}
+sequence: {beta_prior: 1.0, probability_floor: 0.01, adjacent_weight_eta: 0.50, temperature: 0.50, frozen: true}
+feedback: {mode: symmetric, p_false_primary: 0.40, p_false_clean: 0.00, match_likelihood: 0.60, mismatch_likelihood: 0.20, feedback_weight: 0.50}
+counterfactual: {top_k_causes: 2, low_level_window: 3, lambda_cf: 4.0, lambda_reject: 2.0, delta_reject: 0.05, tau_r: 1.0}
 attribution: {tau_r: 1.0}
-learning: {alpha_low: 0.20, alpha_high: 0.15, alpha_diag: 0.10, epsilon_start: 0.20, epsilon_end: 0.02, epsilon_decay_episodes: 3000}
+learning: {alpha_low: 0.20, alpha_high: 0.15, alpha_diag: 0.10, diagnostic_update_semantics: scaled_additive, epsilon_start: 0.20, epsilon_end: 0.02, epsilon_decay_episodes: 3000}
 routing: {primary: last_action, secondary_cf_critical: true}
 replay: {ordinary_replay_k: 5, diag_lr_scale: 0.2}
-experiment: {name: v02_confirmatory, seeds: 50, seed_base: 3000000, attribution_per_cause: 30, update_scenarios_per_type: 20, pretrain_episodes: 5000, shocks: 20, recovery_episodes: 500, online_episodes: 5000}
+knowledge: {initial_correct_margin: 0.60, recovery_fraction: 0.95, recovery_consecutive_checkpoints: 3, recovery_horizon_episodes: 500}
+algorithms:
+  primary: [standard, immediate, pe_seq, full_rfl, oracle_update]
+  secondary: [er5, cf_only, rfl_observe, full_rfl_cfcritical]
+experiment_a: {attribution_per_cause: 30, update_scenarios_per_type: 20, scenario_types: [high_protection, low_protection, environment_mixed, hl_mixed]}
+experiment_b: {pretrain_episodes: 5000, shock_count: 20, recovery_episodes: 500, online_training_episodes: 5000, eval_every: 25}
+experiment:
+  name: v02_confirmatory
+  seeds: 50
+  seed_base: 3000000
+  attribution_per_cause: 30
+  update_scenarios_per_type: 20
+  pretrain_episodes: 5000
+  shocks: 20
+  recovery_episodes: 500
+  recovery_eval_every: 25
+  online_episodes: 5000
+  online_eval_every: 100
+  checkpoint_eval_every: 100
+  feedback: {p_false_symmetric: 0.40}
+  algorithms: [standard, immediate, er5, pe_seq, cf_only, full_rfl, rfl_observe, oracle_update, full_rfl_cfcritical]

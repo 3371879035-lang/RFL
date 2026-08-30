@@ -1,4 +1,4 @@
-# RFL-CausalChase-v0.1
+# RFL-CausalChase
 
 最小可复现表格式强化反馈学习（Reinforcement Learning from Feedback）实验系统。
 完整规范见 [`docs/RFL_CausalChase_v0_1_SPEC.md`](docs/RFL_CausalChase_v0_1_SPEC.md)。
@@ -31,11 +31,50 @@ python -m pip install -e ".[dev]"
 python -m pytest -q
 ```
 
+## v0.2：责任 → 真实更新 → 知识 → 恢复/学习
+
+v0.2 保留 v0.1 的表格式环境和归因算法，不增加 DQN、Shapley 或新模型。它只检验
+`R* → R → 实际 ΔQ → knowledge margin → recovery/learning` 这条链。诊断更新的冻结
+语义是 `ΔQ_H=-alpha_diag*R_H`、`ΔQ_L=-alpha_diag*R_L`；每一次实际写 Q 都有
+before/after/delta 收据。
+
+新实验只写入新的 `outputs/v02_*` 目录。特别地，`outputs/confirmatory_a/` 与
+`outputs/pilot_b/` 是 v0.1 历史证据，不会被 v0.2 命令覆盖或混入分析。
+
+严格执行顺序如下。每一步失败都应保留其新输出作为审计材料，并停止下一步，而不是
+删除失败 seed 或用结果调参。
+
+```bash
+# 1. 源码与有界 smoke；smoke 每次创建新的 outputs/v02_smoke_* 目录
+python -m pytest -q
+python scripts/smoke_v02.py --config configs/v02_smoke.yaml --stage all
+
+# 2. pilot 之前保存可复现性封套（环境、依赖、commit、config hash、seed manifest）
+python scripts/capture_v02_reproducibility.py --config configs/v02_pilot.yaml --outdir outputs/v02_reproducibility_pilot
+
+# 3. 12-seed pilot：先 A，再 common checkpoint → shock → 真 recovery，最后 online
+python scripts/experiment_a_v02.py --config configs/v02_pilot.yaml --stage all --outdir outputs/v02_pilot_current/a
+python scripts/experiment_b_v02.py --config configs/v02_pilot.yaml --stage transfer --outdir outputs/v02_pilot_current/b_transfer
+python scripts/experiment_b_v02.py --config configs/v02_pilot.yaml --stage online --outdir outputs/v02_pilot_current/b_online
+python scripts/analyze_v02.py --dir outputs/v02_pilot_current
+```
+
+只有 pilot 的 pre-shock success/safe-option 门禁、输出完整性和 seed-level 统计都通过后，
+才可把同一命令中的配置替换为 `configs/v02_confirmatory.yaml`，使用 50 个新的 seed。
+confirmatory 的配置一经开始不可再根据其数据修改。
+
+v0.2 的主检验是 Full-RFL−Immediate 的 AE、actual-update F1、受保护模块的 CKD、
+RecoveryEpisodes，并对四项主检验做 seed-level 10,000 次 paired sign-flip、10,000 次
+paired bootstrap、Cohen d_z 和 Holm 校正。学习效用另外报告 Full-RFL−Standard 的
+online AUC、EpisodesTo90 和最终成功率非劣性；绝不把 episode 当作独立 p-value 样本。
+
+合法结论包括：AE 改善但 F1 不改善；F1 改善但 CKD 不改善；CKD/恢复改善但没有
+policy utility；或完整链条均改善。前三种都是结果，不应事后改环境“跑出优势”。
+
 ## 复现命令序列（S13 审计路径）
 
 ```bash
-# 1. 环境与场景
-python scripts/smoke.py --stage env
+# 1. v0.1 历史环境与场景（现有 smoke 入口已由 smoke_v02.py 替代）
 python scripts/generate_scenarios.py --smoke --per-cause 5
 python scripts/generate_calibration.py --smoke --per-cause 10
 

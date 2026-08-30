@@ -1,5 +1,20 @@
 # 变更记录
 
+## v0.2.0 (进行中)
+
+- 将 diagnostic auxiliary Q update 冻结为缩放的 additive 语义，并为每个实际 Q 写入
+  记录 `AppliedUpdate(before, after, delta_q)` 收据。
+- 新增 actual-update precision/recall/F1、actual WUR、CKD、WKR、三 checkpoint
+  RecoveryEpisodes，以及四类 acceptance-filtered knowledge shocks。
+- 新增 A-v0.2 attribution/update 入口：每个方法从同一 Q snapshot 开始，shock 阶段
+  禁用 task Q update；Oracle-Update 明确只作为 evaluator-side upper bound。
+- 新增 B-v0.2 common checkpoint、哈希 clone、pre-shock success/safe-option 硬门禁、
+  真正 task-reward recovery 和从头 online 曲线（含 episode 0）。
+- 新增严格 smoke、输出完整性验证、可复现性封套、seed manifest 与按 seed 续跑保护；
+  新结果只写入新的 `outputs/v02_*` 路径。
+- 新增 seed-level v0.2 分析入口；主终点使用 paired sign-flip、bootstrap、Cohen d_z、
+  Holm，而非 episode-level p-value。
+
 ## v0.1.0 (2026-08-28)
 
 - 建立模块化工程骨架（src layout、configs、tests、scripts）。
