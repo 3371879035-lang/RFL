@@ -892,9 +892,17 @@ def _render_markdown(report: dict[str, Any]) -> str:
                 decision=decision,
             )
         )
+    primary_gate = report["primary_gate"]
+    gate_text = (
+        "PASS"
+        if primary_gate["all_pass"]
+        else "FAIL"
+        if primary_gate["all_available"]
+        else "not supported"
+    )
     lines.extend([
         "",
-        "Primary gate: " + ("PASS" if report["primary_gate"]["all_pass"] else "not supported"),
+        "Primary gate: " + gate_text,
         "",
         "Unavailable/invalid rows are not null results. Their exact data-integrity reason is in `analysis_v02.json`.",
     ])

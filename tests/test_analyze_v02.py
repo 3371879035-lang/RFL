@@ -182,6 +182,23 @@ def test_complete_panel_has_seed_level_primary_statistics_and_outputs(tmp_path: 
     assert "episode-level p-values" in written["markdown"].read_text(encoding="utf-8")
 
 
+def test_markdown_distinguishes_a_failed_primary_gate_from_an_unavailable_one(tmp_path: Path):
+    report = {
+        "statistical_unit": "seed",
+        "n_permutations": 10,
+        "n_bootstraps": 10,
+        "holm_family": [],
+        "records": [],
+        "primary_gate": {"all_available": True, "all_pass": False},
+    }
+    failed = write_analysis_outputs(report, tmp_path / "failed.json")
+    assert "Primary gate: FAIL" in failed["markdown"].read_text(encoding="utf-8")
+
+    report["primary_gate"] = {"all_available": False, "all_pass": False}
+    unavailable = write_analysis_outputs(report, tmp_path / "unavailable.json")
+    assert "Primary gate: not supported" in unavailable["markdown"].read_text(encoding="utf-8")
+
+
 def test_aligned_pairs_refuses_to_silently_drop_a_seed():
     source = MetricSource(name="synthetic")
     source.add("metric", "full_rfl", "0", 0.2, origin="test")
