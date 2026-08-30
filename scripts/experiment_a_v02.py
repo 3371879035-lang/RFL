@@ -55,6 +55,8 @@ ALL_ALGORITHMS = (
     "rfl_observe", "oracle_update", "full_rfl_cfcritical",
 )
 
+ARTIFACT_SCHEMA_VERSION = "0.2.1"
+
 
 def load_config(path: str) -> dict:
     return yaml.safe_load(Path(path).read_text(encoding="utf-8"))
@@ -286,7 +288,7 @@ def run_update(cfg: dict, *, outdir: str | Path, seeds: int, per_type: int, seed
                     "oracle_update_upper_bound": is_oracle_upper,
                 }
                 logger.write_episode(build_episode_record(
-                    run_id="A-v02-update", schema_version="0.2.0", seed=trace.seed,
+                    run_id="A-v02-update", schema_version=ARTIFACT_SCHEMA_VERSION, seed=trace.seed,
                     scenario_id=scenario.scenario_id, experiment="A-update", algorithm=algorithm,
                     condition=scenario_type, trace=trace, observed_feedback=scenario.feedback,
                     feedback_is_false=(scenario.feedback != trace.true_primary), learner=learner,
@@ -346,7 +348,7 @@ def main(argv=None) -> int:
     seeds = int(args.seeds if args.seeds is not None else exp["seeds"])
     outdir = Path(args.outdir or f"outputs/v02_{exp['name']}_a")
     meta = {
-        "schema_version": "0.2.0", "stage": args.stage, "seeds": seeds,
+        "schema_version": ARTIFACT_SCHEMA_VERSION, "stage": args.stage, "seeds": seeds,
         "config_hash": _config_hash(cfg),
         "git_commit": os.popen("git rev-parse HEAD").read().strip(),
         "timestamp": time.time(),

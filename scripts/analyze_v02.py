@@ -47,6 +47,7 @@ class MetricSource:
     files: list[str] = field(default_factory=list)
     scenario_ids: dict[tuple[str, str], frozenset[str]] = field(default_factory=dict)
     metric_scenario_ids: dict[tuple[str, str, str], frozenset[str]] = field(default_factory=dict)
+    defined_counts: dict[tuple[str, str, str], int] = field(default_factory=dict)
     censoring: dict[tuple[str, str, str], bool] = field(default_factory=dict)
     notes: list[str] = field(default_factory=list)
     metadata: dict[str, str] = field(default_factory=dict)
@@ -232,6 +233,7 @@ def _aggregate_update(
             source.metric_scenario_ids[(metric, algorithm, seed)] = frozenset(
                 str(_value(row, "scenario_id")) for row, _ in selected
             )
+            source.defined_counts[(metric, algorithm, seed)] = len(selected)
     return source
 
 
@@ -352,6 +354,13 @@ def load_transfer_results(paths: Iterable[str | Path]) -> MetricSource:
     config_hashes: set[str] = set()
     git_commits: set[str] = set()
     for path in paths:
+        status_path = path.parent / "STATUS.json"
+        if status_path.exists():
+            status = _read_json(status_path)
+            if status.get("primary_gate_status") in {"invalid_measurement", "invalid_probe_semantics"}:
+                raise AnalysisDataError(
+                    f"{path.parent}: historical transfer is marked invalid_probe_semantics; H-L is unavailable"
+                )
         payload = _read_json(path)
         if not isinstance(payload, dict):
             raise AnalysisDataError(f"transfer output must be a JSON object: {path}")
@@ -362,6 +371,10 @@ def load_transfer_results(paths: Iterable[str | Path]) -> MetricSource:
         if seed in seen_seeds:
             raise AnalysisDataError(f"duplicate B-transfer seed {seed}; refuse to merge reruns")
         seen_seeds.add(seed)
+        if payload.get("status") == "blocked_invalid_knowledge_probe":
+            raise AnalysisDataError(
+                f"B-transfer seed {seed} is blocked_invalid_knowledge_probe; H-L is unavailable"
+            )
         if payload.get("status") != "completed" or not bool(payload.get("pretrain_gate")):
             raise AnalysisDataError(
                 f"B-transfer seed {seed} failed/never passed its pretrain gate; downstream inference is blocked"
@@ -391,12 +404,22 @@ def load_transfer_results(paths: Iterable[str | Path]) -> MetricSource:
                     f"{path.name} ({algorithm}, seed={seed}) lacks episode=0 success; "
                     "AUC_success,0:500 is intentionally unavailable."
                 )
+            if result.get("correct_knowledge_damage") is not None:
+                source.add(
+                    "correct_knowledge_damage", str(algorithm), seed,
+                    result["correct_knowledge_damage"], origin=str(path),
+                )
+            if result.get("wrong_knowledge_reinforcement") is not None:
+                source.add(
+                    "wrong_knowledge_reinforcement", str(algorithm), seed,
+                    result["wrong_knowledge_reinforcement"], origin=str(path),
+                )
             shocks = result.get("shocks")
             if not isinstance(shocks, list) or not shocks:
                 raise AnalysisDataError(f"B-transfer seed {seed}, {algorithm}: missing shocks")
             for metric in (
                 "update_precision", "update_recall", "update_f1", "actual_wur",
-                "correct_knowledge_damage", "wrong_knowledge_reinforcement", "cf_transitions",
+                "cf_transitions",
             ):
                 value = _nested_mean(shocks, metric, f"{path}, seed={seed}, algorithm={algorithm}")
                 if value is not None:
@@ -599,6 +622,8 @@ def paired_comparison(
         "mean_difference": float((x - y).mean()),
         "left_censored_seeds": sum(source.censoring.get((metric, left_algorithm, seed), False) for seed in seeds),
         "right_censored_seeds": sum(source.censoring.get((metric, right_algorithm, seed), False) for seed in seeds),
+        "defined_count_left": sum(source.defined_counts.get((metric, left_algorithm, seed), 1) for seed in seeds),
+        "defined_count_right": sum(source.defined_counts.get((metric, right_algorithm, seed), 1) for seed in seeds),
     })
     if right_scale != 1.0:
         raw_right = np.asarray([source.metrics[metric][right_algorithm][seed] for seed in seeds], dtype=float)
@@ -828,13 +853,14 @@ def analyze_sources(
     _apply_holm_and_decisions(records)
     primary = [record for record in records if record["primary"]]
     return {
-        "analysis_schema_version": "0.2.0",
+        "analysis_schema_version": "0.2.1",
         "statistical_unit": "seed",
         "n_permutations": n_permutations,
         "n_bootstraps": n_bootstraps,
         "holm_family": [record["comparison_id"] for record in primary if record["status"] == "complete"],
         "source_files": {name: source.files for name, source in sorted(sources.items())},
         "source_metadata": {name: source.metadata for name, source in sorted(sources.items())},
+        "analysis_git_commit": os.popen("git rev-parse HEAD").read().strip() or "unavailable",
         "source_notes": {name: source.notes for name, source in sorted(sources.items()) if source.notes},
         "records": records,
         "primary_gate": {
@@ -926,7 +952,8 @@ def write_analysis_outputs(report: dict[str, Any], output: str | Path) -> dict[s
         "comparison_id", "endpoint", "source", "metric", "left_algorithm", "right_algorithm",
         "right_scale", "statistical_unit", "primary", "status", "reason", "n_seeds", "seeds",
         "mean_left", "mean_right", "mean_right_unscaled", "mean_ratio_left_to_right_unscaled",
-        "mean_difference", "left_censored_seeds", "right_censored_seeds", "bootstrap_ci_95",
+        "mean_difference", "left_censored_seeds", "right_censored_seeds",
+        "defined_count_left", "defined_count_right", "bootstrap_ci_95",
         "p_sign_flip", "holm_adjusted_p", "cohens_dz", "threshold", "rule", "decision", "note",
     )
     with csv_path.open("w", newline="", encoding="utf-8") as handle:
@@ -947,8 +974,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--n-permutations", type=int, default=DEFAULT_N_PERMUTATIONS)
     parser.add_argument("--n-bootstraps", type=int, default=DEFAULT_N_BOOTSTRAPS)
     parser.add_argument(
-        "--strict", action="store_true",
-        help="exit non-zero unless all four frozen primary endpoints are available and PASS",
+        "--report-only", action="store_true",
+        help="write a descriptive report but return 0 even when a valid primary gate fails",
     )
     args = parser.parse_args(argv)
     input_path = Path(args.dir or args.input)
@@ -962,12 +989,13 @@ def main(argv: list[str] | None = None) -> int:
         )
         written = write_analysis_outputs(report, output)
     except (AnalysisDataError, ValueError) as exc:
-        parser.error(str(exc))
+        print(json.dumps({"status": "invalid", "error": str(exc)}, ensure_ascii=False), file=sys.stderr)
+        return 3
     print(json.dumps({
         "primary_gate": report["primary_gate"],
         "outputs": {name: str(path) for name, path in written.items()},
     }, ensure_ascii=False))
-    return 0 if not args.strict or report["primary_gate"]["all_pass"] else 2
+    return 0 if args.report_only or report["primary_gate"]["all_pass"] else 2
 
 
 if __name__ == "__main__":

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rfl-causalchase.local/schema/v02-artifact-0.2.1.json",
+  "title": "RFL-CausalChase v0.2 artifact envelope",
+  "type": "object",
+  "required": ["schema_version", "config_hash", "git_commit"],
+  "properties": {
+    "schema_version": {"enum": ["0.2.0", "0.2.1"]},
+    "config_hash": {"type": "string", "minLength": 7},
+    "git_commit": {"type": "string", "minLength": 7},
+    "status": {"type": "string"},
+    "seed": {"type": "integer"},
+    "seed_index": {"type": "integer"},
+    "experiment_seed": {"type": "integer"},
+    "scenario_seed": {"type": ["integer", "null"]}
+  }
+}

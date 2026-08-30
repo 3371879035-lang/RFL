@@ -33,6 +33,13 @@ python -m pytest -q
 
 ## v0.2：责任 → 真实更新 → 知识 → 恢复/学习
 
+**当前收口状态（2026-08-30）**：旧 strict 12-seed pilot 的 A 证据可保留，但其
+B-transfer 的 H-L probe 把故意错误的 low-level last action 当成“正确知识”。因此它
+是 `invalid_probe_semantics`，不是 H-L 的科学 FAIL；confirmatory 没有运行，完整链条
+不受支持。原始文件保留在 `outputs/v02_pilot_20260830_strict/`，并由
+`STATUS.json` 和 `ARTIFACT_SHA256.csv` 固定；其他占位输出在
+`legacy/invalid_v02_outputs/`，不会被新入口读取。
+
 v0.2 保留 v0.1 的表格式环境和归因算法，不增加 DQN、Shapley 或新模型。它只检验
 `R* → R → 实际 ΔQ → knowledge margin → recovery/learning` 这条链。诊断更新的冻结
 语义是 `ΔQ_H=-alpha_diag*R_H`、`ΔQ_L=-alpha_diag*R_L`；每一次实际写 Q 都有
@@ -45,22 +52,20 @@ before/after/delta 收据。
 删除失败 seed 或用结果调参。
 
 ```bash
-# 1. 源码与有界 smoke；smoke 每次创建新的 outputs/v02_smoke_* 目录
+# 1. release worktree 中使用其 editable venv；先完整测试
 python -m pytest -q
-python scripts/smoke_v02.py --config configs/v02_smoke.yaml --stage all
 
-# 2. pilot 之前保存可复现性封套（环境、依赖、commit、config hash、seed manifest）
-python scripts/capture_v02_reproducibility.py --config configs/v02_pilot.yaml --outdir outputs/v02_reproducibility_pilot
+# 2. 每层只能写入一个全新的 outputs/v02_* 目录。
+# 0=全通过，2=有效科学 FAIL，3=配置/probe/运行/产物无效，4=拒绝 confirmatory。
+python scripts/run_v02.py --tier smoke --config configs/v02_smoke.yaml --outdir outputs/v02_smoke_fresh
+python scripts/run_v02.py --tier pilot --config configs/v02_pilot.yaml --outdir outputs/v02_pilot_fresh
 
-# 3. 12-seed pilot：先 A，再 common checkpoint → shock → 真 recovery，最后 online
-python scripts/experiment_a_v02.py --config configs/v02_pilot.yaml --stage all --outdir outputs/v02_pilot_current/a
-python scripts/experiment_b_v02.py --config configs/v02_pilot.yaml --stage transfer --outdir outputs/v02_pilot_current/b_transfer
-python scripts/experiment_b_v02.py --config configs/v02_pilot.yaml --stage online --outdir outputs/v02_pilot_current/b_online
-python scripts/analyze_v02.py --dir outputs/v02_pilot_current
+# 3. 只有 pilot 的四个主 gate 全部 PASS 才允许此命令。
+python scripts/run_v02.py --tier confirmatory --config configs/v02_confirmatory.yaml --outdir outputs/v02_confirmatory_fresh --pilot-dir outputs/v02_pilot_fresh
 ```
 
 只有 pilot 的 pre-shock success/safe-option 门禁、输出完整性和 seed-level 统计都通过后，
-才可把同一命令中的配置替换为 `configs/v02_confirmatory.yaml`，使用 50 个新的 seed。
+才可运行 `configs/v02_confirmatory.yaml`，使用 50 个新的 seed。
 confirmatory 的配置一经开始不可再根据其数据修改。
 
 v0.2 的主检验是 Full-RFL−Immediate 的 AE、actual-update F1、受保护模块的 CKD、

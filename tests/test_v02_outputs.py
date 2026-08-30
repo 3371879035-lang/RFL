@@ -68,7 +68,7 @@ def test_integrity_rejects_oracle_update_in_learner_namespace(tmp_path):
         validate_v02_update_record(record)
 
 
-def test_transfer_artifacts_are_checked_from_written_files(tmp_path):
+def test_transfer_stops_when_low_protected_knowledge_probe_is_unavailable(tmp_path):
     cfg = _smoke_config()
     cfg["experiment"].update({
         "seeds": 1,
@@ -83,9 +83,12 @@ def test_transfer_artifacts_are_checked_from_written_files(tmp_path):
     outdir = tmp_path / "v02_transfer"
     assert experiment_b_main([
         "--config", str(config_path), "--stage", "transfer", "--outdir", str(outdir),
-    ]) == 0
-    report = validate_b_transfer_output(outdir, cfg)
-    assert report == {"transfer_seed_files": 1, "shock_rows": 4}
+    ]) == 3
+    artifact = json.loads((outdir / f"transfer_seed{cfg['experiment']['seed_base']}.json").read_text(encoding="utf-8"))
+    assert artifact["status"] == "blocked_invalid_knowledge_probe"
+    assert artifact["algorithms"] == {}
+    with pytest.raises(OutputIntegrityError, match="transfer gate"):
+        validate_b_transfer_output(outdir, cfg)
 
 
 def test_fresh_output_directory_rejects_existing_artifacts(tmp_path):

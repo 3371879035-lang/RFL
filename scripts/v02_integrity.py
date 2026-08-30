@@ -14,8 +14,18 @@ import math
 from pathlib import Path
 from typing import Any, Iterable
 
+from jsonschema import Draft202012Validator
 
-V02_SCHEMA_VERSION = "0.2.0"
+
+# 0.2.1 is the first artifact schema that contains protected-probe evidence.
+# Readers retain 0.2.0 support only to inspect/label historical evidence; new
+# runners always emit 0.2.1.
+V02_SCHEMA_VERSION = "0.2.1"
+V02_COMPATIBLE_SCHEMA_VERSIONS = frozenset({"0.2.0", V02_SCHEMA_VERSION})
+_ARTIFACT_SCHEMA = json.loads(
+    (Path(__file__).resolve().parents[1] / "schemas" / "v02_artifact.schema.json").read_text(encoding="utf-8")
+)
+_ARTIFACT_VALIDATOR = Draft202012Validator(_ARTIFACT_SCHEMA)
 
 
 class OutputIntegrityError(RuntimeError):
@@ -65,6 +75,13 @@ def _read_json(path: Path) -> dict[str, Any]:
     return value
 
 
+def _validate_artifact_schema(value: dict[str, Any], path: Path) -> None:
+    """Run the versioned JSON Schema before detailed semantic checks."""
+    errors = sorted(_ARTIFACT_VALIDATOR.iter_errors(value), key=lambda error: list(error.path))
+    if errors:
+        _fail(str(path), f"JSON schema violation: {errors[0].message}")
+
+
 def _read_jsonl(path: Path) -> list[dict[str, Any]]:
     if not path.is_file():
         _fail(str(path), "missing JSONL artifact")
@@ -103,9 +120,13 @@ def _assert_hash(value: Any, context: str, field: str) -> None:
         _fail(context, f"{field} is absent or not a usable hash")
 
 
+def _assert_schema_version(value: Any, context: str) -> None:
+    if value not in V02_COMPATIBLE_SCHEMA_VERSIONS:
+        _fail(context, f"schema_version must be one of {sorted(V02_COMPATIBLE_SCHEMA_VERSIONS)}")
+
+
 def _assert_meta(meta: dict[str, Any], cfg: dict[str, Any], *, stage: str, seeds: int, context: str) -> None:
-    if meta.get("schema_version") != V02_SCHEMA_VERSION:
-        _fail(context, f"schema_version must be {V02_SCHEMA_VERSION}")
+    _assert_schema_version(meta.get("schema_version"), context)
     if meta.get("stage") != stage:
         _fail(context, f"stage must be {stage!r}, got {meta.get('stage')!r}")
     if meta.get("seeds") != seeds:
@@ -162,8 +183,7 @@ def validate_v02_update_record(record: dict[str, Any], *, context: str = "episod
     }
     if set(record) != required:
         _fail(context, f"top-level fields differ from episode schema: {sorted(set(record) ^ required)}")
-    if record.get("schema_version") != V02_SCHEMA_VERSION:
-        _fail(context, "update record is not schema version 0.2.0")
+    _assert_schema_version(record.get("schema_version"), context)
     if record.get("experiment") != "A-update":
         _fail(context, "expected an A-update record")
     if not isinstance(record.get("algorithm"), str) or not record["algorithm"]:
@@ -343,8 +363,16 @@ def validate_b_transfer_output(
         _fail(str(outdir), f"expected {seeds} transfer seed files, found {len(seed_files)}")
 
     shock_rows = 0
+    required_direction_counts = {
+        "h_dominant_false_l": int(exp["shocks"]) // 2,
+        "l_dominant_false_h": int(exp["shocks"]) // 2,
+    }
+    expected_recovery_episodes = list(range(0, int(exp["recovery_episodes"]) + 1, int(exp["recovery_eval_every"])))
+    if expected_recovery_episodes[-1] != int(exp["recovery_episodes"]):
+        expected_recovery_episodes.append(int(exp["recovery_episodes"]))
     for path in seed_files:
         result = _read_json(path)
+        _validate_artifact_schema(result, path)
         if result.get("config_hash") != canonical_config_hash(cfg):
             _fail(str(path), "seed artifact config_hash differs from frozen config")
         _assert_hash(result.get("git_commit"), str(path), "git_commit")
@@ -356,6 +384,32 @@ def validate_b_transfer_output(
             _fail(str(path), "pretrain metrics do not meet the .90 gate")
         checkpoint_hash = result.get("common_checkpoint_hash")
         _assert_hash(checkpoint_hash, str(path), "common_checkpoint_hash")
+        if result.get("schema_version") == V02_SCHEMA_VERSION:
+            for field in ("seed_index", "experiment_seed", "scenario_seed"):
+                if field not in result:
+                    _fail(str(path), f"missing seed identity field {field}")
+            probes = result.get("protected_probes")
+            if not isinstance(probes, list) or len(probes) != int(exp["shocks"]):
+                _fail(str(path), "missing frozen protected-probe set")
+            probe_ids = [probe.get("probe_id") for probe in probes if isinstance(probe, dict)]
+            if len(probe_ids) != len(probes) or len(set(probe_ids)) != len(probes):
+                _fail(str(path), "protected probe IDs are missing or duplicated")
+            observed_directions = {name: 0 for name in required_direction_counts}
+            for probe in probes:
+                if not isinstance(probe, dict):
+                    _fail(str(path), "protected probe is not an object")
+                direction = probe.get("direction")
+                if direction not in observed_directions:
+                    _fail(str(path), f"unexpected protected-probe direction {direction!r}")
+                observed_directions[direction] += 1
+                if probe.get("module") not in {"H", "L"}:
+                    _fail(str(path), "protected probe has invalid module")
+                if not _finite_number(probe.get("initial_margin")) or float(probe["initial_margin"]) < float(cfg["knowledge"]["initial_correct_margin"]):
+                    _fail(str(path), "protected probe lacks required initial correct margin")
+            if observed_directions != required_direction_counts:
+                _fail(str(path), f"protected directions differ from frozen schedule: {observed_directions}")
+        else:
+            probe_ids = []
         results = result.get("algorithms")
         if not isinstance(results, dict) or set(results) != set(algorithms):
             _fail(str(path), "transfer algorithm set differs from frozen config")
@@ -364,6 +418,8 @@ def validate_b_transfer_output(
                 _fail(str(path), f"{name} did not start from the common checkpoint")
             if algorithm_result.get("shock_count") != int(exp["shocks"]):
                 _fail(str(path), f"{name} has an incomplete shock schedule")
+            if probe_ids and algorithm_result.get("probe_ids") != probe_ids:
+                _fail(str(path), f"{name} did not use the shared protected-probe IDs")
             recovery = algorithm_result.get("recovery_episode")
             horizon = int(exp["recovery_episodes"])
             if not isinstance(recovery, int) or recovery < 0 or recovery > horizon + 1:
@@ -371,6 +427,9 @@ def validate_b_transfer_output(
             records = algorithm_result.get("recovery_eval_records")
             if not isinstance(records, list) or not records:
                 _fail(str(path), f"{name} has no real recovery evaluations")
+            observed_recovery_episodes = [row.get("episode") for row in records if isinstance(row, dict)]
+            if observed_recovery_episodes != expected_recovery_episodes:
+                _fail(str(path), f"{name} recovery cadence differs from frozen schedule")
             shocks = algorithm_result.get("shocks")
             if not isinstance(shocks, list) or len(shocks) != int(exp["shocks"]):
                 _fail(str(path), f"{name} has malformed shock receipts")
@@ -379,7 +438,16 @@ def validate_b_transfer_output(
                     shock.get("actual_update"), shock.get("applied_updates"),
                     context=f"{path.name}:{name}:shock{index}",
                 )
+                if probe_ids and shock.get("probe_id") not in probe_ids:
+                    _fail(str(path), f"{name} shock {index} does not reference a frozen probe")
                 shock_rows += 1
+            if probe_ids:
+                per_probe = algorithm_result.get("knowledge_by_probe")
+                if not isinstance(per_probe, list) or {row.get("probe_id") for row in per_probe if isinstance(row, dict)} != set(probe_ids):
+                    _fail(str(path), f"{name} lacks complete post-shock protected-probe metrics")
+                for metric in ("correct_knowledge_damage", "wrong_knowledge_reinforcement"):
+                    if not _finite_number(algorithm_result.get(metric)):
+                        _fail(str(path), f"{name} has invalid fixed-probe {metric}")
             if name == "oracle_update":
                 for shock in shocks:
                     evaluator = shock.get("evaluator_only")
@@ -389,6 +457,51 @@ def validate_b_transfer_output(
                     if not isinstance(learner, dict) or learner.get("responsibility") not in ({}, None):
                         _fail(str(path), "Oracle-Update shock stores evaluator R* in learner data")
     return {"transfer_seed_files": len(seed_files), "shock_rows": shock_rows}
+
+
+def validate_b_online_output(
+    outdir: str | Path,
+    cfg: dict[str, Any],
+    *,
+    expected_algorithms: Iterable[str] | None = None,
+) -> dict[str, int]:
+    """Validate B-online's real Bellman-update evidence and 51/short cadence."""
+    outdir = Path(outdir)
+    exp = cfg["experiment"]
+    seeds = int(exp["seeds"])
+    algorithms = tuple(expected_algorithms or exp["algorithms"])
+    meta = _require_meta(outdir, cfg, stage="online", seeds=seeds)
+    if meta.get("gate_ok") is not True:
+        _fail(str(outdir / "run_meta.json"), "online gate is not marked passed")
+    seed_files = sorted(outdir.glob("online_seed*.json"))
+    if len(seed_files) != seeds:
+        _fail(str(outdir), f"expected {seeds} online seed files, found {len(seed_files)}")
+    expected_points = list(range(0, int(exp["online_episodes"]) + 1, int(exp["online_eval_every"])))
+    if expected_points[-1] != int(exp["online_episodes"]):
+        expected_points.append(int(exp["online_episodes"]))
+    records = 0
+    for path in seed_files:
+        payload = _read_json(path)
+        _validate_artifact_schema(payload, path)
+        if payload.get("status") != "completed" or payload.get("config_hash") != canonical_config_hash(cfg):
+            _fail(str(path), "online seed did not complete under the frozen config")
+        result = payload.get("algorithms")
+        if not isinstance(result, dict) or set(result) != set(algorithms):
+            _fail(str(path), "online algorithm set differs from frozen config")
+        for name, algorithm in result.items():
+            if not isinstance(algorithm, dict):
+                _fail(str(path), f"{name} online result is not an object")
+            _assert_hash(algorithm.get("q_hash_initial"), str(path), f"{name}.q_hash_initial")
+            _assert_hash(algorithm.get("q_hash_final"), str(path), f"{name}.q_hash_final")
+            if algorithm["q_hash_initial"] == algorithm["q_hash_final"]:
+                _fail(str(path), f"{name} final Q hash did not change")
+            if not isinstance(algorithm.get("task_update_count"), int) or algorithm["task_update_count"] <= 0:
+                _fail(str(path), f"{name} has no real task updates")
+            curve = algorithm.get("eval_records")
+            if not isinstance(curve, list) or [row.get("episode") for row in curve if isinstance(row, dict)] != expected_points:
+                _fail(str(path), f"{name} online evaluation cadence differs from frozen schedule")
+            records += len(curve)
+    return {"online_seed_files": len(seed_files), "online_eval_records": records}
 
 
 def validate_smoke_output(outdir: str | Path, cfg: dict[str, Any]) -> dict[str, int]:

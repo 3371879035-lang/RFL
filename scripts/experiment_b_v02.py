@@ -16,6 +16,7 @@ import sys
 import time
 from dataclasses import asdict
 from pathlib import Path
+from types import SimpleNamespace
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
@@ -37,19 +38,29 @@ from rflcc.baselines.standard import StandardHQ
 from rflcc.checkpoints import load_checkpoint
 from rflcc.counterfactual import CounterfactualRunner
 from rflcc.env import CausalChaseEnv
-from rflcc.knowledge import correct_knowledge_damage, correct_margin, recovery_episode, wrong_knowledge_reinforcement
+from rflcc.knowledge import (
+    InvalidKnowledgeProbe,
+    correct_knowledge_damage,
+    correct_margin,
+    recovery_episode,
+    require_initial_correct_margin,
+    wrong_knowledge_reinforcement,
+)
 from rflcc.metrics import compute_update_metrics
 from rflcc.policies import ScriptedRouteFollower
 from rflcc.qtables import linear_epsilon
 from rflcc.router import UpdateRouter
 from rflcc.types import TERM_EXIT
-from rflcc.update_scenarios import make_high_protection, make_low_protection
+from rflcc.scenarios import ScenarioGenerator
+from rflcc.update_scenarios import is_high_protection, is_low_protection
 
 
 PRIMARY_ALGORITHMS = (
     "standard", "immediate", "er5", "pe_seq", "cf_only", "full_rfl",
     "rfl_observe", "oracle_update", "full_rfl_cfcritical",
 )
+
+ARTIFACT_SCHEMA_VERSION = "0.2.1"
 
 
 def _seed32(value: int) -> int:
@@ -67,6 +78,15 @@ def _config_hash(cfg: dict) -> str:
 
 def _git_commit() -> str:
     return os.popen("git rev-parse HEAD").read().strip()
+
+
+def _seed_identity(cfg: dict, experiment_seed: int, *, scenario_seed: int | None = None) -> dict:
+    """Use the same explicit seed labels in every v0.2 B artifact."""
+    return {
+        "seed_index": int(experiment_seed) - int(cfg["experiment"].get("seed_base", 0)),
+        "experiment_seed": int(experiment_seed),
+        "scenario_seed": scenario_seed,
+    }
 
 
 def _load_completed(path: Path, cfg_hash: str, *, status: str | None = None) -> dict | None:
@@ -161,8 +181,8 @@ def run_checkpoint(cfg: dict, outdir: str | Path, seed: int) -> dict:
     _, meta = load_checkpoint(ckpt_dir, expected_config_hash=cfg_hash)
     gate = result["final_success"] >= 0.90 and result["final_safe_option"] >= 0.90
     output = {
-        "schema_version": "0.2.0", "config_hash": cfg_hash, "git_commit": _git_commit(),
-        "status": "completed" if gate else "blocked_pretrain_gate",
+        "schema_version": ARTIFACT_SCHEMA_VERSION, "config_hash": cfg_hash, "git_commit": _git_commit(),
+        **_seed_identity(cfg, seed), "status": "completed" if gate else "blocked_pretrain_gate",
         "seed": seed, "checkpoint_dir": str(ckpt_dir), "q_hash": meta["q_hash"],
         "pretrain_episodes": episodes, "pre_success": result["final_success"],
         "pre_safe_option": result["final_safe_option"], "pretrain_gate": gate,
@@ -172,32 +192,139 @@ def run_checkpoint(cfg: dict, outdir: str | Path, seed: int) -> dict:
     return output
 
 
-def _shock_scenarios(cfg: dict, seed: int):
-    n = int(cfg["experiment"]["shocks"])
-    if n < 2 or n % 2:
-        raise ValueError("shocks must be a positive even number")
-    # low-protection is H-dominant, false L; high-protection is L-dominant,
-    # false H.  Thus each half is controlled misleading feedback.
-    half = n // 2
-    return (
-        [("h_dominant_false_l", s) for s in make_low_protection(half, seed=seed + 101, max_attempts=300)]
-        + [("l_dominant_false_h", s) for s in make_high_protection(half, seed=seed + 202, max_attempts=300)]
-    )
-
-
 def _row(q, module, state):
     if module == "H":
         return {0: q.high_get(state, 0), 1: q.high_get(state, 1)}
     return {a: q.low_get(state, a) for a in range(q.n_actions)}
 
 
-def _probes_for_shock(q, trace):
-    tr = trace.transitions[-1]
-    s_h = trace.noise_tape.monster_start_lane
-    return [
-        {"module": "H", "state": s_h, "correct": 1 - s_h, "wrong": s_h},
-        {"module": "L", "state": tr.state, "correct": tr.action, "wrong": (tr.action + 1) % q.n_actions},
-    ]
+def _is_unique_greedy(values: dict, action: int) -> bool:
+    """The nominated protected action must be the checkpoint's sole argmax."""
+    maximum = max(values.values())
+    return values.get(action) == maximum and sum(value == maximum for value in values.values()) == 1
+
+
+def _probe_for_sample(q, direction: str, sample, *, minimum_margin: float) -> dict | None:
+    """Return one direction-specific protected probe, or ``None`` if invalid.
+
+    The former implementation always emitted an H and an L probe, then
+    treated a deliberately faulty L last-action as known-correct.  A probe is
+    now direction-specific and accepted only when the *common checkpoint*
+    already knows its nominated correct action.
+    """
+    trace = sample.trace
+    if direction == "l_dominant_false_h":
+        state = int(trace.noise_tape.monster_start_lane)
+        correct, wrong, module = 1 - state, state, "H"
+    elif direction == "h_dominant_false_l":
+        last = trace.transitions[-1]
+        state, correct, module = last.state, int(last.action), "L"
+        values = _row(q, module, state)
+        competitors = {action: value for action, value in values.items() if action != correct}
+        wrong = max(competitors, key=competitors.get)
+    else:  # pragma: no cover - guarded by the fixed direction table
+        raise ValueError(direction)
+    values = _row(q, module, state)
+    if not _is_unique_greedy(values, correct):
+        return None
+    try:
+        initial_margin = require_initial_correct_margin(
+            values, correct, minimum=float(minimum_margin)
+        )
+    except InvalidKnowledgeProbe:
+        return None
+    return {
+        "module": module,
+        "state": state,
+        "correct": correct,
+        "wrong": wrong,
+        "initial_margin": initial_margin,
+        "last_action": int(trace.transitions[-1].action),
+    }
+
+
+def _build_protected_probe_plan(cfg: dict, q0, seed: int) -> tuple[list[dict], dict]:
+    """Freeze all B probes before *any* algorithm runs.
+
+    Exactly ``shocks / 2`` samples are requested per direction.  Each slot is
+    searched at most 300 deterministic candidates.  Failure is evidence that
+    the current checkpoint/environment cannot identify the corresponding
+    protected knowledge, not permission to change a scenario or denominator.
+    """
+    n_shocks = int(cfg["experiment"]["shocks"])
+    if n_shocks < 2 or n_shocks % 2:
+        raise ValueError("shocks must be a positive even number")
+    half = n_shocks // 2
+    if cfg["experiment"].get("name") in {"v02_pilot", "v02_confirmatory"} and half != 10:
+        raise ValueError("pilot and confirmatory B-transfer require exactly 10 probes per direction")
+    search_limit = int(cfg.get("scenarios", {}).get("search_attempts_per_trace", 0))
+    if search_limit != 300:
+        raise ValueError("protected-probe search_attempts_per_trace is frozen at 300")
+    minimum_margin = float(cfg.get("knowledge", {}).get("initial_correct_margin", 0.60))
+    env = _env(cfg)
+    acceptance = cfg.get("scenarios", {}).get("acceptance", {})
+    generator = ScenarioGenerator(
+        env=env,
+        delta_target_pos=float(acceptance.get("delta_target_pos", 0.4)),
+        delta_leak=float(acceptance.get("delta_leak", 0.1)),
+        max_attempts=search_limit,
+    )
+    directions = (
+        ("h_dominant_false_l", "H", is_low_protection, "L", 101),
+        ("l_dominant_false_h", "L", is_high_protection, "H", 202),
+    )
+    plan: list[dict] = []
+    diagnostics: dict[str, dict] = {}
+    for direction, cause, predicate, feedback, offset in directions:
+        accepted, rejected = 0, 0
+        accepted_ids: list[str] = []
+        for slot in range(half):
+            found = None
+            for attempt in range(search_limit):
+                scenario_seed = int(seed + offset + slot * 100_003 + attempt * 7_919)
+                sample = generator._try_candidate(cause, scenario_seed, attempt)
+                if sample is None or not sample.oracle.responsibility or not predicate(sample.oracle.responsibility):
+                    rejected += 1
+                    continue
+                probe = _probe_for_sample(q0, direction, sample, minimum_margin=minimum_margin)
+                if probe is None:
+                    rejected += 1
+                    continue
+                found = (sample, probe)
+                break
+            if found is None:
+                break
+            sample, probe = found
+            probe_id = f"{direction}:{slot:02d}:{sample.scenario_id}"
+            probe.update({
+                "probe_id": probe_id,
+                "direction": direction,
+                "source_scenario_id": sample.scenario_id,
+                "scenario_seed": int(sample.seed),
+            })
+            plan.append({
+                "shock_type": direction,
+                "scenario": SimpleNamespace(
+                    scenario_id=sample.scenario_id,
+                    trace=sample.trace,
+                    oracle_r=dict(sample.oracle.responsibility),
+                    feedback=feedback,
+                    scenario_seed=int(sample.seed),
+                ),
+                "probe": probe,
+            })
+            accepted += 1
+            accepted_ids.append(probe_id)
+        diagnostics[direction] = {
+            "requested": half,
+            "accepted": accepted,
+            "rejected_candidates": rejected,
+            "search_attempts_per_slot": search_limit,
+            "probe_ids": accepted_ids,
+        }
+    if len(plan) != n_shocks:
+        return [], diagnostics
+    return plan, diagnostics
 
 
 def _probe_margin(q, probe) -> float:
@@ -278,7 +405,15 @@ def _recover(q, cfg: dict, *, seed: int, probes: list[dict], pre_shock_margin: f
     }]
     margins = [post_shock_margin]
     for episode in range(1, horizon + 1):
-        eps = linear_epsilon(episode - 1, 0.10, 0.02, max(1, horizon))
+        # Recovery continues the frozen pretraining schedule.  It must not
+        # silently invent a second 0.10 -> 0.02 anneal for the recovery-only
+        # phase; at the pilot checkpoint this is the configured 0.02 floor.
+        eps = linear_epsilon(
+            int(cfg["experiment"]["pretrain_episodes"]) + episode - 1,
+            float(lr["epsilon_start"]),
+            float(lr["epsilon_end"]),
+            int(lr["epsilon_decay_episodes"]),
+        )
         _task_episode(agent, env, _seed32(seed * 1_000_000 + episode), eps)
         if episode % interval == 0 or episode == horizon:
             evaluation = _evaluate(agent, env, seed=_seed32(seed * 10_000_000 + episode * 100), n_eval=50)
@@ -288,7 +423,7 @@ def _recover(q, cfg: dict, *, seed: int, probes: list[dict], pre_shock_margin: f
     knowledge_cfg = cfg.get("knowledge", {})
     recovery = recovery_episode(
         margins,
-        initial_margin=max(pre_shock_margin, 1e-9),
+        initial_margin=pre_shock_margin,
         fraction=float(knowledge_cfg.get("recovery_fraction", 0.95)),
         consecutive=int(knowledge_cfg.get("recovery_consecutive_checkpoints", 3)),
         checkpoint_interval=interval,
@@ -297,17 +432,23 @@ def _recover(q, cfg: dict, *, seed: int, probes: list[dict], pre_shock_margin: f
     return {"q": agent.q, "eval_records": records, "margins": margins, "recovery_episode": recovery}
 
 
-def _transfer_algorithm(q0, scenarios, name, cfg, seq_model, runner, exhaustive) -> dict:
+def _transfer_algorithm(q0, plan, name, cfg, seq_model, runner, exhaustive) -> dict:
+    """Apply the shocks, then compare the fixed protected probes with ``q0``.
+
+    The reported CKD/WKR are deliberately not shock-by-shock averages.  Each
+    algorithm is measured against the same common checkpoint after the whole
+    frozen shock schedule, avoiding a fabricated near-zero denominator.
+    """
     q = q0.copy()
     pre_hash = q.deep_hash()
     alpha_diag = float(cfg["learning"]["alpha_diag"])
-    all_probes = []
+    all_probes = [entry["probe"] for entry in plan]
     shock_rows = []
-    pre_shock_q = q.copy()
-    for index, (shock_type, scenario) in enumerate(scenarios):
+    for index, entry in enumerate(plan):
+        shock_type, scenario, probe = entry["shock_type"], entry["scenario"], entry["probe"]
         trace = scenario.trace
         tr = trace.transitions[-1]
-        before = q.copy()
+        before_hash = q.deep_hash()
         responsibility, cf_cost, info = _responsibility(
             name, trace, scenario.feedback, seq_model, runner, exhaustive,
             oracle_r=(scenario.oracle_r if name == "oracle_update" else None),
@@ -325,15 +466,13 @@ def _transfer_algorithm(q0, scenarios, name, cfg, seq_model, runner, exhaustive)
             )
             receipts = router.apply(q, routed)
         update = compute_update_metrics(receipts, scenario.oracle_r, alpha_diag=alpha_diag)
-        probes = _probes_for_shock(q, trace)
-        all_probes.extend(probes)
-        damage = [_probe_damage(before, q, p) for p in probes]
         # Oracle-Update is intentionally an evaluator-side upper bound.  Its
         # labels may determine the applied update, but those labels must never
         # be serialized as learner output (or passed to a normal learner).
         learner_responsibility = {} if name == "oracle_update" else (responsibility or {})
         shock_rows.append({
             "shock_index": index, "shock_type": shock_type, "scenario_id": scenario.scenario_id,
+            "scenario_seed": scenario.scenario_seed, "probe_id": probe["probe_id"],
             "feedback": scenario.feedback,
             "learner": {"responsibility": learner_responsibility, "cf_transitions": cf_cost},
             "evaluator_only": {
@@ -344,17 +483,32 @@ def _transfer_algorithm(q0, scenarios, name, cfg, seq_model, runner, exhaustive)
             "applied_updates": [asdict(r) for r in receipts],
             "update_precision": update.precision, "update_recall": update.recall,
             "update_f1": update.f1, "actual_wur": update.actual_wur,
-            "correct_knowledge_damage": float(np.mean([x[0] for x in damage])),
-            "wrong_knowledge_reinforcement": float(np.mean([x[1] for x in damage])),
-            "cf_transitions": cf_cost, "q_hash_after_shock": q.deep_hash(),
+            "cf_transitions": cf_cost, "q_hash_before_shock": before_hash,
+            "q_hash_after_shock": q.deep_hash(),
         })
-    pre_margin = float(np.mean([_probe_margin(pre_shock_q, p) for p in all_probes]))
-    post_margin = float(np.mean([_probe_margin(q, p) for p in all_probes]))
+    per_probe = []
+    for probe in all_probes:
+        ckd_value, wkr_value = _probe_damage(q0, q, probe)
+        per_probe.append({
+            "probe_id": probe["probe_id"], "direction": probe["direction"],
+            "initial_margin": probe["initial_margin"], "post_shock_margin": _probe_margin(q, probe),
+            "correct_knowledge_damage": ckd_value,
+            "wrong_knowledge_reinforcement": wkr_value,
+        })
+    pre_margin = float(np.mean([probe["initial_margin"] for probe in all_probes]))
+    post_margin = float(np.mean([_probe_margin(q, probe) for probe in all_probes]))
     post_shock_hash = q.deep_hash()
-    recovery = _recover(q, cfg, seed=int(scenarios[0][1].trace.seed), probes=all_probes, pre_shock_margin=pre_margin)
+    recovery = _recover(
+        q, cfg, seed=int(plan[0]["scenario"].trace.seed), probes=all_probes,
+        pre_shock_margin=pre_margin,
+    )
     return {
         "algorithm": name, "pre_shock_hash": pre_hash, "post_shock_hash": post_shock_hash,
         "shock_count": len(shock_rows), "shocks": shock_rows,
+        "probe_ids": [probe["probe_id"] for probe in all_probes],
+        "knowledge_by_probe": per_probe,
+        "correct_knowledge_damage": float(np.mean([row["correct_knowledge_damage"] for row in per_probe])),
+        "wrong_knowledge_reinforcement": float(np.mean([row["wrong_knowledge_reinforcement"] for row in per_probe])),
         "knowledge_margin_pre_shock": pre_margin, "knowledge_margin_post_shock": post_margin,
         "recovery_episode": recovery["recovery_episode"],
         "recovery_eval_records": recovery["eval_records"],
@@ -373,7 +527,7 @@ def run_transfer(cfg: dict, outdir: str | Path, seed: int, algorithms=None) -> d
     checkpoint = run_checkpoint(cfg, outdir, seed)
     if not checkpoint["pretrain_gate"]:
         result = {
-            **checkpoint, "schema_version": "0.2.0", "config_hash": cfg_hash,
+            **checkpoint, "schema_version": ARTIFACT_SCHEMA_VERSION, "config_hash": cfg_hash,
             "git_commit": _git_commit(), "status": "blocked_pretrain_gate", "algorithms": {},
         }
         result_path.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -382,21 +536,34 @@ def run_transfer(cfg: dict, outdir: str | Path, seed: int, algorithms=None) -> d
     algorithms = tuple(algorithms or cfg["experiment"].get("algorithms", PRIMARY_ALGORITHMS))
     if set(algorithms) - set(PRIMARY_ALGORITHMS):
         raise ValueError("unsupported transfer algorithm")
+    plan, probe_search = _build_protected_probe_plan(cfg, q0, seed)
+    if not plan:
+        result = {
+            **checkpoint, "schema_version": ARTIFACT_SCHEMA_VERSION, "config_hash": cfg_hash,
+            "git_commit": _git_commit(), "status": "blocked_invalid_knowledge_probe",
+            "common_checkpoint_hash": checkpoint["q_hash"], "probe_search": probe_search,
+            "protected_probes": [], "algorithms": {},
+        }
+        result_path.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
+        return result
     env = _env(cfg)
     seq_model, _ = build_sequence_model(cfg, env, 5, cfg.get("scenarios", {}).get("calibration_seed_offset", 1_000_000))
     runner, exhaustive = _runners(cfg, env)
-    scenarios = _shock_scenarios(cfg, seed)
     results = {}
     for name in algorithms:
         if q0.deep_hash() != checkpoint["q_hash"]:
             raise AssertionError("common checkpoint hash changed before clone")
-        result = _transfer_algorithm(q0, scenarios, name, cfg, seq_model, runner, exhaustive)
+        result = _transfer_algorithm(q0, plan, name, cfg, seq_model, runner, exhaustive)
         if result["pre_shock_hash"] != checkpoint["q_hash"]:
             raise AssertionError("algorithm clone was not bitwise identical pre-shock")
         results[name] = result
     output = {
-        **checkpoint, "schema_version": "0.2.0", "config_hash": cfg_hash, "git_commit": _git_commit(),
-        "status": "completed", "common_checkpoint_hash": checkpoint["q_hash"], "algorithms": results,
+        **checkpoint, "schema_version": ARTIFACT_SCHEMA_VERSION, "config_hash": cfg_hash, "git_commit": _git_commit(),
+        **_seed_identity(cfg, seed),
+        "status": "completed", "common_checkpoint_hash": checkpoint["q_hash"],
+        "probe_search": probe_search,
+        "protected_probes": [entry["probe"] for entry in plan],
+        "algorithms": results,
     }
     result_path.write_text(json.dumps(output, ensure_ascii=False, indent=2), encoding="utf-8")
     return output
@@ -473,10 +640,13 @@ def run_online(cfg: dict, outdir: str | Path, seed: int, algorithms=None) -> dic
         )
         raw_path = outdir / "online_runs" / f"B4_{name}_seed{seed}.json"
         raw = json.loads(raw_path.read_text(encoding="utf-8"))
+        if run["q_hash_initial"] == run["q_hash_final"] or int(run["task_update_count"]) <= 0:
+            raise AssertionError(f"B-online {name} did not perform real task Bellman updates")
         result[name] = {**run, **_curve_metrics(raw, episodes), "eval_records": raw.get("eval_records", [])}
     output = {
-        "schema_version": "0.2.0", "config_hash": cfg_hash, "git_commit": _git_commit(),
-        "status": "completed", "seed": seed, "episodes": episodes, "algorithms": result,
+        "schema_version": ARTIFACT_SCHEMA_VERSION, "config_hash": cfg_hash, "git_commit": _git_commit(),
+        **_seed_identity(cfg, seed), "status": "completed", "seed": seed,
+        "episodes": episodes, "algorithms": result,
     }
     result_path.write_text(json.dumps(output, ensure_ascii=False, indent=2), encoding="utf-8")
     return output
@@ -504,15 +674,25 @@ def main(argv=None) -> int:
         gate_ok = all(r["status"] == "completed" for r in results)
     else:
         results = [run_online(cfg, outdir, seed) for seed in run_seeds]
-        gate_ok = True
+        gate_ok = all(
+            r.get("status") == "completed"
+            and all(
+                item.get("q_hash_initial") != item.get("q_hash_final")
+                and int(item.get("task_update_count", 0)) > 0
+                for item in r.get("algorithms", {}).values()
+            )
+            for r in results
+        )
     meta = {
-        "schema_version": "0.2.0", "stage": args.stage, "seeds": seeds,
+        "schema_version": ARTIFACT_SCHEMA_VERSION, "stage": args.stage, "seeds": seeds,
         "config_hash": _config_hash(cfg), "git_commit": os.popen("git rev-parse HEAD").read().strip(),
         "gate_ok": gate_ok, "results": results, "timestamp": time.time(),
     }
     (outdir / "run_meta.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
     print(json.dumps({"stage": args.stage, "seeds": seeds, "gate_ok": gate_ok}, ensure_ascii=False))
-    return 0 if gate_ok else 2
+    # A pretrain/probe failure is an invalid measurement or runtime gate, not
+    # a scientific FAIL.  The unified pipeline reserves 3 for this class.
+    return 0 if gate_ok else 3
 
 
 if __name__ == "__main__":

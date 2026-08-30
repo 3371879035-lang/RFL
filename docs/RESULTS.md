@@ -1,4 +1,22 @@
-# RFL-CausalChase-v0.1 — 结果记录（截至 2026-08-28）
+# RFL-CausalChase — 唯一结果账本
+
+## v0.2 协议收口（2026-08-30）
+
+| 项目 | 状态 |
+|---|---|
+| 工程状态 | 0.2.1 protected-probe、严格入口、产物校验与停止码已实现；新运行必须在干净 release worktree 执行。 |
+| 旧 strict pilot A | H-A / H-U / H-K 为已执行的描述性历史证据。 |
+| 旧 strict pilot B H-L | `invalid_probe_semantics`：错误 low-level last action 被当成正确知识，CKD/WKR 无效。不是科学 FAIL。 |
+| Confirmatory | `blocked_not_run`。没有把旧文件补字段冒充 fresh rerun。 |
+| 当前科学结论 | `full_chain_not_supported`。必须由 fresh probe-feasibility 通过后的新 pilot 重新决定。 |
+
+原始 strict pilot 的状态和逐文件 SHA-256 在
+`outputs/v02_pilot_20260830_strict/STATUS.json` 与 `ARTIFACT_SHA256.csv`。六组不可用的
+旧输出在 `legacy/invalid_v02_outputs/`，每组原因见其 README。若冻结的 300 次搜索内
+无法形成每方向 10 个、初始 margin 至少 0.60 的合法 probe，正式结论应是
+`UNSUPPORTED_BY_CURRENT_ENVIRONMENT`，不得改变 checkpoint 覆盖率或重新定义 correct action。
+
+# RFL-CausalChase-v0.1 — 历史结果（截至 2026-08-28）
 
 ## Experiment A（Attribution Microbenchmark，confirmatory 50 seeds）
 

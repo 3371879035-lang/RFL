@@ -1,5 +1,18 @@
 # 变更记录
 
+## v0.2.1 (2026-08-30)
+
+- 修复 B-transfer 的 protected-probe 语义：在 common checkpoint、任何算法运行前冻结
+  每方向 probe；初始正确 margin 小于 0.60、非唯一 greedy 或不足 10+10 时写入
+  `blocked_invalid_knowledge_probe` 并返回退出码 3。
+- CKD/WKR 改为比较 common checkpoint 与全部 shocks 后的同一固定 probe；WKR 使用
+  正确知识的初始 margin 作分母，recovery 延续配置的 epsilon 日程。
+- 新增 schema 0.2.1、JSON Schema + 语义校验、Q hash/task-update 证据、preflight、
+  `seed_manifest.csv`/`execution_manifest.csv`、严格 `run_v02.py` 入口及 0/2/3/4 停止码。
+- 归档并标注六组占位输出；旧 strict pilot 添加不可覆盖的状态和 SHA-256 清单，H-L 标为
+  `invalid_probe_semantics`，confirmatory 标为 `blocked_not_run`。
+- `analyze_v02.py` 默认严格；只有 `--report-only` 可在有效科学 FAIL 后返回 0。
+
 ## v0.2.0 (进行中)
 
 - 将 diagnostic auxiliary Q update 冻结为缩放的 additive 语义，并为每个实际 Q 写入

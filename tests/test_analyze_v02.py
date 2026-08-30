@@ -15,6 +15,7 @@ from scripts.analyze_v02 import (
     analyze_directory,
     analyze_sources,
     load_online_results,
+    main,
     write_analysis_outputs,
 )
 
@@ -241,3 +242,26 @@ def test_online_loader_requires_episode_zero_for_word_auc_but_recomputes_three_c
     assert source.metrics["episodes_to_90_3checkpoints"]["full_rfl"]["0"] == 300.0
     assert source.metrics["episodes_to_90_3checkpoints"]["standard"]["0"] == 400.0
     assert source.notes
+
+
+def test_cli_is_strict_by_default_and_report_only_is_explicit(tmp_path: Path):
+    _write_complete_panel(tmp_path)
+    metrics_path = tmp_path / "attribution" / "seed_metrics.csv"
+    with metrics_path.open(newline="", encoding="utf-8") as handle:
+        rows = list(csv.DictReader(handle))
+    fieldnames = list(rows[0])
+    for row in rows:
+        if row["algorithm"] == "full_rfl":
+            row["ae_mean"] = "0.90"
+    with metrics_path.open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(rows)
+    assert main(["--dir", str(tmp_path), "--n-permutations", "20", "--n-bootstraps", "20"]) == 2
+    assert main([
+        "--dir", str(tmp_path), "--report-only", "--n-permutations", "20", "--n-bootstraps", "20",
+    ]) == 0
+
+
+def test_cli_returns_invalid_code_for_unusable_source(tmp_path: Path):
+    assert main(["--dir", str(tmp_path)]) == 3

@@ -294,6 +294,7 @@ def run_learning(
             seq_model = _calibrate_sequence(cfg, env)
 
     agent = BAgent(algo, cfg, env, rng, seq_model, runner_rfl, runner_exhaustive)
+    q_hash_initial = agent.std.q.deep_hash()
     # FrozenQLowPolicy 需要引用 agent 的 q；runner 的 policy_for 用闭包修正
     def policy_for(o):
         return FrozenQLowPolicy(agent.std.q.low)
@@ -329,6 +330,7 @@ def run_learning(
         eval_records.append(evaluate(env, agent, seed, 0, use_scripted_low=use_scripted_low))
     t0 = time.time()
     total_bellman = 0
+    task_update_count = 0
     for ep in range(episodes):
         eps = linear_epsilon(ep, lr["epsilon_start"], lr["epsilon_end"],
                              lr["epsilon_decay_episodes"])
@@ -351,6 +353,7 @@ def run_learning(
             rewards.append(r)
             if not use_scripted_low or learn_low_while_scripted:
                 agent.update_low(state, a, r, state2, term or trunc)
+                task_update_count += 1
                 if agent.er5 is not None:
                     agent.er5.add_transition(state, a, r, state2, term or trunc)
                 total_bellman += 1
@@ -368,6 +371,7 @@ def run_learning(
         trace.compute_return(gamma)
         G = trace.total_return
         agent.update_high(s_h, option, G)
+        task_update_count += 1
 
         # 普通 replay（ER-5）也在每 episode 做
         total_bellman += agent.replay()
@@ -403,6 +407,9 @@ def run_learning(
         "collisions": agent.attribution_counts["collisions"],
         "cf_transitions": agent.cf_transitions,
         "total_bellman": total_bellman,
+        "task_update_count": task_update_count,
+        "q_hash_initial": q_hash_initial,
+        "q_hash_final": agent.std.q.deep_hash(),
         "wall_s": round(time.time() - t0, 2),
     }
     os.makedirs(outdir, exist_ok=True)

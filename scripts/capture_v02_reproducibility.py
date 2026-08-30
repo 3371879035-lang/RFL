@@ -48,6 +48,18 @@ def _git_commit(project_root: Path) -> str:
     return commit
 
 
+def _working_tree_clean(project_root: Path) -> bool:
+    completed = subprocess.run(
+        ["git", "status", "--porcelain"], cwd=str(project_root), check=False,
+        stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
+    )
+    if completed.returncode != 0:
+        raise ReproducibilityError(
+            f"cannot inspect worktree state from {project_root}: {completed.stderr.strip()}"
+        )
+    return not completed.stdout.strip()
+
+
 def _file_sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
@@ -121,6 +133,9 @@ def capture_reproducibility(
         "processor": platform.processor(),
         "python_executable": sys.executable,
         "project_root": str(project_root),
+        "source_commit": commit,
+        "analysis_commit": commit,
+        "working_tree_clean": str(_working_tree_clean(project_root)).lower(),
     }
     _write_text(outdir / "environment.txt", "\n".join(f"{key}={value}" for key, value in environment.items()) + "\n")
     _write_text(outdir / "python_version.txt", sys.version + "\n")
@@ -161,9 +176,10 @@ def capture_reproducibility(
         writer.writerows(manifest_rows)
 
     benchmark_payload = {
-        "schema_version": "0.2.0",
+        "schema_version": "0.2.1",
         "captured_at_utc": now,
-        "git_commit": commit,
+        "source_commit": commit,
+        "analysis_commit": commit,
         "kind": "metadata-capture",
         "metadata": benchmark or {},
     }
