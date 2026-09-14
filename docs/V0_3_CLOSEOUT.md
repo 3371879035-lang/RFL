@@ -1,5 +1,47 @@
 # RFL-CausalChase v0.3 — Closeout
 
+> ## Seed-count audit (added after v0.4 showed 12 → 100 seeds can flip results)
+>
+> The v0.3 pilots ran at **12 / 20 / 8 / 40 / 30 / 8** seeds (Alpha / Beta /
+> Gamma / Timing / Stage 4 / Stage 5). That is a real weakness: when the v0.4
+> pilots were re-run at 100 seeds, **three of their conclusions changed**,
+> including one sign flip.
+>
+> Two v0.3 pilots have since been re-run at **100 paired seeds**:
+>
+> | pilot | at original seeds | at 100 seeds | verdict |
+> |---|---|---|---|
+> | **Pilot Alpha** | ΔAUC +0.00247, CI [−0.00376, +0.01071], p = 0.75 | ΔAUC **+0.00174**, CI **[−0.00008, +0.00398]**, p = 0.094 | **stable** — the null is confirmed with a much tighter CI, and `FinalSuccess Δ = 0.00000` exactly |
+> | **Stage 5** | 1 of 6 settings separated | **3 of 6 separate** | **changed** — see below |
+>
+> **Stage 5 at 100 seeds:**
+>
+> | setting | horizon | alpha | ΔAUC (Oracle − Traditional) | 95% CI | separates |
+> |---|---:|---:|---:|---|---|
+> | `base_h8_a10` | 8 | 0.10 | −0.00029 | [−0.00269, +0.00211] | no |
+> | `tight_h6_a10` | 6 | 0.10 | **+0.00757** | [+0.00033, +0.01486] | **yes, POSITIVE** |
+> | `tight_h5_a10` | 5 | 0.10 | **−0.02673** | [−0.03611, −0.01732] | **yes** (did not separate at 8 seeds) |
+> | `base_h8_a03` | 8 | 0.03 | −0.00188 | [−0.00618, +0.00276] | no |
+> | `tight_h5_a03` | 5 | 0.03 | **−0.09018** | [−0.10169, −0.07816] | **yes** |
+> | `base_h8_a01` | 8 | 0.01 | −0.00647 | [−0.01294, +0.00101] | no (marginal) |
+>
+> Oracle's innocent-module KnowledgeDamage is **exactly 0.00000 in all six
+> settings at 100 seeds**, unchanged.
+>
+> **The v0.3 Stage 5 verdict below is therefore superseded.** The correct
+> statement is not "correct routing never helps and stress reverses it" but:
+> **correct routing helps in some regimes (+0.0076 at `tight_h6_a10`) and hurts
+> in others (−0.0902 at `tight_h5_a03`); the sign depends on the regime.** The
+> 8-seed run saw only the harmful end.
+>
+> Still at their original seed counts and therefore still exposed: **Gamma (8)**,
+> **Stage 4 (30)**, **Beta (20)**, **Timing (40)**. Timing's headline
+> (correct credit 1.0 → 0.0, identical across all 40 seeds) and Beta's headline
+> (Oracle collateral exactly 0.00000) are *structural* — they cannot move with
+> seed count. Gamma's composition effect and Stage 4's marginal p-values
+> (0.0215, 0.0295 at 30 seeds) are not, and remain candidates for the same
+> treatment.
+
 **Status:** closed. This document is the consolidated conclusion; the evidence
 ledger is `docs/RESULTS.md` and the raw artifacts are under `outputs/`.
 
