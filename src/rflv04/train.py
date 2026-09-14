@@ -26,6 +26,7 @@ from rflnext.qtables import QTables, linear_epsilon
 
 from .credit_units import REPRESENTATIONS, responsible_units, selected_repair
 from .env import (
+    ABSORB,
     ACT,
     ACT_ACTIONS,
     HORIZON,
@@ -104,7 +105,12 @@ def agent_rollout(q, scene: Scene, *, epsilon: float, rng) -> Trace:
                                     PLAN_ACTIONS[0] + o, (g, x, y, o, ACT)))
             continue
         if absorbing:
-            trace.steps.append(Step(t, (g, x, y, o, ACT), -1, -1, (g, x, y, o, ACT)))
+            # Absorbing placeholders must NOT be tagged ACT: doing so made them
+            # look like decisions, so the task update wrote Q for action -1
+            # (which indexes the last action) and picked an absorbing step as
+            # the terminal one.
+            trace.steps.append(Step(t, (g, x, y, o, ABSORB), -1, -1,
+                                    (g, x, y, o, ABSORB)))
             continue
 
         vals = {a: q.low_get((x, y, o, t), a) for a in ACT_ACTIONS}
@@ -138,15 +144,20 @@ def _task_update(q, trace: Trace, *, alpha_low: float, alpha_high: float,
     s0 = trace.steps[0]
     q.high_update((s0.state[0], 0, 0), s0.next_state[3], r, alpha_high)
 
-    terms = [s for s in trace.steps if s.state[4] == ACT]
+    terms = [s for s in trace.steps if s.state[4] == ACT and s.intent >= 0]
     for i, step in enumerate(terms):
         terminal = (i == len(terms) - 1)
-        target = r if terminal else 0.0
-        state = step.state
-        row = q.low.get(state)
-        nxt = step.next_state
-        if not terminal and nxt[4] == ACT:
-            nrow = q.low.get((nxt[0], nxt[1], nxt[2], nxt[3] + 1))
+        state = (step.state[1], step.state[2], step.state[3], step.t)
+        if terminal:
+            target = r
+        else:
+            # Bootstrap from the NEXT timestep's low-level state.  The earlier
+            # version read (g, nx, ny, o+1), which is not a state the agent can
+            # ever occupy, so no value ever propagated and the agent could not
+            # learn the task at all.
+            nxt_key = (step.next_state[1], step.next_state[2], step.next_state[3],
+                       step.t + 1)
+            nrow = q.low.get(nxt_key)
             target = 0.0 + (max(nrow) if nrow else 0.0)
         q.low_update(state, step.realized, target, alpha_low)
 

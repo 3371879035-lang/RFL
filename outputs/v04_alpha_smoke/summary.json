@@ -1,7 +1,7 @@
 {
   "schema_version": "0.4.0",
   "experiment": "v04_alpha",
-  "git_commit": "4e8411ef97ee256a165e20fe84a9042bc0ce7cbc",
+  "git_commit": "f8308a34074a56dcb6ce6f33ab5dcaae975f5fdb",
   "config": {
     "schema_version": "0.4.0",
     "environment": {
@@ -27,7 +27,7 @@
       "seeds": 2,
       "seed_base": 4600000,
       "warmup_episodes": 300,
-      "episodes": 300,
+      "episodes": 2000,
       "eval_every": 250,
       "eval_episodes": 100,
       "reward_mode": "A",
@@ -49,8 +49,8 @@
     {
       "seed": 4600000,
       "arm": "NoCorrection",
-      "success_auc": 0.29000000000000004,
-      "final_success": 0.33,
+      "success_auc": 0.008125,
+      "final_success": 0.01,
       "wmd": 0.0,
       "kd_innocent": 0.0,
       "collateral": 0.0,
@@ -58,83 +58,169 @@
       "sites": 0,
       "clippings": 0,
       "family_counts": {
-        "Plan": 50,
-        "Execution": 75,
-        "Decision": 84,
-        "WholeProcess": 79,
-        "clean": 12
+        "Plan": 484,
+        "Execution": 515,
+        "Decision": 488,
+        "WholeProcess": 512,
+        "clean": 1
       },
-      "wall_s": 0.06737000000430271,
-      "q_hash": "dc8c3c8d9373fb2c88eee75042364ce1bf3328bd40f637a47a1bd1f21ed36a65"
+      "checkpoints": [
+        0,
+        250,
+        500,
+        750,
+        1000,
+        1250,
+        1500,
+        1750,
+        2000
+      ],
+      "curve": [
+        0.0,
+        0.0,
+        0.01,
+        0.01,
+        0.01,
+        0.01,
+        0.01,
+        0.01,
+        0.01
+      ],
+      "wall_s": 0.349679000035394,
+      "q_hash": "8ce655698e27965780f59eafe95c69c780c85fd8c9225c8374de3bca2a3c366b"
     },
     {
       "seed": 4600000,
       "arm": "ModuleOracle",
-      "success_auc": 0.29000000000000004,
-      "final_success": 0.33,
+      "success_auc": 0.22375,
+      "final_success": 0.5,
       "wmd": 0.0,
       "kd_innocent": 0.0,
-      "collateral": 0.49899799599198397,
-      "corrections": 288,
-      "sites": 499,
+      "collateral": 0.6137793463249962,
+      "corrections": 1917,
+      "sites": 13034,
       "clippings": 0,
       "family_counts": {
-        "Plan": 50,
-        "Execution": 75,
-        "Decision": 84,
-        "WholeProcess": 79,
-        "clean": 12
+        "Plan": 402,
+        "Execution": 515,
+        "Decision": 488,
+        "WholeProcess": 512,
+        "clean": 83
       },
-      "wall_s": 0.05663010000716895,
-      "q_hash": "e456c6de4648ec247a7a7f781daeaf0a40b28239d2fa83c1c1a493ac3fe53563"
+      "checkpoints": [
+        0,
+        250,
+        500,
+        750,
+        1000,
+        1250,
+        1500,
+        1750,
+        2000
+      ],
+      "curve": [
+        0.0,
+        0.0,
+        0.01,
+        0.01,
+        0.02,
+        0.5,
+        0.5,
+        0.5,
+        0.5
+      ],
+      "wall_s": 0.4016276000184007,
+      "q_hash": "e383825989591f4011b24414f97e118c2e4a9b8b69110df760758f31e71c611c"
     },
     {
       "seed": 4600000,
       "arm": "DecisionOracle",
-      "success_auc": 0.29000000000000004,
-      "final_success": 0.33,
+      "success_auc": 0.00625,
+      "final_success": 0.0,
       "wmd": 0.0,
       "kd_innocent": 0.0,
       "collateral": 0.0,
-      "corrections": 288,
-      "sites": 367,
+      "corrections": 2000,
+      "sites": 2512,
       "clippings": 0,
       "family_counts": {
-        "Plan": 50,
-        "Execution": 75,
-        "Decision": 84,
-        "WholeProcess": 79,
-        "clean": 12
+        "Plan": 485,
+        "Execution": 515,
+        "Decision": 488,
+        "WholeProcess": 512
       },
-      "wall_s": 0.06319620000431314,
-      "q_hash": "422726393d8da84c1becb7462a27c2877c2308012bfd089786ddb9f27688dca8"
+      "checkpoints": [
+        0,
+        250,
+        500,
+        750,
+        1000,
+        1250,
+        1500,
+        1750,
+        2000
+      ],
+      "curve": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.03,
+        0.02,
+        0.0,
+        0.0
+      ],
+      "wall_s": 0.3875939999707043,
+      "q_hash": "c2a92c0576ca22aa963b6dbf042fefbcff5d21080d78153db69c2a19987a7388"
     },
     {
       "seed": 4600000,
       "arm": "RepairOracle",
-      "success_auc": 0.29000000000000004,
-      "final_success": 0.33,
+      "success_auc": 0.00625,
+      "final_success": 0.0,
       "wmd": 0.0,
       "kd_innocent": 0.0,
       "collateral": 0.0,
-      "corrections": 288,
-      "sites": 367,
+      "corrections": 2000,
+      "sites": 2512,
       "clippings": 0,
       "family_counts": {
-        "Plan": 50,
-        "Execution": 75,
-        "Decision": 84,
-        "WholeProcess": 79,
-        "clean": 12
+        "Plan": 485,
+        "Execution": 515,
+        "Decision": 488,
+        "WholeProcess": 512
       },
-      "wall_s": 0.06382929999381304,
-      "q_hash": "422726393d8da84c1becb7462a27c2877c2308012bfd089786ddb9f27688dca8"
+      "checkpoints": [
+        0,
+        250,
+        500,
+        750,
+        1000,
+        1250,
+        1500,
+        1750,
+        2000
+      ],
+      "curve": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.03,
+        0.02,
+        0.0,
+        0.0
+      ],
+      "wall_s": 0.39912429999094456,
+      "q_hash": "c2a92c0576ca22aa963b6dbf042fefbcff5d21080d78153db69c2a19987a7388"
     },
     {
       "seed": 4600001,
       "arm": "NoCorrection",
-      "success_auc": 0.24,
-      "final_success": 0.24,
+      "success_auc": 0.0,
+      "final_success": 0.0,
       "wmd": 0.0,
       "kd_innocent": 0.0,
       "collateral": 0.0,
@@ -142,127 +228,215 @@
       "sites": 0,
       "clippings": 0,
       "family_counts": {
-        "clean": 27,
-        "WholeProcess": 62,
-        "Execution": 84,
-        "Decision": 76,
-        "Plan": 51
+        "Plan": 478,
+        "WholeProcess": 462,
+        "Execution": 540,
+        "Decision": 517,
+        "clean": 3
       },
-      "wall_s": 0.050307299999985844,
-      "q_hash": "676cf87d5dcf6fc6402f4caea845b4c08ed688e8893e0e83e7aedb04f4ca2bb1"
+      "checkpoints": [
+        0,
+        250,
+        500,
+        750,
+        1000,
+        1250,
+        1500,
+        1750,
+        2000
+      ],
+      "curve": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "wall_s": 0.3522936999797821,
+      "q_hash": "87d22943a10486362d916e8bce5a57f30e1d472f54f9dddb0b905d79d8f4b042"
     },
     {
       "seed": 4600001,
       "arm": "ModuleOracle",
-      "success_auc": 0.24,
-      "final_success": 0.24,
+      "success_auc": 0.014375,
+      "final_success": 0.23,
       "wmd": 0.0,
       "kd_innocent": 0.0,
-      "collateral": 0.47770700636942676,
-      "corrections": 270,
-      "sites": 471,
+      "collateral": 0.5982736230998396,
+      "corrections": 1996,
+      "sites": 13091,
       "clippings": 0,
       "family_counts": {
-        "clean": 30,
-        "WholeProcess": 62,
-        "Execution": 84,
-        "Decision": 76,
-        "Plan": 48
+        "Plan": 477,
+        "WholeProcess": 462,
+        "Execution": 540,
+        "Decision": 517,
+        "clean": 4
       },
-      "wall_s": 0.058781900035683066,
-      "q_hash": "db43101763e97f7ac97a92835a94b7a27821b3b793464118a08543c0907e5373"
+      "checkpoints": [
+        0,
+        250,
+        500,
+        750,
+        1000,
+        1250,
+        1500,
+        1750,
+        2000
+      ],
+      "curve": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.23
+      ],
+      "wall_s": 0.4038730000029318,
+      "q_hash": "dca18daf4038fcc8e423ee19e37f73ba482610614d1effeef28161b0b7b39eff"
     },
     {
       "seed": 4600001,
       "arm": "DecisionOracle",
-      "success_auc": 0.24,
-      "final_success": 0.24,
+      "success_auc": 0.09875,
+      "final_success": 0.5,
       "wmd": 0.0,
       "kd_innocent": 0.0,
       "collateral": 0.0,
-      "corrections": 270,
-      "sites": 332,
+      "corrections": 1963,
+      "sites": 2425,
       "clippings": 0,
       "family_counts": {
-        "clean": 30,
-        "WholeProcess": 62,
-        "Execution": 84,
-        "Decision": 76,
-        "Plan": 48
+        "Plan": 444,
+        "WholeProcess": 462,
+        "Execution": 540,
+        "Decision": 517,
+        "clean": 37
       },
-      "wall_s": 0.061754000023938715,
-      "q_hash": "bee9d981b2f5ea8338b42e9abf9da54fcb4b17cd290538b20f17b0d4e42b7c9c"
+      "checkpoints": [
+        0,
+        250,
+        500,
+        750,
+        1000,
+        1250,
+        1500,
+        1750,
+        2000
+      ],
+      "curve": [
+        0.0,
+        0.03,
+        0.01,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.5,
+        0.5
+      ],
+      "wall_s": 0.3775247000157833,
+      "q_hash": "7bb885755bf6f1a65471c4227827b8840aadb47310d90493d634d5bb04a424f4"
     },
     {
       "seed": 4600001,
       "arm": "RepairOracle",
-      "success_auc": 0.24,
-      "final_success": 0.24,
+      "success_auc": 0.09875,
+      "final_success": 0.5,
       "wmd": 0.0,
       "kd_innocent": 0.0,
       "collateral": 0.0,
-      "corrections": 270,
-      "sites": 332,
+      "corrections": 1963,
+      "sites": 2425,
       "clippings": 0,
       "family_counts": {
-        "clean": 30,
-        "WholeProcess": 62,
-        "Execution": 84,
-        "Decision": 76,
-        "Plan": 48
+        "Plan": 444,
+        "WholeProcess": 462,
+        "Execution": 540,
+        "Decision": 517,
+        "clean": 37
       },
-      "wall_s": 0.05633950000628829,
-      "q_hash": "bee9d981b2f5ea8338b42e9abf9da54fcb4b17cd290538b20f17b0d4e42b7c9c"
+      "checkpoints": [
+        0,
+        250,
+        500,
+        750,
+        1000,
+        1250,
+        1500,
+        1750,
+        2000
+      ],
+      "curve": [
+        0.0,
+        0.03,
+        0.01,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.5,
+        0.5
+      ],
+      "wall_s": 0.3750667999847792,
+      "q_hash": "7bb885755bf6f1a65471c4227827b8840aadb47310d90493d634d5bb04a424f4"
     }
   ],
   "pooled": {
     "NoCorrection": {
-      "success_auc": 0.265,
-      "final_success": 0.28500000000000003,
+      "success_auc": 0.0040625,
+      "final_success": 0.005,
       "wmd": 0.0,
       "kd_innocent": 0.0,
       "collateral": 0.0,
       "sites": 0.0
     },
     "ModuleOracle": {
-      "success_auc": 0.265,
-      "final_success": 0.28500000000000003,
+      "success_auc": 0.1190625,
+      "final_success": 0.365,
       "wmd": 0.0,
       "kd_innocent": 0.0,
-      "collateral": 0.4883525011807054,
-      "sites": 485.0
+      "collateral": 0.6060264847124179,
+      "sites": 13062.5
     },
     "DecisionOracle": {
-      "success_auc": 0.265,
-      "final_success": 0.28500000000000003,
+      "success_auc": 0.052500000000000005,
+      "final_success": 0.25,
       "wmd": 0.0,
       "kd_innocent": 0.0,
       "collateral": 0.0,
-      "sites": 349.5
+      "sites": 2468.5
     },
     "RepairOracle": {
-      "success_auc": 0.265,
-      "final_success": 0.28500000000000003,
+      "success_auc": 0.052500000000000005,
+      "final_success": 0.25,
       "wmd": 0.0,
       "kd_innocent": 0.0,
       "collateral": 0.0,
-      "sites": 349.5
+      "sites": 2468.5
     }
   },
   "contrasts": {
     "DecisionOracle": {
       "success_auc": {
         "n_seeds": 2,
-        "mean": 0.0,
-        "median": 0.0,
+        "mean": -0.0665625,
+        "median": -0.0665625,
         "ci": [
-          0.0,
-          0.0
+          -0.2175,
+          0.084375
         ],
-        "cohens_dz": 0.0,
+        "cohens_dz": -0.31182969853568243,
         "p_sign_flip": 1.0,
-        "p_wilcoxon": null,
-        "probability_of_improvement": 0.0
+        "p_wilcoxon": 1.0,
+        "probability_of_improvement": 0.2526
       },
       "wmd": {
         "n_seeds": 2,
@@ -292,13 +466,13 @@
       },
       "collateral": {
         "n_seeds": 2,
-        "mean": -0.4883525011807054,
-        "median": -0.4883525011807054,
+        "mean": -0.6060264847124179,
+        "median": -0.6060264847124179,
         "ci": [
-          -0.49899799599198397,
-          -0.47770700636942676
+          -0.6137793463249962,
+          -0.5982736230998396
         ],
-        "cohens_dz": -32.43788769953973,
+        "cohens_dz": -55.273195670557605,
         "p_sign_flip": 0.5046,
         "p_wilcoxon": 0.25,
         "probability_of_improvement": 0.0
@@ -307,16 +481,16 @@
     "RepairOracle": {
       "success_auc": {
         "n_seeds": 2,
-        "mean": 0.0,
-        "median": 0.0,
+        "mean": -0.0665625,
+        "median": -0.0665625,
         "ci": [
-          0.0,
-          0.0
+          -0.2175,
+          0.084375
         ],
-        "cohens_dz": 0.0,
+        "cohens_dz": -0.31182969853568243,
         "p_sign_flip": 1.0,
-        "p_wilcoxon": null,
-        "probability_of_improvement": 0.0
+        "p_wilcoxon": 1.0,
+        "probability_of_improvement": 0.2506
       },
       "wmd": {
         "n_seeds": 2,
@@ -346,13 +520,13 @@
       },
       "collateral": {
         "n_seeds": 2,
-        "mean": -0.4883525011807054,
-        "median": -0.4883525011807054,
+        "mean": -0.6060264847124179,
+        "median": -0.6060264847124179,
         "ci": [
-          -0.49899799599198397,
-          -0.47770700636942676
+          -0.6137793463249962,
+          -0.5982736230998396
         ],
-        "cohens_dz": -32.43788769953973,
+        "cohens_dz": -55.273195670557605,
         "p_sign_flip": 0.4974,
         "p_wilcoxon": 0.25,
         "probability_of_improvement": 0.0
@@ -361,23 +535,23 @@
   },
   "screens": {
     "DecisionOracle": {
-      "noninferior": true,
+      "noninferior": false,
       "wmd_relative_decrease": 0.0,
       "wmd_screen_passed": false,
-      "inconclusive_precision": false,
-      "verdict": "SCREEN_FAIL"
+      "inconclusive_precision": true,
+      "verdict": "INCONCLUSIVE_PRECISION"
     },
     "RepairOracle": {
-      "noninferior": true,
+      "noninferior": false,
       "wmd_relative_decrease": 0.0,
       "wmd_screen_passed": false,
-      "inconclusive_precision": false,
-      "verdict": "SCREEN_FAIL"
+      "inconclusive_precision": true,
+      "verdict": "INCONCLUSIVE_PRECISION"
     }
   },
   "preflight": {
     "ceiling_risk": false,
     "learning_failure": true,
-    "nocorrection_final_success": 0.28500000000000003
+    "nocorrection_final_success": 0.005
   }
 }

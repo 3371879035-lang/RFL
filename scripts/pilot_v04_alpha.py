@@ -72,6 +72,7 @@ def main(argv=None) -> int:
                    "kd_innocent": res.kd_innocent, "collateral": res.collateral,
                    "corrections": res.corrections, "sites": res.sites_touched,
                    "clippings": res.clippings, "family_counts": res.family_counts,
+                   "checkpoints": res.checkpoints, "curve": res.success_curve,
                    "wall_s": res.wall_s, "q_hash": res.q_hash}
             rows.append(row)
             by_arm[arm][seed] = row
@@ -80,11 +81,15 @@ def main(argv=None) -> int:
             f"/wmd={by_arm[a][seed]['wmd']:.4f}" for a in arms), flush=True)
 
     pooled = {}
+    curves = {}
     for a in arms:
         v = list(by_arm[a].values())
         pooled[a] = {k: float(np.mean([r[k] for r in v]))
                      for k in ("success_auc", "final_success", "wmd",
                                "kd_innocent", "collateral", "sites")}
+        curves[a] = {"checkpoints": rows[0]["checkpoints"] if rows else [],
+                     "curve": [float(np.mean([r["curve"][i] for r in v]))
+                               for i in range(len(v[0]["curve"]))]}
 
     rng = np.random.RandomState(0)
     contrasts = {}
@@ -96,10 +101,15 @@ def main(argv=None) -> int:
                 np.array(xs), np.array(ys), n_perm=10000, n_boot=10000, rng=rng)
 
     # ---- ceiling preflight, NoCorrection only (plan's rule) -------------
+    # The plan's rule is "baseline reaches >= 0.98 within 500 episodes", not
+    # "baseline ends high" -- a curve that saturates only at 10k still has
+    # dynamic range and is usable.
     nc = pooled["NoCorrection"]
     gate = cfg["gate"]
-    ceiling_risk = bool(nc["final_success"] >= gate["ceiling_success"] and
-                        nc["success_auc"] >= gate["ceiling_success"])
+    ncc = curves["NoCorrection"]
+    idx = [i for i, e in enumerate(ncc["checkpoints"]) if e <= gate["ceiling_episodes"]]
+    early = ncc["curve"][idx[-1]] if idx else ncc["curve"][0]
+    ceiling_risk = bool(early >= gate["ceiling_success"])
     learning_failure = bool(nc["final_success"] < gate["learning_failure_success"])
 
     screens = {}

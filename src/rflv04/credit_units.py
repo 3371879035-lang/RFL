@@ -54,8 +54,19 @@ def _plan_state(trace) -> tuple:
     return (s[0], s[1], s[2])
 
 
+def _q_key(step) -> tuple:
+    """The low-level Q key for a step: (x, y, o, t).
+
+    The environment's state carries the context lane in slot 0, which is not
+    part of the Q_L key.  Using the raw state as a key silently writes to
+    entries the agent never reads.
+    """
+    return (step.state[1], step.state[2], step.state[3], step.t)
+
+
 def _act_states(trace) -> list:
-    return [s.state for s in trace.steps if s.state[4] == ACT]
+    return [_q_key(s) for s in trace.steps
+            if s.state[4] == ACT and s.intent >= 0]
 
 
 def module_oracle(trace, oracle_res) -> Credit:
@@ -93,12 +104,12 @@ def decision_oracle(trace, oracle_res) -> Credit:
             blamed.add("DECISION")
             step = next((s for s in trace.steps if s.t == prim[1]), None)
             if step is not None:
-                sites.append(Site("DECISION", step.state, step.intent))
+                sites.append(Site("DECISION", _q_key(step), step.intent))
         elif prim[0] == "exec":
             blamed.add("EXECUTION")
             step = next((s for s in trace.steps if s.t == prim[1]), None)
             if step is not None:
-                sites.append(Site("EXECUTION", step.state, step.intent))
+                sites.append(Site("EXECUTION", _q_key(step), step.intent))
     if not sites:
         return module_oracle(trace, oracle_res)
     return Credit("DecisionOracle", blamed, sites).dedup()
@@ -119,12 +130,12 @@ def repair_oracle(trace, oracle_res, selected) -> Credit:
             blamed.add("DECISION")
             step = next((s for s in trace.steps if s.t == prim[1]), None)
             if step is not None:
-                sites.append(Site("DECISION", step.state, step.intent))
+                sites.append(Site("DECISION", _q_key(step), step.intent))
         elif prim[0] == "exec":
             blamed.add("EXECUTION")
             step = next((s for s in trace.steps if s.t == prim[1]), None)
             if step is not None:
-                sites.append(Site("EXECUTION", step.state, step.intent))
+                sites.append(Site("EXECUTION", _q_key(step), step.intent))
     if not sites:
         return module_oracle(trace, oracle_res)
     return Credit("RepairOracle", blamed, sites).dedup()

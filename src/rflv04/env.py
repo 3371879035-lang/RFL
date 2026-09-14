@@ -36,6 +36,45 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 
 X_MAX = 3
+"""Corridor length, as the plan specifies (``x in {0..3}`` with ``H = 8``).
+
+Difficulty calibration attempts, recorded rather than erased:
+
+* ``X_MAX = 3`` -- baseline solves the task during warmup, first checkpoint is
+  already 1.0 -> ``CEILING_RISK``, no dynamic range.
+* ``X_MAX = 6`` -- baseline never learns it at this budget, final 0.005 ->
+  ``LEARNING_FAILURE``.
+
+Both are the plan's own preflight firing, and both were measured on the
+NoCorrection baseline alone, which is the only difficulty calibration the plan
+permits.  The plan's ratio of corridor length to horizon therefore admits no
+setting tested here that is both learnable and non-saturating.
+
+This is **not** the blocking issue, though.  See ``SCENE_FAULT_NOTE`` below.
+"""
+
+SCENE_FAULT_NOTE = """\
+Structural flaw found while calibrating, and it is the reason Alpha cannot
+discriminate at any difficulty:
+
+    A decision or execution fault is implemented as the environment OVERRIDING
+    the agent's action from t* onward.  The bad choice is therefore exogenous
+    to the agent's policy -- there is nothing for the agent to learn, and no
+    credit representation can improve task success.  That is exactly the
+    pattern the smoke shows: every arm lands on an identical success curve
+    while collateral and site counts differ.
+
+    The plan intends a decision failure to be a bad DECISION BY THE AGENT
+    ("system already decided a_t but the execution differs" is reserved for
+    Execution).  To make that real, a decision fault must corrupt the agent's
+    own value estimate at the critical state so the greedy action is genuinely
+    bad, and the diagnostic update must then be able to repair it.  Overriding
+    the action cannot be repaired, so it cannot be measured.
+
+    Fixing this is a change to the fault injector, not to any arm, and it must
+    be re-validated on the NoCorrection baseline before Alpha results mean
+    anything.
+"""
 LANES = 2
 HORIZON = 8
 
