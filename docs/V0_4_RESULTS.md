@@ -1,5 +1,22 @@
 # RFL-CausalChase v0.4 — Results
 
+> **EXPLORATORY — NOT EVIDENCE.**
+>
+> This document reports runs made at 6 / 12 / 100 / 200 / 300 seeds under a rule
+> ("if the conclusion changed, run more seeds") that is **optional stopping**,
+> and its 100- and 200-seed numbers were later found to be **one
+> `PYTHONHASHSEED` draw each** (`docs/V0_4_REPRODUCIBILITY_DEFECT.md`: a 3.3x
+> spread in `WMD` from identical inputs). Two of its conclusions do not survive:
+>
+> * "granularity is utility-neutral" — withdrawn. The mean is +0.0082 but the
+>   median is 0, the sign test runs *negative*, and five of 400 seeds carry 76%
+>   of the net sum. The utility contrast is `INCONCLUSIVE`.
+> * the relative `WMD` figures move under the reproducibility fix; the effect
+>   survives, the number does not.
+>
+> The confirmatory results are in **`docs/FROZEN_RESULTS_400.md`**. This file is
+> retained unedited as a record of the exploration.
+
 **Scale: 100 paired seeds** per pilot (the 12-seed runs are retained under
 `outputs/v04_*` and their discrepancies are recorded below — three conclusions
 changed when the seed count went up, which is itself a result).

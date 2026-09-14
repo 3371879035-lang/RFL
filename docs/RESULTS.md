@@ -1,5 +1,11 @@
 # RFL-CausalChase v0.3 — Stage 1 results
 
+> **EXPLORATORY — NOT EVIDENCE.** Superseded by `docs/FROZEN_RESULTS_400.md`.
+> Every mean-based number here was produced before the frozen four-block
+> protocol existed; see `docs/ROBUSTNESS_AUDIT.md` for which of them survive
+> (the structural ones) and which do not (the ones resting on a mean over
+> zero-inflated, heavy-tailed per-seed deltas).
+
 Statistical unit is the **seed** throughout. Episodes are nested inside seeds and
 are never treated as independent samples.
 

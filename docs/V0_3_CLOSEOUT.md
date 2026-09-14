@@ -1,5 +1,15 @@
 # RFL-CausalChase v0.3 — Closeout
 
+> **EXPLORATORY — NOT EVIDENCE.** Superseded by `docs/FROZEN_RESULTS_400.md`.
+>
+> Two of this document's conclusions do not survive the frozen protocol:
+> the Pilot Alpha reward contrast is `EQUIVALENT` at N=400 (its 200/300-seed CI
+> excluded zero only because five seeds carried 72% of the net sum), and Pilot
+> Beta's `reward B − A` figures move at 400. The structural results — Oracle's
+> innocent-module `KD` exactly 0.00000, Timing's Δ exactly −1.00000 — are
+> unaffected and are seed-invariant by construction. See
+> `docs/ROBUSTNESS_AUDIT.md`.
+
 > ## Seed-count audit (added after v0.4 showed 12 → 100 seeds can flip results)
 >
 > The v0.3 pilots ran at **12 / 20 / 8 / 40 / 30 / 8** seeds (Alpha / Beta /

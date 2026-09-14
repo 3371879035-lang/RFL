@@ -1,0 +1,628 @@
+{
+  "schema_version": "0.4.0",
+  "experiment": "v04_ledger",
+  "arm": "NegativeOnly",
+  "seeds": [
+    4600000,
+    4600001,
+    4600002,
+    4600003,
+    4600004,
+    4600005,
+    4600006,
+    4600007
+  ],
+  "seed_base": 4600000,
+  "episodes": 2000,
+  "v_samples": 8,
+  "run_oracle_samples": 8,
+  "n_failed_episodes": 7137,
+  "n_training_episodes": 16000,
+  "fraction_failed": 0.4460625,
+  "candidate_set_size_histogram": {
+    "0": 83,
+    "1": 7025,
+    "2": 29
+  },
+  "candidate_set_size_fractions": {
+    "0": 0.011629536219700155,
+    "1": 0.9843071318481155,
+    "2": 0.004063331932184391
+  },
+  "n_candidates_total": 7083,
+  "candidate_set_singleton_fraction": 0.9843071318481155,
+  "fraction_empty_candidate_set": 0.011629536219700155,
+  "n_empty_candidate_set": 83,
+  "fraction_minimal_size_gt1": 0.6839007986548971,
+  "n_minimal_size_gt1": 4881,
+  "fraction_minimal_size_gt1_of_nonempty": 0.6919478310178622,
+  "minimal_size_histogram": {
+    "1": 2173,
+    "2": 3254,
+    "3": 1627
+  },
+  "wholeprocess_equals_minimal_size_gt1": {
+    "confirmed": true,
+    "n_rows": 7137,
+    "n_agree": 7137,
+    "n_disagree": 0,
+    "disagreements": []
+  },
+  "selection_primary_rule": {
+    "rule": "selected_repair(trace, res, pick='best')  [train.py's rule]",
+    "n_episodes_with_candidates": 7054,
+    "n_selected_regret_zero": 7054,
+    "fraction_selected_regret_zero": 1.0,
+    "fraction_selected_regret_zero_over_all_failed": 0.9883704637802998,
+    "mean_regret_of_selected": 0.0,
+    "median_regret_of_selected": 0.0,
+    "max_regret_of_selected": 0.0,
+    "n_episodes_with_2plus_candidates": 29,
+    "fraction_selected_regret_zero_given_2plus": 1.0
+  },
+  "selection_secondary_rule": {
+    "rule": "selected_repair(trace, res, pick='first')  [smallest, then lexicographic; non-oracle]",
+    "n_selected_regret_zero": 7054,
+    "fraction_selected_regret_zero": 1.0,
+    "mean_regret_of_selected": 0.0,
+    "median_regret_of_selected": 0.0,
+    "max_regret_of_selected": 0.0,
+    "n_rule_disagreements": 0
+  },
+  "v_true": {
+    "histogram": {
+      "0.0": 4172,
+      "1.0": 2911
+    },
+    "mean": 0.41098404630806157,
+    "n_distinct_candidate_values_per_episode": {
+      "1": 7054
+    },
+    "n_candidates_not_minimal": 0,
+    "by_plan_primitive": {
+      "candidates_touching_plan": {
+        "1": 2911,
+        "0": 108
+      },
+      "candidates_not_touching_plan": {
+        "0": 4064
+      }
+    }
+  },
+  "by_scene_structure": {
+    "plan_ok=N|dec=N|exec=N|same_step=N": {
+      "n": 314,
+      "families": {
+        "Plan": 314
+      },
+      "n_minimal_size_gt1": 0,
+      "n_empty_candidates": 0
+    },
+    "plan_ok=N|dec=Y|exec=N|same_step=N": {
+      "n": 1132,
+      "families": {
+        "CLEAN": 83,
+        "Plan": 142,
+        "WholeProcess": 907
+      },
+      "n_minimal_size_gt1": 907,
+      "n_empty_candidates": 83
+    },
+    "plan_ok=N|dec=Y|exec=Y|same_step=N": {
+      "n": 177,
+      "families": {
+        "Execution": 26,
+        "WholeProcess": 151
+      },
+      "n_minimal_size_gt1": 151,
+      "n_empty_candidates": 0
+    },
+    "plan_ok=N|dec=Y|exec=Y|same_step=Y": {
+      "n": 1476,
+      "families": {
+        "WholeProcess": 1476
+      },
+      "n_minimal_size_gt1": 1476,
+      "n_empty_candidates": 0
+    },
+    "plan_ok=Y|dec=Y|exec=N|same_step=N": {
+      "n": 1691,
+      "families": {
+        "Decision": 1662,
+        "Plan": 29
+      },
+      "n_minimal_size_gt1": 0,
+      "n_empty_candidates": 0
+    },
+    "plan_ok=Y|dec=Y|exec=Y|same_step=N": {
+      "n": 241,
+      "families": {
+        "WholeProcess": 241
+      },
+      "n_minimal_size_gt1": 241,
+      "n_empty_candidates": 0
+    },
+    "plan_ok=Y|dec=Y|exec=Y|same_step=Y": {
+      "n": 2106,
+      "families": {
+        "WholeProcess": 2106
+      },
+      "n_minimal_size_gt1": 2106,
+      "n_empty_candidates": 0
+    }
+  },
+  "execution_fault_rows": {
+    "n": 4000,
+    "share_of_failures": 0.5604595768530195,
+    "families": {
+      "Execution": 26,
+      "WholeProcess": 3974
+    },
+    "minimal_size_histogram": {
+      "1": 26,
+      "2": 2347,
+      "3": 1627
+    },
+    "n_decision_fault_equals_execution_fault": 3582
+  },
+  "n_family_plan_but_plan_matches_context": 29,
+  "regret_api_check": {
+    "n_rows_checked": 7137,
+    "n_mismatch_with_local_candidate_table": 0
+  },
+  "family_counts": {
+    "CLEAN": 83,
+    "Decision": 1662,
+    "Execution": 26,
+    "Plan": 485,
+    "WholeProcess": 4881
+  },
+  "by_family": {
+    "CLEAN": {
+      "n": 83,
+      "share": 0.011629536219700155,
+      "mean_n_candidates": 0.0,
+      "n_empty": 83,
+      "fraction_empty": 1.0,
+      "n_minimal_size_gt1": 0,
+      "fraction_minimal_size_gt1": 0.0,
+      "n_selected_regret_zero": 0,
+      "fraction_selected_regret_zero": null,
+      "mean_regret_of_selected": null,
+      "median_regret_of_selected": null,
+      "max_regret_of_selected": null,
+      "mean_regret_of_selected_first": null,
+      "median_regret_of_selected_first": null,
+      "n_candidates_gt1": 0,
+      "n_rule_disagreements": 0,
+      "mean_V_true": null
+    },
+    "Decision": {
+      "n": 1662,
+      "share": 0.2328709541824296,
+      "mean_n_candidates": 1.0,
+      "n_empty": 0,
+      "fraction_empty": 0.0,
+      "n_minimal_size_gt1": 0,
+      "fraction_minimal_size_gt1": 0.0,
+      "n_selected_regret_zero": 1662,
+      "fraction_selected_regret_zero": 1.0,
+      "mean_regret_of_selected": 0.0,
+      "median_regret_of_selected": 0.0,
+      "max_regret_of_selected": 0.0,
+      "mean_regret_of_selected_first": 0.0,
+      "median_regret_of_selected_first": 0.0,
+      "n_candidates_gt1": 0,
+      "n_rule_disagreements": 0,
+      "mean_V_true": 0.0
+    },
+    "Execution": {
+      "n": 26,
+      "share": 0.0036429872495446266,
+      "mean_n_candidates": 1.0,
+      "n_empty": 0,
+      "fraction_empty": 0.0,
+      "n_minimal_size_gt1": 0,
+      "fraction_minimal_size_gt1": 0.0,
+      "n_selected_regret_zero": 26,
+      "fraction_selected_regret_zero": 1.0,
+      "mean_regret_of_selected": 0.0,
+      "median_regret_of_selected": 0.0,
+      "max_regret_of_selected": 0.0,
+      "mean_regret_of_selected_first": 0.0,
+      "median_regret_of_selected_first": 0.0,
+      "n_candidates_gt1": 0,
+      "n_rule_disagreements": 0,
+      "mean_V_true": 0.0
+    },
+    "Plan": {
+      "n": 485,
+      "share": 0.06795572369342862,
+      "mean_n_candidates": 1.0597938144329897,
+      "n_empty": 0,
+      "fraction_empty": 0.0,
+      "n_minimal_size_gt1": 0,
+      "fraction_minimal_size_gt1": 0.0,
+      "n_selected_regret_zero": 485,
+      "fraction_selected_regret_zero": 1.0,
+      "mean_regret_of_selected": 0.0,
+      "median_regret_of_selected": 0.0,
+      "max_regret_of_selected": 0.0,
+      "mean_regret_of_selected_first": 0.0,
+      "median_regret_of_selected_first": 0.0,
+      "n_candidates_gt1": 29,
+      "n_rule_disagreements": 0,
+      "mean_V_true": 0.7334630350194552
+    },
+    "WholeProcess": {
+      "n": 4881,
+      "share": 0.6839007986548971,
+      "mean_n_candidates": 1.0,
+      "n_empty": 0,
+      "fraction_empty": 0.0,
+      "n_minimal_size_gt1": 4881,
+      "fraction_minimal_size_gt1": 1.0,
+      "n_selected_regret_zero": 4881,
+      "fraction_selected_regret_zero": 1.0,
+      "mean_regret_of_selected": 0.0,
+      "median_regret_of_selected": 0.0,
+      "max_regret_of_selected": 0.0,
+      "mean_regret_of_selected_first": 0.0,
+      "median_regret_of_selected_first": 0.0,
+      "n_candidates_gt1": 0,
+      "n_rule_disagreements": 0,
+      "mean_V_true": 0.5191559106740422
+    }
+  },
+  "field_notes": {
+    "candidates[].repair": "sorted primitive strings, e.g. 'unstick:2', 'plan:1', 'exec:2'; 'step:t:a' if a forced-step primitive ever appears",
+    "candidates[].V_true": "oracle.repair_value(scene, repair, n_samples=v_samples), evaluator-only",
+    "candidates[].selected": "was this the candidate selected_repair() picked (pick='best', train.py's rule)",
+    "candidates[].regret_vs_best": "V_true - max(V_true over this episode's candidates)",
+    "candidates[].minimal": "repair.size == oracle minimal_size. NOTE: enumerate_sufficient() stops at the first size that yields any sufficient intervention, so every returned candidate has that size and 'minimal' is True for all of them by construction -- the run reports the count of False values so this is measured, not assumed.",
+    "regret_of_selected": "oracle.repair_regret(scene, selected, n_samples=v_samples); null when the candidate set is empty",
+    "scene": "the reconstructed scene scene_from_trace(trace) that the oracle classified: what the agent actually chose (g = context lane, plan, plan_matches_context) plus the faults the reconstruction carries",
+    "steps[].action": "realized action index (what the environment executed)",
+    "steps[].agent_action": "intent -- the action the agent itself chose",
+    "steps[].is_deviation": "agent_action != reference_action (ACT steps only; false on the PLAN step, null where no action exists)",
+    "steps[].q_values_selected_unit": "the Q row read at that timestep, i.e. the row the credit unit's site indexes: {action_name: value}; the HIGH row at (g,0,0) on the PLAN step, the LOW row at (x,y,o,t) on ACT steps, null on ABSORB.  q_unit/q_key identify it.",
+    "steps[].chosen_value": "the value of agent_action inside that row (the value epsilon-greedy compared against)",
+    "steps[].plan_chosen": "t=0 only: the plan the agent emitted (step 'o' is -1 in PLAN phase, so this is the readable form)",
+    "first_deviation_t": "first ACT step where agent_action != reference_action",
+    "first_realized_deviation_t": "first ACT step where the *realized* action != reference_action -- the oracle's own critical_t, which differs from first_deviation_t under an execution fault",
+    "terminal_step": "t at which the outcome was decided (goal reached, or horizon)",
+    "absorbing": "the trace entered the ABSORB phase before the horizon, i.e. the outcome was decided early; always false for horizon-timeouts"
+  },
+  "meta": {
+    "schema_version": "0.4.0",
+    "arm": "NegativeOnly",
+    "seeds": [
+      4600000,
+      4600001,
+      4600002,
+      4600003,
+      4600004,
+      4600005,
+      4600006,
+      4600007
+    ],
+    "seed_base": 4600000,
+    "episodes": 2000,
+    "v_samples": 8,
+    "n_training_episodes": 16000
+  },
+  "wall_s": 5.999808199994732,
+  "pythonhashseed": "0",
+  "hash_seed_pinned": true,
+  "determinism_note": "PYTHONHASHSEED is pinned to 0 by re-exec so the jsonl is byte-identical for a given --seeds/--episodes/--arm/--v-samples. Without the pin, rflv04.credit_units.decision_oracle's frozenset iteration order changes the Q writes and train() is not cross-process reproducible (measured: 3 processes x same seed -> 3 different q_hashes).",
+  "train_equivalence": [
+    {
+      "seed": 4600000,
+      "arm": "NegativeOnly",
+      "identical": true,
+      "checks": {
+        "q_hash": true,
+        "family_counts": true,
+        "corrections": true,
+        "sites_touched": true,
+        "clippings": true,
+        "n_negative_td": true,
+        "checkpoints": true,
+        "success_curve": true,
+        "wmd": true,
+        "kd_innocent": true,
+        "collateral": true
+      },
+      "mismatched": []
+    },
+    {
+      "seed": 4600001,
+      "arm": "NegativeOnly",
+      "identical": true,
+      "checks": {
+        "q_hash": true,
+        "family_counts": true,
+        "corrections": true,
+        "sites_touched": true,
+        "clippings": true,
+        "n_negative_td": true,
+        "checkpoints": true,
+        "success_curve": true,
+        "wmd": true,
+        "kd_innocent": true,
+        "collateral": true
+      },
+      "mismatched": []
+    },
+    {
+      "seed": 4600002,
+      "arm": "NegativeOnly",
+      "identical": true,
+      "checks": {
+        "q_hash": true,
+        "family_counts": true,
+        "corrections": true,
+        "sites_touched": true,
+        "clippings": true,
+        "n_negative_td": true,
+        "checkpoints": true,
+        "success_curve": true,
+        "wmd": true,
+        "kd_innocent": true,
+        "collateral": true
+      },
+      "mismatched": []
+    },
+    {
+      "seed": 4600003,
+      "arm": "NegativeOnly",
+      "identical": true,
+      "checks": {
+        "q_hash": true,
+        "family_counts": true,
+        "corrections": true,
+        "sites_touched": true,
+        "clippings": true,
+        "n_negative_td": true,
+        "checkpoints": true,
+        "success_curve": true,
+        "wmd": true,
+        "kd_innocent": true,
+        "collateral": true
+      },
+      "mismatched": []
+    },
+    {
+      "seed": 4600004,
+      "arm": "NegativeOnly",
+      "identical": true,
+      "checks": {
+        "q_hash": true,
+        "family_counts": true,
+        "corrections": true,
+        "sites_touched": true,
+        "clippings": true,
+        "n_negative_td": true,
+        "checkpoints": true,
+        "success_curve": true,
+        "wmd": true,
+        "kd_innocent": true,
+        "collateral": true
+      },
+      "mismatched": []
+    },
+    {
+      "seed": 4600005,
+      "arm": "NegativeOnly",
+      "identical": true,
+      "checks": {
+        "q_hash": true,
+        "family_counts": true,
+        "corrections": true,
+        "sites_touched": true,
+        "clippings": true,
+        "n_negative_td": true,
+        "checkpoints": true,
+        "success_curve": true,
+        "wmd": true,
+        "kd_innocent": true,
+        "collateral": true
+      },
+      "mismatched": []
+    },
+    {
+      "seed": 4600006,
+      "arm": "NegativeOnly",
+      "identical": true,
+      "checks": {
+        "q_hash": true,
+        "family_counts": true,
+        "corrections": true,
+        "sites_touched": true,
+        "clippings": true,
+        "n_negative_td": true,
+        "checkpoints": true,
+        "success_curve": true,
+        "wmd": true,
+        "kd_innocent": true,
+        "collateral": true
+      },
+      "mismatched": []
+    },
+    {
+      "seed": 4600007,
+      "arm": "NegativeOnly",
+      "identical": true,
+      "checks": {
+        "q_hash": true,
+        "family_counts": true,
+        "corrections": true,
+        "sites_touched": true,
+        "clippings": true,
+        "n_negative_td": true,
+        "checkpoints": true,
+        "success_curve": true,
+        "wmd": true,
+        "kd_innocent": true,
+        "collateral": true
+      },
+      "mismatched": []
+    }
+  ],
+  "replica_fingerprints": [
+    {
+      "seed": 4600000,
+      "arm": "NegativeOnly",
+      "n_failed": 887,
+      "corrections": 882,
+      "sites_touched": 1517,
+      "clippings": 3,
+      "n_negative_td": 2096,
+      "q_hash": "6d64235582ca22cdaf8b3d642f5cdf2ab65cc900b37b196d0a24e27c62e92fdd",
+      "family_counts": {
+        "Decision": 261,
+        "WholeProcess": 555,
+        "Execution": 3,
+        "clean": 1113,
+        "CLEAN": 5,
+        "Plan": 63
+      }
+    },
+    {
+      "seed": 4600001,
+      "arm": "NegativeOnly",
+      "n_failed": 872,
+      "corrections": 862,
+      "sites_touched": 1730,
+      "clippings": 2,
+      "n_negative_td": 1929,
+      "q_hash": "402eddea7dfc489d9b1a98fa760538805be2db9152c9b55f72fa6c3db91a5f99",
+      "family_counts": {
+        "WholeProcess": 623,
+        "Decision": 174,
+        "clean": 1128,
+        "CLEAN": 10,
+        "Plan": 60,
+        "Execution": 5
+      }
+    },
+    {
+      "seed": 4600002,
+      "arm": "NegativeOnly",
+      "n_failed": 896,
+      "corrections": 881,
+      "sites_touched": 1729,
+      "clippings": 1,
+      "n_negative_td": 2192,
+      "q_hash": "6eacca06f5db097a7b357481d7393e89f7619233a9e2809920e9a41aae946ff9",
+      "family_counts": {
+        "Decision": 219,
+        "WholeProcess": 610,
+        "Execution": 5,
+        "clean": 1104,
+        "Plan": 47,
+        "CLEAN": 15
+      }
+    },
+    {
+      "seed": 4600003,
+      "arm": "NegativeOnly",
+      "n_failed": 909,
+      "corrections": 896,
+      "sites_touched": 1747,
+      "clippings": 1,
+      "n_negative_td": 1886,
+      "q_hash": "f5f26330d4b3163092386f075b4ff877408f5f201353f97330927f4ceb416ff3",
+      "family_counts": {
+        "WholeProcess": 626,
+        "Decision": 205,
+        "clean": 1091,
+        "CLEAN": 13,
+        "Execution": 9,
+        "Plan": 56
+      }
+    },
+    {
+      "seed": 4600004,
+      "arm": "NegativeOnly",
+      "n_failed": 899,
+      "corrections": 876,
+      "sites_touched": 1698,
+      "clippings": 1,
+      "n_negative_td": 2099,
+      "q_hash": "cafa6cdc3a22faf3c6b74533fe16dd5e133e4fc1cb5899a38285b5978a875a29",
+      "family_counts": {
+        "Decision": 208,
+        "WholeProcess": 607,
+        "CLEAN": 23,
+        "clean": 1101,
+        "Execution": 4,
+        "Plan": 57
+      }
+    },
+    {
+      "seed": 4600005,
+      "arm": "NegativeOnly",
+      "n_failed": 910,
+      "corrections": 907,
+      "sites_touched": 1801,
+      "clippings": 2,
+      "n_negative_td": 1908,
+      "q_hash": "4486db0cdec8c5be125663e765acb1da29a82ccbcd8025b9bd723afbcb6d11b7",
+      "family_counts": {
+        "Decision": 182,
+        "WholeProcess": 647,
+        "clean": 1090,
+        "CLEAN": 3,
+        "Plan": 78
+      }
+    },
+    {
+      "seed": 4600006,
+      "arm": "NegativeOnly",
+      "n_failed": 854,
+      "corrections": 851,
+      "sites_touched": 1560,
+      "clippings": 0,
+      "n_negative_td": 2142,
+      "q_hash": "6ed2241efd8fc39aad8df8640a46612d9ea509f66a3ead57ccd56d02f40d4c9e",
+      "family_counts": {
+        "Decision": 227,
+        "WholeProcess": 568,
+        "Plan": 56,
+        "clean": 1146,
+        "CLEAN": 3
+      }
+    },
+    {
+      "seed": 4600007,
+      "arm": "NegativeOnly",
+      "n_failed": 910,
+      "corrections": 899,
+      "sites_touched": 1780,
+      "clippings": 3,
+      "n_negative_td": 2021,
+      "q_hash": "2984b2a388aa3ce9999e2623fdd295eef7772dbe38198f1c4004d5bf1b94fe69",
+      "family_counts": {
+        "Decision": 186,
+        "WholeProcess": 645,
+        "CLEAN": 11,
+        "clean": 1090,
+        "Plan": 68
+      }
+    }
+  ],
+  "step_traces": {
+    "n": 64,
+    "first_n": 40,
+    "families": {
+      "Decision": 27,
+      "Execution": 26,
+      "WholeProcess": 11
+    },
+    "smallest_family": "Execution",
+    "n_smallest_family": 26,
+    "smallest_family_count_in_run": 26,
+    "capped": false
+  }
+}

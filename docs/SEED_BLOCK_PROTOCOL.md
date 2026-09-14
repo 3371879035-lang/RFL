@@ -158,7 +158,80 @@ and is not a finding regardless of its CI.
 * Writing up a $p$-value crossing as a "reversal" without the §3 block
   decomposition.
 
-## 9. Execution log
+## 9. Never change the algorithm while increasing seeds
+
+$$\boxed{\text{During seed collection the code is frozen.}}$$
+
+If a pilot at 100 seeds looks bad, the parameter is not tuned. If 200 disagrees,
+the threshold is not moved. If 300 flips again, the environment is not adjusted.
+Any of those turns $N = 100, 200, 300, 400$ into four samples from four
+*different* distributions, which cannot be pooled, compared, or drawn on one
+curve — and the "instability" that motivated the change is then partly caused by
+the change itself. It is optional stopping wearing a different hat.
+
+### 9.1 The bug rule
+
+$$\boxed{\text{A bug voids the entire seed set.}}$$
+
+A defect is **not** patched in place and the run resumed. The fix lands, and
+collection restarts from $N = 0$ on the new code. Partially collected seeds from
+the old code are not a head start; they are a second distribution.
+
+This was applied literally during the v0.4 re-run. A reproducibility defect was
+found in `src/rflv04` mid-collection (`docs/V0_4_REPRODUCIBILITY_DEFECT.md`:
+training depended on `PYTHONHASHSEED`, giving a 3.3x spread in `WMD` for
+identical inputs). Every in-flight v0.4 run was killed, the fix was committed,
+and all v0.4 pilots restarted from $N = 0$ on the fixed code. The pre-fix numbers
+at 6 / 12 / 100 / 200 / 300 seeds are void as evidence and are retained only as
+a record of what the defect did.
+
+### 9.2 Enforcement
+
+Rule 9 is checked mechanically, not by discipline:
+
+```bash
+python scripts/src_fingerprint.py --record docs/PROVENANCE.json   # before a run
+python scripts/src_fingerprint.py --check  docs/PROVENANCE.json   # after / before resuming
+```
+
+`src_fingerprint.py` hashes the repo-relative path and normalized contents of
+every `.py` under `src/`, and fails (exit 1) if any package differs from the
+record or if `src/` has uncommitted changes. Paths are hashed relative to the
+repo root so the digest is portable, and line endings are normalized so that
+`core.autocrlf` rewriting LF to CRLF does not raise a false alarm — a provenance
+check that cries wolf gets ignored, which is worse than not having one.
+
+## 10. Provenance of the 400-seed runs
+
+Verified after the fact rather than asserted:
+
+| check | result |
+|---|---|
+| `git status --short src/` during collection | empty — the tree matched `HEAD` throughout |
+| commits touching `src/` since the pilots | exactly one, the reproducibility fix `9c03f43` |
+| files changed by that commit | `src/rflv04/credit_units.py` only |
+| `src/rflnext` (v0.3 pilots) touched? | **no** — verified two ways |
+| `git_commit` recorded in `v04_alpha_400` / `v03_alpha_400` summary | `095238b` (post-fix) |
+
+Because the fix commit touched only `src/rflv04`, the v0.3 pilots ran on one
+unchanged codebase across every seed count. This is confirmed empirically as well
+as by inspection: the 300-seed Stage 5 run and the first 300 seeds of the
+400-seed run were separate processes, and all 1,800 `(setting, seed)` pairs match
+bit-for-bit.
+
+The v0.4 400-seed runs are therefore a clean $N = 0$ restart on fixed code, as
+§9.1 requires. `v03_stage5_400` records the earlier commit `86a2e0b`, which is
+correct for it: that run predates the fix and does not include it, and does not
+need to, because it does not import `rflv04`.
+
+Fingerprints at the time of writing, recorded in `docs/PROVENANCE.json`:
+
+```
+src/rflv04     b928bc5e3ba34d833e628b4da07ee0b59f6c453f1d5df06f14f0e421a69ed12b
+src/rflnext    009557a1fc8941cd0a7cd68e364a80ccb3f542f6e0ee2016d30d4b05c585cfb8
+```
+
+## 11. Execution log
 
 | pilot | 400-seed run | status |
 |---|---|---|

@@ -1,5 +1,10 @@
 # Seed-count audit — everything re-run at 200 paired seeds
 
+> **EXPLORATORY — NOT EVIDENCE.** Superseded by
+> `docs/FROZEN_RESULTS_400.md` (frozen four-block protocol) and
+> `docs/ROBUSTNESS_AUDIT.md` (why most of these movements were noise).
+> Retained unedited as the record of what the exploration actually did.
+
 The v0.3 pilots originally ran at 12 / 20 / 8 / 40 / 30 / 8 seeds and the v0.4
 pilots at 12. When v0.4 was re-run at 100 seeds **three of its conclusions
 changed**, which made every earlier number suspect. Everything was therefore
