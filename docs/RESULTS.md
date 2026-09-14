@@ -131,3 +131,124 @@ endpoint was changed after seeing these results. The two design changes made
 - Pilot Beta additionally needs `U` gating and knowledge probes, and per the
   plan those probes are defined on **clean reference states** with a verified
   pre-margin -- never on a failure's terminal transition.
+
+---
+
+## Pilot Beta — Penalty x Oracle selective correction
+
+### Provenance
+
+| item | value |
+|---|---|
+| config | `configs/beta.yaml` |
+| environment | identical to Pilot Alpha (5x2, horizon 8, gamma 1.0, no step reward, `p_hazard` 0.25) |
+| correction | `dQ_m -= alpha_diag` (=0.10) on the responsible module's chosen action(s); H at `(s_H, option_chosen)`, L at every low-level transition of the episode |
+| design | 8 paired seeds (4100000..4100007), 12,000 episodes per condition, greedy eval of 200 episodes every 250 |
+| conditions | the 2x2 `{traditional, positive_only} x {none, oracle}` plus blunt `h_only`, `l_only`, `hl` |
+| artifacts | `outputs/v03_beta/{config.yaml,summary.json,analysis.json,run.log}` |
+| process exit | **0** (both fatal gates pass) |
+
+**Episode count was raised from the plan's 2,000 to 12,000.** D6 pre-registers
+exactly this remedy. It was forced by the treatment itself: 2,000 episodes
+cannot deliver the plan's own ">= 400-500 effective failures per scene" floor,
+and the Oracle arms cut failures *further* by learning better, so `HL_error` in
+`positive_only_oracle` fell to 337 pooled events. No threshold, `p_hazard`,
+epsilon value, or label definition was touched. At 12,000 episodes the floor is
+met in every family of every condition.
+
+### KnowledgeDamage on the correct-but-not-responsible module
+
+Mean absolute margin loss per diagnostic event. `HL_error` has no innocent
+module by construction, so its column is undefined.
+
+| family (innocent module) | traditional | positive_only | T+Oracle | PO+Oracle | h_only | l_only | hl |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| `H_error` (L) | 0.00000 | 0.00000 | **0.00000** | **0.00000** | 0.00000 | 0.04072 | 0.04020 |
+| `L_error` (H) | 0.00000 | 0.00000 | **0.00000** | **0.00000** | 0.10000 | 0.00000 | 0.10000 |
+| `E_failure` (both) | 0.00000 | 0.00000 | **0.00000** | **0.00000** | 0.02502 | 0.01923 | 0.04382 |
+
+### Paired contrasts (unit = seed, 8 pairs)
+
+**Knowledge damage**
+
+| family | contrast | mean | 95% CI | p |
+|---|---|---:|---|---:|
+| `H_error` | `l_only` − `traditional` | **+0.04046** | [+0.03357, +0.04697] | 0.0079 |
+| `H_error` | `hl` − `traditional` | **+0.04030** | [+0.03592, +0.04526] | 0.0079 |
+| `L_error` | `h_only` − `traditional` | **+0.10000** | [+0.10000, +0.10000] | 0.0077 |
+| `L_error` | `hl` − `traditional` | **+0.10000** | [+0.10000, +0.10000] | 0.0080 |
+| `E_failure` | `h_only` − `traditional` | **+0.02502** | [+0.02485, +0.02522] | 0.0085 |
+| `E_failure` | `l_only` − `traditional` | **+0.01923** | [+0.01709, +0.02065] | 0.0068 |
+| `E_failure` | `hl` − `traditional` | **+0.04381** | [+0.04263, +0.04513] | 0.0082 |
+| all | any **Oracle** − its counterpart | **0.00000** | [0, 0] | 1.0000 |
+
+Every blunt rule damages knowledge it had no business touching, at p < 0.01.
+Both Oracle arms score **exactly zero** in every family: they do not damage the
+innocent module even once.
+
+**Policy utility (SuccessAUC)**
+
+| contrast | mean | 95% CI | d_z | p |
+|---|---:|---|---:|---:|
+| `T+Oracle` − `traditional` | **+0.00000** | [0, 0] | 0.000 | 1.0000 |
+| `PO+Oracle` − `positive_only` | +0.00237 | [+0.00036, +0.00495] | +0.651 | 0.2483 |
+| `h_only` − `traditional` | −0.00210 | [−0.00487, 0] | −0.535 | 0.4954 |
+| `l_only` − `traditional` | −0.00079 | [−0.00238, 0] | −0.354 | 1.0000 |
+| `hl` − `traditional` | −0.00490 | [−0.00974, −0.00099] | −0.683 | 0.2478 |
+
+Penalty x Oracle interaction, `(PO+O − PO) − (T+O − T)`: **+0.00237**
+[+0.00036, +0.00495]. The CI excludes zero, but the magnitude is ~0.002 on a
+~0.75 AUC, it is uncorrected for multiplicity, and it rests on 8 seeds; it is
+reported as negligible rather than as a finding.
+
+### Gates
+
+| gate | role | outcome |
+|---|---|---|
+| `family_gate` | **fatal** | `ok` — floor of 400 met in every family of every condition |
+| `oracle_advantage` | **fatal** | **True** |
+| `auc_check` | secondary, not fatal | `benchmark_no_discriminating_power` — spread 0.00490 < 0.005 |
+
+`oracle_advantage` is true **only through `E_failure`** (gap 0.0192 over the
+closest blunt rule). In `H_error` and `L_error` the Oracle arms tie with
+`h_only` and `l_only` respectively, at gap exactly 0, because in those families
+that blunt rule happens to target the module that really was responsible. The
+structural advantage appears precisely in the genuinely ambiguous family, where
+*no* module is responsible and every blunt rule therefore fires on an innocent
+one.
+
+### Verdict
+
+**`KNOWLEDGE_PROTECTION_IMPROVES_WITHOUT_POLICY_UTILITY`** — one of the valid
+outcomes the research plan names in advance.
+
+### Reading
+
+1. **Selective correction works as designed, and the effect is structural, not
+   marginal.** Oracle never damages the innocent module (0.00000 in every
+   family, every seed); every blunt rule does, significantly.
+2. **It buys nothing in task performance at this scale.** All seven conditions
+   end at *identical* final success (0.7575), and the AUC spread is 0.005 —
+   statistically indistinguishable. `T+Oracle − traditional` is exactly 0.
+3. **The reason is visible in the run, and it is the one the plan's decision
+   tree predicts** ("knowledge protection improves but return does not"): the
+   task is learned so fast, and its damage repaired so fast, that collateral
+   knowledge loss never survives long enough to change the policy. Ordinary RL
+   re-learns the damaged values before the next evaluation checkpoint.
+4. Corroborating evidence: the Oracle arms also produce **fewer failures**
+   during training (31.0k-32.6k diagnostic events vs 37.5k-40.8k) and about
+   **6x fewer `HL_error`s** (524-603 vs 3245-4915). Selective correction does
+   change the learning trajectory — it just does not change where it lands.
+
+### What this implies
+
+- The plan's precondition for Pilot Gamma **is met** (Oracle shows a structural
+  advantage in an ambiguous scene), so Gamma is permitted.
+- But the binding constraint is now the *benchmark*, not the attributor: this
+  task cannot express a utility benefit because it self-repairs too quickly. A
+  utility effect would need a task where damage persists — longer horizons,
+  less redundant paths, or a utility endpoint measured before recovery.
+- No threshold, `p_hazard`, epsilon, label definition, or endpoint was changed
+  after seeing these results. The only change was episode count, per D6, and it
+  was made to satisfy a pre-registered power floor.
+
