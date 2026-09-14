@@ -1,0 +1,22 @@
+environment:
+  gamma: 1.0
+  horizon: 8
+experiment:
+  cells:
+  - immediate_fixed
+  - immediate_revisable
+  - deferred_fixed
+  - deferred_revisable
+  name: v03_timing_formal
+  seed_base: 4300000
+  seeds: 40
+learning:
+  alpha_diag: 0.1
+  alpha_high: 0.1
+protocol:
+  checkpoint_every: 25
+  contradiction_episodes: 12
+  lucky_episodes: 120
+  unlucky_every: 4
+  warmup_episodes: 200
+schema_version: 0.3.0

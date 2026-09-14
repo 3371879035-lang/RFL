@@ -623,6 +623,145 @@ the tape, and locked with
 `test_horizon_comes_from_the_tape_not_the_module_constant` plus a
 short-horizon reachability test.
 
+---
+
+# Formal-scale reruns, the `p_U` channel, and remaining requirements
+
+## Throughput calibration (run before committing to any budget)
+
+| item | value |
+|---|---|
+| measured | 10,000 baseline episodes at horizon 8 |
+| single process | **66,607 episodes/s** |
+| parallel (21 workers) | **unavailable** — `BrokenProcessPool`; multiprocessing needs named pipes, which this sandbox denies |
+| artifacts | `outputs/v03_reproducibility/benchmark.json` |
+
+Parallel measurement was not worked around. Formal scale is therefore affordable
+single-process, which is why every formal run below was executed.
+
+## Formal-scale reruns
+
+### Pilot Beta — 20 seeds x 7 conditions x 5,000 episodes (exit **0**)
+
+All gates pass. The pilot's conclusions hold with tighter CIs:
+
+| family (innocent module) | traditional | PO | T+Oracle | PO+Oracle | h_only | l_only | hl |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| `H_error` (L) | 0 | 0 | **0.00000** | **0.00000** | 0 | 0.04281 | 0.04327 |
+| `L_error` (H) | 0 | 0 | **0.00000** | **0.00000** | 0.10000 | 0 | 0.10000 |
+| `E_failure` (both) | 0 | 0 | **0.00000** | **0.00000** | 0.02500 | 0.01813 | 0.04367 |
+
+`family_gate = ok`, `auc_check = ok`, `oracle_advantage = True`.
+Artifacts: `outputs/v03_beta_formal/`.
+
+### Stage 3 — 40 seeds x 4 cells (exit **2**)
+
+The pilot's verdict is unchanged and now much sharper:
+
+| contrast | metric | mean | 95% CI | p |
+|---|---|---:|---|---:|
+| `immediate_revisable` − `immediate_fixed` | overcredit | +0.00000 | [0, 0] | 1.0000 |
+| `immediate_revisable` − `immediate_fixed` | **correct credit** | **−1.00000** | [−1, −1] | **0.0000** |
+| `deferred_fixed` − `immediate_fixed` | overcredit | +0.05009 | [+0.05009, +0.05009] | **0.0000** |
+
+At 40 seeds the false-reversal harm reaches **p = 0.0000** (was 0.0004 at 12).
+Artifacts: `outputs/v03_timing_formal/`.
+
+### Stage 4 — 30 seeds x 7 arms x 5,000 episodes (exit **0**)
+
+| arm | success AUC | final | collateral | update precision | exp. KD | corrections | CF |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| `traditional` | 0.7337 | 0.7522 | — | — | 0.00000 | 0 | 0 |
+| `positive_only` | 0.7308 | 0.7522 | — | — | 0.00000 | 0 | 0 |
+| `direct_feedback` | 0.7274 | 0.7522 | 0.6735 | 0.3265 | 0.06735 | 1,872 | 0 |
+| **`random_correction`** | 0.7321 | 0.7522 | **0.7298** | 0.2702 | 0.07298 | 1,432 | 0 |
+| `sequence_rfl` | 0.7336 | 0.7522 | 0.4217 | 0.5783 | 0.04217 | 1,187 | 0 |
+| `learned_rfl` | 0.7336 | 0.7522 | 0.4217 | 0.5783 | 0.04217 | 1,187 | 2,115 |
+| `oracle_rfl` | 0.7338 | 0.7522 | **0.0000** | 1.0000 | 0.00000 | 978 | 0 |
+
+Paired vs `traditional` on AUC: `positive_only` **−0.00293** (p=0.0295),
+`direct_feedback` **−0.00630** (p=0.0215), `random_correction` −0.00156 (p=0.4069),
+`sequence_rfl` and `learned_rfl` **−0.00011** (p=1.0000), `oracle_rfl` +0.00011.
+
+**This is sharper than the pilot.** At 30 seeds, *both* unverified correction
+strategies are now significantly **worse** than doing nothing, while the two RFL
+arms are exactly non-inferior. RFL is the only arm that corrects without paying
+for it.
+
+The Random/prevalence baseline lands **below** `direct_feedback`
+(collateral 0.7298 vs 0.6735), which is not a bug: online, `H_error` is rare
+(~5% of failures), so an uninformed "pick H" is usually wrong. That is precisely
+what a lower bound should look like.
+Artifacts: `outputs/v03_stage4_formal/`.
+
+## `p_U`: the unexplained-cause channel
+
+The plan requires `p = (p_H, p_L, p_E, p_U)` so the system can decline to
+attribute rather than being forced into H/L/E. Implemented as a fifth failure
+family: **correct plan, correct execution, no gate hazard, but an unmodelled
+blockage on the agent's own corridor.** The cause is genuinely outside the
+taxonomy, and `truth_scores` now returns a four-way multi-label vector.
+
+Adding it changed the Gamma conclusions materially:
+
+| method | CF | Brier | Hamming | exact-set | ECE | AUROC_E | **AUROC_U** | ms/trace |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| `oracle` | 0.00 | 0.0000 | 0.0000 | 1.0000 | 0.0000 | 1.0000 | 1.0000 | 0.001 |
+| `sequence_only` | 0.00 | **0.1620** | 0.2248 | 0.4507 | **0.0546** | 0.6537 | **0.6873** | 0.004 |
+| `seq_then_cf_k1` | 1.00 | 0.1966 | 0.2248 | 0.4507 | 0.1903 | 0.9375 | 0.2515 | 0.011 |
+| `cf_only_k1` | 1.00 | 0.2044 | 0.2248 | 0.4507 | 0.2001 | 0.7795 | 0.1258 | 0.008 |
+| `seq_then_cf_k2` | 1.40 | 0.1498 | 0.1498 | 0.6006 | 0.1498 | 1.0000 | 0.5000 | 0.010 |
+| `seq_then_cf_k4` | 1.40 | 0.1498 | 0.1498 | 0.6006 | 0.1498 | 1.0000 | 0.5000 | 0.010 |
+| `cf_only_k2` | 1.60 | 0.1498 | 0.1498 | 0.6006 | 0.1498 | 1.0000 | 0.5000 | 0.007 |
+| `cf_only_k4` | 1.60 | 0.1498 | 0.1498 | 0.6006 | 0.1498 | 1.0000 | 0.5000 | 0.007 |
+
+1. **A single counterfactual now makes calibration worse, not better.** With no
+   unexplained channel, one CF query improved Brier. With `p_U` present,
+   `sequence_only` (0.1620) **beats** `seq_then_cf_k1` (0.1966), and ECE degrades
+   0.0546 -> 0.1903. The reason is visible in `AUROC_U`: sequence evidence
+   detects the unexplained family at **0.6873**, while one CF query drops it to
+   **0.2515** — below chance. CF answers one-hot, and on an unexplained failure
+   its one-hot answer is confidently wrong.
+
+2. **This is the blind spot, now measured rather than asserted.**
+   Counterfactuals test single-module *sufficiency*, so they can only ever
+   conclude "H" or "L"; they have no way to output "unexplained". `AUPRC_L`
+   correspondingly collapses from 0.8227 to 0.4707, because the unknown family
+   gets blamed on the low level.
+
+3. **K=4 saturates at K=2**, exactly and on every metric, at 1.40/1.60 queries.
+   This design has only two distinct counterfactual hypotheses, so budget beyond
+   2 buys nothing. Reported, not papered over.
+
+4. **Diagnosis cost is negligible**: 0.001-0.011 ms per trace, so the CF-query
+   count in the Pareto column — not wall time — is the real budget.
+
+5. The K=1 composition effect survives the new family:
+   `seq_then_cf_k1` 0.1966 vs `cf_only_k1` 0.2044 at an identical 1.00 query.
+
+## Figures
+
+Four fixed figures are produced by `scripts/make_figures.py` from the artifacts
+already on disk (no analytical logic in the plotting step):
+`alpha_success_curves.png`, `gamma_pareto.png`, `beta_knowledge_damage.png`,
+`stage5_difficulty_sweep.png`, in `outputs/v03_figures/`.
+
+## Requirement status after this pass
+
+| previously missing | status |
+|---|---|
+| throughput calibration | **done** (66,607 ep/s single-process) |
+| formal scale for Beta / Stage 3 / Stage 4 | **done** (20 / 40 / 30 seeds) |
+| `p_U` and an unknown-cause family | **done**, with a new finding |
+| Random / prevalence baseline | **done** (Stage 4 `random_correction`) |
+| AUROC, Hamming, exact-set, ECE, diagnosis ms | **done** |
+| `K_CF in {0,1,2,4}` | **done**, K=4 reported as saturated |
+| fixed figures | **done** (4 PNGs) |
+| absorbing-to-horizon, literal | **not done** — equivalent under gamma=1 with no step reward, but not literally implemented |
+| per-attribution raw evidence serialized | **not done** |
+| revision ledger `old_U -> new_U` schema | **not done** |
+
+
 
 
 

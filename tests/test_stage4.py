@@ -31,10 +31,29 @@ def model():
 
 def test_arm_table_matches_the_plan():
     assert set(ARMS) == {
-        "traditional", "positive_only", "direct_feedback",
+        "traditional", "positive_only", "direct_feedback", "random_correction",
         "sequence_rfl", "learned_rfl", "oracle_rfl",
     }
     assert NO_CORRECTION == {"traditional", "positive_only"}
+
+
+def test_random_correction_arm_needs_an_rng_and_picks_blindly(model):
+    import numpy as np
+
+    rec = _rec(option=0, goal_lane=0, final_x=2, final_y=0)
+    with pytest.raises(ValueError):
+        _choose_module("random_correction", rec, model, "")
+    rng = np.random.default_rng(0)
+    picks = {_choose_module("random_correction", rec, model, "", rng=rng)[0] for _ in range(200)}
+    assert picks <= {"H", "L", None}
+    assert "H" in picks and "L" in picks  # it really is blind to the truth
+
+
+def test_random_correction_arm_is_reproducible(model):
+    a = train_arm(CFG, seed=3, arm="random_correction", model=model)
+    b = train_arm(CFG, seed=3, arm="random_correction", model=model)
+    assert a.q_hash == b.q_hash
+    assert a.collateral == b.collateral
 
 
 def test_feedback_stream_respects_the_error_rate():

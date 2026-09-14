@@ -15,6 +15,7 @@ import json
 import os
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
@@ -104,9 +105,12 @@ def main(argv=None) -> int:
         for entry in plan:
             name = entry[0] if isinstance(entry, tuple) else entry
             k = entry[1] if isinstance(entry, tuple) else 0
+            t0 = time.perf_counter()
             atts = run_method(name, test, model, k=k)
+            per_trace_ms = (time.perf_counter() - t0) / max(1, len(test)) * 1000.0
             rows[label_for(entry)] = score_method(
-                label_for(entry), atts, test, alpha_diag=alpha_diag
+                label_for(entry), atts, test, alpha_diag=alpha_diag,
+                diagnosis_ms=per_trace_ms,
             )
         per_seed.append({"seed": seed, "n_train": len(train), "n_test": len(test),
                          "methods": rows})

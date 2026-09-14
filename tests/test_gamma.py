@@ -12,6 +12,7 @@ from rflnext.gamma import (
     responsibility_from_cf,
     run_method,
     score_method,
+    truth_scores,
     SequenceModel,
 )
 
@@ -86,19 +87,44 @@ def test_counterfactual_resolves_that_ambiguity():
 def test_cf_hypothesis_l_responsibility():
     tr = _trace(goal_lane=0, option=0, fault=True, fault_start=1)
     res = {"L": cf_query(tr, "L")}
-    assert responsibility_from_cf(res) == {"H": 0.0, "L": 1.0, "E": 0.0}
+    assert responsibility_from_cf(res) == {"H": 0.0, "L": 1.0, "E": 0.0, "U": 0.0}
 
 
 def test_cf_hypothesis_h_responsibility():
     tr = _trace(goal_lane=0, option=1, fault=False)
     res = {"L": cf_query(tr, "L"), "H": cf_query(tr, "H")}
-    assert responsibility_from_cf(res) == {"H": 1.0, "L": 0.0, "E": 0.0}
+    assert responsibility_from_cf(res) == {"H": 1.0, "L": 0.0, "E": 0.0, "U": 0.0}
 
 
 def test_cf_both_fail_means_environment():
     tr = _trace(goal_lane=0, option=0, fault=False, hazard=1)
     res = {"L": cf_query(tr, "L"), "H": cf_query(tr, "H")}
-    assert responsibility_from_cf(res) == {"H": 0.0, "L": 0.0, "E": 1.0}
+    assert responsibility_from_cf(res) == {"H": 0.0, "L": 0.0, "E": 1.0, "U": 0.0}
+
+
+def test_unknown_family_has_an_explicit_unexplained_channel():
+    """Nobody is at fault, the gate is not jammed, yet the episode fails: the
+    cause is outside the modelled H/L/E taxonomy."""
+    tr = make_trace("u", goal_lane=0, hazard=0, option=0, fault=False,
+                    obstruction_at=2, horizon=H)
+    assert tr is not None
+    assert tr.family == "unknown"
+    assert (tr.u_h, tr.u_l) == (0, 0)
+    assert tr.p_u == 1.0
+    truth = truth_scores(tr)
+    assert truth == {"H": 0.0, "L": 0.0, "E": 0.0, "U": 1.0}
+
+
+def test_counterfactuals_misattribute_the_unknown_family():
+    """A documented blind spot, measured rather than hidden: the reference
+    re-rollout carries no unmodelled obstruction, so perfect execution looks
+    like it would have won and the failure is blamed on the low level."""
+    tr = make_trace("u", goal_lane=0, hazard=0, option=0, fault=False,
+                    obstruction_at=2, horizon=H)
+    res = {"L": cf_query(tr, "L"), "H": cf_query(tr, "H")}
+    score = responsibility_from_cf(res)
+    assert score["L"] == 1.0          # blamed on L ...
+    assert truth_scores(tr)["U"] == 1.0  # ... but the truth is "unexplained"
 
 
 def test_likelihood_indexing_is_not_inverted():
@@ -122,9 +148,9 @@ def test_generate_balanced_returns_even_families():
     counts: dict = {}
     for t in traces:
         counts[t.family] = counts.get(t.family, 0) + 1
-    assert set(counts) == {"H_error", "L_error", "HL_error", "E_failure"}
+    assert set(counts) == {"H_error", "L_error", "HL_error", "E_failure", "unknown"}
     assert len(set(counts.values())) == 1
-    assert counts["H_error"] == 100
+    assert counts["H_error"] == 80
 
 
 def test_sequence_model_separates_the_observable_cases():
@@ -203,4 +229,22 @@ def test_budget_is_respected():
 def test_truths_are_multilabel_for_hl_errors():
     tr = _trace(goal_lane=0, option=1, fault=True, fault_start=1)
     assert tr.u_h == 1 and tr.u_l == 1
-    assert set(CAUSES) == {"H", "L", "E"}
+    assert tr.p_u == 0.0
+    assert set(CAUSES) == {"H", "L", "E", "U"}
+
+
+def test_new_metrics_are_defined_and_bounded():
+    from rflnext.gamma import (
+        exact_set_accuracy, expected_calibration_error, hamming_loss, roc_auc,
+    )
+
+    truths = [{"H": 1.0, "L": 0.0, "E": 0.0, "U": 0.0},
+              {"H": 0.0, "L": 1.0, "E": 0.0, "U": 0.0}]
+    scores = [{"H": 0.9, "L": 0.1, "E": 0.0, "U": 0.0},
+              {"H": 0.2, "L": 0.8, "E": 0.0, "U": 0.0}]
+    assert roc_auc([0.9, 0.2], [1, 0]) == pytest.approx(1.0)
+    assert roc_auc([0.5, 0.5], [1, 1]) is None
+    assert hamming_loss(scores, truths) == 0.0
+    assert exact_set_accuracy(scores, truths) == 1.0
+    ece = expected_calibration_error(scores, truths)
+    assert 0.0 <= ece <= 1.0

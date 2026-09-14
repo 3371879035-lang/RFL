@@ -1,0 +1,33 @@
+schema_version: "0.3.0"
+environment:
+  horizon: 8
+  gamma: 1.0
+  width: 5
+  lanes: 2
+  p_hazard: 0.25
+learning:
+  alpha_low: 0.10
+  alpha_high: 0.10
+  alpha_diag: 0.10
+  epsilon_start: 0.30
+  epsilon_end: 0.05
+  epsilon_decay_fraction: 0.80
+gate:
+  min_auc_gap: 0.0005
+  min_family_events: 400
+  oracle_advantage_kd: 0.01
+experiment:
+  name: v03_beta_formal
+  seeds: 20
+  seed_base: 4100000
+  episodes: 5000
+  eval_every: 250
+  eval_episodes: 200
+  conditions:
+    - traditional
+    - positive_only
+    - traditional_oracle
+    - positive_only_oracle
+    - h_only
+    - l_only
+    - hl

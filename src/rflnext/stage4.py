@@ -40,12 +40,14 @@ ARMS = (
     "traditional",
     "positive_only",
     "direct_feedback",
+    "random_correction",
     "sequence_rfl",
     "learned_rfl",
     "oracle_rfl",
 )
 NO_CORRECTION = {"traditional", "positive_only"}
 FEEDBACK_SEED_OFFSET = 700_000_000
+RANDOM_SEED_OFFSET = 800_000_000
 
 
 @dataclass(frozen=True)
@@ -108,6 +110,8 @@ def _choose_module(
     rec: EpisodeRecord,
     model: SequenceModel,
     feedback: str,
+    *,
+    rng: np.random.Generator | None = None,
 ) -> tuple[str | None, int]:
     """Return (module to correct, counterfactual queries spent)."""
     if arm in NO_CORRECTION:
@@ -117,6 +121,13 @@ def _choose_module(
         return (None if t == "E" else t), 0
     if arm == "direct_feedback":
         return (None if feedback == "E" else feedback), 0
+    if arm == "random_correction":
+        # The plan's "Random / prevalence" lower bound: pick a module with no
+        # information at all, including the option of picking none.
+        if rng is None:
+            raise ValueError("random_correction requires an rng")
+        pick = ("H", "L", "E")[int(rng.integers(0, 3))]
+        return (None if pick == "E" else pick), 0
 
     ot = _to_online_trace(rec)
     if arm == "sequence_rfl":
@@ -150,6 +161,7 @@ def train_arm(
 
     tape = NoiseTape.from_seed(seed, episodes=episodes, horizon=horizon, p_hazard=p_hazard)
     feedback = make_feedback_stream(seed, episodes, float(exp.get("p_false", 0.40)))
+    arm_rng = np.random.default_rng((int(seed) + RANDOM_SEED_OFFSET) % (2**32 - 1))
     q = QTables(n_actions=N_ACTIONS)
     reward_mode = "B" if arm == "positive_only" else "A"
 
@@ -178,7 +190,7 @@ def train_arm(
 
         if rec.labels is not None:
             family_counts[rec.labels.family] = family_counts.get(rec.labels.family, 0) + 1
-            module, spent = _choose_module(arm, rec, model, feedback[ep])
+            module, spent = _choose_module(arm, rec, model, feedback[ep], rng=arm_rng)
             n_cf += spent
             if module is not None and alpha_diag > 0.0:
                 truth = rec.labels.u_h if module == "H" else rec.labels.u_l

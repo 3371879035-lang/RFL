@@ -48,8 +48,8 @@ from .env import (
 )
 from .labels import causal_labels
 
-CAUSES = ("H", "L", "E")
-FAILURE_FAMILIES = ("H_error", "L_error", "HL_error", "E_failure")
+CAUSES = ("H", "L", "E", "U")
+FAILURE_FAMILIES = ("H_error", "L_error", "HL_error", "E_failure", "unknown")
 
 
 # --------------------------------------------------------------------------
@@ -73,6 +73,7 @@ class Trace:
     family: str
     u_h: int
     u_l: int
+    p_u: float = 0.0
 
 
 def _corridor_action(x: int, y: int, option: int) -> int:
@@ -92,42 +93,74 @@ def make_trace(
     option: int,
     fault: bool,
     fault_start: int = 1,
+    obstruction_at: int | None = None,
     horizon: int = HORIZON,
 ) -> Trace | None:
     """Generate one episode with an independently controlled causal structure.
 
     ``fault`` makes the low level stall from ``fault_start`` (a WAIT loop), so
-    it cannot complete its corridor.  ``option`` may be set against
-    ``goal_lane`` to make the high level wrong.  ``hazard`` jams the exit.
+    it cannot complete its corridor.  ``obstruction_at`` puts an unmodelled
+    blockage on the agent's own corridor: the low level still executes
+    correctly, nobody is at fault, the gate is not jammed, and yet the episode
+    fails.  That is the ``unknown`` family -- the cause is genuinely outside the
+    modelled H/L/E taxonomy, and it exists so the system has the option of
+    saying "unexplained" instead of being forced to pick a module.
+
     Returns ``None`` on success: a successful episode has nothing to diagnose.
     """
     x, y = 0, 0
     actions: list = []
     states: list = []
     terminal = TIMEOUT
+    deviated = False
     for t in range(1, horizon + 1):
         stalled = fault and t >= fault_start
         a = WAIT if stalled else _corridor_action(x, y, option)
         states.append((x, y, option, t))
         nx, ny = step_cell(x, y, a)
+        if obstruction_at is not None and nx == obstruction_at and a == RIGHT:
+            nx = x  # blocked by the unmodelled obstruction
         kind = terminal_kind(nx, ny, goal_lane, hazard)
         actions.append(a)
         x, y = nx, ny
         if kind is not None:
             terminal = kind
             break
+    if fault:
+        deviated = True
 
-    lab = causal_labels(
-        option=option, goal_lane=goal_lane, final_x=x, final_y=y,
-        hazard=hazard, terminal=terminal,
-    )
-    if lab is None:
+    if terminal == SUCCESS:
         return None
+
+    # Labels come from the generator's own flags, not from the realized
+    # position: the low level is judged by whether it did what it was told.
+    h_correct = option == goal_lane
+    l_correct = not deviated
+
+    if obstruction_at is not None and h_correct and l_correct and hazard == 0:
+        family, u_h, u_l, p_u = "unknown", 0, 0, 1.0
+    elif hazard == 1:
+        family, u_h, u_l, p_u = "E_failure", 0, 0, 0.0
+    else:
+        u_h = 0 if h_correct else 1
+        u_l = 0 if l_correct else 1
+        family = {
+            (1, 0): "H_error",
+            (0, 1): "L_error",
+            (1, 1): "HL_error",
+        }.get((u_h, u_l))
+        if family is None:
+            raise AssertionError(
+                "hazard-free failure with both modules correct is unreachable: "
+                f"option={option} goal_lane={goal_lane} final=({x},{y}) terminal={terminal}"
+            )
+        p_u = 0.0
+
     return Trace(
         trace_id=trace_id, option=option, actions=tuple(actions), states=tuple(states),
         terminal=terminal, steps=len(actions), final_x=x, final_y=y,
-        goal_lane=goal_lane, hazard=hazard, family=lab.family,
-        u_h=lab.u_h, u_l=lab.u_l,
+        goal_lane=goal_lane, hazard=hazard, family=family,
+        u_h=u_h, u_l=u_l, p_u=p_u,
     )
 
 
@@ -152,14 +185,23 @@ def generate_balanced(
     while any(counts[f] < quota for f in FAILURE_FAMILIES) and draws < limit:
         draws += 1
         goal_lane = int(rng.integers(0, 2))
-        hazard = int(rng.random() < p_hazard)
-        wrong = bool(rng.random() < 0.5)
-        option = goal_lane if not wrong else 1 - goal_lane
-        fault = bool(rng.random() < 0.5)
+        which = int(rng.integers(0, len(FAILURE_FAMILIES)))
+        obstruction_at = None
+        if which == 4:
+            # unknown family: correct plan, correct execution, no gate hazard,
+            # but an unmodelled blockage on the agent's own corridor.
+            hazard, option, fault = 0, goal_lane, False
+            obstruction_at = int(rng.integers(2, W - 1))
+        else:
+            hazard = int(rng.random() < p_hazard)
+            wrong = bool(rng.random() < 0.5)
+            option = goal_lane if not wrong else 1 - goal_lane
+            fault = bool(rng.random() < 0.5)
         fault_start = int(rng.integers(1, 4))
         tr = make_trace(
             f"T{draws:07d}", goal_lane=goal_lane, hazard=hazard, option=option,
-            fault=fault, fault_start=fault_start, horizon=horizon,
+            fault=fault, fault_start=fault_start, obstruction_at=obstruction_at,
+            horizon=horizon,
         )
         if tr is None:
             continue
@@ -203,13 +245,16 @@ FEATURE_NAMES = ("reached_end", "blocked", "incomplete")
 
 def cause_responsible(tr: Trace, cause: str) -> int:
     """Multi-label truth for one cause.  ``H`` and ``L`` can both hold; ``E``
-    holds only when neither module was at fault."""
+    holds only when the cause is the modelled environment, and ``U`` only when
+    no modelled module explains the failure."""
     if cause == "H":
         return int(tr.u_h)
     if cause == "L":
         return int(tr.u_l)
     if cause == "E":
-        return int(not tr.u_h and not tr.u_l)
+        return int(not tr.u_h and not tr.u_l and tr.p_u == 0.0)
+    if cause == "U":
+        return int(tr.p_u == 1.0)
     raise ValueError(cause)
 
 
@@ -307,16 +352,23 @@ def cf_query(tr: Trace, hypothesis: str, *, horizon: int = HORIZON) -> CFResult:
 
 
 def responsibility_from_cf(results: dict) -> dict:
-    """Map a (possibly partial) set of counterfactual outcomes to a score."""
+    """Map a (possibly partial) set of counterfactual outcomes to a score.
+
+    Counterfactuals here test single-module *sufficiency*, so they have a blind
+    spot for the ``unknown`` family: the reference re-rollout carries no
+    unmodelled obstruction, so perfect execution appears to win and the failure
+    gets blamed on the low level.  That mis-attribution is a property of the
+    method, and it is measured rather than hidden.
+    """
     l_res = results.get("L")
     h_res = results.get("H")
     if l_res is not None and l_res.outcome == SUCCESS:
-        return {"H": 0.0, "L": 1.0, "E": 0.0}
+        return {"H": 0.0, "L": 1.0, "E": 0.0, "U": 0.0}
     if h_res is not None and h_res.outcome == SUCCESS:
-        return {"H": 1.0, "L": 0.0, "E": 0.0}
+        return {"H": 1.0, "L": 0.0, "E": 0.0, "U": 0.0}
     if l_res is not None and h_res is not None:
         # Perfect execution under either option still loses: exogenous.
-        return {"H": 0.0, "L": 0.0, "E": 1.0}
+        return {"H": 0.0, "L": 0.0, "E": 1.0, "U": 0.0}
     return {}
 
 
@@ -336,8 +388,17 @@ class Attribution:
 
 
 def attribute_oracle(tr: Trace) -> Attribution:
-    return Attribution("oracle", {"H": float(tr.u_h), "L": float(tr.u_l),
-                                  "E": 1.0 if (not tr.u_h and not tr.u_l) else 0.0}, 0)
+    return Attribution("oracle", truth_scores(tr), 0)
+
+
+def truth_scores(tr: Trace) -> dict:
+    """Multi-label truth vector, including the unexplained channel."""
+    return {
+        "H": float(tr.u_h),
+        "L": float(tr.u_l),
+        "E": float(not tr.u_h and not tr.u_l and tr.p_u == 0.0),
+        "U": float(tr.p_u),
+    }
 
 
 def attribute_sequence(tr: Trace, model: SequenceModel) -> Attribution:
@@ -405,12 +466,78 @@ def brier_multilabel(scores: list[dict], truths: list[dict]) -> float:
     return total / n if n else 0.0
 
 
+def roc_auc(scores: list[float], labels: list[int]) -> float | None:
+    """AUROC via the rank (Mann-Whitney) identity, with tie correction."""
+    pairs = sorted(zip(scores, labels), key=lambda p: p[0])
+    pos = sum(labels)
+    neg = len(labels) - pos
+    if pos == 0 or neg == 0:
+        return None
+    ranks = [0.0] * len(pairs)
+    i = 0
+    while i < len(pairs):
+        j = i
+        while j + 1 < len(pairs) and pairs[j + 1][0] == pairs[i][0]:
+            j += 1
+        avg = (i + j) / 2.0 + 1.0
+        for k in range(i, j + 1):
+            ranks[k] = avg
+        i = j + 1
+    rank_sum = sum(r for r, (_s, y) in zip(ranks, pairs) if y)
+    return float((rank_sum - pos * (pos + 1) / 2.0) / (pos * neg))
+
+
+def hamming_loss(scores: list[dict], truths: list[dict], *, threshold: float = 0.5) -> float:
+    """Fraction of wrong binary decisions across all causes."""
+    bad = 0
+    total = 0
+    for sc, tr in zip(scores, truths):
+        for c in CAUSES:
+            pred = 1 if float(sc.get(c, 0.0)) >= threshold else 0
+            bad += int(pred != int(tr[c]))
+            total += 1
+    return bad / total if total else 0.0
+
+
+def exact_set_accuracy(scores: list[dict], truths: list[dict], *, threshold: float = 0.5) -> float:
+    """Fraction of traces whose whole predicted cause-set matches exactly."""
+    hits = 0
+    for sc, tr in zip(scores, truths):
+        if all((1 if float(sc.get(c, 0.0)) >= threshold else 0) == int(tr[c]) for c in CAUSES):
+            hits += 1
+    return hits / len(truths) if truths else 0.0
+
+
+def expected_calibration_error(
+    scores: list[dict], truths: list[dict], *, n_bins: int = 10
+) -> float:
+    """ECE over all (trace, cause) probability/outcome pairs."""
+    pairs = [
+        (float(sc.get(c, 0.0)), int(tr[c]))
+        for sc, tr in zip(scores, truths) for c in CAUSES
+    ]
+    if not pairs:
+        return 0.0
+    total = len(pairs)
+    ece = 0.0
+    for b in range(n_bins):
+        lo, hi = b / n_bins, (b + 1) / n_bins
+        bucket = [p for p in pairs if (lo <= p[0] < hi) or (b == n_bins - 1 and p[0] == 1.0)]
+        if not bucket:
+            continue
+        conf = sum(p for p, _y in bucket) / len(bucket)
+        acc = sum(y for _p, y in bucket) / len(bucket)
+        ece += (len(bucket) / total) * abs(conf - acc)
+    return float(ece)
+
+
 def update_quality(attributions: list[Attribution], traces: list[Trace]) -> dict:
     """Translate attribution into the diagnostic update it would cause.
 
     The correction goes to the top-scoring non-environment module.  If that
     module was innocent, the update damages correct knowledge -- which is the
-    downstream quantity the whole chain cares about.
+    downstream quantity the whole chain cares about.  ``U`` on top means the
+    system declined to attribute, so no update is issued at all.
     """
     corrected = 0
     correct_hits = 0
@@ -418,7 +545,7 @@ def update_quality(attributions: list[Attribution], traces: list[Trace]) -> dict
     no_op = 0
     for att, tr in zip(attributions, traces):
         best = max(CAUSES, key=lambda c: att.score.get(c, 0.0))
-        if best == "E":
+        if best in ("E", "U"):
             no_op += 1
             continue
         corrected += 1
@@ -439,21 +566,25 @@ def update_quality(attributions: list[Attribution], traces: list[Trace]) -> dict
 
 
 def score_method(name: str, attributions: list[Attribution], traces: list[Trace],
-                 *, alpha_diag: float = 0.10) -> dict:
+                 *, alpha_diag: float = 0.10, diagnosis_ms: float | None = None) -> dict:
     scores = [a.score for a in attributions]
-    truths = [{"H": float(t.u_h), "L": float(t.u_l),
-               "E": 1.0 if (not t.u_h and not t.u_l) else 0.0} for t in traces]
+    truths = [truth_scores(t) for t in traces]
     out = {"method": name, "n": len(traces)}
     for c in CAUSES:
-        out[f"auprc_{c}"] = average_precision(
-            [float(s.get(c, 0.0)) for s in scores], [int(t[c]) for t in truths]
-        )
+        sc = [float(s.get(c, 0.0)) for s in scores]
+        lab = [int(t[c]) for t in truths]
+        out[f"auprc_{c}"] = average_precision(sc, lab)
+        out[f"auroc_{c}"] = roc_auc(sc, lab)
     out["brier"] = brier_multilabel(scores, truths)
+    out["hamming_loss"] = hamming_loss(scores, truths)
+    out["exact_set_accuracy"] = exact_set_accuracy(scores, truths)
+    out["calibration_ece"] = expected_calibration_error(scores, truths)
     out["mean_cf_queries"] = (
         sum(a.cf_queries for a in attributions) / len(attributions) if attributions else 0.0
     )
     out.update(update_quality(attributions, traces))
     out["expected_knowledge_damage"] = alpha_diag * (out["collateral_rate"] or 0.0)
+    out["diagnosis_ms_per_trace"] = float(diagnosis_ms) if diagnosis_ms is not None else None
     return out
 
 

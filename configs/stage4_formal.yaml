@@ -1,0 +1,34 @@
+schema_version: "0.3.0"
+environment:
+  horizon: 8
+  gamma: 1.0
+  p_hazard: 0.25
+learning:
+  alpha_low: 0.10
+  alpha_high: 0.10
+  alpha_diag: 0.10
+  epsilon_start: 0.30
+  epsilon_end: 0.05
+  epsilon_decay_fraction: 0.80
+attribution:
+  n_traces: 8000
+  n_train: 4000
+  seed_offset: 5000000
+gate:
+  noninferiority_margin: 0.02
+experiment:
+  name: v03_stage4_formal
+  seeds: 30
+  seed_base: 4400000
+  episodes: 5000
+  eval_every: 250
+  eval_episodes: 150
+  p_false: 0.40
+  arms:
+    - traditional
+    - positive_only
+    - direct_feedback
+    - random_correction
+    - sequence_rfl
+    - learned_rfl
+    - oracle_rfl
