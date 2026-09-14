@@ -36,21 +36,13 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 
 X_MAX = 3
-"""Corridor length, as the plan specifies (``x in {0..3}`` with ``H = 8``).
+"""Corridor length, as the plan specifies.
 
-Difficulty calibration attempts, recorded rather than erased:
-
-* ``X_MAX = 3`` -- baseline solves the task during warmup, first checkpoint is
-  already 1.0 -> ``CEILING_RISK``, no dynamic range.
-* ``X_MAX = 6`` -- baseline never learns it at this budget, final 0.005 ->
-  ``LEARNING_FAILURE``.
-
-Both are the plan's own preflight firing, and both were measured on the
-NoCorrection baseline alone, which is the only difficulty calibration the plan
-permits.  The plan's ratio of corridor length to horizon therefore admits no
-setting tested here that is both learnable and non-saturating.
-
-This is **not** the blocking issue, though.  See ``SCENE_FAULT_NOTE`` below.
+The blocking parameter turned out to be the horizon, not the corridor.  With
+``H = 8`` against a 4-step path there are 4-5 spare steps, so a delay-heavy
+policy is *also* optimal; the "correct action" is then not policy-independent,
+the Knowledge Set is empty or circular, and no induced damage can persist.  See
+``HORIZON`` below.
 """
 
 SCENE_FAULT_NOTE = """\
@@ -76,7 +68,19 @@ discriminate at any difficulty:
     anything.
 """
 LANES = 2
-HORIZON = 8
+HORIZON = 4
+"""Episode horizon, set so the long path has *zero* slack.
+
+The long path (lane differs from the plan) costs exactly ``X_MAX + 1 = 4``
+steps.  At ``H = 4`` no step can be wasted, so the correct action is uniquely
+determined at every state and ``WAIT`` is never free.  The plan suggests
+``H = 8`` with stress horizons 6 and 10; at that ratio the task admits delay
+policies, which is what made the Knowledge Set unestablishable.
+
+The short path (lane already matches the plan) still has one spare step, which
+is recorded rather than hidden: ``KI`` margins for those states are weaker, and
+the calibration script reports them separately.
+"""
 
 PLAN, ACT, ABSORB = 0, 1, 2
 PHASE_NAMES = ("PLAN", "ACT", "ABSORB")
