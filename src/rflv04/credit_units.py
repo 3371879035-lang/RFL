@@ -31,6 +31,19 @@ class Site:
     def key(self) -> tuple:
         return (self.unit, self.state, self.action)
 
+    @property
+    def write_key(self) -> tuple:
+        """The Q-table entry this site actually writes.
+
+        ``updates._write`` routes every non-PLAN unit to the *same* low-level
+        table, so ``DECISION`` and ``EXECUTION`` sites sharing a state and action
+        are two writes to one entry, not two independent edits.  ``key`` keeps
+        them distinct (the unit names differ); ``write_key`` collapses them onto
+        the entry they collide on, which is what collision detection needs.
+        """
+        bucket = "PLAN" if self.unit == "PLAN" else "LOW"
+        return (bucket, self.state, self.action)
+
 
 @dataclass
 class Credit:
@@ -47,6 +60,25 @@ class Credit:
                 out.append(s)
         self.sites = out
         return self
+
+    def collisions(self) -> list:
+        """Groups of sites that write the same Q entry with differing targets.
+
+        With a ``WholeProcess`` repair ``{unstick:t, exec:t}`` the oracle emits a
+        ``DECISION`` site and an ``EXECUTION`` site on the same step.  Both are
+        routed to ``q.low``, so they are successive relative writes to one entry.
+        The value that lands therefore depends on the order they are applied in.
+
+        This is a genuine modelling defect, not a cosmetic one, so it is counted
+        rather than hidden.  Determinism is restored separately by iterating the
+        oracle's primitives in sorted order, which makes the outcome canonical --
+        but a canonical coin flip is still a coin flip, and the count is reported
+        so the affected contrasts can be read with that in mind.
+        """
+        buckets: dict = {}
+        for s in self.sites:
+            buckets.setdefault(s.write_key, []).append(s)
+        return [g for g in buckets.values() if len(g) > 1]
 
 
 def _plan_state(trace) -> tuple:
@@ -96,7 +128,12 @@ def decision_oracle(trace, oracle_res) -> Credit:
     if not prims:
         prims = frozenset().union(*[r.primitives for r in oracle_res.sufficient]) \
             if oracle_res.sufficient else frozenset()
-    for prim in prims:
+    # `prims` is a frozenset of (str, int) tuples, so its iteration order follows
+    # string hashing and therefore PYTHONHASHSEED.  When the repair contains both
+    # a `unstick` and an `exec` primitive they resolve to a DECISION and an
+    # EXECUTION site on the same Q entry, and the order decides which write lands
+    # last.  Sorting removes the run-to-run dependence.
+    for prim in sorted(prims):
         if prim[0] == "plan":
             blamed.add("PLAN")
             sites.append(Site("PLAN", _plan_state(trace), trace.scene.plan))
@@ -122,7 +159,8 @@ def repair_oracle(trace, oracle_res, selected) -> Credit:
     prims = selected.primitives if selected is not None else frozenset()
     if not prims:
         return module_oracle(trace, oracle_res)
-    for prim in prims:
+    # Same frozenset-ordering hazard as `decision_oracle`; see the note there.
+    for prim in sorted(prims):
         if prim[0] == "plan":
             blamed.add("PLAN")
             sites.append(Site("PLAN", _plan_state(trace), trace.scene.plan))
