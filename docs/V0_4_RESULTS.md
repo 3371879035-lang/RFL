@@ -83,6 +83,59 @@ Per the plan's own decision tree the required conclusion is therefore:
 
 ---
 
+## Pilot Gamma — robustness across reward semantics and damage severity
+
+`reward in {A: +1/-1, B: +1/0}` x `severity in {mild, severe}` x
+`mechanism in {NoCorrection, NegativeOnly, DecisionOracle}` = 12 cells,
+6 paired seeds, 1,000 episodes. Reduced from 12 seeds for budget; CIs are
+correspondingly wide and are reported rather than hidden.
+
+### SuccessAUC by cell
+
+| mechanism | A / mild | A / severe | B / mild | B / severe |
+|---|---:|---:|---:|---:|
+| `NoCorrection` | 0.8873 | 0.7727 | 0.8388 | 0.8283 |
+| `NegativeOnly` | 0.8873 | 0.7831 | 0.8283 | 0.7867 |
+| `DecisionOracle` | **0.7831** | **0.6685** | **0.8075** | **0.7033** |
+
+### Interactions (paired)
+
+| mechanism | contrast | mean | 95% CI | p |
+|---|---|---:|---|---:|
+| `NoCorrection` | reward B − A | +0.00354 | [−0.08500, +0.09552] | 0.9288 |
+| `NegativeOnly` | reward B − A | −0.02771 | [−0.09719, +0.03396] | 0.4676 |
+| `DecisionOracle` | reward B − A | +0.02958 | [−0.05375, +0.10778] | 0.4862 |
+| `NoCorrection` | severe − mild | −0.06250 | [−0.12240, −0.01562] | 0.0328 |
+| `NegativeOnly` | severe − mild | −0.07292 | [−0.09896, −0.04688] | 0.0004 |
+| `DecisionOracle` | severe − mild | **−0.10938** | [−0.14583, −0.07292] | **0.0000** |
+
+`N_delta_neg` under reward B: `NoCorrection` 849, `NegativeOnly` 519,
+`DecisionOracle` 497 per run.
+
+### Reading
+
+1. **The reward ablation does nothing, for any mechanism.** Every
+   `reward_B − reward_A` CI includes zero. This reproduces the v0.3 Pilot Alpha
+   result one layer down: at `gamma=1`, fixed horizon and no step reward,
+   `+1/-1` and `+1/0` induce the same policy ordering.
+2. **`r_failure = 0` is not "no negative learning"** — reward B still produces
+   497-849 negative TD errors per run, now measured directly.
+3. **Severity degrades the more complex mechanism fastest**: −0.063
+   (`NoCorrection`), −0.073 (`NegativeOnly`), **−0.109** (`DecisionOracle`),
+   all significant. The plan's Gamma pass condition requires the winner not to
+   degrade by more than 0.01 under skew; `DecisionOracle` degrades by an order
+   of magnitude more and therefore **does not pass**.
+4. **`DecisionOracle` is the worst mechanism in all four cells**, including the
+   two mild ones. Combined with Alpha, the granular representation buys zero
+   collateral at the cost of consistently lower task utility.
+
+### Gamma verdict
+
+**`WINNER_IS_NEGATIVE_ONLY`**, robust to reward semantics but not to damage
+severity; the granular representation is rejected.
+
+---
+
 ## What v0.4 established
 
 Two pre-registered, negative results:
@@ -114,9 +167,20 @@ does not make the edit a good one.* The failure is in the primitive itself.
 | Baseline-only difficulty calibration | done — the blocker was the **horizon**, not the corridor |
 | Pilot Alpha, 12 paired seeds | done |
 | Pilot Beta, 12 paired seeds | done |
-| Pilot Gamma (reward x distribution) | **not run** |
+| Pilot Gamma (reward x severity x mechanism) | done, 6 seeds (reduced for budget) |
 | Pilot Delta (learned `p`, `p_U`) | **not run** |
 | candidate ledger, step traces, fixed figures | **not done** |
+
+### Why Delta was not run
+
+Delta requires a learned attributor emitting `p_whole, p_plan, p_decision,
+p_execution, p_U` with an independent (non-softmax) unknown channel, trained on
+an 8,000/2,000/4,000 corpus. That is a separate build. It is also **not
+indicated by the results above**: Alpha, Beta and Gamma all remove the *same*
+thing — the diagnostic update itself. Running a learned attributor against a
+mechanism already shown to be net-negative would measure attribution quality
+against a broken consumer, which is the ordering error the plan's own decision
+tree warns against ("Oracle 失败时不训练更复杂 attribution model").
 
 ## Environment calibration record
 

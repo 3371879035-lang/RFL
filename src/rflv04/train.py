@@ -116,6 +116,7 @@ class TrainResult:
     clippings: int = 0
     wall_s: float = 0.0
     q_hash: str = ""
+    n_negative_td: int = 0
 
 
 def _sample_kind(rng, dist: dict) -> str:
@@ -187,7 +188,14 @@ def agent_rollout(q, scene: Scene, *, epsilon: float, rng) -> Trace:
 
 
 def _task_update(q, trace: Trace, *, alpha_low: float, alpha_high: float,
-                 reward_mode: str) -> None:
+                 reward_mode: str) -> int:
+    """Apply task learning; return the number of negative TD errors.
+
+    The count is reported so that `r_failure = 0` is never described as "no
+    negative learning" -- it removes the explicit penalty, not the downward
+    value updates.
+    """
+    neg = 0
     r = trace.return_value if reward_mode == "A" else (
         1.0 if trace.success else 0.0)
     s0 = trace.steps[0]
@@ -208,7 +216,11 @@ def _task_update(q, trace: Trace, *, alpha_low: float, alpha_high: float,
                        step.t + 1)
             nrow = q.low.get(nxt_key)
             target = 0.0 + (max(nrow) if nrow else 0.0)
+        before = q.low_get(state, step.realized)
+        if alpha_low * (target - before) < 0.0:
+            neg += 1
         q.low_update(state, step.realized, target, alpha_low)
+    return neg
 
 
 def evaluate(q, cfg: dict, *, seed: int, n: int) -> float:
@@ -246,6 +258,7 @@ def train(cfg: dict, *, seed: int, arm: str) -> TrainResult:
     rng = np.random.default_rng((int(seed) + 4_100_000) % (2**32 - 1))
     q = QTables(n_actions=6, options=(0, 1))
     counts: dict = {}
+    neg_td = 0
 
     # ---- phase 1: warmup on clean scenes -------------------------------
     for ep in range(warmup):
@@ -253,8 +266,8 @@ def train(cfg: dict, *, seed: int, arm: str) -> TrainResult:
         scene = Scene(f"W{ep}", g, g, horizon=horizon)
         trace = agent_rollout(q, scene, epsilon=linear_epsilon(
             ep, start=0.30, end=0.05, decay_episodes=decay), rng=rng)
-        _task_update(q, trace, alpha_low=alpha_low, alpha_high=alpha_high,
-                     reward_mode=reward_mode)
+        neg_td += _task_update(q, trace, alpha_low=alpha_low,
+                               alpha_high=alpha_high, reward_mode=reward_mode)
 
     checkpoint = q.copy()
     ks = build_knowledge_set(q, theta=float(exp.get("knowledge_theta", 0.60)),
@@ -305,8 +318,8 @@ def train(cfg: dict, *, seed: int, arm: str) -> TrainResult:
 
         eps = linear_epsilon(warmup + ep, start=0.30, end=0.05, decay_episodes=decay)
         trace = agent_rollout(q, scene, epsilon=eps, rng=rng)
-        _task_update(q, trace, alpha_low=alpha_low, alpha_high=alpha_high,
-                     reward_mode=reward_mode)
+        neg_td += _task_update(q, trace, alpha_low=alpha_low,
+                               alpha_high=alpha_high, reward_mode=reward_mode)
 
         if trace.success:
             counts["clean"] = counts.get("clean", 0) + 1
@@ -386,4 +399,5 @@ def train(cfg: dict, *, seed: int, arm: str) -> TrainResult:
         collateral=collateral / max(1, sites_touched), corrections=corrections,
         sites_touched=sites_touched,
         clippings=clippings, wall_s=time.perf_counter() - t0, q_hash=q.deep_hash(),
+        n_negative_td=int(neg_td),
     )
