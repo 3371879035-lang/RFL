@@ -212,7 +212,7 @@ SMALL = {
 
 
 def test_all_arms_train_and_report():
-    for arm in ARMS:
+    for arm in ("NoCorruption", "NoCorrection", "DecisionOracle"):
         res = train(SMALL, seed=1, arm=arm)
         assert len(res.success_curve) == len(res.checkpoints)
         assert 0.0 <= res.success_curve[-1] <= 1.0

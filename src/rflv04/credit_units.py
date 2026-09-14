@@ -141,6 +141,29 @@ def repair_oracle(trace, oracle_res, selected) -> Credit:
     return Credit("RepairOracle", blamed, sites).dedup()
 
 
+def alternative_sites(trace, oracle_res) -> list:
+    """The verified *alternative* action at each blamed decision site.
+
+    Pilot Beta asks whether raising a counterfactually verified replacement
+    beats merely pushing the factual bad action down.  That needs the site of
+    the bad choice plus the action that should have been taken there.
+    """
+    out: list = []
+    for step in trace.steps:
+        if step.state[4] != ACT or step.intent < 0:
+            continue
+        ref = reference_action(step.state[1], step.state[2], step.state[3])
+        if step.realized != ref:
+            out.append(Site("DECISION", _q_key(step), ref, is_factual=False))
+    if out:
+        return out
+    # A plan-level failure: the alternative is the plan the context calls for.
+    if oracle_res.family in ("Plan", "WholeProcess"):
+        s = trace.steps[0].state
+        return [Site("PLAN", (s[0], s[1], s[2]), trace.scene.g, is_factual=False)]
+    return []
+
+
 REPRESENTATIONS = {
     "ModuleOracle": module_oracle,
     "DecisionOracle": decision_oracle,

@@ -24,7 +24,13 @@ import numpy as np
 
 from rflnext.qtables import QTables, linear_epsilon
 
-from .credit_units import REPRESENTATIONS, responsible_units, selected_repair
+from .credit_units import (
+    REPRESENTATIONS,
+    alternative_sites,
+    decision_oracle,
+    responsible_units,
+    selected_repair,
+)
 from .env import (
     ABSORB,
     ACT,
@@ -41,6 +47,7 @@ from .env import (
     Trace,
     apply_action,
     reference_action,
+    rollout_intervened,
 )
 from .knowledge import build_knowledge_set, kd_innocent, wmd
 from .oracle import classify, oracle_repair_set, scene_from_trace
@@ -52,7 +59,19 @@ ARMS = (
     "ModuleOracle",
     "DecisionOracle",
     "RepairOracle",
+    # --- Pilot Beta: update-target semantics, all on the winning representation
+    "NegativeOnly",
+    "PositiveAlternative",
+    "Contrastive",
+    "CFRevalue",
 )
+TARGET_ARMS = ("NegativeOnly", "PositiveAlternative", "Contrastive", "CFRevalue")
+BETA_TARGET_MODE = {
+    "NegativeOnly": "negative_only",
+    "PositiveAlternative": "positive_alternative_only",
+    "Contrastive": "contrastive",
+}
+FAMILIES = ("Plan", "Decision", "Execution", "WholeProcess", "Unknown")
 
 CALIBRATION_NOTE = """\
 Measured state of Pilot Alpha after the fault injector was repaired:
@@ -296,6 +315,7 @@ def train(cfg: dict, *, seed: int, arm: str) -> TrainResult:
             continue
 
         res = oracle_repair_set(scene_from_trace(trace), n_samples=8)
+        source_trace = trace
         counts[res.family] = counts.get(res.family, 0) + 1
         if arm in ("NoCorrection", "NoCorruption") or not res.sufficient:
             if (ep + 1) % eval_every == 0:
@@ -303,14 +323,48 @@ def train(cfg: dict, *, seed: int, arm: str) -> TrainResult:
             continue
 
         sel = selected_repair(trace, res)
-        credit = REPRESENTATIONS[arm](trace, res) if arm != "RepairOracle" else \
-            REPRESENTATIONS[arm](trace, res, sel)
+        if arm in TARGET_ARMS:
+            # Pilot Beta: granularity is fixed at the winner (DecisionOracle),
+            # and only the update TARGET varies.
+            credit = decision_oracle(source_trace, res)
+            alts = alternative_sites(source_trace, res)
+        elif arm == "RepairOracle":
+            credit = REPRESENTATIONS[arm](source_trace, res, sel)
+            alts = []
+        else:
+            credit = REPRESENTATIONS[arm](source_trace, res)
+            alts = []
 
         before = q.copy()
-        targets = {}
-        for site in credit.sites:
-            targets[site.key] = -1.0 if reward_mode == "A" else 0.0
-        rec = MODES["negative_only"](q, credit.sites, targets, alpha=alpha_diag)
+        fail_v = -1.0 if reward_mode == "A" else 0.0
+        targets = {site.key: fail_v for site in credit.sites}
+        alt_targets = {site.key: 1.0 for site in alts}
+        if arm == "CFRevalue":
+            # Target comes from an actual counterfactual re-execution under the
+            # same latent scene, not from a fixed constant.
+            cf_return = rollout_intervened(
+                source_trace.scene,
+                sel.primitives if sel is not None else frozenset(),
+            ).return_value
+            targets = {site.key: cf_return for site in credit.sites}
+            alt_targets = {site.key: cf_return for site in alts}
+
+        if arm == "CFRevalue":
+            rec = MODES["negative_only"](q, credit.sites, targets, alpha=alpha_diag)
+        elif arm in TARGET_ARMS:
+            mode = BETA_TARGET_MODE[arm]
+            merged = {**targets, **alt_targets}
+            if mode == "contrastive":
+                rec = MODES["contrastive"](q, credit.sites, alts, merged,
+                                           alpha=alpha_diag)
+            elif mode == "positive_alternative_only":
+                rec = MODES["positive_alternative_only"](q, alts, merged,
+                                                         alpha=alpha_diag)
+            else:
+                rec = MODES["negative_only"](q, credit.sites, merged,
+                                             alpha=alpha_diag)
+        else:
+            rec = MODES["negative_only"](q, credit.sites, targets, alpha=alpha_diag)
         corrections += 1
         sites_touched += len(rec.applied)
         clippings += sum(1 for u in rec.applied if u.clipped)
