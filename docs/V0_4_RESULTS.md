@@ -1,138 +1,133 @@
 # RFL-CausalChase v0.4 — Results
 
-Pilot scale, as the plan specifies: **12 paired seeds**, 300 warmup + 2,000
-training episodes, 200 greedy evaluation episodes per checkpoint, reward
-`+1/-1`, Oracle failure truth, balanced scene distribution.
+**Scale: 100 paired seeds** per pilot (the 12-seed runs are retained under
+`outputs/v04_*` and their discrepancies are recorded below — three conclusions
+changed when the seed count went up, which is itself a result).
+
+300 warmup + 2,000 training episodes, 100 greedy evaluation episodes per
+checkpoint, reward `+1/-1`, Oracle failure truth.
 
 ---
 
-## Pilot Alpha — how coarse should a credit unit be?
-
-Fixed: Oracle truth, negative-only update. Varied: credit granularity.
+## Pilot Alpha — how coarse should a credit unit be? (100 seeds)
 
 | arm | SuccessAUC | final | WMD | KD_innocent | collateral | sites touched |
 |---|---:|---:|---:|---:|---:|---:|
-| `NoCorruption` (clean ceiling) | 0.9922 | 1.0000 | 0.00000 | 0.00000 | 0.0000 | 0 |
-| `NoCorrection` (damaged, not repaired) | 0.9358 | 1.0000 | 0.00000 | 0.00000 | 0.0000 | 0 |
-| `ModuleOracle` | 0.8915 | 0.9583 | 0.02336 | 0.00056 | **0.4425** | 4,536 |
-| `DecisionOracle` | 0.8759 | 0.9583 | **0.07504** | 0.00173 | **0.0000** | 1,765 |
-| `RepairOracle` | 0.8759 | 0.9583 | **0.07504** | 0.00173 | **0.0000** | 1,765 |
+| `NoCorruption` (clean ceiling) | 0.9950 | 1.0000 | 0.00000 | 0.00000 | 0.0000 | 0 |
+| `NoCorrection` (damaged, not repaired) | 0.9417 | 1.0000 | 0.00000 | 0.00000 | 0.0000 | 0 |
+| `ModuleOracle` | 0.8709 | 0.9450 | 0.04471 | 0.00082 | **0.4377** | 4,610 |
+| `DecisionOracle` | 0.8764 | 0.9350 | **0.07067** | 0.00295 | **0.0000** | 1,703 |
+| `RepairOracle` | 0.8764 | 0.9350 | **0.07067** | 0.00295 | **0.0000** | 1,703 |
 
-**Verdict: `INCONCLUSIVE_PRECISION`** — the paired ΔAUC CI for
-`DecisionOracle − ModuleOracle` is **[−0.0938, +0.0911]**, width 0.185, against
-the plan's 0.05 threshold. At 12 seeds the contrast is not resolved either way.
+Paired ΔAUC, `DecisionOracle − ModuleOracle`: **+0.00550**, CI
+**[−0.02659, +0.03899]**, width 0.0656, p = 0.748, **PoI = 0.625**.
 
-What *is* resolved, and does not depend on the CI:
+**Verdict: `INCONCLUSIVE_PRECISION`** — the CI is still marginally wider than
+the plan's 0.05 threshold, so the utility contrast is unresolved.
 
-1. **Granularity works on exactly what it targets.** Decision and Repair reach
-   **collateral = 0.0000** against Module's 0.4425, with **2.6x fewer touched
-   sites** (1,765 vs 4,536). The plan's `H_D` prediction about collateral holds.
-2. **But it does not convert.** Within-module damage is **2.2x higher**
-   (0.0750 vs 0.0234, `WMD_rel = −2.212`), and AUC is numerically *lower* than
-   both Module and no-correction.
+What is resolved and does not depend on the CI:
 
-Preflight: `ceiling_risk=True` (`NoCorruption` = 0.9922). Even the clean ceiling
-sits at 0.99, so the remaining headroom is small; the run is recorded as
-diagnostic rather than confirmatory.
+1. **Granularity works on exactly what it targets.** Collateral **0.4377 →
+   0.0000**, with **2.7x fewer touched sites** (4,610 → 1,703).
+2. **It is utility-neutral, not harmful.** ΔAUC **+0.0055** with the CI
+   straddling zero and PoI 0.625.
+3. **It costs within-module damage**: WMD **0.0447 → 0.0707 (+58%)**.
+
+> **Correction to the 12-seed run.** At 12 seeds the ΔAUC point estimate was
+> **−0.0156** and read as "granularity does not convert, and if anything
+> hurts". At 100 seeds it is **+0.0055**. The sign flipped: the 12-seed
+> estimate was noise. Only the collateral and WMD effects were stable across
+> both.
 
 ---
 
-## Pilot Beta — what should the update target be?
+## Pilot Beta — what should the update target be? (100 seeds)
 
 Granularity fixed at the Alpha winner (`DecisionOracle`). Only the target varies.
 
 | arm | SuccessAUC | final | WMD | collateral | sites |
 |---|---:|---:|---:|---:|---:|
-| `NoCorrection` | 0.9358 | 1.0000 | 0.00000 | 0.0000 | 0 |
-| **`NegativeOnly`** | **0.9410** | **1.0000** | **0.02002** | **0.0000** | 1,707 |
-| `PositiveAlternative` | 0.9019 | 0.9583 | 0.12954 | 0.0199 | 2,240 |
-| `Contrastive` | 0.9097 | 0.9167 | 0.11758 | 0.0054 | 3,731 |
-| `CFRevalue` | **0.8446** | 0.9583 | 0.10002 | 0.0000 | 1,599 |
+| `NoCorrection` | 0.9417 | 1.0000 | 0.00000 | 0.0000 | 0 |
+| **`NegativeOnly`** | **0.9473** | **1.0000** | **0.02702** | **0.0000** | 1,715 |
+| `PositiveAlternative` | 0.9301 | 0.9950 | 0.06167 | 0.0249 | 2,216 |
+| `Contrastive` | 0.9351 | 0.9550 | 0.06627 | 0.0055 | 3,762 |
+| `CFRevalue` | **0.8595** | 0.9550 | **0.27435** | 0.0000 | 1,558 |
 
-Primary pre-registered contrast, `Contrastive − NegativeOnly`:
+Paired contrasts, all **vs `NegativeOnly`**:
 
-| statistic | value |
-|---|---|
-| ΔAUC mean | **−0.03125** |
-| 95% paired CI | **[−0.05729, −0.00781]** |
-| CI width | 0.0495 |
-| sign-flip p | 0.1263 |
-| Wilcoxon p | 0.125 |
-| probability of improvement | **0.000** |
+| arm | ΔAUC | 95% CI | p | PoI | ΔWMD |
+|---|---:|---|---:|---:|---:|
+| `NoCorrection` | −0.00562 | [−0.01375, +0.00000] | 0.161 | 0.011 | −0.02702 |
+| `PositiveAlternative` | **−0.01719** | [−0.02469, −0.01063] | 0.0000 | 0.000 | +0.03465 |
+| `Contrastive` | **−0.01219** | [−0.01781, −0.00688] | 0.0000 | 0.000 | +0.03924 |
+| `CFRevalue` | **−0.08781** | [−0.12469, −0.05594] | 0.0000 | 0.000 | **+0.24733** |
 
 **Verdict: `PRIMARY_NOT_SUPPORTED`.** The plan's hypothesis
-`H_B: (bad↓ + good↑) > (bad↓ only)` is **refuted**: adding positive
-reinforcement of the verified alternative is *worse* on every axis — AUC down
-0.031, WMD **6.5x higher** (0.118 vs 0.020), and 2.2x more sites touched.
-`NegativeOnly` alone is the best arm, and the only one that beats
-`NoCorrection` on AUC.
+`H_B: (bad↓ + good↑) > (bad↓ only)` is **refuted with a resolved CI**: the
+primary contrast `Contrastive − NegativeOnly` is **−0.01219**, CI width 0.0109,
+sign-flip p = 0.0000, Wilcoxon p = 1.3e−4, **PoI = 0.000**.
 
-### The plan's strong falsification condition fires
+`NegativeOnly` is the best arm on **every** axis:
 
-The plan states:
+* highest AUC (0.9473) and the only correction arm that is non-inferior to
+  `NoCorrection` (ΔAUC −0.0056, CI includes 0);
+* lowest WMD (0.0270) — 2.3x below `PositiveAlternative`, 2.5x below
+  `Contrastive`, **10x below `CFRevalue`**;
+* zero collateral, with fewer edits than any arm except `CFRevalue`.
 
-> `OracleRepair + CFRevalue <= NoCorrection` → stop the local Q-correction line.
+### The plan's strong falsification condition fires even harder
 
-Here `CFRevalue` = **0.8446** against `NoCorrection` = **0.9358**. The strongest
-repair — Oracle site, Oracle target, counterfactual-valued — does worse than
-making no update at all.
+| | SuccessAUC |
+|---|---:|
+| `CFRevalue` (Oracle site + Oracle target + counterfactual value) | **0.8595** |
+| `NoCorrection` | **0.9417** |
 
-Per the plan's own decision tree the required conclusion is therefore:
+Δ = **−0.08781**, CI [−0.12469, −0.05594]. The strongest repair available
+performs far *worse* than making no update at all. Per the plan's own decision
+tree the required conclusion is:
 
 > **直接修补 Q-entry 不是合适的 update primitive.**
 
 ---
 
-## Pilot Gamma — robustness across reward semantics and damage severity
-
-`reward in {A: +1/-1, B: +1/0}` x `severity in {mild, severe}` x
-`mechanism in {NoCorrection, NegativeOnly, DecisionOracle}` = 12 cells,
-6 paired seeds, 1,000 episodes. Reduced from 12 seeds for budget; CIs are
-correspondingly wide and are reported rather than hidden.
-
-### SuccessAUC by cell
+## Pilot Gamma — robustness (100 seeds, 12 cells)
 
 | mechanism | A / mild | A / severe | B / mild | B / severe |
 |---|---:|---:|---:|---:|
-| `NoCorrection` | 0.8873 | 0.7727 | 0.8388 | 0.8283 |
-| `NegativeOnly` | 0.8873 | 0.7831 | 0.8283 | 0.7867 |
-| `DecisionOracle` | **0.7831** | **0.6685** | **0.8075** | **0.7033** |
+| `NoCorrection` | 0.8849 | 0.8080 | 0.8522 | 0.7754 |
+| **`NegativeOnly`** | **0.8973** | **0.8305** | **0.8622** | **0.8104** |
+| `DecisionOracle` | 0.8306 | 0.7401 | 0.8332 | 0.7570 |
 
-### Interactions (paired)
+Paired interactions:
 
 | mechanism | contrast | mean | 95% CI | p |
 |---|---|---:|---|---:|
-| `NoCorrection` | reward B − A | +0.00354 | [−0.08500, +0.09552] | 0.9288 |
-| `NegativeOnly` | reward B − A | −0.02771 | [−0.09719, +0.03396] | 0.4676 |
-| `DecisionOracle` | reward B − A | +0.02958 | [−0.05375, +0.10778] | 0.4862 |
-| `NoCorrection` | severe − mild | −0.06250 | [−0.12240, −0.01562] | 0.0328 |
-| `NegativeOnly` | severe − mild | −0.07292 | [−0.09896, −0.04688] | 0.0004 |
-| `DecisionOracle` | severe − mild | **−0.10938** | [−0.14583, −0.07292] | **0.0000** |
+| `NoCorrection` | reward B − A | **−0.03262** | [−0.04794, −0.01718] | 0.0000 |
+| `NegativeOnly` | reward B − A | **−0.02760** | [−0.04142, −0.01460] | 0.0000 |
+| `DecisionOracle` | reward B − A | +0.00976 | [−0.00750, +0.02685] | 0.2854 |
+| `NoCorrection` | severe − mild | −0.07681 | [−0.08867, −0.06537] | 0.0000 |
+| `NegativeOnly` | severe − mild | −0.05934 | [−0.06842, −0.05045] | 0.0000 |
+| `DecisionOracle` | severe − mild | −0.08338 | [−0.09917, −0.06731] | 0.0000 |
 
-`N_delta_neg` under reward B: `NoCorrection` 849, `NegativeOnly` 519,
-`DecisionOracle` 497 per run.
+`N_delta_neg` under reward B: `NoCorrection` 882, `NegativeOnly` 561,
+`DecisionOracle` 520.
 
 ### Reading
 
-1. **The reward ablation does nothing, for any mechanism.** Every
-   `reward_B − reward_A` CI includes zero. This reproduces the v0.3 Pilot Alpha
-   result one layer down: at `gamma=1`, fixed horizon and no step reward,
-   `+1/-1` and `+1/0` induce the same policy ordering.
-2. **`r_failure = 0` is not "no negative learning"** — reward B still produces
-   497-849 negative TD errors per run, now measured directly.
-3. **Severity degrades the more complex mechanism fastest**: −0.063
-   (`NoCorrection`), −0.073 (`NegativeOnly`), **−0.109** (`DecisionOracle`),
-   all significant. The plan's Gamma pass condition requires the winner not to
-   degrade by more than 0.01 under skew; `DecisionOracle` degrades by an order
-   of magnitude more and therefore **does not pass**.
-4. **`DecisionOracle` is the worst mechanism in all four cells**, including the
-   two mild ones. Combined with Alpha, the granular representation buys zero
-   collateral at the cost of consistently lower task utility.
+1. **`NegativeOnly` wins all four cells**, and in `B/severe` beats
+   `NoCorrection` by +0.035.
+2. **The reward ablation is NOT null at 100 seeds.** Removing the explicit
+   failure penalty costs **−0.033** (`NoCorrection`) and **−0.028**
+   (`NegativeOnly`), both p = 0.0000.
+3. **`r_failure = 0` is not "no negative learning"** — reward B still produces
+   520-882 negative TD errors per run, now measured directly.
+4. **Severity hurts the complex mechanism most**: −0.059 (`NegativeOnly`) vs
+   −0.083 (`DecisionOracle`).
 
-### Gamma verdict
-
-**`WINNER_IS_NEGATIVE_ONLY`**, robust to reward semantics but not to damage
-severity; the granular representation is rejected.
+> **Correction to the 6-seed run.** At 6 seeds every `reward B − A` CI included
+> zero and the conclusion was "the reward ablation does nothing, reproducing
+> v0.3". At 100 seeds it is **significantly negative for two of three
+> mechanisms**. The 6-seed null was underpowered, not a finding.
 
 ---
 
