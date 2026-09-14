@@ -102,8 +102,11 @@ def run_episode(
     terminal = TIMEOUT
     steps = 0
     fail_reward = _failure_reward(reward_mode)
+    # Take the horizon from the tape, not from the module constant, so a
+    # configured horizon other than the default cannot index past the tape.
+    span = int(getattr(tape, "horizon", HORIZON))
 
-    for t in range(1, HORIZON + 1):
+    for t in range(1, span + 1):
         # The timestep is part of the low-level state.  With gamma=1 and no
         # step reward, a state without t admits a self-loop action whose TD
         # target is `0 + max_a Q(s,a)` -- its own state value -- so the
@@ -123,7 +126,7 @@ def run_episode(
             reward, terminal, done = REWARD_SUCCESS, SUCCESS, True
         elif kind is not None:
             reward, terminal, done = fail_reward, kind, True
-        elif t == HORIZON:
+        elif t == span:
             # Horizon expiry is a failure with exactly the failure reward:
             # no extra hidden timeout value.
             reward, terminal, done = fail_reward, TIMEOUT, True

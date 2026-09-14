@@ -536,6 +536,94 @@ so the gate could never pass. Utility is now judged against `traditional` and
 knowledge damage against `direct_feedback`, the arm that actually acts on the
 label. The first run's numbers were unchanged; only the comparison was fixed.
 
+---
+
+## Stage 5 — difficulty sweep: does correct routing ever convert to utility?
+
+Every earlier stage located its effect in credit or knowledge and never in policy
+utility. The research plan's decision tree anticipates exactly this ("knowledge
+protection improves but return does not") and directs a check of whether the
+benchmark is too easy, i.e. whether ordinary RL repairs the damage too quickly.
+
+This sweeps the two things that govern repair speed and task slack — `horizon`
+(5 is exactly enough for the longer lane: zero slack) and `alpha` (how fast
+ordinary RL re-learns a damaged value) — and asks at each setting whether the
+paired task-AUC difference between Oracle selective correction and Traditional
+ever separates from zero.
+
+### Provenance
+
+| item | value |
+|---|---|
+| config | `configs/stage5.yaml` |
+| design | 8 paired seeds (4500000..4500007), 2,000 episodes per arm per setting, 6 settings |
+| arms | `traditional` vs `traditional_oracle` |
+| artifacts | `outputs/v03_stage5/{config.yaml,summary.json}` |
+| process exit | **0** — but read the sign |
+
+### Results
+
+| setting | horizon | alpha | traditional AUC | Oracle AUC | ΔAUC | 95% CI | separates | Oracle KD |
+|---|---:|---:|---:|---:|---:|---|---:|---:|
+| `base_h8_a10` | 8 | 0.10 | 0.7051 | 0.7112 | +0.00615 | [+0.00000, +0.01844] | no | 0.00000 |
+| `tight_h6_a10` | 6 | 0.10 | 0.6915 | 0.7035 | +0.01198 | [−0.00260, +0.02782] | no | 0.00000 |
+| `tight_h5_a10` | 5 | 0.10 | 0.6642 | 0.6436 | −0.02052 | [−0.05823, +0.02042] | no | 0.00000 |
+| `base_h8_a03` | 8 | 0.03 | 0.7112 | 0.7112 | **+0.00000** | [+0.00000, +0.00000] | no | 0.00000 |
+| **`tight_h5_a03`** | **5** | **0.03** | **0.6576** | **0.5727** | **−0.08490** | **[−0.10188, −0.06823]** | **yes** | 0.00000 |
+| `base_h8_a01` | 8 | 0.01 | 0.7112 | 0.7055 | −0.00573 | [−0.01719, +0.00000] | no | 0.00000 |
+
+### Verdict
+
+**`CORRECT_ROUTING_NEVER_HELPS_AND_STRESS_REVERSES_IT`**
+
+### Reading
+
+1. **Nowhere does correct responsibility routing improve task performance.**
+   Five of six settings fail to separate. The one that does separates the wrong
+   way: at a tight horizon with slow learning, Oracle selective correction is
+   **significantly worse** — ΔAUC **−0.08490**, CI [−0.10188, −0.06823].
+
+2. **The knowledge-protection benefit is real but never converts.** Oracle's
+   knowledge damage is **exactly 0.00000** in every setting, as established in
+   Pilot Beta — and it buys nothing on the task. The channel from "protect
+   knowledge" to "behave better" is empty in this environment family.
+
+3. **Why the correction hurts, and why `KnowledgeDamage` cannot see it.** The
+   diagnostic update only ever *subtracts*. Oracle never touches the innocent
+   module, so its KD is zero — but in an `L_error` it pushes down `Q_L` at the
+   last visited `(s, a)`, which is not necessarily a wrong action. That damages
+   the *responsible* module's own correct sub-knowledge, which the
+   innocent-module KD metric is blind to by construction. Under slow learning
+   (`alpha = 0.03`) the accumulated downward pressure cannot be repaired, and at
+   `horizon = 5` there is no slack to absorb it.
+
+4. **Repair speed is the moderator, and it confirms the plan's suspicion.** At
+   `alpha = 0.10` the same tight task shows no harm (−0.021, CI includes 0)
+   because ordinary RL repairs the damage between checkpoints. Slow the repair
+   by 3x and the identical correction becomes significantly harmful. The
+   benchmark was not "too easy" in the sense of being solved; it was too *fast
+   at healing*, exactly the branch the decision tree flagged.
+
+5. **Consequence for the programme.** The plan's precondition for the extension
+   mechanisms — "ordinary RL repairs the error quickly" — is now confirmed as
+   the binding constraint, and the extensions in the frozen pool (selective
+   replay, SSP-BO, active evidence) all address *attribution cost*, not the
+   repair channel. None of them is indicated by this result. What this result
+   indicates is that the **diagnostic update rule itself** is the problem: a
+   correlate that only ever subtracts from a module cannot be rescued by making
+   attribution more accurate.
+
+### Defect found and fixed during this sweep
+
+`run_episode` iterated over the module constant `HORIZON = 8` instead of
+`tape.horizon`, so a configured horizon other than 8 indexed past the end of the
+tape and crashed. Every earlier experiment used horizon 8, which is why it never
+surfaced, and **no earlier result is affected**. Fixed by taking the span from
+the tape, and locked with
+`test_horizon_comes_from_the_tape_not_the_module_constant` plus a
+short-horizon reachability test.
+
+
 
 
 

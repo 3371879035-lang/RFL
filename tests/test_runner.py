@@ -120,3 +120,26 @@ def test_low_level_state_includes_the_timestep():
     assert states, "episode recorded no low-level decisions"
     assert all(len(s) == 4 for s in states), f"state is not (x, y, option, t): {states[0]}"
     assert [s[3] for s in states] == list(range(1, len(states) + 1))
+
+
+def test_horizon_comes_from_the_tape_not_the_module_constant():
+    """Regression: iterating over the module HORIZON while the tape was built
+    for a shorter horizon indexes past the end of the tape."""
+    for span in (4, 5, 6, 7, 9, 12):
+        tape = _tape(seed=2, episodes=1, horizon=span)
+        rec = run_episode(episode=0, tape=tape, q=QTables(n_actions=4), epsilon=0.0,
+                          reward_mode="A", alpha_low=0.1, alpha_high=0.1)
+        assert rec.steps <= span
+        assert [s[3] for s, _ in rec.visited_low] == list(range(1, rec.steps + 1))
+
+
+def test_short_horizon_still_allows_the_long_lane_with_full_slack():
+    """At horizon 5 the DOWN-then-RIGHT lane is exactly reachable and no more."""
+    span = 5
+    tape = _tape(seed=5, episodes=4, horizon=span, p_hazard=0.0)
+    for ep in range(4):
+        gl = int(tape.goal_lane[ep])
+        q = _route_q(gl, hazard=0)
+        rec = run_episode(episode=ep, tape=tape, q=q, epsilon=0.0, reward_mode="A",
+                          alpha_low=0.0, alpha_high=0.0)
+        assert rec.terminal == SUCCESS, (ep, gl, rec.steps)

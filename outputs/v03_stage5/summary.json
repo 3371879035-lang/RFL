@@ -1,0 +1,573 @@
+{
+  "schema_version": "0.3.0",
+  "experiment": "v03_stage5",
+  "git_commit": "66dc15c1cf042fe9f9d71ac31f70bdb8d9d55da8",
+  "config": {
+    "schema_version": "0.3.0",
+    "environment": {
+      "horizon": 8,
+      "gamma": 1.0,
+      "width": 5,
+      "lanes": 2,
+      "p_hazard": 0.25
+    },
+    "learning": {
+      "alpha_low": 0.1,
+      "alpha_high": 0.1,
+      "alpha_diag": 0.1,
+      "epsilon_start": 0.3,
+      "epsilon_end": 0.05,
+      "epsilon_decay_fraction": 0.8
+    },
+    "gate": {
+      "min_auc_gap": 0.0005,
+      "min_family_events": 300,
+      "oracle_advantage_kd": 0.005
+    },
+    "experiment": {
+      "name": "v03_stage5",
+      "seeds": 8,
+      "seed_base": 4500000,
+      "episodes": 2000,
+      "eval_every": 250,
+      "eval_episodes": 150,
+      "conditions": [
+        "traditional",
+        "traditional_oracle"
+      ]
+    }
+  },
+  "settings": {
+    "base_h8_a10": {
+      "setting": {
+        "name": "base_h8_a10",
+        "horizon": 8,
+        "alpha": 0.1
+      },
+      "contrast": {
+        "d_auc_mean": 0.0061458333333333365,
+        "d_auc_ci": [
+          0.0,
+          0.01843750000000001
+        ],
+        "cohens_dz": 0.3535533905932738,
+        "p_sign_flip": 1.0,
+        "separates_from_zero": false,
+        "traditional_auc": 0.7051041666666666,
+        "oracle_auc": 0.7112499999999999,
+        "traditional_final": 0.755,
+        "oracle_final": 0.755,
+        "oracle_kd": 0.0,
+        "oracle_diagnoses": 715.0,
+        "traditional_diagnoses": 940.875
+      }
+    },
+    "tight_h6_a10": {
+      "setting": {
+        "name": "tight_h6_a10",
+        "horizon": 6,
+        "alpha": 0.1
+      },
+      "contrast": {
+        "d_auc_mean": 0.011979166666666652,
+        "d_auc_ci": [
+          -0.002604166666666685,
+          0.02781510416666659
+        ],
+        "cohens_dz": 0.49456206719502405,
+        "p_sign_flip": 0.2516,
+        "separates_from_zero": false,
+        "traditional_auc": 0.6915104166666667,
+        "oracle_auc": 0.7034895833333333,
+        "traditional_final": 0.755,
+        "oracle_final": 0.755,
+        "oracle_kd": 0.0,
+        "oracle_diagnoses": 898.5,
+        "traditional_diagnoses": 1036.5
+      }
+    },
+    "tight_h5_a10": {
+      "setting": {
+        "name": "tight_h5_a10",
+        "horizon": 5,
+        "alpha": 0.1
+      },
+      "contrast": {
+        "d_auc_mean": -0.020520833333333335,
+        "d_auc_ci": [
+          -0.05822916666666665,
+          0.020416666666666652
+        ],
+        "cohens_dz": -0.3370538590787768,
+        "p_sign_flip": 0.3318,
+        "separates_from_zero": false,
+        "traditional_auc": 0.6641666666666666,
+        "oracle_auc": 0.6436458333333334,
+        "traditional_final": 0.755,
+        "oracle_final": 0.755,
+        "oracle_kd": 0.0,
+        "oracle_diagnoses": 1098.875,
+        "traditional_diagnoses": 1118.875
+      }
+    },
+    "base_h8_a03": {
+      "setting": {
+        "name": "base_h8_a03",
+        "horizon": 8,
+        "alpha": 0.03
+      },
+      "contrast": {
+        "d_auc_mean": 0.0,
+        "d_auc_ci": [
+          0.0,
+          0.0
+        ],
+        "cohens_dz": 0.0,
+        "p_sign_flip": 1.0,
+        "separates_from_zero": false,
+        "traditional_auc": 0.7112499999999999,
+        "oracle_auc": 0.7112499999999999,
+        "traditional_final": 0.755,
+        "oracle_final": 0.755,
+        "oracle_kd": 0.0,
+        "oracle_diagnoses": 698.375,
+        "traditional_diagnoses": 923.375
+      }
+    },
+    "tight_h5_a03": {
+      "setting": {
+        "name": "tight_h5_a03",
+        "horizon": 5,
+        "alpha": 0.03
+      },
+      "contrast": {
+        "d_auc_mean": -0.08489583333333335,
+        "d_auc_ci": [
+          -0.10187500000000001,
+          -0.06822916666666667
+        ],
+        "cohens_dz": -3.2324694639507197,
+        "p_sign_flip": 0.0102,
+        "separates_from_zero": true,
+        "traditional_auc": 0.6576041666666667,
+        "oracle_auc": 0.5727083333333334,
+        "traditional_final": 0.755,
+        "oracle_final": 0.755,
+        "oracle_kd": 0.0,
+        "oracle_diagnoses": 1150.875,
+        "traditional_diagnoses": 1128.625
+      }
+    },
+    "base_h8_a01": {
+      "setting": {
+        "name": "base_h8_a01",
+        "horizon": 8,
+        "alpha": 0.01
+      },
+      "contrast": {
+        "d_auc_mean": -0.00572916666666666,
+        "d_auc_ci": [
+          -0.01718749999999998,
+          0.0
+        ],
+        "cohens_dz": -0.3535533905932738,
+        "p_sign_flip": 1.0,
+        "separates_from_zero": false,
+        "traditional_auc": 0.7112499999999999,
+        "oracle_auc": 0.7055208333333334,
+        "traditional_final": 0.755,
+        "oracle_final": 0.755,
+        "oracle_kd": 0.0,
+        "oracle_diagnoses": 735.125,
+        "traditional_diagnoses": 906.625
+      }
+    }
+  },
+  "rows": [
+    {
+      "setting": "base_h8_a10",
+      "seed": 4500000,
+      "traditional_auc": 0.74125,
+      "oracle_auc": 0.74125,
+      "traditional_final": 0.7866666666666666,
+      "oracle_final": 0.7866666666666666
+    },
+    {
+      "setting": "base_h8_a10",
+      "seed": 4500001,
+      "traditional_auc": 0.7083333333333331,
+      "oracle_auc": 0.7083333333333331,
+      "traditional_final": 0.7533333333333333,
+      "oracle_final": 0.7533333333333333
+    },
+    {
+      "setting": "base_h8_a10",
+      "seed": 4500002,
+      "traditional_auc": 0.7475,
+      "oracle_auc": 0.7475,
+      "traditional_final": 0.7933333333333333,
+      "oracle_final": 0.7933333333333333
+    },
+    {
+      "setting": "base_h8_a10",
+      "seed": 4500003,
+      "traditional_auc": 0.7304166666666666,
+      "oracle_auc": 0.7304166666666666,
+      "traditional_final": 0.7733333333333333,
+      "oracle_final": 0.7733333333333333
+    },
+    {
+      "setting": "base_h8_a10",
+      "seed": 4500004,
+      "traditional_auc": 0.6729166666666668,
+      "oracle_auc": 0.7220833333333335,
+      "traditional_final": 0.7666666666666667,
+      "oracle_final": 0.7666666666666667
+    },
+    {
+      "setting": "base_h8_a10",
+      "seed": 4500005,
+      "traditional_auc": 0.68375,
+      "oracle_auc": 0.68375,
+      "traditional_final": 0.7266666666666667,
+      "oracle_final": 0.7266666666666667
+    },
+    {
+      "setting": "base_h8_a10",
+      "seed": 4500006,
+      "traditional_auc": 0.6704166666666668,
+      "oracle_auc": 0.6704166666666668,
+      "traditional_final": 0.7133333333333334,
+      "oracle_final": 0.7133333333333334
+    },
+    {
+      "setting": "base_h8_a10",
+      "seed": 4500007,
+      "traditional_auc": 0.68625,
+      "oracle_auc": 0.68625,
+      "traditional_final": 0.7266666666666667,
+      "oracle_final": 0.7266666666666667
+    },
+    {
+      "setting": "tight_h6_a10",
+      "seed": 4500000,
+      "traditional_auc": 0.7170833333333334,
+      "oracle_auc": 0.69625,
+      "traditional_final": 0.7866666666666666,
+      "oracle_final": 0.7866666666666666
+    },
+    {
+      "setting": "tight_h6_a10",
+      "seed": 4500001,
+      "traditional_auc": 0.6649999999999999,
+      "oracle_auc": 0.7066666666666666,
+      "traditional_final": 0.7533333333333333,
+      "oracle_final": 0.7533333333333333
+    },
+    {
+      "setting": "tight_h6_a10",
+      "seed": 4500002,
+      "traditional_auc": 0.7195833333333332,
+      "oracle_auc": 0.7454166666666666,
+      "traditional_final": 0.7933333333333333,
+      "oracle_final": 0.7933333333333333
+    },
+    {
+      "setting": "tight_h6_a10",
+      "seed": 4500003,
+      "traditional_auc": 0.7258333333333332,
+      "oracle_auc": 0.7258333333333332,
+      "traditional_final": 0.7733333333333333,
+      "oracle_final": 0.7733333333333333
+    },
+    {
+      "setting": "tight_h6_a10",
+      "seed": 4500004,
+      "traditional_auc": 0.6712500000000002,
+      "oracle_auc": 0.7204166666666668,
+      "traditional_final": 0.7666666666666667,
+      "oracle_final": 0.7666666666666667
+    },
+    {
+      "setting": "tight_h6_a10",
+      "seed": 4500005,
+      "traditional_auc": 0.6825,
+      "oracle_auc": 0.6825,
+      "traditional_final": 0.7266666666666667,
+      "oracle_final": 0.7266666666666667
+    },
+    {
+      "setting": "tight_h6_a10",
+      "seed": 4500006,
+      "traditional_auc": 0.6695833333333334,
+      "oracle_auc": 0.6695833333333334,
+      "traditional_final": 0.7133333333333334,
+      "oracle_final": 0.7133333333333334
+    },
+    {
+      "setting": "tight_h6_a10",
+      "seed": 4500007,
+      "traditional_auc": 0.68125,
+      "oracle_auc": 0.68125,
+      "traditional_final": 0.7266666666666667,
+      "oracle_final": 0.7266666666666667
+    },
+    {
+      "setting": "tight_h5_a10",
+      "seed": 4500000,
+      "traditional_auc": 0.7379166666666668,
+      "oracle_auc": 0.6954166666666667,
+      "traditional_final": 0.7866666666666666,
+      "oracle_final": 0.7866666666666666
+    },
+    {
+      "setting": "tight_h5_a10",
+      "seed": 4500001,
+      "traditional_auc": 0.6645833333333332,
+      "oracle_auc": 0.6537499999999998,
+      "traditional_final": 0.7533333333333333,
+      "oracle_final": 0.7533333333333333
+    },
+    {
+      "setting": "tight_h5_a10",
+      "seed": 4500002,
+      "traditional_auc": 0.6929166666666666,
+      "oracle_auc": 0.6929166666666666,
+      "traditional_final": 0.7933333333333333,
+      "oracle_final": 0.7933333333333333
+    },
+    {
+      "setting": "tight_h5_a10",
+      "seed": 4500003,
+      "traditional_auc": 0.7254166666666666,
+      "oracle_auc": 0.63375,
+      "traditional_final": 0.7733333333333333,
+      "oracle_final": 0.7733333333333333
+    },
+    {
+      "setting": "tight_h5_a10",
+      "seed": 4500004,
+      "traditional_auc": 0.5816666666666669,
+      "oracle_auc": 0.6700000000000003,
+      "traditional_final": 0.7666666666666667,
+      "oracle_final": 0.7666666666666667
+    },
+    {
+      "setting": "tight_h5_a10",
+      "seed": 4500005,
+      "traditional_auc": 0.63875,
+      "oracle_auc": 0.5904166666666666,
+      "traditional_final": 0.7266666666666667,
+      "oracle_final": 0.7266666666666667
+    },
+    {
+      "setting": "tight_h5_a10",
+      "seed": 4500006,
+      "traditional_auc": 0.66875,
+      "oracle_auc": 0.5795833333333333,
+      "traditional_final": 0.7133333333333334,
+      "oracle_final": 0.7133333333333334
+    },
+    {
+      "setting": "tight_h5_a10",
+      "seed": 4500007,
+      "traditional_auc": 0.6033333333333334,
+      "oracle_auc": 0.6333333333333334,
+      "traditional_final": 0.7266666666666667,
+      "oracle_final": 0.7266666666666667
+    },
+    {
+      "setting": "base_h8_a03",
+      "seed": 4500000,
+      "traditional_auc": 0.74125,
+      "oracle_auc": 0.74125,
+      "traditional_final": 0.7866666666666666,
+      "oracle_final": 0.7866666666666666
+    },
+    {
+      "setting": "base_h8_a03",
+      "seed": 4500001,
+      "traditional_auc": 0.7083333333333331,
+      "oracle_auc": 0.7083333333333331,
+      "traditional_final": 0.7533333333333333,
+      "oracle_final": 0.7533333333333333
+    },
+    {
+      "setting": "base_h8_a03",
+      "seed": 4500002,
+      "traditional_auc": 0.7475,
+      "oracle_auc": 0.7475,
+      "traditional_final": 0.7933333333333333,
+      "oracle_final": 0.7933333333333333
+    },
+    {
+      "setting": "base_h8_a03",
+      "seed": 4500003,
+      "traditional_auc": 0.7304166666666666,
+      "oracle_auc": 0.7304166666666666,
+      "traditional_final": 0.7733333333333333,
+      "oracle_final": 0.7733333333333333
+    },
+    {
+      "setting": "base_h8_a03",
+      "seed": 4500004,
+      "traditional_auc": 0.7220833333333335,
+      "oracle_auc": 0.7220833333333335,
+      "traditional_final": 0.7666666666666667,
+      "oracle_final": 0.7666666666666667
+    },
+    {
+      "setting": "base_h8_a03",
+      "seed": 4500005,
+      "traditional_auc": 0.68375,
+      "oracle_auc": 0.68375,
+      "traditional_final": 0.7266666666666667,
+      "oracle_final": 0.7266666666666667
+    },
+    {
+      "setting": "base_h8_a03",
+      "seed": 4500006,
+      "traditional_auc": 0.6704166666666668,
+      "oracle_auc": 0.6704166666666668,
+      "traditional_final": 0.7133333333333334,
+      "oracle_final": 0.7133333333333334
+    },
+    {
+      "setting": "base_h8_a03",
+      "seed": 4500007,
+      "traditional_auc": 0.68625,
+      "oracle_auc": 0.68625,
+      "traditional_final": 0.7266666666666667,
+      "oracle_final": 0.7266666666666667
+    },
+    {
+      "setting": "tight_h5_a03",
+      "seed": 4500000,
+      "traditional_auc": 0.7379166666666668,
+      "oracle_auc": 0.6129166666666668,
+      "traditional_final": 0.7866666666666666,
+      "oracle_final": 0.7866666666666666
+    },
+    {
+      "setting": "tight_h5_a03",
+      "seed": 4500001,
+      "traditional_auc": 0.6645833333333332,
+      "oracle_auc": 0.5595833333333332,
+      "traditional_final": 0.7533333333333333,
+      "oracle_final": 0.7533333333333333
+    },
+    {
+      "setting": "tight_h5_a03",
+      "seed": 4500002,
+      "traditional_auc": 0.6604166666666667,
+      "oracle_auc": 0.59625,
+      "traditional_final": 0.7933333333333333,
+      "oracle_final": 0.7933333333333333
+    },
+    {
+      "setting": "tight_h5_a03",
+      "seed": 4500003,
+      "traditional_auc": 0.6795833333333333,
+      "oracle_auc": 0.62875,
+      "traditional_final": 0.7733333333333333,
+      "oracle_final": 0.7733333333333333
+    },
+    {
+      "setting": "tight_h5_a03",
+      "seed": 4500004,
+      "traditional_auc": 0.6283333333333335,
+      "oracle_auc": 0.5741666666666668,
+      "traditional_final": 0.7666666666666667,
+      "oracle_final": 0.7666666666666667
+    },
+    {
+      "setting": "tight_h5_a03",
+      "seed": 4500005,
+      "traditional_auc": 0.6420833333333333,
+      "oracle_auc": 0.5420833333333333,
+      "traditional_final": 0.7266666666666667,
+      "oracle_final": 0.7266666666666667
+    },
+    {
+      "setting": "tight_h5_a03",
+      "seed": 4500006,
+      "traditional_auc": 0.6145833333333334,
+      "oracle_auc": 0.5254166666666668,
+      "traditional_final": 0.7133333333333334,
+      "oracle_final": 0.7133333333333334
+    },
+    {
+      "setting": "tight_h5_a03",
+      "seed": 4500007,
+      "traditional_auc": 0.6333333333333334,
+      "oracle_auc": 0.5425,
+      "traditional_final": 0.7266666666666667,
+      "oracle_final": 0.7266666666666667
+    },
+    {
+      "setting": "base_h8_a01",
+      "seed": 4500000,
+      "traditional_auc": 0.74125,
+      "oracle_auc": 0.74125,
+      "traditional_final": 0.7866666666666666,
+      "oracle_final": 0.7866666666666666
+    },
+    {
+      "setting": "base_h8_a01",
+      "seed": 4500001,
+      "traditional_auc": 0.7083333333333331,
+      "oracle_auc": 0.7083333333333331,
+      "traditional_final": 0.7533333333333333,
+      "oracle_final": 0.7533333333333333
+    },
+    {
+      "setting": "base_h8_a01",
+      "seed": 4500002,
+      "traditional_auc": 0.7475,
+      "oracle_auc": 0.7475,
+      "traditional_final": 0.7933333333333333,
+      "oracle_final": 0.7933333333333333
+    },
+    {
+      "setting": "base_h8_a01",
+      "seed": 4500003,
+      "traditional_auc": 0.7304166666666666,
+      "oracle_auc": 0.6845833333333333,
+      "traditional_final": 0.7733333333333333,
+      "oracle_final": 0.7733333333333333
+    },
+    {
+      "setting": "base_h8_a01",
+      "seed": 4500004,
+      "traditional_auc": 0.7220833333333335,
+      "oracle_auc": 0.7220833333333335,
+      "traditional_final": 0.7666666666666667,
+      "oracle_final": 0.7666666666666667
+    },
+    {
+      "setting": "base_h8_a01",
+      "seed": 4500005,
+      "traditional_auc": 0.68375,
+      "oracle_auc": 0.68375,
+      "traditional_final": 0.7266666666666667,
+      "oracle_final": 0.7266666666666667
+    },
+    {
+      "setting": "base_h8_a01",
+      "seed": 4500006,
+      "traditional_auc": 0.6704166666666668,
+      "oracle_auc": 0.6704166666666668,
+      "traditional_final": 0.7133333333333334,
+      "oracle_final": 0.7133333333333334
+    },
+    {
+      "setting": "base_h8_a01",
+      "seed": 4500007,
+      "traditional_auc": 0.68625,
+      "oracle_auc": 0.68625,
+      "traditional_final": 0.7266666666666667,
+      "oracle_final": 0.7266666666666667
+    }
+  ],
+  "any_setting_separates": true
+}
