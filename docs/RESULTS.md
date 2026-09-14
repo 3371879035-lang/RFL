@@ -252,3 +252,96 @@ outcomes the research plan names in advance.
   after seeing these results. The only change was episode count, per D6, and it
   was made to satisfy a pre-registered power floor.
 
+---
+
+## Pilot Gamma — Sequence evidence x counterfactual verification
+
+### Provenance
+
+| item | value |
+|---|---|
+| config | `configs/gamma.yaml` |
+| data | 8 seeds (4200000..4200007), 8,000 balanced offline traces per seed, 4,000 train / 4,000 test |
+| families | exactly balanced by construction: 2,000 per family per seed |
+| budgets | K in {1, 2} |
+| artifacts | `outputs/v03_gamma/{config.yaml,summary.json}` |
+| process exit | **0** — the pre-registered composition test passes |
+
+### What the diagnoser is allowed to see
+
+Only what a learner could see: the sequence of low-level `(state, action)` pairs,
+the chosen `option`, and the terminal kind. **Not** `goal_lane`, **not**
+`hazard`; both are recorded evaluator-side only.
+
+That leaves one irreducible ambiguity, verified by test
+(`test_stalled_and_jammed_are_observationally_identical`): when the agent times
+out *without* reaching the end of its corridor, a stalled execution and a jammed
+gate are byte-identical in the action sequence.
+
+### Pareto: verification cost vs attribution quality
+
+| method | CF queries | Brier | update prec. | collateral | exp. KD | AUPRC_H | AUPRC_L | AUPRC_E |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| `oracle` | 0.00 | 0.0000 | 1.0000 | 0.0000 | 0.00000 | 1.0000 | 1.0000 | 1.0000 |
+| `sequence_only` | 0.00 | 0.1659 | 0.8007 | 0.1993 | 0.01993 | 0.7161 | 0.8030 | 0.5022 |
+| **`seq_then_cf_k1`** | **1.00** | **0.1447** | 0.8007 | 0.1993 | 0.01993 | **0.8777** | 0.9359 | **0.8134** |
+| `cf_only_k1` | 1.00 | 0.1573 | 0.8007 | 0.1993 | 0.01993 | 0.7824 | 0.9359 | 0.5292 |
+| **`seq_then_cf_k2`** | **1.50** | **0.0845** | **1.0000** | **0.0000** | **0.00000** | 1.0000 | 0.8227 | 1.0000 |
+| `cf_only_k2` | 1.75 | 0.0845 | 1.0000 | 0.0000 | 0.00000 | 1.0000 | 0.8227 | 1.0000 |
+
+### Findings
+
+1. **The composition effect is real at equal budget.** At exactly 1.00 query,
+   `seq_then_cf` beats the fixed order on Brier, **0.1447 vs 0.1573**
+   (delta **−0.0127**, lower is better). The gain is concentrated where the
+   ambiguity lives: `AUPRC_E` **0.8134 vs 0.5292 (+0.284)**, and `AUPRC_H`
+   +0.095. The prior does not merely reshuffle a budget — it picks the *right*
+   query.
+
+2. **The prior buys a genuine budget reduction.** `seq_then_cf_k2` matches
+   `cf_only_k2` on every quality axis (Brier 0.0845, precision 1.0000,
+   collateral 0.0000) while using **1.50 vs 1.75** queries — a **14% saving at
+   identical attribution quality**. This is precisely the claim the research
+   plan wanted tested ("在相同 downstream quality 下，减少了多少反事实查询").
+
+3. **One well-chosen query does not replace two.** `seq_then_cf_k1` (0.1447) is
+   far behind `cf_only_k2` (0.0845). The budget can be trimmed, not halved.
+
+4. **Counterfactuals earn their cost specifically on the environment cause.**
+   `AUPRC_E` climbs 0.5022 -> 0.8134 -> 1.0000 across 0, 1, 2 queries, while
+   `AUPRC_L` is already 0.8030 from the sequence alone. This is exactly the
+   predicted division of labour: cheap observational evidence handles what is
+   visible, verification resolves what is latent.
+
+5. **Two queries eliminate downstream collateral damage entirely.** Update
+   precision goes 0.8007 -> **1.0000** and collateral rate 0.1993 -> **0.0000**,
+   so expected knowledge damage falls to **0.00000** — the same figure the
+   Oracle reaches. This links Gamma to Pilot Beta's KnowledgeDamage directly.
+
+6. **A limitation worth stating: `AUPRC_L` never reaches 1.0** (0.8227 even at
+   K=2, versus 1.0000 for Oracle). Counterfactual verification here tests
+   single-module *sufficiency*: in an `HL_error` both modules are responsible,
+   so repairing either one alone does not flip the outcome and CF credits only
+   H. Concurrent faults are systematically under-detected. This is a property of
+   sufficiency-based CF, not a tuning issue.
+
+### Verdict
+
+**`COMPOSITION_EFFECT_CONFIRMED`** — sequence evidence makes counterfactual
+verification cheaper at matched quality, and the saving is largest on the cause
+that is invisible to observation alone.
+
+### Defect found and fixed during this pilot
+
+The sequence model originally stored its likelihood tuple as
+`(log p1, log(1-p1))` while indexing it with the binary feature value, which
+**reads every feature inverted**: `reached_end = 1` looked up `log P(f = 0)`.
+A jammed gate consequently scored as an execution failure (`L = 0.72`). Caught
+by `test_sequence_model_separates_the_observable_cases`, fixed, and locked with
+`test_likelihood_indexing_is_not_inverted`.
+
+A second defect: `generate_balanced` filled families at different rates, so a
+naive head/tail split was badly imbalanced (E_failure 192 vs H_error 132 in a
+600-trace training half). Fixed by shuffling deterministically before returning.
+
+
