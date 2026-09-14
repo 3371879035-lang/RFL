@@ -24,9 +24,12 @@ import yaml
 
 from rflnext.gamma import (
     SequenceModel,
+    cf_query,
     generate_balanced,
+    observable_features,
     run_method,
     score_method,
+    truth_scores,
 )
 
 EXIT_OK = 0
@@ -93,6 +96,7 @@ def main(argv=None) -> int:
     plan = method_plan(budgets)
 
     per_seed = []
+    evidence_rows = []
     for index in range(int(exp["seeds"])):
         seed = int(exp["seed_base"]) + index
         traces = generate_balanced(
@@ -100,6 +104,26 @@ def main(argv=None) -> int:
         )
         train, test = traces[:n_train], traces[n_train:]
         model = SequenceModel().fit(train)
+
+        # Raw evidence per trace, not just the final label: the observable
+        # features, the counterfactual outcomes, and the truth side by side.
+        for tr in test:
+            cf_l = cf_query(tr, "L")
+            cf_h = cf_query(tr, "H")
+            evidence_rows.append({
+                "seed": seed,
+                "trace_id": tr.trace_id,
+                "observable": observable_features(tr),
+                "option": tr.option,
+                "terminal": tr.terminal,
+                "steps": tr.steps,
+                "sequence_score": model.score(tr),
+                "cf_L_outcome": cf_l.outcome,
+                "cf_H_outcome": cf_h.outcome,
+                "cf_queries": cf_l.queries + cf_h.queries,
+                "truth": truth_scores(tr),
+                "family": tr.family,
+            })
 
         rows = {}
         for entry in plan:
@@ -191,6 +215,10 @@ def main(argv=None) -> int:
     (outdir / "summary.json").write_text(
         json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8"
     )
+    with (outdir / "attribution_evidence.jsonl").open("w", encoding="utf-8") as fh:
+        for row in evidence_rows:
+            fh.write(json.dumps(row, ensure_ascii=False) + "\n")
+    print(f"wrote {len(evidence_rows)} raw-evidence rows to attribution_evidence.jsonl")
     print("\n=== composition (lower Brier is better) ===")
     for name, info in comp.items():
         if info:

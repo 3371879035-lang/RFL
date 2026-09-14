@@ -33,6 +33,7 @@ def test_arm_table_matches_the_plan():
     assert set(ARMS) == {
         "traditional", "positive_only", "direct_feedback", "random_correction",
         "sequence_rfl", "learned_rfl", "oracle_rfl",
+        "aux_penalty_rfl", "global_value_rfl",
     }
     assert NO_CORRECTION == {"traditional", "positive_only"}
 

@@ -44,10 +44,16 @@ ARMS = (
     "sequence_rfl",
     "learned_rfl",
     "oracle_rfl",
+    "aux_penalty_rfl",
+    "global_value_rfl",
 )
 NO_CORRECTION = {"traditional", "positive_only"}
+# The plan's "Auxiliary penalty" architecture: dQ_m = dQ_m^task + lambda*dQ_m^diag,
+# applied to every module rather than gated by responsibility.
+ALWAYS_BOTH = {"aux_penalty_rfl"}
 FEEDBACK_SEED_OFFSET = 700_000_000
 RANDOM_SEED_OFFSET = 800_000_000
+GLOBAL_VALUE_LAMBDA_H = 1.0
 
 
 @dataclass(frozen=True)
@@ -128,9 +134,12 @@ def _choose_module(
             raise ValueError("random_correction requires an rng")
         pick = ("H", "L", "E")[int(rng.integers(0, 3))]
         return (None if pick == "E" else pick), 0
+    if arm == "aux_penalty_rfl":
+        # Auxiliary penalty: always add the diagnostic term to every module.
+        return "BOTH", 0
 
     ot = _to_online_trace(rec)
-    if arm == "sequence_rfl":
+    if arm in ("sequence_rfl", "global_value_rfl"):
         score = model.score(ot)  # type: ignore[arg-type]
         best = max(("H", "L", "E"), key=lambda c: score.get(c, 0.0))
         return (None if best == "E" else best), 0
@@ -157,6 +166,7 @@ def train_arm(
     horizon = int(env_cfg.get("horizon", HORIZON))
     p_hazard = float(env_cfg.get("p_hazard", 0.25))
     alpha_diag = float(learn.get("alpha_diag", 0.0))
+    alpha_high = float(learn["alpha_high"])
     decay = max(1, int(episodes * float(learn["epsilon_decay_fraction"])))
 
     tape = NoiseTape.from_seed(seed, episodes=episodes, horizon=horizon, p_hazard=p_hazard)
@@ -170,6 +180,8 @@ def train_arm(
     winnable: list = []
     family_counts: dict = {}
     corrections = collateral = n_cf = 0
+    # Global value table for the "Q_G + module knowledge" architecture.
+    q_g: dict = {}
 
     def record(index: int) -> None:
         rate, _states, win = evaluate(q, cfg, seed=seed, n=eval_episodes)
@@ -183,29 +195,48 @@ def train_arm(
             ep, start=float(learn["epsilon_start"]), end=float(learn["epsilon_end"]),
             decay_episodes=decay,
         )
+        bonus = None
+        if arm == "global_value_rfl":
+            # Score = Q_G(s, H) + lambda_H * Q_H(s, H).  Expressed as a bonus on
+            # the Q_H scores so the rollout itself stays unchanged.
+            s_h = (int(tape.goal_lane[ep]), int(tape.hazard[ep]))
+            bonus = {
+                o: q_g.get((s_h, o), 0.0)
+                + (GLOBAL_VALUE_LAMBDA_H - 1.0) * q.high_get(s_h, o)
+                for o in q.options
+            }
         rec = run_episode(
             episode=ep, tape=tape, q=q, epsilon=eps, reward_mode=reward_mode,
             alpha_low=float(learn["alpha_low"]), alpha_high=float(learn["alpha_high"]),
+            absorb=bool(env_cfg.get("absorb_to_horizon", False)),
+            option_bonus=bonus,
         )
+        if arm == "global_value_rfl":
+            key = ((rec.goal_lane, rec.hazard), rec.option)
+            q_g[key] = q_g.get(key, 0.0) + alpha_high * (
+                rec.return_value - q_g.get(key, 0.0)
+            )
 
         if rec.labels is not None:
             family_counts[rec.labels.family] = family_counts.get(rec.labels.family, 0) + 1
             module, spent = _choose_module(arm, rec, model, feedback[ep], rng=arm_rng)
             n_cf += spent
-            if module is not None and alpha_diag > 0.0:
-                truth = rec.labels.u_h if module == "H" else rec.labels.u_l
+            targets = ("H", "L") if module == "BOTH" else (() if module is None else (module,))
+            for target in targets:
+                if alpha_diag <= 0.0:
+                    continue
+                truth = rec.labels.u_h if target == "H" else rec.labels.u_l
                 corrections += 1
                 if not truth:
                     collateral += 1
-                if module == "H":
+                if target == "H":
                     s_h = (rec.goal_lane, rec.hazard)
                     cur = q.high_get(s_h, rec.option)
                     q.high_update(s_h, rec.option, cur - alpha_diag, 1.0)
-                else:
-                    if rec.visited_low:
-                        site, action = rec.visited_low[-1]
-                        cur = q.low_get(site, action)
-                        q.low_update(site, action, cur - alpha_diag, 1.0)
+                elif rec.visited_low:
+                    site, action = rec.visited_low[-1]
+                    cur = q.low_get(site, action)
+                    q.low_update(site, action, cur - alpha_diag, 1.0)
 
         if (ep + 1) % eval_every == 0:
             record(ep + 1)

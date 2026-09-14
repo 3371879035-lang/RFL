@@ -42,9 +42,21 @@ CELLS = (
     "immediate_revisable",
     "deferred_fixed",
     "deferred_revisable",
+    "immediate_revisable_naive",
+    "deferred_revisable_naive",
 )
-IMMEDIATE = {"immediate_fixed", "immediate_revisable"}
-REVISABLE = {"immediate_revisable", "deferred_revisable"}
+IMMEDIATE = {
+    "immediate_fixed", "immediate_revisable", "immediate_revisable_naive",
+}
+REVISABLE = {
+    "immediate_revisable", "deferred_revisable",
+    "immediate_revisable_naive", "deferred_revisable_naive",
+}
+# The plan warns that patching credit by ``Q <- Q - dQ_old + dQ_new`` is only an
+# approximation, because later bootstrap targets were computed from the
+# already-updated Q.  These two cells use exactly that patch, so the error it
+# introduces is measured rather than asserted.
+NAIVE_REVISION = {"immediate_revisable_naive", "deferred_revisable_naive"}
 
 
 @dataclass
@@ -56,6 +68,7 @@ class Update:
     s_h: tuple
     option: int
     return_value: float = 0.0
+    delta: float = 0.0
 
 
 @dataclass
@@ -65,6 +78,29 @@ class EpisodeMeta:
     lucky: int
     h_wrong: bool
     was_success: bool
+
+
+@dataclass
+class RevisionRecord:
+    """One revision, with the interpretation it replaced.
+
+    The plan's checklist requires every revision to save ``old_U -> new_U`` and
+    the reason it fired, so that a false reversal is auditable after the fact
+    rather than only visible as a damaged Q value.
+    """
+
+    revision_id: int
+    target_episodes: list
+    old_u_h: int
+    old_u_l: int
+    new_u_h: int
+    new_u_l: int
+    trigger_episode: int
+    trigger_type: str  # "contradiction" | "unlucky_failure"
+    checkpoint_id: int
+    replay_from: int
+    mode: str  # "replay" | "naive_patch"
+    justified: bool
 
 
 @dataclass
@@ -83,6 +119,7 @@ class TimingResult:
     n_diagnosis: int
     n_cf: int
     wall_s: float
+    revision_records: list = field(default_factory=list)
 
 
 def _corridor_action(x: int, y: int, option: int) -> int:
@@ -138,15 +175,17 @@ def run_cell(cfg: dict, *, seed: int, cell: str) -> TimingResult:
     episode = 0
 
     def task(e: int, s_h, option: int, r: float) -> None:
+        before = q.high_get(s_h, option)
         q.high_update(s_h, option, r, alpha_high)
-        log.append(Update(e, "task", s_h, option, r))
+        log.append(Update(e, "task", s_h, option, r, q.high_get(s_h, option) - before))
 
     def diag(e: int, s_h, option: int) -> None:
         nonlocal n_diagnosis
         n_diagnosis += 1
         cur = q.high_get(s_h, option)
         q.high_update(s_h, option, cur - alpha_diag, 1.0)
-        log.append(Update(e, "diag", s_h, option))
+        log.append(Update(e, "diag", s_h, option, 0.0,
+                          q.high_get(s_h, option) - cur))
 
     def snapshot(e: int) -> None:
         checkpoints[e] = q.copy()
@@ -163,6 +202,25 @@ def run_cell(cfg: dict, *, seed: int, cell: str) -> TimingResult:
             else:
                 cur = q.high_get(u.s_h, u.option)
                 q.high_update(u.s_h, u.option, cur - alpha_diag, 1.0)
+
+    def naive_revision(withdraw: set) -> None:
+        """The plan's warned-against approximation: ``Q <- Q - dQ_old``.
+
+        Subtracting each withdrawn update's recorded delta leaves the later
+        bootstrap targets untouched, even though they were computed from the
+        Q values those very updates produced.  The error is not corrected.
+        """
+        nonlocal q
+        for u in log:
+            if u.kind == "task" and u.episode in withdraw and u.delta != 0.0:
+                cur = q.high_get(u.s_h, u.option)
+                q.high_update(u.s_h, u.option, cur - u.delta, 1.0)
+
+    def revise(withdraw: set) -> None:
+        if cell in NAIVE_REVISION:
+            naive_revision(withdraw)
+        else:
+            replay_from(0, episode, withdraw=withdraw)
 
     # -------- phase 1: warmup, the correct plan succeeds ---------------------
     for _ in range(warmup):
@@ -191,6 +249,8 @@ def run_cell(cfg: dict, *, seed: int, cell: str) -> TimingResult:
     true_revisions = 0
     false_reversals = 0
     revision_happened = False
+    revision_records: list = []
+    mode = "naive_patch" if cell in NAIVE_REVISION else "replay"
 
     for i in range(n_contra):
         is_unlucky = unlucky_every > 0 and (i + 1) % unlucky_every == 0
@@ -223,10 +283,16 @@ def run_cell(cfg: dict, *, seed: int, cell: str) -> TimingResult:
             # genuinely wrong, so this is a correct revision.
             rev = [m.episode for m in metas if m.lucky == 1 and m.option == option]
             if rev:
-                replay_from(0, episode, withdraw=set(rev))
+                revise(set(rev))
                 revisions += len(rev)
                 true_revisions += len(rev)
                 revision_happened = True
+                revision_records.append(RevisionRecord(
+                    revision_id=len(revision_records), target_episodes=list(rev),
+                    old_u_h=0, old_u_l=0, new_u_h=1, new_u_l=0,
+                    trigger_episode=episode, trigger_type="contradiction",
+                    checkpoint_id=0, replay_from=0, mode=mode, justified=True,
+                ))
         elif cell in REVISABLE and not h_wrong:
             # The identical rule now fires on an unlucky failure, where the
             # successes it withdraws were earned by a *correct* plan.  This is
@@ -238,9 +304,15 @@ def run_cell(cfg: dict, *, seed: int, cell: str) -> TimingResult:
                 if m.was_success and not m.lucky and m.option == option
             ]
             if rev:
-                replay_from(0, episode, withdraw=set(rev))
+                revise(set(rev))
                 revisions += len(rev)
                 false_reversals += len(rev)
+                revision_records.append(RevisionRecord(
+                    revision_id=len(revision_records), target_episodes=list(rev),
+                    old_u_h=0, old_u_l=0, new_u_h=1, new_u_l=0,
+                    trigger_episode=episode, trigger_type="unlucky_failure",
+                    checkpoint_id=0, replay_from=0, mode=mode, justified=False,
+                ))
 
         if recovery_episodes is None and max(
             q.options, key=lambda o: q.high_get(s_h_normal, o)
@@ -265,4 +337,5 @@ def run_cell(cfg: dict, *, seed: int, cell: str) -> TimingResult:
         n_diagnosis=n_diagnosis,
         n_cf=n_cf,
         wall_s=time.perf_counter() - t0,
+        revision_records=revision_records,
     )

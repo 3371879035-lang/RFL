@@ -83,17 +83,34 @@ def run_episode(
     reward_mode: str,
     alpha_low: float,
     alpha_high: float,
+    absorb: bool = False,
+    option_bonus: dict | None = None,
 ) -> EpisodeRecord:
-    """Roll out one episode and apply the online updates in place."""
+    """Roll out one episode and apply the online updates in place.
+
+    ``absorb=True`` implements the plan's A/B fairness rule literally: after a
+    terminal the episode enters an absorbing state and runs to the horizon, so
+    early and late outcomes are settled at the same step.  With ``gamma = 1``
+    and zero step reward the *return* is provably identical either way -- that
+    equivalence is what the plan relies on, and it is asserted by test rather
+    than assumed.
+
+    ``option_bonus`` adds a per-option term to the high-level scores only, which
+    is how the "global value + module knowledge" architecture
+    (``Score = Q_G + lambda_H * Q_H``) is expressed without forking the rollout.
+    """
     goal_lane = int(tape.goal_lane[episode])
     hazard = int(tape.hazard[episode])
     s_h = (goal_lane, hazard)
 
     explore = tape.explore_u[episode]
     tie = tape.tie_u[episode]
-    option = _epsilon_greedy(
-        [q.high_get(s_h, o) for o in q.options], epsilon, explore[0], tie[0]
-    )
+    high_vals = [q.high_get(s_h, o) for o in q.options]
+    if option_bonus:
+        high_vals = [
+            v + float(option_bonus.get(o, 0.0)) for v, o in zip(high_vals, q.options)
+        ]
+    option = _epsilon_greedy(high_vals, epsilon, explore[0], tie[0])
 
     x, y = 0, 0
     visited_low: list = []
@@ -105,8 +122,13 @@ def run_episode(
     # Take the horizon from the tape, not from the module constant, so a
     # configured horizon other than the default cannot index past the tape.
     span = int(getattr(tape, "horizon", HORIZON))
+    absorbing = False
 
     for t in range(1, span + 1):
+        if absorbing:
+            # Frozen terminal state, zero reward, no decision: hold to horizon.
+            steps = t
+            continue
         # The timestep is part of the low-level state.  With gamma=1 and no
         # step reward, a state without t admits a self-loop action whose TD
         # target is `0 + max_a Q(s,a)` -- its own state value -- so the
@@ -150,7 +172,9 @@ def run_episode(
 
         x, y = nx, ny
         if done:
-            break
+            if not absorb:
+                break
+            absorbing = True
 
     return_value = REWARD_SUCCESS if terminal == SUCCESS else fail_reward
 
@@ -209,10 +233,11 @@ def evaluate(q: QTables, cfg: dict, *, seed: int, n: int) -> tuple[float, list, 
     )
     wins = 0
     states: list = []
+    absorb = bool(cfg.get("environment", {}).get("absorb_to_horizon", False))
     for ep in range(n):
         rec = run_episode(
             episode=ep, tape=tape, q=q, epsilon=0.0, reward_mode="A",
-            alpha_low=0.0, alpha_high=0.0,
+            alpha_low=0.0, alpha_high=0.0, absorb=absorb,
         )
         wins += int(rec.terminal == SUCCESS)
         states.extend(state for state, _ in rec.visited_low)
@@ -264,6 +289,7 @@ def train(cfg: dict, *, seed: int, arm: str) -> TrainResult:
         rec = run_episode(
             episode=ep, tape=tape, q=q, epsilon=eps, reward_mode=reward_mode,
             alpha_low=float(learn["alpha_low"]), alpha_high=float(learn["alpha_high"]),
+            absorb=bool(env_cfg.get("absorb_to_horizon", False)),
         )
         records.append(rec)
         if rec.labels is not None:

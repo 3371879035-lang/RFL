@@ -17,12 +17,13 @@ CFG = {
 
 
 def test_cells_table_is_the_full_2x2():
-    assert set(CELLS) == {
-        "immediate_fixed", "immediate_revisable",
-        "deferred_fixed", "deferred_revisable",
-    }
-    assert IMMEDIATE | {"deferred_fixed", "deferred_revisable"} == set(CELLS)
-    assert len(REVISABLE) == 2
+    base = {"immediate_fixed", "immediate_revisable",
+            "deferred_fixed", "deferred_revisable"}
+    assert base <= set(CELLS)
+    assert {"immediate_revisable_naive", "deferred_revisable_naive"} <= set(CELLS)
+    assert len(IMMEDIATE) + len({"deferred_fixed", "deferred_revisable",
+                                 "deferred_revisable_naive"}) == len(CELLS)
+    assert len(REVISABLE) == 4
 
 
 def test_lucky_shortcut_lets_a_wrong_plan_succeed():

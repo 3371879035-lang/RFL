@@ -11,6 +11,7 @@ import json
 import os
 import subprocess
 import sys
+from dataclasses import asdict
 from pathlib import Path
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
@@ -18,7 +19,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 import numpy as np
 import yaml
 
-from rflnext.stats import cohens_dz, paired_bootstrap_ci, paired_sign_flip_test
+from rflnext.stats_ext import summary_contrast
 from rflnext.timing import CELLS, run_cell
 
 EXIT_OK = 0
@@ -29,6 +30,10 @@ PAIRS = (
     ("deferred_revisable", "deferred_fixed"),
     ("deferred_fixed", "immediate_fixed"),
     ("deferred_revisable", "immediate_revisable"),
+    # The plan warns that patching Q by -dQ_old is only an approximation; this
+    # contrast measures how far the approximation drifts from a real replay.
+    ("immediate_revisable", "immediate_revisable_naive"),
+    ("deferred_revisable", "deferred_revisable_naive"),
 )
 METRICS = (
     "overcredit_after_lucky",
@@ -74,10 +79,13 @@ def main(argv=None) -> int:
 
     cells = list(exp["cells"])
     rows = []
+    ledger_rows = []
     for index in range(int(exp["seeds"])):
         seed = int(exp["seed_base"]) + index
         for cell in cells:
             res = run_cell(cfg, seed=seed, cell=cell)
+            for rec in res.revision_records:
+                ledger_rows.append({"seed": seed, "cell": cell, **asdict(rec)})
             rows.append({
                 "seed_index": index, "seed": seed, "cell": cell,
                 "overcredit_after_lucky": res.overcredit_after_lucky,
@@ -129,14 +137,9 @@ def main(argv=None) -> int:
             if len(xs) < 2:
                 continue
             x, y = np.array(xs), np.array(ys)
-            lo, hi = paired_bootstrap_ci(x, y, n_resample=10000, rng=rng)
-            contrasts.setdefault(f"{a}_minus_{b}", {})[metric] = {
-                "n_seeds": len(xs),
-                "mean": float((x - y).mean()),
-                "ci": [float(lo), float(hi)],
-                "cohens_dz": cohens_dz(x - y),
-                "p_sign_flip": float(paired_sign_flip_test(x, y, n_perm=10000, rng=rng)),
-            }
+            contrasts.setdefault(f"{a}_minus_{b}", {})[metric] = summary_contrast(
+                x, y, n_perm=10000, n_boot=10000, rng=rng
+            )
 
     summary = {
         "schema_version": cfg["schema_version"],
@@ -150,6 +153,10 @@ def main(argv=None) -> int:
     (outdir / "summary.json").write_text(
         json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8"
     )
+    with (outdir / "revision_ledger.jsonl").open("w", encoding="utf-8") as fh:
+        for row in ledger_rows:
+            fh.write(json.dumps(row, ensure_ascii=False) + "\n")
+    print(f"\nwrote {len(ledger_rows)} revision-ledger rows to revision_ledger.jsonl")
 
     print("\n=== pooled by cell ===")
     print(f"{'cell':<22}{'overcredit$':>12}{'overcredit#':>12}{'correct#':>10}"

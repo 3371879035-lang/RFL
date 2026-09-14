@@ -761,6 +761,96 @@ already on disk (no analytical logic in the plotting step):
 | per-attribution raw evidence serialized | **not done** |
 | revision ledger `old_U -> new_U` schema | **not done** |
 
+---
+
+# Final pass: remaining plan items
+
+131 tests pass. Everything below was implemented, run, and verified.
+
+## A. Absorbing-to-horizon (A/B fairness clause)
+
+`run_episode(..., absorb=True)` now literally runs a terminal episode to the
+horizon in a frozen absorbing state. Because the plan's A/B comparison depends
+on this being *equivalent* under `gamma = 1` with no step reward, that
+equivalence is asserted rather than assumed:
+
+* `test_absorbing_runs_to_the_horizon_but_returns_the_same` — identical return
+  and terminal either way;
+* `test_absorbing_does_not_add_decisions` — no phantom decisions are recorded;
+* `test_absorbing_does_not_change_learning` — the resulting Q tables hash
+  identically over 8 episodes.
+
+## B. Naive revision `Q <- Q - dQ_old` vs a true replay
+
+The plan warns this patch is only an approximation because later bootstrap
+targets were computed from the already-updated Q. Two cells now use exactly that
+patch (`*_revisable_naive`) and carry `mode: "naive_patch"` in the ledger.
+
+**40 seeds, all six cells:**
+
+| cell | overcredit after lucky | overcredit after contradiction | **correct credit** | revision mode |
+|---|---:|---:|---:|---|
+| `immediate_fixed` | 1.0000 | −0.8377 | **1.0000** | — |
+| `immediate_revisable` | 1.0000 | −0.8377 | **0.0000** | replay |
+| `deferred_fixed` | 1.0000 | −0.7876 | **1.0000** | — |
+| `deferred_revisable` | 1.0000 | −0.7876 | **0.0000** | replay |
+| `immediate_revisable_naive` | 1.0000 | **−1.2682** | **−2.0000** | naive patch |
+| `deferred_revisable_naive` | 1.0000 | **−1.2181** | **−2.0000** | naive patch |
+
+| contrast | metric | mean | p (sign-flip) | p (Wilcoxon) | POI |
+|---|---|---:|---:|---:|---:|
+| replay − naive | overcredit | **+0.43047** | 0.0000 | 9.1e−13 | 1.000 |
+| replay − naive | **correct credit** | **+2.00000** | 0.0000 | 9.1e−13 | 1.000 |
+
+**The approximation's error is not small — it overshoots.** Subtracting
+`dQ_old` cannot undo the bootstrap targets that were computed *from* the
+updated Q, so the patch drives the correct plan's credit to **−2.0** where a
+true replay lands at 0.0, and drags the wrong plan's credit 0.43 further down
+than it should go. Every one of 40 seeds agrees (Wilcoxon p = 2^−40). The
+plan's warning is correct and now quantified.
+
+## C. Statistics: Wilcoxon and probability of improvement
+
+`src/rflnext/stats_ext.py` (kept separate so the vendored `stats.py` stays
+byte-identical) adds `wilcoxon_signed_rank`, `probability_of_improvement`,
+`summary_contrast`, and re-exports `holm_correct`. Wired into the timing
+contrasts; `wilcoxon_signed_rank` returns `None` rather than a fabricated number
+when every paired difference is zero or scipy is unavailable.
+
+## D. The plan's three architectures, compared
+
+| arm | architecture | AUC | collateral | precision | corrections |
+|---|---|---:|---:|---:|---:|
+| `aux_penalty_rfl` | Auxiliary penalty (`dQ^task + λ dQ^diag`, all modules) | 0.7302 | **0.7081** | 0.2919 | 4,450 |
+| `global_value_rfl` | Global value + module knowledge (`Q_G + λ_H Q_H`) | 0.7313 | 0.4383 | 0.5617 | 1,167 |
+| `sequence_rfl` / `learned_rfl` | **Responsibility-gated** (`dQ_m = U_m α δ`) | **0.7336** | **0.4217** | 0.5783 | 1,187 |
+| `oracle_rfl` | gated, SCM truth | 0.7338 | 0.0000 | 1.0000 | 978 |
+
+**The responsibility gate wins.** The auxiliary penalty is the *worst* arm on
+knowledge damage (0.7081, +0.0346 worse than even `direct_feedback`, p=0.0002) —
+exactly the drawback the plan predicts: once `r = -1` has already pushed both
+modules down, a later diagnosis can only patch, not protect. The global-value
+architecture sits in between (0.4383). Only gating reaches 0.4217 while staying
+non-inferior on AUC (−0.00011).
+
+## E. Ledger tables
+
+| table | status |
+|---|---|
+| revision ledger, `old_U -> new_U` + trigger + mode | **done** — `outputs/v03_timing_formal/revision_ledger.jsonl` (0.67 MB) |
+| diagnosis-level raw evidence per attribution | **done** — `outputs/v03_gamma_formal/attribution_evidence.jsonl` (19.4 MB): observable features, counterfactual outcomes, sequence scores, and truth, side by side per trace |
+| per-episode table in the plan's full schema | **partial** — per-seed curves, family counts, corrections and collateral are in every `summary.json`, but not serialised one row per episode |
+
+## Remaining gaps after this pass
+
+Only two, both engineering and neither affecting a conclusion:
+
+1. the per-episode table is aggregated rather than one row per episode (E);
+2. seed-parallel execution is unavailable in this sandbox (multiprocessing needs
+   named pipes, which are denied); single-process throughput is 66,607 ep/s, so
+   nothing was blocked by it.
+
+
 
 
 
