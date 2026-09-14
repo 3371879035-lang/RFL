@@ -3,22 +3,20 @@ environment:
   horizon: 8
 experiment:
   arms:
+  - NoCorruption
   - NoCorrection
   - ModuleOracle
   - DecisionOracle
   - RepairOracle
-  distribution:
-    decision_only: 0.25
-    execution_only: 0.25
-    plan_only: 0.25
-    whole: 0.25
-  episodes: 2000
+  corrupt_delta: 1.0
+  corrupt_states: 6
+  episodes: 1500
   eval_episodes: 100
   eval_every: 250
   name: v04_alpha
   reward_mode: A
   seed_base: 4600000
-  seeds: 2
+  seeds: 3
   warmup_episodes: 300
 gate:
   ceiling_episodes: 500

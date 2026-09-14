@@ -24,9 +24,9 @@ experiment:
   eval_every: 250
   eval_episodes: 100
   reward_mode: "A"
-  distribution:
-    whole: 0.25
-    plan_only: 0.25
-    decision_only: 0.25
-    execution_only: 0.25
-  arms: [NoCorrection, ModuleOracle, DecisionOracle, RepairOracle]
+  # The corruption injected into the checkpoint.  A decision failure must be the
+  # agent's OWN bad choice, so the fault is a bad value estimate, not an
+  # external action override.
+  corrupt_states: 6
+  corrupt_delta: 1.0
+  arms: [NoCorruption, NoCorrection, ModuleOracle, DecisionOracle, RepairOracle]

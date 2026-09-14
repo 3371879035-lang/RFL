@@ -34,6 +34,7 @@ from .env import (
     PLAN_ACTIONS,
     SUCCESS,
     TIMEOUT,
+    WAIT,
     X_MAX,
     Scene,
     Step,
@@ -42,10 +43,39 @@ from .env import (
     reference_action,
 )
 from .knowledge import build_knowledge_set, kd_innocent, wmd
-from .oracle import classify, oracle_repair_set
+from .oracle import classify, oracle_repair_set, scene_from_trace
 from .updates import MODES
 
-ARMS = ("NoCorrection", "ModuleOracle", "DecisionOracle", "RepairOracle")
+ARMS = (
+    "NoCorruption",   # clean checkpoint, no correction: the ceiling reference
+    "NoCorrection",   # corrupted checkpoint, no correction: the damage reference
+    "ModuleOracle",
+    "DecisionOracle",
+    "RepairOracle",
+)
+
+CALIBRATION_NOTE = """\
+Measured state of Pilot Alpha after the fault injector was repaired:
+
+    arms now separate on WMD and on sites touched
+      ModuleOracle     WMD 0.0506, 4409 sites
+      DecisionOracle   WMD 0.0535,  839 sites
+      RepairOracle     WMD 0.0535,  839 sites
+    but every arm still reaches SuccessAUC 1.0000
+
+    => CEILING_RISK.  Ordinary Q-learning repairs the six corrupted states
+    inside the 250-episode evaluation interval, so there is no persistent
+    damage for a diagnostic update to add value on.
+
+This is the v0.3 Stage 5 finding reproduced one layer down: the environment
+self-repairs faster than update semantics can matter.  Making Alpha
+discriminative therefore needs damage that PERSISTS, not a better arm:
+corrupt many more states, corrupt states the greedy policy rarely revisits, or
+evaluate recovery at a far finer interval than 250 episodes.
+
+Until the baseline shows a non-saturating recovery curve, Alpha numbers are not
+interpretable and must not be reported as a result.
+"""
 
 # Balanced diagnostic distribution (plan §"Balanced 与 Naturalistic 分布").
 BALANCED = {"whole": 0.25, "plan_only": 0.25, "decision_only": 0.25,
@@ -210,7 +240,29 @@ def train(cfg: dict, *, seed: int, arm: str) -> TrainResult:
     checkpoint = q.copy()
     ks = build_knowledge_set(q, horizon=horizon)
 
-    # ---- phase 2: fault scenes with the arm's correction ----------------
+    # ---- induce knowledge corruption (the thing Alpha must repair) ------
+    # A decision failure has to be a bad decision BY THE AGENT.  Overriding the
+    # action from outside made it exogenous: nothing to learn, and every arm
+    # produced an identical curve.  Instead the checkpoint's own value estimate
+    # is corrupted at a set of states, so the agent greedily chooses wrongly and
+    # a diagnostic update at that site can genuinely repair it.
+    corrupted: list = []
+    corrupt_delta = float(exp.get("corrupt_delta", 1.0))
+    n_corrupt = int(exp.get("corrupt_states", 0))
+    if arm != "NoCorruption" and n_corrupt > 0:
+        pool = [k for k in ks.items if k.unit == "DECISION"]
+        for item in pool[:n_corrupt]:
+            row = q.low.get(item.state)
+            if row is None:
+                continue
+            bad = WAIT
+            row[bad] = row[item.correct] + corrupt_delta
+            corrupted.append((item.state, bad))
+        q_hash_after_corruption = q.deep_hash()
+    else:
+        q_hash_after_corruption = q.deep_hash()
+
+    # ---- phase 2: clean scenes; failures come from the corruption --------
     checkpoints, curve = [], []
     wmd_sum = kd_sum = 0.0
     corrections = sites_touched = clippings = collateral = 0
@@ -221,17 +273,15 @@ def train(cfg: dict, *, seed: int, arm: str) -> TrainResult:
 
     record(0)
     for ep in range(episodes):
-        kind = _sample_kind(rng, dist)
-        g = int(rng.integers(0, 2))
-        fault_t = int(rng.integers(1, min(4, horizon)))
-        if kind == "plan_only":
-            scene = Scene(f"S{ep}", g, 1 - g, horizon=horizon)
-        elif kind == "decision_only":
-            scene = Scene(f"S{ep}", g, g, decision_fault_at=fault_t, horizon=horizon)
-        elif kind == "execution_only":
-            scene = Scene(f"S{ep}", g, g, execution_fault_at=fault_t, horizon=horizon)
+        # Only execution faults remain exogenous; they are the plan's
+        # "execution interface" case and must NOT be blamed on the decision.
+        exec_fault = (ep % 4 == 3)
+        g = int(rng.integers(0, 2)) if exec_fault else (ep % 2)
+        if exec_fault:
+            ft = int(rng.integers(1, horizon))
+            scene = Scene(f"S{ep}", g, g, execution_fault_at=ft, horizon=horizon)
         else:
-            scene = Scene(f"S{ep}", g, 1 - g, decision_fault_at=fault_t, horizon=horizon)
+            scene = Scene(f"S{ep}", g, g, horizon=horizon)
 
         eps = linear_epsilon(warmup + ep, start=0.30, end=0.05, decay_episodes=decay)
         trace = agent_rollout(q, scene, epsilon=eps, rng=rng)
@@ -244,9 +294,9 @@ def train(cfg: dict, *, seed: int, arm: str) -> TrainResult:
                 record(ep + 1)
             continue
 
-        res = oracle_repair_set(scene, n_samples=8)
+        res = oracle_repair_set(scene_from_trace(trace), n_samples=8)
         counts[res.family] = counts.get(res.family, 0) + 1
-        if arm == "NoCorrection" or not res.sufficient:
+        if arm in ("NoCorrection", "NoCorruption") or not res.sufficient:
             if (ep + 1) % eval_every == 0:
                 record(ep + 1)
             continue

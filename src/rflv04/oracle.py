@@ -142,6 +142,35 @@ def enumerate_sufficient(scene: Scene) -> tuple[list, int]:
     return sufficient, tried
 
 
+def scene_from_trace(trace) -> Scene:
+    """Reconstruct the oracle's view of what actually happened.
+
+    Faults must be classified from the trace the agent *produced*, not from the
+    generator's intentions: the plan is always the agent's own choice, and the
+    critical decision is the first timestep where its realized action left the
+    reference path.
+    """
+    scene = trace.scene
+    act = [s for s in trace.steps if s.state[4] == ACT and s.intent >= 0]
+    critical_t = None
+    for step in act:
+        ref = reference_action(step.state[1], step.state[2], step.state[3])
+        if step.realized != ref:
+            critical_t = step.t
+            break
+    return Scene(
+        scene_id=scene.scene_id,
+        g=scene.g,
+        plan=trace.steps[0].next_state[3],      # what the agent actually chose
+        decision_fault_at=critical_t,
+        decision_fault_action=(next((s.realized for s in act if s.t == critical_t), WAIT)
+                               if critical_t is not None else WAIT),
+        execution_fault_at=scene.execution_fault_at,
+        execution_fault_action=scene.execution_fault_action,
+        horizon=scene.horizon,
+    )
+
+
 def classify(scene: Scene, trace: Trace | None = None) -> OracleResult:
     """Decide the family by intervention, not by the injection kind."""
     trace = trace or rollout(scene)

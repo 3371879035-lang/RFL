@@ -217,8 +217,17 @@ def test_all_arms_train_and_report():
         assert len(res.success_curve) == len(res.checkpoints)
         assert 0.0 <= res.success_curve[-1] <= 1.0
         assert res.wmd >= 0.0 and res.kd_innocent >= 0.0
-        if arm != "NoCorrection":
+        if arm not in ("NoCorrection", "NoCorruption"):
             assert res.corrections > 0
+
+
+def test_nocorruption_leaves_the_checkpoint_clean():
+    """NoCorruption is the ceiling reference: nothing is corrupted and nothing
+    is corrected, so it must out-perform the corrupted no-correction arm."""
+    clean = train(SMALL, seed=4, arm="NoCorruption")
+    damaged = train(SMALL, seed=4, arm="NoCorrection")
+    assert clean.corrections == 0 and damaged.corrections == 0
+    assert clean.success_curve[-1] >= damaged.success_curve[-1]
 
 
 def test_training_is_reproducible():
