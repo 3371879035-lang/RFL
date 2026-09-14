@@ -3,6 +3,51 @@
 最小可复现表格式强化反馈学习（Reinforcement Learning from Feedback）实验系统。
 完整规范见 [`docs/RFL_CausalChase_v0_1_SPEC.md`](docs/RFL_CausalChase_v0_1_SPEC.md)。
 
+---
+
+## 📍 版本导航与结果入口
+
+本项目按里程碑分成若干分支，**默认分支 `master` 是 v0.2 的状态**。最新结果在 `v0.4`。
+
+| 分支 | 内容 | 关键文档 |
+|---|---|---|
+| `master`（默认） | v0.1 / v0.2 | [`docs/RESULTS.md`](docs/RESULTS.md) |
+| `v0.2-responsibility-update-learning` | v0.2 责任→更新→知识→学习 | — |
+| `release/v02-protocol-closeout` | v0.2 协议收口 | — |
+| `v0.3` | v0.3 credit / repair 语义 | `docs/V0_3_CLOSEOUT.md` |
+| **`v0.4`** | **当前主线：credit-unit 与 repair 语义** | **`docs/FROZEN_RESULTS_400.md`** |
+
+### 结论入口
+
+**先读 [`docs/FROZEN_RESULTS_400.md`](https://github.com/3371879035-lang/RFL/blob/v0.4/docs/FROZEN_RESULTS_400.md)**（在 `v0.4` 分支上）——这是全项目**唯一**的确认性文档。
+
+它建立在三项方法学工作之上：
+
+- [`docs/SEED_BLOCK_PROTOCOL.md`](https://github.com/3371879035-lang/RFL/blob/v0.4/docs/SEED_BLOCK_PROTOCOL.md)
+  —— 冻结的预注册：$N_{\max}=400$，四个不重叠的 100-seed block；结论由 CI 相对
+  $\Delta_{\min}=0.01$ 的位置决定，而不是由 $p$ 是否跨过 0.05 决定。
+- [`docs/ROBUSTNESS_AUDIT.md`](https://github.com/3371879035-lang/RFL/blob/v0.4/docs/ROBUSTNESS_AUDIT.md)
+  —— 为什么需要上面的协议：本项目的 per-seed 配对差值是**零膨胀 + 重尾**的，
+  均值单独不可解释。三条旧结论因此被撤回。
+- [`docs/REVERSAL_LEDGER.md`](https://github.com/3371879035-lang/RFL/blob/v0.4/docs/REVERSAL_LEDGER.md)
+  —— 反转账本：23 条对比里 5 次真反转、**0 次方向改变**；7 次 CI 翻转**全是 no-op**。
+
+> ⚠️ **除 `FROZEN_RESULTS_400.md` 外的所有结果文件都标记为 EXPLORATORY**，不作为证据。
+> 它们记录了探索过程，以及旧数字在新协议下移动了多少——这本身就是结果。
+
+### v0.4 的核心结论（N=400）
+
+- **难度扫描六档中只有一个真发现**：`tight_h5_a03`（horizon 5, α=0.03）上 Oracle
+  路由**有害**，ΔAUC = −0.0828，**四个独立 block 全部为负**。
+- **其余五档全部 EQUIVALENT 或 INCONCLUSIVE** —— 项目里三次"反转"都是噪声的移动。
+- **"直接修补 Q-entry 不是合适的 update primitive"**：`CFRevalue` 0.8509 显著差于
+  `NoCorrection` 0.9432（Δ = −0.0923），是全项目最稳健的结果。
+- 一个复现性缺陷（`PYTHONHASHSEED` 导致 WMD 有 3.3 倍波动）被发现后，**整套 v0.4
+  seed 作废并从 N=0 重跑**；见
+  [`docs/V0_4_REPRODUCIBILITY_DEFECT.md`](https://github.com/3371879035-lang/RFL/blob/v0.4/docs/V0_4_REPRODUCIBILITY_DEFECT.md)。
+
+---
+
 ## 科学定位
 
 > **Feedback information 不应被默认视为 ground truth learning target；在一个完全
