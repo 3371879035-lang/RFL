@@ -27,13 +27,19 @@ def step_cell(x: int, y: int, action: int) -> tuple[int, int]:
     raise ValueError(f"unknown action {action!r}")
 
 
-def terminal_kind(x: int, y: int, goal_lane: int, hazard: int) -> str | None:
+def terminal_kind(x: int, y: int, goal_lane: int, hazard: int, lucky: int = 0) -> str | None:
     """Terminal on the exit cell, or ``None`` to continue.
 
-    Entering the exit cell while the hazard is active is a failure: the gate
-    is jammed.  This is the only exogenous cause of failure in the env, and it
-    is what makes the ``E_failure`` family unwinnable by construction.
+    ``hazard=1`` jams the gate on the goal lane: the only exogenous cause of
+    *failure*.  ``lucky=1`` opens a shortcut on the other lane: the only
+    exogenous cause of *unearned success*, which Stage 3 needs so that a wrong
+    plan can succeed by luck and later be re-interpreted.
+
+    ``lucky`` defaults to 0, so every earlier caller keeps its old behaviour.
     """
-    if x == W - 1 and y == goal_lane:
-        return BLOCKED if hazard == 1 else SUCCESS
+    if x == W - 1:
+        if y == goal_lane:
+            return BLOCKED if hazard == 1 else SUCCESS
+        if lucky == 1:
+            return SUCCESS
     return None

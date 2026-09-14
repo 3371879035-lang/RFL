@@ -344,4 +344,95 @@ A second defect: `generate_balanced` filled families at different rates, so a
 naive head/tail split was badly imbalanced (E_failure 192 vs H_error 132 in a
 600-trace training half). Fixed by shuffling deterministically before returning.
 
+---
+
+## Stage 3 — attribution timing x historical revision
+
+### Provenance
+
+| item | value |
+|---|---|
+| config | `configs/timing.yaml` |
+| env | extended with a **lucky shortcut** (`lucky=1` opens the exit on the other lane), the only exogenous cause of *unearned success*; `hazard` remains the only exogenous cause of failure |
+| design | 12 paired seeds (4300000..4300011); 200 warmup + 120 lucky + 12 contradiction episodes; every 4th contradiction episode is an unlucky failure |
+| cells | `{immediate, deferred} x {fixed, revisable}` |
+| artifacts | `outputs/v03_timing/{config.yaml,summary.json}` |
+| process exit | **2** — the pre-registered "revisable beats fixed" test does **not** pass |
+
+### The protocols, stated plainly
+
+* **Lucky success**: the agent is made to run a *wrong* plan while `lucky=1`, so
+  it succeeds. Ordinary reinforcement credits the wrong plan.
+* **Contradiction**: the same wrong plan, no luck, fails.
+* **Unlucky failure**: the *correct* plan fails because `hazard=1`, while the
+  same plan normally succeeds.
+* **Revision rule** (identical in both revisable cells, deliberately blind):
+  on a contradiction, withdraw the outcome evidence of every earlier success of
+  the same plan, by restoring a checkpoint and replaying the ledger forward --
+  never by `Q <- Q - dQ_old + dQ_new`.
+
+### Results
+
+| cell | overcredit after lucky | overcredit after contradiction | **correct credit after contradiction** | recovery | revision precision | false reversals |
+|---|---:|---:|---:|---:|---:|---:|
+| `immediate_fixed` | 1.0000 | −0.8377 | **1.0000** | 1.00 | — | 0 |
+| `immediate_revisable` | 1.0000 | −0.8377 | **0.0000** | 1.00 | 0.1667 | 720 |
+| `deferred_fixed` | 1.0000 | −0.7876 | **1.0000** | 1.00 | — | 0 |
+| `deferred_revisable` | 1.0000 | −0.7876 | **0.0000** | 1.00 | 0.1667 | 720 |
+
+Paired contrasts (12 seeds). `overcredit` = Q of the wrong plan (lower better);
+`correct credit` = Q of the right plan (higher better).
+
+| contrast | metric | mean | 95% CI | p |
+|---|---|---:|---|---:|
+| `immediate_revisable` − `immediate_fixed` | overcredit | **+0.00000** | [0, 0] | 1.0000 |
+| `immediate_revisable` − `immediate_fixed` | **correct credit** | **−1.00000** | [−1, −1] | **0.0004** |
+| `immediate_revisable` − `immediate_fixed` | recovery episodes | +0.00000 | [0, 0] | 1.0000 |
+| `deferred_fixed` − `immediate_fixed` | overcredit | **+0.05009** | [+0.05009, +0.05009] | **0.0006** |
+| `deferred_fixed` − `immediate_fixed` | correct credit | +0.00000 | [0, 0] | 1.0000 |
+
+### Verdict
+
+**`REVISION_IS_NET_HARMFUL_UNDER_A_BLIND_CONTRADICTION_RULE`**
+
+### Reading
+
+1. **Revisable credit destroyed the correct plan's credit completely** — Q(right
+   plan) fell from 1.0000 to 0.0000, Δ = −1.0, p = 0.0004 — while producing
+   **exactly zero** reduction in the wrong plan's overcredit.
+
+2. **Why it could not help.** Task RL already drives the wrong plan's value down
+   within a single episode: `recovery_episodes = 1` in *every* cell. By the time
+   a contradiction is confirmed there is no overcredit left to remove — but
+   plenty of correct credit to destroy.
+
+3. **The revision rule had no luck-detector.** It withdrew evidence from every
+   earlier success of the same plan, and could not tell an unearned success from
+   an earned one. Only **1 in 6** revisions was justified
+   (`revision_precision = 0.1667`); `false_reversal_rate = 0.8333`. This is
+   precisely the failure the research plan asked to test for, and it occurs.
+
+4. **Deferral is simply weaker, not "slower but eventually better".** Deferred
+   cells diagnose less (10 vs 12 events) and end with *more* residual overcredit
+   (+0.050, p = 0.0006) with no compensating gain on correct credit. It defers
+   without acquiring any new information, so the delay buys nothing.
+
+5. **Conclusion that connects the stages:** revision is only viable *on top of*
+   a working attributor. The blind rule failed because it could not distinguish
+   lucky from earned success — which is exactly the discrimination Pilot Gamma's
+   sequence + counterfactual machinery provides. Stage 3 as specified is not a
+   standalone improvement; it is a consumer of Stage 2.
+
+### Protocol note (recorded, not hidden)
+
+The first run of this experiment used 120 contradiction episodes and was
+**degenerate**: all four cells produced numerically identical overcredit
+(−2.000 for the immediate pair), because a long contradiction phase drives
+Q(wrong) to the same fixed point regardless of what the revision did. The
+revision effect was washed out before measurement. The phase was shortened to
+12 episodes so the revision is measured before it is overwritten — a
+measurement-window change, not a change to any threshold, label, or endpoint.
+The degenerate run is not reported as a result.
+
+
 

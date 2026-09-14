@@ -1,0 +1,29 @@
+schema_version: "0.3.0"
+environment:
+  horizon: 8
+  gamma: 1.0
+learning:
+  alpha_high: 0.10
+  alpha_diag: 0.10
+protocol:
+  warmup_episodes: 200
+  lucky_episodes: 120
+  # Deliberately SHORT.  With a long contradiction phase the task RL drives
+  # Q(wrong) to the same fixed point in every cell and washes out whatever the
+  # revision did -- the first version used 120 and produced identical numbers
+  # for all four cells.  A short phase measures the revision before it is
+  # overwritten.
+  contradiction_episodes: 12
+  # every 4th contradiction-phase episode is an unlucky failure: the correct
+  # plan fails for an exogenous reason, and a careless reviser will overturn it
+  unlucky_every: 4
+  checkpoint_every: 25
+experiment:
+  name: v03_timing
+  seeds: 12
+  seed_base: 4300000
+  cells:
+    - immediate_fixed
+    - immediate_revisable
+    - deferred_fixed
+    - deferred_revisable
