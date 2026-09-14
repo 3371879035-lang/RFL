@@ -1,0 +1,243 @@
+{
+  "schema_version": "0.3.0",
+  "experiment": "v03_alpha",
+  "git_commit": "",
+  "config": {
+    "schema_version": "0.3.0",
+    "environment": {
+      "horizon": 8,
+      "gamma": 1.0,
+      "width": 5,
+      "lanes": 2,
+      "p_hazard": 0.25
+    },
+    "learning": {
+      "alpha_low": 0.1,
+      "alpha_high": 0.1,
+      "epsilon_start": 0.3,
+      "epsilon_end": 0.05,
+      "epsilon_decay_fraction": 0.8
+    },
+    "gate": {
+      "min_auc_gap": 0.005,
+      "min_family_events": 400
+    },
+    "experiment": {
+      "name": "v03_alpha",
+      "seeds": 2,
+      "seed_base": 4000000,
+      "episodes": 10000,
+      "eval_every": 2000,
+      "eval_episodes": 100,
+      "arms": [
+        "traditional",
+        "positive_only"
+      ]
+    }
+  },
+  "seeds": [
+    {
+      "seed_index": 0,
+      "seed": 4000000,
+      "arm": "traditional",
+      "checkpoints": [
+        0,
+        2000,
+        4000,
+        6000,
+        8000,
+        10000
+      ],
+      "success_curve": [
+        0.06,
+        0.8,
+        0.8,
+        0.8,
+        0.8,
+        0.8
+      ],
+      "success_auc": 0.726,
+      "episodes_to_90": null,
+      "final_success": 0.8,
+      "family_counts": {
+        "H_error": 431,
+        "L_error": 608,
+        "HL_error": 342,
+        "E_failure": 2541
+      },
+      "n_negative_td": 39120,
+      "q_hash": "e2c822c9c7f820a5933dfb383bcfba07fa188cd6519b79adb2bba0f87c1409b6"
+    },
+    {
+      "seed_index": 0,
+      "seed": 4000000,
+      "arm": "positive_only",
+      "checkpoints": [
+        0,
+        2000,
+        4000,
+        6000,
+        8000,
+        10000
+      ],
+      "success_curve": [
+        0.06,
+        0.8,
+        0.8,
+        0.8,
+        0.8,
+        0.8
+      ],
+      "success_auc": 0.726,
+      "episodes_to_90": null,
+      "final_success": 0.8,
+      "family_counts": {
+        "H_error": 365,
+        "L_error": 474,
+        "HL_error": 314,
+        "E_failure": 2541
+      },
+      "n_negative_td": 29583,
+      "q_hash": "ac2e7b682d3c0cfbb2a966a214c94031bedcbd1be22c7bcaefa3a5d3e3583374"
+    },
+    {
+      "seed_index": 1,
+      "seed": 4000001,
+      "arm": "traditional",
+      "checkpoints": [
+        0,
+        2000,
+        4000,
+        6000,
+        8000,
+        10000
+      ],
+      "success_curve": [
+        0.05,
+        0.84,
+        0.84,
+        0.84,
+        0.84,
+        0.84
+      ],
+      "success_auc": 0.761,
+      "episodes_to_90": null,
+      "final_success": 0.84,
+      "family_counts": {
+        "H_error": 258,
+        "L_error": 686,
+        "HL_error": 357,
+        "E_failure": 2527
+      },
+      "n_negative_td": 37485,
+      "q_hash": "bd8953a70e00338acbac6dc05cfbcd88bdeece4f7dd521bb89973eefed7a97ec"
+    },
+    {
+      "seed_index": 1,
+      "seed": 4000001,
+      "arm": "positive_only",
+      "checkpoints": [
+        0,
+        2000,
+        4000,
+        6000,
+        8000,
+        10000
+      ],
+      "success_curve": [
+        0.05,
+        0.84,
+        0.84,
+        0.84,
+        0.84,
+        0.84
+      ],
+      "success_auc": 0.761,
+      "episodes_to_90": null,
+      "final_success": 0.84,
+      "family_counts": {
+        "H_error": 386,
+        "L_error": 894,
+        "HL_error": 128,
+        "E_failure": 2527
+      },
+      "n_negative_td": 33803,
+      "q_hash": "b7cebc9765029b71e176adb43e00a7df9319197436694f2fe41f82a0183857ce"
+    }
+  ],
+  "pooled": {
+    "traditional": {
+      "checkpoints": [
+        0,
+        2000,
+        4000,
+        6000,
+        8000,
+        10000
+      ],
+      "success_curve": [
+        0.055,
+        0.8200000000000001,
+        0.8200000000000001,
+        0.8200000000000001,
+        0.8200000000000001,
+        0.8200000000000001
+      ],
+      "success_auc": 0.7435,
+      "final_success": 0.8200000000000001,
+      "family_counts": {
+        "H_error": 689,
+        "L_error": 1294,
+        "HL_error": 699,
+        "E_failure": 5068
+      }
+    },
+    "positive_only": {
+      "checkpoints": [
+        0,
+        2000,
+        4000,
+        6000,
+        8000,
+        10000
+      ],
+      "success_curve": [
+        0.055,
+        0.8200000000000001,
+        0.8200000000000001,
+        0.8200000000000001,
+        0.8200000000000001,
+        0.8200000000000001
+      ],
+      "success_auc": 0.7435,
+      "final_success": 0.8200000000000001,
+      "family_counts": {
+        "H_error": 751,
+        "L_error": 1368,
+        "HL_error": 442,
+        "E_failure": 5068
+      }
+    }
+  },
+  "ceiling_gate": {
+    "status": "benchmark_no_discriminating_power",
+    "reasons": [
+      "auc_gap_below_floor"
+    ],
+    "finals": {
+      "traditional": 0.8200000000000001,
+      "positive_only": 0.8200000000000001
+    },
+    "aucs": {
+      "traditional": 0.7435,
+      "positive_only": 0.7435
+    },
+    "auc_spread": 0.0,
+    "saturated_at_ceiling": true,
+    "structural_ceiling": 0.75
+  },
+  "family_gate": {
+    "status": "ok",
+    "short_families": []
+  }
+}
