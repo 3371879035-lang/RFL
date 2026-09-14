@@ -76,27 +76,25 @@ def build_knowledge_set(q, *, theta: float = DEFAULT_THETA, horizon: int = 8,
             if m >= theta:
                 ks.items.append(KnowledgeItem("PLAN", (g, 0, 0), best, m))
 
-    # DECISION-phase items: on the clean path, the correct action at each state.
-    # The competing set must be the ACT actions only.  Including PLAN_A/PLAN_B
-    # (which are never legal here and sit at exactly 0.0) manufactured a
-    # competitor out of nothing and pushed every real margin below theta, which
-    # silently emptied the Knowledge Set and made the whole damage measurement
-    # structurally zero.
-    from .env import ACT_ACTIONS
-    for o in options:
-        x, y = 0, 0
+    # DECISION-phase items: read off the AGENT'S OWN greedy trajectory, not the
+    # reference policy's.  The two differ whenever the horizon leaves slack --
+    # this agent learned to WAIT before advancing and still succeeds -- and
+    # building the set from the reference path therefore looked up states the
+    # agent barely visits, found negative margins, and silently emptied the set.
+    from .env import ACT, ACT_ACTIONS, PLAN, apply_action
+    for g in options:
+        x, y, o = 0, 0, g
         for t in range(1, horizon + 1):
             state = (x, y, o, t)
-            correct = reference_action(x, y, o)
             row = q.low.get(state)
             if row is None:
                 break
             vals = {a: row[a] for a in ACT_ACTIONS}
-            m = correct_margin(vals, correct)
+            best = max(vals, key=vals.get)
+            m = correct_margin(vals, best)
             if m >= theta:
-                ks.items.append(KnowledgeItem("DECISION", state, correct, m))
-            from .env import apply_action
-            x, y = apply_action(x, y, o, correct)
+                ks.items.append(KnowledgeItem("DECISION", state, best, m))
+            x, y = apply_action(x, y, o, best)
             if x == x_max:
                 break
     return ks
