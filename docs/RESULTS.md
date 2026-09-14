@@ -102,3 +102,33 @@ B3（dash=0, success 0.98）、B4（dash=0.10, standard 1.00 / full_rfl 0.94）�
 可能原因：环境本身可学会且三算法均饱和（天花板效应）、auxiliary shaping 幅度
 （alpha_diag=0.10）相对 task QL 影响小、feedback 注入错误率下诊断更新不改变
 长期策略收敛。这是可报告的科学负结果，不作为"RFL 无效"断言——仅限本环境/规模。
+
+---
+
+## Experiment A 扩样：50 → 200 seeds（2026-09-01）
+
+确认性实验由 50 seeds 扩到 **200 seeds** 重跑。注意 `run_confirmatory.py` 以
+append 模式写 CSV，直接重跑会在旧数据后追加，因此原 50-seed 产物先整体移至
+`outputs/confirmatory_a/_as_run_50seeds/`，再从空目录重跑，两份均保留。
+
+### 结果
+
+| 统计量 | 50 seeds | **200 seeds** |
+|---|---|---|
+| ΔAE（symmetric 0.40） | −0.272 | **−0.268** |
+| Cohen d_z | −5.72 | **−5.99** |
+| ΔWUR（symmetric 0.40） | −0.026 | **−0.025** |
+| d_z（WUR） | −0.45 | **−0.44** |
+
+### 判读
+
+1. **确认性结论完全复现。** ΔAE 从 −0.272 到 −0.268，d_z 从 −5.72 到 −5.99，
+   四倍样本量下几乎没有移动。这是全项目**唯一**一个结论不随 seed 数漂移的
+   pilot——也是效应量相对门槛最大的一个。这一点与 v0.3/v0.4 中反复翻转的
+   mean-based 结论形成对照（见 v0.3 仓库 `docs/ROBUSTNESS_AUDIT.md`）。
+2. **WUR 仍未达预注册的 ≤ −0.10**，与 50 seeds 时一致（−0.025，d_z −0.44）。
+   原因同前：E-only 轨迹的 oracle R* 固有 mixed，忠实归因的 WUR 下限 ≈ 0.5，
+   且 Immediate 通过降低 UpdateCoverage 在 WUR 上"占便宜"。该门槛在本环境
+   几何下不可达，属于规范预期的结果，不是新发现。
+3. clean 条件方向不变（AE +0.017，WUR +0.320）。
+
