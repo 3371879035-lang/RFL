@@ -434,5 +434,108 @@ revision effect was washed out before measurement. The phase was shortened to
 measurement-window change, not a change to any threshold, label, or endpoint.
 The degenerate run is not reported as a result.
 
+---
+
+## Stage 4 — end-to-end Q-learning with attribution in the loop
+
+### Provenance
+
+| item | value |
+|---|---|
+| config | `configs/stage4.yaml` |
+| design | 20 paired seeds (4400000..4400019), 3,000 episodes per arm per seed, greedy eval of 100 episodes every 250 |
+| feedback | the environment emits a diagnostic label that is **wrong with probability 0.40**; the outcome reward is never falsified, only the explanation attached to it |
+| attributor | sequence model pretrained offline on 1,000 generated traces and frozen |
+| artifacts | `outputs/v03_stage4/{config.yaml,summary.json,run.log}` |
+| process exit | **0** — both gates pass |
+
+### Pooled by arm
+
+| arm | success AUC | final success | collateral rate | update precision | exp. knowledge damage | corrections | CF queries |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| `traditional` | 0.7308 | 0.7610 | — | — | 0.00000 | 0 | 0 |
+| `positive_only` | 0.7316 | 0.7610 | — | — | 0.00000 | 0 | 0 |
+| `direct_feedback` | 0.7232 | 0.7610 | **0.6427** | 0.3573 | 0.06427 | 1,175 | 0 |
+| `sequence_rfl` | 0.7316 | 0.7610 | **0.3807** | 0.6193 | 0.03807 | 776 | 0 |
+| `learned_rfl` | 0.7316 | 0.7610 | **0.3807** | 0.6193 | 0.03807 | 776 | 1,319 |
+| `oracle_rfl` | 0.7313 | 0.7610 | **0.0000** | 1.0000 | 0.00000 | 526 | 0 |
+
+`collateral rate` = share of diagnostic corrections that targeted a module the
+SCM says was **not** responsible.
+
+### Paired contrasts (20 seeds)
+
+**Utility, vs `traditional`**
+
+| arm | ΔAUC | 95% CI | p |
+|---|---:|---|---:|
+| `direct_feedback` | **−0.00754** | [−0.01775, +0.00008] | 0.1925 |
+| `sequence_rfl` | +0.00088 | [+0.00000, +0.00263] | 1.0000 |
+| `learned_rfl` | +0.00088 | [+0.00000, +0.00263] | 1.0000 |
+| `oracle_rfl` | +0.00054 | [−0.00100, +0.00263] | 1.0000 |
+
+**Knowledge damage, vs `direct_feedback`** (the only other arm that corrects)
+
+| arm | Δcollateral | 95% CI | p | Δprecision |
+|---|---:|---|---:|---:|
+| `sequence_rfl` | **−0.26204** | [−0.29126, −0.23091] | **0.0000** | +0.26204 |
+| `learned_rfl` | **−0.26204** | [−0.29159, −0.23128] | **0.0000** | +0.26204 |
+| `oracle_rfl` | **−0.64269** | [−0.65649, −0.62831] | **0.0000** | +0.64269 |
+
+### Gates
+
+| gate | outcome |
+|---|---|
+| `learned_rfl` non-inferior on AUC vs `traditional` (margin 0.02) | **True** |
+| `learned_rfl` reduces knowledge damage vs `direct_feedback` | **True** |
+
+### Verdict
+
+**`RFL_IMPROVES_CREDIT_WITHOUT_HURTING_UTILITY`** — a valid outcome the research
+plan names in advance.
+
+### Reading
+
+1. **Trusting the diagnostic label is the worst option available.**
+   `direct_feedback` lands at **64.3%** collateral — *worse* than the 40% label
+   error rate, because it also corrects on environment-caused failures where
+   neither module is responsible. It is also the **only** arm whose task
+   utility is numerically hurt (ΔAUC −0.0075).
+
+2. **Verification cuts wrong-module updates by 41%**: collateral 0.6427 ->
+   0.3807, a paired effect of **−0.262** with CI [−0.291, −0.231], p = 0.0000.
+   Update precision rises 0.3573 -> 0.6193. Expected knowledge damage falls
+   0.0643 -> 0.0381.
+
+3. **The Oracle upper bound is qualitatively different**, not just better:
+   collateral **exactly 0.0000** and precision **1.0000**. It also corrects less
+   often (526 vs 776), so the honest gap between learned and oracle RFL is
+   concentrated in *how often* the learner commits an update at all.
+
+4. **The counterfactual component added exactly nothing online.** `sequence_rfl`
+   and `learned_rfl` are identical to four decimals on every metric — collateral
+   0.3807, precision 0.6193, AUC 0.7316 — while `learned_rfl` spent **1,319 extra
+   CF queries**. This is the plan's "Core-RFL minus one component" ablation, and
+   it says the component is dispensable *in this loop*. The reason is visible in
+   `attribute_seq_then_cf`: at K=1 it tests precisely the hypothesis the sequence
+   prior already ranks first, so it can change the *probability* but not the
+   *argmax*. Gamma showed the same thing from the other side — at K=1 CF improved
+   AUPRC and Brier (calibration) while the top-1 decision was already made by the
+   prior. **Across both pilots, CF buys calibration, not decisions.**
+
+5. **No arm changes task performance.** Final success is identical at 0.7610 for
+   all six arms and AUCs sit within 0.008. Consistent with Alpha and Beta: this
+   benchmark cannot express a utility difference.
+
+### Gate correction, recorded
+
+The first run of this stage exited 3 on a gate that was **ill-posed**. It
+compared `learned_rfl`'s collateral against `traditional`, which makes *zero*
+corrections and therefore has no collateral at all — the contrast cannot exist,
+so the gate could never pass. Utility is now judged against `traditional` and
+knowledge damage against `direct_feedback`, the arm that actually acts on the
+label. The first run's numbers were unchanged; only the comparison was fixed.
+
+
 
 
