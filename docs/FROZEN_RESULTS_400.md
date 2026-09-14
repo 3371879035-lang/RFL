@@ -50,6 +50,28 @@ rule, **five of the six difficulty settings are `EQUIVALENT` or `INCONCLUSIVE`,
 and one is `SUPPORT_B` in all four blocks independently.** That is the entire
 difficulty-sweep result.
 
+### Where the reversals actually happened
+
+Full ledger in `docs/REVERSAL_LEDGER.md`. In summary, across 23 contrasts:
+
+| | count | at which N |
+|---|---|---|
+| **frozen-verdict reversals** | **5** | three at **N=400**, one at N=300, one at N=200 |
+| of those, direction changes | **0** | every one was the effect shrinking toward zero |
+| CI-exclusion flips | 7 | **all 7 were no-ops** — the verdict did not move |
+| cumulative-mean sign flips | 6 | all in quantities well inside $\Delta_{\min}$ |
+
+The three new reversals at N=400 are `tight_h6_a10` (`INCONCLUSIVE →
+EQUIVALENT`, B4 alone = +0.00114), `tight_h5_a10` (`SUPPORT_B → INCONCLUSIVE`,
+B4 alone = −0.00959) and `base_h8_a01` (`INCONCLUSIVE → EQUIVALENT`, B4 alone =
+−0.00382). Each is the fourth block landing closer to zero than the running mean
+— a statement about the decision boundary, not about the phenomenon.
+
+**Not one effect large enough to matter ever changed sign**, at any N.
+`DecisionOracle − ModuleOracle` wandered $+0.0055 \rightarrow -0.0003
+\rightarrow +0.0083 \rightarrow +0.0082$ and was `INCONCLUSIVE` at every look;
+the rule refused to turn that into three findings.
+
 ---
 
 ## 2. v0.3 Stage 5 — difficulty sweep (N = 400)
