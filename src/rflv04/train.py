@@ -238,7 +238,8 @@ def train(cfg: dict, *, seed: int, arm: str) -> TrainResult:
                      reward_mode=reward_mode)
 
     checkpoint = q.copy()
-    ks = build_knowledge_set(q, horizon=horizon)
+    ks = build_knowledge_set(q, theta=float(exp.get("knowledge_theta", 0.60)),
+                             horizon=horizon)
 
     # ---- induce knowledge corruption (the thing Alpha must repair) ------
     # A decision failure has to be a bad decision BY THE AGENT.  Overriding the

@@ -29,4 +29,8 @@ experiment:
   # external action override.
   corrupt_states: 6
   corrupt_delta: 1.0
+  # Margin floor for admitting a knowledge item.  At 0.60 this checkpoint
+  # yields only PLAN items, so nothing is ever corrupted and every damage
+  # number is a structural zero rather than a measurement.
+  knowledge_theta: 0.20
   arms: [NoCorruption, NoCorrection, ModuleOracle, DecisionOracle, RepairOracle]

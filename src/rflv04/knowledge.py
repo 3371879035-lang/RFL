@@ -77,6 +77,12 @@ def build_knowledge_set(q, *, theta: float = DEFAULT_THETA, horizon: int = 8,
                 ks.items.append(KnowledgeItem("PLAN", (g, 0, 0), best, m))
 
     # DECISION-phase items: on the clean path, the correct action at each state.
+    # The competing set must be the ACT actions only.  Including PLAN_A/PLAN_B
+    # (which are never legal here and sit at exactly 0.0) manufactured a
+    # competitor out of nothing and pushed every real margin below theta, which
+    # silently emptied the Knowledge Set and made the whole damage measurement
+    # structurally zero.
+    from .env import ACT_ACTIONS
     for o in options:
         x, y = 0, 0
         for t in range(1, horizon + 1):
@@ -85,13 +91,12 @@ def build_knowledge_set(q, *, theta: float = DEFAULT_THETA, horizon: int = 8,
             row = q.low.get(state)
             if row is None:
                 break
-            vals = {a: row[a] for a in range(len(row))}
+            vals = {a: row[a] for a in ACT_ACTIONS}
             m = correct_margin(vals, correct)
             if m >= theta:
                 ks.items.append(KnowledgeItem("DECISION", state, correct, m))
-            a = correct
             from .env import apply_action
-            x, y = apply_action(x, y, o, a)
+            x, y = apply_action(x, y, o, correct)
             if x == x_max:
                 break
     return ks
@@ -102,10 +107,11 @@ def unit_margin(q, item: KnowledgeItem) -> float:
         options = tuple(getattr(q, "options", (0, 1)))
         vals = {o: q.high_get(item.state, o) for o in options}
     else:
+        from .env import ACT_ACTIONS
         row = q.low.get(item.state)
         if row is None:
             return 0.0
-        vals = {a: row[a] for a in range(len(row))}
+        vals = {a: row[a] for a in ACT_ACTIONS}
     return correct_margin(vals, item.correct)
 
 
