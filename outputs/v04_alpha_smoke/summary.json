@@ -1,0 +1,383 @@
+{
+  "schema_version": "0.4.0",
+  "experiment": "v04_alpha",
+  "git_commit": "4e8411ef97ee256a165e20fe84a9042bc0ce7cbc",
+  "config": {
+    "schema_version": "0.4.0",
+    "environment": {
+      "horizon": 8,
+      "gamma": 1.0
+    },
+    "learning": {
+      "alpha_low": 0.1,
+      "alpha_high": 0.1,
+      "alpha_diag": 0.1,
+      "epsilon_decay_fraction": 0.8
+    },
+    "gate": {
+      "noninferiority_margin": 0.01,
+      "wmd_relative_decrease": 0.2,
+      "inconclusive_ci_width": 0.05,
+      "ceiling_success": 0.98,
+      "ceiling_episodes": 500,
+      "learning_failure_success": 0.3
+    },
+    "experiment": {
+      "name": "v04_alpha",
+      "seeds": 2,
+      "seed_base": 4600000,
+      "warmup_episodes": 300,
+      "episodes": 300,
+      "eval_every": 250,
+      "eval_episodes": 100,
+      "reward_mode": "A",
+      "distribution": {
+        "whole": 0.25,
+        "plan_only": 0.25,
+        "decision_only": 0.25,
+        "execution_only": 0.25
+      },
+      "arms": [
+        "NoCorrection",
+        "ModuleOracle",
+        "DecisionOracle",
+        "RepairOracle"
+      ]
+    }
+  },
+  "seeds": [
+    {
+      "seed": 4600000,
+      "arm": "NoCorrection",
+      "success_auc": 0.29000000000000004,
+      "final_success": 0.33,
+      "wmd": 0.0,
+      "kd_innocent": 0.0,
+      "collateral": 0.0,
+      "corrections": 0,
+      "sites": 0,
+      "clippings": 0,
+      "family_counts": {
+        "Plan": 50,
+        "Execution": 75,
+        "Decision": 84,
+        "WholeProcess": 79,
+        "clean": 12
+      },
+      "wall_s": 0.06737000000430271,
+      "q_hash": "dc8c3c8d9373fb2c88eee75042364ce1bf3328bd40f637a47a1bd1f21ed36a65"
+    },
+    {
+      "seed": 4600000,
+      "arm": "ModuleOracle",
+      "success_auc": 0.29000000000000004,
+      "final_success": 0.33,
+      "wmd": 0.0,
+      "kd_innocent": 0.0,
+      "collateral": 0.49899799599198397,
+      "corrections": 288,
+      "sites": 499,
+      "clippings": 0,
+      "family_counts": {
+        "Plan": 50,
+        "Execution": 75,
+        "Decision": 84,
+        "WholeProcess": 79,
+        "clean": 12
+      },
+      "wall_s": 0.05663010000716895,
+      "q_hash": "e456c6de4648ec247a7a7f781daeaf0a40b28239d2fa83c1c1a493ac3fe53563"
+    },
+    {
+      "seed": 4600000,
+      "arm": "DecisionOracle",
+      "success_auc": 0.29000000000000004,
+      "final_success": 0.33,
+      "wmd": 0.0,
+      "kd_innocent": 0.0,
+      "collateral": 0.0,
+      "corrections": 288,
+      "sites": 367,
+      "clippings": 0,
+      "family_counts": {
+        "Plan": 50,
+        "Execution": 75,
+        "Decision": 84,
+        "WholeProcess": 79,
+        "clean": 12
+      },
+      "wall_s": 0.06319620000431314,
+      "q_hash": "422726393d8da84c1becb7462a27c2877c2308012bfd089786ddb9f27688dca8"
+    },
+    {
+      "seed": 4600000,
+      "arm": "RepairOracle",
+      "success_auc": 0.29000000000000004,
+      "final_success": 0.33,
+      "wmd": 0.0,
+      "kd_innocent": 0.0,
+      "collateral": 0.0,
+      "corrections": 288,
+      "sites": 367,
+      "clippings": 0,
+      "family_counts": {
+        "Plan": 50,
+        "Execution": 75,
+        "Decision": 84,
+        "WholeProcess": 79,
+        "clean": 12
+      },
+      "wall_s": 0.06382929999381304,
+      "q_hash": "422726393d8da84c1becb7462a27c2877c2308012bfd089786ddb9f27688dca8"
+    },
+    {
+      "seed": 4600001,
+      "arm": "NoCorrection",
+      "success_auc": 0.24,
+      "final_success": 0.24,
+      "wmd": 0.0,
+      "kd_innocent": 0.0,
+      "collateral": 0.0,
+      "corrections": 0,
+      "sites": 0,
+      "clippings": 0,
+      "family_counts": {
+        "clean": 27,
+        "WholeProcess": 62,
+        "Execution": 84,
+        "Decision": 76,
+        "Plan": 51
+      },
+      "wall_s": 0.050307299999985844,
+      "q_hash": "676cf87d5dcf6fc6402f4caea845b4c08ed688e8893e0e83e7aedb04f4ca2bb1"
+    },
+    {
+      "seed": 4600001,
+      "arm": "ModuleOracle",
+      "success_auc": 0.24,
+      "final_success": 0.24,
+      "wmd": 0.0,
+      "kd_innocent": 0.0,
+      "collateral": 0.47770700636942676,
+      "corrections": 270,
+      "sites": 471,
+      "clippings": 0,
+      "family_counts": {
+        "clean": 30,
+        "WholeProcess": 62,
+        "Execution": 84,
+        "Decision": 76,
+        "Plan": 48
+      },
+      "wall_s": 0.058781900035683066,
+      "q_hash": "db43101763e97f7ac97a92835a94b7a27821b3b793464118a08543c0907e5373"
+    },
+    {
+      "seed": 4600001,
+      "arm": "DecisionOracle",
+      "success_auc": 0.24,
+      "final_success": 0.24,
+      "wmd": 0.0,
+      "kd_innocent": 0.0,
+      "collateral": 0.0,
+      "corrections": 270,
+      "sites": 332,
+      "clippings": 0,
+      "family_counts": {
+        "clean": 30,
+        "WholeProcess": 62,
+        "Execution": 84,
+        "Decision": 76,
+        "Plan": 48
+      },
+      "wall_s": 0.061754000023938715,
+      "q_hash": "bee9d981b2f5ea8338b42e9abf9da54fcb4b17cd290538b20f17b0d4e42b7c9c"
+    },
+    {
+      "seed": 4600001,
+      "arm": "RepairOracle",
+      "success_auc": 0.24,
+      "final_success": 0.24,
+      "wmd": 0.0,
+      "kd_innocent": 0.0,
+      "collateral": 0.0,
+      "corrections": 270,
+      "sites": 332,
+      "clippings": 0,
+      "family_counts": {
+        "clean": 30,
+        "WholeProcess": 62,
+        "Execution": 84,
+        "Decision": 76,
+        "Plan": 48
+      },
+      "wall_s": 0.05633950000628829,
+      "q_hash": "bee9d981b2f5ea8338b42e9abf9da54fcb4b17cd290538b20f17b0d4e42b7c9c"
+    }
+  ],
+  "pooled": {
+    "NoCorrection": {
+      "success_auc": 0.265,
+      "final_success": 0.28500000000000003,
+      "wmd": 0.0,
+      "kd_innocent": 0.0,
+      "collateral": 0.0,
+      "sites": 0.0
+    },
+    "ModuleOracle": {
+      "success_auc": 0.265,
+      "final_success": 0.28500000000000003,
+      "wmd": 0.0,
+      "kd_innocent": 0.0,
+      "collateral": 0.4883525011807054,
+      "sites": 485.0
+    },
+    "DecisionOracle": {
+      "success_auc": 0.265,
+      "final_success": 0.28500000000000003,
+      "wmd": 0.0,
+      "kd_innocent": 0.0,
+      "collateral": 0.0,
+      "sites": 349.5
+    },
+    "RepairOracle": {
+      "success_auc": 0.265,
+      "final_success": 0.28500000000000003,
+      "wmd": 0.0,
+      "kd_innocent": 0.0,
+      "collateral": 0.0,
+      "sites": 349.5
+    }
+  },
+  "contrasts": {
+    "DecisionOracle": {
+      "success_auc": {
+        "n_seeds": 2,
+        "mean": 0.0,
+        "median": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "cohens_dz": 0.0,
+        "p_sign_flip": 1.0,
+        "p_wilcoxon": null,
+        "probability_of_improvement": 0.0
+      },
+      "wmd": {
+        "n_seeds": 2,
+        "mean": 0.0,
+        "median": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "cohens_dz": 0.0,
+        "p_sign_flip": 1.0,
+        "p_wilcoxon": null,
+        "probability_of_improvement": 0.0
+      },
+      "kd_innocent": {
+        "n_seeds": 2,
+        "mean": 0.0,
+        "median": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "cohens_dz": 0.0,
+        "p_sign_flip": 1.0,
+        "p_wilcoxon": null,
+        "probability_of_improvement": 0.0
+      },
+      "collateral": {
+        "n_seeds": 2,
+        "mean": -0.4883525011807054,
+        "median": -0.4883525011807054,
+        "ci": [
+          -0.49899799599198397,
+          -0.47770700636942676
+        ],
+        "cohens_dz": -32.43788769953973,
+        "p_sign_flip": 0.5046,
+        "p_wilcoxon": 0.25,
+        "probability_of_improvement": 0.0
+      }
+    },
+    "RepairOracle": {
+      "success_auc": {
+        "n_seeds": 2,
+        "mean": 0.0,
+        "median": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "cohens_dz": 0.0,
+        "p_sign_flip": 1.0,
+        "p_wilcoxon": null,
+        "probability_of_improvement": 0.0
+      },
+      "wmd": {
+        "n_seeds": 2,
+        "mean": 0.0,
+        "median": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "cohens_dz": 0.0,
+        "p_sign_flip": 1.0,
+        "p_wilcoxon": null,
+        "probability_of_improvement": 0.0
+      },
+      "kd_innocent": {
+        "n_seeds": 2,
+        "mean": 0.0,
+        "median": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "cohens_dz": 0.0,
+        "p_sign_flip": 1.0,
+        "p_wilcoxon": null,
+        "probability_of_improvement": 0.0
+      },
+      "collateral": {
+        "n_seeds": 2,
+        "mean": -0.4883525011807054,
+        "median": -0.4883525011807054,
+        "ci": [
+          -0.49899799599198397,
+          -0.47770700636942676
+        ],
+        "cohens_dz": -32.43788769953973,
+        "p_sign_flip": 0.4974,
+        "p_wilcoxon": 0.25,
+        "probability_of_improvement": 0.0
+      }
+    }
+  },
+  "screens": {
+    "DecisionOracle": {
+      "noninferior": true,
+      "wmd_relative_decrease": 0.0,
+      "wmd_screen_passed": false,
+      "inconclusive_precision": false,
+      "verdict": "SCREEN_FAIL"
+    },
+    "RepairOracle": {
+      "noninferior": true,
+      "wmd_relative_decrease": 0.0,
+      "wmd_screen_passed": false,
+      "inconclusive_precision": false,
+      "verdict": "SCREEN_FAIL"
+    }
+  },
+  "preflight": {
+    "ceiling_risk": false,
+    "learning_failure": true,
+    "nocorrection_final_success": 0.28500000000000003
+  }
+}

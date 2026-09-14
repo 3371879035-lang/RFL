@@ -1,0 +1,32 @@
+schema_version: "0.4.0"
+environment:
+  horizon: 8
+  gamma: 1.0
+learning:
+  alpha_low: 0.10
+  alpha_high: 0.10
+  alpha_diag: 0.10
+  epsilon_decay_fraction: 0.80
+gate:
+  # plan's practical margins
+  noninferiority_margin: 0.01
+  wmd_relative_decrease: 0.20
+  inconclusive_ci_width: 0.05
+  ceiling_success: 0.98
+  ceiling_episodes: 500
+  learning_failure_success: 0.30
+experiment:
+  name: v04_alpha
+  seeds: 12
+  seed_base: 4600000
+  warmup_episodes: 300
+  episodes: 2000
+  eval_every: 250
+  eval_episodes: 100
+  reward_mode: "A"
+  distribution:
+    whole: 0.25
+    plan_only: 0.25
+    decision_only: 0.25
+    execution_only: 0.25
+  arms: [NoCorrection, ModuleOracle, DecisionOracle, RepairOracle]

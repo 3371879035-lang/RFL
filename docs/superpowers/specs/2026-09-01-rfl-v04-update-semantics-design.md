@@ -1,6 +1,19 @@
 # RFL-CausalChase v0.4 — Update Semantics Design
 
-**Status:** design proposal, derived from the v0.3 closeout.
+> **SUPERSEDED_BY_V04_CREDIT_REPAIR_SPEC**
+>
+> This draft is retained for audit, not deleted. Its `Update Site` /
+> `Update Direction` distinction and its `WithinModuleDamage` endpoint are
+> **carried forward**. What it got wrong is the framing: it still treated the
+> H/L module responsibility `U_m` as a fixed ontology.
+>
+> The superseding spec moves one layer further out —
+> `Outcome -> CreditUnit -> CandidateRepairs -> RepairSelection -> Update` —
+> demotes H/L from axiom to **experimental candidate representation**, and
+> defines the failure families by **intervention** rather than by label.
+> See `docs/V0_4_SPEC.md`.
+
+**Status:** superseded 2026-09-01.
 
 **Origin:** Stage 5's negative result. With `U` fixed at the SCM truth, Oracle
 routing never reliably improved policy utility in any of six difficulty

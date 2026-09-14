@@ -1,0 +1,35 @@
+environment:
+  gamma: 1.0
+  horizon: 8
+experiment:
+  arms:
+  - NoCorrection
+  - ModuleOracle
+  - DecisionOracle
+  - RepairOracle
+  distribution:
+    decision_only: 0.25
+    execution_only: 0.25
+    plan_only: 0.25
+    whole: 0.25
+  episodes: 300
+  eval_episodes: 100
+  eval_every: 250
+  name: v04_alpha
+  reward_mode: A
+  seed_base: 4600000
+  seeds: 2
+  warmup_episodes: 300
+gate:
+  ceiling_episodes: 500
+  ceiling_success: 0.98
+  inconclusive_ci_width: 0.05
+  learning_failure_success: 0.3
+  noninferiority_margin: 0.01
+  wmd_relative_decrease: 0.2
+learning:
+  alpha_diag: 0.1
+  alpha_high: 0.1
+  alpha_low: 0.1
+  epsilon_decay_fraction: 0.8
+schema_version: 0.4.0
