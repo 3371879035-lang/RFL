@@ -701,11 +701,22 @@ See `12-AMENDMENTS.md` **A3**.
 ## 9. Identifiability signature
 
 For `03-IDENTIFIABILITY.md`, the signature of a case under query $q$ is the hash of
+the learner's **total information set**, not of `obs_t` alone:
 
-$$\bigl(s_t,\ a^{cmd}_t,\ a^{realized}_t,\ r_t,\ \text{feedback}_t\bigr)_{t=0}^{T}$$
+$$\boxed{\sigma(\ell, q) = \bigl(I_t\bigr)_{t=0}^{T}}, \qquad I_t = \bigl(obs_t,\ z_t,\ m_t\bigr)$$
 
-— exactly the fields of `01-OBSERVATION-MODEL.md` §2.1, in order, serialised
-deterministically. Truth fields ($Z$, $M$, $z$, $\epsilon_E$) are **excluded**;
+expanded as
+
+$$\bigl(s_t,\ a^{cmd}_t,\ a^{realized}_t,\ r_t,\ \text{feedback}_t,\ z_t,\ m_t\bigr)_{t=0}^{T}$$
+
+**$z_t$ and $m_t$ are in the signature, and that is load-bearing.** `01` §2.1.1
+makes them learner-visible, so a learner may legitimately index
+$Q_D(s,z,m,\cdot)$ with them. A signature built from `obs_t` alone would *withhold
+information the learner actually has*, and Gate L could then report an
+information-theoretic failure that is an artefact of the bookkeeping (A27). An
+earlier revision of this section did exactly that.
+
+Truth fields ($Z$, $M$, and the fault parameters inside $M$) are **excluded**;
 including them would make the matrix trivially injective and the gate vacuous.
 
 ---

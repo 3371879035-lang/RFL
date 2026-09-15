@@ -18,21 +18,31 @@ that impossible.
 A **latent case** is a full assignment of the **generator's free variables** — and
 of nothing else:
 
-$$\boxed{\ell = \bigl(Z,\; M,\; \kappa,\; z,\; \theta_{C_X},\; \epsilon_E,\; \omega\bigr)}$$
+$$\boxed{\ell = \bigl(Z,\; M,\; \kappa,\; z,\; \omega\bigr)}$$
 
-| symbol | role | why it is a generation variable |
-|---|---|---|
-| $Z$ | fault presence, $Z \in \{0,1\}^5$ | drawn exogenously |
-| $M$ | fault mask: which timestep and which alternative each fault took | drawn — $Z_D$'s $(t^{*}, a')$, $Z_U$'s trap location |
-| $\kappa$ | context lane | drawn |
-| $z$ | option | drawn (or overwritten when $Z_P$) |
-| $\theta_{C_X}$ | controller parameters | drawn (perturbed when $Z_X$) |
-| $\epsilon_E$ | plant perturbation | drawn (when $Z_E$) |
-| $\omega$ | noise tape | drawn |
+| symbol | role |
+|---|---|
+| $Z$ | fault presence, $\in \{0,1\}^5$, drawn exogenously |
+| $M$ | fault parameters — **all five** blocks ($P, D, X, E, U$): which timestep, which action or cell, which alternative |
+| $\kappa$ | context lane |
+| $z$ | the episode's **base option** — a genuinely free variable, not a fault |
+| $\omega$ | the ambient tape (the three frozen keys, `11-ENVIRONMENT.md` §8.1.1) |
 
-Two derived quantities are **functions of $\ell$**, not coordinates of it:
+**$\theta_{C_X}$ and $\epsilon_E$ are no longer independent coordinates.** The
+healthy controller is the identity; a $Z_X$ perturbation lives *inside* $M$; a
+$Z_E$ perturbation lives *inside* $M$ too. Listing them separately enumerated
+states the generator cannot produce — the same defect A11 removed for $B$, one
+level down.
 
-$$B = f_B(\ell) \quad\text{(but-for relevance)},\qquad R^{*} = f_R(\ell) \quad\text{(repair truth)}$$
+$$\boxed{\lvert\mathcal L\rvert \text{ is \textbf{counted by enumeration}, never asserted as a closed-form product}}$$
+
+$M$'s feasible region depends on the option, on the trajectory, and on co-fault
+interaction, so it is **not** a free Cartesian product. The product formula that
+used to sit in §4 was already behind the SCM; it is replaced by an actual count.
+
+Two quantities are **derived**, not coordinates:
+
+$$B = f_B(\ell) \quad\text{(but-for relevance)}, \qquad R^{*}_{\text{suff}} = f_R(\ell) \quad\text{(task-rescuing repair)}$$
 
 $$\boxed{\mathcal L = \{\, \ell \text{ satisfying the generator's well-formedness constraints} \,\}}$$
 
@@ -183,6 +193,85 @@ a scientific result.
 
 ---
 
+### 1.5 Two repair-truth objects, and a sentinel — required before Gate E runs
+
+"Sufficient" and "the learner should change this" are **different relations**, and
+conflating them makes the matrix mathematically incoherent.
+
+An external plant fault can be *dodged*: if $do(d_{t-1} = \texttt{WAIT})$ happens to
+avoid the perturbed step, the task succeeds. That intervention is therefore
+**sufficient** — but it emphatically does **not** mean the learner should modify its
+decision policy for an environment fault. `11` §6.6 and case **C8** say the correct
+response there is to update **nothing**.
+
+So the two objects are separated:
+
+$$\boxed{R^{*}_{\text{suff}} = \text{minimal \emph{task-rescuing} interventions}}$$
+
+$$\boxed{U^{*} = \text{learning / update-responsibility truth}}$$
+
+For external and unmodelled faults, $U^{*} = \varnothing$ is entirely reasonable
+while $R^{*}_{\text{suff}} \neq \varnothing$.
+
+**And an empty rescuing set is not "update nothing".** If no agent-side
+intervention rescues the episode, $\varnothing$ did not turn failure into success —
+it is the *absence* of a repair, not a repair. A sentinel is required:
+
+$$\boxed{R^{*}_{\text{suff}} = \bot_{\texttt{NO-SUFFICIENT-REPAIR}}}$$
+
+Only this closes Gate E. Which of the two objects V0.2R should compare
+representations against is a further decision, but the Gate generator **must not**
+fuse them into a single $R^{*}$ before that decision is made.
+
+### 1.6 Query legality is per factual class, and MALFORMED is never an observation
+
+An earlier formulation built one global query matrix and let `MALFORMED` show up as
+a cell value. That is wrong on two counts, and both are fixed here.
+
+**(a) The legal query family depends on the factual trace.** Whether $do(d_t = d')$
+is legal depends on $A_z(m_t, s_t)$, and $(z,m,s)$ are learner-visible and evolve
+along the trajectory. Different factual traces therefore have different legal
+query families.
+
+**(b) A rejected query would leak information.** If "this query is illegal" were
+observable, a learner could learn something from *not* being allowed to ask — a
+channel that exists only because the analyser chose to expose it. So a `MALFORMED`
+query **does not enter $\mathcal Q(C)$ at all** and is never an observation.
+
+The gate is therefore computed **per factual class**:
+
+$$\mathcal L \;\overset{\sigma_0}{\longrightarrow}\; \text{factual equivalence classes}, \qquad \sigma_0(\ell) = I^{factual}_{0:T}$$
+
+Two latent cases with different factual signatures are already separated at
+**zero queries**. Within a class the factual $I$ is identical, so the admissible
+decision replays, controller probes and process replays are identical too. Then
+
+$$\boxed{B_{\min}^{\text{adaptive}} = \max_{C} B_{\min}^{\text{adaptive}}(C)}$$
+
+This also handles the cost of the factual episode correctly: *seeing your own
+episode* is free and is **not** charged against $B_{CF}$.
+
+### 1.7 Counterfactual rollouts use the exact reference policy
+
+$O(\ell, q)$ needs one more object, and the kernel deliberately refuses to supply
+it: **after an intervention, who chooses the subsequent actions?**
+
+$$\boxed{\text{Gate E/L and V0.1R scene generation roll out under } \pi_D^{*}(s, z, m)}$$
+
+that is, the exact reference policy, except where a $do(d_t)$ explicitly overrides
+the current decision. After $q = do(z=z')$, the next action comes from
+$\pi_D^{*}(s, z', m)$.
+
+The justification is that **V0.1R has no policy learning at all**: the scene's
+decision mechanism should be one fixed, deterministic, already-validated policy,
+not something the generator improvises. The learner receives the resulting
+observations and never reads $Q^{*}$, so this is not oracle-label leakage.
+
+Without this freeze the identifiability generator would become a **third place that
+silently defines world semantics**, after the kernel and the DP.
+
+---
+
 ## 2. Two query sets — and why the distinction is load-bearing
 
 | set | contents | used for |
@@ -241,10 +330,18 @@ Mixing it into the same table would have two bad consequences:
    that cannot separate any two cases differing only in $Z$.
 
 It is therefore listed **separately**, counted against a separate budget
-$B_{\text{resample}}$, and it is **not** a member of $\mathcal Q_{\text{learner}}$
-for the purposes of §1.4. Its legitimate use is to establish whether a failure is
-stochastic or structural, which is a property of the environment and not of the
-label, and it is used by the evaluator when computing $B$ (`11` §6.1).
+$B_{\text{resample}}$, and it is **not** a member of $\mathcal Q_{\text{learner}}$.
+Its only legitimate use is as a stochastic-robustness probe — establishing whether
+a failure is stochastic or structural, which is a property of the environment and
+not of the label.
+
+**It must not participate in $B$.** But-for relevance is
+
+$$B_i = \mathbf{1}\bigl[\mathrm{Outcome}(\ell \setminus Z_i,\ \omega) \neq \mathrm{Outcome}(\ell,\ \omega)\bigr]$$
+
+with $\omega$ **held fixed**. Resampling $\omega$ is a different operation and is
+not a but-for test (A26). An earlier revision said the evaluator used resampling
+when computing $B$; that was wrong and is removed.
 
 See `12-AMENDMENTS.md` **A10**.
 
