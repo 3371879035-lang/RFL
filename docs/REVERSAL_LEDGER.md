@@ -1,12 +1,42 @@
 # Reversal ledger — exactly at which N every conclusion changed
 
-**Unit:** the statistical unit here is the **seed**. One seed = one complete,
-independent training run (300 warmup + 2,000 episodes + 100 greedy evaluation
-episodes). So "N = 300" means 300 independent runs, and the four scheduled looks
-are at **100 / 200 / 300 / 400 局**.
+**Unit:** the statistical unit here is the **seed** — one seed = one complete,
+independent training run. So "N = 300" means 300 independent runs, and the four
+scheduled looks are at **100 / 200 / 300 / 400 局**.
+
+**What increasing N did and did not do.** Going from 100 to 400 increased *how
+many independent worlds were observed*, **not** how long any single agent
+trained. Every seed's agent trained for the same budget at N=400 as at N=100.
+Statements of the form *"the policy had not matured yet at N=100"* therefore do
+**not** apply to anything in this ledger. Testing that question is a different
+axis — $N_{\text{episodes}} = 500, 1000, 2000, 5000, \dots$ with seeds held
+fixed — which this project has never run.
+
+Training budgets differ per pilot and must not be generalised:
+
+| pilot | warmup | training episodes | eval episodes |
+|---|---:|---:|---:|
+| v0.3 Alpha | — | 10,000 | 200 |
+| v0.3 Stage 4 | — | 5,000 | 150 |
+| v0.3 Stage 5 | — | 2,000 | 150 |
+| v0.4 Alpha / Beta | 300 | 2,000 | 100 |
+| v0.4 Gamma | 300 | 1,000 | 100 |
 
 Produced by `scripts/reversal_ledger.py`; raw output in
 `outputs/reversal_ledger.txt` and `outputs/reversal_ledger.json`.
+
+**Coverage — 5 pilots, 23 contrasts:**
+
+```
+v03_stage5 (6)   v03_alpha (1)   v03_stage4 (8)   v04_alpha (4)   v04_beta (4)
+```
+
+**Pilot Gamma is not in this ledger.** Its reward × severity results are
+within-design interactions rather than arm-versus-baseline pairs, and they needed
+a statistics correction before they could be included at all — see
+`docs/V0_4_SEMANTIC_CORRECTIONS.md` §4 and §7 of this document. Phrasings such as
+"5 reversals in 23 contrasts" refer to these 23, not to every experiment in the
+project.
 
 ---
 
@@ -131,3 +161,41 @@ a reversal when it is accompanied by (a) the fresh block's own mean, and (b) the
 sign test and top-5 share for that block. A reversal caused by a block whose mean
 is inside $[-\Delta_{\min}, +\Delta_{\min}]$ is a statement about the decision
 boundary, not about the phenomenon.
+
+---
+
+## 7. Pilot Gamma — one verdict changed under correction
+
+Gamma is not in the 23 contrasts above because its effects are within-design
+interactions, and because its statistics had a defect that had to be fixed before
+the numbers meant anything: `pilot_v04_gamma.py:98-102` appended **every
+observation twice** (each `pick` ignores one of the two loop variables) and tested
+**cell-level** pairs although one seed contributes two cells. Means are unaffected
+by duplication; CIs were **2.2–2.5× too narrow**.
+
+Recomputed at the seed level by `scripts/v04_gamma_seedlevel.py`:
+
+| mechanism | interaction | mean | published CI | **seed-level CI** | published | **corrected** |
+|---|---|---:|---|---|---|---|
+| `NoCorrection` | reward B − A | −0.02629 | [−0.03183, −0.02075] | **[−0.03957, −0.01344]** | `SUPPORT_B` | **`SUPPORT_B`** |
+| `NoCorrection` | severe − mild | −0.09425 | [−0.09910, −0.08946] | **[−0.10516, −0.08365]** | `SUPPORT_B` | **`SUPPORT_B`** |
+| `NegativeOnly` | reward B − A | −0.02026 | [−0.02451, −0.01601] | **[−0.03080, −0.00979]** | `SUPPORT_B` | **`INCONCLUSIVE`** |
+| `NegativeOnly` | severe − mild | −0.06484 | [−0.06818, −0.06155] | **[−0.07227, −0.05764]** | `SUPPORT_B` | **`SUPPORT_B`** |
+| `DecisionOracle` | reward B − A | +0.01078 | [+0.00418, +0.01745] | **[−0.00475, +0.02590]** | `INCONCLUSIVE` | **`INCONCLUSIVE`** |
+| `DecisionOracle` | severe − mild | −0.09921 | [−0.10514, −0.09341] | **[−0.11227, −0.08629]** | `SUPPORT_B` | **`SUPPORT_B`** |
+
+**One verdict changed.** `NegativeOnly: reward B − A` moves from `SUPPORT_B` to
+`INCONCLUSIVE` — its corrected upper bound, −0.00979, sits a hair inside the
+equivalence band. `DecisionOracle: reward B − A` was p = 0.0198 as published and
+is p = 0.16 at the correct unit; its significance was an artifact of the
+duplicated $n$.
+
+The **severity** half of Gamma is untouched and is the robust half: `severe −
+mild` is `SUPPORT_B` for all three mechanisms, with means of −0.065 to −0.099 and
+CIs far clear of $-\Delta_{\min}$.
+
+This is a different failure mode from everything in §2–§6. Those were effects too
+small to resolve; **this was a resolved-looking effect that was resolved only
+because the test had been fed each observation twice.** It is the one correction
+here that makes a previously confirmed finding go away, and it was found by
+reading the analysis code rather than by running more seeds.

@@ -2,6 +2,39 @@
 
 **This is the only confirmatory document in the project.**
 
+> ### ⚠️ Post-hoc corrections — read `docs/V0_4_SEMANTIC_CORRECTIONS.md` alongside this
+>
+> The seed-count work answered *"is the effect real?"*. It could not answer *"what
+> does the code actually compute?"*. Four corrections, made after collection
+> finished, change or narrow conclusions below:
+>
+> 1. **`CFRevalue` is not a ceiling arm** — it writes the counterfactual return
+>    into the **factual failing action's** Q-entry (`train.py:355-366`). The claim
+>    that *"patching a Q-entry is the wrong primitive"* is **withdrawn** (§6).
+> 2. **`DECISION` and `EXECUTION` write the same Q table**, so Pilot Alpha is not
+>    a clean credit-unit decomposition.
+> 3. **The Oracle's failure families are inflated by reconstruction** —
+>    `WholeProcess` at 68.4% is largely an artifact; family-level readings are not
+>    mechanism facts.
+> 4. **Pilot Gamma's interaction CIs were 2.2–2.5× too narrow** (duplicated,
+>    non-independent observations). Recomputed at the seed level, one verdict
+>    changes: `NegativeOnly: reward B − A` is `INCONCLUSIVE`, not `SUPPORT_B` (§7).
+> 5. **Stage 4's "ROBUST harmful" was a terminology collision** — those arms are
+>    directionally negative but *practically equivalent* (§4).
+>
+> The numbers that survive — collateral exactly 0.0000, WMD +57.7%,
+> `tight_h5_a03`, the `Contrastive` refutation — are unchanged.
+
+**Scale note — what "N" means.** N is the number of **independent seeds**, i.e.
+independent complete training runs. Going from 100 to 400 increased *how many
+independent worlds were observed*, **not** how long any single agent trained. No
+statement of the form "the policy had not matured at N=100" applies to these
+data. Per-pilot budgets differ and are tabulated in
+`docs/V0_4_SEMANTIC_CORRECTIONS.md` §5 — the commonly quoted
+"300 warmup + 2,000 episodes + 100 eval" holds only for v0.4 Alpha and Beta
+(v0.3 Alpha trains 10,000 episodes; v0.3 Stage 5 trains 2,000; v0.4 Gamma was run
+with 1,000).
+
 Everything else — `docs/RESULTS.md`, `docs/V0_3_CLOSEOUT.md`, `docs/V0_4_RESULTS.md`,
 `docs/SEED_AUDIT_200.md`, `docs/ROBUSTNESS_AUDIT.md` — reports runs made at
 8 / 12 / 20 / 30 / 40 / 50 / 100 / 200 / 300 seeds under a rule ("if the
@@ -144,16 +177,27 @@ write-up ("a difference of about +0.001 that the CI resolves") is withdrawn.
 
 Contrast `arm − traditional` on task AUC.
 
-| arm | ΔAUC | 95% CI | p | Holm | verdict |
-|---|---:|---|---:|---:|---|
-| `direct_feedback` | −0.00532 | — | 0.0000 | 0.0000 | **ROBUST harmful** |
-| `random_correction` | −0.00322 | — | 0.0000 | 0.0000 | **ROBUST harmful** |
-| `aux_penalty_rfl` | −0.00277 | [−0.00372, −0.00186] | 0.0000 | 0.0000 | **ROBUST harmful** |
-| `positive_only` | −0.00181 | — | 0.0032 | 0.0158 | tail-driven (5 seeds) |
-| `global_value_rfl` | −0.00089 | [−0.00170, −0.00010] | 0.0118 | 0.0471 | direction unresolved |
-| `sequence_rfl` | −0.00056 | [−0.00130, +0.00017] | 0.0915 | 0.2077 | direction unresolved |
-| `learned_rfl` | −0.00056 | [−0.00132, +0.00017] | 0.0915 | 0.2077 | direction unresolved |
-| `oracle_rfl` | +0.00052 | [−0.00006, +0.00111] | 0.0692 | 0.2077 | tail-driven |
+| arm | ΔAUC | 95% CI | p | Holm | direction | practical |
+|---|---:|---|---:|---:|---|---|
+| `direct_feedback` | −0.00532 | — | 0.0000 | 0.0000 | reliable | **equivalent** |
+| `random_correction` | −0.00322 | — | 0.0000 | 0.0000 | reliable | **equivalent** |
+| `aux_penalty_rfl` | −0.00277 | [−0.00372, −0.00186] | 0.0000 | 0.0000 | reliable | **equivalent** |
+| `positive_only` | −0.00181 | — | 0.0032 | 0.0158 | tail-driven (5 seeds) | equivalent |
+| `global_value_rfl` | −0.00089 | [−0.00170, −0.00010] | 0.0118 | 0.0471 | unresolved | equivalent |
+| `sequence_rfl` | −0.00056 | [−0.00130, +0.00017] | 0.0915 | 0.2077 | unresolved | equivalent |
+| `learned_rfl` | −0.00056 | [−0.00132, +0.00017] | 0.0915 | 0.2077 | unresolved | equivalent |
+| `oracle_rfl` | +0.00052 | [−0.00006, +0.00111] | 0.0692 | 0.2077 | tail-driven | equivalent |
+
+> **Corrected wording.** An earlier version of this table called the first three
+> arms **"ROBUST harmful"**, contradicting `REVERSAL_LEDGER.md`, which records all
+> eight arms as `EQUIVALENT` × 4 from the same data. The contradiction was a
+> terminology collision: `robustness_audit.verdict()`'s `ROBUST` means *the
+> direction is reliably non-zero*, while the four-way rule asks *is the effect
+> practically meaningful* — whether the CI clears $\Delta_{\min} = 0.01$. These
+> are different questions, and the ledger is right. Every Stage 4 arm has
+> $|\Delta| < \Delta_{\min}$: their **directions** are reliable, their
+> **magnitudes** are practically nil. See
+> `docs/V0_4_SEMANTIC_CORRECTIONS.md` §6.
 
 Pre-registered gates, both **pass**:
 
@@ -162,11 +206,19 @@ Pre-registered gates, both **pass**:
 * `learned_rfl` reduces knowledge damage vs `direct_feedback` —
   ΔCollateral **−0.26509**, CI [−0.27139, −0.25854], p = 0.0000.
 
-The conclusion holds and is now sharpened: **three correction mechanisms are
-robustly worse than doing nothing, and the two RFL arms are the only ones that
-are not — while cutting collateral by 0.265 against the strongest naive
-baseline.** `oracle_rfl`, the evaluator-truth ceiling, is not distinguishable
-from zero, which is the same defect Stage 5 localised.
+The conclusion holds, and the correction above **strengthens** it. The project's
+claim was never "RFL improves task utility" — it is "RFL is the only mechanism
+that corrects without paying for it". That claim survives better once the
+wording is fixed, because the thing RFL is better at is an order of magnitude
+larger than the thing its competitors are worse at:
+
+| | Δ | scale |
+|---|---:|---|
+| `learned_rfl` vs `direct_feedback`, **collateral** | **−0.26509** | ≫ $\Delta_{\min}$ |
+| `direct_feedback` vs `traditional`, **task utility** | −0.00532 | ≈ ½ $\Delta_{\min}$ |
+
+`oracle_rfl`, the evaluator-truth ceiling, is indistinguishable from zero — the
+same defect Stage 5 localised.
 
 ---
 
@@ -254,13 +306,46 @@ statistically indistinguishable from `NoCorrection`, and lowest WMD — 1.5x bel
 
 | | SuccessAUC |
 |---|---:|
-| `CFRevalue` — Oracle site + Oracle target + counterfactual value | **0.8509** |
+| `CFRevalue` (as implemented) | **0.8509** |
 | `NoCorrection` — make no update at all | **0.9432** |
 
-Δ = **−0.0923**. The strongest repair available performs far *worse* than doing
-nothing. Per the plan's own decision tree the required conclusion is:
+Δ = **−0.0923**. The number is real and robust. **The interpretation originally
+drawn from it is withdrawn.**
 
-> **直接修补 Q-entry 不是合适的 update primitive.**
+> ### ❌ Withdrawn: *"直接修补 Q-entry 不是合适的 update primitive"*
+>
+> `CFRevalue` is **not** the ceiling arm the spec describes. `train.py:355-366`
+> computes the counterfactual return and then writes it into the **factual
+> failing action's** Q-entry:
+>
+> ```python
+> cf_return = rollout_intervened(scene, sel.primitives).return_value
+> targets = {site.key: cf_return for site in credit.sites}   # factual sites
+> rec = MODES["negative_only"](q, credit.sites, targets, ...)
+> ```
+>
+> `alt_targets` is built and then never read on this path. Since
+> `env.py:236` sets `return_value = +1.0` exactly when the repaired rollout
+> succeeds, the arm does
+>
+> $$Q(s, a_{\text{bad}}) \leftarrow Q(s, a_{\text{bad}}) + \alpha\,(1.0 - Q(s, a_{\text{bad}}))$$
+>
+> — it **raises the value of the action that caused the failure**, on precisely
+> the episodes where the repair worked. On episodes where the repair failed it
+> degenerates to `NegativeOnly` exactly.
+>
+> So `CFRevalue` is `NegativeOnly` plus a sign inversion on the good cases. Its
+> collapse is a **predicted consequence of the implementation**, not evidence
+> about credit assignment.
+>
+> **What survives:** writing a counterfactual return into the factual failing
+> action is harmful. **What does not:** any claim about a *correctly aimed*
+> Q-entry repair. No arm in v0.4 implements one — `PositiveAlternative` and
+> `Contrastive` do target the alternative, but with a constant `+1.0`, not an
+> Oracle-derived value. The plan's falsification branch therefore **did not
+> fire**, and the ceiling question remains open.
+>
+> Full analysis: `docs/V0_4_SEMANTIC_CORRECTIONS.md` §1.
 
 ---
 
@@ -272,25 +357,38 @@ nothing. Per the plan's own decision tree the required conclusion is:
 | **`NegativeOnly`** | **0.8948** | **0.8279** | **0.8725** | **0.8097** |
 | `DecisionOracle` | 0.8385 | 0.7324 | 0.8423 | 0.7501 |
 
-| mechanism | contrast | mean | 95% CI | p |
-|---|---|---:|---|---:|
-| `NoCorrection` | reward B − A | **−0.02629** | [−0.03396, −0.01837] | 0.0000 |
-| `NegativeOnly` | reward B − A | **−0.02026** | [−0.02629, −0.01424] | 0.0000 |
-| `DecisionOracle` | reward B − A | +0.01078 | [+0.00176, +0.02007] | 0.0198 |
-| all three | severe − mild | −0.09425 / −0.06484 / −0.09921 | all exclude 0 | 0.0000 |
+> **Recomputed.** The interaction statistics below were originally computed on
+> **duplicated, non-independent observations**: `pilot_v04_gamma.py:98-102` loops
+> over both rewards *and* both severities while each `pick` ignores one of them,
+> so every pair entered twice; and cell-level pairs from one seed are not
+> independent. Means are unaffected by duplication; CIs were **2.2–2.5× too
+> narrow**. Recomputed at the seed level by `scripts/v04_gamma_seedlevel.py`:
+
+| mechanism | contrast | mean | published CI | **seed-level CI** | **verdict** |
+|---|---|---:|---|---|---|
+| `NoCorrection` | reward B − A | −0.02629 | [−0.03183, −0.02075] | **[−0.03957, −0.01344]** | `SUPPORT_B` |
+| `NegativeOnly` | reward B − A | −0.02026 | [−0.02451, −0.01601] | **[−0.03080, −0.00979]** | **`INCONCLUSIVE`** |
+| `DecisionOracle` | reward B − A | +0.01078 | [+0.00418, +0.01745] | **[−0.00475, +0.02590]** | `INCONCLUSIVE` |
+| all three | severe − mild | −0.09425 / −0.06484 / −0.09921 | — | all far below −0.01 | **`SUPPORT_B`** |
 
 `N_delta_neg` under reward B: `NoCorrection` 896, `NegativeOnly` 565,
-`DecisionOracle` 521 per 2,000 episodes.
+`DecisionOracle` 521 per **1,000** episodes (the 400-seed run was launched with
+`--episodes 1000`; the script's "per 2000 episodes" string is hardcoded and
+wrong).
 
 1. **`NegativeOnly` wins all four cells**, and in `B/severe` beats
    `NoCorrection` by +0.047.
-2. **The reward ablation is not null.** Removing the explicit failure penalty
-   costs −0.026 and −0.020 for the two non-oracle mechanisms, both p = 0.0000 —
-   an order of magnitude larger than $\Delta_{\min}$, so this is a real effect
-   and not a boundary case.
+2. **The reward ablation is confirmed for `NoCorrection` only.** Removing the
+   explicit failure penalty costs **−0.02629** there, CI [−0.03957, −0.01344],
+   clearing $\Delta_{\min}$ by a wide margin. For `NegativeOnly` the corrected CI
+   is [−0.03080, −0.00979] — its upper bound sits a hair *inside* the equivalence
+   band, so that one is **`INCONCLUSIVE`**, not confirmed. The previously reported
+   p = 0.0000 for both came from the duplicated $n$.
 3. **`r_failure = 0` is not "no negative learning"**: 521–896 negative TD errors
-   per run remain, now measured directly.
-4. **Severity hurts the complex mechanism most** (−0.0648 vs −0.0992).
+   per 1,000 episodes remain, now measured directly.
+4. **Severity hurts the complex mechanism most** (−0.0648 vs −0.0992), and this
+   half of Pilot Gamma is **unaffected** by the correction: `severe − mild` is
+   `SUPPORT_B` for all three mechanisms with CIs far below $-\Delta_{\min}$.
 
 ---
 
@@ -319,23 +417,29 @@ largest effect size relative to its threshold.
 |---|---|---|
 | Oracle routing is harmful at horizon 5, alpha 0.03 (−0.0828) | `SUPPORT_B` in 4/4 blocks | **finding** |
 | `Contrastive − NegativeOnly` = −0.0141, $H_B$ refuted | CI width 0.0060, PoI 0.000, robust | **finding** |
-| `CFRevalue` − `NoCorrection` = −0.0923; patching Q-entries is the wrong primitive | CI excludes 0, robust | **finding** |
+| `CFRevalue` − `NoCorrection` = −0.0923 | CI excludes 0, robust | **finding** |
+| …therefore *patching a Q-entry is the wrong primitive* | `CFRevalue` writes the CF return into the **factual** failing action | **WITHDRAWN** — §6 |
 | Granularity eliminates collateral (0.4352 → 0.0000) | structural, exact | **finding** |
 | Granularity raises WMD by 57.7% | 304/395 non-tied positive, top-5 share 23% | **finding** |
-| Reward ablation costs −0.020 to −0.026 | p = 0.0000, ≫ Δ_min | **finding** |
+| Reward ablation costs −0.026 (`NoCorrection`) | seed-level CI clears Δ_min | **finding** |
+| Reward ablation costs −0.020 (`NegativeOnly`) | seed-level CI upper bound −0.00979, inside the band | **`INCONCLUSIVE`** — §7 |
 | Two RFL arms non-inferior; collateral −0.265 vs `direct_feedback` | gates pass | **finding** |
 | v0.1 ΔAE = −0.268 | d_z −5.99 at 200 seeds | **finding** |
+| Stage 4 arms are "robustly harmful" | every \|Δ\| < Δ_min; directions reliable, magnitudes nil | **reworded** — §4 |
 | Granularity is utility-neutral | mean +0.0082 but median 0, sign test negative, top-5 share 76% | **withdrawn → `INCONCLUSIVE`** |
 | Oracle routing helps at tight_h6_a10 | failed Holm at 300; `EQUIVALENT` at 400 | **withdrawn** |
 | Oracle routing helps at base_h8_a10 | 90% ties; blocks disagree in sign | **withdrawn** |
 | v0.3 reward contrast is resolved | 70% ties; CI includes 0 at 400 | **withdrawn** |
+| `WholeProcess` = 68.4% of failures | inflated by `scene_from_trace` reconstruction | **not credible** — corrections §3 |
+| Pilot Alpha is a clean credit-unit decomposition | `DECISION`/`EXECUTION` share one Q entry | **not clean** — corrections §2 |
 
 ## 10. Open defects
 
-Found by the candidate-ledger audit (`scripts/v04_ledger.py`), **not fixed** —
-they were reported after the 400-seed collection was launched, and changing
-behaviour mid-collection is prohibited by §9 of the protocol. They are recorded
-for v0.5:
+**not fixed** — they were identified after the 400-seed collection was launched,
+and changing behaviour mid-collection is prohibited by §9 of the protocol. They
+are recorded for v0.5. Items 1–4 change training semantics, so fixing them voids
+the current seed set and requires a restart from N=0; item 6 is analysis-only and
+has already been applied.
 
 1. **`scene_from_trace` (`oracle.py:157`) uses the realized action** to locate
    the critical decision, although `env.py` records intent and realized
@@ -344,18 +448,30 @@ for v0.5:
    execution fault, and **`WholeProcess` at 68.4% is inflated by reconstruction,
    not by genuinely multi-fault episodes.** This is the most consequential open
    item — it means the family the spec singles out as the hard case is largely an
-   artifact.
-2. **The `DECISION`/`EXECUTION` collision** (`docs/V0_4_REPRODUCIBILITY_DEFECT.md`
+   artifact. See `docs/V0_4_SEMANTIC_CORRECTIONS.md` §3.
+2. **`CFRevalue` writes its target to the wrong site.** `train.py:355-366` builds
+   `alt_targets` and never reads it, passing `credit.sites` (the factual failing
+   actions) to `negative_only` with the post-repair return. The arm therefore
+   reinforces the action that caused the failure. It is not the spec's ceiling
+   arm, and the conclusion drawn from it has been withdrawn (§6). Fixing this is
+   what would make the plan's falsification branch testable at all.
+3. **The `DECISION`/`EXECUTION` collision** (`docs/V0_4_REPRODUCIBILITY_DEFECT.md`
    §7): the two units are nominally distinct but write the same Q entry. The fix
    made the outcome deterministic; it did not make it principled. Now counted and
    reported via `Credit.collisions()` rather than hidden.
-3. `enumerate_sufficient` stops at the first sufficient size, so `minimal` is
+4. `enumerate_sufficient` stops at the first sufficient size, so `minimal` is
    `True` for all 7,083 candidates and carries no information.
-4. `classify` returns family `"CLEAN"` for **failed** episodes whose
+5. `classify` returns family `"CLEAN"` for **failed** episodes whose
    reconstruction is reference-solvable — 83 rows (1.2%) with empty candidate
    sets, silently skipped by `train.py`.
-5. Latent: `Repair.describe()` is the tie-break key, so for `t >= 10`
+6. `pilot_v04_gamma.py` duplicated every observation in its interaction tests and
+   used the wrong unit of analysis; also prints a hardcoded "per 2000 episodes"
+   string for a run configured with 1,000. **Recomputed** by
+   `scripts/v04_gamma_seedlevel.py` (§7); the script itself is left unedited so
+   the defect stays visible in the record.
+7. Latent: `Repair.describe()` is the tie-break key, so for `t >= 10`
    `exec:(10,)` sorts before `exec:(2,)`. Inactive at `HORIZON = 4`.
+
 
 Confirmed correct in the same audit: **`WholeProcess == (minimal_size > 1)`**,
 7,137/7,137 rows, 0 disagreements. The spec's operational definition holds; what

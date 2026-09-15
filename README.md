@@ -33,15 +33,35 @@ EVIDENCE`，只作为探索过程的记录保留（旧数字在新协议下移�
 Oracle 的 innocent-module KnowledgeDamage 在六档中**全部恰好为 0.00000**——这是结构性
 的，任何 seed 数都改不了。
 
-### 2. 直接修补 Q-entry 不是合适的 update primitive
+### 2. ~~直接修补 Q-entry 不是合适的 update primitive~~ —— 已撤回
 
 | | SuccessAUC |
 |---|---:|
-| `CFRevalue`（Oracle site + Oracle target + 反事实价值） | **0.8509** |
+| `CFRevalue`（**如当前实现**） | **0.8509** |
 | `NoCorrection`（完全不更新） | **0.9432** |
 
-Δ = **−0.0923**。这是全项目最稳健的结果（`Contrastive − NegativeOnly` = −0.01414，
-CI 宽 0.0060，Wilcoxon p = 3e−16，PoI = 0.000）。计划预注册的强否证条件成立。
+Δ = **−0.0923**，数字是真的。**但从它推出的结论不成立。**
+
+`train.py:355-366` 把反事实回报写进了**事实站点**——也就是那个导致失败的动作——而不是
+备选动作：`alt_targets` 构造出来后在该路径上**从未被读取**。由于 `env.py:236` 在修补
+成功时给出 `return_value = +1.0`，这个 arm 实际做的是
+
+$$Q(s, a_{\text{bad}}) \leftarrow Q(s, a_{\text{bad}}) + \alpha\,(1.0 - Q(s, a_{\text{bad}}))$$
+
+**它在抬高那个导致失败的动作**，而且恰好发生在修补成功的那些 episode 上。
+
+所以 `CFRevalue` 不是 spec 声称的 ceiling arm，而是 `NegativeOnly` 加上一个符号反转。
+**幸存的说法**：把反事实回报写进事实失败动作是有害的。**不成立的说法**：任何关于
+*瞄准正确* 的 Q-entry 修补的断言——v0.4 里没有任何 arm 实现它。计划预注册的强否证
+条件**没有触发**，ceiling 问题仍然开放。
+
+详见 [`docs/V0_4_SEMANTIC_CORRECTIONS.md`](docs/V0_4_SEMANTIC_CORRECTIONS.md)。
+
+> **同一份收口文档里的另外三处：** `DECISION`/`EXECUTION` 名字不同但写**同一张 Q 表**，
+> 所以 Pilot Alpha 不是干净的 credit-unit 分解；Oracle 的 `WholeProcess` 占 68.4%
+> 主要是**重构 artifact**（`scene_from_trace` 用 realized 而非 intent 定位决策故障）；
+> Pilot Gamma 的 interaction 统计**把每个观测放进去两遍**、CI 窄了 2.2–2.5 倍，按 seed
+> 重算后 `NegativeOnly: reward B−A` 从 `SUPPORT_B` 变为 **`INCONCLUSIVE`**。
 
 ### 3. 粒度消除 collateral，但代价是 within-module damage
 
