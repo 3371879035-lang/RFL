@@ -88,12 +88,12 @@ outcome-conditioned quantity.
 
 **Now** (`11` §6.1): two separate variables.
 
-$$Z = \text{mechanism actually active (forward generation, never zeroed by outcome)}$$
+$$Z = \text{fault presence: mechanism actually active (never zeroed by outcome)}$$
 
-$$A = \text{outcome-relevant on this tape (evaluator intervention)}$$
+$$B = \text{but-for relevance: a difference-maker on this tape (evaluator intervention)}$$
 
-$Z_A = 1, A_A = 0$ is legal and meaningful. V0.1R predicts $Z$ primarily and $A$
-as a secondary endpoint (`11` §6.2).
+$Z_A = 1, B_A = 0$ is legal and meaningful. V0.1R predicts $Z$ primarily and $B$
+as a secondary endpoint (`11` §6.2). The symbol is $B$, not $A$ — see **A13**.
 
 **Trigger.** Review, by reasoning about the redundant-cause case. The filter
 looked correct on every single-cause example.
@@ -264,29 +264,307 @@ hidden set §2.2 explicitly. There is no third category.
 
 ---
 
-## 10. Summary and what remains open
+## 10. A9 — the four options were four names for one policy
+
+**Severity: P0.** Would have reopened A1 in a new costume.
+
+**Was.** A1 fixed the chain to $\kappa \to z \to Q_D(s,z,\cdot) \to a^{cmd}$, but
+nothing made the four options *different policies*. They were four numbered slices
+of one table with the same action set and the same reward — under tabular
+Q-learning each slice converges to the same fixed point, so $do(z=z')$ would again
+change the name of the behaviour without changing the behaviour. Compounding it,
+`11` §12 trained $Q^{*}$ under $z = z^{*}(\kappa)$ while `02` §2.1 claimed $Q^{*}$
+covers all four options, so it was never specified what $z_2$ and $z_4$ are
+trained on.
+
+**Now** (`02-SCM.md` §2.3): an option carries a **waypoint automaton** and
+constrains the policy class,
+
+$$A_z(s) \subseteq A, \qquad \pi_D^{*}(s,z) = \arg\max_{a \in A_z(s)} Q_D^{*}(s,z,a)$$
+
+with $z_1$ unconstrained, $z_2$ obliged to visit $(2,1)$, $z_3$ obliged to hold at
+$(1,2)$ until the hazard clears, $z_4$ obliged to visit $(2,4)$. The admissible
+sets differ, so the optimal policies differ on shared states.
+
+**And decision faults are now defined relative to the option in force**,
+$do(d_t) \neq \pi_D^{*}(s_t, z_{\text{current}})$. Against a single global
+$\pi_{\text{ref}}$ a wrong $z$ would cause the option's *locally correct* actions
+to be re-labelled as decision faults, re-creating exactly the process/decision
+overlap the rebuild exists to remove. `11` §12.2's global
+$\pi_{\text{ref}}(s) = \arg\max_a Q^{*}(s,a)$ is retired in favour of the family
+$\{\pi_D^{*}(\cdot,z)\}$.
+
+**Trigger.** Review. Note the shape: A1 was a *connection* bug, A9 is a
+*degeneracy* bug. Fixing the first did not reveal the second, because the
+degeneracy only appears once the connection exists.
+
+---
+
+## 11. A10 — the identifiability gate was not budget-aware
+
+**Severity: P0.** Gate L could pass while the learner could never pass.
+
+**Was** (`03` §1): $\ell_i \equiv \ell_j \iff \forall q \in \mathcal Q_{\text{legal}}:
+O(\ell_i,q) = O(\ell_j,q)$ — "if every legal query were performed, could these be
+told apart?"
+
+**Wrong because.** That is not the question. A pair needing eight probes makes the
+full-signature map injective, so Gate L reports **PASS**, while a learner holding
+$B_{CF} = 4$ queries can never separate it. The gate would license an experiment
+whose failure is guaranteed by the budget, and the failure would be written up as
+an algorithmic result.
+
+**Now** (`03` §1.4):
+
+$$B_{\min}^{\text{adaptive}} = \min_{\Pi} \max_{\ell} \mathrm{depth}_{\Pi}(\ell) \le B_{CF}$$
+
+over decision trees whose nodes issue legal queries and branch on outcomes; with a
+tractable non-adaptive fallback $\exists S,\ |S| \le B_{CF}$ that separates.
+
+**Two more defects in the same section:**
+
+* the controller probe was still written $do(C_X = C')$ — the whole-table form A7
+  had already replaced in `02` but not in `03`, so the identifiability analysis
+  would have run against a **different intervention lattice** than the learner
+  uses. Now the single-cell primitive.
+* **noise resample is not a causal intervention.** It holds the mechanism fixed
+  and varies the exogenous draw, whereas $do(\cdot)$ does the opposite. Mixing it
+  into $\mathcal Q_{\text{learner}}$ would make signatures incomparable (the two
+  rollouts do not share $\omega$) and would inflate $B_{CF}$ with a query that
+  separates no two cases differing only in $Z$. It now has its own budget
+  $B_{\text{resample}}$ and is excluded from $\mathcal Q_{\text{learner}}$.
+
+---
+
+## 12. A11 — the latent case was not closed
+
+**Severity: P0.** The gate enumerated states the generator cannot produce, and
+omitted ones it can.
+
+**Was** (`03` §1): $\ell = (Z, A, z, \theta_{C_X}, \epsilon_E, \omega)$, with a size
+formula multiplying in **two** five-dimensional factors.
+
+**Wrong because.**
+
+1. **$A$ is derived, not drawn.** It is computed by intervention *after*
+   generation (`11` §6.1). Enumerating it as a free coordinate inflates
+   $\lvert\mathcal L\rvert$ with unreachable states and dilutes the gate.
+2. **$\kappa$ was missing** from $\ell$ and from the product, though it appears in
+   the matrix description and changes the hazard schedule — and therefore changes
+   signatures.
+3. **$M$ was missing entirely**, though it is exactly what separates two episodes
+   with the same $Z$: a decision fault at $t=2$ and one at $t=7$ are different
+   episodes.
+
+**Now** (`03` §1):
+
+$$\ell = (Z,\; M,\; \kappa,\; z,\; \theta_{C_X},\; \epsilon_E,\; \omega), \qquad B = f_B(\ell), \quad R^{*} = f_R(\ell)$$
+
+with $\mathcal L$ the feasible set of those free variables.
+
+**Also withdrawn:** the claim that $B$ "cannot be less identifiable than $Z$".
+Coarser as a *function of $\ell$* is not coarser as an *inference target* — the
+same $Z$ yields different $B$ under different masks and tapes. $B$ now gets its
+own audit, and if it is not identifiable within budget it is reported as **not
+evaluable** rather than as a learner failure.
+
+---
+
+## 13. A12 — P3 and P4 were both mis-graded
+
+**Severity: high.** One was unsatisfiable; the other was false.
+
+**P4 was a logical contradiction.** Written as *"no size-1 intervention of any
+kind suffices, but some $do(z=z')$ does"* — but $do(z=z')$ **is** an element of
+the intervention lattice and **is** size-1. `route_check.py` could never have
+passed. Corrected to `02` §5.1's form: no single **local Decision/Execution**
+intervention suffices, while one **process** intervention does.
+
+**P3's witness claim was false.** It asserted $z_3$ is unreachable from $z_1$ by
+any size-1 local intervention. Counterexample on the frozen schedule: under
+$\kappa=1$ the hazard occupies $(2,2)$ at $t \in \{2,5,8,11\}$ and `rush` arrives
+at $t=2$. The **single** intervention $do(d_2 = \texttt{WAIT})$ holds the agent at
+$(1,2)$, the hazard leaves, and it crosses at $t = 3,4,5$ — reaching $G$ inside
+the horizon. One size-1 local repair rescues `rush`.
+
+The same section claimed the bypass and wait routes are "vertex-disjoint from the
+short corridor except at the endpoints"; the route table in `11` §1 shows all
+three share $(1,2)$ and $(3,2)$.
+
+**Now** (`11` §4.2): **all four properties are enumeration-pending; none is
+claimed.** Both defects had the same cause — *a property of a route was asserted
+by describing the route*. This is the second time (after A4) that prose
+description substituted for enumeration, which is why the grading language
+"available / not established" is gone entirely.
+
+---
+
+## 14. A13 — the $C$ symbol was not cleaned up, and $A$ collided
+
+**Severity: medium.** Not cosmetic: implementers read these symbols as the data
+schema.
+
+**Was.** A2 introduced $Z$ and $A$ but $C$ survived in `02` §1, `02` §4, `02` §6,
+`06` §2, `11` §7 (as $\hat C^{fb}$), `11` §9 ("excluding truth fields $C, M, z,
+\epsilon_E$") and the `03` readout ("classes containing more than one distinct
+$C$") — while `03` §1 declared the symbol retired. Separately, $A$ was the action
+set in `11` §3 **and** the relevance vector in `11` §6.1: a collision inside one
+document.
+
+**Now.** The symbol table is frozen:
+
+$$Z = \text{fault presence},\quad B = \text{but-for relevance},\quad R^{*} = \text{repair truth},\quad \hat Z^{fb} = \text{feedback claim}$$
+
+$A$ is the action set, exclusively. And $B$ is named **but-for relevance**, not
+"causal relevance", because in overdetermination two genuinely broken mechanisms
+can both have $B_i = 0$; a name implying actual-causation would promise more than
+the definition delivers.
+
+---
+
+## 15. A14 — the reward equivalence claim ignored the step cost
+
+**Severity: high.** A mathematical error that propagated to three documents.
+
+**Was** (`02` §7): $\mathbb{E}[R^{(A)}] = 2P(S)-1$, $\mathbb{E}[R^{(B)}] = P(S)$,
+"so they induce the **same optimal policy**".
+
+**Wrong because.** It ignored the per-step cost, which `11` §1 fixes at $-0.02$,
+while the route lengths differ (4 / 6 / 8). With $L$ the policy-dependent step
+count,
+
+$$G_A = 2\cdot\mathbf{1}_{\text{success}} - 1 - 0.02L, \qquad G_B = \mathbf{1}_{\text{success}} - 0.02L$$
+
+so $2\mathbb{E}[G_B] - 1 = 2P(S) - 1 - 0.04\,\mathbb{E}[L] \neq \mathbb{E}[G_A]$
+whenever $\mathbb{E}[L] \neq 0$. **The objectives are not affine transforms and do
+not in general share an optimal policy.**
+
+**Now** (`02` §7): the claim is retracted; the step cost stays, because it is what
+makes the short corridor better than the bypass when both are safe and therefore
+what gives §2.3's option semantics any content. Reward × Update becomes a
+**genuine secondary factorial between two different objectives**, and can no
+longer be read as a "does reward matter" null.
+
+The legacy Alpha pilot's finding of practical equivalence is explained by the
+legacy environment having no policy-dependent step cost — it does not carry over.
+
+---
+
+## 16. A15 — $R_{\text{trajectory}}$ could never propose a process repair
+
+**Severity: medium.** Would have biased the V0.2R primary endpoint.
+
+**Was** (`11` §11.2): trajectory converts to "the union over all $t$ of the action
+conversion".
+
+**Wrong because.** $R_{\text{trajectory}}$ asserts *"something in this run is
+wrong"* — the coarsest representation. Converted without a process candidate, it
+is **structurally unable** to repair a pure process fault, not because it is too
+coarse but because the conversion forbade it. `InterventionSufficiency` for that
+arm would then be depressed by a rule of the conversion rather than by the
+representation's coarseness.
+
+**Now:**
+
+$$R_{\text{trajectory}} \longrightarrow \{\text{process candidate}\} \cup \bigcup_t Action_t$$
+
+---
+
+## 17. A16 — the proposed execution order was circular
+
+**Severity: P0 (process).** Would have produced a second simulator.
+
+**Was.** The next step was "write `route_check.py` and the identifiability
+generator, without touching `env/`, then let their results decide how `env/` is
+written".
+
+**Wrong because.**
+
+1. `route_check` needs `rollout`, the hazard transition, the `do`-operators and
+   the option policy; the identifiability generator needs the same. Re-implemented
+   inside `scripts/`, that is a **second simulator**, and the day the real `env/`
+   drifts from it we are back to *the specification's Oracle and the training
+   world are not the same world* — the legacy failure, exactly.
+2. P2/P3/P4 depend on option-conditioned $Q_D$, which needs the environment to
+   produce it. "Run route_check first, let it decide how to write env" is
+   therefore **circular**, a point `11` §4.2 itself conceded by noting P2 depends
+   on trained $Q_D$.
+
+**Now.** The first artifact is not V0.1R and not `route_check` — it is a minimal,
+single-source **SCM kernel**:
+
+$$\text{state transition} + \text{semantic tape} + \text{option constraints} + \text{do-operators}$$
+
+at `src/rfl_rebuild/env/kernel.py`, with **no training, no RFL, no seeds**.
+`route_check.py` and the identifiability generator both **import it** and add
+nothing of their own about the world. The order becomes
+
+$$\boxed{\text{kernel} \to \text{route\_check} \to \text{Gate E/L} \to \text{semantic suite} \to \text{reference DP} \to \text{V0.1R}}$$
+
+which is the first ordering in this project with no circular dependency.
+
+**And $Q^{*}$ by exact DP, not by training** (`11` §12.1). A few hundred states;
+finite-horizon DP gives $Q_D^{*}(s,z,a)$ deterministically. This removes seed,
+$\epsilon$-schedule and stopping-rule dependence from the *ruler* every arm is
+scored against, answers "what were $z_2$ and $z_4$ trained on" by construction,
+and dissolves the circularity in 2 above. The learner still uses tabular
+Q-learning; only the evaluator is exact.
+
+---
+
+## 18. Summary and what remains open
 
 | # | what | severity | status |
 |---|---|---|---|
 | A1 | $z$ emitted actions; $Q_D$ disconnected from behaviour | **P0** | fixed |
-| A2 | outcome-relevance filter erased redundant co-faults; $Z$/$A$ conflated | **P0** | fixed |
+| A2 | outcome-relevance filter erased redundant co-faults; $Z$/$B$ conflated | **P0** | fixed |
 | A3 | tape key too coarse; invariant too strong | medium | fixed |
-| A4 | map made $z_2$ impossible; $z_4$ self-contradictory | high | fixed; **P4 withdrawn, not replaced** |
+| A4 | map made $z_2$ impossible; $z_4$ self-contradictory | high | fixed |
 | A5 | $R_{\text{module}}$ action level and $R_{\text{trajectory}}$ unconvertible | high | fixed |
 | A6 | identifiability rows per label, not per case; tape set unbounded | high | fixed |
 | A7 | execution primitive replaced the whole controller | medium | fixed |
 | A8 | $u_t$ visibility implicit; `01`/`11` disagreed | medium | fixed |
+| **A9** | four options were four names for one policy | **P0** | fixed |
+| **A10** | identifiability gate not budget-aware; wrong primitive; resample miscounted | **P0** | fixed |
+| **A11** | latent case not closed; derived $B$ enumerated as free; $M$, $\kappa$ missing | **P0** | fixed |
+| A12 | P3 false by counterexample; P4 unsatisfiable | high | fixed |
+| A13 | $C$ not cleaned up; $A$ collided with the action set | medium | fixed |
+| A14 | reward equivalence claim ignored the step cost | high | fixed |
+| A15 | $R_{\text{trajectory}}$ could never propose a process repair | medium | fixed |
+| **A16** | proposed execution order was circular; risked a second simulator | **P0 (process)** | fixed |
+
+### The pattern across the two rounds
+
+Round 1 produced four P0s; round 2 produced four more. They are not random. Two
+recurring shapes account for nearly all of them:
+
+**A fix that connects two objects can expose a degeneracy between them.** A1
+connected $z$ to $Q_D$; only then was it visible that four identical slices
+converge to one policy (A9). A2 separated $Z$ from $B$; only then was it visible
+that $B$ needs its own identifiability audit (A11).
+
+**A property described in prose is not a property.** Three separate amendments
+(A4, A12, and the P2 reclassification) came from asserting route or reachability
+properties without enumerating. This is why the spec now says *assertion,
+discharged by enumeration* wherever a property is claimed, and why the grading
+language "available / not established" has been removed.
 
 ### What is still open after this round
 
-* **P4 has no witness and is not claimed** (`11` §4.2). It is discharged by
-  `route_check.py` or reported as a blocked process-level arm.
-* $\lvert\mathcal L\rvert$ is not yet computed. If it is impractical, a factor
-  shrinks and the spec says so — `03` §1.1 forbids sampling and calling it
-  exhaustive.
-* $\lvert\Theta_{C_X}\rvert$ and $\mathcal E$ are not yet enumerated; both must be
-  finite before Gate E can run.
+* **P1–P4 all enumeration-pending.** None is claimed; witnesses come from
+  `route_check.py` against the kernel.
+* $B_{\min}^{\text{adaptive}}$, $\lvert\mathcal L\rvert$, $\lvert\Theta_{C_X}\rvert$
+  and $\mathcal E$ are all **uncomputed**. `03` §1.1 forbids sampling and calling
+  it exhaustive; if a factor must shrink, the spec says so.
+* The identifiability audit for $B$ is specified (`03` §1.3) but not yet run.
+* The option waypoint automata in `02` §2.3 are specified by obligation, not yet
+  by transition table.
 
-These are **known-open**, listed here so they cannot be mistaken for settled. None
-of them blocks writing `route_check.py` and the identifiability generator, which
-is the next step.
+### The authorised next step
+
+$$\boxed{\text{minimal SCM kernel only}}$$
+
+`src/rfl_rebuild/env/kernel.py` — state transition, semantic tape, option
+constraints, `do`-operators. No training, no RFL, no seeds, no metrics. Every
+later artifact imports it. Nothing else is authorised until Gate E and Gate L have
+been run against it.

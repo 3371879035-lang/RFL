@@ -26,9 +26,9 @@ Five exogenous causes, each independently assignable:
 Plus $M$, the evaluator's fault mask, which records *which timesteps and which
 variables* were perturbed. $M$ is bookkeeping, not a cause.
 
-$$C = (c_P,\, c_D,\, c_X,\, c_E,\, c_U) \in \{0,1\}^5,\qquad \text{entries independent}$$
+$$Z = (Z_P,\, Z_D,\, Z_X,\, Z_E,\, Z_U) \in \{0,1\}^5,\qquad \text{entries independent}$$
 
-**Multi-label is required.** $C = (1,1,0,0,0)$ — a bad process *and* a bad local
+**Multi-label is required.** $Z = (1,1,0,0,0)$ — a bad process *and* a bad local
 decision — is a legal episode. The learner's output
 
 $$p = (p_P,\, p_D,\, p_X,\, p_E,\, p_U)$$
@@ -37,6 +37,14 @@ is likewise **not required to sum to 1**, and no softmax over the five is
 imposed. Any method that internally normalises must report the unnormalised
 scores it would have produced, because "sums to 1 over five causes" is a modelling
 assumption the spec does not grant.
+
+> **Symbol note.** The vector of fault presence is $Z$; the option set is
+> $\mathcal Z$ with element $z$. They are distinguished by case and script. The
+> **but-for relevance** vector is $B$ (`11-ENVIRONMENT.md` §6.1) — not $A$, which
+> is the action set, and deliberately not called "causal relevance", because in
+> overdetermination two genuinely broken mechanisms can both have $B_i = 0$. The
+> name must not promise more than the definition delivers. See
+> `12-AMENDMENTS.md` **A13**.
 
 ---
 
@@ -99,6 +107,61 @@ $$do(z = z') \quad\text{which changes which slice is read for the whole episode}
 
 These are different operations on different nodes.
 
+### 2.3 What makes the four options four *different* policies
+
+A1 fixed the chain $\kappa \to z \to Q_D(s,z,\cdot)$ but left a hole that would
+have reopened the same failure in a new costume:
+
+$$\boxed{\text{Four slices of one table, with identical action sets and identical reward, converge to the same optimal policy.}}$$
+
+Under tabular Q-learning each slice would be driven to the same fixed point, and
+$do(z = z')$ would again change the *name* of the behaviour without changing the
+behaviour — the A1 failure, one level down. Worse, `11` §12 trained $Q^{*}$ under
+$z = z^{*}(\kappa)$ while `02` §2.1 claimed $Q^{*}$ covers all four options, so it
+was not even specified how $z_2$ and $z_4$ acquire a policy.
+
+So an option must **constrain the policy class it governs**:
+
+$$\boxed{A_z(s) \subseteq A \quad\text{— the option-specific admissible action set}}$$
+
+An option is a **finite waypoint automaton** carrying obligations; $A_z(s)$ is the
+set of actions legal under the automaton's current state. Concretely:
+
+| $z$ | obligation the automaton enforces | optimal policy inside the class |
+|---|---|---|
+| $z_1$ `rush` | none — $A_{z_1}(s) = A$ for all $s$ | shortest path, 4 moves |
+| $z_2$ `detour_upper` | must visit $(2,1)$ before entering $G$ | upper bypass, 6 moves |
+| $z_3$ `wait_then_cross` | must hold at $(1,2)$ until the hazard clears, then cross | 4 moves plus the wait |
+| $z_4$ `loop_lower` | must visit $(2,4)$ before entering $G$ | lower loop, 8 moves |
+
+$Q_D(s,z,a)$ is defined **only for $a \in A_z(s)$**, and
+
+$$\boxed{\pi_D^{*}(s, z) = \arg\max_{a \in A_z(s)} Q_D^{*}(s, z, a)}$$
+
+Because the four admissible sets differ, their optimal policies differ on states
+they share — $z_1$ and $z_4$ both pass through $(1,2)$ and both head for $G$, but
+$z_4$ cannot enter $G$ until it has visited $(2,4)$. The options are therefore
+genuinely different **policy classes**, not four names for one policy, and
+
+$$do(z = z') \;\text{changes } A_z \;\Longrightarrow\; \text{changes reachable behaviour}$$
+
+Two consequences that bind the rest of the specification:
+
+**Decision faults are defined relative to the current option.** A decision fault
+is a deviation from $\pi_D^{*}(\cdot, z)$ **for the $z$ actually in force**:
+
+$$\text{decision fault at } t \iff a^{cmd}_t \neq \pi_D^{*}(s_t, z_{\text{current}})$$
+
+Defining it against a single global reference policy would re-create the
+process/decision overlap the whole rebuild exists to remove: an episode with a
+wrong $z$ would have its *locally correct* actions re-labelled as decision faults,
+and the two fault kinds would be entangled again. See `12-AMENDMENTS.md` **A9**.
+
+**The reference is option-conditioned**, which retires the global
+$\pi_{\text{ref}}(s) = \arg\max_a Q^{*}(s,a)$ of `11` §12.2 as a single object: it
+becomes the family $\{\pi_D^{*}(\cdot, z)\}_{z \in \mathcal Z}$, and the canonical
+conversion rule of `11` §11.2 uses the member indexed by the current $z$.
+
 ---
 
 ## 3. The execution system
@@ -129,7 +192,7 @@ make no edit at all, and an arm that edits anyway is measurably wrong.
 
 This distinction is new and load-bearing.
 
-$$C = (c_P, c_D, c_X, c_E, c_U) \qquad\text{— \textbf{cause truth}: what is broken}$$
+$$Z = (Z_P, Z_D, Z_X, Z_E, Z_U) \qquad\text{— \textbf{fault presence}: what is broken}$$
 
 $$R^{*} = \text{minimal sufficient intervention set} \qquad\text{— \textbf{repair truth}: what must change}$$
 
@@ -235,21 +298,52 @@ labels (`04-SEMANTIC-INVARIANTS.md`, invariant **I5**).
 
 ## 7. Reward
 
-Task reward is terminal plus a small step cost, with two modes as a secondary
-factor (see `06-V01R.md` §6 for why reward is demoted out of the main line):
+Task reward is terminal plus a **per-step cost** (`11-ENVIRONMENT.md` §1 fixes it
+at $-0.02$), with two terminal modes as a secondary factor (see `06-V01R.md` §6
+for why reward is demoted out of the main line):
 
 $$R^{(A)}: \text{success } +1,\ \text{failure } -1 \qquad\qquad R^{(B)}: \text{success } +1,\ \text{failure } 0$$
 
-With $\gamma = 1$ and a fixed horizon these are affine:
+### 7.1 The affine equivalence does **not** hold here
 
-$$\mathbb{E}[R^{(A)}] = 2P(S) - 1, \qquad \mathbb{E}[R^{(B)}] = P(S)$$
+An earlier draft claimed the two modes are affine transforms and therefore induce
+the same optimal policy:
 
-so they induce the **same optimal policy**. They are therefore *not* capable of
-producing a large policy difference by themselves, which is exactly why the legacy
-Alpha pilot found them practically equivalent. Under a fixed learning rate they
-are still not interchangeable, because the TD error differs by 1 and any update
-clipping bites at different times — which is why reward is accompanied by the
-update-dynamics ledger in `10-REPRODUCIBILITY-AND-OPS.md` §4.
+$$\mathbb{E}[R^{(A)}] = 2P(S) - 1, \qquad \mathbb{E}[R^{(B)}] = P(S) \qquad\text{— \textbf{withdrawn}}$$
+
+**That argument ignored the step cost.** Write $L$ for the number of steps the
+policy actually takes, which is policy-dependent — the three route lengths differ
+(4 / 6 / 8, `11` §1). Then the returns are
+
+$$G_A = 2\cdot\mathbf{1}_{\text{success}} - 1 - 0.02\,L, \qquad\qquad G_B = \mathbf{1}_{\text{success}} - 0.02\,L$$
+
+so
+
+$$\mathbb{E}[G_A] = 2P(S) - 1 - 0.02\,\mathbb{E}[L], \qquad \mathbb{E}[G_B] = P(S) - 0.02\,\mathbb{E}[L]$$
+
+and $2\,\mathbb{E}[G_B] - 1 = 2P(S) - 1 - 0.04\,\mathbb{E}[L] \neq \mathbb{E}[G_A]$
+whenever $\mathbb{E}[L] \neq 0$. **The two objectives are not affine transforms of
+one another, and they do not in general share an optimal policy.** See
+`12-AMENDMENTS.md` **A14**.
+
+### 7.2 What follows
+
+1. **The step cost stays.** It is what makes the short corridor better than the
+   bypass when both are safe, and therefore what gives the option semantics of
+   §2.3 any content. Removing it would collapse $z_1$ and $z_4$ onto the same
+   return.
+2. **"Same optimal policy" is retracted**, and with it the reason the legacy
+   Alpha pilot found the modes equivalent — that reason was an artefact of the
+   legacy environment having no policy-dependent step cost, and it does not carry
+   over.
+3. **Reward × Update becomes a genuine secondary factorial** between two
+   *different objectives*, not a null manipulation. It therefore cannot be used
+   as a "does reward matter" probe; it asks which objective, crossed with which
+   update rule, performs better, and the answer may legitimately be that they
+   differ.
+4. The update-dynamics ledger (`10-REPRODUCIBILITY-AND-OPS.md` §4) remains
+   mandatory, because the two objectives still differ in TD-error scale
+   independently of the policy argument above.
 
 ---
 

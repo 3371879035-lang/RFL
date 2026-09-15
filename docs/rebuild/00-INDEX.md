@@ -156,15 +156,27 @@ $$\boxed{\text{The legacy programme's real output was the specification of how t
 
 ## 7. What happens next
 
-Implementation, in this order, with nothing skipped:
+The order below is the first in this project with no circular dependency. An
+earlier proposal — write `route_check.py` and the identifiability generator
+standalone, then let their results decide how `env/` is written — was circular and
+would have produced a second simulator (`12-AMENDMENTS.md` **A16**).
 
-1. `src/rfl_rebuild/env/` — the SCM, forward generation, truth fields;
-2. identifiability matrix generator → **Gate E must pass**;
-3. semantic suite → **I1–I6 and C0–C8 must pass**;
-4. V0.1R arms and metrics → Gate L → development calibration → seeds;
-5. and only then V0.2R.
+$$\boxed{\text{minimal SCM kernel} \to \text{route\_check} \to \text{Gate E/L} \to \text{semantic suite} \to \text{reference DP} \to \text{V0.1R}}$$
 
-No version may begin collection while a gate upstream of it is failing.
+1. **`src/rfl_rebuild/env/kernel.py`** — state transition, semantic tape, option
+   constraints, `do`-operators. **No training, no RFL, no seeds, no metrics.**
+   This is the single source of truth for what the world is; everything later
+   imports it and adds nothing of its own about the world.
+2. `scripts/route_check.py` — enumerates the full product and discharges P1–P4 as
+   assertions (`11` §4.1). Imports the kernel.
+3. **Gate E, then Gate L** (`03`) — the identifiability matrix over the full
+   feasible set, at the budget the learner actually has.
+4. Semantic suite — invariants I1–I6 and cases C0–C8 (`04`).
+5. Reference DP — $Q_D^{*}(s,z,a)$ computed exactly (`11` §12.1).
+6. V0.1R.
+
+No version may begin collection while a gate upstream of it is failing. Steps 1–5
+produce **no scientific result**; they exist to make step 6 interpretable.
 
 ---
 

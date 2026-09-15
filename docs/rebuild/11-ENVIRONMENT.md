@@ -104,7 +104,7 @@ $$\boxed{|\mathcal Z| = 4,\ \text{enumerated in full}.}$$
 | $z_1$ | `rush` | short corridor | **P1** default: succeeds under $\kappa=0$, fails under $\kappa=1$ |
 | $z_2$ | `detour_upper` | commit at $(1,2)$ to the upper bypass | **P2** locally improvable: an episode with $|R^{*}| = 1$ whose unique member is a *decision* intervention |
 | $z_3$ | `wait_then_cross` | hold at $(1,2)$ until the hazard clears | **P3** genuinely different: succeeds on a $(\kappa, \text{tape})$ where $z_1$ fails, and is unreachable from $z_1$ by any size-1 local intervention |
-| $z_4$ | `loop_lower` | commit at $(1,3)$ to the lower loop | **P4** process granularity: an episode where **no** size-1 intervention of any kind suffices, but some $do(z = z')$ does |
+| $z_4$ | `loop_lower` | commit at $(1,3)$ to the lower loop | **P4** process granularity: an episode where **no size-1 local Decision or Execution intervention** suffices, but some $do(z = z')$ does |
 
 ### 4.1 Properties are asserted, not described
 
@@ -132,31 +132,58 @@ witness $(\kappa, \text{tape}, \text{injection})$. A property with no witness is
 
 ### 4.2 Status of the four properties
 
+$$\boxed{\text{All four are enumeration-pending. None is claimed.}}$$
+
 | property | status |
 |---|---|
-| P1 | witness available by construction; the hazard phase in §2 is chosen to give it |
-| P2 | depends on the trained $Q_D$ slices, so it is a **design obligation on the options**, not on the map |
-| P3 | witness available; the upper bypass and the wait route are vertex-disjoint from the short corridor except at the endpoints |
-| **P4** | **not established, and not claimed** |
+| P1 | expected, on the strength of the frozen hazard phase in §2 — **to be witnessed** |
+| P2 | depends on the option-conditioned $Q_D^{*}$ (`02-SCM.md` §2.3), so it is a **design obligation on the option semantics**, not on the map — **to be witnessed** |
+| P3 | **withdrawn as a claim** — see below — **to be witnessed** |
+| P4 | **never claimed** — **to be witnessed**, with a defined failure mode |
 
-P4 is the hardest and is the one this document does **not** assert. Constructing a
-failure that no single action change repairs — but which a change of option does —
-requires the option to make an *irreversible early commitment*, and it is not
-obvious that a 12-step horizon with a 4-step optimal route admits one.
+An earlier draft graded these "available / available / not established". That
+grading was wrong on P3 and incoherent on P4, in two separate ways.
 
-**Defined failure mode.** If `route_check.py` finds no P4 witness:
+**P4 was a logical contradiction.** It was written as *"no size-1 intervention of
+any kind suffices, but some $do(z=z')$ does"* — but $do(z=z')$ **is** an element
+of the intervention lattice (`02-SCM.md` §5) and therefore **is** a size-1
+intervention. The property was unsatisfiable by construction, and `route_check.py`
+could never have passed. Corrected to the version `02` §5.1 always had: no
+**single local Decision/Execution** intervention suffices, while one **process**
+intervention does.
 
-1. the map and the option set are redesigned and the check is re-run;
-2. if after redesign no P4 episode exists in this environment, then the
-   process-level representation has **no evaluable target** here, and
-   $R_{\text{causal}}$'s process arm and $R_{\text{module}}$'s process level are
-   **blocked** — recorded as a gate outcome in `experiments/v02r/`, not silently
-   dropped, and V0.2R runs with the process arm reported as not evaluable.
+**P3's witness claim was false.** It asserted that $z_3$ is unreachable from $z_1$
+by any size-1 local intervention. Counterexample, on the frozen schedule:
 
-Option 2 is a legitimate outcome. An environment that cannot express the
-distinction V0.2R exists to test should say so, rather than manufacturing the
-distinction by construction and then reporting that the representation captures
-it.
+$$\kappa = 1:\ \text{hazard occupies } (2,2) \text{ at } t \in \{2,5,8,11\}$$
+
+`rush` reaches $(2,2)$ at $t = 2$ and collides. Now apply the **single** local
+intervention $do(d_2 = \texttt{WAIT})$: the agent holds at $(1,2)$ through $t=2$,
+the hazard leaves, and it crosses at $t = 3, 4, 5$ — reaching $G$ at $t=5$ **inside
+the horizon**. One size-1 local decision repair therefore rescues `rush`, which is
+exactly what P3 said could not happen.
+
+The accompanying claim that the upper bypass and the wait route are
+*"vertex-disjoint from the short corridor except at the endpoints"* is also false
+on the route table in §1: all three share $(1,2)$ and $(3,2)$.
+
+Both are now assertions rather than grades, and the reason they were mis-graded is
+the same in both cases: **a property of a route is not established by describing
+the route.** It is established by enumerating the interventions and checking.
+
+**Defined failure mode.** If `route_check.py` finds no P3 or P4 witness:
+
+1. the map and the option semantics are redesigned and the check is re-run;
+2. if after redesign no witness exists, then the corresponding representation arm
+   has **no evaluable target** in this environment — $R_{\text{causal}}$'s process
+   arm and $R_{\text{module}}$'s process level for P4 — and it is **blocked**,
+   recorded as a gate outcome in `experiments/v02r/` rather than silently dropped.
+
+Outcome 2 is legitimate. An environment that cannot express the distinction V0.2R
+exists to test should say so, rather than manufacturing the distinction by
+construction and then reporting that the representation captures it.
+
+See `12-AMENDMENTS.md` **A12**.
 
 ---
 
@@ -250,36 +277,43 @@ same distribution as the one that was generated.
 
 **So the two concepts are separated:**
 
-$$\boxed{Z = (Z_P, Z_D, Z_X, Z_E, Z_U)\quad\text{— mechanism actually active}}$$
+$$\boxed{Z = (Z_P, Z_D, Z_X, Z_E, Z_U)\quad\text{— fault presence: mechanism actually active}}$$
 
-$$\boxed{A = (A_P, A_D, A_X, A_E, A_U)\quad\text{— outcome-relevant on this tape}}$$
+$$\boxed{B = (B_P, B_D, B_X, B_E, B_U)\quad\text{— but-for relevance: a difference-maker on this tape}}$$
 
-| | $Z_i$ | $A_i$ |
+> **Naming.** $B$ is called **but-for relevance**, not "causal relevance", and not
+> $A$. Two reasons, both load-bearing. $A$ is the action set (§3), so reusing it
+> collided inside this very document. And in an overdetermined episode **both**
+> genuinely broken mechanisms can have $B_i = 0$, so a name implying
+> actual-causation would promise more than the definition delivers. See
+> `12-AMENDMENTS.md` **A13**.
+
+| | $Z_i$ | $B_i$ |
 |---|---|---|
 | source | forward generation, exogenously assigned | evaluator intervention, computed after generation |
 | can be zeroed by the outcome? | **never** | by definition |
 | what it answers | *what broke?* | *did it make a difference this time?* |
 | cost to compute | free | one counterfactual rollout per cause |
 
-$$Z_A = 1,\; A_A = 0 \quad\text{is a legal and meaningful state:}$$
+$$Z_A = 1,\; B_A = 0 \quad\text{is a legal and meaningful state:}$$
 
 > mechanism $A$ really did break, but on this episode another mechanism
 > established the outcome first, so $A$ was not the difference-maker.
 
-This is the same distinction the project already drew between **cause truth** and
+This is the same distinction the project already drew between **fault presence** and
 **repair truth** (`02-SCM.md` §4), applied one level down: $Z$ is what is broken,
-$A$ is what mattered, $R^{*}$ is what must change. Three different objects, all
+$B$ is what mattered, $R^{*}$ is what must change. Three different objects, all
 evaluator truth.
 
 ### 6.2 Which one each version predicts
 
 | version | target | rationale |
 |---|---|---|
-| **V0.1R** | **$Z$** — primary | the question is *what happened*, a diagnosis. Predicting $A$ would smuggle in causal responsibility and re-entangle diagnosis with prescription, which is the error the four-version split exists to undo |
-| V0.1R | $A$ — **secondary endpoint** | reported, because a method that gets $Z$ right and $A$ wrong is informative — it means the method detects faults but cannot rank their contribution |
+| **V0.1R** | **$Z$** — primary | the question is *what happened*, a diagnosis. Predicting $B$ would smuggle in causal responsibility and re-entangle diagnosis with prescription, which is the error the four-version split exists to undo |
+| V0.1R | $B$ — **secondary endpoint** | reported, because a method that gets $Z$ right and $B$ wrong is informative — it means the method detects faults but cannot rank their contribution. **Requires its own identifiability audit** (`03-IDENTIFIABILITY.md` §1.3); if $B$ is not identifiable within $B_{CF}$ it is reported as **not evaluable**, not as a negative result |
 | V0.2R | $R^{*}$ | still a third object, unchanged |
 
-$A$ is computed for every episode regardless, and is what makes the redundant-cause
+$B$ is computed for every episode regardless, and is what makes the redundant-cause
 episodes visible in the results rather than silently mislabelled.
 
 ### 6.3 What survives of the old filter
@@ -465,7 +499,7 @@ The rules are completed here. See `12-AMENDMENTS.md` **A5**.
 | **decision** $(t)$ | $do(d_t = d')$, where $d'$ is the alternative named; if none, the reference action $\pi_{\text{ref}}(s_t)$ |
 | **execution** $(s^{*}, a^{*})$ | $do\bigl(C_X(s^{*}, a^{*}) = a^{*}\bigr)$ — one cell (`02-SCM.md` §5.0) |
 | **action** $(t)$ | **both** of $\{do(d_t = \pi_{\text{ref}}(s_t)),\ do(C_X(s_t, a^{cmd}_t) = a^{cmd}_t)\}$ |
-| **trajectory** $(\text{whole episode})$ | the union over all $t$ of the **action** conversion above |
+| **trajectory** $(\text{whole episode})$ | the **process** candidate, **union** the union over all $t$ of the **action** conversion above |
 | empty $\hat R$ | $\varnothing$ — change nothing |
 
 #### 11.2.2 Why `action` expands to two candidates and not one
@@ -518,33 +552,53 @@ V0.2R, V0.3R and V0.4R all refer to "the reference" without the source having be
 fixed. It is fixed here, and it is a **single shared artifact** so that no version
 can quietly use a different one.
 
-### 12.1 $Q^{*}$
+### 12.1 $Q^{*}$ — computed exactly, not trained
 
-A tabular checkpoint trained on the **healthy** environment — no cause injected,
-$z = z^{*}(\kappa)$, $C_X$ = identity, no external perturbation — using the
-baseline learner to convergence under the $T$-freezing rule of
-`05-STATISTICAL-PROTOCOL.md` §6.
+$$\boxed{Q_D^{*}(s, z, a) \text{ is obtained by exact finite-horizon dynamic programming}}$$
+
+over the **healthy** environment — no fault injected, $C_X$ = identity, no external
+perturbation — with $z$ ranging over all four options and $a$ restricted to
+$A_z(s)$ (`02-SCM.md` §2.3).
+
+An earlier draft specified "the baseline learner trained to convergence under the
+$T$-freezing rule". That was wrong for this environment, on three counts:
+
+1. **It reintroduced seed dependence into the ruler.** $Q^{*}$ is the target that
+   every arm is scored against; deriving it from a stochastic training run makes
+   the measurement instrument depend on a seed, an $\epsilon$-schedule and a
+   stopping rule. The state space is a few hundred states (`11` §1), so the exact
+   solution is computable and there is no reason to approximate it.
+2. **It could not answer how the four option slices get trained.** `02` §2.3
+   requires four genuinely different policy classes; "train to convergence" never
+   said what $z_2$ and $z_4$ were trained *on*. Exact DP answers it by
+   construction: each slice is solved inside its own admissible set.
+3. **It made P2/P3/P4 depend on a training run**, which is circular — the
+   properties are supposed to validate the environment that the training would
+   have needed.
+
+The **learner still uses tabular Q-learning**. Only the evaluator's ruler is exact.
 
 $Q^{*}$ is:
 
-* **committed** to `experiments/_shared/reference/`, not regenerated per run;
-* **fingerprinted** alongside the source tree (`10` §2), so a version cannot
-  silently train against a different reference;
-* **frozen**: any change to it voids every experiment that used it, by the same
-  rule that voids a seed set.
+* **computed** by DP and committed to `experiments/_shared/reference/`, never
+  regenerated per run;
+* **fingerprinted** alongside the source tree (`10` §2);
+* **frozen**: any change to it voids every experiment that used it.
 
-The learner used to produce $Q^{*}$ is the *baseline*, not any RFL arm. Training
-the reference with a treatment arm would bake that arm's assumptions into the
-target that every other arm is scored against.
+### 12.2 The reference policy family
 
-### 12.2 The reference policy
+$$\boxed{\pi_D^{*}(s, z) = \arg\max_{a \in A_z(s)} Q_D^{*}(s, z, a)}$$
 
-$$\pi_{\text{ref}}(s) = \arg\max_a Q^{*}(s,a)$$
+option-conditioned, with ties broken by a frozen declared order. The single global
+$\pi_{\text{ref}}(s) = \arg\max_a Q^{*}(s,a)$ of the first draft is **retired** — it
+is inconsistent with behaviour being generated by $Q_D(s,z,\cdot)$ (`02-SCM.md`
+§2.1) and, worse, using it to define decision faults would re-create the
+process/decision overlap: after a wrong $z$, the *locally correct* actions of that
+option would be flagged as decision faults.
 
-with ties broken by a frozen, declared order. $\pi_{\text{ref}}$ is used for:
+$\pi_D^{*}(\cdot,z)$ is used for:
 
-* defining a decision fault (a decision deviating from $\pi_{\text{ref}}$ at a
-  state where the deviation is outcome-relevant — `Z_D`, §6);
+* defining a decision fault **relative to the option in force** (`02-SCM.md` §2.3);
 * the canonical conversion rule's fallback alternative (`11` §11.2);
 * the `is_deviation` flag in any step trace.
 
