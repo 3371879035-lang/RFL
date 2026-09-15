@@ -1100,7 +1100,103 @@ is **not** to be pre-tuned for that gate.
 
 ---
 
-## 38. Summary and what remains open
+## 38. A50 — query availability is itself partially observable
+
+**Severity: P0 (semantics).** Found by Stage 3's independent-replay assertion, on
+its first run, after the earlier `query_family_conflicts == 0` check had reported
+clean for two rounds.
+
+**Was.** `03-IDENTIFIABILITY.md` §1.6 asserted
+
+$$\forall \ell_i, \ell_j \in C:\quad \mathcal Q_{\text{legal}}(\ell_i) = \mathcal Q_{\text{legal}}(\ell_j)$$
+
+on the grounds that members of a factual class share the same factual $I_t$.
+
+**The counterexample.** A factual class of size 430 containing
+$Z = (0,1,0,0,0)$ with `base_option = 1` and
+$D = \texttt{DecisionOverride}(t{=}0, \texttt{WAIT})$. The query $do(z = \texttt{rush})$
+is **well formed** for that case's siblings but **MALFORMED** for it: under `rush`,
+$A_{z_1}$ admits only strict static descent (A39), so at `START` it is exactly
+$\{\texttt{RIGHT}\}$, and `WAIT` is outside. Per `02` §5.0.1 the whole candidate is
+then MALFORMED.
+
+Two cases therefore share an identical factual observation while admitting
+different query families, because **query legality depends on the latent $M$**:
+
+$$\boxed{\mathcal Q_{\text{legal}} \text{ depends on } (I^{factual}_t \textbf{ and } M^{latent})}$$
+
+**The three rejected repairs, and why.**
+
+* **(d) partition by $\mathcal Q_{\text{legal}}$** — this was rejected outright, and
+  the reason is the sharpest part of the ruling. If the class key became
+  $(I_t, \mathcal Q_{\text{legal}})$, then two worlds the learner **cannot tell
+  apart observationally** would be split apart by a hidden-$M$-derived quantity.
+  That is a new information channel dressed up as a partition refinement: it tells
+  the learner *"although you cannot see $M$, I will tell you in advance which
+  questions are legal here."* It reintroduces the very leakage §1.6 forbids, only
+  as a legal-query menu instead of a MALFORMED sentinel.
+* **(b) legality against the factual option** — rewrites counterfactual
+  well-formedness.
+* **(c) MALFORMED as a sentinel response** — leaks hidden $M$ through illegality,
+  and contradicts §1.6.
+
+**Now — (a\*), information-state safe legality:**
+
+$$\boxed{\mathcal Q_{\text{learner}}(H) = \bigcap_{\ell \in H} \mathcal Q_{\text{semantic}}(\ell)}$$
+
+where $H$ is the current information set, determined by the factual observation and
+the query-response history so far.
+
+* **factual classes still partition by $I_t$ alone** — Stage 2's 2,921 classes stand
+  unchanged, and the partition is **not** re-derived from hidden legality;
+* $\mathcal Q_{\text{legal}}(\ell)$ is evaluator-side hidden structure, used only to
+  decide whether an intervention is well formed *in that world*;
+* the learner **never observes it**, and may only select queries that are legal in
+  **every** still-possible world;
+* after a response, $H$ shrinks and $\mathcal Q_{\text{learner}}(H)$ can **grow**;
+* **MALFORMED is never an observation.**
+
+**Why the intersection is not conservatism.** Under partial observability, an agent
+may not choose an action that is well defined in only some of the worlds it still
+considers possible. If it did, and the true world were one of the others, the only
+options would be to return MALFORMED (leak), refuse the query (leak), or let it
+execute (rewrite the SCM). Intersection is the only epistemically clean choice
+given the frozen constraints.
+
+**The consequence for the gate's proof structure.** Under the old assumption, a
+root-level unlimited signature that failed to separate implied
+`FAIL_UNIDENTIFIABLE_EVEN_UNBOUNDED`. It no longer does:
+
+$$\boxed{\text{unsafe at the root} \;\not\Rightarrow\; \text{unsafe forever}}$$
+
+A query unsafe at the root may become safe one level down, after an earlier
+response has eliminated the world that made it malformed. So Stage 3 is the
+**non-adaptive fallback only**: it searches $S \subseteq \mathcal Q_0(C)$ with
+$|S| \le B_{CF}$, where $\mathcal Q_0(C) = \bigcap_{\ell \in C}\mathcal Q_{\text{legal}}(\ell)$;
+a hit is a sound `PASS_NONADAPTIVE`, a miss is `INCONCLUSIVE_NEEDS_ADAPTIVE` and
+nothing more. Stage 4 is the history-dependent adaptive tree,
+
+$$D(H) = 1 + \min_{q \in \mathcal Q_{\text{learner}}(H)} \max_o D(H_o), \qquad D(H) = 0 \text{ if all } \ell \in H \text{ share one } Z$$
+
+with $D(H) = \infty$ only when $\mathcal Q_{\text{learner}}(H) = \varnothing$ while
+$H$ still spans multiple $Z$ — which is now the **only** route to
+`FAIL_UNIDENTIFIABLE`. Gate L remains $B_{\min}^{\text{adaptive}} = \max_C D(C) \le B_{CF}$.
+
+**The deeper point, recorded because it generalises.**
+
+$$\boxed{\text{Observation} \to \text{belief} \to \text{safe intervention set}}$$
+
+The project had assumed *same factual observation $\Rightarrow$ same executable
+intervention set*. That is false. It is the same shape as the project's oldest
+principle, $Evidence \neq Truth$: the evaluator knowing that a query is legal in the
+true latent world does not make it legal for the learner.
+
+**No environment change, no A39 change, no fault-mask change.** Only the
+identifiability semantics changed.
+
+---
+
+## 39. Summary and what remains open
 
 | # | what | severity | status |
 |---|---|---|---|

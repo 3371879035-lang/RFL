@@ -146,17 +146,22 @@ def dynamical_key(case: LatentCase):
 def min_separating_subset(cols: dict, limit: int):
     """Smallest subset of deduplicated query columns that separates all ``Z``.
 
-    Exhaustive over subset size 1..limit. Returns ``(size, subset)`` or
-    ``(None, None)`` if none exists within the limit.
+    ``cols[q]`` is a list of ``(Z, response)`` per representative case. A subset
+    separates iff every group of cases sharing a response-vector shares a single
+    ``Z``. Exhaustive over size 1..limit: a greedy failure would not be a proof
+    that no set of size <= limit exists.
     """
     keys = list(cols)
+    if not keys:
+        return None, None
+    n = len(cols[keys[0]])
     for size in range(1, limit + 1):
         for combo in itertools.combinations(range(len(keys)), size):
-            sig = defaultdict(set)
-            for ci, k in enumerate(keys):
-                vals = tuple(cols[keys[j]][ci] for j in combo)
-                sig[vals].add(k[0])          # k[0] is the Z vector
-            if all(len(v) == 1 for v in sig.values()):
+            groups: dict = defaultdict(set)
+            for ci in range(n):
+                vals = tuple(cols[keys[j]][ci][1] for j in combo)
+                groups[vals].add(cols[keys[0]][ci][0])
+            if all(len(v) == 1 for v in groups.values()):
                 return size, [keys[j] for j in combo]
     return None, None
 
@@ -191,43 +196,35 @@ def main() -> int:
             by_key.setdefault(dynamical_key(m), m)
         reps = list(by_key.values())
 
-        cols = {}
-        malformed_here = []
+        # ---- A50: information-state safe legality -------------------------- #
+        # Q_learner(H) = intersection over the CURRENT hypothesis set of the
+        # queries that are well-formed in that world. A query that is MALFORMED
+        # on any still-possible case is not selectable -- it is dropped, NOT
+        # stopped on and NOT turned into a response category. Illegal query
+        # availability is itself partially observable, and observing it would
+        # leak hidden M.
+        cols: dict = {}
+        dropped = []
         for q in sorted(qfam, key=repr):
             col = []
+            ok = True
             for m in reps:
                 r = response(sol, m, q)
                 if r is None:
-                    malformed_here.append(q)
+                    ok = False
                     break
                 col.append((m.Z, r))
-            if malformed_here:
-                break
-            cols[q] = col
+            if ok:
+                cols[q] = col
+            else:
+                dropped.append(q)
 
-        if malformed_here:
-            report["malformed_queries"] += 1
-            print(f"STOP — query {malformed_here[0]} is MALFORMED on a member of a "
-                  f"class of size {len(members)}. Class-local legality is broken.")
-            return 6
-
-        # unlimited-query check
-        block = defaultdict(set)
-        for ci, m in enumerate(reps):
-            block[m.Z].add(ci)
-        full = defaultdict(set)
-        for ci, m in enumerate(reps):
-            key = tuple(cols[q][ci][1] for q in cols)
-            full[key].add(m.Z)
-        unbounded_separates = all(len(v) == 1 for v in full.values())
-
-        if not unbounded_separates:
-            colliding = next(v for v in full.values() if len(v) > 1)
-            verdicts[VERDICT_FAIL] += 1
+        if not cols:
+            verdicts[VERDICT_INC] += 1
             report["details"].append({
-                "kind": VERDICT_FAIL, "class_size": len(members),
-                "n_distinct_Z": len(zs), "query_family_size": len(qfam),
-                "colliding_Z": [list(z) for z in colliding],
+                "kind": VERDICT_INC, "class_size": len(members),
+                "n_distinct_Z": len(zs), "query_candidate_size": len(qfam),
+                "n_safe_queries": 0, "n_dropped_by_legality": len(dropped),
             })
             continue
 
@@ -241,11 +238,16 @@ def main() -> int:
         if size is not None:
             verdicts[VERDICT_PASS] += 1
         else:
+            # A50: Stage 3 is the NON-ADAPTIVE fallback only. A miss here is
+            # INCONCLUSIVE, never an unbounded FAIL -- after a query the
+            # hypothesis set shrinks and the safe family can GROW, so a query
+            # unsafe at the root may become safe one level down.
             verdicts[VERDICT_INC] += 1
             report["details"].append({
                 "kind": VERDICT_INC, "class_size": len(members),
-                "n_distinct_Z": len(zs), "query_family_size": len(qfam),
-                "n_dedup_queries": len(dedup),
+                "n_distinct_Z": len(zs), "query_candidate_size": len(qfam),
+                "n_safe_queries": len(cols), "n_dedup_queries": len(dedup),
+                "n_dropped_by_legality": len(dropped),
             })
 
     report["verdicts"] = dict(verdicts)
