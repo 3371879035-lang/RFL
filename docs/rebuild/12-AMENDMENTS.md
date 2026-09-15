@@ -668,7 +668,182 @@ policy.
 
 ---
 
-## 23. Summary and what remains open
+## 24. A22 — $m$ was part of the decision state but missing from $Q_D$ and $\pi_D^{*}$
+
+**Severity: P0.** Determines what the kernel's `State` object is.
+
+**Was.** `02` §2.3/§2.4 made the admissible set depend on the automaton state —
+$A_z(m,s)$ — while the policy objects stayed $Q_D(s,z,a)$ and $\pi_D^{*}(s,z)$.
+
+**Wrong because.** The same $(s,z)$ admits different actions in different $m$. For
+$z_2$ at $s=(3,2)$:
+
+$$m=0:\ \texttt{RIGHT} \notin A_{z_2}(m,s) \qquad m=1:\ \texttt{RIGHT} \in A_{z_2}(m,s)$$
+
+No single $Q_D(s,z,\cdot)$ is correct for both, so $(s,z)$ is **not a sufficient
+statistic** and the representation is not Markov.
+
+**Now:** $Q_D(s, z, m, a)$ and $\pi_D^{*}(s, z, m)$, with the admissible set
+$A_z(m,s)$.
+
+**And the visibility question is closed.** The learner must evaluate $A_z(m,s)$
+and index the table, so
+
+$$x^{D}_t = (s_t,\; z_t,\; m_t) \quad\text{— learner-visible internal control state}$$
+
+$z_t$ and $m_t$ are the agent's own control commitments, with exactly the status
+of $a^{cmd}_t$ (`01` §2.3). Hiding one's own control state from oneself is
+manufactured partial observability. They therefore **enter the identifiability
+signature's usable information set** (`03` §3.1): a field the policy may read but
+the identifiability analysis may not would be an undeclared third category, which
+`01` §2.2 forbids.
+
+$Z_P$ does not become trivial: knowing *which* option is in force says nothing
+about whether it *matched* the context, which is the fault.
+
+---
+
+## 25. A23 — the hazard phase made $s_t$ non-Markov
+
+**Severity: P0.** Would have made DP and Q-learning solve the wrong object, and
+agree with each other while doing it.
+
+**Was.** $\phi \in \{0,\dots,5\}$ was introduced as a tape key while $s_t$ carried
+only the *current* hazard occupancy.
+
+**Wrong because.** Two episodes can share
+$(x, y, t, \kappa, \text{occupancy now})$ and still have different **future**
+schedules, so $P(s_{t+1} \mid s_t, a_t)$ is not determined by $s_t, a_t$. Both the
+tabular Q-table and the finite-horizon DP would be ill-posed — and would agree
+with each other, which is the hardest kind of error to notice.
+
+**Now**, option A of the three the review listed:
+
+$$\boxed{s_t = (x_t, y_t, t, \kappa, \phi)} \qquad 5 \times 5 \times 13 \times 2 \times 6 = 3900 \text{ states}$$
+
+$$\text{hazard\_at}(t,\kappa,\phi) = \mathbf{1}\bigl[t \equiv \phi \pmod{p(\kappa)}\bigr]$$
+
+$\phi$ is drawn uniformly, is a tape key, is **visible**, and lives in the state.
+The earlier fixed phase offsets are gone: a fixed phase is not a distribution over
+schedules, and the document had simultaneously described the schedule as frozen
+and the tape as supplying uncertainty about it.
+
+**Consequential:** $z^{*}(\kappa)$ is retired. If the best option can depend on the
+hazard phase, "context-appropriate" cannot be a function of $\kappa$ alone. Rather
+than replace it with $z^{*}(s)$ — which would need the DP, and re-circularise the
+generator against step 2 — **the fault generator no longer consults $z^{*}$ at
+all**: $Z_P$ draws $z' \in \mathcal Z \setminus \{z\}$ uniformly, and whether that
+hurt is $B$, computed by intervention. $z^{*}(s) = \arg\max_z V_z^{*}(s)$ survives
+as a **derived reporting quantity**, computed after the DP, never as a generation
+input.
+
+---
+
+## 26. A24 — joint interventions had no semantics, and the fault generator could escape the option
+
+**Severity: P0.**
+
+**Was, part 1.** The well-formedness rule was stated for a single $do(d_t)$. But
+$R^{*}$ is a **set**. Checking each member against the **factual** prefix is wrong
+as soon as the set has two members: $do(d_2=a')$ changes the trajectory, so at
+$t=5$ the counterfactual $(s_5^{cf}, m_5^{cf})$ differs, and a second intervention
+validated against the factual prefix may repair a decision that does not exist, or
+write an action no longer admissible.
+
+**Now:** the intervention set is **fixed once, before the rollout**; validity is
+checked against the **current counterfactual** at each intervened $t$; any failure
+marks the **entire candidate `MALFORMED`** — not clamped, not skipped, not
+partially applied. Two interventions on the same structural node are `MALFORMED`
+too, their composition being undefined.
+
+**Was, part 2.** `11` §6 required only that a decision fault's $a'$ be *physically
+legal*. A17 fixed the counterfactual side and left the generator free to violate
+its own option — so a nominal "decision fault" could step outside the obligation,
+i.e. perform a process-level change while labelled local.
+
+**Now:**
+
+$$a' \in A_z(m_t, s_t) \setminus \{\pi_D^{*}(s_t, z, m_t)\}$$
+
+inside the option, not adjacent to it.
+
+---
+
+## 27. A25 — the tape support was complete but had no measure or decoder
+
+**Severity: P0.** The kernel could not have generated the promised feedback distribution.
+
+**Was.** The support was written out — `error_flag` $\in \{0,1\}$ and
+`cause_choice` $\in \{P,D,X,E,U\}$ — while §7 promised $P(\text{wrong}) = 0.4$ and
+*uniform over the eligible causes*.
+
+**Wrong because**, in two distinct ways:
+
+1. **A two-point support does not imply $1/2$.** $P(\texttt{error\_flag}=1) = 0.4$
+   is an extra fact that nothing stated.
+2. **A five-valued draw cannot be decoded uniformly onto an eligible set of size
+   2, 3 or 4.** Taking a rank modulo $\lvert E\rvert$ from a uniform draw on
+   $\{0,\dots,4\}$ is uniform only for $\lvert E\rvert \in \{1,5\}$. For the common
+   cases the feedback distribution was silently **non-uniform**, and nothing in the
+   document said so.
+
+**Now** — support, measure and decoder all frozen:
+
+| key | domain | measure |
+|---|---|---|
+| `("hazard","phase")` | $\{0,\dots,5\}$ | uniform |
+| `("feedback","error_flag")` | $\{0,1\}$ | $P(1) = 0.4$ |
+| `("feedback","cause_rank")` | $\{0,\dots,59\}$ | uniform |
+
+$$\lvert\mathcal T\rvert = 6 \times 2 \times 60 = 720$$
+
+$60$ is divisible by $1,2,3,4,5$, so $i = \texttt{cause\_rank} \bmod \lvert E\rvert$
+is **exactly uniform on any non-empty eligible set** $E$.
+
+**And the empty case is frozen, not resampled.** $Z=(1,1,1,1,1)$ with
+`error_flag=1`, and $Z=(0,0,0,0,0)$ with `error_flag=0`, leave $E=\varnothing$;
+the claim is then $\varnothing$. Resampling would condition the feedback
+distribution on $Z$, reintroducing the outcome-conditioning A2 removed. The
+frequency of $E=\varnothing$ is counted and reported.
+
+---
+
+## 28. A26 — the A21 cleanup was incomplete, and the audit had false negatives
+
+**Severity: medium**, but it is the amendment that says the most about method.
+
+**Was.** A21 claimed the retired symbols were cleared. They were not: `11` §6.3
+still used $A_i$; the canonical conversion rule and §11.2.4 still consulted the
+retired reference policy; the frozen list still read "causal relevance $A$"; `03`
+still said *mutually redundant … $A=(0,\dots)$*; and `route_check.py`'s comment
+still said it "must pass before `src/rfl_rebuild/env/` is written", contradicting
+the order A16/A19 had just fixed.
+
+**Also wrong:** `03` said resampling is "used by the evaluator when computing $B$".
+**But-for relevance holds $\omega$ fixed** and removes one fault to compare
+outcomes; resampling $\omega$ is a different operation and is not a but-for test.
+
+**Now.** All cleared. But the substantive finding is the one about the check
+itself:
+
+> **`spec_audit.py` had false negatives, and A21 was written as if it did not.**
+
+A21's claim "the residuals are fixed" rested on a check that only matched a few
+literal spellings. It missed LaTeX variants and semantically equivalent phrasing.
+So the fix was not only to clear the text but to **widen the pattern table** —
+`Q_D(s,z,·)` without $m$, `\pi_{\text{ref}}` in any form, `A_i`, `causal
+relevance`, `z^{*}(\kappa)` — and to re-run it until clean.
+
+**Widening it immediately found 26 hits**, including four the review had not
+listed. The lesson, recorded because the same shape has now appeared four times in
+this project: **a check that passes is not evidence that the thing is right; it is
+evidence only that the check did not look.** The retired-semantics check is now
+part of the standing audit (`scripts/spec_audit.py`), so the next residual is
+caught by machine rather than by a reviewer reading closely.
+
+---
+
+## 29. Summary and what remains open
 
 | # | what | severity | status |
 |---|---|---|---|

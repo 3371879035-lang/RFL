@@ -41,7 +41,7 @@ assumption the spec does not grant.
 > **Symbol note.** The vector of fault presence is $Z$; the option set is
 > $\mathcal Z$ with element $z$. They are distinguished by case and script. The
 > **but-for relevance** vector is $B$ (`11-ENVIRONMENT.md` §6.1) — not $A$, which
-> is the action set, and deliberately not called "causal relevance", because in
+> is the action set, and deliberately not called "but-for relevance", because in
 > overdetermination two genuinely broken mechanisms can both have $B_i = 0$. The
 > name must not promise more than the definition delivers. See
 > `12-AMENDMENTS.md` **A13**.
@@ -58,7 +58,7 @@ $$z \in \mathcal Z,\qquad \boxed{|\mathcal Z| = 4}$$
 
 ### 2.1 $z$ is an option, not an action emitter
 
-$$\boxed{\kappa \;\longrightarrow\; z \;\longrightarrow\; Q_D(s, z, \cdot) \;\longrightarrow\; a^{cmd}}$$
+$$\boxed{\kappa \;\longrightarrow\; z \;\longrightarrow\; Q_D(s, z, m, \cdot) \;\longrightarrow\; a^{cmd}}$$
 
 $z$ is a **strategy/option identifier**. It selects *which slice of the decision
 table governs behaviour*; it does not compute $a^{cmd}$ itself.
@@ -76,7 +76,7 @@ $\Delta Q_D$ a repair is the contradiction; the two cannot both hold.
 So the four programs are four **option-conditioned policies**, and the behaviour
 chain is:
 
-$$z \;\text{selected by context}\; \longrightarrow\; \pi_D(s) = \arg\max_a Q_D(s, z, a) \;\longrightarrow\; a^{cmd}$$
+$$z \;\text{selected by context}\; \longrightarrow\; \pi_D(s) = \arg\max_a Q_D(s, z, m, a) \;\longrightarrow\; a^{cmd}$$
 
 Both levels are now real interventions that change behaviour:
 
@@ -88,7 +88,7 @@ Both levels are now real interventions that change behaviour:
 and neither is expressible as the other. That is what makes "process" a
 granularity rather than a sum of locals.
 
-$Q_D(s, z, \cdot)$ is one table over $(s, z, a)$; the reference checkpoint
+$Q_D(s, z, m, \cdot)$ is one table over $(s, z, a)$; the reference checkpoint
 $Q^{*}$ (`11-ENVIRONMENT.md` §12) is trained across all four options, so switching
 option at test time selects an already-trained slice rather than an untrained one.
 
@@ -109,7 +109,7 @@ These are different operations on different nodes.
 
 ### 2.3 What makes the four options four *different* policies
 
-A1 fixed the chain $\kappa \to z \to Q_D(s,z,\cdot)$ but left a hole that would
+A1 fixed the chain $\kappa \to z \to Q_D(s, z, m, \cdot)$ but left a hole that would
 have reopened the same failure in a new costume:
 
 $$\boxed{\text{Four slices of one table, with identical action sets and identical reward, converge to the same optimal policy.}}$$
@@ -117,7 +117,7 @@ $$\boxed{\text{Four slices of one table, with identical action sets and identica
 Under tabular Q-learning each slice would be driven to the same fixed point, and
 $do(z = z')$ would again change the *name* of the behaviour without changing the
 behaviour — the A1 failure, one level down. Worse, `11` §12 trained $Q^{*}$ under
-$z = z^{*}(\kappa)$ while `02` §2.1 claimed $Q^{*}$ covers all four options, so it
+$z = z^{*}(s)$ while `02` §2.1 claimed $Q^{*}$ covers all four options, so it
 was not even specified how $z_2$ and $z_4$ acquire a policy.
 
 So an option must **constrain the policy class it governs**:
@@ -243,9 +243,52 @@ would stop distinguishing anything.
 This is the frozen answer to the question the review posed. See
 `12-AMENDMENTS.md` **A17**.
 
-$Q_D(s,z,a)$ is defined **only for $a \in A_z(s)$**, and
+$Q_D$ is defined **only for $a \in A_z(m,s)$**, and because $A_z$ depends on $m$,
+**$m$ is part of the decision state**:
 
-$$\boxed{\pi_D^{*}(s, z) = \arg\max_{a \in A_z(s)} Q_D^{*}(s, z, a)}$$
+$$\boxed{Q_D(s, z, m, a)},\qquad \boxed{\pi_D^{*}(s, z, m) = \arg\max_{a \in A_z(m,s)} Q_D^{*}(s, z, m, a)}$$
+
+### 2.3.1 Why $m$ cannot be dropped
+
+An earlier draft wrote $Q_D(s,z,a)$ and $\pi_D^{*}(s,z)$ while simultaneously
+letting $A_z$ depend on $m$. Those are inconsistent, and the counterexample is
+immediate. Take $z_2$ (obliged to visit $(2,1)$ before $G$) at one physical state
+$s = (3,2)$:
+
+$$m = 0:\ \texttt{RIGHT} \notin A_{z_2}(m,s) \qquad\qquad m = 1:\ \texttt{RIGHT} \in A_{z_2}(m,s)$$
+
+The same $(s, z_2)$ admits $\texttt{RIGHT}$ in one automaton state and forbids it
+in the other. No single $Q_D(s, z, m, \cdot)$ can be correct for both, so
+$(s,z)$ is **not a sufficient statistic** and the representation would not be
+Markov. See `12-AMENDMENTS.md` **A22**.
+
+### 2.3.2 The learner's control state, and no third category of information
+
+The learner must be able to evaluate $A_z(m,s)$ and index $Q_D(s,z,m,\cdot)$, so
+$z$ and $m$ must be available to it:
+
+$$x^{D}_t = (s_t,\; z_t,\; m_t) \quad\text{— the learner-visible internal control state}$$
+
+$z_t$ and $m_t$ are **not sensor observations**; they are the agent's own control
+commitments. That is exactly the status of $a^{cmd}_t$ (`01-OBSERVATION-MODEL.md`
+§2.3), and the same argument applies: a system knows which option it committed to
+and what obligations it is carrying. Hiding one's own control state from oneself
+is manufactured partial observability, not modelled partial observability.
+
+Two consequences, both binding:
+
+1. **They enter the identifiability signature's usable information set**
+   (`03-IDENTIFIABILITY.md` §2.1). A field the policy may read but the
+   identifiability analysis may not is an undeclared third category, and `01` §2.2
+   forbids exactly that: every field is either in `obs` or in the hidden set.
+2. **$Z_P$ does not become trivial.** Knowing *which* option is in force does not
+   tell the learner whether that option was the right one for this context — that
+   still requires counterfactuals. The fault is in the *match* between $z$ and the
+   state, not in $z$ itself.
+
+Note that $m$ depends on the trajectory ($\delta_z$ consumes $s'$), so $x^D$ is
+deterministic given the episode; it carries no information about the fault beyond
+what $s$ and $z$ already carry.
 
 Because the four admissible sets differ, their optimal policies differ on states
 they share — $z_1$ and $z_4$ both pass through $(1,2)$ and both head for $G$, but
@@ -257,9 +300,9 @@ $$do(z = z') \;\text{changes } A_z \;\Longrightarrow\; \text{changes reachable b
 Two consequences that bind the rest of the specification:
 
 **Decision faults are defined relative to the current option.** A decision fault
-is a deviation from $\pi_D^{*}(\cdot, z)$ **for the $z$ actually in force**:
+is a deviation from $\pi_D^{*}(\cdot, z, m)$ **for the $z$ actually in force**:
 
-$$\text{decision fault at } t \iff a^{cmd}_t \neq \pi_D^{*}(s_t, z_{\text{current}})$$
+$$\text{decision fault at } t \iff a^{cmd}_t \neq \pi_D^{*}(s_t, z_{\text{current}}, m_t)$$
 
 Defining it against a single global reference policy would re-create the
 process/decision overlap the whole rebuild exists to remove: an episode with a
@@ -268,7 +311,7 @@ and the two fault kinds would be entangled again. See `12-AMENDMENTS.md` **A9**.
 
 **The reference is option-conditioned**, which retires the single global reference
 policy of `11` §12.2 as one object: it becomes the family
-$\{\pi_D^{*}(\cdot, z)\}_{z \in \mathcal Z}$, and the canonical conversion rule of
+$\{\pi_D^{*}(\cdot, z, m)\}_{z \in \mathcal Z}$, and the canonical conversion rule of
 `11` §11.2 uses the member indexed by the current $z$.
 
 ---
@@ -352,6 +395,50 @@ A **repair** is a finite subset $r \subseteq \mathcal I$. It is **sufficient** i
 the episode succeeds under $do(r)$. The **minimal sufficient set** is
 
 $$R^{*} = \arg\min_{r \text{ sufficient}} |r|$$
+
+### 5.0.1 Joint interventions: fixed before the rollout, validated on the counterfactual
+
+The well-formedness rule of §2.4.7 is stated for a single intervention. $R^{*}$ is
+a *set*, and a set has semantics that a singleton does not. An earlier draft
+checked each member against the **factual** prefix, which is wrong as soon as the
+set has two members:
+
+* $do(d_2 = a')$ changes the trajectory, so at $t=5$ the counterfactual state
+  $(s_5^{cf}, m_5^{cf})$ generally differs from the factual one;
+* checking $do(d_5 = b')$ against the factual prefix may therefore repair a
+  decision that **does not exist** in the counterfactual run, or write an action
+  that is **no longer admissible** there.
+
+**Frozen semantics:**
+
+$$\boxed{\text{the intervention set } r \text{ is fixed once, before the rollout}}$$
+
+The SCM is then advanced in time order; when the rollout reaches an intervened
+$t$, validity is checked against the **current counterfactual**
+
+$$d' \in A_{z}\bigl(m_t^{cf},\, s_t^{cf}\bigr)$$
+
+If any member fails, the **entire candidate is marked `MALFORMED`** — not
+silently clamped, not skipped, not partially applied. Two interventions targeting
+the same structural node are `MALFORMED` as well, since their composition is not
+defined.
+
+`MALFORMED` candidates are excluded from $R^{*}$ and counted in the exclusion
+table of the identifiability artifact (`03` §4). See `12-AMENDMENTS.md` **A24**.
+
+### 5.0.2 The fault generator obeys the same constraint
+
+A17 fixed the *counterfactual* side but left the *generator* free to violate its
+own option. `11-ENVIRONMENT.md` §6 required only that a decision fault's $a'$ be
+*physically legal*, which lets a nominal "decision fault" step outside the option
+obligation — that is, perform a process-level change while being labelled local,
+and the two granularities collapse again.
+
+A decision fault is therefore
+
+$$\boxed{a' \in A_z(m_t, s_t) \setminus \{\pi_D^{*}(s_t, z, m_t)\}}$$
+
+within the option, not adjacent to it.
 
 ### 5.1 The corrected definition of a process fault
 

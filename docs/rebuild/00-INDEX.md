@@ -207,7 +207,7 @@ An implementer needs to know which choices are theirs. This is the boundary.
 * the statistical tiers, the four-way rule, the $T$-freezing rule, RMST with
   censoring (`05`);
 * each version's **primary endpoint** and **go/no-go gates** (`06`–`09`);
-* $Q^{*}$, $\pi_{\text{ref}}$, $V_{\text{pre}}$ as one shared artifact (`11` §12);
+* $Q^{*}$, $\pi_D^{*}$, $V_{\text{pre}}$ as one shared artifact (`11` §12);
 * tape addressing by $(t, \text{role})$ (`11` §8).
 
 ### Open — the implementation's job, and where the research contribution lives

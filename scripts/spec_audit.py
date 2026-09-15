@@ -69,9 +69,16 @@ RETIRED = (
     (r"predicts\s*\}?\s*C\b", "the predicted label is Z, not C (A13)"),
     (r"distinct \$C\$", "labels are distinct Z (A13)"),
     (r"\$C\s*=\s*\(c_P", "the fault vector is Z = (Z_P, ...) (A13)"),
-    (r"pi_\{\\text\{ref\}\}\(s\)", "the global reference policy is retired (A9)"),
+    (r"\\pi_\{\\text\{ref\}\}", "the global reference policy is retired (A9, A26)"),
     (r"truth fields\s*\(\$C\$", "truth fields are Z, M, z, eps (A13)"),
     (r"A_\{z_1\}\(s\)\s*=\s*A\$", "admissible sets are subsets of A_legal (A20)"),
+    (r"\$A_i\$", "but-for relevance is B_i, not A_i (A13, A26)"),
+    (r"causal relevance", "it is but-for relevance; the name must not overclaim (A13)"),
+    (r"Q_D\(s,\s*z,\s*a\)", "the decision table is Q_D(s,z,m,a) -- m is part of the state (A22)"),
+    (r"Q_D\(s,\s*z,\s*\\cdot\)", "the decision table is Q_D(s,z,m,.) (A22)"),
+    (r"\\pi_D\^\{\*\}\(s,\s*z\)", "the reference is pi_D*(s,z,m) (A22)"),
+    (r"pi_D\^\{\*\}\(\\cdot,\s*z\)", "the reference is pi_D*(.,z,m) (A22)"),
+    (r"z\^\{\*\}\(\\kappa\)", "the context-appropriate option is z*(s), not z*(kappa) (A23)"),
 )
 
 # The amendment log quotes superseded text by design.

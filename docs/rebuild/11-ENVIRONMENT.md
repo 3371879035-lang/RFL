@@ -55,26 +55,46 @@ A step cost of $-0.02$ applies, terminal reward as in `02-SCM.md` §7. Success
 requires reaching $G$ **without** occupying a cell the hazard occupies at that
 timestep.
 
-$$5 \times 5 \times 13 \times 2 \;=\; 650 \text{ states} \quad\text{— fully enumerable}$$
+$$\boxed{s_t = (x_t,\; y_t,\; t,\; \kappa,\; \phi)} \qquad 5 \times 5 \times 13 \times 2 \times 6 = 3900 \text{ states}$$
 
-(The factor 13 is $H+1$ for the timestep, 2 for the context lane.)
+fully enumerable. (The factor 13 is $H+1$ for the timestep, 2 for the context
+lane, 6 for the hazard phase $\phi$ of §2.)
+
+> **Why $\phi$ is in the state.** An earlier draft put the hazard phase on the
+> tape and left it out of $s_t$, keeping only the *current* occupancy. That
+> breaks the Markov property: two episodes can share
+> $(x, y, t, \kappa, \text{occupancy now})$ and still have different *future*
+> hazard schedules, so $P(s_{t+1} \mid s_t, a_t)$ is not well defined by
+> $s_t, a_t$ alone. Both tabular Q-learning and ordinary finite-horizon DP would
+> be solving the wrong object, and they would agree with each other while doing
+> it — the hardest kind of error to notice. See `12-AMENDMENTS.md` **A23**.
+
+Hazard occupancy at time $t$ is then a deterministic function of the state:
+
+$$\text{hazard\_at}(t,\kappa,\phi) = \mathbf{1}\bigl[t \equiv \phi \pmod{p(\kappa)}\bigr]$$
 
 ---
 
 ## 2. Context lane
 
-Each episode carries an observable context $\kappa \in \{0,1\}$:
+Each episode carries an observable context $\kappa \in \{0,1\}$ and an observable
+hazard phase $\phi \in \{0,\dots,5\}$, both drawn per episode and both part of
+$s_t$ (§1):
 
-| $\kappa$ | meaning | hazard occupies $(2,2)$ at |
-|---|---|---|
-| 0 | slow patrol | $t \equiv 4 \pmod 6$ — i.e. $t \in \{4, 10\}$ |
-| 1 | fast patrol | $t \equiv 2 \pmod 3$ — i.e. $t \in \{2, 5, 8, 11\}$ |
+| $\kappa$ | meaning | period $p(\kappa)$ | hazard occupies $(2,2)$ at |
+|---|---|---|---|
+| 0 | slow patrol | 6 | $t \equiv \phi \pmod 6$ |
+| 1 | fast patrol | 3 | $t \equiv \phi \pmod 3$ |
 
-The phases are chosen, not arbitrary: the short corridor reaches $(2,2)$ at
-$t = 2$, which is clear under $\kappa=0$ and occupied under $\kappa=1$. That is
-what makes `rush` correct iff $\kappa = 0$ (property **P1**, §4). The phase offset
-is a frozen design parameter, and the tape (§8) supplies only the *uncertainty*
-about occupancy, not the schedule itself.
+$\phi$ is drawn uniformly over $\{0,\dots,5\}$ and is the **only** hazard
+randomness: it is a tape key (`§8.1.1`), it is visible, and it lives in the state.
+The earlier draft's fixed phase offsets are gone — a fixed phase is not a
+distribution over schedules, and the tape was described as supplying uncertainty
+about occupancy while the schedule was simultaneously described as frozen. Both
+could not be true.
+
+$\kappa$ and $\phi$ together are what make "context-appropriate" a real property:
+the same option can be right for one $(\kappa,\phi)$ and wrong for another.
 
 $\kappa$ is **visible** at $t=0$ and is part of $s_t$. It is what makes
 "context-appropriate" a real property: the same strategy can be right under
@@ -95,7 +115,7 @@ illegality recorded in $M$.
 ## 4. The four options
 
 $z$ is an **option identifier** (`02-SCM.md` §2.1). Each option is a slice of the
-decision table, $Q_D(s, z, \cdot)$, not a script that emits actions.
+decision table, $Q_D(s, z, m, \cdot)$, not a script that emits actions.
 
 $$\boxed{|\mathcal Z| = 4,\ \text{enumerated in full}.}$$
 
@@ -118,7 +138,7 @@ review. So the properties are promoted to **assertions the generator must
 witness**, discharged by exhaustive enumeration:
 
 ```python
-# scripts/route_check.py  -- must pass before src/rfl_rebuild/env/ is written
+# scripts/route_check.py  -- must pass after the kernel and the exact DP, and before Gate E/L
 for z, kappa, tape in product(Z, KAPPA, CANONICAL_TAPES):
     trace = rollout(z=z, kappa=kappa, tape=tape)
     ...
@@ -230,7 +250,7 @@ read this table off and must separate the columns by query.
 
 | evaluator structural condition | fault kind | correct repair | learner-visible? |
 |---|---|---|---|
-| $a^{cmd}$ deviates from $\pi_D^{*}(\cdot, z_{\text{current}})$ | decision fault | $\Delta Q_D$ | **yes** |
+| $a^{cmd}$ deviates from $\pi_D^{*}(\cdot, z_{\text{current}}, m)$ | decision fault | $\Delta Q_D$ | **yes** |
 | $u \neq a^{cmd}$ | internal execution fault | $\Delta C_X$ | no — needs a controller probe |
 | $u = a^{cmd}$, $a^{realized} \neq u$ | external fault | **none** | no — and this is the point |
 
@@ -246,13 +266,13 @@ Each cause is assigned exogenously (`02-SCM.md` §6), never reconstructed.
 
 | cause | injection | well-formedness constraint |
 |---|---|---|
-| $Z_P$ | $z \leftarrow z' \neq z^{*}(\kappa)$ | $z'$ must be a valid option id |
-| $Z_D$ | $d_{t^{*}} \leftarrow a' \neq d_{t^{*}}$ for one $t^{*}$ | $a'$ must be legal in $s_{t^{*}}$ |
+| $Z_P$ | $z \leftarrow z' \neq z^{*}(s)$ | $z'$ must be a valid option id |
+| $Z_D$ | $d_{t^{*}} \leftarrow a' \neq d_{t^{*}}$ for one $t^{*}$ | $a' \in A_z(m_{t^{*}}, s_{t^{*}}) \setminus \{\pi_D^{*}(s_{t^{*}}, z, m_{t^{*}})\}$ — **inside** the option, not adjacent to it (`02-SCM.md` §5.0.2) |
 | $Z_X$ | $C_X(s^{*}, a^{*}) \leftarrow a'$ | $a^{*}$ must be issued at $s^{*}$ on this tape |
 | $Z_E$ | activate $\epsilon_E$ at one $t$ | $t$ within horizon |
 | $Z_U$ | a rare cell-specific trap the agent's hypothesis space has no symbol for | within horizon |
 
-### 6.1 Fault presence and causal relevance are two different variables
+### 6.1 Fault presence and but-for relevance are two different variables
 
 The first draft of this document had a single $C$, filtered post hoc by
 outcome-relevance: *"a cause is recorded as active only if the injection changes
@@ -281,7 +301,7 @@ $$\boxed{Z = (Z_P, Z_D, Z_X, Z_E, Z_U)\quad\text{— fault presence: mechanism a
 
 $$\boxed{B = (B_P, B_D, B_X, B_E, B_U)\quad\text{— but-for relevance: a difference-maker on this tape}}$$
 
-> **Naming.** $B$ is called **but-for relevance**, not "causal relevance", and not
+> **Naming.** $B$ is called **but-for relevance**, not "but-for relevance", and not
 > $A$. Two reasons, both load-bearing. $A$ is the action set (§3), so reusing it
 > collided inside this very document. And in an overdetermined episode **both**
 > genuinely broken mechanisms can have $B_i = 0$, so a name implying
@@ -395,13 +415,57 @@ $$\mathcal K = \{k_1, \dots, k_n\},\qquad D(k_i) = \text{the finite value domain
 
 | # | key $k$ | domain $D(k)$ | $\lvert D\rvert$ |
 |---|---|---|---|
-| 1 | `("hazard", "phase")` | $\{0,\dots,5\}$ — added to the base schedule, reduced mod the period | 6 |
-| 2 | `("feedback", "error_flag")` | $\{0,1\}$ — is this feedback wrong | 2 |
-| 3 | `("feedback", "cause_choice")` | $\{P,D,X,E,U\}$ — which cause it names | 5 |
+| 1 | `("hazard", "phase")` | $\{0,\dots,5\}$ — the phase $\phi$ of §2, part of $s_t$ | 6 |
+| 2 | `("feedback", "error_flag")` | $\{0,1\}$ | 2 |
+| 3 | `("feedback", "cause_rank")` | $\{0,\dots,59\}$ | 60 |
 
-$$\lvert\mathcal T\rvert = \prod_i \lvert D(k_i)\rvert = 6 \times 2 \times 5 = 60$$
+$$\lvert\mathcal T\rvert = \prod_i \lvert D(k_i)\rvert = 6 \times 2 \times 60 = 720$$
 
-$$\mathcal T \subseteq \prod_{k \in \mathcal K} D(k) \quad\text{— small enough to enumerate in full}$$
+$$\mathcal T \subseteq \prod_{k \in \mathcal K} D(k) \quad\text{— finite, and enumerated in full}$$
+
+#### The measure is not uniform, and the support alone does not define it
+
+Writing the support was necessary but not sufficient: §7 promises
+$P(\text{wrong}) = 0.4$ and *uniform over the eligible causes*, and **neither
+follows from the domains**. Two gaps, both now closed.
+
+**Gap 1 — $P(\text{wrong}) = 0.4$ needs an explicit measure.** A two-point support
+$\{0,1\}$ does not imply $1/2$:
+
+$$P(\texttt{error\_flag} = 1) = 0.4, \qquad P(\texttt{error\_flag} = 0) = 0.6$$
+
+**Gap 2 — a 5-valued draw cannot be decoded uniformly onto an eligible set of
+size 2, 3 or 4.** Taking a rank modulo $\lvert E\rvert$ from a uniform draw on
+$\{0,\dots,4\}$ is uniform only when $\lvert E\rvert \in \{1,5\}$. That is why the
+key is a **60-valued rank** rather than a 5-valued choice: $60$ is divisible by
+$1,2,3,4,5$, so
+
+$$i = \texttt{cause\_rank} \bmod \lvert E\rvert$$
+
+is **exactly uniform on any non-empty eligible set**. The five-valued key silently
+produced a *non-uniform* feedback distribution for $\lvert E\rvert \in \{2,3,4\}$ —
+which is most episodes.
+
+#### The decoder, frozen
+
+$$E = \begin{cases}
+\{\,i : Z_i = 1\,\} & \texttt{error\_flag} = 0 \quad\text{(name an active cause)}\\[2pt]
+\{\,i : Z_i = 0\,\} & \texttt{error\_flag} = 1 \quad\text{(name an inactive cause)}
+\end{cases}$$
+
+$$\hat Z^{fb} = \begin{cases}
+\text{one-hot at } E[\texttt{cause\_rank} \bmod |E|] & E \neq \varnothing\\[2pt]
+\varnothing & E = \varnothing
+\end{cases}$$
+
+**The empty case is reachable and is frozen, not resampled.**
+$Z = (1,1,1,1,1)$ with `error_flag = 1`, and $Z = (0,0,0,0,0)$ with
+`error_flag = 0`, both leave $E = \varnothing$. Resampling in that case would
+silently condition the feedback distribution on $Z$, reintroducing exactly the
+outcome-conditioning A2 removed. Episodes with $E = \varnothing$ are counted and
+reported so their frequency is visible.
+
+See `12-AMENDMENTS.md` **A25**.
 
 **Why the tape has only three keys.** This is the point that keeps
 $\lvert\mathcal T\rvert$ finite and the gate tractable, and it is a consequence of
@@ -528,10 +592,10 @@ The rules are completed here. See `12-AMENDMENTS.md` **A5**.
 
 | unit kind | converts to |
 |---|---|
-| **process** | $do(z = z')$, where $z'$ is the option the representation names; if it names none, $z' = z^{*}(\kappa)$ |
-| **decision** $(t)$ | $do(d_t = d')$, where $d'$ is the alternative named; if none, the reference action $\pi_{\text{ref}}(s_t)$ |
+| **process** | $do(z = z')$, where $z'$ is the option the representation names; if it names none, $z' = z^{*}(s)$ |
+| **decision** $(t)$ | $do(d_t = d')$, where $d'$ is the alternative named; if none, the reference action $\pi_D^{*}(s_t, z, m_t)$ |
 | **execution** $(s^{*}, a^{*})$ | $do\bigl(C_X(s^{*}, a^{*}) = a^{*}\bigr)$ — one cell (`02-SCM.md` §5.0) |
-| **action** $(t)$ | **both** of $\{do(d_t = \pi_{\text{ref}}(s_t)),\ do(C_X(s_t, a^{cmd}_t) = a^{cmd}_t)\}$ |
+| **action** $(t)$ | **both** of $\{do(d_t = \pi_D^{*}(s_t, z, m_t)),\ do(C_X(s_t, a^{cmd}_t) = a^{cmd}_t)\}$ |
 | **trajectory** $(\text{whole episode})$ | the **process** candidate, **union** the union over all $t$ of the **action** conversion above |
 | empty $\hat R$ | $\varnothing$ — change nothing |
 
@@ -568,8 +632,8 @@ that is the point of including it as a baseline.
 
 #### 11.2.4 Admissibility
 
-The rule is oracle-assisted — it may consult $z^{*}(\kappa)$ and
-$\pi_{\text{ref}}$, both evaluator truth. That is admissible in V0.2R because
+The rule is oracle-assisted — it may consult $z^{*}(s)$ and
+$\pi_D^{*}$, both evaluator truth. That is admissible in V0.2R because
 V0.2R receives cause truth and is scored against repair truth (`07` §1). It is
 **not** admissible in V0.4R, where $\hat V(c)$ must be learned, and it is not used
 there (`09` §3).
@@ -620,16 +684,16 @@ $Q^{*}$ is:
 
 ### 12.2 The reference policy family
 
-$$\boxed{\pi_D^{*}(s, z) = \arg\max_{a \in A_z(s)} Q_D^{*}(s, z, a)}$$
+$$\boxed{\pi_D^{*}(s, z, m) = \arg\max_{a \in A_z(s)} Q_D^{*}(s, z, a)}$$
 
 option-conditioned, with ties broken by a frozen declared order. The single global
 $\pi_{\text{ref}}(s) = \arg\max_a Q^{*}(s,a)$ of the first draft is **retired** — it
-is inconsistent with behaviour being generated by $Q_D(s,z,\cdot)$ (`02-SCM.md`
+is inconsistent with behaviour being generated by $Q_D(s, z, m, \cdot)$ (`02-SCM.md`
 §2.1) and, worse, using it to define decision faults would re-create the
 process/decision overlap: after a wrong $z$, the *locally correct* actions of that
 option would be flagged as decision faults.
 
-$\pi_D^{*}(\cdot,z)$ is used for:
+$\pi_D^{*}(\cdot, z, m)$ is used for:
 
 * defining a decision fault **relative to the option in force** (`02-SCM.md` §2.3);
 * the canonical conversion rule's fallback alternative (`11` §11.2);
@@ -651,21 +715,21 @@ with the reference artifact. It is **not** re-measured per run.
 3. the action set and the ill-formed-action rule;
 4. the four options, and properties **P1–P4 as assertions discharged by
    `scripts/route_check.py`** (§4.1), with P4 carrying a defined failure mode (§4.2);
-5. the behaviour chain $\kappa \to z \to Q_D(s,z,\cdot) \to a^{cmd}$ (§5); $z$ is an
+5. the behaviour chain $\kappa \to z \to Q_D(s, z, m, \cdot) \to a^{cmd}$ (§5); $z$ is an
    option id and does **not** emit actions;
 6. the controller/plant split and the three-channel table (§5.2), with $u_t$
    evaluator-only;
-7. the separation of fault presence $Z$ from causal relevance $A$ (§6.1), and the
+7. the separation of fault presence $Z$ from but-for relevance $A$ (§6.1), and the
    rule that $Z$ is never zeroed by the outcome;
 8. the feedback error model and $\eta = 0.4$;
 9. the tape's semantic-key form $(\texttt{kind}, \texttt{where}, \texttt{which})$
-   with frozen kinds and subkeys (§8.1), and the *same assignment* invariant
+   with the frozen three keys and their measures (§8.1), and the *same assignment* invariant
    (§8.2), including the prohibition on positional consumption;
 10. the identifiability signature (§9), excluding truth fields;
 11. the deferred-value table (§10) and its defaults;
 12. the $R_{\text{module}}$ referent (§11.1) and the **complete** canonical
     conversion rule (§11.2), including the `action` and `trajectory` rows;
-13. $Q^{*}$, $\pi_{\text{ref}}$ and $V_{\text{pre}}$ as one shared, frozen,
+13. $Q^{*}$, $\pi_D^{*}$ and $V_{\text{pre}}$ as one shared, frozen,
     fingerprinted reference artifact (§12);
 14. the execution primitive $do(C_X(s^{*},a^{cmd}) = a^{cmd})$ acting on one cell
     (`02-SCM.md` §5.0).
