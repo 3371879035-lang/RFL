@@ -48,6 +48,13 @@ DECLARED_PATHS = (
 
 INVARIANTS = ("I1", "I2", "I3", "I4", "I5", "I6")
 CASES = ("C0", "C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8")
+AMENDMENTS = tuple(f"A{i}" for i in range(1, 13))
+
+# Sequences that indicate UTF-8 read as a legacy codepage. This is not
+# hypothetical: a PowerShell Get-Content/Set-Content round-trip silently
+# destroyed every em dash in 12-AMENDMENTS.md, turning "—" into "鈥?". The file
+# still parsed, still rendered as text, and looked fine in a diff summary.
+MOJIBAKE = ("\ufffd", "鈥", "锛", "銆", "鈻", "芒€")
 
 
 def strip_code(text: str) -> str:
@@ -104,6 +111,23 @@ def audit() -> dict:
 
     missing_paths = [p for p in DECLARED_PATHS if not (ROOT / p).exists()]
 
+    # Amendment references must resolve to an amendment heading.
+    amend_doc = docs.get("12-AMENDMENTS.md", "")
+    defined_amendments = set(re.findall(r"^##\s+\d+\.\s+(A\d+)\s+—", amend_doc, re.M))
+    referenced_amendments: set[str] = set()
+    for name, raw in docs.items():
+        for m in re.finditer(r"\*\*(A\d+)\*\*", raw):
+            if name != "12-AMENDMENTS.md":
+                referenced_amendments.add(m.group(1))
+    dangling_amendments = sorted(referenced_amendments - defined_amendments)
+
+    # UTF-8 integrity.
+    mojibake: list[tuple[str, str]] = []
+    for name, raw in docs.items():
+        for bad in MOJIBAKE:
+            if bad in raw:
+                mojibake.append((name, bad))
+
     return {
         "documents": sorted(names),
         "documents_without_numbered_sections": unnumbered,
@@ -112,6 +136,10 @@ def audit() -> dict:
         "missing_declared_paths": missing_paths,
         "invariants_defined": {k: v for k, v in definitions.items() if k.startswith("I")},
         "cases_defined": {k: v for k, v in definitions.items() if k.startswith("C")},
+        "amendments_defined": sorted(defined_amendments),
+        "amendments_referenced": sorted(referenced_amendments),
+        "dangling_amendments": dangling_amendments,
+        "mojibake": mojibake,
     }
 
 
@@ -152,6 +180,27 @@ def main() -> int:
     if undef:
         ok = False
         print(f"\nUNDEFINED INVARIANTS/CASES: {undef}")
+
+    if r["dangling_amendments"]:
+        ok = False
+        print("\nAMENDMENT REFERENCES WITH NO SUCH AMENDMENT:")
+        for a in r["dangling_amendments"]:
+            print(f"  {a}")
+    print(
+        f"\namendments defined: {len(r['amendments_defined'])} "
+        f"{r['amendments_defined']}; referenced from other docs: "
+        f"{r['amendments_referenced']}"
+    )
+
+    if r["mojibake"]:
+        ok = False
+        print("\nUTF-8 CORRUPTION DETECTED:")
+        for name, bad in r["mojibake"]:
+            print(f"  {name}: contains {bad!r}")
+        print(
+            "  Never round-trip these files through PowerShell "
+            "Get-Content/Set-Content; use the editor tools."
+        )
 
     if ok:
         print("\nOK - the specification is a closed reference graph")

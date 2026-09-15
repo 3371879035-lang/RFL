@@ -60,11 +60,36 @@ $$\boxed{\;obs_t \;=\; \bigl(s_t,\; a^{cmd}_t,\; a^{realized}_t,\; r_t,\; \text{
 
 ### 2.2 What is hidden — evaluator truth only
 
-$$Z_P,\ Z_D,\ Z_X,\ Z_E,\ Z_U \qquad\text{and}\qquad M \text{ (the fault mask)}$$
+$$Z_P,\ Z_D,\ Z_X,\ Z_E,\ Z_U,\qquad M \text{ (the fault mask)},\qquad u_t \text{ (the motor command)}$$
 
 are **never** in `obs`. They exist only in the evaluator's ground truth. No
 method may read them during a run; the Oracle may read them only where the spec
 says so explicitly.
+
+$u_t$ is named here rather than left implicit because it is the one field whose
+visibility decides whether execution faults are inferable or merely *readable*.
+The controller output $u_t$ sits between the command and the realised action:
+
+$$a^{cmd}_t \;\to\; C_X \;\to\; u_t \;\to\; P \;\to\; a^{realized}_t$$
+
+If $u_t$ were observed, the distinction between the two non-decision fault kinds
+would collapse to a comparison:
+
+$$u_t \neq a^{cmd}_t \;\Rightarrow\; \text{internal execution fault},\qquad
+a^{realized}_t \neq u_t \;\Rightarrow\; \text{external fault}$$
+
+Both would be read off rather than inferred, and $Z_X$ versus $Z_E$ — which the
+learner must be able to separate, because one is repairable and the other is
+not — would stop being a question.
+
+So $u_t$ is **hidden**, and the learner must separate $Z_X$ from $Z_E$ through
+legal queries — principally the controller probe of
+`03-IDENTIFIABILITY.md` §3. This is stated as an explicit exclusion rather than
+left to "it happens not to be in the list", because the legacy project's defects
+were repeatedly of the form *a field was visible and nobody had decided it should
+be*. See `12-AMENDMENTS.md` **A8**.
+
+$$\boxed{\text{Every field is either in } obs \text{ (§2.1) or in the hidden set (§2.2). There is no third category.}}$$
 
 ### 2.3 Why $a^{cmd}$ is visible — and why that is not a giveaway
 

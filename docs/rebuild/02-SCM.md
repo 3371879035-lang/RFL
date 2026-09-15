@@ -48,41 +48,56 @@ failures. The rebuild gives the process level a real, intervenable referent:
 
 $$z \in \mathcal Z,\qquad \boxed{|\mathcal Z| = 4}$$
 
-$z$ is a **strategy program**: it determines the decision sequence.
+### 2.1 $z$ is an option, not an action emitter
 
-$$z \;\longrightarrow\; d_1, d_2, \ldots, d_T$$
+$$\boxed{\kappa \;\longrightarrow\; z \;\longrightarrow\; Q_D(s, z, \cdot) \;\longrightarrow\; a^{cmd}}$$
 
-Concretely, $z$ is a small function from (context, timestep) to a decision rule —
-"always head for the short corridor", "wait for the hazard to move, then cross",
-and so on. Four programs, fully enumerable, chosen so that the following are all
-representable:
+$z$ is a **strategy/option identifier**. It selects *which slice of the decision
+table governs behaviour*; it does not compute $a^{cmd}$ itself.
 
-| program | property it exists to provide |
-|---|---|
-| $z_1$ | the default / context-appropriate strategy |
-| $z_2$ | a strategy that is locally improvable — one decision is wrong but the rest is fine |
-| $z_3$ | a genuinely different strategy that succeeds where $z_1$ fails |
-| $z_4$ | a strategy whose failure is delayed — it looks fine early and fails late |
+This is load-bearing and was wrong in the first draft of this specification.
 
-$|\mathcal Z| = 4$ is frozen. It is large enough to make process-level attribution
-a real question and small enough that the whole intervention lattice is
-enumerable, so V0.3R does not silently become a search-algorithm contest.
-Continuous $\mathcal Z$ is out of scope for the rebuild.
+$$\boxed{\text{If } z \text{ emitted actions directly, } Q_D \text{ would not participate in behaviour at all.}}$$
 
-**Consequence for the DAG.** Decisions are *not* independent draws:
+A decision repair ($\Delta Q_D$) would then change no rollout, and the rebuild
+would reproduce the legacy failure exactly: *"we repaired the decision precisely
+and the task utility did not move"* — because the policy never read the table we
+repaired. Writing $d_t = z(s_t, t, \kappa)$ and simultaneously calling
+$\Delta Q_D$ a repair is the contradiction; the two cannot both hold.
+
+So the four programs are four **option-conditioned policies**, and the behaviour
+chain is:
+
+$$z \;\text{selected by context}\; \longrightarrow\; \pi_D(s) = \arg\max_a Q_D(s, z, a) \;\longrightarrow\; a^{cmd}$$
+
+Both levels are now real interventions that change behaviour:
+
+| intervention | changes | does it move the rollout? |
+|---|---|---|
+| $do(z = z')$ | which slice governs | **yes** — different option, different policy |
+| $do(d_t = d')$ | one entry of one slice, one timestep | **yes** — one decision differs |
+
+and neither is expressible as the other. That is what makes "process" a
+granularity rather than a sum of locals.
+
+$Q_D(s, z, \cdot)$ is one table over $(s, z, a)$; the reference checkpoint
+$Q^{*}$ (`11-ENVIRONMENT.md` §12) is trained across all four options, so switching
+option at test time selects an already-trained slice rather than an untrained one.
+
+### 2.2 Consequences for the DAG
 
 $$z \to d_1, \ldots, d_T$$
 
-so a local decision repair must be a genuine intervention that leaves $z$ intact:
+is realised as "$z$ selects the slice, the slice emits the decisions", so a local
+decision repair must be a genuine intervention that leaves $z$ intact:
 
 $$do(d_t = d') \quad\text{changes } d_t \text{ only}$$
 
 and a process repair is
 
-$$do(z = z') \quad\text{which rewrites the whole sequence}$$
+$$do(z = z') \quad\text{which changes which slice is read for the whole episode}$$
 
-These are different operations on different nodes. That is what makes the process
-level a *granularity*, not a sum of locals.
+These are different operations on different nodes.
 
 ---
 
@@ -135,10 +150,31 @@ and it removes a confusion that ran through the whole legacy project, where
 
 The admissible intervention space is
 
-$$\mathcal I = \underbrace{\{do(z = z')\}_{z' \in \mathcal Z}}_{\text{process}} \;\cup\; \underbrace{\{do(d_t = d')\}_{t, d'}}_{\text{decision}} \;\cup\; \underbrace{\{do(C_X = C')\}}_{\text{execution}} \;\cup\; \{\varnothing\}$$
+$$\mathcal I = \underbrace{\{do(z = z')\}_{z' \in \mathcal Z}}_{\text{process}} \;\cup\; \underbrace{\{do(d_t = d')\}_{t, d'}}_{\text{decision}} \;\cup\; \underbrace{\{do(C_X(s, a) = a)\}_{(s,a)}}_{\text{execution}} \;\cup\; \{\varnothing\}$$
 
 with $\varnothing$ meaning *change nothing* — which is a legal repair and must be
 a legal answer.
+
+### 5.0 The execution primitive acts on one cell
+
+$$\boxed{do\bigl(C_X(s^{*}, a^{cmd}) = a^{cmd}\bigr) \text{ is the execution primitive}}$$
+
+Not $do(C_X = C')$. The first draft wrote the latter, which reads as *replace the
+entire controller table*, and that breaks the lattice:
+
+| primitive | scope of a size-1 repair |
+|---|---|
+| $do(d_t = d')$ | **one** decision at **one** timestep |
+| $do(C_X = C')$ | **every** cell of the controller |
+| $do(C_X(s^{*},a^{cmd}) = a^{cmd})$ | **one** cell |
+
+Under the second row a single execution repair could fix an arbitrarily large
+controller while a single decision repair fixes one step, and $|R^{*}|$ would no
+longer be comparable across fault kinds — a size-1 execution repair would be
+"cheaper" only because it silently does more work. Narrowing to one cell makes the
+cardinality mean the same thing everywhere.
+
+See `12-AMENDMENTS.md` **A7**.
 
 A **repair** is a finite subset $r \subseteq \mathcal I$. It is **sufficient** iff
 the episode succeeds under $do(r)$. The **minimal sufficient set** is

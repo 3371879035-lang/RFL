@@ -52,7 +52,8 @@ every algorithmic choice below is a consequence of a design decision above it.
 | **08** | [`08-V03R.md`](08-V03R.md) | V0.3R — repair primitive, offline gate then online |
 | **09** | [`09-V04R.md`](09-V04R.md) | V0.4R — end-to-end, candidate competition |
 | **10** | [`10-REPRODUCIBILITY-AND-OPS.md`](10-REPRODUCIBILITY-AND-OPS.md) | determinism, fingerprints, runtime calibration, artifact layout |
-| **11** | [`11-ENVIRONMENT.md`](11-ENVIRONMENT.md) | the concrete task, the four strategy programs, the controller/plant split, the tape-addressing rule, and every deferred value with its default |
+| **11** | [`11-ENVIRONMENT.md`](11-ENVIRONMENT.md) | the concrete task, the four options, the controller/plant split, the tape-addressing rule, and every deferred value with its default |
+| **12** | [`12-AMENDMENTS.md`](12-AMENDMENTS.md) | append-only amendment log: eight corrections raised before implementation, four of which would have changed the meaning of an experiment |
 
 ---
 

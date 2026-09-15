@@ -15,12 +15,38 @@ that impossible.
 
 ## 1. Definition
 
-A **latent case** is a full assignment of the exogenous variables together with
-the strategy and the plant state:
+A **latent case** is a full assignment of everything the generator draws:
 
-$$\ell = \bigl(C,\; z,\; \theta_{C_X},\; \epsilon_E,\; \omega\bigr)$$
+$$\ell = \bigl(Z,\; A,\; z,\; \theta_{C_X},\; \epsilon_E,\; \omega\bigr)$$
 
-where $\omega$ is the noise tape (fixed by common random numbers).
+where $Z$ is fault presence and $A$ causal relevance (`11-ENVIRONMENT.md` §6.1),
+$z$ the option, $\theta_{C_X}$ the controller parameters, $\epsilon_E$ the plant
+perturbation, and $\omega$ the noise tape.
+
+$$\boxed{\text{The predicted label is } Z \text{, never } C \text{.}}$$
+
+`11-ENVIRONMENT.md` §6.1 removed the symbol $C$: an episode whose faults are
+mutually redundant has $Z = (1,1,0,0,0)$ but $A = (0,0,0,0,0)$, and a single
+symbol cannot carry both. The gate is stated on $Z$ because that is what V0.1R
+predicts; $A$ is a secondary endpoint and gets its own, weaker, requirement
+(below).
+
+### 1.1 The tape set must be finite, or nothing is exhaustive
+
+$\omega$ as a stream of real-valued draws cannot be enumerated, and a gate that
+says "exhaustive" while quantifying over a continuum is not a gate.
+
+$$\boxed{\mathcal T = \{\omega_1, \ldots, \omega_K\} \text{ is a frozen, finite set of canonical tapes}}$$
+
+$\mathcal T$ contains every tape the generator can actually produce — the hazard's
+occupancy schedule is deterministic given $(\kappa, \omega)$, and $\omega$'s only
+roles are the finite choices listed in `11-ENVIRONMENT.md` §8.1. So $\mathcal T$ is
+finite **by construction**, and its size is reported with the matrix.
+
+If a future change makes any tape role continuous, $\mathcal T$ must be replaced
+by a symbolic enumeration over the discrete choices, and the gate re-run. A gate
+over a sampled subset of $\mathcal T$ is a **smoke test**, not a gate, and must be
+labelled as such.
 
 A **query** $q$ is an element of the legal intervention set applied to a case and
 then rolled out, producing an observation sequence
@@ -32,15 +58,36 @@ Because the SCM is deterministic given $\omega$, signatures are compared by
 
 $$\boxed{\ell_i \equiv \ell_j \iff \forall q \in \mathcal Q_{\text{legal}}:\; O(\ell_i, q) = O(\ell_j, q)}$$
 
-$$\boxed{\text{Gate PASSES} \iff \text{no two cases with different cause labels are equivalent}}$$
+### 1.2 The gate quantifies over all cases, not one per label
 
-Equivalently, the map $\ell \mapsto \bigl(O(\ell,q)\bigr)_{q \in \mathcal Q}$ must be
-injective **on the cause label**:
+$$\boxed{\text{Gate PASSES} \iff \forall \ell_i, \ell_j \in \mathcal L:\; Z_i \neq Z_j \Rightarrow \ell_i \not\equiv \ell_j}$$
 
-$$\ell_i \not\equiv \ell_j \;\;\text{whenever}\;\; C_i \neq C_j$$
+with $\mathcal L$ the **full enumerated product**
 
-Cases that share a cause label but differ in $z$ or $\omega$ are *allowed* to be
-equivalent — that is a nuisance variable, not a cause.
+$$\mathcal L = \mathcal Z_{\text{causes}} \times \{0,1\}^5 \times \mathcal Z \times \Theta_{C_X} \times \mathcal E \times \mathcal T$$
+
+The first draft of `03` stated this correctly in symbols and then described the
+matrix as having "one row per feasible cause assignment $C \in \{0,1\}^5$" — which
+is a strictly weaker object. One representative per label misses exactly the
+failure that matters:
+
+$$\exists\, \ell_i, \ell_j \text{ with } Z_i \neq Z_j \text{ that collide under some }
+(z, t^{*}, \theta_{C_X}, \kappa, \omega)$$
+
+A single row per $Z$ would report PASS while the two labels are inseparable in
+part of the nuisance space, and V0.1R would then be asked to solve a problem that
+is not identifiable there. See `12-AMENDMENTS.md` **A6**.
+
+Cases that share a label but differ in nuisance variables *may* be equivalent —
+that is what makes them nuisance variables. What is forbidden is two **different
+labels** colliding.
+
+### 1.3 The secondary requirement on $A$
+
+$A$ is a coarser object than $Z$ ($A_i = 0$ wherever $Z_i = 0$), so it cannot be
+*less* identifiable than $Z$. The gate therefore requires only that $A$ be
+determined by $Z$ and the tape, which it is by construction, and does not run a
+separate injectivity check. Reported as a derived column in the matrix.
 
 ---
 
@@ -96,13 +143,28 @@ could not be fairly compared against $R_{\text{module}}$.
 The gate's artifact is a matrix, generated exhaustively and committed to
 `experiments/<version>/identifiability.json` **before** any seed is run:
 
-* **rows** — every *feasible* cause assignment $C \in \{0,1\}^5$ that the generator
-  can produce. Infeasible combinations (e.g. $c_X = 1$ with a perfect controller
-  and no plant perturbation) are excluded **and listed as excluded**, with the
-  reason.
+* **rows** — every $\ell \in \mathcal L$, the full enumerated product of §1.2:
+  $Z$, $z$, $\theta_{C_X}$, $\epsilon_E$, $\kappa$ and the canonical tape. **Not**
+  one row per cause label. Rows the generator cannot produce (e.g. $Z_X = 1$ with
+  a perfect controller and no plant perturbation) are excluded **and listed in an
+  exclusion table with the reason**.
 * **columns** — every $q \in \mathcal Q_{\text{learner}}$, up to $B_{CF}$.
 * **cells** — a hash of $O(\ell, q)$.
+* **derived column** — $A$, computed from the row.
 * **final column** — the equivalence class of the row under the full query set.
+
+The matrix is generated over $\mathcal L$ and then **collapsed by label for
+reading**, not generated per label. The distinction is the whole point of §1.2:
+the gate is decided on the uncollapsed rows.
+
+### 4.0 Size
+
+$$|\mathcal L| = |\mathcal Z_{\text{causes}}| \times 2^5 \times 4 \times |\Theta_{C_X}| \times |\mathcal E| \times |\mathcal T|$$
+
+Every factor is finite and frozen (`11-ENVIRONMENT.md` §8.1 makes $\mathcal T$
+finite). The realized $|\mathcal L|$ is reported. If it is large enough that
+enumeration is impractical, the correct response is to shrink a factor and say
+so — not to sample and call it exhaustive (§1.1).
 
 The read-out required by the gate:
 

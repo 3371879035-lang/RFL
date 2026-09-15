@@ -16,22 +16,38 @@ make each of the five causes physically real rather than notational.
 ## 1. Task
 
 A 5×5 grid. The agent starts at $S = (0,2)$ and must reach $G = (4,2)$.
+Coordinates are $(x, y)$ with $x$ the column.
 
 ```
-        col 0    1    2    3    4
-row 0    .     .    .    .    .
-row 1    .     #    .    #    .        # = wall
-row 2    S     .    ·    .    G        · = contested cell
-row 3    .     #    .    #    .
-row 4    .     .    .    .    .
+          x=0   x=1   x=2   x=3   x=4
+  y=0      #     #     #     #     #
+  y=1      #     .     .     .     #
+  y=2      S     .     ·     .     G       · = contested cell
+  y=3      #     .     #     .     #
+  y=4      #     .     .     .     #
 ```
 
-Two routes: the **short corridor** along row 2 ($S \to \cdot \to G$, 4 steps), and
-the **long way** around via rows 0 or 4 (8 steps).
+Hand-verified routes from $S$ to $G$, with move counts:
 
-A **hazard** patrols the short corridor. It occupies the contested cell $(2,2)$ at
-deterministic times given the noise tape, with a period that depends on the
-episode's context.
+| route | path | moves |
+|---|---|---:|
+| short corridor | $(0,2)\,(1,2)\,(2,2)\,(3,2)\,(4,2)$ | **4** |
+| upper bypass | $(0,2)\,(1,2)\,(1,1)\,(2,1)\,(3,1)\,(3,2)\,(4,2)$ | **6** |
+| lower loop | $(0,2)\,(1,2)\,(1,3)\,(1,4)\,(2,4)\,(3,4)\,(3,3)\,(3,2)\,(4,2)$ | **8** |
+
+Every listed step is between adjacent open cells. The walls at $(2,1)$ and
+$(2,3)$ are what force the upper bypass to commit at $(1,2)$ and the lower loop to
+commit at $(1,3)$ — neither can rejoin the short corridor except at $(3,2)$.
+
+> **Corrected.** The first draft drew the side walls at $(1,1)$ and $(1,3)$
+> instead of $(2,1)$ and $(2,3)$. Under that map the "sidestep around the
+> contested cell" was **physically impossible**: from $(1,2)$ both $(1,1)$ and
+> $(1,3)$ were walls, and the only cell from which the contested cell can be
+> avoided is $(2,2)$ itself — the cell the hazard occupies. The property was
+> asserted in prose without a route being walked. See `12-AMENDMENTS.md` **A4**.
+
+A **hazard** occupies the contested cell $(2,2)$ at deterministic timesteps given
+the tape and the context (§2).
 
 $$H = 12 \quad\text{(episode length, fixed)}$$
 
@@ -49,10 +65,16 @@ $$5 \times 5 \times 13 \times 2 \;=\; 650 \text{ states} \quad\text{— fully en
 
 Each episode carries an observable context $\kappa \in \{0,1\}$:
 
-| $\kappa$ | meaning | hazard period |
+| $\kappa$ | meaning | hazard occupies $(2,2)$ at |
 |---|---|---|
-| 0 | slow patrol | 6 |
-| 1 | fast patrol | 3 |
+| 0 | slow patrol | $t \equiv 4 \pmod 6$ — i.e. $t \in \{4, 10\}$ |
+| 1 | fast patrol | $t \equiv 2 \pmod 3$ — i.e. $t \in \{2, 5, 8, 11\}$ |
+
+The phases are chosen, not arbitrary: the short corridor reaches $(2,2)$ at
+$t = 2$, which is clear under $\kappa=0$ and occupied under $\kappa=1$. That is
+what makes `rush` correct iff $\kappa = 0$ (property **P1**, §4). The phase offset
+is a frozen design parameter, and the tape (§8) supplies only the *uncertainty*
+about occupancy, not the schedule itself.
 
 $\kappa$ is **visible** at $t=0$ and is part of $s_t$. It is what makes
 "context-appropriate" a real property: the same strategy can be right under
@@ -70,29 +92,85 @@ illegality recorded in $M$.
 
 ---
 
-## 4. The four strategy programs
+## 4. The four options
 
-$z$ is a function `(state, t, κ) → A`. Four programs, frozen:
-
-| $z$ | name | behaviour | property it exists to provide (`02-SCM.md` §2) |
-|---|---|---|---|
-| $z_1$ | `rush` | head straight along row 2 to $G$ | the default; **correct iff $\kappa = 0$** |
-| $z_2$ | `rush_detour` | row 2, but sidestep to row 1 or 3 when the hazard is at $(2,2)$ | **locally improvable**: one decision — the sidestep *timing* — is wrong, everything else is sound |
-| $z_3$ | `wait_then_cross` | advance to $(1,2)$, `WAIT` until the hazard clears, then cross | **genuinely different**: succeeds under $\kappa = 1$ where $z_1$ collides |
-| $z_4$ | `long_way` | go around via rows 0/4 | **delayed failure**: looks healthy for ~5 steps, then times out at $H$ |
-
-$z_1$ under $\kappa = 1$ collides. $z_3$ and $z_4$ succeed under both contexts.
-$z_2$ succeeds under $\kappa = 0$ and, depending on the tape, may or may not under
-$\kappa = 1$ — this is deliberate, it gives $Z_P$ episodes whose outcome is
-tape-dependent rather than context-determined.
+$z$ is an **option identifier** (`02-SCM.md` §2.1). Each option is a slice of the
+decision table, $Q_D(s, z, \cdot)$, not a script that emits actions.
 
 $$\boxed{|\mathcal Z| = 4,\ \text{enumerated in full}.}$$
 
+| $z$ | name | intent | the property it must witness |
+|---|---|---|---|
+| $z_1$ | `rush` | short corridor | **P1** default: succeeds under $\kappa=0$, fails under $\kappa=1$ |
+| $z_2$ | `detour_upper` | commit at $(1,2)$ to the upper bypass | **P2** locally improvable: an episode with $|R^{*}| = 1$ whose unique member is a *decision* intervention |
+| $z_3$ | `wait_then_cross` | hold at $(1,2)$ until the hazard clears | **P3** genuinely different: succeeds on a $(\kappa, \text{tape})$ where $z_1$ fails, and is unreachable from $z_1$ by any size-1 local intervention |
+| $z_4$ | `loop_lower` | commit at $(1,3)$ to the lower loop | **P4** process granularity: an episode where **no** size-1 intervention of any kind suffices, but some $do(z = z')$ does |
+
+### 4.1 Properties are asserted, not described
+
+The first draft of this section described the four programs in prose and stated
+that "`long_way` fails by timeout" two lines after stating that $z_3$ and $z_4$
+succeed under both contexts. Both claims cannot hold, and with an 8-move route
+under $H = 12$ the timeout claim was simply false. See `12-AMENDMENTS.md` **A4**.
+
+Prose descriptions of route properties are how the map defect of §1 survived
+review. So the properties are promoted to **assertions the generator must
+witness**, discharged by exhaustive enumeration:
+
+```python
+# scripts/route_check.py  -- must pass before src/rfl_rebuild/env/ is written
+for z, kappa, tape in product(Z, KAPPA, CANONICAL_TAPES):
+    trace = rollout(z=z, kappa=kappa, tape=tape)
+    ...
+assert witness_exists("P1"); assert witness_exists("P2")
+assert witness_exists("P3"); assert witness_exists("P4")
+```
+
+The check enumerates the full product and reports, for each property, a concrete
+witness $(\kappa, \text{tape}, \text{injection})$. A property with no witness is a
+**gate failure**, not a note.
+
+### 4.2 Status of the four properties
+
+| property | status |
+|---|---|
+| P1 | witness available by construction; the hazard phase in §2 is chosen to give it |
+| P2 | depends on the trained $Q_D$ slices, so it is a **design obligation on the options**, not on the map |
+| P3 | witness available; the upper bypass and the wait route are vertex-disjoint from the short corridor except at the endpoints |
+| **P4** | **not established, and not claimed** |
+
+P4 is the hardest and is the one this document does **not** assert. Constructing a
+failure that no single action change repairs — but which a change of option does —
+requires the option to make an *irreversible early commitment*, and it is not
+obvious that a 12-step horizon with a 4-step optimal route admits one.
+
+**Defined failure mode.** If `route_check.py` finds no P4 witness:
+
+1. the map and the option set are redesigned and the check is re-run;
+2. if after redesign no P4 episode exists in this environment, then the
+   process-level representation has **no evaluable target** here, and
+   $R_{\text{causal}}$'s process arm and $R_{\text{module}}$'s process level are
+   **blocked** — recorded as a gate outcome in `experiments/v02r/`, not silently
+   dropped, and V0.2R runs with the process arm reported as not evaluable.
+
+Option 2 is a legitimate outcome. An environment that cannot express the
+distinction V0.2R exists to test should say so, rather than manufacturing the
+distinction by construction and then reporting that the representation captures
+it.
+
 ---
 
-## 5. The three-layer action, instantiated
+## 5. The behaviour chain, instantiated
 
-$$d_t = z(s_t, t, \kappa) \;\longrightarrow\; a^{cmd}_t = d_t \;\longrightarrow\; u_t = C_X(s_t, a^{cmd}_t) \;\longrightarrow\; a^{realized}_t = P(s_t, u_t, \epsilon_E)$$
+$$\kappa \;\longrightarrow\; z \;\longrightarrow\; a^{cmd}_t = \arg\max_a Q_D(s_t, z, a) \;\longrightarrow\; u_t = C_X(s_t, a^{cmd}_t) \;\longrightarrow\; a^{realized}_t = P(s_t, u_t, \epsilon_E)$$
+
+$z$ selects the **slice of the decision table** that governs the episode; it does
+not emit actions (`02-SCM.md` §2.1). Both process repair ($do(z=z')$) and decision
+repair ($\Delta Q_D$) therefore change behaviour, which is the whole point.
+
+The first draft of this document wrote $a^{cmd}_t = z(s_t, t, \kappa)$ — $z$
+emitting actions directly — which would have left $Q_D$ out of the rollout
+entirely. See `12-AMENDMENTS.md` **A1**.
 
 with $u \in A$, and the **healthy plant is the identity**: $P(s, u, \epsilon_E) = u$
 unless $\epsilon_E$ is active at $t$.
@@ -118,13 +196,20 @@ which case at one specific timestep $P$ returns $u' \neq u$ regardless of $C_X$.
 This is **not repairable by the learner** and the correct response is to change
 nothing (`04-SEMANTIC-INVARIANTS.md`, case **C8**).
 
-The three channels are therefore physically distinct:
+The three channels are therefore physically distinct. The table below is a
+statement about the **evaluator's structure**, not about what the learner sees —
+$u_t$ is evaluator-only (`01-OBSERVATION-MODEL.md` §2.2), so the learner cannot
+read this table off and must separate the columns by query.
 
-| observed | inference | correct repair |
-|---|---|---|
-| $a^{cmd}$ deviates from reference | decision fault | $\Delta Q_D$ |
-| $a^{cmd}$ fine, $u \neq a^{cmd}$ | internal execution fault | $\Delta C_X$ |
-| $a^{cmd}$ fine, $u = a^{cmd}$, $a^{realized} \neq u$ | external fault | **none** |
+| evaluator structural condition | fault kind | correct repair | learner-visible? |
+|---|---|---|---|
+| $a^{cmd}$ deviates from $\pi_{\text{ref}}$ | decision fault | $\Delta Q_D$ | **yes** |
+| $u \neq a^{cmd}$ | internal execution fault | $\Delta C_X$ | no — needs a controller probe |
+| $u = a^{cmd}$, $a^{realized} \neq u$ | external fault | **none** | no — and this is the point |
+
+The last two rows are exactly the pair the learner must resolve without seeing
+$u_t$. If $u_t$ leaked into `obs`, $Z_X$ and $Z_E$ would become a one-line
+comparison and the controller probe would be pointless (`01` §2.2).
 
 ---
 
@@ -132,29 +217,91 @@ The three channels are therefore physically distinct:
 
 Each cause is assigned exogenously (`02-SCM.md` §6), never reconstructed.
 
-| cause | injection | feasibility constraint |
+| cause | injection | well-formedness constraint |
 |---|---|---|
-| $Z_P$ | $z \leftarrow z' \neq z^{*}(\kappa)$, where $z^{*}(\kappa)$ is the context-appropriate program | $z'$ must not be outcome-equivalent to $z^{*}(\kappa)$ on this tape |
-| $Z_D$ | $d_{t^{*}} \leftarrow a' \neq d_{t^{*}}$ for one $t^{*}$ | $a'$ must be legal and must change the outcome on this tape |
-| $Z_X$ | $C_X(s^{*}, a^{*}) \leftarrow a'$ | $a^{*}$ must actually be issued at $s^{*}$ on this tape |
-| $Z_E$ | activate $\epsilon_E$ at one $t$ | must change the outcome on this tape |
-| $Z_U$ | draw from the **unmodelled** generator: a rare cell-specific trap that the agent's hypothesis space has no symbol for | must change the outcome |
+| $Z_P$ | $z \leftarrow z' \neq z^{*}(\kappa)$ | $z'$ must be a valid option id |
+| $Z_D$ | $d_{t^{*}} \leftarrow a' \neq d_{t^{*}}$ for one $t^{*}$ | $a'$ must be legal in $s_{t^{*}}$ |
+| $Z_X$ | $C_X(s^{*}, a^{*}) \leftarrow a'$ | $a^{*}$ must be issued at $s^{*}$ on this tape |
+| $Z_E$ | activate $\epsilon_E$ at one $t$ | $t$ within horizon |
+| $Z_U$ | a rare cell-specific trap the agent's hypothesis space has no symbol for | within horizon |
 
-### 6.1 The feasibility filter is mandatory
+### 6.1 Fault presence and causal relevance are two different variables
 
-An injection that does **not** change the outcome on the realised tape produces an
-episode where the cause is present but inert. Labeling those as faults would
-inflate every cause and destroy the meaning of $R^{*}$.
+The first draft of this document had a single $C$, filtered post hoc by
+outcome-relevance: *"a cause is recorded as active only if the injection changes
+the outcome on this tape."* **That filter is wrong**, and it fails on the most
+standard case in multi-cause attribution.
 
-$$\boxed{\text{A cause is recorded as active only if the injection is outcome-relevant on this tape.}}$$
+Consider two faults that are each independently sufficient:
 
-The filter is applied by re-running the episode with and without the injection and
-comparing outcomes. Inactive injections are recorded in $M$ as `inert` and the
-corresponding $c$ is set to $0$.
+$$A \Rightarrow F, \qquad B \Rightarrow F$$
 
-This is the direct structural replacement for the legacy `scene_from_trace`
-disaster, where causes were *added* by reconstruction rather than *removed* by
-relevance.
+With both present, remove $A$: the episode still fails, via $B$. Remove $B$: it
+still fails, via $A$. The filter therefore sets $c_A = 0$ **and** $c_B = 0$, and
+records $C = (0,0,\dots)$ for an episode in which both mechanisms genuinely
+broke. This is the classic redundancy / overdetermination problem, and with a
+multi-label $C$ it is not an edge case — it is the expected behaviour of any
+generator that permits co-occurring faults.
+
+It also contradicted `02-SCM.md` §1. Causes are drawn independently and
+exogenously; a filter that then *rejects* a drawn cause on the basis of the
+outcome makes the observed $C$ an outcome-conditioned quantity, which is not the
+same distribution as the one that was generated.
+
+**So the two concepts are separated:**
+
+$$\boxed{Z = (Z_P, Z_D, Z_X, Z_E, Z_U)\quad\text{— mechanism actually active}}$$
+
+$$\boxed{A = (A_P, A_D, A_X, A_E, A_U)\quad\text{— outcome-relevant on this tape}}$$
+
+| | $Z_i$ | $A_i$ |
+|---|---|---|
+| source | forward generation, exogenously assigned | evaluator intervention, computed after generation |
+| can be zeroed by the outcome? | **never** | by definition |
+| what it answers | *what broke?* | *did it make a difference this time?* |
+| cost to compute | free | one counterfactual rollout per cause |
+
+$$Z_A = 1,\; A_A = 0 \quad\text{is a legal and meaningful state:}$$
+
+> mechanism $A$ really did break, but on this episode another mechanism
+> established the outcome first, so $A$ was not the difference-maker.
+
+This is the same distinction the project already drew between **cause truth** and
+**repair truth** (`02-SCM.md` §4), applied one level down: $Z$ is what is broken,
+$A$ is what mattered, $R^{*}$ is what must change. Three different objects, all
+evaluator truth.
+
+### 6.2 Which one each version predicts
+
+| version | target | rationale |
+|---|---|---|
+| **V0.1R** | **$Z$** — primary | the question is *what happened*, a diagnosis. Predicting $A$ would smuggle in causal responsibility and re-entangle diagnosis with prescription, which is the error the four-version split exists to undo |
+| V0.1R | $A$ — **secondary endpoint** | reported, because a method that gets $Z$ right and $A$ wrong is informative — it means the method detects faults but cannot rank their contribution |
+| V0.2R | $R^{*}$ | still a third object, unchanged |
+
+$A$ is computed for every episode regardless, and is what makes the redundant-cause
+episodes visible in the results rather than silently mislabelled.
+
+### 6.3 What survives of the old filter
+
+The *motivation* was sound: an injection that changes nothing produces an episode
+whose "fault" is inert, and labelling those as faults inflates every cause. That
+concern is real and is still handled — but by **recording $A$ separately**, not by
+erasing $Z$.
+
+* inert-but-present faults remain in the data with $Z_i = 1, A_i = 0$;
+* metrics that want fault *detection* use $Z$;
+* metrics that want causal *ranking* use $A$;
+* an injection whose $Z_i = 1, A_i = 0$ **and** which cannot be made relevant by
+  any tape is excluded at generation time and listed in the exclusion table of
+  the identifiability artifact (`03-IDENTIFIABILITY.md` §4) — that is a
+  well-formedness constraint on the generator, not a post-hoc filter on labels.
+
+This is also the structural replacement for `scene_from_trace`: causes are never
+**added** by reconstruction (the legacy bug), and they are now no longer
+**removed** by outcome either.
+
+See `12-AMENDMENTS.md` **A2**.
 
 ---
 
@@ -185,21 +332,71 @@ without changing anything else, and that substitution is itself a factor
 
 This is the most easily-broken part of the design and it is specified exactly.
 
-$$\boxed{\text{The tape is addressed by } (t, \text{role}), \text{ never by draw order.}}$$
+$$\boxed{\text{The tape is addressed by a semantic key, never by draw order.}}$$
 
-Roles: `hazard`, `plant`, `injection`, `feedback`.
+### 8.1 Keys carry subkeys
 
-Every rollout — factual or intervened — reads the **same slot** $(t, \text{role})$
-at step $t$. A `do()` operation therefore changes *what is done with* the draw, not
-*which draw is used*. Without this, an intervention that changes the trajectory
-length or the number of draws silently shifts every subsequent random value, and
-counterfactuals compare two different noise realisations while claiming to hold
-noise fixed.
+A `(t, role)` pair is **not** fine-grained enough. At the terminal step the
+feedback channel needs at least two independent draws:
 
-$$\boxed{\text{Two rollouts of the same episode under different } do() \text{ operations must read an identical tape.}}$$
+$$\omega(t, \texttt{feedback}, \texttt{error\_flag}),\qquad \omega(t, \texttt{feedback}, \texttt{cause\_choice})$$
 
-This is asserted mechanically: a test re-runs a factual and an intervened rollout
-and checks that the tape access log is identical in $(t, \text{role})$ terms.
+With a single `(t, feedback)` slot there are only two options, and both are wrong:
+reuse one value for both decisions — manufacturing a spurious correlation between
+*"is this feedback wrong"* and *"which cause does it name"* — or draw a second
+value positionally, which is the very thing the addressing rule exists to forbid.
+
+So the frozen key form is
+
+$$\boxed{\omega[\text{semantic key}]},\qquad \text{key} = (\texttt{kind},\ \texttt{where},\ \texttt{which})$$
+
+with the kinds and subkeys declared in full before implementation, e.g.
+
+```
+("hazard",   t,           "occupancy")
+("plant",    t,           "deviation")
+("feedback", H,           "error_flag")
+("feedback", H,           "cause_choice")
+("inject",   "Z_D",       "time")
+("inject",   "Z_D",       "action")
+("inject",   "Z_P",       "option")
+```
+
+The list is frozen; adding a kind or subkey later changes the exogenous structure
+of every existing episode and therefore voids the seeds, exactly like a code
+change.
+
+### 8.2 The invariant is *same assignment*, not *same access log*
+
+The first draft required two rollouts under different $do()$ operations to read an
+**identical tape access log**. That is stronger than the causal requirement and
+would wrongly forbid a legitimate implementation.
+
+What is actually needed is:
+
+$$\boxed{
+\begin{aligned}
+&\text{(a) all rollouts of an episode share the same tape fingerprint, and}\\
+&\text{(b) the same key yields the same value in every rollout, and}\\
+&\text{(c) positional consumption is forbidden.}
+\end{aligned}}$$
+
+An intervention may legitimately make a variable irrelevant, in which case a
+rollout may simply never look up that key — and that is fine, because the value it
+*would* have received is unchanged. Requiring an identical log would either fail
+such a rollout or force a redundant lookup purely to satisfy a test.
+
+Materialising the entire $H \times \text{kinds} \times \text{subkeys}$ table up
+front and having every rollout read every slot unconditionally would also satisfy
+the log version — but that is an **implementation choice**, and it must not be
+promoted into the definition of causal validity.
+
+A mechanical test asserts (a), (b) and (c): the tape object is compared by
+fingerprint; a read of the same key in two rollouts of one episode is asserted
+equal; and the RNG interface exposes no positional/sequential accessor at all, so
+(c) is enforced by construction rather than by discipline.
+
+See `12-AMENDMENTS.md` **A3**.
 
 ---
 
@@ -252,22 +449,66 @@ outcome `07-V02R.md` §3 was written to allow.
 ### 11.2 The canonical conversion rule
 
 `07-V02R.md` §4.2 requires one rule, identical across representations, converting
-a proposed unit set $\hat R$ into an intervention set:
+a proposed unit set $\hat R$ into an intervention set.
 
-* a proposed **process** unit converts to $do(z = z')$ where $z'$ is the program
-  the representation names; if it names none, $z'$ is the context-appropriate
-  program $z^{*}(\kappa)$;
-* a proposed **decision** unit $(t)$ converts to $do(d_t = d')$ where $d'$ is the
-  alternative the representation names; if it names none, $d'$ is the reference
-  policy's action at that state;
-* a proposed **execution** unit converts to $do(C_X = \text{identity})$ at the
-  implicated $(s^{*}, a^{*})$;
-* an empty $\hat R$ converts to $\varnothing$ — change nothing.
+**Two representations had no rule at all in the first draft** — $R_{\text{module}}$
+has an *action level* that merges decision and execution, and
+$R_{\text{trajectory}}$ proposes the whole episode. Both are listed as official
+competitors in `07` §3, and both were unconvertible, so V0.2R was not executable.
+The rules are completed here. See `12-AMENDMENTS.md` **A5**.
 
-The rule is oracle-assisted (it may consult $z^{*}$ and the reference policy),
-which is admissible in V0.2R because V0.2R receives cause truth and is scored
-against repair truth (`07` §1). It would not be admissible in V0.4R, and it is not
-used there.
+#### 11.2.1 The rule, by unit kind
+
+| unit kind | converts to |
+|---|---|
+| **process** | $do(z = z')$, where $z'$ is the option the representation names; if it names none, $z' = z^{*}(\kappa)$ |
+| **decision** $(t)$ | $do(d_t = d')$, where $d'$ is the alternative named; if none, the reference action $\pi_{\text{ref}}(s_t)$ |
+| **execution** $(s^{*}, a^{*})$ | $do\bigl(C_X(s^{*}, a^{*}) = a^{*}\bigr)$ — one cell (`02-SCM.md` §5.0) |
+| **action** $(t)$ | **both** of $\{do(d_t = \pi_{\text{ref}}(s_t)),\ do(C_X(s_t, a^{cmd}_t) = a^{cmd}_t)\}$ |
+| **trajectory** $(\text{whole episode})$ | the union over all $t$ of the **action** conversion above |
+| empty $\hat R$ | $\varnothing$ — change nothing |
+
+#### 11.2.2 Why `action` expands to two candidates and not one
+
+$R_{\text{module}} = \{\text{process}, \text{action}\}$ collapses decision and
+execution into one unit. Keeping the timestep but dropping the kind gives
+
+$$Action_t = \{Decision_t,\ Execution_t\}$$
+
+If the conversion were allowed to pick whichever of the two the Oracle knows to be
+correct, a **coarse** representation would silently receive the fine
+representation's information, and the comparison in `07` §4 would measure nothing.
+
+So the conversion is honest: a representation that cannot tell the two apart must
+**propose both**. The consequences fall exactly where they should:
+
+| endpoint | effect |
+|---|---|
+| InterventionSufficiency | can stay high — one of the two may suffice |
+| CandidateSetSize | rises |
+| FalseEditRate | **penalised** by the redundant candidate |
+
+This is the price of coarseness, made visible instead of hidden. The Oracle is
+never consulted to break the tie.
+
+#### 11.2.3 Why `trajectory` expands to everything
+
+$R_{\text{trajectory}}$ asserts only *"something in this run is wrong"*. Converted
+honestly it proposes a candidate at every timestep, which is the correct
+operationalisation of a representation that has no localisation. It is expected to
+score high on coverage and poor on `CandidateSetSize` and `FalseEditRate`, and
+that is the point of including it as a baseline.
+
+#### 11.2.4 Admissibility
+
+The rule is oracle-assisted — it may consult $z^{*}(\kappa)$ and
+$\pi_{\text{ref}}$, both evaluator truth. That is admissible in V0.2R because
+V0.2R receives cause truth and is scored against repair truth (`07` §1). It is
+**not** admissible in V0.4R, where $\hat V(c)$ must be learned, and it is not used
+there (`09` §3).
+
+The rule is frozen and identical across representations. Any per-representation
+special case would reintroduce exactly the confound §11.2.2 exists to remove.
 
 ---
 
@@ -318,16 +559,26 @@ with the reference artifact. It is **not** re-measured per run.
 
 ## 13. Frozen
 
-1. the grid, start, goal, hazard, horizon $H = 12$, step cost;
+1. the grid, start, goal, hazard schedule and phase, horizon $H = 12$, step cost;
 2. the context lane and its two regimes;
 3. the action set and the ill-formed-action rule;
-4. the four strategy programs and their properties;
-5. the controller/plant split and the three-channel table (§5.2);
-6. the feasibility filter (§6.1) — **a cause counts only if it is outcome-relevant**;
-7. the feedback error model and $\eta = 0.4$;
-8. tape addressing by $(t, \text{role})$ (§8) and the counterfactual validity rule;
-9. the identifiability signature (§9), excluding truth fields;
-10. the deferred-value table (§10) and its defaults;
-11. the $R_{\text{module}}$ referent (§11.1) and the canonical conversion rule (§11.2);
-12. $Q^{*}$, $\pi_{\text{ref}}$ and $V_{\text{pre}}$ as one shared, frozen,
-    fingerprinted reference artifact (§12).
+4. the four options, and properties **P1–P4 as assertions discharged by
+   `scripts/route_check.py`** (§4.1), with P4 carrying a defined failure mode (§4.2);
+5. the behaviour chain $\kappa \to z \to Q_D(s,z,\cdot) \to a^{cmd}$ (§5); $z$ is an
+   option id and does **not** emit actions;
+6. the controller/plant split and the three-channel table (§5.2), with $u_t$
+   evaluator-only;
+7. the separation of fault presence $Z$ from causal relevance $A$ (§6.1), and the
+   rule that $Z$ is never zeroed by the outcome;
+8. the feedback error model and $\eta = 0.4$;
+9. the tape's semantic-key form $(\texttt{kind}, \texttt{where}, \texttt{which})$
+   with frozen kinds and subkeys (§8.1), and the *same assignment* invariant
+   (§8.2), including the prohibition on positional consumption;
+10. the identifiability signature (§9), excluding truth fields;
+11. the deferred-value table (§10) and its defaults;
+12. the $R_{\text{module}}$ referent (§11.1) and the **complete** canonical
+    conversion rule (§11.2), including the `action` and `trajectory` rows;
+13. $Q^{*}$, $\pi_{\text{ref}}$ and $V_{\text{pre}}$ as one shared, frozen,
+    fingerprinted reference artifact (§12);
+14. the execution primitive $do(C_X(s^{*},a^{cmd}) = a^{cmd})$ acting on one cell
+    (`02-SCM.md` §5.0).
