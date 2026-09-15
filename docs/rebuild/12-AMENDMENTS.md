@@ -949,7 +949,84 @@ before the identifiability generator is written.
 
 ---
 
-## 35. Summary and what remains open
+## 36. A39 — `rush` was an unconstrained superset, so it dominated every specialised option
+
+**Severity: P0 (design).** Found by the exact DP on its first run, not by review.
+
+**Was** (`02` §2.4.2): $A_{z_1}(m,s) = A_{\text{legal}}(s)$ — `rush` carried **no
+obligation at all**.
+
+**Wrong because.** The optimal policy *inside* an unconstrained option is simply
+the unconstrained optimum. Three consequences, all measured:
+
+$$z^{*}(s) = z_1 \;\;\text{for every } (\kappa,\phi)$$
+
+the optimal `rush` trajectory under $\kappa=1,\phi=2$ is
+
+$$\texttt{RIGHT, WAIT, RIGHT, RIGHT, RIGHT}$$
+
+— it waits out the hazard and succeeds, so `rush` is not a rush; and property
+**P1** ("`rush` succeeds iff $\kappa=0$") is therefore **false**, because inside
+`rush` the DP can imitate every specialised option. `wait_then_cross` merely
+*tied* it (0.90 vs 0.90) rather than beating it.
+
+This is A9 in mirror image. A9 removed "four names for one policy" by giving the
+options obligations; the resulting constraint set was degenerate in the opposite
+direction, because exactly one option was unconstrained and therefore dominated.
+
+**Now** (`02` §2.4.2), with $d_G$ the static shortest-path distance to $G$ over
+the open-cell graph:
+
+$$\boxed{A_{z_1}(0,s) = \bigl\{a \in A_{\text{legal}}(s) : d_G(\text{enter}(a,s)) = d_G(\text{cell}(s)) - 1\bigr\}}$$
+
+Strict descent implies $\texttt{WAIT} \notin A_{z_1}$ and forbids any detour. From
+$S$ it is exactly `RIGHT, RIGHT, RIGHT, RIGHT`; displaced by an execution fault it
+resumes descending rather than deadlocking.
+
+**Why this is not "tuning the environment until P1 passes".** The constraint reads
+**no result**: not $Q^{*}$, not $z^{*}$, not `hazard_at`, not the reward. $d_G$ is a
+property of the static grid alone, computed once by BFS at import. It states a
+pre-declarable behavioural commitment — *rush always advances along the static
+shortest path* — and the environment then decides where that commitment is good and
+where it is bad. That is categorically different from *"if a hazard is detected,
+forbid action $a$"*, which would write the correct answer into the option.
+
+**P1 is restated over the full context.** With $\phi$ in the state (A23), the old
+predicate keyed on $\kappa$ alone is the wrong predicate; what decides whether the
+short corridor is safe at $t=2$ is $(\kappa,\phi)$:
+
+$$\text{P1a}:\ \neg\text{hazard\_at}(2,\kappa,\phi) \Rightarrow \text{4-step success}$$
+
+$$\text{P1b}:\ \text{hazard\_at}(2,\kappa,\phi) \Rightarrow \text{collision at the contested cell on step 2}$$
+
+$$\text{P1c}:\ \bigl|\{z^{*}(s_0(\kappa,\phi))\}_{\kappa,\phi}\bigr| \ge 2$$
+
+P1c is the assertion that closes this degeneracy. It deliberately does **not**
+require a particular winner in the hazardous contexts: whether `wait_then_cross`,
+`detour_upper` or a tie wins is for the DP to report, not for the environment to
+arrange.
+
+**Measured after the fix** (exact DP, 12 contexts): $z^{*}$ is `rush` in 9 and
+`wait_then_cross` in 3 ($\kappa{=}0,\phi{=}2$; $\kappa{=}1,\phi{=}2$;
+$\kappa{=}1,\phi{=}5$) — so $|\{z^{*}\}| = 2$, P1c passes. `rush` scores $+0.92$
+(4 steps) where the corridor is clear and $-1.04$ (collision) where it is not.
+
+**Consequence for fault injection:** $A_{z_1}$ is a **singleton** at most cells
+(strict descent usually admits exactly one move), so there is frequently no
+alternative action to substitute. A $Z_D$ fault must be injected under an option
+with room. The kernel regression test that injected $Z_D$ under `rush` was moved
+to `z_2` for this reason — and its failure after A39 was correct behaviour, not a
+regression.
+
+**Test replaced, not deleted.**
+`test_z1_is_unconstrained_and_therefore_dominates` became
+`test_z1_is_static_shortest_path_descent`, and
+`test_the_context_appropriate_option_is_meant_to_depend_on_context` became
+`test_best_option_depends_on_full_context`, which asserts P1c directly.
+
+---
+
+## 37. Summary and what remains open
 
 | # | what | severity | status |
 |---|---|---|---|

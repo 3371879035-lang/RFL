@@ -167,9 +167,41 @@ make. $z_1$ is therefore $A_{z_1}(m,s) = A_{\text{legal}}(s)$, **not** $A$.
 Let `enter(a, s)` denote the cell the agent would occupy. Write
 $\text{enter}(a,s) = G$ for "leads into the goal cell".
 
-#### 2.4.2 $z_1$ `rush` — no obligation
+#### 2.4.2 $z_1$ `rush` — strict static descent
 
-$$M_{z_1} = \{0\},\qquad \delta_{z_1} \equiv 0,\qquad A_{z_1}(m,s) = A_{\text{legal}}(s)$$
+$$M_{z_1} = \{0\},\qquad \delta_{z_1} \equiv 0$$
+
+$$\boxed{A_{z_1}(0,s) = \bigl\{a \in A_{\text{legal}}(s) \;:\; d_G\bigl(\text{enter}(a,s)\bigr) = d_G(\text{cell}(s)) - 1\bigr\}}$$
+
+where $d_G(c)$ is the **static** shortest-path distance from cell $c$ to $G$ over
+the open-cell graph — ignoring the hazard, $\kappa$, $\phi$ and $t$, and never
+consulting $Q^{*}$ or $z^{*}$.
+
+An earlier revision set $A_{z_1} = A_{\text{legal}}(s)$, i.e. **no obligation at
+all**. The exact DP immediately showed what that means: the optimal policy *inside*
+$z_1$ is the unconstrained optimum, so $z_1$ dominated every specialised option,
+the context-appropriate option was constant, and `rush` under $\kappa=1,\phi=2$
+played `RIGHT, WAIT, RIGHT, RIGHT, RIGHT` — it waited out the hazard and succeeded.
+A rush that waits is not a rush. See `12-AMENDMENTS.md` **A39**.
+
+Strict descent implies $\texttt{WAIT} \notin A_{z_1}$ and excludes any temporary
+detour to dodge the hazard. From $S$ it is exactly `RIGHT, RIGHT, RIGHT, RIGHT`.
+It is still a *process* rather than a hard-coded trajectory: if an execution fault
+displaces the agent, it resumes descending from wherever it now is rather than
+deadlocking.
+
+**Why this is not tuning the environment to pass a test.** The constraint reads no
+result — not $Q^{*}$, not $z^{*}$, not `hazard_at`, not the reward. It expresses a
+pre-declarable behavioural commitment: *rush always advances along the static
+shortest path; it does not wait and does not detour.* The environment then decides
+for itself in which contexts that commitment is good and bad. That is categorically
+different from "if a hazard is detected, forbid action $a$", which would write the
+answer into the option.
+
+**Consequence worth recording:** $A_{z_1}$ is a **singleton** at most cells, so
+under `rush` there is often no alternative action available for a decision fault.
+$Z_D$ injections must be made under an option with room — see the note in
+`12-AMENDMENTS.md` **A39**.
 
 #### 2.4.3 $z_2$ `detour_upper` — visit $(2,1)$ before $G$
 

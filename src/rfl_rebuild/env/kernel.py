@@ -189,24 +189,67 @@ def _enter(action: Action, state: State) -> tuple[int, int]:
     return cell if cell in OPEN_CELLS else (state.x, state.y)
 
 
+def _bfs_distance_to_goal() -> Mapping[tuple[int, int], int]:
+    """``d_G(c)``: static shortest-path distance to ``GOAL`` over open cells.
+
+    Ignores the hazard, ``kappa``, ``phi`` and ``t`` entirely, and never consults
+    the DP value. That is the whole point (A39): if this read anything about the
+    current situation it would be encoding "where is it safe right now" into the
+    option, which is writing the answer into the option rather than defining the
+    option's behaviour style.
+    """
+    from collections import deque
+
+    dist: dict[tuple[int, int], int] = {GOAL: 0}
+    queue = deque([GOAL])
+    while queue:
+        cx, cy = queue.popleft()
+        for dx, dy in _DELTAS.values():
+            nb = (cx + dx, cy + dy)
+            if nb in OPEN_CELLS and nb not in dist:
+                dist[nb] = dist[(cx, cy)] + 1
+                queue.append(nb)
+    return dist
+
+
+STATIC_DISTANCE_TO_GOAL: Mapping[tuple[int, int], int] = _bfs_distance_to_goal()
+"""``d_G``, frozen. Computed once at import from the static open-cell graph."""
+
+
 def option_actions(z: int, ctrl: ControlState, state: State) -> tuple[Action, ...]:
     """``A_z(m, s)`` — 02 §2.4.2–§2.4.5, transcribed. No recovery logic added."""
     if ctrl.z != z:
         raise ValueError("control state belongs to a different option")
     legal = legal_actions(state)
     m = ctrl.m
+
     if z == _Z1:
-        return legal
+        # A39: `rush` must strictly decrease the STATIC distance to the goal at
+        # every step. This makes it a genuine rush rather than the unconstrained
+        # optimum, and thereby removes the degeneracy in which `rush` absorbed
+        # the abilities of every specialised option.
+        here = STATIC_DISTANCE_TO_GOAL.get(state.cell)
+        if here is None:
+            raise ValueError(f"{state.cell} is not an open cell")
+        if here == 0:
+            raise ValueError("the goal is terminal and is never a decision point")
+        return tuple(
+            a for a in legal
+            if STATIC_DISTANCE_TO_GOAL.get(_enter(a, state), here) == here - 1
+        )
+
     if z in (_Z2, _Z4):
         if m == 0:
             return tuple(a for a in legal if _enter(a, state) != GOAL)
         return legal
+
     if z == _Z3:
         if m == 0:
             return tuple(
                 a for a in legal if _enter(a, state) not in (CONTESTED, GOAL)
             )
         return legal
+
     raise ValueError(f"unknown option {z!r}")
 
 

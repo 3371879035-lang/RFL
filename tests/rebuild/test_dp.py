@@ -33,9 +33,11 @@ def sol():
 # --------------------------------------------------------------------------- #
 
 def test_solution_covers_every_state_option_and_automaton_state(sol):
-    expected = len(K.OPEN_CELLS) * K.HORIZON * 2 * len(K.PHASE_DOMAIN) \
+    # GOAL is excluded: arriving there is terminal, never a decision point (A39).
+    decision_cells = len(K.OPEN_CELLS) - 1
+    expected = decision_cells * K.HORIZON * 2 * len(K.PHASE_DOMAIN) \
         * len(K.option_ids()) * 2
-    assert len(sol.v) == expected
+    assert len(sol.v) == expected == 13_824
 
 
 def test_dp_agrees_with_the_kernel_it_reads(sol):
@@ -57,7 +59,7 @@ def test_dp_agrees_with_the_kernel_it_reads(sol):
             )
             assert value == pytest.approx(expected)
             checked += 1
-    assert checked > 40_000
+    assert checked > 35_000
 
 
 def test_policy_is_admissible_everywhere(sol):
@@ -77,11 +79,23 @@ def test_solution_is_deterministic():
     assert a.v == b.v
 
 
-def test_greedy_following_the_dp_succeeds(sol):
-    for z in K.option_ids():
-        for kappa in (0, 1):
-            for phi in K.PHASE_DOMAIN:
-                assert sol.policy_success(kappa=kappa, phi=phi, z=z)
+def test_the_best_option_always_succeeds_and_rush_does_not(sol):
+    """A39 changed this test's premise, deliberately.
+
+    Before A39 every option succeeded everywhere, because ``rush`` was the
+    unconstrained optimum wearing a name. A rush that always succeeds is not a
+    rush. What holds now:
+
+    * the **best** option in each context always reaches the goal;
+    * ``rush`` reaches it **iff** the short corridor is clear at ``t=2``.
+    """
+    for kappa in (0, 1):
+        for phi in K.PHASE_DOMAIN:
+            z = sol.context_option(kappa, phi)
+            assert sol.policy_success(kappa=kappa, phi=phi, z=z)
+            assert sol.policy_success(kappa=kappa, phi=phi, z=0) == (
+                not K.hazard_at(2, kappa, phi)
+            )
 
 
 def test_terminal_states_are_not_decision_points(sol):
@@ -92,47 +106,101 @@ def test_terminal_states_are_not_decision_points(sol):
 # The design degeneracy the DP exposed
 # --------------------------------------------------------------------------- #
 
-def test_z1_is_unconstrained_and_therefore_dominates(sol):
-    """**A recorded design defect, not a desirable property.**
+def test_z1_is_static_shortest_path_descent(sol):
+    """A39: ``rush`` must strictly decrease the static distance to the goal.
 
-    ``A_{z_1} = A_legal`` (02 §2.4.2) means ``z_1`` carries no obligation at all,
-    so the DP's optimal policy *inside* ``z_1`` is simply the unconstrained
-    optimum. Consequences, all verified here:
-
-    * ``z*(s)`` is ``z_1`` for **every** ``(kappa, phi)`` — "context-appropriate
-      option" is vacuous;
-    * ``z_1``'s optimal trajectory under ``kappa=1, phi=2`` is
-      ``RIGHT, WAIT, RIGHT, RIGHT, RIGHT`` — it waits out the hazard and
-      succeeds, so "rush" is not a rush;
-    * property **P1** ("``rush`` succeeds under ``kappa=0`` and *fails* under
-      ``kappa=1``") is therefore **false** for the DP-optimal policy.
-
-    This test asserts the *current* behaviour so the defect is visible and
-    tracked. It must be replaced — not deleted — when ``z_1`` is given an
-    obligation (amendment A39), at which point ``z*`` should become
-    context-dependent and P1 should hold.
+    Replaces ``test_z1_is_unconstrained_and_therefore_dominates``. That test
+    recorded a defect; this one asserts the correction. ``d_G`` is static — it
+    ignores the hazard, ``kappa``, ``phi`` and ``t`` and never consults the DP —
+    so the constraint defines a *behaviour style* rather than encoding the
+    answer. If it read the current situation it would be writing the correct
+    action into the option.
     """
-    assert K.option_actions(0, ControlState(0, 0), State(1, 2, 1, 1, 2)) == \
-        K.legal_actions(State(1, 2, 1, 1, 2))
+    d = K.STATIC_DISTANCE_TO_GOAL
 
-    assert {sol.context_option(k, p) for k in (0, 1) for p in K.PHASE_DOMAIN} == {0}
+    # d_G is the static open-cell distance, hazard-blind.
+    assert d[K.START] == 4 and d[K.GOAL] == 0
+    assert d[(1, 2)] == 3 and d[(2, 1)] == 3 and d[(2, 4)] == 4
 
-    def provider(s: State, c: ControlState) -> int:
-        return sol.best_action(s, c.z, c.m)
+    # At the start, the only admissible action is the one that descends.
+    s = K.State(0, 2, 0, 0, 0)
+    assert [K.ACTIONS[a] for a in K.option_actions(0, K.ControlState(0, 0), s)] \
+        == ["RIGHT"]
 
-    tr = K.rollout(kappa=1, tape=SemanticTape(phase=2, error_flag=0, cause_rank=0),
-                   command_provider=provider, base_option=0)
-    assert tr.success
-    assert [K.ACTIONS[a] for a in tr.commands()] == \
-        ["RIGHT", "WAIT", "RIGHT", "RIGHT", "RIGHT"]
+    # At (1,2) neither WAIT nor a detour is available.
+    s = K.State(1, 2, 1, 1, 2)
+    acts = [K.ACTIONS[a] for a in K.option_actions(0, K.ControlState(0, 0), s)]
+    assert "WAIT" not in acts
+    assert acts == ["RIGHT"]
+
+    # Everywhere, every admissible action strictly decreases d_G.
+    for cell in K.OPEN_CELLS - {K.GOAL}:
+        for kappa in (0, 1):
+            for phi in K.PHASE_DOMAIN:
+                for t in range(K.HORIZON):
+                    st = K.State(cell[0], cell[1], t, kappa, phi)
+                    acts = K.option_actions(0, K.ControlState(0, 0), st)
+                    assert acts, f"empty A_z1 at {cell}"
+                    for a in acts:
+                        nxt = K._enter(a, st)
+                        assert d[nxt] == d[cell] - 1
 
 
-def test_the_context_appropriate_option_is_meant_to_depend_on_context(sol):
-    """The design *intent*, asserted so the gap to reality is measurable.
+def test_rush_is_actually_a_rush_P1a_P1b(sol):
+    """P1a/P1b: the outcome of ``rush`` is decided by ``hazard_at(2, kappa, phi)``.
 
-    Under ``kappa=1`` the hazard is fast and the short corridor is unsafe, so
-    ``wait_then_cross`` ought to be at least as good as ``rush``. Today it ties
-    (both 0.90) precisely because ``rush`` is unconstrained and can imitate it.
+    The old P1 keyed on ``kappa`` alone. Once ``phi`` became part of the state
+    (A23) that was no longer the right predicate: what decides whether the short
+    corridor is safe at ``t=2`` is the full context.
     """
-    s = State(x=0, y=2, t=0, kappa=1, phi=2)
-    assert sol.option_value(s, 0) == pytest.approx(sol.option_value(s, 2))
+    from rfl_rebuild.env.kernel import SemanticTape
+
+    for kappa in (0, 1):
+        for phi in K.PHASE_DOMAIN:
+            s0 = K.State(0, 2, 0, kappa, phi)
+            safe = not K.hazard_at(2, kappa, phi)
+
+            def provider(s, c, _sol=sol):
+                return _sol.best_action(s, c.z, c.m)
+
+            tr = K.rollout(
+                kappa=kappa,
+                tape=SemanticTape(phase=phi, error_flag=0, cause_rank=0),
+                command_provider=provider, base_option=0,
+            )
+            if safe:
+                # P1a: four steps, no collision.
+                assert tr.success, f"kappa={kappa} phi={phi} should succeed"
+                assert len(tr.steps) == 4
+            else:
+                # P1b: collides at the contested cell on step 2.
+                assert tr.outcome == K.Outcome.COLLISION
+                assert len(tr.steps) == 2
+                assert tr.visited()[-1] == K.CONTESTED
+
+
+def test_best_option_depends_on_full_context(sol):
+    """P1c: the context-appropriate option is not a constant.
+
+    This is the assertion that closes the A39 degeneracy. It deliberately does
+    **not** require a particular winner in the hazardous contexts — whether
+    ``wait_then_cross``, ``detour_upper`` or a tie wins is for the DP to say, not
+    for the environment to arrange.
+    """
+    zs = {
+        sol.context_option(kappa, phi)
+        for kappa in (0, 1)
+        for phi in K.PHASE_DOMAIN
+    }
+    assert len(zs) >= 2, f"z* is constant at {zs} — the degeneracy is back"
+
+    # And specifically: where the short corridor is unsafe, rushing must lose.
+    for kappa in (0, 1):
+        for phi in K.PHASE_DOMAIN:
+            if not K.hazard_at(2, kappa, phi):
+                continue
+            s0 = K.State(0, 2, 0, kappa, phi)
+            best = max(sol.option_value(s0, z) for z in K.option_ids())
+            assert sol.option_value(s0, 0) < best, (
+                f"rush still optimal at kappa={kappa} phi={phi}"
+            )

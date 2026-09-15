@@ -41,10 +41,15 @@ _DUMMY_TAPE = SemanticTape(phase=0, error_flag=0, cause_rank=0)
 
 
 def iter_states() -> Iterator[State]:
-    """Every reachable decision state: open cell, ``t in [0, H)``, both lanes, every phase."""
+    """Every reachable **decision** state: open cell, ``t in [0, H)``, both lanes, every phase.
+
+    ``GOAL`` is excluded: arriving there is terminal, so it is never a decision
+    point, and ``A_{z_1}`` would be empty there (no action strictly decreases a
+    distance of zero).
+    """
     for x in range(K.N_COLS):
         for y in range(K.N_ROWS):
-            if (x, y) not in K.OPEN_CELLS:
+            if (x, y) not in K.OPEN_CELLS or (x, y) == K.GOAL:
                 continue
             for t in range(K.HORIZON):
                 for kappa in (0, 1):

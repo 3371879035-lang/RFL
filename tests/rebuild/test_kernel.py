@@ -195,11 +195,16 @@ def test_do_cannot_escape_the_option():
 # --------------------------------------------------------------------------- #
 
 def test_decision_fault_changes_the_trajectory():
-    """A34: ``mask.decision`` was never read, so Z_D was inert."""
-    clean = K.rollout(kappa=0, tape=tape(), command_provider=scripted(ROUTE_Z1),
-                      base_option=0)
+    """A34: ``mask.decision`` was never read, so Z_D was inert.
+
+    Injected under ``z_2``, not ``z_1``: after A39 ``rush`` strictly descends the
+    static distance to the goal every step, so ``A_{z_1}`` is a singleton almost
+    everywhere and there is often no alternative action to substitute.
+    """
+    clean = K.rollout(kappa=0, tape=tape(), command_provider=scripted(ROUTE_Z2),
+                      base_option=1)
     faulted = K.rollout(
-        kappa=0, tape=tape(), command_provider=scripted(ROUTE_Z1), base_option=0,
+        kappa=0, tape=tape(), command_provider=scripted(ROUTE_Z2), base_option=1,
         mask=FaultMask(decision=DecisionOverride(t=1, action=WAIT)),
     )
     assert clean.outcome == K.Outcome.SUCCESS
@@ -208,13 +213,18 @@ def test_decision_fault_changes_the_trajectory():
 
 
 def test_do_overrides_the_decision_fault():
-    """``do(d_t)`` > ``Z_D``: an intervention overrides the fault equation."""
+    """``do(d_t)`` > ``Z_D``: an intervention overrides the fault equation.
+
+    The override is ``UP`` — the action the ``z_2`` route actually takes at
+    ``(1,2)`` — so overriding the fault puts the episode back on its route.
+    """
     tr = K.rollout(
-        kappa=0, tape=tape(), command_provider=scripted(ROUTE_Z1), base_option=0,
+        kappa=0, tape=tape(), command_provider=scripted(ROUTE_Z2), base_option=1,
         mask=FaultMask(decision=DecisionOverride(t=1, action=WAIT)),
-        interventions=InterventionSet((Intervention.decision(1, RIGHT),)),
+        interventions=InterventionSet((Intervention.decision(1, UP),)),
     )
     assert tr.outcome == K.Outcome.SUCCESS
+    assert tr.commands()[1] == UP
 
 
 def test_base_option_is_not_always_z1():
