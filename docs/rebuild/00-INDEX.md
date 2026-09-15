@@ -9,7 +9,7 @@ Nothing in this directory is a result. There is no evidence here, only design.
 
 ---
 
-## Why the rebuild exists
+## 1. Why the rebuild exists
 
 The legacy programme (v0.1–v0.4) is preserved under tags and is not deleted. Its
 value is that it made the design errors cheaply, and its failure mode was always
@@ -35,7 +35,7 @@ failure has exactly one interpretation.
 
 ---
 
-## Reading order
+## 2. Reading order
 
 The order is deliberate: the model of the problem comes before any algorithm, and
 every algorithmic choice below is a consequence of a design decision above it.
@@ -52,10 +52,11 @@ every algorithmic choice below is a consequence of a design decision above it.
 | **08** | [`08-V03R.md`](08-V03R.md) | V0.3R — repair primitive, offline gate then online |
 | **09** | [`09-V04R.md`](09-V04R.md) | V0.4R — end-to-end, candidate competition |
 | **10** | [`10-REPRODUCIBILITY-AND-OPS.md`](10-REPRODUCIBILITY-AND-OPS.md) | determinism, fingerprints, runtime calibration, artifact layout |
+| **11** | [`11-ENVIRONMENT.md`](11-ENVIRONMENT.md) | the concrete task, the four strategy programs, the controller/plant split, the tape-addressing rule, and every deferred value with its default |
 
 ---
 
-## The gate chain
+## 3. The gate chain
 
 Nothing downstream runs until everything upstream has passed.
 
@@ -71,7 +72,7 @@ identifiability gate (E and L)  ──►  semantic suite (I1–I6, C0–C8)  �
 |---|---|---|
 | Gate E — evaluator identifiability | everything | `03` §2 |
 | Gate L — learner identifiability | V0.1R seeds | `03` §2 |
-| Semantic suite | all seeds, all versions | `04` Part III |
+| Semantic suite | all seeds, all versions | `04` §3 |
 | Oracle ceiling | V0.1R | `06` §3.1 |
 | Representation distinctness | V0.2R | `07` §8 |
 | Block 1 offline repair | V0.3R Block 2 | `08` §4 |
@@ -82,7 +83,7 @@ reported in this directory as amendments, not in a results document.
 
 ---
 
-## The four rules that matter most
+## 4. The four rules that matter most
 
 These are the ones the legacy programme learned the hard way. Each is enforced
 mechanically, not by discipline.
@@ -105,7 +106,7 @@ test and top-5 share are mandatory companions to every mean (`05` §5).
 
 ---
 
-## Key design decisions, and the legacy failure each one answers
+## 5. Key design decisions, and the legacy failure each one answers
 
 | decision | legacy failure it prevents |
 |---|---|
@@ -127,7 +128,7 @@ test and top-5 share are mandatory companions to every mean (`05` §5).
 
 ---
 
-## Legacy record
+## 6. Legacy record
 
 The old work is preserved, unedited in substance, under annotated tags:
 
@@ -152,7 +153,7 @@ $$\boxed{\text{The legacy programme's real output was the specification of how t
 
 ---
 
-## What happens next
+## 7. What happens next
 
 Implementation, in this order, with nothing skipped:
 
@@ -163,3 +164,42 @@ Implementation, in this order, with nothing skipped:
 5. and only then V0.2R.
 
 No version may begin collection while a gate upstream of it is failing.
+
+---
+
+## 8. What the specification fixes, and what it leaves open
+
+An implementer needs to know which choices are theirs. This is the boundary.
+
+### Fixed — changing any of these voids the affected seeds
+
+* the observation model (`01`), the SCM structure (`02`), the concrete environment
+  (`11`);
+* identifiability gates E and L, and the semantic invariants I1–I6 and cases
+  C0–C8 (`03`, `04`);
+* the statistical tiers, the four-way rule, the $T$-freezing rule, RMST with
+  censoring (`05`);
+* each version's **primary endpoint** and **go/no-go gates** (`06`–`09`);
+* $Q^{*}$, $\pi_{\text{ref}}$, $V_{\text{pre}}$ as one shared artifact (`11` §12);
+* tape addressing by $(t, \text{role})$ (`11` §8).
+
+### Open — the implementation's job, and where the research contribution lives
+
+* **the internals of each method.** The spec fixes what is *compared* and how it
+  is *scored*; it does not specify the algorithm inside `SequenceEvidence` or
+  `SeqThenCF`. That is the work.
+* any representation not listed in `07` §3 may be **added** as an extra arm, but
+  the listed ones may not be removed;
+* module layout, class design, log format, and the choice of tabular data
+  structures;
+* the mechanism of $U(c)$ in V0.4R, subject to the one constraint in `09` §3.2
+  that it be a genuine uncertainty and not a softmax temperature.
+
+### The rule that governs the boundary
+
+$$\boxed{\text{A free choice may be made at any time \emph{before} it is frozen; after that it is fixed.}}$$
+
+Every free choice that touches a reported number must be declared in
+`experiments/<version>/config.yaml` before collection, so that "which choices were
+made" is recoverable from the artifacts alone. A choice made after seeing a result
+is not a free choice; it is a change to the experiment, and it voids the seeds.

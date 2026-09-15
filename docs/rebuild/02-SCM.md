@@ -232,6 +232,11 @@ prohibited is starting from it as an assumption.
 
 ## 9. Frozen
 
+This document fixes structure. The **concrete instantiation** — the grid, the
+four strategy programs, the controller parameterisation, the feedback error model,
+the tape-addressing rule — is fixed separately in `11-ENVIRONMENT.md`, so that
+every version runs on one environment and results stay comparable.
+
 1. the five exogenous causes and their independence;
 2. multi-label $C$, and $p$ not summing to 1;
 3. $|\mathcal Z| = 4$, discrete and fully enumerated;

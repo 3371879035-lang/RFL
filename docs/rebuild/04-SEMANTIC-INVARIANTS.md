@@ -15,7 +15,7 @@ $$\boxed{\text{deterministic correctness}} \quad \boxed{\text{semantic correctne
 
 ---
 
-## Part I — Global invariants
+## 1. Global invariants
 
 These are asserted on **every** run, not only in the test suite. A violation
 aborts the run.
@@ -73,7 +73,7 @@ a violation.
 
 ---
 
-## Part II — The case suite
+## 2. The case suite
 
 Each case is a hand-constructed episode with a known truth assignment. The suite
 asserts on the **implementation's** outputs, not on the design.
@@ -149,7 +149,7 @@ the right answer is to change nothing" measurable.
 
 ---
 
-## Part III — Gate mechanics
+## 3. Gate mechanics
 
 | rule | |
 |---|---|
@@ -159,7 +159,7 @@ the right answer is to change nothing" measurable.
 | determinism | the suite must give identical results across processes; it runs under the fingerprint check (`10-REPRODUCIBILITY-AND-OPS.md`) |
 | scope | invariants I1–I6 run on every episode of every run, not only in the suite |
 
-### What a failure means
+### 3.1 What a failure means
 
 A failed case is a **bug**, never a result. It is fixed, and — per the
 no-mid-collection rule — if it is found after seeds have been collected, the seed
@@ -167,7 +167,7 @@ set is void and collection restarts from $N=0$.
 
 ---
 
-## Part IV — Deliberate omissions
+## 4. Deliberate omissions
 
 * The suite does **not** test learning quality. Semantic correctness is about
   *what the code changes*, not whether changing it helps.
