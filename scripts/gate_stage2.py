@@ -273,11 +273,17 @@ def main() -> int:
     outdir.mkdir(parents=True, exist_ok=True)
     (outdir / "gate_stage2.json").write_text(
         json.dumps(report, indent=1, default=str), encoding="utf-8")
-    with (outdir / "gate_stage2_cases.jsonl").open("w", encoding="utf-8") as fh:
+    import gzip
+    # gzipped: the raw dump is ~257 MB, over GitHub's 100 MB limit (the legacy
+    # project hit the same wall with a 484 MB evidence file). Written as .gz
+    # DIRECTLY so a clean checkout cannot regenerate the plain file -- an earlier
+    # attempt gzipped the artifact by hand but left this open() in place.
+    with gzip.open(outdir / "gate_stage2_cases.jsonl.gz", "wt",
+                   encoding="utf-8", compresslevel=9) as fh:
         for v in classes.values():
             for cid in v:
                 fh.write(json.dumps(case_index[cid].describe()) + "\n")
-    print(f"\nwrote {outdir / 'gate_stage2.json'} and gate_stage2_cases.jsonl")
+    print(f"\nwrote {outdir / 'gate_stage2.json'} and gate_stage2_cases.jsonl.gz")
 
     if failures:
         print("\nSTOP — " + "; ".join(failures))
