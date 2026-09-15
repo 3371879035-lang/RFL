@@ -40,11 +40,23 @@
 - **难度扫描六档中只有一个真发现**：`tight_h5_a03`（horizon 5, α=0.03）上 Oracle
   路由**有害**，ΔAUC = −0.0828，**四个独立 block 全部为负**。
 - **其余五档全部 EQUIVALENT 或 INCONCLUSIVE** —— 项目里三次"反转"都是噪声的移动。
-- **"直接修补 Q-entry 不是合适的 update primitive"**：`CFRevalue` 0.8509 显著差于
-  `NoCorrection` 0.9432（Δ = −0.0923），是全项目最稳健的结果。
+- **粒度消除 collateral**：`DecisionOracle` vs `ModuleOracle` 是 **0.4352 → 0.0000**
+  （结构性、精确），编辑次数少 2.67 倍。
 - 一个复现性缺陷（`PYTHONHASHSEED` 导致 WMD 有 3.3 倍波动）被发现后，**整套 v0.4
   seed 作废并从 N=0 重跑**；见
   [`docs/V0_4_REPRODUCIBILITY_DEFECT.md`](https://github.com/3371879035-lang/RFL/blob/v0.4/docs/V0_4_REPRODUCIBILITY_DEFECT.md)。
+
+> **⚠️ 一处 headline 已被撤回。** 早先写的 *"直接修补 Q-entry 不是合适的 update
+> primitive"* **不成立**：`CFRevalue` 把反事实回报写进了**事实失败动作**的 Q-entry
+> （`alt_targets` 构造后从未被读取），实际是在抬高那个导致失败的动作。它不是 spec
+> 声称的 ceiling arm。详见
+> [`docs/V0_4_SEMANTIC_CORRECTIONS.md`](https://github.com/3371879035-lang/RFL/blob/v0.4/docs/V0_4_SEMANTIC_CORRECTIONS.md)
+> —— 同一份文档还修正了 Oracle family 比例、`DECISION`/`EXECUTION` 语义碰撞，以及
+> Pilot Gamma 的统计（重算后一个判定从 `SUPPORT_B` 变为 `INCONCLUSIVE`）。
+
+**最重要的未解问题仍然没有被回答**：更好的归因 / credit 是否导致更好的策略学习。
+目前对 RFL 有利的可靠证据是 V0.1 的归因效应和 v0.3/v0.4 的 collateral 下降，
+**不是** task utility 提升。
 
 ---
 
