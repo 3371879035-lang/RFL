@@ -202,7 +202,7 @@ $$\boxed{\text{All four are enumeration-pending. None is claimed.}}$$
 | property | status |
 |---|---|
 | P1 | **restated over the full context** by A39 as P1a/P1b/P1c below — **to be witnessed** |
-| P2 | depends on the option-conditioned $Q_D^{*}$ (`02-SCM.md` §2.3), so it is a **design obligation on the option semantics**, not on the map — **to be witnessed** |
+| P2 | **A40**: a *singleton* Decision minimal repair must **exist**; uniqueness is explicitly **not** required — **to be witnessed** |
 | P3 | **withdrawn as a claim** — see below — **to be witnessed** |
 | P4 | **never claimed** — **to be witnessed**, with a defined failure mode |
 
@@ -222,6 +222,30 @@ context-appropriate option is not a constant**, which is what closes the A39
 degeneracy. P1c deliberately does **not** require a particular winner in the
 hazardous contexts — whether `wait_then_cross`, `detour_upper` or a tie wins is
 for the DP to report, not for the environment to arrange.
+
+**P2, restated by A40 — existence, not uniqueness.**
+
+$$\exists e:\quad \min_{r\,\text{sufficient}} |r| = 1 \quad\wedge\quad \exists r \in R^{*}(e),\ r = \{do(d_t = d')\}$$
+
+$$\boxed{\#R^{*} = 1 \text{ is \textbf{not} required.}}$$
+
+Multiple tied size-1 repairs are first-class (`02-SCM.md` §5.2), and any metric
+assuming a unique repair is prohibited there. Demanding uniqueness here would
+contradict the repair-truth ontology and, worse, would require editing the map until
+repairs became unique — deleting exactly the tie cases V0.2R's tie-handling
+endpoint exists to face.
+
+**P2 is a coverage gate, not a result.** It asks whether this benchmark contains
+the object *"a local Decision-level repair"* at all. It does not ask whether a
+Decision is the only correct explanation; that is V0.2R's question. A weak P2 is
+correct; making P2 look like a main hypothesis would be the error. P1–P4 all
+establish that the environment **can express** a mechanism, not that RFL works.
+
+The size-1 family is enumerated as $\mathcal F_1 = \mathcal F_{\text{process}} \cup
+\mathcal F_{\text{decision}} \cup \mathcal F_{\text{execution}}$ — omitting the
+process family, as an earlier revision did, leaves any claim about $R^{*}$'s
+size-1 candidates unsupported. `route_check` reports candidate count, unique-site
+count and per-kind counts as **diagnostics**; ties are described, never penalised.
 
 An earlier draft graded these "available / available / not established". That
 grading was wrong on P3 and incoherent on P4, in two separate ways.

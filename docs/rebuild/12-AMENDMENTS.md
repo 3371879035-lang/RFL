@@ -1026,7 +1026,81 @@ regression.
 
 ---
 
-## 37. Summary and what remains open
+## 37. A40 — P2 required repair *uniqueness*, contradicting the ontology and deleting V0.2R's hard cases
+
+**Severity: P0 (property definition).** Found by `route_check`, not by review.
+
+**Was** (`11` §4): P2 read *"an episode with $|R^{*}| = 1$ whose **unique member**
+is a decision intervention"*. `route_check` implemented that as
+`len(rescuing) == 1` and it **FAILED**.
+
+**The full enumeration, reported before anything was patched.** 26 candidate
+episodes, each with its entire size-1 family evaluated:
+
+| n rescuers | 5 | 9 | 11 | 12 | 15 |
+|---|---:|---:|---:|---:|---:|
+| episodes | 6 | 3 | 4 | 5 | 8 |
+
+No episode had exactly one rescuer. But **the failure was in the operationalisation,
+not the environment**:
+
+1. **Uniqueness directly contradicts `02-SCM.md` §5.2**, which freezes size and
+   candidate count as separate quantities, makes tied size-1 repairs first-class,
+   and **prohibits** any metric that assumes a unique repair. Requiring
+   $\#R^{*} = 1$ here is not extra strictness; it is working against the
+   repair-truth ontology the spec just built.
+2. **It would have required editing the map until repairs became unique** — which
+   is precisely deleting the tie cases V0.2R's tie-handling **structural
+   pass/fail endpoint** exists to face. A gate that can only be satisfied by
+   removing the phenomenon under study is the wrong gate.
+3. **The enumerator was also incomplete.** It tried only
+   $\mathcal F_{\text{decision}} \cup \mathcal F_{\text{execution}}$, so even a
+   correct uniqueness claim about $R^{*}$ would have been unsupported:
+   $do(z=z')$ can rescue too and was never tried.
+
+**Now:**
+
+$$\boxed{\exists e:\ \min_{r\,\text{sufficient}} |r| = 1 \ \wedge\ \exists r \in R^{*}(e),\ r = \{do(d_t = d')\}}$$
+
+$$\boxed{\#R^{*} = 1 \text{ is \textbf{not} required.}}$$
+
+And `route_check` enumerates the full
+$\mathcal F_1 = \mathcal F_{\text{process}} \cup \mathcal F_{\text{decision}} \cup \mathcal F_{\text{execution}}$,
+reporting candidate count, unique-site count and per-kind counts as **diagnostics**.
+Ties are described, never penalised.
+
+**Measured after A40:** P2 **PASS**. Witness: `kappa=0, phi=0`, option
+`detour_upper`, decision fault at $t=5$ to `LEFT`, factual outcome `COLLISION`.
+Family 32, malformed 0, **18 rescuing candidates over 9 unique sites** —
+15 decision, **3 process**, 0 execution. `do(z=rush)` is itself a rescuer.
+
+That last row is the point: the same episode has both a Decision singleton and a
+Process singleton that suffice. *"Minimal size is 1"* and *"the minimal repair is
+unique"* are different questions, and only the first is P2's.
+
+**Why a weak P2 is correct.** P2 is an **environment coverage gate** — it asks
+whether the benchmark contains the object *"a local Decision-level repair"* at
+all. It does not ask whether a Decision is the only correct explanation; that is
+V0.2R's question. **P1–P4 establish that the environment can express a mechanism,
+not that RFL works.** Making P2 look like a main hypothesis would be the error.
+
+**Also fixed in the same pass:** `check_p2`'s PASS branch referenced an undefined
+`t` for `fault_t` (it should be `st.t`). It never executed while P2 was failing,
+so the defect was invisible — a reminder that a FAIL can hide a bug in the success
+path.
+
+**P3/P4 caveat, accepted and not acted on.** Their local family is only 4 members,
+because after A39 $A_{z_1}$ is a singleton at most cells, so few local repairs
+exist along a failed `rush` and the negative half is easy to satisfy. This is
+correct behaviour, not a defect: `route_check` is an existence/coverage gate, not
+an effect-size test. Guarding against "too few process cases, all representations
+look alike" is V0.2R's **development gate**, which already requires the four
+representations to differ on a non-trivial fraction of episodes. The environment
+is **not** to be pre-tuned for that gate.
+
+---
+
+## 38. Summary and what remains open
 
 | # | what | severity | status |
 |---|---|---|---|

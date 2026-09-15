@@ -148,11 +148,65 @@ def process_family() -> list[Intervention]:
 
 
 # --------------------------------------------------------------------------- #
-# P2 — a size-1 DECISION repair suffices
+# P2 (A40) — a singleton DECISION minimal repair EXISTS; uniqueness is NOT required
 # --------------------------------------------------------------------------- #
 
+def size1_family(trace, kappa: int, phi: int, base_option: int) -> list[Intervention]:
+    """The full size-1 family ``F_1 = F_process u F_decision u F_execution``.
+
+    Earlier revisions enumerated only decision + execution, so any claim about
+    ``R*``'s size-1 candidates was unsupported: ``do(z=z')`` could rescue too and
+    was simply never tried (A40).
+    """
+    process = [Intervention.process(zp) for zp in K.option_ids()
+               if zp != base_option]
+    return (process
+            + decision_family(trace, kappa, phi, base_option)
+            + execution_family(trace, kappa, phi, base_option))
+
+
+def _rescuer_summary(rescuers: list[Intervention]) -> dict:
+    """Candidate count, unique-site count, and per-kind counts.
+
+    ``do(d_2=UP)`` and ``do(d_2=WAIT)`` are two *candidates* but one *site*, and
+    for a credit representation they are the same unit ``Decision_2``. V0.2R
+    compares representations on *where to change* before *what target*, so the
+    two counts must not be conflated.
+    """
+    kinds = Counter(iv.kind for iv in rescuers)
+    sites = set()
+    for iv in rescuers:
+        sites.add(("process", iv.option) if iv.kind == "process"
+                  else (iv.kind, iv.node()[1]))
+    return {
+        "n_candidates": len(rescuers),
+        "n_unique_sites": len(sites),
+        "n_process": kinds.get("process", 0),
+        "n_decision": kinds.get("decision", 0),
+        "n_execution": kinds.get("execution", 0),
+        "candidate_sites": sorted(f"{k}:{v}" for k, v in sites),
+    }
+
+
 def check_p2(sol) -> dict:
+    """A40: P2 asks for a **singleton Decision minimal repair**, not uniqueness.
+
+    $$\\exists e:\\ \\min_{r\\,\\text{sufficient}} |r| = 1 \\ \\wedge\\
+      \\exists r \\in R^*(e),\\ r = \\{do(d_t = d')\\}$$
+
+    It deliberately does **not** require ``#R* = 1``. Multiple tied size-1 repairs
+    are first-class (``02-SCM.md`` §5.2), and demanding uniqueness here would
+    contradict the repair-truth ontology and delete the tie cases V0.2R exists to
+    face. **Ties are a result, never a failure condition**, and the environment is
+    not tuned to remove them.
+
+    P2 is an **environment coverage gate**: it asks whether this benchmark
+    contains the object *"a local Decision-level repair"* at all. It does not ask
+    whether a Decision is the only correct explanation — that is V0.2R's question.
+    A weak P2 is not a bug; making P2 look like a main hypothesis would be.
+    """
     provider = healthy_provider(sol)
+    counts: Counter = Counter()
     for kappa, phi in CONTEXTS:
         for z in K.option_ids():
             clean = K.rollout(kappa=kappa, tape=tape_for(kappa, phi),
@@ -176,27 +230,43 @@ def check_p2(sol) -> dict:
                         continue
                     if fact.success:
                         continue
-                    # positive witness found; now the negative half, exhaustively
-                    fam = decision_family(fact, kappa, phi, z) + execution_family(fact, kappa, phi, z)
+                    # Factual failure established. The negative half is
+                    # exhaustive: every size-1 candidate of every kind is tried.
+                    family = size1_family(fact, kappa, phi, z)
                     rescuing, malformed = [], 0
-                    for iv in fam:
+                    for iv in family:
                         ok, _ = try_intervention(sol, kappa, phi, z, iv, fault)
                         if ok is True:
-                            rescuing.append(iv.kind + "" + str(iv.node()))
+                            rescuing.append(iv)
                         elif ok is None:
                             malformed += 1
-                    if len(rescuing) == 1:
+                    counts[len(rescuing)] += 1
+                    # A40: one Decision singleton rescuer is sufficient.
+                    if any(iv.kind == "decision" for iv in rescuing):
                         return {
                             "verdict": "PASS",
-                            "witness": {"kappa": kappa, "phi": phi,
-                                        "option": K.option_name(z),
-                                        "fault_t": t, "fault_action": K.ACTIONS[a],
-                                        "family_size": len(fam), "malformed": malformed,
-                                        "rescuing": rescuing},
-                            "minimal_size": 1,
+                            "witness": {
+                                "kappa": kappa, "phi": phi,
+                                "option": K.option_name(z),
+                                "fault_t": st.t,
+                                "fault_action": K.ACTIONS[a],
+                                "factual_outcome": fact.outcome,
+                                "minimal_size": 1,
+                                "family_size": len(family),
+                                "malformed": malformed,
+                                **_rescuer_summary(rescuing),
+                            },
+                            "ties_are_expected": (
+                                "heavy ties are a result, not a failure (A40); "
+                                "they are the pressure V0.2R's tie-handling "
+                                "endpoint exists to face"
+                            ),
                         }
-                    # otherwise keep searching; this episode is size-1-ambiguous
-    return {"verdict": "FAIL", "reason": "no episode with exactly one size-1 rescuer"}
+    return {
+        "verdict": "FAIL",
+        "reason": "no size-1 Decision repair candidate found in any context",
+        "rescuer_count_distribution": dict(sorted(counts.items())),
+    }
 
 
 # --------------------------------------------------------------------------- #
