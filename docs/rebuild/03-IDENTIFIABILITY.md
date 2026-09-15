@@ -60,7 +60,7 @@ $$\boxed{\text{The predicted label is } Z \text{. The symbol } C \text{ is retir
 `11-ENVIRONMENT.md` §6.1 removed the symbol $C$: an episode whose faults are
 mutually redundant has $Z = (1,1,0,0,0)$ but $A = (0,0,0,0,0)$, and a single
 symbol cannot carry both. The gate is stated on $Z$ because that is what V0.1R
-predicts; $A$ is a secondary endpoint and gets its own, weaker, requirement
+predicts; $B$ is a secondary endpoint and gets its own audit (§1.3).
 (below).
 
 ### 1.1 The tape set must be finite, or nothing is exhaustive
@@ -273,7 +273,7 @@ The gate's artifact is a matrix, generated exhaustively and committed to
   exclusion table with the reason**.
 * **columns** — every $q \in \mathcal Q_{\text{learner}}$, up to $B_{CF}$.
 * **cells** — a hash of $O(\ell, q)$.
-* **derived column** — $A$, computed from the row.
+* **derived column** — $B$, computed from the row.
 * **final column** — the equivalence class of the row under the full query set.
 
 The matrix is generated over $\mathcal L$ and then **collapsed by label for
@@ -293,10 +293,11 @@ The read-out required by the gate:
 
 | quantity | requirement |
 |---|---|
-| number of feasible cause assignments | reported |
+| number of feasible latent cases $\lvert\mathcal L\rvert$ | reported |
 | number of distinct signature classes | reported |
-| classes containing more than one distinct $C$ | **must be empty** |
-| smallest separating query set | reported — which queries are actually needed |
+| classes containing more than one distinct $Z$ | **must be empty** |
+| $B_{\min}^{\text{adaptive}}$ (§1.4), or the non-adaptive fallback and which was used | **must be $\le B_{CF}$** |
+| the separating query set $S$ actually used | reported — which queries are actually needed |
 | queries that separate nothing | reported — candidates for removal |
 
 If any class contains two distinct cause labels, the gate **FAILS**, and the

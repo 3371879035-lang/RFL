@@ -512,7 +512,163 @@ Q-learning; only the evaluator is exact.
 
 ---
 
-## 18. Summary and what remains open
+## 18. A17 — the option automata were obligation prose, and $do(d_t)$ was unconstrained
+
+**Severity: P0.** `kernel.py` owns *option constraints*; an implementer would have
+had to invent them.
+
+**Was** (`02` §2.3): four options described by obligation — "must visit $(2,1)$",
+"must hold at $(1,2)$ until the hazard clears" — with no automaton state, no
+initial state, no discharge condition, no statement of how $A_z$ varies with
+state, and no answer to the question that decides the whole design:
+
+$$do(d_t = d') \text{ — may } d' \notin A_z?$$
+
+**Wrong because.** Those are not engineering details; they are design decisions
+that change the experiment. And the unanswered question decides whether
+"process" and "local" granularity are distinct at all: if a local $do(d_t)$ may
+ignore the option's obligation, then a nominal *decision* repair can deliver a
+*process* repair — escaping the obligation is exactly what changing $z$ does —
+and P3/P4 stop distinguishing anything.
+
+Prose obligation is also the same hazard that produced A4 and A12: a property
+asserted by describing it.
+
+**Now** (`02` §2.4): all four automata are given as explicit transition tables
+($M_z$, $m_0$, $\delta_z$, and $A_z(m,s)$ per state), all four are monotone so
+that every obligation is recoverable, and the do-question is answered:
+
+$$\boxed{do(d_t = d') \text{ is well-formed} \iff d' \in A_{z}(m_t, s_t)}$$
+
+A local decision intervention changes **one decision inside the current option**;
+it does not lift the option's constraint. Ill-formed interventions are rejected at
+generation and recorded in the identifiability exclusion table, not silently
+clamped.
+
+**Two intended consequences.** When the option itself is wrong, **no** local
+decision intervention can rescue the episode — which is what a process fault
+*means*, and it makes P4 satisfiable without contrivance. And $do(z=z')$ stays
+unrestricted over $\mathcal Z$.
+
+---
+
+## 19. A18 — the frozen tape key list did not exist
+
+**Severity: P0.** The kernel implements the tape; the list was a placeholder.
+
+**Was** (`11` §8.1): "the kinds and subkeys declared in full before
+implementation, **e.g.**" followed by a partial list — and, three lines later,
+"the list is frozen".
+
+**Wrong because.** Deciding which keys exist, what they range over, how many
+subkeys each needs, which slots are $t$-indexed, and how $\mathcal T$ is
+constructed **is** defining the SCM's exogenous variables. The document declared
+it frozen while not containing it, so an implementer would have decided it
+silently. `03` §1.1 correctly required a finite $\mathcal T$; nothing said what
+that finite set is.
+
+**Now** (`11` §8.1.1): the complete key set with domains —
+
+| key | domain | $\lvert D\rvert$ |
+|---|---|---|
+| `("hazard", "phase")` | $\{0,\dots,5\}$ | 6 |
+| `("feedback", "error_flag")` | $\{0,1\}$ | 2 |
+| `("feedback", "cause_choice")` | $\{P,D,X,E,U\}$ | 5 |
+
+$$\lvert\mathcal T\rvert = 6 \times 2 \times 5 = 60$$
+
+**The three-key result is a consequence of the latent-case definition, not a
+convenience.** Fault parameters — which faults fire, at which timestep, on which
+action or cell — are coordinates of the **fault mask $M$**, a free variable of
+$\ell$ *alongside* $\omega$. Had they been tape keys, every fault's activation,
+location and parameter would have been crossed into $\mathcal T$ and it would have
+exploded beyond enumeration — while the same information was already being
+enumerated in $M$. The tape carries only what is genuinely ambient: the hazard
+phase and the feedback channel's two draws.
+
+---
+
+## 20. A19 — the execution order was still circular by one position
+
+**Severity: P0 (process).**
+
+**Was** (A16's order): kernel → `route_check` → Gate E/L → semantic suite →
+reference DP → V0.1R.
+
+**Wrong because.** P2/P3/P4 depend on $\pi_D^{*}(s,z)$ and option-conditioned
+$Q_D^{*}$. `route_check` asks *"does a local repair rescue the episode?"* — but it
+must first know what the option does when healthy, which requires the exact
+solution. Placing the DP after `route_check` therefore left the circularity A16
+had set out to remove, one position to the right.
+
+**Now:**
+
+$$\boxed{\text{kernel} \to \text{exact DP} \to route\_check \to \text{Gate E/L} \to \text{semantic suite} \to \text{V0.1R}}$$
+
+The DP does **not** define the world — it reads the kernel and solves it — so
+moving it before `route_check` does not create a second simulator. This is the
+first ordering with no circular dependency at any position, and it matches the
+authorisation boundary: kernel first, DP separately after.
+
+---
+
+## 21. A20 — admissible sets were not bounded by physical legality
+
+**Severity: medium.** Would have polluted the DP's state-action space.
+
+**Was** (`02` §2.3): $A_{z_1}(s) = A$.
+
+**Wrong because.** `11` §3 makes wall and off-grid moves illegal and resolves them
+to `WAIT`. If $A_{z_1}$ were the full action set, exact DP would treat that
+resolution rule as part of the environment and generate candidates for moves the
+agent cannot make — spurious ties and Q-entries, even where the optimal action is
+unaffected.
+
+**Now** (`02` §2.4.1):
+
+$$A_z(m, s) \subseteq A_{\text{legal}}(s),\qquad A_{z_1}(m,s) = A_{\text{legal}}(s)$$
+
+with $A_{\text{legal}}(s)$ fixed as the in-grid, non-wall moves.
+
+---
+
+## 22. A21 — retired symbols were still live, and the audit could not see them
+
+**Severity: medium.** Not cosmetic: implementers read these as the data schema.
+
+**Was.** A13 retired $C$ and A9 retired the global reference policy, but both
+survived in live prose: `06` §2 still said "the cause truth $C = (c_P,\dots)$";
+`11` §7 still wrote $\hat C^{fb}$ in three places; `11` §9 still listed $C$ among
+the excluded truth fields; `03` §1 and §4 still used $A$ for but-for relevance
+after the rename to $B$; and `11` §5.2 still defined a decision fault against
+$\pi_{\text{ref}}$, which A9 had abolished.
+
+**Wrong because — and this is the part worth recording.** `spec_audit.py` was good
+at **reference closure** (does `NN §X` resolve?) and blind to **superseded
+semantics surviving in prose**. A document set can be a perfectly closed graph and
+still tell an implementer to build the wrong thing.
+
+**Now.** The residuals are fixed, and the audit has a third check:
+
+```python
+RETIRED = ((r"\\hat C\^\{fb\}", ...), (r"predicts\s*\}?\s*C\b", ...), ...)
+```
+
+restricted to *live* lines — a line carrying a retirement marker ("retired",
+"withdrawn", "first draft", "**Was**") is a notice quoting the old form, not a
+usage, and is skipped. Without that exemption every withdrawal notice would trip
+the check and the check would be switched off, which is worse than not having it.
+
+Deliberately **not** a bare regex on `C`: that would flag `C_X`, the controller,
+which is alive and load-bearing.
+
+**The check immediately earned its place**, finding three residuals this review
+had not listed: `06` §2's live $C$, and two further uses of the retired reference
+policy.
+
+---
+
+## 23. Summary and what remains open
 
 | # | what | severity | status |
 |---|---|---|---|
@@ -532,39 +688,48 @@ Q-learning; only the evaluator is exact.
 | A14 | reward equivalence claim ignored the step cost | high | fixed |
 | A15 | $R_{\text{trajectory}}$ could never propose a process repair | medium | fixed |
 | **A16** | proposed execution order was circular; risked a second simulator | **P0 (process)** | fixed |
+| **A17** | option automata were obligation prose; $do(d_t)$ vs obligation unanswered | **P0** | fixed |
+| **A18** | the frozen tape key list did not exist (`e.g.`) | **P0** | fixed |
+| **A19** | execution order still circular — DP must precede `route_check` | **P0 (process)** | fixed |
+| A20 | admissible sets not bounded by physical legality | medium | fixed |
+| A21 | retired symbols live; audit blind to superseded semantics | medium | fixed |
 
-### The pattern across the two rounds
+### The pattern across the three rounds
 
-Round 1 produced four P0s; round 2 produced four more. They are not random. Two
-recurring shapes account for nearly all of them:
+Round 1 produced four P0s, round 2 four more, round 3 three more (A17–A19). They
+are not random. Three recurring shapes now account for nearly all of them:
 
 **A fix that connects two objects can expose a degeneracy between them.** A1
 connected $z$ to $Q_D$; only then was it visible that four identical slices
-converge to one policy (A9). A2 separated $Z$ from $B$; only then was it visible
-that $B$ needs its own identifiability audit (A11).
+converge to one policy (A9).
 
-**A property described in prose is not a property.** Three separate amendments
-(A4, A12, and the P2 reclassification) came from asserting route or reachability
-properties without enumerating. This is why the spec now says *assertion,
-discharged by enumeration* wherever a property is claimed, and why the grading
-language "available / not established" has been removed.
+**A property described in prose is not a property.** A4, A12, and now A17 — three
+separate amendments from asserting automaton, route or reachability properties
+without enumerating them. Every property in the spec is now an assertion
+discharged by enumeration.
+
+**A deferred decision is a decision.** A18 is the sharpest case: the spec declared
+a list frozen, and the list did not exist. "Declared in full before
+implementation" is not a specification; it is a note to self. Anything the kernel
+must implement is now written out, or explicitly marked as the implementer's free
+choice in `00-INDEX.md` §8.
 
 ### What is still open after this round
 
-* **P1–P4 all enumeration-pending.** None is claimed; witnesses come from
-  `route_check.py` against the kernel.
-* $B_{\min}^{\text{adaptive}}$, $\lvert\mathcal L\rvert$, $\lvert\Theta_{C_X}\rvert$
-  and $\mathcal E$ are all **uncomputed**. `03` §1.1 forbids sampling and calling
-  it exhaustive; if a factor must shrink, the spec says so.
+* **P1–P4 are all enumeration-pending.** None is claimed. They are answered by
+  `route_check.py` against the kernel, and — per the reviewer's own point — they
+  **do not block the kernel**: they are questions the enumerator answers *after*
+  the kernel exists.
+* $B_{\min}^{\text{adaptive}}$, $\lvert\mathcal L\rvert$,
+  $\lvert\Theta_{C_X}\rvert$ and $\mathcal E$ are uncomputed. `03` §1.1 forbids
+  sampling and calling it exhaustive.
 * The identifiability audit for $B$ is specified (`03` §1.3) but not yet run.
-* The option waypoint automata in `02` §2.3 are specified by obligation, not yet
-  by transition table.
 
-### The authorised next step
+### Authorised next step
 
-$$\boxed{\text{minimal SCM kernel only}}$$
+$$\boxed{\text{minimal SCM kernel only — } \texttt{src/rfl\_rebuild/env/kernel.py}}$$
 
-`src/rfl_rebuild/env/kernel.py` — state transition, semantic tape, option
-constraints, `do`-operators. No training, no RFL, no seeds, no metrics. Every
-later artifact imports it. Nothing else is authorised until Gate E and Gate L have
-been run against it.
+state transition, semantic tape (the three frozen keys), the four option
+automata, and the `do`-operators with the well-formedness rule of §2.4.7. No
+training, no RFL, no seeds, no metrics, no DP. The exact DP solver is authorised
+separately once the kernel is complete.

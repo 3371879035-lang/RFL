@@ -56,6 +56,37 @@ AMENDMENTS = tuple(f"A{i}" for i in range(1, 13))
 # still parsed, still rendered as text, and looked fine in a diff summary.
 MOJIBAKE = ("\ufffd", "鈥", "锛", "銆", "鈻", "芒€")
 
+# Expressions explicitly retired by an amendment. Closing the reference graph is
+# not enough: a superseded symbol can survive in live prose and be read as the
+# data schema by an implementer. Each entry is a literal that must not appear in
+# any document other than the amendment log, which quotes them on purpose in its
+# "Was" fields.
+#
+# Deliberately NOT a bare regex on `C`: that would flag `C_X`, the controller,
+# which is alive and load-bearing.
+RETIRED = (
+    (r"\\hat C\^\{fb\}", "feedback claim is now Z-hat (A13)"),
+    (r"predicts\s*\}?\s*C\b", "the predicted label is Z, not C (A13)"),
+    (r"distinct \$C\$", "labels are distinct Z (A13)"),
+    (r"\$C\s*=\s*\(c_P", "the fault vector is Z = (Z_P, ...) (A13)"),
+    (r"pi_\{\\text\{ref\}\}\(s\)", "the global reference policy is retired (A9)"),
+    (r"truth fields\s*\(\$C\$", "truth fields are Z, M, z, eps (A13)"),
+    (r"A_\{z_1\}\(s\)\s*=\s*A\$", "admissible sets are subsets of A_legal (A20)"),
+)
+
+# The amendment log quotes superseded text by design.
+RETIRED_EXEMPT = {"12-AMENDMENTS.md"}
+
+# A line carrying one of these is a *notice* that the form is retired, not a live
+# usage. Without this, every withdrawal notice would trip the check and the check
+# would be turned off -- which is worse than not having it.
+RETIREMENT_MARKERS = (
+    "retire", "Retire", "RETIRE",
+    "withdrawn", "Withdrawn",
+    "first draft", "earlier draft", "first version",
+    "**Was**", "Was `",
+)
+
 
 def strip_code(text: str) -> str:
     """Remove backticks so `` `03` §2 `` reads as `` 03 §2 ``."""
@@ -128,6 +159,20 @@ def audit() -> dict:
             if bad in raw:
                 mojibake.append((name, bad))
 
+    # Retired semantics surviving in live prose.
+    retired_hits: list[tuple[str, str, str]] = []
+    for name, raw in docs.items():
+        if name in RETIRED_EXEMPT:
+            continue
+        for lineno, line in enumerate(raw.splitlines(), 1):
+            if any(marker in line for marker in RETIREMENT_MARKERS):
+                continue  # a notice that quotes the retired form is not a usage
+            for pattern, why in RETIRED:
+                for m in re.finditer(pattern, line):
+                    retired_hits.append(
+                        (name, f"line {lineno}: {m.group(0)[:40]}", why)
+                    )
+
     return {
         "documents": sorted(names),
         "documents_without_numbered_sections": unnumbered,
@@ -140,6 +185,7 @@ def audit() -> dict:
         "amendments_referenced": sorted(referenced_amendments),
         "dangling_amendments": dangling_amendments,
         "mojibake": mojibake,
+        "retired_semantics": retired_hits,
     }
 
 
@@ -200,6 +246,16 @@ def main() -> int:
         print(
             "  Never round-trip these files through PowerShell "
             "Get-Content/Set-Content; use the editor tools."
+        )
+
+    if r["retired_semantics"]:
+        ok = False
+        print("\nRETIRED SEMANTICS SURVIVING IN LIVE PROSE:")
+        for name, where, why in r["retired_semantics"]:
+            print(f"  {name:<28} {where:<34} {why}")
+        print(
+            "  A closed reference graph is not enough: a superseded symbol can\n"
+            "  survive in prose and be read as the data schema by an implementer."
         )
 
     if ok:

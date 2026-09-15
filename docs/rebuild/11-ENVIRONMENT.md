@@ -230,7 +230,7 @@ read this table off and must separate the columns by query.
 
 | evaluator structural condition | fault kind | correct repair | learner-visible? |
 |---|---|---|---|
-| $a^{cmd}$ deviates from $\pi_{\text{ref}}$ | decision fault | $\Delta Q_D$ | **yes** |
+| $a^{cmd}$ deviates from $\pi_D^{*}(\cdot, z_{\text{current}})$ | decision fault | $\Delta Q_D$ | **yes** |
 | $u \neq a^{cmd}$ | internal execution fault | $\Delta C_X$ | no — needs a controller probe |
 | $u = a^{cmd}$, $a^{realized} \neq u$ | external fault | **none** | no — and this is the point |
 
@@ -272,7 +272,7 @@ generator that permits co-occurring faults.
 
 It also contradicted `02-SCM.md` §1. Causes are drawn independently and
 exogenously; a filter that then *rejects* a drawn cause on the basis of the
-outcome makes the observed $C$ an outcome-conditioned quantity, which is not the
+outcome makes the observed label an outcome-conditioned quantity, which is not the
 same distribution as the one that was generated.
 
 **So the two concepts are separated:**
@@ -343,13 +343,13 @@ See `12-AMENDMENTS.md` **A2**.
 
 At episode end the feedback channel emits a claimed cause vector
 
-$$\hat C^{fb} \in \{0,1\}^5$$
+$$\hat Z^{fb} \in \{0,1\}^5$$
 
 with error model, error rate $\eta$ frozen at $0.4$ for the primary claim:
 
-* with probability $1-\eta$: $\hat C^{fb}$ names a cause that **is** active —
+* with probability $1-\eta$: $\hat Z^{fb}$ names a cause that **is** active —
   possibly not all of them, chosen uniformly among the active set;
-* with probability $\eta$: $\hat C^{fb}$ names a cause that is **not** active,
+* with probability $\eta$: $\hat Z^{fb}$ names a cause that is **not** active,
   chosen uniformly among the inactive set.
 
 The channel therefore never emits the empty vector when a fault exists, and
@@ -384,21 +384,54 @@ So the frozen key form is
 
 $$\boxed{\omega[\text{semantic key}]},\qquad \text{key} = (\texttt{kind},\ \texttt{where},\ \texttt{which})$$
 
-with the kinds and subkeys declared in full before implementation, e.g.
+### 8.1.1 The complete key set and its value domains
 
-```
-("hazard",   t,           "occupancy")
-("plant",    t,           "deviation")
-("feedback", H,           "error_flag")
-("feedback", H,           "cause_choice")
-("inject",   "Z_D",       "time")
-("inject",   "Z_D",       "action")
-("inject",   "Z_P",       "option")
-```
+An earlier draft gave this list with `e.g.` and then declared it frozen — so the
+list did not exist, while the kernel was required to implement it. Deciding which
+keys exist and what they range over **is** defining the SCM's exogenous variables,
+not an engineering detail, so it is fixed here in full.
 
-The list is frozen; adding a kind or subkey later changes the exogenous structure
-of every existing episode and therefore voids the seeds, exactly like a code
-change.
+$$\mathcal K = \{k_1, \dots, k_n\},\qquad D(k_i) = \text{the finite value domain of } k_i$$
+
+| # | key $k$ | domain $D(k)$ | $\lvert D\rvert$ |
+|---|---|---|---|
+| 1 | `("hazard", "phase")` | $\{0,\dots,5\}$ — added to the base schedule, reduced mod the period | 6 |
+| 2 | `("feedback", "error_flag")` | $\{0,1\}$ — is this feedback wrong | 2 |
+| 3 | `("feedback", "cause_choice")` | $\{P,D,X,E,U\}$ — which cause it names | 5 |
+
+$$\lvert\mathcal T\rvert = \prod_i \lvert D(k_i)\rvert = 6 \times 2 \times 5 = 60$$
+
+$$\mathcal T \subseteq \prod_{k \in \mathcal K} D(k) \quad\text{— small enough to enumerate in full}$$
+
+**Why the tape has only three keys.** This is the point that keeps
+$\lvert\mathcal T\rvert$ finite and the gate tractable, and it is a consequence of
+`03-IDENTIFIABILITY.md` §1's latent-case definition rather than a convenience.
+Fault parameters — which faults fire, at which timestep, on which action or cell,
+with which alternative — are **coordinates of the fault mask $M$**, which is a free
+variable of $\ell$ *alongside* $\omega$. They are **not** tape keys.
+
+Had they been tape keys, every fault's activation, location and parameter would
+have been crossed into $\mathcal T$ and $\lvert\mathcal T\rvert$ would have
+exploded past any hope of exhaustive enumeration — while the same information was
+already being enumerated in $M$. The tape supplies only what is genuinely
+*ambient*: the hazard's phase, and the feedback channel's two draws.
+
+Concretely:
+
+* **no `plant` key.** The plant is the identity unless $Z_E$ fires
+  (§5.2), and $Z_E$'s timestep and deviation are $M$. There is no ambient plant
+  noise to draw.
+* **no `inject` keys.** Fault activation and parameters are $M$. Injection is
+  deterministic given $M$ and the trajectory.
+* **no $t$-indexed hazard key.** The schedule is a deterministic function of
+  $(\kappa, \texttt{phase})$ (§2), so one phase draw per episode determines
+  occupancy at every timestep.
+* **feedback is drawn once per episode**, not per timestep — it is emitted at the
+  terminal step — so `where` is the terminal step and appears once.
+
+The list is frozen. Adding a kind or subkey later changes the exogenous structure
+of every existing episode, and therefore voids the seeds, exactly like a code
+change. See `12-AMENDMENTS.md` **A18**.
 
 ### 8.2 The invariant is *same assignment*, not *same access log*
 
@@ -441,7 +474,7 @@ For `03-IDENTIFIABILITY.md`, the signature of a case under query $q$ is the hash
 $$\bigl(s_t,\ a^{cmd}_t,\ a^{realized}_t,\ r_t,\ \text{feedback}_t\bigr)_{t=0}^{T}$$
 
 — exactly the fields of `01-OBSERVATION-MODEL.md` §2.1, in order, serialised
-deterministically. Truth fields ($C$, $M$, $z$, $\epsilon_E$) are **excluded**;
+deterministically. Truth fields ($Z$, $M$, $z$, $\epsilon_E$) are **excluded**;
 including them would make the matrix trivially injective and the gate vacuous.
 
 ---

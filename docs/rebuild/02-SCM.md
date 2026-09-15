@@ -129,10 +129,119 @@ set of actions legal under the automaton's current state. Concretely:
 
 | $z$ | obligation the automaton enforces | optimal policy inside the class |
 |---|---|---|
-| $z_1$ `rush` | none — $A_{z_1}(s) = A$ for all $s$ | shortest path, 4 moves |
+| $z_1$ `rush` | none | shortest path, 4 moves |
 | $z_2$ `detour_upper` | must visit $(2,1)$ before entering $G$ | upper bypass, 6 moves |
 | $z_3$ `wait_then_cross` | must hold at $(1,2)$ until the hazard clears, then cross | 4 moves plus the wait |
 | $z_4$ `loop_lower` | must visit $(2,4)$ before entering $G$ | lower loop, 8 moves |
+
+### 2.4 The automata, as transition tables
+
+**Obligation prose is not an automaton.** `11-ENVIRONMENT.md` §4.1 already had to
+promote route properties from prose to assertions after A4 and A12; the option
+constraints are the same hazard, one level up. `src/rfl_rebuild/env/kernel.py` has
+*option constraints* among its responsibilities, so an implementer given only the
+table above would have to invent the automaton state, its initial value, when an
+obligation discharges, how $A_z$ varies with it, and whether a detour is
+recoverable. Those are design decisions that change the experiment.
+
+They are fixed here. See `12-AMENDMENTS.md` **A17**.
+
+#### 2.4.1 Common structure
+
+For each option $z$:
+
+$$M_z = \text{finite automaton state set},\qquad m_0 = 0,\qquad \delta_z(m, s, a, s') = m'$$
+
+$$A_z(m, s) \subseteq A_{\text{legal}}(s)$$
+
+$$A_{\text{legal}}(s) = \{\,a \in A : \text{the move from } s \text{ is inside the grid and not into a wall}\,\}$$
+
+$$\boxed{\text{Every admissible set is a subset of } A_{\text{legal}}(s).}$$
+
+This matters before any DP runs: the environment resolves an illegal action to
+`WAIT` and records the illegality (`11` §3). If $A_z$ were allowed to contain
+illegal actions, exact DP would treat that resolution rule as part of the
+environment and generate spurious ties and Q-entries for moves the agent cannot
+make. $z_1$ is therefore $A_{z_1}(m,s) = A_{\text{legal}}(s)$, **not** $A$.
+
+Let `enter(a, s)` denote the cell the agent would occupy. Write
+$\text{enter}(a,s) = G$ for "leads into the goal cell".
+
+#### 2.4.2 $z_1$ `rush` — no obligation
+
+$$M_{z_1} = \{0\},\qquad \delta_{z_1} \equiv 0,\qquad A_{z_1}(m,s) = A_{\text{legal}}(s)$$
+
+#### 2.4.3 $z_2$ `detour_upper` — visit $(2,1)$ before $G$
+
+$$M_{z_2} = \{0, 1\}$$
+
+| $m$ | meaning | $A_{z_2}(m,s)$ |
+|---|---|---|
+| 0 | waypoint $(2,1)$ not yet visited | $A_{\text{legal}}(s) \setminus \{a : \text{enter}(a,s) = G\}$ |
+| 1 | visited | $A_{\text{legal}}(s)$ |
+
+$$\delta_{z_2}(m, s, a, s') = \begin{cases} 1 & m = 0 \ \text{and}\ s' = (2,1)\\ m & \text{otherwise}\end{cases}$$
+
+#### 2.4.4 $z_3$ `wait_then_cross` — hold until the hazard clears
+
+Let $\text{clear}(s)$ be the observable predicate *"the hazard does not occupy
+$(2,2)$ at this timestep"* (hazard occupancy is part of $s$ and is visible).
+
+$$M_{z_3} = \{0, 1\}$$
+
+| $m$ | meaning | $A_{z_3}(m,s)$ |
+|---|---|---|
+| 0 | not yet cleared to cross | $A_{\text{legal}}(s) \setminus \{a : \text{enter}(a,s) \in \{(2,2),\, G\}\}$ |
+| 1 | cleared | $A_{\text{legal}}(s)$ |
+
+$$\delta_{z_3}(m, s, a, s') = \begin{cases} 1 & m = 0 \ \text{and}\ s = (1,2) \ \text{and}\ \text{clear}(s)\\ m & \text{otherwise}\end{cases}$$
+
+#### 2.4.5 $z_4$ `loop_lower` — visit $(2,4)$ before $G$
+
+$$M_{z_4} = \{0, 1\}$$
+
+| $m$ | meaning | $A_{z_4}(m,s)$ |
+|---|---|---|
+| 0 | waypoint $(2,4)$ not yet visited | $A_{\text{legal}}(s) \setminus \{a : \text{enter}(a,s) = G\}$ |
+| 1 | visited | $A_{\text{legal}}(s)$ |
+
+$$\delta_{z_4}(m, s, a, s') = \begin{cases} 1 & m = 0 \ \text{and}\ s' = (2,4)\\ m & \text{otherwise}\end{cases}$$
+
+#### 2.4.6 Detours are recoverable
+
+All four automata are **monotone**: $m$ never decreases, and every obligation is
+discharged by reaching a cell that remains reachable from anywhere the agent can
+wander. Nothing is irreversible except the fault itself. That is deliberate — a
+non-recoverable obligation would make a decision fault indistinguishable from a
+process fault, which is the distinction the whole design rests on.
+
+#### 2.4.7 $do(d_t)$ may **not** escape the option obligation
+
+$$\boxed{do(d_t = d') \text{ is well-formed} \iff d' \in A_{z}(m_t, s_t)}$$
+
+where $m_t$ and $s_t$ are the **factual** prefix's automaton state and environment
+state at $t$.
+
+A local decision intervention changes **one decision inside the current option**;
+it does not lift the option's constraint. The alternative — allowing
+$do(d_t = d')$ with $d' \notin A_z(m_t,s_t)$ — would let a nominal *decision*
+repair deliver a *process* repair, because escaping the obligation is precisely
+what changing $z$ does. Local and process granularity would merge again, and P3/P4
+would stop distinguishing anything.
+
+**Consequences, which are intended:**
+
+* an ill-formed $d'$ is rejected at generation and recorded in the exclusion
+  table of the identifiability artifact (`03` §4). It is not silently clamped;
+* when the option itself is wrong, **no local decision intervention can rescue
+  the episode**, because every legal local action still respects the obligation.
+  That is exactly what a process fault means, and it is what makes P4 satisfiable
+  without contrivance;
+* $do(z = z')$ remains unrestricted over $\mathcal Z$: it changes the automaton,
+  and therefore the admissible sets, and therefore the reachable behaviour.
+
+This is the frozen answer to the question the review posed. See
+`12-AMENDMENTS.md` **A17**.
 
 $Q_D(s,z,a)$ is defined **only for $a \in A_z(s)$**, and
 
@@ -157,10 +266,10 @@ process/decision overlap the whole rebuild exists to remove: an episode with a
 wrong $z$ would have its *locally correct* actions re-labelled as decision faults,
 and the two fault kinds would be entangled again. See `12-AMENDMENTS.md` **A9**.
 
-**The reference is option-conditioned**, which retires the global
-$\pi_{\text{ref}}(s) = \arg\max_a Q^{*}(s,a)$ of `11` §12.2 as a single object: it
-becomes the family $\{\pi_D^{*}(\cdot, z)\}_{z \in \mathcal Z}$, and the canonical
-conversion rule of `11` §11.2 uses the member indexed by the current $z$.
+**The reference is option-conditioned**, which retires the single global reference
+policy of `11` §12.2 as one object: it becomes the family
+$\{\pi_D^{*}(\cdot, z)\}_{z \in \mathcal Z}$, and the canonical conversion rule of
+`11` §11.2 uses the member indexed by the current $z$.
 
 ---
 
@@ -202,7 +311,7 @@ already optimal may be unrepairable.
 
 This is exactly the split the four-version chain needs:
 
-$$\text{V0.1R predicts } C \qquad\qquad \text{V0.2R predicts } R^{*}$$
+$$\text{V0.1R predicts } Z \qquad\qquad \text{V0.2R predicts } R^{*}$$
 
 and it removes a confusion that ran through the whole legacy project, where
 "attribution" was asked to be simultaneously a diagnosis and a prescription.

@@ -156,27 +156,41 @@ $$\boxed{\text{The legacy programme's real output was the specification of how t
 
 ## 7. What happens next
 
-The order below is the first in this project with no circular dependency. An
-earlier proposal — write `route_check.py` and the identifiability generator
-standalone, then let their results decide how `env/` is written — was circular and
-would have produced a second simulator (`12-AMENDMENTS.md` **A16**).
+The order below is the first in this project with no circular dependency. Two
+earlier proposals were rejected: writing `route_check.py` and the identifiability
+generator standalone, then letting their results decide how `env/` is written,
+was **circular** and risked a second simulator (`12-AMENDMENTS.md` **A16**); and
+placing the DP after `route_check` was still circular, because P2/P3/P4 depend on
+the option-conditioned $Q_D^{*}$ and `route_check` must know what the option does
+when healthy before it can ask whether a local repair rescues the episode
+(**A19**).
 
-$$\boxed{\text{minimal SCM kernel} \to \text{route\_check} \to \text{Gate E/L} \to \text{semantic suite} \to \text{reference DP} \to \text{V0.1R}}$$
+$$\boxed{\text{minimal SCM kernel} \to \text{exact reference DP} \to \text{route\_check} \to \text{Gate E/L} \to \text{semantic suite} \to \text{V0.1R}}$$
 
 1. **`src/rfl_rebuild/env/kernel.py`** — state transition, semantic tape, option
-   constraints, `do`-operators. **No training, no RFL, no seeds, no metrics.**
-   This is the single source of truth for what the world is; everything later
+   automata and constraints, `do`-operators. **No training, no RFL, no seeds, no
+   metrics.** The single source of truth for what the world is; everything later
    imports it and adds nothing of its own about the world.
-2. `scripts/route_check.py` — enumerates the full product and discharges P1–P4 as
-   assertions (`11` §4.1). Imports the kernel.
-3. **Gate E, then Gate L** (`03`) — the identifiability matrix over the full
+2. **Exact reference DP** — $Q_D^{*}(s,z,a)$ by finite-horizon backup over the
+   kernel (`11` §12.1). It *reads* the kernel and *solves* it; it defines nothing
+   about the world, so it is not a second simulator and may legally precede
+   `route_check`.
+3. `scripts/route_check.py` — enumerates the full product and discharges P1–P4 as
+   assertions (`11` §4.1). Imports the kernel and the DP.
+4. **Gate E, then Gate L** (`03`) — the identifiability matrix over the full
    feasible set, at the budget the learner actually has.
-4. Semantic suite — invariants I1–I6 and cases C0–C8 (`04`).
-5. Reference DP — $Q_D^{*}(s,z,a)$ computed exactly (`11` §12.1).
+5. Semantic suite — invariants I1–I6 and cases C0–C8 (`04`).
 6. V0.1R.
 
 No version may begin collection while a gate upstream of it is failing. Steps 1–5
 produce **no scientific result**; they exist to make step 6 interpretable.
+
+### 7.1 Authorisation boundary
+
+Only step 1 is authorised. Step 2 is authorised separately **after** the kernel is
+complete, and steps 3–5 after that. `kernel.py` is the single source of truth, so
+it is precisely the artifact that must not be written with any semantics still
+undecided.
 
 ---
 
