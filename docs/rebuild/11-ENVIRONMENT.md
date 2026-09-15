@@ -166,7 +166,7 @@ $$\boxed{|\mathcal Z| = 4,\ \text{enumerated in full}.}$$
 
 | $z$ | name | intent | the property it must witness |
 |---|---|---|---|
-| $z_1$ | `rush` | short corridor | **P1** default: succeeds under $\kappa=0$, fails under $\kappa=1$ |
+| $z_1$ | `rush` | strict static descent toward $G$ | **P1a/P1b/P1c** — see §4.2 |
 | $z_2$ | `detour_upper` | commit at $(1,2)$ to the upper bypass | **P2** locally improvable: an episode with $|R^{*}| = 1$ whose unique member is a *decision* intervention |
 | $z_3$ | `wait_then_cross` | hold at $(1,2)$ until the hazard clears | **P3** genuinely different: succeeds on a $(\kappa, \text{tape})$ where $z_1$ fails, and is unreachable from $z_1$ by any size-1 local intervention |
 | $z_4$ | `loop_lower` | commit at $(1,3)$ to the lower loop | **P4** process granularity: an episode where **no size-1 local Decision or Execution intervention** suffices, but some $do(z = z')$ does |
@@ -201,10 +201,27 @@ $$\boxed{\text{All four are enumeration-pending. None is claimed.}}$$
 
 | property | status |
 |---|---|
-| P1 | expected, on the strength of the frozen hazard phase in §2 — **to be witnessed** |
+| P1 | **restated over the full context** by A39 as P1a/P1b/P1c below — **to be witnessed** |
 | P2 | depends on the option-conditioned $Q_D^{*}$ (`02-SCM.md` §2.3), so it is a **design obligation on the option semantics**, not on the map — **to be witnessed** |
 | P3 | **withdrawn as a claim** — see below — **to be witnessed** |
 | P4 | **never claimed** — **to be witnessed**, with a defined failure mode |
+
+**P1, restated over the full context (A39).** The earlier form — *"`rush` succeeds
+under $\kappa=0$ and fails under $\kappa=1$"* — is the wrong predicate once $\phi$
+is in the state: what decides whether the short corridor is safe at $t=2$ is the
+pair $(\kappa,\phi)$, not $\kappa$ alone.
+
+$$\text{P1a}:\quad \neg\text{hazard\_at}(2,\kappa,\phi) \;\Rightarrow\; \text{4-step success}$$
+
+$$\text{P1b}:\quad \text{hazard\_at}(2,\kappa,\phi) \;\Rightarrow\; \text{collision at the contested cell on step 2}$$
+
+$$\text{P1c}:\quad \bigl|\{\,z^{*}(s_0(\kappa,\phi)) : \kappa \in \{0,1\},\ \phi \in \{0,\dots,5\}\,\}\bigr| \;\ge\; 2$$
+
+P1a and P1b verify that `rush` really is a rush. **P1c verifies that the
+context-appropriate option is not a constant**, which is what closes the A39
+degeneracy. P1c deliberately does **not** require a particular winner in the
+hazardous contexts — whether `wait_then_cross`, `detour_upper` or a tie wins is
+for the DP to report, not for the environment to arrange.
 
 An earlier draft graded these "available / available / not established". That
 grading was wrong on P3 and incoherent on P4, in two separate ways.

@@ -1,0 +1,72 @@
+{
+ "P1": {
+  "P1a": {
+   "safe_contexts": 9,
+   "failures": [],
+   "verdict": "PASS"
+  },
+  "P1b": {
+   "dangerous_contexts": 3,
+   "witness": [
+    0,
+    2
+   ],
+   "failures": [],
+   "verdict": "PASS"
+  },
+  "P1c": {
+   "distinct_options": [
+    "rush",
+    "wait_then_cross"
+   ],
+   "count": 2,
+   "by_context": {
+    "k0_p0": "rush",
+    "k0_p1": "rush",
+    "k0_p2": "wait_then_cross",
+    "k0_p3": "rush",
+    "k0_p4": "rush",
+    "k0_p5": "rush",
+    "k1_p0": "rush",
+    "k1_p1": "rush",
+    "k1_p2": "wait_then_cross",
+    "k1_p3": "rush",
+    "k1_p4": "rush",
+    "k1_p5": "wait_then_cross"
+   },
+   "verdict": "PASS"
+  }
+ },
+ "P2": {
+  "verdict": "FAIL",
+  "reason": "no episode with exactly one size-1 rescuer"
+ },
+ "P3": {
+  "verdict": "PASS",
+  "witness": {
+   "kappa": 0,
+   "phi": 2,
+   "z1_outcome": "COLLISION",
+   "z3_outcome": "SUCCESS",
+   "family_size": 4,
+   "malformed": 0,
+   "note": "no size-1 local Decision/Execution repair rescues z1"
+  }
+ },
+ "P4": {
+  "verdict": "PASS",
+  "witness": {
+   "kappa": 0,
+   "phi": 2,
+   "failing_option": "rush",
+   "outcome": "COLLISION",
+   "local_family_size": 4,
+   "malformed": 0,
+   "process_repairs": [
+    "detour_upper",
+    "wait_then_cross",
+    "loop_lower"
+   ]
+  }
+ }
+}
