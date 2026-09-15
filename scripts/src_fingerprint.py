@@ -38,7 +38,11 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-PACKAGES = ("src/rflv04", "src/rflnext")
+PACKAGES = ("src/rfl_rebuild", "src/rflv04", "src/rflnext")
+# `src/rfl_rebuild` is the rebuild namespace (`docs/rebuild/`). The two legacy
+# trees are frozen but stay in the fingerprint on purpose: their presence is what
+# keeps the `legacy-*` tags reproducible, and a stray edit to a frozen tree is
+# exactly the kind of change that must not pass silently.
 
 
 def fingerprint(root: Path) -> str:

@@ -1,3 +1,66 @@
+# RFL-Rebuild — frozen research specification
+
+本分支（`rebuild`）是**重构系列**。表格式（tabular）强化反馈学习实验系统，CPU-only，
+单进程，无神经网络，全部随机性由预采样 `NoiseTape` 固定。
+
+> ## 🚧 规范已冻结，实现尚未开始
+>
+> **本目录里没有任何结果，只有设计。** 实现顺序与门禁见
+> [`docs/rebuild/00-INDEX.md`](docs/rebuild/00-INDEX.md)。
+
+## 为什么要重构
+
+旧系列（v0.1–v0.4）完整保留在 tag 下，没有删除。它最大的实验设计错误是：
+
+$$\boxed{\text{一次实验同时混进了好几层问题}}$$
+
+归因准不准、责任单位对不对、更新位置对不对、更新目标对不对、训练够不够、策略有没有变好——
+全部压进一个 AUC。结果坏了不知道哪一层坏；结果好了也不知道该归功于哪一层。三条结论被迫
+撤回，其中一条是 headline。
+
+重构的核心是**每版只攻一箭**：
+
+$$\boxed{\text{V0.1R}:\ \text{证据} \to \text{原因推断}}$$
+$$\boxed{\text{V0.2R}:\ \text{原因真值} \to \text{credit 表示}}$$
+$$\boxed{\text{V0.3R}:\ \text{credit 真值} \to \text{repair primitive}}$$
+$$\boxed{\text{V0.4R}:\ \text{学习式 RFL} \to \text{端到端学习}}$$
+
+每一版都以上一版通过门禁为前提，且**失败只有一种解释**。
+
+## 规范入口
+
+| # | 文档 | 冻结的内容 |
+|---|---|---|
+| 00 | [`docs/rebuild/00-INDEX.md`](docs/rebuild/00-INDEX.md) | 总览、门禁链、四版链条、决策对照表 |
+| 01 | [`01-OBSERVATION-MODEL.md`](docs/rebuild/01-OBSERVATION-MODEL.md) | $a^{policy}\to a^{cmd}\to a^{realized}$；观测什么、隐藏什么 |
+| 02 | [`02-SCM.md`](docs/rebuild/02-SCM.md) | 五个潜因、$\lvert\mathcal Z\rvert=4$、干预格、只许前向生成 |
+| 03 | [`03-IDENTIFIABILITY.md`](docs/rebuild/03-IDENTIFIABILITY.md) | 可识别性矩阵、Gate E / Gate L |
+| 04 | [`04-SEMANTIC-INVARIANTS.md`](docs/rebuild/04-SEMANTIC-INVARIANTS.md) | 不变量 I1–I6、用例套件 C0–C8 |
+| 05 | [`05-STATISTICAL-PROTOCOL.md`](docs/rebuild/05-STATISTICAL-PROTOCOL.md) | 分层、block、四分类判定、$T$ 冻结、RMST |
+| 06–09 | [`06-V01R.md`](docs/rebuild/06-V01R.md) · [`07-V02R.md`](docs/rebuild/07-V02R.md) · [`08-V03R.md`](docs/rebuild/08-V03R.md) · [`09-V04R.md`](docs/rebuild/09-V04R.md) | 每版唯一主假设、arms、终点、go/no-go |
+| 10 | [`10-REPRODUCIBILITY-AND-OPS.md`](docs/rebuild/10-REPRODUCIBILITY-AND-OPS.md) | 确定性、指纹、运行时校准、产物布局 |
+
+## 四条最重要的规则
+
+$$\boxed{\text{1. 收集 seed 期间绝不改算法}}$$
+$$\boxed{\text{2. 收集后发现 bug，整套 seed 作废，从 } N=0 \text{ 重来}}$$
+$$\boxed{\text{3. contrast 的分层在收集前冻结，之后不得升级}}$$
+$$\boxed{\text{4. 先看 per-seed 分布，再看均值}}$$
+
+## 旧系列的定位
+
+旧工作以 annotated tag 保留：`legacy-v0.1` / `legacy-v0.2` / `legacy-v0.3` /
+`legacy-v0.4.1`。其中三份文档在新系列里仍然准确且必要：
+`docs/ROBUSTNESS_AUDIT.md`、`docs/REVERSAL_LEDGER.md`、
+`docs/V0_4_SEMANTIC_CORRECTIONS.md`。
+
+$$\boxed{\text{旧系列真正的产出，是"该怎么测"的规范。}}$$
+
+---
+
+<details>
+<summary>旧 v0.4 分支的 README（历史，作为探索记录保留）</summary>
+
 # RFL-CausalChase v0.4 — Credit-unit and Repair Semantics
 
 本分支是项目的**当前主线**。表格式（tabular）强化反馈学习实验系统，CPU-only，
@@ -141,3 +204,15 @@ Gamma 三者否定的是**同一个东西**——诊断式更新本身。拿一�
 记录在 [`docs/V0_4_REPRODUCIBILITY_DEFECT.md`](docs/V0_4_REPRODUCIBILITY_DEFECT.md) §8，
 留给 v0.5。最严重的一条：`scene_from_trace` 用**已实现动作**定位关键决策，导致
 `WholeProcess` 占 68.4% 很可能是重构 artifact，而非真有那么多多故障回合。
+
+---
+
+**以上为历史内容。** 这些缺陷不会在旧代码上打补丁 —— 它们已经被写进
+[`docs/rebuild/`](docs/rebuild/00-INDEX.md) 的规范里，由新系列从零实现：
+`scene_from_trace` 那类"从轨迹反推原因"的做法在新 SCM 中被结构性禁止
+（`02-SCM.md` §6，只许前向生成），`DECISION`/`EXECUTION` 共写同一张表被提升为全局
+不变量 I1（`04-SEMANTIC-INVARIANTS.md`），而那个错误的 CFRevalue 被
+`08-V03R.md` §3.2 的 `CFTarget` 取代 —— 反事实回报只能写到真正产生它的动作上。
+
+</details>
+
