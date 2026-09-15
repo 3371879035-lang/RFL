@@ -79,6 +79,13 @@ RETIRED = (
     (r"\\pi_D\^\{\*\}\(s,\s*z\)", "the reference is pi_D*(s,z,m) (A22)"),
     (r"pi_D\^\{\*\}\(\\cdot,\s*z\)", "the reference is pi_D*(.,z,m) (A22)"),
     (r"z\^\{\*\}\(\\kappa\)", "the context-appropriate option is z*(s), not z*(kappa) (A23)"),
+    # A27-A31: propagation of the control state, and of the generator change.
+    (r"Q_D\^\{\*\}\(s,\s*z,\s*a\)", "the solved table is Q_D*(s,z,m,a) (A27)"),
+    (r"A_z\(s\)", "the admissible set is A_z(m,s) (A27)"),
+    (r"z\^\{\*\}\(s\)", "the generator must not consult z* at all (A28)"),
+    (r"assign \$C\$|carry \$C\$|\$C\$\s+and\s+\$M\$", "the schema is Z, not C (A31)"),
+    (r"but-for relevance \$A\$", "but-for relevance is B (A31)"),
+    (r"tell you whether that option was the right one", "A27 reword"),
 )
 
 # The amendment log quotes superseded text by design.

@@ -171,7 +171,7 @@ $$\boxed{\text{minimal SCM kernel} \to \text{exact reference DP} \to \text{route
    automata and constraints, `do`-operators. **No training, no RFL, no seeds, no
    metrics.** The single source of truth for what the world is; everything later
    imports it and adds nothing of its own about the world.
-2. **Exact reference DP** — $Q_D^{*}(s,z,a)$ by finite-horizon backup over the
+2. **Exact reference DP** — $Q_D^{*}(s, z, m, a)$ by finite-horizon backup over the
    kernel (`11` §12.1). It *reads* the kernel and *solves* it; it defines nothing
    about the world, so it is not a second simulator and may legally precede
    `route_check`.

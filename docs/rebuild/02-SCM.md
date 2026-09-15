@@ -117,14 +117,14 @@ $$\boxed{\text{Four slices of one table, with identical action sets and identica
 Under tabular Q-learning each slice would be driven to the same fixed point, and
 $do(z = z')$ would again change the *name* of the behaviour without changing the
 behaviour — the A1 failure, one level down. Worse, `11` §12 trained $Q^{*}$ under
-$z = z^{*}(s)$ while `02` §2.1 claimed $Q^{*}$ covers all four options, so it
+$z = z^{*}$ while `02` §2.1 claimed $Q^{*}$ covers all four options, so it
 was not even specified how $z_2$ and $z_4$ acquire a policy.
 
 So an option must **constrain the policy class it governs**:
 
-$$\boxed{A_z(s) \subseteq A \quad\text{— the option-specific admissible action set}}$$
+$$\boxed{A_z(m,s) \subseteq A \quad\text{— the option-specific admissible action set}}$$
 
-An option is a **finite waypoint automaton** carrying obligations; $A_z(s)$ is the
+An option is a **finite waypoint automaton** carrying obligations; $A_z(m,s)$ is the
 set of actions legal under the automaton's current state. Concretely:
 
 | $z$ | obligation the automaton enforces | optimal policy inside the class |
@@ -471,11 +471,11 @@ repair is ill-defined and is prohibited.
 The evaluator must **never** re-derive a cause from a trace. Every episode is
 generated forward:
 
-1. assign $C$ and $M$ exogenously;
+1. assign $Z$ and $M$ exogenously;
 2. assign $z$ (or perturb it if $Z_P$ active);
 3. assign controller state and any $Z_X$ perturbation;
 4. roll out $z \to d_1..d_T \to a^{cmd} \to u \to a^{realized}$;
-5. carry $C$, $M$, $z$, and the true $a^{cmd}$ alongside the trace as **truth
+5. carry $Z$, $M$, $z$, and the true $a^{cmd}$ alongside the trace as **truth
    fields**, never as reconstructed fields.
 
 $$\boxed{\text{No cause is ever inferred from the trace, even by the evaluator.}}$$

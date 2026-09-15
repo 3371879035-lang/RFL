@@ -843,7 +843,113 @@ caught by machine rather than by a reviewer reading closely.
 
 ---
 
-## 29. Summary and what remains open
+## 30. A27 — the control state had no home in the observation model
+
+**Was.** A22 made $z,m$ learner-visible and put them in $Q_D(s,z,m,a)$, but
+`01` §2.1 still listed only `obs_t`, §2.2 listed only the hidden set, and `01`
+insisted *"every field is either observable or hidden, no third category"*. So
+$z,m$ **were** the forbidden third category. `11` §5 still wrote
+$a^{cmd} = \arg\max_a Q_D(s,z,a)$; §12.1 still wrote $Q_D^{*}(s,z,a)$ and
+$A_z(s)$; §12.2's left-hand side had $m$ while its right-hand side dropped it.
+
+**Now** (`01` §2.1.1, `11` §5/§12):
+
+$$I_t = (obs_t,\; z_t,\; m_t),\qquad Q_D(x^{D}_t, a),\qquad A_z(m_t, s_t)$$
+
+with the rule restated to cover the control state. **$z_t$ and $m_t$ enter the
+identifiability signature's usable information set** — an analysis restricted to
+`obs_t` would understate what a method may legitimately use and manufacture a
+false identifiability failure.
+
+## 31. A28 — $Z_P$ still consulted $z^{*}$, restoring the circularity
+
+**Was.** A23 removed $z^{*}$ from the generator; `11` §6 still wrote
+$z' \neq z^{*}$. Not a wording issue: an implementer following it would put a
+**DP-derived** quantity back into a **step-1** generator, restoring exactly the
+dependency A19 removed.
+
+**Now** (`11` §6.4):
+
+$$z' \sim \text{Uniform}\bigl(\mathcal Z \setminus \{z\}\bigr)$$
+
+with no reference to $z^{*}$ anywhere in the generator. Whether the substitution
+hurt is $B$, computed by intervention. $z^{*}(s)$ survives only as a derived
+reporting quantity.
+
+**And $do(z=z')$ is now frozen as an episode-start intervention** (`11` §6.5):
+it sets the option for the whole episode with $m_0(z') = 0$. The automaton state
+is **not inherited** — $M_z$ differs between options and one option's progress
+carries no meaning for another's obligations. Left unsaid, the kernel would have
+decided it.
+
+## 32. A29 — the order of events within a step was undefined
+
+**Was.** The state was Markov (A23) but the within-step order was not stated. Two
+readings were consistent with the text and differ observably: hazard-check-then-move
+versus move-then-hazard-check. They change when `rush` collides, what
+$\text{clear}(s)$ means, how $z_3$ behaves, which of P1–P4 have witnesses, and
+later the Bellman target.
+
+**Now** (`11` §1.1), frozen:
+
+$$(s_t,z,m) \to a^{cmd}_t \to u_t \to a^{realized}_t \to (x_{t+1},y_{t+1}) \to t{+}1 \to \text{hazard check} \to \text{terminal/reward} \to m_{t+1}$$
+
+with three consequences spelled out rather than left to be derived: the hazard is
+checked against the **newly occupied** cell; $\text{clear}(s)$ tests the hazard at
+the current step; and the automaton updates **last**, so an obligation discharged
+by the move just made is available to the next decision.
+
+## 33. A30 — three marginals do not determine the joint, and §7 contradicted the decoder
+
+**Was, part 1.** Only marginals were given. If `error_flag` correlated with
+$\phi$, feedback reliability would vary with the hazard schedule and the channel
+would leak information about $\phi$ beyond what `obs` carries — an undeclared
+second information path.
+
+**Now** (`11` §8.1.1):
+
+$$P(\phi, e, r) = P(\phi)P(e)P(r),\qquad P(\phi)=\tfrac16,\ P(e{=}1)=0.4,\ P(r)=\tfrac1{60}$$
+
+**Was, part 2.** §7 said the channel "never emits the empty vector when a fault
+exists", while A25's decoder correctly yields $\varnothing$ for $Z=(1,1,1,1,1)$
+with `error_flag=1` and for $Z=(0,0,0,0,0)$ with `error_flag=0`. Two rules in one
+document, contradicting each other.
+
+**Now:** §7 says the channel *aims* at non-empty but does not guarantee it, and
+defers to the decoder.
+
+## 34. A31 — $Z_U$ was a description, not a mechanism
+
+**Was.** *"a rare cell-specific trap the agent's hypothesis space has no symbol
+for"* — and nothing about what the trap does to the transition. The kernel is the
+single source of truth, so an implementer would have invented the SCM.
+
+**Now** (`11` §6.6):
+
+$$\boxed{Z_U:\ \text{entering cell } c^{*} \text{ at step } t^{*} \text{ is an immediate terminal failure}}$$
+
+with $c^{*} \notin \{\text{start}, G\}$ drawn into $M$. Terminal and immediate, so
+no later action can undo it — which is what "unmodelled" means for repair; cell-
+and-time specific, so it is not a rule the agent could learn; evaluation-only, so
+the learner must express it as $p_U > 0$ (case **C5**). $Z_U$ is the family's only
+cause whose repair truth is routinely $\varnothing$, making it a second
+"update nothing" case alongside C8.
+
+**Residual cleanup in the same pass:** `02` §6 still said *assign $C$* / *carry
+$C$*; `11` §6.3 and the frozen list still used $A$ for but-for relevance. Cleared,
+and the retired-pattern table widened again — it found **14 more hits**, which is
+the third time the widened check has found residuals a review had not listed.
+
+Also noted for the Gate generator, not blocking the kernel: `03` §4's
+$\lvert\mathcal L\rvert$ formula still does not match
+$\ell = (Z, M, \kappa, z, \theta_{C_X}, \epsilon_E, \omega)$ and its row
+description omits $M$; and `03` still says resampling is used to compute $B$,
+which contradicts but-for relevance holding $\omega$ **fixed**. Both must be fixed
+before the identifiability generator is written.
+
+---
+
+## 35. Summary and what remains open
 
 | # | what | severity | status |
 |---|---|---|---|

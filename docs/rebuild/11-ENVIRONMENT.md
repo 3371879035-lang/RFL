@@ -75,6 +75,51 @@ $$\text{hazard\_at}(t,\kappa,\phi) = \mathbf{1}\bigl[t \equiv \phi \pmod{p(\kapp
 
 ---
 
+## 1.1 The order of events within one step
+
+The state is Markov (A23), but a Markov state does not by itself say *what happens
+in what order inside a step*. Two readings are both consistent with everything
+written so far, and they differ observably:
+
+$$\text{hazard check at } t \to \text{action} \qquad\text{vs.}\qquad
+\text{action} \to s_{t+1} \to \text{hazard check at } t+1$$
+
+They change when `rush` collides, what $\text{clear}(s)$ means, how $z_3$ behaves,
+which of P1–P4 have witnesses, and — later — the Bellman target. The kernel cannot
+choose this; it is frozen as:
+
+$$\boxed{
+(s_t, z, m) \to a^{cmd}_t \to u_t \to a^{realized}_t \to (x_{t+1}, y_{t+1}) \to t{+}1 \to \text{hazard check} \to \text{terminal/reward} \to m_{t+1}
+}$$
+
+Reading it out:
+
+1. the option and automaton state select $A_z(m, s_t)$ and the policy picks
+   $a^{cmd}_t$;
+2. the controller and plant produce $u_t$ then $a^{realized}_t$ (§5);
+3. the **realized** action moves the agent;
+4. $t$ advances;
+5. **the hazard is then checked against the newly occupied cell**, not the cell
+   the agent left;
+6. terminal conditions and reward are evaluated;
+7. finally the option automaton updates on $s_{t+1}$ (§2.4).
+
+**Consequences that must be read off this order, not guessed:**
+
+* **an agent occupying the contested cell at step $t$ is caught by the hazard at
+  step $t$, evaluated after its own move into that cell.** `rush` arrives at
+  $(2,2)$ at $t=2$ and is caught there if `hazard_at$(2,\kappa,\phi)=1$`;
+* $\text{clear}(s)$ in $z_3$ (§2.4.4) tests **the hazard at the current step**, so
+  "wait until clear, then move" means the agent may enter $(2,2)$ on the following
+  step only if the hazard has left by then;
+* the automaton updates **last**, on $s_{t+1}$, so an obligation discharged by the
+  move just made is available to the next decision — which is what makes the
+  waypoint automata of §2.4 work as intended.
+
+See `12-AMENDMENTS.md` **A29**.
+
+---
+
 ## 2. Context lane
 
 Each episode carries an observable context $\kappa \in \{0,1\}$ and an observable
@@ -266,7 +311,7 @@ Each cause is assigned exogenously (`02-SCM.md` §6), never reconstructed.
 
 | cause | injection | well-formedness constraint |
 |---|---|---|
-| $Z_P$ | $z \leftarrow z' \neq z^{*}(s)$ | $z'$ must be a valid option id |
+| $Z_P$ | $z \leftarrow z'$, with $z'$ drawn **uniformly from $\mathcal Z \setminus \{z\}$** | none — see §6.4 |
 | $Z_D$ | $d_{t^{*}} \leftarrow a' \neq d_{t^{*}}$ for one $t^{*}$ | $a' \in A_z(m_{t^{*}}, s_{t^{*}}) \setminus \{\pi_D^{*}(s_{t^{*}}, z, m_{t^{*}})\}$ — **inside** the option, not adjacent to it (`02-SCM.md` §5.0.2) |
 | $Z_X$ | $C_X(s^{*}, a^{*}) \leftarrow a'$ | $a^{*}$ must be issued at $s^{*}$ on this tape |
 | $Z_E$ | activate $\epsilon_E$ at one $t$ | $t$ within horizon |
@@ -357,6 +402,67 @@ This is also the structural replacement for `scene_from_trace`: causes are never
 
 See `12-AMENDMENTS.md` **A2**.
 
+### 6.4 $Z_P$ does not consult $z^{*}$
+
+$$\boxed{Z_P:\ z \leftarrow z' \sim \text{Uniform}\bigl(\mathcal Z \setminus \{z\}\bigr)}$$
+
+**No reference to $z^{*}$ appears in the generator.** An earlier revision wrote
+$z' \neq z^{*}$, which reintroduces the circularity A19 removed: $z^{*}$ is a
+DP-derived quantity (step 2 of the execution order, `00-INDEX.md` §7), and the
+generator runs at step 1, so consulting it would make the kernel depend on a
+solver that is supposed to read the kernel.
+
+Whether the substitution *hurt* is not the generator's business. That is $B$,
+computed by intervention (§6.1), and it is what makes redundant-cause episodes
+visible rather than assumed away.
+
+$$\text{the context-appropriate option } z^{*} = \arg\max_z V_z^{*} \text{ is a \textbf{derived reporting quantity}, computed after the DP}$$
+
+It is never a generation input. See `12-AMENDMENTS.md` **A28**.
+
+### 6.5 $do(z = z')$ is an episode-start intervention
+
+$$\boxed{do(z = z') \text{ sets the option for the whole episode, with } m_0(z') = 0}$$
+
+The automaton state is **not** inherited. Carrying the old $m$ across an option
+switch would be undefined — $M_z$ differs between options, and one option's
+progress carries no meaning for another's obligations. The kernel must therefore
+reset $m$ to the initial state, and the specification must say so or the
+implementer will decide it.
+
+This also keeps the process intervention genuinely different in kind from a local
+one: $do(z=z')$ acts **at the root** and changes which automaton runs for the
+whole episode; $do(d_t=d')$ acts inside the running automaton (`02-SCM.md` §5.0).
+
+### 6.6 $Z_U$ — the unmodelled trap, operationally
+
+An earlier revision described $Z_U$ only as *"a rare cell-specific trap the
+agent's hypothesis space has no symbol for"* — a description, not a mechanism.
+The kernel is the single source of truth, so the trap's effect on the transition
+is now frozen:
+
+$$\boxed{Z_U:\ \text{entering cell } c^{*} \text{ at step } t^{*} \text{ is an immediate terminal failure}}$$
+
+with $c^{*} \in \{\text{open, non-goal cells}\}$ and $t^{*} \in \{0,\dots,H-1\}$
+drawn into $M$, and $c^{*} \notin \{\text{start}, G\}$.
+
+Three properties make this the right operationalisation:
+
+* **it is terminal and immediate**, so it cannot be repaired by a later action —
+  no local decision at $t > t^{*}$ can undo it, which is what "unmodelled" means
+  for repair purposes;
+* **it is cell-and-time specific**, so it is not a general hazard rule the agent
+  could learn; the agent has no symbol for "this cell is deadly on this step";
+* **it is evaluation-only**: nothing in `obs` marks the trap, so the learner must
+  represent "this failure is not explained by my hypothesis space" as $p_U > 0$,
+  which is exactly what case **C5** (`04-SEMANTIC-INVARIANTS.md`) tests.
+
+$Z_U$ is therefore the family's only cause whose *repair truth* is routinely
+$\varnothing$: there is nothing to change. An arm that edits anyway is measurably
+wrong, alongside the external-fault case C8.
+
+See `12-AMENDMENTS.md` **A31**.
+
 ---
 
 ## 7. Feedback channel
@@ -372,8 +478,14 @@ with error model, error rate $\eta$ frozen at $0.4$ for the primary claim:
 * with probability $\eta$: $\hat Z^{fb}$ names a cause that is **not** active,
   chosen uniformly among the inactive set.
 
-The channel therefore never emits the empty vector when a fault exists, and
-frequently names a wrong cause. This is what makes `DirectFeedback`
+The channel aims at a non-empty claim whenever a fault exists, but **does not
+guarantee one**: see §8.1.1 for the two reachable empty cases
+($Z = (1,1,1,1,1)$ with `error_flag = 1`, and $Z = (0,0,0,0,0)$ with
+`error_flag = 0`). An earlier revision said the channel "never emits the empty
+vector when a fault exists", which contradicted the frozen decoder. The decoder
+governs; the frequency of empty claims is counted and reported.
+
+The channel frequently names a wrong cause. This is what makes `DirectFeedback`
 (`06-V01R.md` §3) a genuine straw man rather than a parody.
 
 **Substitution condition.** $\text{feedback}_t$ must be replaceable by pure noise
@@ -445,6 +557,20 @@ $$i = \texttt{cause\_rank} \bmod \lvert E\rvert$$
 is **exactly uniform on any non-empty eligible set**. The five-valued key silently
 produced a *non-uniform* feedback distribution for $\lvert E\rvert \in \{2,3,4\}$ —
 which is most episodes.
+
+#### The three keys are jointly independent
+
+Three marginals do **not** determine a joint distribution, and the kernel is
+authorised to implement "the frozen measure", so the factorisation is stated:
+
+$$\boxed{P(\phi,\; e,\; r) = P(\phi)\,P(e)\,P(r)},\qquad
+P(\phi) = \tfrac{1}{6},\quad P(e{=}1) = 0.4,\quad P(r) = \tfrac{1}{60}$$
+
+Independence is not a convenience. If the feedback's error flag correlated with
+the hazard phase, feedback reliability would vary with the hazard schedule and the
+channel would leak information about $\phi$ beyond what `obs` already carries —
+an undeclared second information path, exactly what `01-OBSERVATION-MODEL.md` §2.2
+forbids. See `12-AMENDMENTS.md` **A30**.
 
 #### The decoder, frozen
 
@@ -592,7 +718,7 @@ The rules are completed here. See `12-AMENDMENTS.md` **A5**.
 
 | unit kind | converts to |
 |---|---|
-| **process** | $do(z = z')$, where $z'$ is the option the representation names; if it names none, $z' = z^{*}(s)$ |
+| **process** | $do(z = z')$, where $z'$ is the option the representation names; if it names none, $z' = z^{*}$ |
 | **decision** $(t)$ | $do(d_t = d')$, where $d'$ is the alternative named; if none, the reference action $\pi_D^{*}(s_t, z, m_t)$ |
 | **execution** $(s^{*}, a^{*})$ | $do\bigl(C_X(s^{*}, a^{*}) = a^{*}\bigr)$ — one cell (`02-SCM.md` §5.0) |
 | **action** $(t)$ | **both** of $\{do(d_t = \pi_D^{*}(s_t, z, m_t)),\ do(C_X(s_t, a^{cmd}_t) = a^{cmd}_t)\}$ |
@@ -632,7 +758,7 @@ that is the point of including it as a baseline.
 
 #### 11.2.4 Admissibility
 
-The rule is oracle-assisted — it may consult $z^{*}(s)$ and
+The rule is oracle-assisted — it may consult $z^{*}$ and
 $\pi_D^{*}$, both evaluator truth. That is admissible in V0.2R because
 V0.2R receives cause truth and is scored against repair truth (`07` §1). It is
 **not** admissible in V0.4R, where $\hat V(c)$ must be learned, and it is not used
@@ -651,11 +777,11 @@ can quietly use a different one.
 
 ### 12.1 $Q^{*}$ — computed exactly, not trained
 
-$$\boxed{Q_D^{*}(s, z, a) \text{ is obtained by exact finite-horizon dynamic programming}}$$
+$$\boxed{Q_D^{*}(s, z, m, a) \text{ is obtained by exact finite-horizon dynamic programming}}$$
 
 over the **healthy** environment — no fault injected, $C_X$ = identity, no external
 perturbation — with $z$ ranging over all four options and $a$ restricted to
-$A_z(s)$ (`02-SCM.md` §2.3).
+$A_z(m,s)$ (`02-SCM.md` §2.3).
 
 An earlier draft specified "the baseline learner trained to convergence under the
 $T$-freezing rule". That was wrong for this environment, on three counts:
@@ -684,7 +810,7 @@ $Q^{*}$ is:
 
 ### 12.2 The reference policy family
 
-$$\boxed{\pi_D^{*}(s, z, m) = \arg\max_{a \in A_z(s)} Q_D^{*}(s, z, a)}$$
+$$\boxed{\pi_D^{*}(s, z, m) = \arg\max_{a \in A_z(m,s)} Q_D^{*}(s, z, m, a)}$$
 
 option-conditioned, with ties broken by a frozen declared order. The single global
 $\pi_{\text{ref}}(s) = \arg\max_a Q^{*}(s,a)$ of the first draft is **retired** — it
@@ -719,7 +845,7 @@ with the reference artifact. It is **not** re-measured per run.
    option id and does **not** emit actions;
 6. the controller/plant split and the three-channel table (§5.2), with $u_t$
    evaluator-only;
-7. the separation of fault presence $Z$ from but-for relevance $A$ (§6.1), and the
+7. the separation of fault presence $Z$ from but-for relevance $B$ (§6.1), and the
    rule that $Z$ is never zeroed by the outcome;
 8. the feedback error model and $\eta = 0.4$;
 9. the tape's semantic-key form $(\texttt{kind}, \texttt{where}, \texttt{which})$

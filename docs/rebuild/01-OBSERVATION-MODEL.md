@@ -58,6 +58,32 @@ $$\boxed{\;obs_t \;=\; \bigl(s_t,\; a^{cmd}_t,\; a^{realized}_t,\; r_t,\; \text{
 | $\text{feedback}_t$ | yes | unreliable diagnostic feedback channel |
 | $t$ | yes | timestep |
 
+### 2.1.1 The learner's total information includes its control state
+
+`obs_t` above is what the environment *reports*. The learner additionally holds
+its own control commitments, which it must have in order to act at all:
+
+$$\boxed{I_t = \bigl(obs_t,\; z_t,\; m_t\bigr)} \quad\text{— the learner's total information set}$$
+
+$z_t$ is the option in force and $m_t$ the option automaton state
+(`02-SCM.md` §2.3.2). The learner cannot evaluate $A_z(m_t, s_t)$ or index
+$Q_D(s_t, z_t, m_t, \cdot)$ without them, so they are not optional.
+
+**They are neither observations nor hidden, and the spec previously left them in
+exactly that gap.** A22 made them visible to the policy while §2.2 below continued
+to say every field is either in `obs` or in the hidden set — so the control state
+was the "third category" this document explicitly forbids. The rule is restated
+to cover it:
+
+$$\boxed{\text{Every field is in } I \text{ (usable) or in the hidden set (§2.2). There is no third category.}}$$
+
+Practically: **$z_t$ and $m_t$ enter the identifiability signature's usable
+information set** (`03-IDENTIFIABILITY.md` §3.1). An analysis restricted to
+`obs_t` alone would understate what a method can legitimately use, and would
+manufacture an identifiability failure that is an artefact of the bookkeeping.
+
+See `12-AMENDMENTS.md` **A27**.
+
 ### 2.2 What is hidden — evaluator truth only
 
 $$Z_P,\ Z_D,\ Z_X,\ Z_E,\ Z_U,\qquad M \text{ (the fault mask)},\qquad u_t \text{ (the motor command)}$$
