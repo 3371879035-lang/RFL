@@ -1,16 +1,27 @@
-"""Gate stage 3 — query signatures and the non-adaptive search at B_CF = 4.
+"""Gate stage 3 — query signatures and the NON-ADAPTIVE search at B_CF = 4.
 
-``docs/rebuild/03-IDENTIFIABILITY.md`` §1.4, §1.6, §1.7.
+``docs/rebuild/03-IDENTIFIABILITY.md`` §1.4, §1.6, §1.7, §1.8 (A50).
 
-Contract, frozen by the review:
+This stage is the NON-ADAPTIVE FALLBACK, not the criterion. It answers one
+narrow question: is there a fixed set of at most ``B_CF`` queries that separates
+every ``Z`` in the class, all of them legal on the whole class? A miss here is
+``INCONCLUSIVE_NEEDS_ADAPTIVE``, and Stage 4 is what actually decides Gate L.
 
-1. **Unlimited-query check FIRST.** If some cross-``Z`` pair agrees on *every*
-   legal query, that is ``FAIL_UNIDENTIFIABLE_EVEN_UNBOUNDED`` -- no adaptive
-   policy could separate them either. ``INCONCLUSIVE_NEEDS_ADAPTIVE`` is reserved
-   for the case where the full family separates but no subset of size <= B_CF does.
-2. **A MALFORMED class-local query STOPS the run.** It may not become a response
-   category: the frozen invariant is that a factual class shares one legal query
-   family, so a disagreement means Stage 2 or the query reconstruction has a bug.
+Contract, as amended by A50:
+
+1. **Legality is an information-state property.** ``Q_learner(H)`` is the
+   intersection over the current hypothesis set of the queries well-formed in
+   that world, so a query that is MALFORMED on part of the class is dropped from
+   the non-adaptive pool. It is NOT a STOP, and it is NOT a response category:
+   query availability is itself partially observable, and encoding it as an
+   observation would hand the learner a function of hidden ``M`` for free.
+   That is also why ``FAIL_UNIDENTIFIABLE_EVEN_UNBOUNDED`` no longer exists --
+   "no subset of size <= B_CF separates" says nothing about adaptive depth,
+   because after a query the set ``H`` shrinks and ``Q_safe(H)`` can GROW.
+   Stage 3 therefore reports no unbounded-failure verdict at all.
+2. **A class with no query legal on the whole class** is ``ROOT_DEAD_END``: no
+   adaptive tree can even take a first step. This is a genuine structural
+   obstruction and is reported separately from the non-adaptive misses.
 3. Responses use the full counterfactual ``I_t``; ``Z``, the base option, ``M``,
    ``u_t`` and ``Outcome`` are all excluded. The fixed reference policy continues
    to act after the intervention.
@@ -46,7 +57,10 @@ from identifiability_gate import CAUSE_KEYS, KAPPAS, TAPES, canonicalise  # noqa
 B_CF = 4
 VERDICT_PASS = "PASS_NONADAPTIVE"
 VERDICT_INC = "INCONCLUSIVE_NEEDS_ADAPTIVE"
-VERDICT_FAIL = "FAIL_UNIDENTIFIABLE_EVEN_UNBOUNDED"
+# A50 retired "FAIL_UNIDENTIFIABLE_EVEN_UNBOUNDED": a non-adaptive miss at B_CF
+# bounds nothing, because Q_safe(H) grows as H shrinks. What remains genuinely
+# unbounded-looking is a class where no query is legal on the whole class.
+ROOT_DEAD_END = "ROOT_DEAD_END"
 
 
 # --------------------------------------------------------------------------- #
@@ -173,7 +187,7 @@ def main() -> int:
 
     verdicts: Counter = Counter()
     report = {"n_classes": len(classes), "details": [], "malformed_queries": 0,
-              "independent_qfamily_mismatch": 0}
+              "independent_qfamily_mismatch": 0, "root_dead_ends": 0}
 
     for idx, (sig, members) in enumerate(classes.items()):
         zs = {m.Z for m in members}
@@ -220,9 +234,15 @@ def main() -> int:
                 dropped.append(q)
 
         if not cols:
+            # A50: no query is legal on the whole class, so no non-adaptive
+            # subset exists AND no adaptive tree can take its first step. This
+            # is a structural dead end, distinct from "B_CF was too small".
+            # Counted SEPARATELY: adding it to `verdicts` would double-count
+            # these classes in `n_body` and corrupt the PASS test below.
             verdicts[VERDICT_INC] += 1
+            report["root_dead_ends"] += 1
             report["details"].append({
-                "kind": VERDICT_INC, "class_size": len(members),
+                "kind": ROOT_DEAD_END, "class_size": len(members),
                 "n_distinct_Z": len(zs), "query_candidate_size": len(qfam),
                 "n_safe_queries": 0, "n_dropped_by_legality": len(dropped),
             })

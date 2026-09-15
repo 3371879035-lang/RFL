@@ -193,7 +193,7 @@ a scientific result.
 
 ---
 
-### 1.5 Two repair-truth objects, and a sentinel — required before Gate E runs
+### 1.6 Two repair-truth objects, and a sentinel — required before Gate E runs
 
 "Sufficient" and "the learner should change this" are **different relations**, and
 conflating them makes the matrix mathematically incoherent.
@@ -223,35 +223,89 @@ Only this closes Gate E. Which of the two objects V0.2R should compare
 representations against is a further decision, but the Gate generator **must not**
 fuse them into a single $R^{*}$ before that decision is made.
 
-### 1.6 Query legality is per factual class, and MALFORMED is never an observation
+### 1.7 Query legality is per factual class, and MALFORMED is never an observation
 
-An earlier formulation built one global query matrix and let `MALFORMED` show up as
-a cell value. That is wrong on two counts, and both are fixed here.
+> **Corrected by A50.** This section previously asserted that members of a factual
+> class share one legal query family. **They do not.** Query legality depends on
+> the latent fault parameters $M$, not only on the factual observation, so two
+> cases with identical $I_t$ can admit different query families. The counterexample
+> and the full analysis are in `12-AMENDMENTS.md` **A50**; what follows is the
+> corrected rule.
 
-**(a) The legal query family depends on the factual trace.** Whether $do(d_t = d')$
-is legal depends on $A_z(m_t, s_t)$, and $(z,m,s)$ are learner-visible and evolve
-along the trajectory. Different factual traces therefore have different legal
-query families.
+**(a) The legal query family depends on the latent world, not just the trace.**
+Whether $do(d_t = d')$ is legal depends on $A_z(m_t, s_t)$ *and* on whether the
+case's own fault parameters survive the intervention. So
+
+$$\mathcal Q_{\text{legal}} \text{ depends on } (I^{factual}_t,\ M^{latent})$$
 
 **(b) A rejected query would leak information.** If "this query is illegal" were
-observable, a learner could learn something from *not* being allowed to ask — a
-channel that exists only because the analyser chose to expose it. So a `MALFORMED`
-query **does not enter $\mathcal Q(C)$ at all** and is never an observation.
+observable, a learner could learn from *not* being allowed to ask. So a MALFORMED
+query **does not enter the learner's family at all** and is never an observation.
+That much of the original section stands.
 
-The gate is therefore computed **per factual class**:
+**(c) What the learner may select is the intersection over its information set.**
 
-$$\mathcal L \;\overset{\sigma_0}{\longrightarrow}\; \text{factual equivalence classes}, \qquad \sigma_0(\ell) = I^{factual}_{0:T}$$
+$$\boxed{\mathcal Q_{\text{learner}}(H) = \bigcap_{\ell \in H} \mathcal Q_{\text{semantic}}(\ell)}$$
 
-Two latent cases with different factual signatures are already separated at
-**zero queries**. Within a class the factual $I$ is identical, so the admissible
-decision replays, controller probes and process replays are identical too. Then
+$H$ is the current information set, determined by the factual observation and the
+query-response history. An agent may not choose a query that is well formed in only
+some of the worlds it still considers possible: if the true world were one of the
+others, the only options would be to return MALFORMED (leak), refuse (leak), or let
+it execute (rewrite the SCM).
 
-$$\boxed{B_{\min}^{\text{adaptive}} = \max_{C} B_{\min}^{\text{adaptive}}(C)}$$
+**The factual partition is unchanged.** Classes are still keyed on
+$\sigma_0(\ell) = I^{factual}_{0:T}$ alone. Keying them on
+$\mathcal Q_{\text{legal}}$ would split worlds the learner **cannot tell apart
+observationally**, using a hidden-$M$-derived quantity — a new information channel
+disguised as a partition refinement (A50 rejects this explicitly).
+
+**$\mathcal Q_{\text{learner}}(H)$ grows as $H$ shrinks.** A query unsafe at the
+root may become safe after an earlier response eliminates the world that made it
+malformed. Therefore
+
+$$\boxed{\text{unsafe at the root} \;\not\Rightarrow\; \text{unsafe forever}}$$
+
+and a root-level failure to separate says nothing about adaptive depth.
+
+**The gate is therefore computed per factual class**, by
+$\mathcal L \overset{\sigma_0}{\longrightarrow}$ classes, and
+
+$$\boxed{B_{\min}^{\text{adaptive}} = \max_{C} D(C)}$$
+
+where $D(C)$ is the depth-limited adaptive value defined in §1.8. **Stage 3 is the
+non-adaptive fallback only**: it searches $S \subseteq \mathcal Q_0(C)$,
+$\lvert S\rvert \le B_{CF}$, where $\mathcal Q_0(C) = \bigcap_{\ell\in C}\mathcal Q_{\text{legal}}(\ell)$;
+a hit is a sound `PASS_NONADAPTIVE`, a miss is `INCONCLUSIVE_NEEDS_ADAPTIVE` and
+nothing more.
 
 This also handles the cost of the factual episode correctly: *seeing your own
 episode* is free and is **not** charged against $B_{CF}$.
 
-### 1.7 Counterfactual rollouts use the exact reference policy
+### 1.8 The adaptive recursion, and the only route to FAIL
+
+At a node with hypothesis set $H$:
+
+$$D(H) = \begin{cases}
+0, & \lvert\{Z(\ell) : \ell \in H\}\rvert = 1\\[2mm]
+1 + \min_{q \in \mathcal Q_{\text{learner}}(H)} \max_{o} D(H_o), & \text{otherwise}
+\end{cases}$$
+
+$$\text{where } H_o = \{\ell \in H : O(\ell, q) = o\} \text{ is the branch set}$$
+
+$$D(H) = \infty \quad\text{only when } \mathcal Q_{\text{learner}}(H) = \varnothing
+\text{ while } H \text{ still spans more than one } Z$$
+
+That is the **only** route to `FAIL_UNIDENTIFIABLE`. A class whose root has a safe
+query may still have every adaptive path end in such a dead end, so a Stage 3
+result of "no root-level dead end" is weaker than identifiability and is reported
+as `ROOT_DEAD_END = 0`, not as an unbounded pass.
+
+$$\boxed{D(C) \le B_{CF} \Rightarrow \text{PASS}},\qquad
+\boxed{D(C) > B_{CF} \Rightarrow \text{Gate L FAIL at the frozen } B_{CF}}$$
+
+Raising $B_{CF}$ on failure is a **new design amendment**, not a rerun.
+
+### 1.9 Counterfactual rollouts use the exact reference policy
 
 $O(\ell, q)$ needs one more object, and the kernel deliberately refuses to supply
 it: **after an intervention, who chooses the subsequent actions?**
@@ -329,11 +383,13 @@ Mixing it into the same table would have two bad consequences:
 2. it would silently enter $B_{CF}$, inflating the apparent budget with a query
    that cannot separate any two cases differing only in $Z$.
 
-It is therefore listed **separately**, counted against a separate budget
-$B_{\text{resample}}$, and it is **not** a member of $\mathcal Q_{\text{learner}}$.
-Its only legitimate use is as a stochastic-robustness probe — establishing whether
-a failure is stochastic or structural, which is a property of the environment and
-not of the label.
+It is therefore excluded from $\mathcal Q_{\text{learner}}$ outright. An earlier
+revision said it was "listed separately and counted against a separate budget
+$B_{\text{resample}}$", which was worse than wrong — it named a budget that no
+artifact computes and no method is charged against, so it read as a licence. There
+is **no $B_{\text{resample}}$**. The resample probe is not a query, not part of
+any budget, and not a Gate input; if a robustness probe is ever run it is reported
+as a diagnostic of the environment, with its own rollout count stated inline.
 
 **It must not participate in $B$.** But-for relevance is
 
@@ -363,11 +419,14 @@ could not be fairly compared against $R_{\text{module}}$.
 The gate's artifact is a matrix, generated exhaustively and committed to
 `experiments/<version>/identifiability.json` **before** any seed is run:
 
-* **rows** — every $\ell \in \mathcal L$, the full enumerated product of §1.2:
-  $Z$, $z$, $\theta_{C_X}$, $\epsilon_E$, $\kappa$ and the canonical tape. **Not**
-  one row per cause label. Rows the generator cannot produce (e.g. $Z_X = 1$ with
-  a perfect controller and no plant perturbation) are excluded **and listed in an
-  exclusion table with the reason**.
+* **rows** — every $\ell \in \mathcal L$, counted **by enumeration**, not from a
+  closed-form product: $\ell = (Z, M, \kappa, z, \omega)$ where $Z \in 2^5$ is the
+  cause pattern, $M = (z, \text{blocks})$ carries the base option and one
+  canonical block per active cause, $\kappa$ is the active-controller index and
+  $\omega$ the canonical tape. **Not** one row per cause label. Rows the
+  generator cannot produce (e.g. $Z_X = 1$ with a perfect controller and no
+  plant perturbation) are excluded **and listed in an exclusion table with the
+  reason**.
 * **columns** — every $q \in \mathcal Q_{\text{learner}}$, up to $B_{CF}$.
 * **cells** — a hash of $O(\ell, q)$.
 * **derived column** — $B$, computed from the row.
@@ -379,30 +438,57 @@ the gate is decided on the uncollapsed rows.
 
 ### 4.0 Size
 
-$$|\mathcal L| = |\mathcal Z_{\text{causes}}| \times 2^5 \times 4 \times |\Theta_{C_X}| \times |\mathcal E| \times |\mathcal T|$$
+There is **no product formula**, and writing one down was an error in the first
+draft. A closed form requires every factor to have a size independent of the
+others, and here it does not: the admissible block for a cause depends on
+$\kappa$, $\omega$, $z$ and on which other causes are active, so the count is the
+nested sum
+
+$$|\mathcal L_{\text{cand}}| \;=\; \sum_{\kappa}\sum_{\omega}\sum_{z}\sum_{Z\in 2^5}
+   \prod_{k \in Z}\bigl|\mathrm{dom}_k(\kappa,\omega,z,Z)\bigr|$$
+
+over the finite frozen domains, with $\mathrm{dom}_k$ **recomputed per world**
+(`gate_stage2.py`, `_domains` + `canonicalise`). The realized value is reported
+from the enumeration; the current one is $\lvert\mathcal L_{\text{cand}}\rvert =
+1{,}166{,}400$, of which $1{,}038{,}960$ are feasible and $127{,}440$ are
+excluded as malformed and tabled with their reason. That $5{,}760$ clean
+($Z \equiv 0$) worlds survive at all is itself a check: an `or [[]]` guard in the
+product once deleted exactly those $5{,}760$ rows silently (A45).
 
 Every factor is finite and frozen (`11-ENVIRONMENT.md` §8.1 makes $\mathcal T$
-finite). The realized $|\mathcal L|$ is reported. If it is large enough that
-enumeration is impractical, the correct response is to shrink a factor and say
-so — not to sample and call it exhaustive (§1.1).
+finite). If $|\mathcal L|$ is large enough to make enumeration impractical, the
+correct response is to shrink a factor and say so — not to sample and call it
+exhaustive (§1.1).
 
 The read-out required by the gate:
 
 | quantity | requirement |
 |---|---|
-| number of feasible latent cases $\lvert\mathcal L\rvert$ | reported |
+| number of candidate latent cases $\lvert\mathcal L_{\text{cand}}\rvert$ | reported |
+| feasible cases, and the malformed exclusion table | reported |
 | number of distinct signature classes | reported |
-| classes containing more than one distinct $Z$ | **must be empty** |
-| $B_{\min}^{\text{adaptive}}$ (§1.4), or the non-adaptive fallback and which was used | **must be $\le B_{CF}$** |
+| $B_{\min}^{\text{adaptive}} = \max_C D(C)$ (§1.8) | **must be $\le B_{CF}$** |
+| classes with $D(C) = 0$ (single $Z$, no query needed) | reported |
+| classes that are root dead ends ($\mathcal Q_{\text{safe}}(C) = \emptyset$) | reported |
 | the separating query set $S$ actually used | reported — which queries are actually needed |
 | queries that separate nothing | reported — candidates for removal |
 
-If any class contains two distinct cause labels, the gate **FAILS**, and the
-resolution is one of:
+Note what is **not** in that table: "no class may contain two distinct $Z$". That
+was the pre-A50 criterion and it is wrong. A class with several $Z$ is the normal
+case; a class is unidentifiable only if its adaptive depth exceeds $B_{CF}$ (or it
+is a root dead end). Reading "$|\{Z \in C\}| > 1$" as failure would fail the gate
+on $2{,}749$ of $2{,}921$ classes that are in fact decidable.
+
+If some class has $D(C) > B_{CF}$, the gate **FAILS at the frozen budget**, and
+the resolution is one of:
 
 1. **merge** the labels into one, and record the merge in the spec so that every
    downstream metric uses the merged label set; or
 2. **add a legal query** that separates them, and re-run the gate.
+
+Raising $B_{CF}$ is **not** on that list. It is a new amendment, and it must be
+argued for and frozen before the gate is re-run — not discovered as the reason
+the gate passed.
 
 There is no third option. Proceeding with a failed gate is prohibited.
 
