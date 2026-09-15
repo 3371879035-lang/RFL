@@ -1196,7 +1196,54 @@ identifiability semantics changed.
 
 ---
 
-## 39. Summary and what remains open
+## 39. A51 — Gate L fails, and the defect is in the gate's label, not the world
+
+**Found by**: running Gate L to completion under A50. Stage 3 had left 2,695
+classes ``INCONCLUSIVE_NEEDS_ADAPTIVE``, which reads like "the non-adaptive
+fallback was too weak". Stage 4 shows the adaptive machinery does not rescue
+them either.
+
+**The result.** Of $2{,}749$ multi-$Z$ classes, $54$ are decidable at $D = 1$ and
+$2{,}695$ are **provably unidentifiable at any finite depth**. Not "deeper than
+4": the bottom-up closure reaches a fixed point with the root unseparated, and
+the fixed point of a monotone predicate over a finite lattice is exactly the set
+of masks separable at some finite depth. Raising the cap from 4 to 8 recovered
+exactly zero classes.
+
+**The mechanism.** Every one of the 2,695 admits an airtight pairwise witness —
+two feasible cases with different $Z$, the same $\sigma_0$, and the same response
+to *every* legal query. Attribution of the disagreeing cause keys: `U` alone
+2,435, `X` alone 218, `X+E` 42. The trap term dominates because
+`identifiability_gate.canonicalise` takes `[domain[0], domain[-1]]` under the
+frozen order and is **deliberately outcome-blind**, while `_domains` populates
+`U` with `Trap(cell, t)` for every open cell at every step of the healthy trace.
+Most of those traps cannot fire, so the canonical first/last element is generally
+a trap with no effect on the trajectory, the feedback, or the outcome.
+
+**The error, stated plainly.** The gate demands that $Z$ — *fault presence* — be
+recoverable. A fault with no consequence is observationally identical to its
+absence, at every budget, by construction. What RFL needs identified is $B$ —
+*but-for relevance* — and $R^\ast$. A2 already separated these two; A51 is the
+same conflation reappearing one layer down, in the gate's *criterion* rather than
+in its *rows*.
+
+**Why this is not a bug to fix.** No query can expose a fault with no effect, so
+"add a legal query" is unavailable. $B_{CF}$ is irrelevant. The environment is
+not at fault: `canonicalise`'s outcome-blindness is a deliberate design property
+and must be preserved, because an outcome-conditioned domain would let the gate
+choose the worlds that make it pass.
+
+**Resolution.** `03` §4's option 1 — change the label. Either gate on $B$ (with
+$Z$ retained as the mechanism flag; $R_{\text{causal}}$ is already defined on
+$B$), or additionally restrict the canonical domains to faults the healthy trace
+can manifest, decided by trace geometry alone. The 218 `X`-only and 42 `X+E`
+witnesses show the second is not sufficient alone. Recorded in full in
+`13-GATE-L-FAILURE.md`; **frozen before any seed**, which is where the project
+still is.
+
+---
+
+## 40. Summary and what remains open
 
 | # | what | severity | status |
 |---|---|---|---|
@@ -1221,6 +1268,13 @@ identifiability semantics changed.
 | **A19** | execution order still circular — DP must precede `route_check` | **P0 (process)** | fixed |
 | A20 | admissible sets not bounded by physical legality | medium | fixed |
 | A21 | retired symbols live; audit blind to superseded semantics | medium | fixed |
+
+This table covers rounds 1–3 only. Later amendments (A22–A51) are indexed by
+section above; the most recent is:
+
+| # | what | severity | status |
+|---|---|---|---|
+| **A51** | Gate L demands $Z$ (presence) be recoverable, but effectless faults are indistinguishable from absence at any budget; 2,695/2,749 multi-$Z$ classes provably unidentifiable | **P0 (spec)** | open — resolution chosen in `13` |
 
 ### The pattern across the three rounds
 
