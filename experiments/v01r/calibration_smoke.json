@@ -1,0 +1,378 @@
+{
+ "stage": "smoke",
+ "namespace": "v01r_smoke_v1",
+ "n_scenes": 5,
+ "B_Q": 4,
+ "checks": {
+  "all_four_arms_ran_on_every_scene": true,
+  "all_outputs_finite": true,
+  "every_fired_cause_has_pos_and_neg": false,
+  "seqthenquery_used_a_query_at_least_once": true,
+  "seqthenquery_never_exceeded_B_Q": true,
+  "query_changed_inference_on_at_least_one_scene": true,
+  "predictions_not_all_identical_constant": true,
+  "world_fingerprints_unchanged": true,
+  "_applied_to_this_stage": [
+   "all_four_arms_ran_on_every_scene",
+   "all_outputs_finite",
+   "seqthenquery_never_exceeded_B_Q",
+   "world_fingerprints_unchanged"
+  ],
+  "_informational_not_gating_for_smoke": [
+   "every_fired_cause_has_pos_and_neg",
+   "predictions_not_all_identical_constant",
+   "query_changed_inference_on_at_least_one_scene",
+   "seqthenquery_used_a_query_at_least_once"
+  ]
+ },
+ "verdict": "PASS",
+ "coverage": {
+  "positives": {
+   "0": true,
+   "1": true,
+   "2": true,
+   "3": true,
+   "4": false
+  },
+  "negatives": {
+   "0": true,
+   "1": true,
+   "2": true,
+   "3": true,
+   "4": true
+  }
+ },
+ "scenes": [
+  {
+   "scene": 0,
+   "fire": [
+    0,
+    1,
+    0,
+    0,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "SequenceEvidence": [
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "QueryOnly": [
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SeqThenQuery": [
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "scene": 1,
+   "fire": [
+    0,
+    0,
+    1,
+    1,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     0.0,
+     0.0,
+     1.0,
+     1.0,
+     0.0
+    ],
+    "QueryOnly": [
+     0.0,
+     0.0,
+     1.0,
+     1.0,
+     0.0
+    ],
+    "SeqThenQuery": [
+     0.0,
+     0.0,
+     1.0,
+     1.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "scene": 2,
+   "fire": [
+    0,
+    0,
+    0,
+    1,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     0.0,
+     0.0,
+     0.6666666666666666,
+     0.3333333333333333,
+     0.0
+    ],
+    "QueryOnly": [
+     0.0,
+     0.0,
+     0.6666666666666666,
+     0.3333333333333333,
+     0.0
+    ],
+    "SeqThenQuery": [
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "scene": 3,
+   "fire": [
+    1,
+    0,
+    1,
+    1,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     1.0,
+     0.0,
+     1.0,
+     1.0,
+     0.0
+    ],
+    "QueryOnly": [
+     1.0,
+     0.0,
+     1.0,
+     1.0,
+     0.0
+    ],
+    "SeqThenQuery": [
+     1.0,
+     0.0,
+     1.0,
+     1.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "scene": 4,
+   "fire": [
+    0,
+    0,
+    1,
+    1,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "SequenceEvidence": [
+     0.0,
+     0.0,
+     1.0,
+     1.0,
+     0.0
+    ],
+    "QueryOnly": [
+     0.0,
+     0.0,
+     1.0,
+     1.0,
+     0.0
+    ],
+    "SeqThenQuery": [
+     0.0,
+     0.0,
+     1.0,
+     1.0,
+     0.0
+    ]
+   }
+  }
+ ],
+ "metrics": {
+  "DirectFeedback": {
+   "macro_auprc": NaN,
+   "macro_auroc": NaN,
+   "exact_set_accuracy": 0.0,
+   "hamming": 0.56,
+   "brier": 0.56,
+   "ece": 0.56,
+   "auprc": [
+    0.25,
+    0.25,
+    0.5333333333333333,
+    0.6791666666666667,
+    NaN
+   ],
+   "auroc": [
+    0.5,
+    0.125,
+    0.5,
+    0.5,
+    NaN
+   ],
+   "ece_per_cause": [
+    0.2,
+    0.8,
+    0.6,
+    0.8,
+    0.4
+   ],
+   "n_scenes": 5
+  },
+  "SequenceEvidence": {
+   "macro_auprc": NaN,
+   "macro_auroc": NaN,
+   "exact_set_accuracy": 0.8,
+   "hamming": 0.08,
+   "brier": 0.035555555555555556,
+   "ece": 0.053333333333333344,
+   "auprc": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    NaN
+   ],
+   "auroc": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    NaN
+   ],
+   "ece_per_cause": [
+    0.0,
+    0.0,
+    0.13333333333333333,
+    0.13333333333333336,
+    0.0
+   ],
+   "n_scenes": 5
+  },
+  "QueryOnly": {
+   "macro_auprc": NaN,
+   "macro_auroc": NaN,
+   "exact_set_accuracy": 0.8,
+   "hamming": 0.08,
+   "brier": 0.035555555555555556,
+   "ece": 0.053333333333333344,
+   "auprc": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    NaN
+   ],
+   "auroc": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    NaN
+   ],
+   "ece_per_cause": [
+    0.0,
+    0.0,
+    0.13333333333333333,
+    0.13333333333333336,
+    0.0
+   ],
+   "n_scenes": 5
+  },
+  "SeqThenQuery": {
+   "macro_auprc": NaN,
+   "macro_auroc": NaN,
+   "exact_set_accuracy": 1.0,
+   "hamming": 0.0,
+   "brier": 0.0,
+   "ece": 0.0,
+   "auprc": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    NaN
+   ],
+   "auroc": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    NaN
+   ],
+   "ece_per_cause": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "n_scenes": 5
+  }
+ },
+ "arm_runs": {
+  "DirectFeedback": 5,
+  "SequenceEvidence": 5,
+  "QueryOnly": 5,
+  "SeqThenQuery": 5
+ },
+ "failures": [],
+ "gate_semantics": "DEVELOPMENT GATE = TESTABILITY ONLY. It deliberately does not require AUPRC(SeqThenQuery) > AUPRC(DirectFeedback); that is the confirmatory question. Metrics are recorded as raw material for benchmark calibration, NOT as a result.",
+ "discipline": "If this batch exposes a design problem, method or benchmark may change, but the SAME 5 may then NOT be declared calibration-PASS: keep this artifact and re-run on a fresh batch under a new namespace."
+}

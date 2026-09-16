@@ -1,0 +1,1457 @@
+{
+ "stage": "dev",
+ "namespace": "v01r_dev_v1",
+ "n_scenes": 32,
+ "B_Q": 4,
+ "checks": {
+  "all_four_arms_ran_on_every_scene": true,
+  "all_outputs_finite": true,
+  "every_fired_cause_has_pos_and_neg": true,
+  "seqthenquery_used_a_query_at_least_once": true,
+  "seqthenquery_never_exceeded_B_Q": true,
+  "query_changed_inference_on_at_least_one_scene": true,
+  "predictions_not_all_identical_constant": true,
+  "world_fingerprints_unchanged": true,
+  "_applied_to_this_stage": [
+   "all_four_arms_ran_on_every_scene",
+   "all_outputs_finite",
+   "every_fired_cause_has_pos_and_neg",
+   "predictions_not_all_identical_constant",
+   "query_changed_inference_on_at_least_one_scene",
+   "seqthenquery_never_exceeded_B_Q",
+   "seqthenquery_used_a_query_at_least_once",
+   "world_fingerprints_unchanged"
+  ],
+  "_informational_not_gating_for_smoke": []
+ },
+ "verdict": "PASS",
+ "coverage": {
+  "positives": {
+   "0": true,
+   "1": true,
+   "2": true,
+   "3": true,
+   "4": true
+  },
+  "negatives": {
+   "0": true,
+   "1": true,
+   "2": true,
+   "3": true,
+   "4": true
+  }
+ },
+ "scenes": [
+  {
+   "scene": 0,
+   "fire": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "QueryOnly": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SeqThenQuery": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "scene": 1,
+   "fire": [
+    0,
+    0,
+    1,
+    0,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     0.0,
+     0.0,
+     0.6666666666666666,
+     0.3333333333333333,
+     0.0
+    ],
+    "QueryOnly": [
+     0.0,
+     0.0,
+     0.6666666666666666,
+     0.3333333333333333,
+     0.0
+    ],
+    "SeqThenQuery": [
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "scene": 2,
+   "fire": [
+    1,
+    1,
+    0,
+    0,
+    1
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     1.0,
+     1.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "QueryOnly": [
+     1.0,
+     1.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "SeqThenQuery": [
+     1.0,
+     1.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "scene": 3,
+   "fire": [
+    1,
+    0,
+    0,
+    1,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0
+    ],
+    "QueryOnly": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0
+    ],
+    "SeqThenQuery": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "scene": 4,
+   "fire": [
+    0,
+    1,
+    0,
+    0,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "QueryOnly": [
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SeqThenQuery": [
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "scene": 5,
+   "fire": [
+    0,
+    0,
+    0,
+    1,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     0.0,
+     0.0,
+     0.6666666666666666,
+     0.3333333333333333,
+     0.0
+    ],
+    "QueryOnly": [
+     0.0,
+     0.0,
+     0.6666666666666666,
+     0.3333333333333333,
+     0.0
+    ],
+    "SeqThenQuery": [
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "scene": 6,
+   "fire": [
+    0,
+    1,
+    0,
+    0,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "SequenceEvidence": [
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "QueryOnly": [
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SeqThenQuery": [
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "scene": 7,
+   "fire": [
+    0,
+    1,
+    0,
+    1,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "SequenceEvidence": [
+     0.0,
+     1.0,
+     0.6,
+     0.4,
+     0.0
+    ],
+    "QueryOnly": [
+     0.0,
+     1.0,
+     0.6,
+     0.4,
+     0.0
+    ],
+    "SeqThenQuery": [
+     0.0,
+     1.0,
+     0.0,
+     1.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "scene": 8,
+   "fire": [
+    1,
+    0,
+    1,
+    1,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     1.0,
+     0.0,
+     1.0,
+     1.0,
+     0.0
+    ],
+    "QueryOnly": [
+     1.0,
+     0.0,
+     1.0,
+     1.0,
+     0.0
+    ],
+    "SeqThenQuery": [
+     1.0,
+     0.0,
+     1.0,
+     1.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "scene": 9,
+   "fire": [
+    1,
+    0,
+    0,
+    0,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     0.8421052631578947,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "QueryOnly": [
+     0.8421052631578947,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SeqThenQuery": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "scene": 10,
+   "fire": [
+    1,
+    0,
+    1,
+    1,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     1.0,
+     0.0,
+     1.0,
+     1.0,
+     0.0
+    ],
+    "QueryOnly": [
+     1.0,
+     0.0,
+     1.0,
+     1.0,
+     0.0
+    ],
+    "SeqThenQuery": [
+     1.0,
+     0.0,
+     1.0,
+     1.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "scene": 11,
+   "fire": [
+    1,
+    1,
+    0,
+    0,
+    1
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     1.0,
+     1.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "QueryOnly": [
+     1.0,
+     1.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "SeqThenQuery": [
+     1.0,
+     1.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "scene": 12,
+   "fire": [
+    1,
+    1,
+    0,
+    0,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     1.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "QueryOnly": [
+     1.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SeqThenQuery": [
+     1.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "scene": 13,
+   "fire": [
+    1,
+    0,
+    0,
+    1,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "SequenceEvidence": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0
+    ],
+    "QueryOnly": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0
+    ],
+    "SeqThenQuery": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "scene": 14,
+   "fire": [
+    1,
+    0,
+    1,
+    1,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     1.0,
+     0.0,
+     1.0,
+     1.0,
+     0.0
+    ],
+    "QueryOnly": [
+     1.0,
+     0.0,
+     1.0,
+     1.0,
+     0.0
+    ],
+    "SeqThenQuery": [
+     1.0,
+     0.0,
+     1.0,
+     1.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "scene": 15,
+   "fire": [
+    0,
+    0,
+    1,
+    0,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     0.5,
+     0.0,
+     0.5,
+     0.5,
+     0.0
+    ],
+    "QueryOnly": [
+     0.5,
+     0.0,
+     0.5,
+     0.5,
+     0.0
+    ],
+    "SeqThenQuery": [
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "scene": 16,
+   "fire": [
+    1,
+    1,
+    0,
+    0,
+    1
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     1.0,
+     1.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "QueryOnly": [
+     1.0,
+     1.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "SeqThenQuery": [
+     1.0,
+     1.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "scene": 17,
+   "fire": [
+    1,
+    0,
+    0,
+    0,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     0.6666666666666666,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "QueryOnly": [
+     0.6666666666666666,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SeqThenQuery": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "scene": 18,
+   "fire": [
+    1,
+    1,
+    0,
+    1,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     1.0,
+     1.0,
+     0.6,
+     0.4,
+     0.0
+    ],
+    "QueryOnly": [
+     1.0,
+     1.0,
+     0.6,
+     0.4,
+     0.0
+    ],
+    "SeqThenQuery": [
+     1.0,
+     1.0,
+     0.0,
+     1.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "scene": 19,
+   "fire": [
+    1,
+    0,
+    1,
+    1,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     1.0,
+     0.0,
+     1.0,
+     1.0,
+     0.0
+    ],
+    "QueryOnly": [
+     1.0,
+     0.0,
+     1.0,
+     1.0,
+     0.0
+    ],
+    "SeqThenQuery": [
+     1.0,
+     0.0,
+     1.0,
+     1.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "scene": 20,
+   "fire": [
+    0,
+    1,
+    0,
+    0,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "QueryOnly": [
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SeqThenQuery": [
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "scene": 21,
+   "fire": [
+    0,
+    1,
+    0,
+    0,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "SequenceEvidence": [
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "QueryOnly": [
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SeqThenQuery": [
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "scene": 22,
+   "fire": [
+    1,
+    0,
+    0,
+    0,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     0.8571428571428571,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "QueryOnly": [
+     0.8571428571428571,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SeqThenQuery": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "scene": 23,
+   "fire": [
+    1,
+    0,
+    0,
+    1,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     0.5,
+     0.0,
+     0.5,
+     0.5,
+     0.0
+    ],
+    "QueryOnly": [
+     0.5,
+     0.0,
+     0.5,
+     0.5,
+     0.0
+    ],
+    "SeqThenQuery": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "scene": 24,
+   "fire": [
+    1,
+    1,
+    0,
+    1,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     1.0,
+     1.0,
+     0.6,
+     0.4,
+     0.0
+    ],
+    "QueryOnly": [
+     1.0,
+     1.0,
+     0.6,
+     0.4,
+     0.0
+    ],
+    "SeqThenQuery": [
+     1.0,
+     1.0,
+     0.0,
+     1.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "scene": 25,
+   "fire": [
+    0,
+    0,
+    1,
+    0,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     0.0,
+     0.0,
+     0.6666666666666666,
+     0.3333333333333333,
+     0.0
+    ],
+    "QueryOnly": [
+     0.0,
+     0.0,
+     0.6666666666666666,
+     0.3333333333333333,
+     0.0
+    ],
+    "SeqThenQuery": [
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "scene": 26,
+   "fire": [
+    0,
+    0,
+    1,
+    1,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     0.0,
+     0.0,
+     1.0,
+     1.0,
+     0.0
+    ],
+    "QueryOnly": [
+     0.0,
+     0.0,
+     1.0,
+     1.0,
+     0.0
+    ],
+    "SeqThenQuery": [
+     0.0,
+     0.0,
+     1.0,
+     1.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "scene": 27,
+   "fire": [
+    1,
+    0,
+    1,
+    1,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     1.0,
+     0.0,
+     1.0,
+     1.0,
+     0.0
+    ],
+    "QueryOnly": [
+     1.0,
+     0.0,
+     1.0,
+     1.0,
+     0.0
+    ],
+    "SeqThenQuery": [
+     1.0,
+     0.0,
+     1.0,
+     1.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "scene": 28,
+   "fire": [
+    0,
+    1,
+    0,
+    1,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "SequenceEvidence": [
+     0.0,
+     1.0,
+     0.6,
+     0.4,
+     0.0
+    ],
+    "QueryOnly": [
+     0.0,
+     1.0,
+     0.6,
+     0.4,
+     0.0
+    ],
+    "SeqThenQuery": [
+     0.0,
+     1.0,
+     0.0,
+     1.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "scene": 29,
+   "fire": [
+    1,
+    1,
+    0,
+    0,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "SequenceEvidence": [
+     0.625,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "QueryOnly": [
+     0.625,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SeqThenQuery": [
+     1.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "scene": 30,
+   "fire": [
+    1,
+    0,
+    0,
+    1,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0
+    ],
+    "QueryOnly": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0
+    ],
+    "SeqThenQuery": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "scene": 31,
+   "fire": [
+    1,
+    0,
+    0,
+    0,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     0.6666666666666666,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "QueryOnly": [
+     0.6666666666666666,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SeqThenQuery": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  }
+ ],
+ "metrics": {
+  "DirectFeedback": {
+   "macro_auprc": 0.3998724086695081,
+   "macro_auroc": 0.4819416994289233,
+   "exact_set_accuracy": 0.1875,
+   "hamming": 0.43125,
+   "brier": 0.43125,
+   "ece": 0.43125,
+   "auprc": [
+    0.6806963829075181,
+    0.3408618982601222,
+    0.40630623841518393,
+    0.44279382006101237,
+    0.12870370370370368
+   ],
+   "auroc": [
+    0.6083333333333333,
+    0.3684210526315789,
+    0.5579710144927537,
+    0.47843137254901963,
+    0.39655172413793105
+   ],
+   "ece_per_cause": [
+    0.46875000000000006,
+    0.5625,
+    0.34375,
+    0.5,
+    0.28125
+   ],
+   "n_scenes": 32
+  },
+  "SequenceEvidence": {
+   "macro_auprc": 0.9823593951437088,
+   "macro_auroc": 0.988205100880932,
+   "exact_set_accuracy": 0.78125,
+   "hamming": 0.08125,
+   "brier": 0.03825949666714562,
+   "ece": 0.038390115914786964,
+   "auprc": [
+    0.9976190476190476,
+    1.0,
+    0.9479717813051146,
+    0.9662061467943821,
+    1.0
+   ],
+   "auroc": [
+    0.9979166666666667,
+    1.0,
+    0.9685990338164251,
+    0.9745098039215686,
+    1.0
+   ],
+   "ece_per_cause": [
+    0.04195057957393483,
+    0.0,
+    0.075,
+    0.075,
+    0.0
+   ],
+   "n_scenes": 32
+  },
+  "QueryOnly": {
+   "macro_auprc": 0.9823593951437088,
+   "macro_auroc": 0.988205100880932,
+   "exact_set_accuracy": 0.78125,
+   "hamming": 0.08125,
+   "brier": 0.03825949666714562,
+   "ece": 0.038390115914786964,
+   "auprc": [
+    0.9976190476190476,
+    1.0,
+    0.9479717813051146,
+    0.9662061467943821,
+    1.0
+   ],
+   "auroc": [
+    0.9979166666666667,
+    1.0,
+    0.9685990338164251,
+    0.9745098039215686,
+    1.0
+   ],
+   "ece_per_cause": [
+    0.04195057957393483,
+    0.0,
+    0.075,
+    0.075,
+    0.0
+   ],
+   "n_scenes": 32
+  },
+  "SeqThenQuery": {
+   "macro_auprc": 1.0,
+   "macro_auroc": 1.0,
+   "exact_set_accuracy": 1.0,
+   "hamming": 0.0,
+   "brier": 0.0,
+   "ece": 0.0,
+   "auprc": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "auroc": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "ece_per_cause": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "n_scenes": 32
+  }
+ },
+ "arm_runs": {
+  "DirectFeedback": 32,
+  "SequenceEvidence": 32,
+  "QueryOnly": 32,
+  "SeqThenQuery": 32
+ },
+ "failures": [],
+ "gate_semantics": "DEVELOPMENT GATE = TESTABILITY ONLY. It deliberately does not require AUPRC(SeqThenQuery) > AUPRC(DirectFeedback); that is the confirmatory question. Metrics are recorded as raw material for benchmark calibration, NOT as a result.",
+ "discipline": "If this batch exposes a design problem, method or benchmark may change, but the SAME 32 may then NOT be declared calibration-PASS: keep this artifact and re-run on a fresh batch under a new namespace."
+}
