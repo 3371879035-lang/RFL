@@ -1,0 +1,58 @@
+{
+ "verdicts": {
+  "1_dgp_normalisation": true,
+  "2_queryonly_prior_independent": true,
+  "3_rows_only_conditioning": true,
+  "4_feedback_not_in_key": true,
+  "5_query_splits_block": true,
+  "6_a50_on_hierarchical_backend": true,
+  "7_blind_trace_alignment": true,
+  "8_hashseed_independent": true
+ },
+ "results": {
+  "1_dgp_normalisation": {
+   "sum": 0.9999999999999999,
+   "abs_err": 1.1102230246251565e-16
+  },
+  "2_queryonly_prior_independent": {
+   "fp_same": true,
+   "n_blocks": 89,
+   "truth_a": "LatentCase(case_id=0, kappa=0, phi=0, er",
+   "truth_b": "LatentCase(case_id=3, kappa=0, phi=0, er"
+  },
+  "3_rows_only_conditioning": {
+   "same_rows": true,
+   "different_feedback": true,
+   "same_belief": true
+  },
+  "4_feedback_not_in_key": {
+   "class_key_equals_rows_key": true,
+   "key_schema": "repr(tuple of (x,y,t,kappa,phi,z,m,a_cmd,a_realized,reward))",
+   "feedback_excluded": true
+  },
+  "5_query_splits_block": {
+   "cid": "((0, 2, 0, 0, 0, 0, 0, 3, 3, -0.02), (1,",
+   "q": "('proc_audit',)",
+   "before": 378,
+   "after": 18
+  },
+  "6_a50_on_hierarchical_backend": {
+   "wedge_unsafe_at_H0": true,
+   "wedge_safe_after_split": true,
+   "class_level_shortcut_would_say_safe": true,
+   "shortcut_is_wrong": true
+  },
+  "7_blind_trace_alignment": {
+   "n_asked": 3,
+   "prefix_aligned": true,
+   "policy_public_and_replayable": true
+  },
+  "8_hashseed_independent": {
+   "fingerprint_stable_under_input_reordering": true,
+   "uses_sorted_not_dict_order": true
+  }
+ },
+ "n_worlds": 6222,
+ "n_blocks": 89,
+ "note": "Test 1 runs on the support's weights; the full DGP sampler is a separate unit and is not claimed here."
+}
