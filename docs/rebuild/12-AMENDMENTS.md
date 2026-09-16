@@ -1706,7 +1706,89 @@ ceiling, then the $N_{\text{scenes}}=32$ calibration. Any failure stops the chai
 
 ---
 
-## 46. Summary and what remains open
+## 46. A58 — the semantic gate is layered, and `04` is not weakened
+
+**The scope problem.** `04-SEMANTIC-INVARIANTS.md` became unreachable, not
+because it was wrong but because it mixes two obligations of different maturity.
+`src/rfl_rebuild/` today contains only `env` and `solve`: there is **no
+responsibility / update / write-space layer**. So I1, I2, I6, C6 and the write
+halves of C0/C1/C2/C3/C5/C8 have nothing to assert against, and "implementing
+`04` fully" would mean either a fake PASS or implementing V0.2R/V0.3R early.
+
+**`04` remains the total hard gate.** What changes is that the artifact must
+distinguish three statuses and must never use `N/A`:
+
+$$ \boxed{\texttt{PASS} \;/\; \texttt{BLOCKED\_NOT\_IMPLEMENTED} \;/\; \texttt{FAIL}} $$
+
+`BLOCKED_NOT_IMPLEMENTED` is deliberately loud — `N/A` is the status that gets
+forgotten. A version gate consuming the artifact must state, per blocked item,
+whether that version depends on it. When the write layer lands, each blocked item
+becomes a real PASS/FAIL; it may not be quietly dropped.
+
+**Two layers.**
+
+* **S0 — Semantic Kernel Gate**, implementable today: I3, I4, I5 and the
+  kernel/evaluator-truth halves of C0–C5, C7, C8.
+* **S1 — Semantic Learning Gate**, implemented with the corresponding version:
+  I1, I2, I6, C6, and the `p` / responsibility-output / write-receipt / update
+  pieces of C0/C1/C2/C3/C5/C8.
+
+**Correction recorded:** the case suite is **C0–C8**, not C0–C5.
+
+**S0 result** (`scripts/semantic_gate_s0.py` → `experiments/v01r/semantic_gate.json`):
+
+| | count |
+|---|---|
+| PASS | 12 |
+| BLOCKED_NOT_IMPLEMENTED | 4 (I1, I2, I6, C6) |
+| FAIL | 0 |
+
+Every witness was **found by scanning 173,161 real feasible cases**, then checked.
+Nothing is compared against an expectation transcribed from the prose — no
+"expected value" was written down first, which is what would have made this a
+self-confirming test.
+
+What each S0 item actually asserts:
+
+* **I3** reuses Gate E's full-support result mechanically and fixes a real
+  $\#R^* > 1$ witness; it asserts that minimal cardinality and tie count are
+  separable quantities, i.e. that a first-hit search would have collapsed them.
+* **I4** runs three mis-reconstruction probes. Each takes a case whose fire
+  vector is known ($X$-only, $D$-only, $E$-fired) and asks whether a naive
+  behaviour-derived reading would attribute the fault to the *other* kind — the
+  legacy `scene_from_trace` error, which read `realized != reference` as a
+  decision fault. All three probes must come out False.
+* **I5** compares **every** `StepResult` field plus the trace-level
+  `outcome`/`control`/`base_option`/`option_in_force`, and additionally perturbs
+  the truth and requires the trace to move. Without the perturbation the
+  comparison would be vacuous — outcome equality alone passes even when the
+  replay perturbs the run, which is exactly the weakness A57's trace-level
+  invariant was introduced to remove.
+* **C3** asserts $z^{\text{proposal}} \neq z^{\text{in-force}}$, that the proposal
+  audit exposes the mismatch, and that `commit_identity()` has its own node.
+* **C4** asserts on a witness with $Z_P^{\text{fire}} = 0$ that no singleton
+  decision repair suffices while some $do(z{=}z')$ does — making explicit that
+  this is a statement about repair **granularity** and not the definition of
+  $Z_P$ (A56).
+* **C7** asserts $|R^*| = 1$ with $\#R^* \ge 2$ on a constructed failing episode
+  and **replays every tied candidate** to success.
+
+**What S0 explicitly does not claim.** V0.1R has no update path, so the write
+invariants are *vacuous* for it. That is recorded as `V0.1R_DEPENDENCY` and is
+**not** evidence that I1/I2/I6 hold. V0.1R depends only on I3/I4/I5 and the
+kernel halves, and the four blocked items stay blocked.
+
+**Build order from here**, so that "finishing `04`" cannot smuggle in V0.2R:
+
+$$\boxed{\text{S0 kernel/evaluator suite} \rightarrow \text{semantic\_gate.json harness} \rightarrow \text{V0.1R method-facing assertions}}$$
+
+S0 and the harness are done. The method-facing assertions are next, and they are
+what the Oracle ceiling and the $N_{\text{scenes}}=32$ calibration will run
+against.
+
+---
+
+## 47. Summary and what remains open
 
 | # | what | severity | status |
 |---|---|---|---|

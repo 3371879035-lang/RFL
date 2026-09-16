@@ -1,4 +1,28 @@
-# 04 — Semantic invariants and the case suite
+# 04 — Semantic invariants
+
+> **A58: this document is the total hard gate, and it is now layered for
+> execution.** The invariants and cases below mix two obligations of different
+> maturity. `src/rfl_rebuild/` contains only `env` and `solve` — there is no
+> responsibility / update / write-space layer — so I1, I2, I6, C6 and the write
+> halves of C0/C1/C2/C3/C5/C8 have nothing to assert against yet.
+>
+> The gate is therefore reported in three statuses, **never `N/A`**:
+>
+> $$\texttt{PASS} \;/\; \texttt{BLOCKED\_NOT\_IMPLEMENTED} \;/\; \texttt{FAIL}$$
+>
+> * **S0 — Semantic Kernel Gate** (implementable now): I3, I4, I5, and the
+>   kernel/evaluator-truth halves of C0–C5, C7, C8. Runner:
+>   `scripts/semantic_gate_s0.py`; artifact: `experiments/v01r/semantic_gate.json`.
+> * **S1 — Semantic Learning Gate** (with the corresponding version): I1, I2, I6,
+>   C6, and the `p` / responsibility / write-receipt / update pieces.
+>
+> `BLOCKED_NOT_IMPLEMENTED` is deliberately loud because `N/A` is the status that
+> gets forgotten. A version gate consuming the artifact must state, per blocked
+> item, whether that version depends on it — V0.1R depends on I3/I4/I5 and the
+> kernel halves only, and the blocked items are **not** thereby verified.
+>
+> The case suite is **C0–C8**.
+ and the case suite
 
 **Status:** FROZEN. Hard gate. Depends on `01`–`03`.
 
