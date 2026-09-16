@@ -358,7 +358,7 @@ Each cause is assigned exogenously (`02-SCM.md` §6), never reconstructed.
 | $Z_E$ | activate $\epsilon_E$ at one $t$ | $t$ within horizon |
 | $Z_U$ | a rare cell-specific trap the agent's hypothesis space has no symbol for | within horizon |
 
-### 6.1 Fault presence and but-for relevance are two different variables
+### 6.1 Configured, fired, and difference-making are three different variables
 
 The first draft of this document had a single $C$, filtered post hoc by
 outcome-relevance: *"a cause is recorded as active only if the injection changes
@@ -381,11 +381,41 @@ exogenously; a filter that then *rejects* a drawn cause on the basis of the
 outcome makes the observed label an outcome-conditioned quantity, which is not the
 same distribution as the one that was generated.
 
-**So the two concepts are separated:**
+**A second conflation was found later (A54), and it is just as load-bearing.**
+Separating presence from relevance was not enough, because the environment lets a
+fault be *configured* without ever being *executed*: `_domains` enumerates
+`Trap(cell, t)` for every open cell at every step of the healthy trace, so the
+canonical domain routinely contains a trap at a cell the episode never enters.
+Such a world has $Z_U = 1$ and the mechanism never runs. Asking a learner to
+recover that is asking it to infer the generator's private configuration — and,
+worse, it lets a *truthful* feedback claim refer to a fault that never happened.
 
-$$\boxed{Z = (Z_P, Z_D, Z_X, Z_E, Z_U)\quad\text{— fault presence: mechanism actually active}}$$
+**So the three concepts are separated:**
+
+$$\boxed{Z^{\text{pres}} = (Z^{\text{pres}}_P,\dots,Z^{\text{pres}}_U)\quad\text{— fault configured: injected into the latent world}}$$
+
+$$\boxed{Z^{\text{fire}} = (Z^{\text{fire}}_P,\dots,Z^{\text{fire}}_U)\quad\text{— fault fired: the mechanism executed on the factual trajectory}}$$
 
 $$\boxed{B = (B_P, B_D, B_X, B_E, B_U)\quad\text{— but-for relevance: a difference-maker on this tape}}$$
+
+with $Z^{\text{pres}}_i \ge Z^{\text{fire}}_i$ always, and
+
+| $Z^{\text{pres}}$ | $Z^{\text{fire}}$ | $B$ | meaning |
+|---|---|---|---|
+| 1 | 0 | 0 | **dormant** — configured, never executed, no consequence |
+| 1 | 1 | 0 | **fired but redundant** — it happened, but removing it changes nothing (overdetermination) |
+| 1 | 1 | 1 | **fired and difference-making** |
+
+The middle row is exactly the case the old single-$Z$ account destroyed: it is
+the overdetermination this section was written to protect. The first row is the
+case the old account *invented*: a fault event that never occurred.
+
+`kernel.fired_mechanisms` computes $Z^{\text{fire}}$ from one factual rollout,
+with no counterfactual: $Z^{\text{fire}}_P$ iff the option in force differs from
+`base_option`; $Z^{\text{fire}}_D$ iff the episode was still alive at the
+override's timestep; $Z^{\text{fire}}_X$ iff some step has $u_t \neq a^{cmd}_t$;
+$Z^{\text{fire}}_E$ iff some step has $a^{realized}_t \neq u_t$; $Z^{\text{fire}}_U$
+iff the episode terminated in the trap.
 
 > **Naming.** $B$ is called **but-for relevance**, not "but-for relevance", and not
 > $A$. Two reasons, both load-bearing. $A$ is the action set (§3), so reusing it
@@ -415,33 +445,42 @@ evaluator truth.
 
 | version | target | rationale |
 |---|---|---|
-| **V0.1R** | **$Z$** — primary | the question is *what happened*, a diagnosis. Predicting $B$ would smuggle in causal responsibility and re-entangle diagnosis with prescription, which is the error the four-version split exists to undo |
-| V0.1R | $B$ — **secondary endpoint** | reported, because a method that gets $Z$ right and $B$ wrong is informative — it means the method detects faults but cannot rank their contribution. **Requires its own identifiability audit** (`03-IDENTIFIABILITY.md` §1.3); if $B$ is not identifiable within $B_{CF}$ it is reported as **not evaluable**, not as a negative result |
+| **V0.1R** | **$Z^{\text{fire}}$** — primary | the question is *what happened*, a diagnosis. A configured fault that never executed did not happen, so $Z^{\text{pres}}$ would ask the learner to recover the generator's private configuration; and predicting $B$ would smuggle in causal responsibility and re-entangle diagnosis with prescription, which is the error the four-version split exists to undo. $Z^{\text{pres}} \to Z^{\text{fire}}$ is a **scientific-question revision** (A54), not a gate fix: it stays a diagnosis question, only corrected from *what was secretly configured* to *what actually executed* |
+| V0.1R | $B$ — **secondary counterfactual endpoint** | reported, because a method that gets $Z^{\text{fire}}$ right and $B$ wrong is informative — it means the method detects faults but cannot rank their contribution. It is **not a blocking gate**. $B$ is unidentifiable under the current query interface, proved at any budget (`13-GATE-L-FAILURE.md` §10): identifying $B$ requires *applying* the repair, and $do(Z_i{=}\text{off})$ is the but-for test itself. So when it is not identifiable it is reported as **not evaluable**, and that is a statement about the interface, never an algorithm negative result |
+| V0.1R | $Z^{\text{pres}}$ — **diagnostic only** | the old target, kept and reported because it measures how much of the failure was dormant faults. It is **not** what V0.1R predicts |
 | V0.2R | $R^{*}$ | still a third object, unchanged |
 
 $B$ is computed for every episode regardless, and is what makes the redundant-cause
 episodes visible in the results rather than silently mislabelled.
 
+**The feedback channel follows the target.** `SemanticTape.decode_feedback` is
+driven by $Z^{\text{fire}}$, so its eligible set is $\{i : Z^{\text{fire}}_i = 1\}$
+and not $\{i : Z^{\text{pres}}_i = 1\}$. Otherwise a *truthful* feedback claim
+could point at a dormant fault that never executed on the trajectory, which is a
+report about the generator's configuration masquerading as a report about the
+episode.
+
 ### 6.3 What survives of the old filter
 
 The *motivation* was sound: an injection that changes nothing produces an episode
 whose "fault" is inert, and labelling those as faults inflates every cause. That
-concern is real and is still handled — but by **recording $A$ separately**, not by
-erasing $Z$.
+concern is real and is still handled — but by **recording the three variables
+separately**, not by erasing anything.
 
-* inert-but-present faults remain in the data with $Z_i = 1, A_i = 0$;
-* metrics that want fault *detection* use $Z$;
-* metrics that want causal *ranking* use $A$;
-* an injection whose $Z_i = 1, A_i = 0$ **and** which cannot be made relevant by
-  any tape is excluded at generation time and listed in the exclusion table of
-  the identifiability artifact (`03-IDENTIFIABILITY.md` §4) — that is a
-  well-formedness constraint on the generator, not a post-hoc filter on labels.
+* dormant faults remain in the data with $Z^{\text{pres}}_i = 1$, $Z^{\text{fire}}_i = 0$, $B_i = 0$;
+* metrics that want fault *detection* use $Z^{\text{fire}}$;
+* metrics that want causal *ranking* use $B$;
+* an injection whose $Z^{\text{pres}}_i = 1$, $Z^{\text{fire}}_i = 0$ **and** which
+  cannot be made to fire by any tape is excluded at generation time and listed in
+  the exclusion table of the identifiability artifact (`03-IDENTIFIABILITY.md`
+  §4) — that is a well-formedness constraint on the generator, not a post-hoc
+  filter on labels.
 
 This is also the structural replacement for `scene_from_trace`: causes are never
 **added** by reconstruction (the legacy bug), and they are now no longer
 **removed** by outcome either.
 
-See `12-AMENDMENTS.md` **A2**.
+See `12-AMENDMENTS.md` **A2** and **A54**.
 
 ### 6.4 $Z_P$ does not consult $z^{*}$
 

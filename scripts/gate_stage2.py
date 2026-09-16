@@ -118,6 +118,32 @@ def replay(sol, case: LatentCase):
 # sigma_0 and Q(C)
 # --------------------------------------------------------------------------- #
 
+_FIRE_KEYS = ("Z_P", "Z_D", "Z_X", "Z_E", "Z_U")
+_fire_cache: dict = {}
+
+
+def fire_of(sol, case: LatentCase) -> tuple[int, ...]:
+    """``Z^fire`` (A54): which configured mechanisms actually executed.
+
+    Same key order as ``case.Z``, so ``Z^pres[i] >= Z^fire[i]`` always holds and
+    the two vectors are directly comparable. Memoised on the full world because
+    ``sigma_0`` and every query response need it, and it costs a rollout.
+    """
+    key = (case.kappa, case.phi, case.error_flag, case.cause_rank,
+           case.base_option, case.Z, case.option_fault, case.decision,
+           case.controller, case.plant, case.trap)
+    hit = _fire_cache.get(key)
+    if hit is None:
+        d = K.fired_mechanisms(
+            kappa=case.kappa, tape=case.tape(),
+            command_provider=reference_provider(sol),
+            base_option=case.base_option, mask=case.mask(),
+            option_fault=case.option_fault)
+        hit = tuple(d[k] for k in _FIRE_KEYS)
+        _fire_cache[key] = hit
+    return hit
+
+
 def sigma0(sol, case: LatentCase):
     """``(I_t)_{t}`` with the full ``s_t``, plus the terminal feedback claim."""
     try:
@@ -133,7 +159,10 @@ def sigma0(sol, case: LatentCase):
         for (s, z, m, a_cmd, a_realized, r)
         in walk_transition(tr, case.kappa, case.phi, z_in_force)
     )
-    feedback = tuple(case.tape().decode_feedback(list(case.Z)))
+    # A54: the feedback channel reports what HAPPENED, so it is driven by the
+    # fire vector. Driving it by presence let a truthful claim point at a
+    # dormant fault that never executed.
+    feedback = tuple(case.tape().decode_feedback(list(fire_of(sol, case))))
     return (rows, feedback), None
 
 

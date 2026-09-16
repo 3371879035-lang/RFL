@@ -269,21 +269,62 @@ chain (t,a_cmd,u,a_realized), identical in both:
    (5,3,3,3), (6,0,0,0), (7,0,0,0), (8,3,3,3)]
 ```
 
-$$\boxed{B \text{ is counterfactual; no factual telemetry, however rich, can identify it}}$$
+$$\boxed{\text{the current factual execution interface} + \text{plant telemetry cannot identify these } B_E}$$
 
-$q^{plant}_t$ reads the factual trajectory; $B_E$ asks what would have happened
-had the plant fault been removed. The gap is between factual and counterfactual,
-not between visible and hidden, so **escalating the audit is futile in
-principle** — which is why it was not escalated.
+**Narrower than first written, on purpose.** "No factual telemetry, however rich,
+can identify $B$" is too strong. The two witness worlds differ in `base_option`
+and in the trap configuration, and those are *factual* latent variables: a system
+with legitimate provenance/configuration telemetry could separate the worlds
+without ever calling $do(Z_E{=}\text{off})$. What the witnesses prove is the box,
+not an impossibility over all factual information. The gap is specific to
+telemetry on the *action path*, and this is exactly the distinction A54 turns on.
 
-This closes the last non-circular route. The only remaining way to identify $B$
-is to *apply* the repair, and $do(Z_i{=}\text{off})$ is rejected (A51) because it
-is the but-for test itself.
+**V0.1R stays paused at the time of A53**, because V0.1R's primary target was
+then $Z^{\text{pres}}$ and Gate_Z is dominated by dormant $U$ faults — faults
+with no behavioural consequence whose *presence* is nonetheless demanded. Section
+11 resolves that; A53 does not.
 
-**V0.1R stays paused.** Even had Gate_B passed, V0.1R's primary target is $Z$,
-and Gate_Z remains dominated by dormant $U$ faults — faults with no behavioural
-consequence whose *presence* is nonetheless demanded. No diagnostic on the action
-path addresses that; it is a separate problem.
+## 11. A54 — the split, and Gate_fire
+
+`Z` was carrying three objects at once. Split into $Z^{\text{pres}}$ (configured),
+$Z^{\text{fire}}$ (the mechanism actually executed) and $B$ (but-for), with
+$Z^{\text{pres}} \ge Z^{\text{fire}}$. **V0.1R's primary target is now
+$Z^{\text{fire}}$** — a scientific-question revision, not a gate fix, because it
+stays a diagnosis question and only corrects *what was secretly configured* to
+*what actually executed* (`12-AMENDMENTS.md` **A54**). The feedback channel is
+driven by $Z^{\text{fire}}$ too, so a truthful claim can no longer point at a
+dormant fault.
+
+Re-running with the fire target (partition is now 2,783 classes, because the
+feedback semantics changed):
+
+| gate | target | verdict |
+|---|---|---|
+| **Gate_fire** | $Z^{\text{fire}}$ | **FAIL** — 600 classes provably unidentifiable at any depth |
+| Gate_Z | $Z^{\text{pres}}$, diagnostic only | FAIL — 2,713 |
+| Gate_B | $B$, secondary and **non-blocking** | FAIL — 245, attribution `E` 95 / `P` 120 |
+
+$$\boxed{\text{Gate\_fire residual} = 100\%\ P}$$
+
+$E$, $X$, $D$ and $U$ are **fully resolved**. The plant audit plus the ontology
+split close everything except process observability, and again $\max_C D(C) = 1$
+against $B_Q = 4$, so the budget is not the constraint.
+
+Gate_B is **not** a blocker. `11` §6.2 already required that a non-identifiable
+$B$ be reported **not evaluable** rather than treated as an algorithm negative
+result, and A53 proved it is not identifiable here. Chasing it green would be
+fitting the task to the gate.
+
+**Next step, and it is a decision rather than a patch.** The residual is
+exclusively $P$, which is exactly the branch that makes a process provenance layer
+worth building. But it cannot be instrumented until $Z_P$'s **denotation** is
+settled — planner chose a bad strategy? correct proposal swapped in a commit
+layer? strategy program unsuited to context? — because those are three different
+mechanisms. A non-cheating process audit needs the SCM to carry
+
+$$z^{proposal} \rightarrow \text{process/commit layer} \rightarrow z^{\text{in force}}$$
+
+first. No query is added here.
 
 ## 8. What is not happening
 

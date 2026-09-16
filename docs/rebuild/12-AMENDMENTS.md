@@ -1337,17 +1337,22 @@ parameters (`base_option`, `trap`) that have **no factual effect at all**, yet
 change the outcome of the *fault-removed* rollout — and $B_E$ is exactly whether
 that rollout's outcome changes.
 
-$$\boxed{B \text{ is a counterfactual quantity; no factual telemetry, however rich, can identify it}}$$
+$$\boxed{\text{the current factual execution interface} + \text{plant telemetry cannot identify these } B_E}$$
 
-So escalating the audit is not merely discouraged, it is **futile in principle**:
-$q^{plant}_t$ reads the factual trajectory, while $B_E$ asks what would have
-happened in a world where the plant fault was removed. No amount of observability
-crosses that gap, because the gap is between factual and counterfactual, not
-between visible and hidden.
+**Deliberately narrower than it was first written.** An earlier wording claimed
+"no factual telemetry, however rich, can identify $B$", and that is too strong.
+The witness worlds differ in `base_option` and in the trap configuration — those
+are *factual* latent variables. A real system with legitimate
+provenance/configuration telemetry could distinguish the two worlds without ever
+calling $do(Z_E{=}\text{off})$. So what the witnesses prove is the weaker and
+still-strong claim in the box, not an impossibility over all possible factual
+information. The impossibility is specific to telemetry on the *action path*.
 
-This closes the last non-circular route. Identifying $B$ requires *applying* the
-repair, and $do(Z_i{=}\text{off})$ is rejected (A51) precisely because it is the
-but-for test itself. Gate_B's failure is load-bearing.
+Escalating the plant audit is therefore still not the answer — it reads the same
+action path — but the honest reason is that it does not touch the differing
+variables, not that no diagnostic could ever help. This distinction is what A54
+turns on: `base_option` and `trap` are configuration, and configuration is a
+*factual* thing a provenance channel may legitimately report.
 
 **Consequences.** Gate_Z and Gate_B are both **FAILED**. Merge is still
 unavailable — $\widetilde{\mathcal B}$ still discards exactly $(P, E)$ (A52), and
@@ -1360,7 +1365,110 @@ and is not addressed by any diagnostic on the action path.
 
 ---
 
-## 42. Summary and what remains open
+## 42. A54 — configured, fired, difference-making: three objects, not one
+
+**Found by**: A53's residual, and by the absurdity it exposed. `11` §6.1 defined
+$Z$ as *fault presence: mechanism actually active*, yet the same environment
+enumerates `Trap(cell, t)` for every open cell at every step of the healthy
+trace. A trap at a cell the episode never enters is therefore $Z_U = 1$ while the
+mechanism never runs. Those dormant traps were the dominant Gate_Z failure mode.
+Worse, driving the feedback channel by presence meant a *truthful* feedback claim
+could point at a fault that never happened.
+
+Three distinct objects were being carried by one symbol:
+
+$$\boxed{\text{fault configured} \neq \text{fault fired} \neq \text{fault but-for relevant}}$$
+
+**The split.** $Z^{\text{pres}}$ (injected into the latent world) was already
+there; $B$ (A2) was already there; the missing middle is
+
+$$\boxed{Z^{\text{fire}}_i = 1 \iff \text{the mechanism actually executed on the factual trajectory}}$$
+
+with $Z^{\text{pres}}_i \ge Z^{\text{fire}}_i$ always. `kernel.fired_mechanisms`
+computes it from a single factual rollout with no counterfactual: $Z^{\text{fire}}_P$
+iff the option in force differs from `base_option`; $Z^{\text{fire}}_D$ iff the
+episode was still alive at the override's timestep; $Z^{\text{fire}}_X$ iff some
+step has $u_t \neq a^{cmd}_t$; $Z^{\text{fire}}_E$ iff some step has
+$a^{realized}_t \neq u_t$; $Z^{\text{fire}}_U$ iff the episode terminated in the
+trap. This is the middle row of a three-row table that a single $Z$ could not
+express:
+
+| $Z^{\text{pres}}$ | $Z^{\text{fire}}$ | $B$ | meaning |
+|---|---|---|---|
+| 1 | 0 | 0 | **dormant** — configured, never executed |
+| 1 | 1 | 0 | **fired but redundant** — it happened, removing it changes nothing |
+| 1 | 1 | 1 | **fired and difference-making** |
+
+The middle row is the overdetermination A2 existed to protect. The top row is a
+fault event that never occurred, which the single-$Z$ account invented.
+
+**V0.1R's primary target becomes $Z^{\text{fire}}$.** Stated plainly as a
+**scientific-question revision**, because that is what it is:
+
+* $Z^{\text{pres}} \to B$ (the withdrawn A51 proposal) *swaps* diagnosis for
+  causal contribution — a different question;
+* $Z^{\text{pres}} \to Z^{\text{fire}}$ **stays a diagnosis question**. It only
+  corrects *what was secretly configured* to *what actually executed*. V0.1R's
+  title is "can the system work out **what happened**?", and a trap placed where
+  the episode never went did not happen.
+
+It is not a gate fix, and it is not a relaxation: $Z^{\text{fire}}$ is still a
+five-bit diagnosis target, and the learner must still recover it from evidence.
+
+**Feedback channel synced.** `SemanticTape.decode_feedback` is now driven by
+$Z^{\text{fire}}$, so the truthful eligible set is $\{i : Z^{\text{fire}}_i = 1\}$
+and not $\{i : Z^{\text{pres}}_i = 1\}$. Reporting on a cause that never executed
+would be a claim about the generator's private configuration masquerading as a
+report about the episode.
+
+**Gate_B demoted to a non-blocking secondary endpoint**, which `11` §6.2 already
+required: if $B$ is not identifiable it is reported **not evaluable**, never as an
+algorithm negative result. A53 proved it is not identifiable under the current
+interface, so it is exactly that case. Chasing Gate_B to green would be fitting
+the task to the gate.
+
+**Result — the new gate, and it is the one that matters:**
+
+| gate | target | verdict |
+|---|---|---|
+| **Gate_fire** | $Z^{\text{fire}}$ | **FAIL** — 600 of 2,783 classes provably unidentifiable at any depth |
+| Gate_Z | $Z^{\text{pres}}$ — diagnostic | FAIL — 2,713 |
+| Gate_B | $B$ — secondary, non-blocking | FAIL — 245, attribution `E` 95 / `P` 120 |
+
+Gate_fire's depth histogram: $D = 0$ 1,553, $D = 1$ 630, unbounded 600.
+
+$$\boxed{\text{Gate\_fire residual} = 100\%\ P}$$
+
+$E$, $X$, $D$ and $U$ are **fully resolved** by the $Z^{\text{fire}}$ target: the
+plant audit and the ontology split together close everything except process
+observability. $\max_C D(C) = 1$ and $B_Q = 4$, so — for the third time and
+independently — the budget is not the binding constraint.
+
+Census over every feasible case (cause-world pairs, $1{,}541{,}400$ of which have
+$Z^{\text{pres}} \neq Z^{\text{fire}}$): $U$ is dormant in $658{,}320$ pairs and
+fired in $34{,}320$, and **whenever $U$ fires it is difference-making**; $D$
+dormant $141{,}120$, $X$ dormant $377{,}280$, $E$ dormant $364{,}680$; $P$ has
+**no dormant cases at all**, because `_domains` draws `option_fault` from
+$\mathcal Z \setminus \{\text{base\_option}\}$ so the substitution always takes
+effect.
+
+**What follows.** The Gate_fire residual is a *process-observability* problem and
+nothing else, which is precisely the branch that makes a process provenance layer
+worth building. But building it requires first settling what $Z_P$ **denotes** —
+whether the planner chose a bad strategy, or a correct proposal was swapped in a
+process/commit layer, or the strategy program was unsuited to the context. Those
+are three different mechanisms, and the current SCM does not yet carry enough
+structure to instrument one of them without quietly rewriting the ontology.
+So the process audit is **not** taken here; it is the next decision, and it needs
+the explicit SCM form
+
+$$z^{proposal} \rightarrow \text{process/commit layer} \rightarrow z^{\text{in force}}$$
+
+before anything is instrumented. No new query is added in A54.
+
+---
+
+## 43. Summary and what remains open
 
 | # | what | severity | status |
 |---|---|---|---|
@@ -1391,7 +1499,8 @@ section above; the most recent is:
 
 | # | what | severity | status |
 |---|---|---|---|
-| **A51** | Gate L splits into Gate_Z and Gate_B, and **both** fail; replacing $Z$ by $B$ is a change of V0.1R's scientific question, not a bug fix | **P0 (spec)** | frozen — V0.1R seed collection paused |
+| **A51** | Gate L splits into Gate_Z and Gate_B, and **both** fail; replacing $Z$ by $B$ is a change of V0.1R's scientific question, not a bug fix | **P0 (spec)** | frozen — superseded by A54 for the target, retained for the split |
+| **A54** | configured / fired / difference-making were one symbol; V0.1R's target becomes $Z^{\text{fire}}$; Gate_fire FAILs on 600 classes, residual **100% $P$** | **P0 (spec)** | frozen — next step is the $Z_P$ denotation decision |
 
 ---
 

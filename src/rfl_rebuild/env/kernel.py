@@ -335,6 +335,12 @@ class SemanticTape:
     def decode_feedback(self, fault_presence: Sequence[int]) -> tuple[int, ...]:
         """The frozen decoder of 11 §8.1.1, returning ``Z-hat^fb in {0,1}^5``.
 
+        **The argument is ``Z^fire``, not ``Z^pres`` (A54).** The channel reports
+        what *happened*, so its eligible set is ``{i : Z_i^fire = 1}``. Passing
+        presence would let a truthful feedback claim refer to a dormant fault
+        that never executed on the trajectory — a claim about the generator's
+        private configuration dressed up as a report about the episode.
+
         **One-hot vector, not a sparse index set.** The spec freezes the type as
         a five-vector; an earlier revision returned ``(idx,)``, and a schema
         mismatch between the spec and the code is exactly what bites at Gate
@@ -785,6 +791,67 @@ class RolloutTrace:
 # --------------------------------------------------------------------------- #
 # But-for relevance — 11 §6.1
 # --------------------------------------------------------------------------- #
+
+def fired_mechanisms(
+    *,
+    kappa: int,
+    tape: SemanticTape,
+    command_provider: CommandProvider,
+    base_option: int,
+    mask: FaultMask,
+    option_fault: int | None = None,
+    controller: Mapping[ControllerSite, Action] | None = None,
+) -> dict[str, int]:
+    """``Z^fire``: which configured mechanisms actually EXECUTED on this rollout.
+
+    A54. Three different objects were previously conflated under ``Z``:
+
+        fault configured/present  !=  fault actually fired
+                                  !=  fault was but-for relevant
+
+    ``Z^pres`` is what the generator injected into the latent world; ``B``
+    (:func:`but_for_relevance`) is whether removing it changes the outcome; this
+    function is the middle one, and it is the one V0.1R asks about, because a
+    trap placed at a cell the episode never enters did not *happen*.
+
+    Each mechanism is read off the factual rollout, with no counterfactual:
+
+    ``Z_P``  the option in force differs from ``base_option`` -- the process
+             substitution actually took effect;
+    ``Z_D``  the episode was still alive at the override's timestep, so the
+             override was reached and applied;
+    ``Z_X``  some step has ``u != a_cmd``   -- the controller emitted something
+             other than the command it was given;
+    ``Z_E``  some step has ``a_realized != u`` -- the plant did not carry out
+             what it received;
+    ``Z_U``  the episode terminated in the trap.
+
+    All five are observable facts about one execution, so unlike ``B`` they are
+    not counterfactual and no repair primitive is needed to define them.
+    """
+    keys = ("Z_P", "Z_D", "Z_X", "Z_E", "Z_U")
+    try:
+        tr = rollout(
+            kappa=kappa, tape=tape, command_provider=command_provider,
+            base_option=base_option, mask=mask, option_fault=option_fault,
+            controller=controller,
+        )
+    except (MalformedIntervention, OptionViolation):
+        return {k: 0 for k in keys}
+
+    out = {k: 0 for k in keys}
+    if option_fault is not None and tr.option_in_force != base_option:
+        out["Z_P"] = 1
+    if mask.decision is not None and len(tr.steps) > mask.decision.t:
+        out["Z_D"] = 1
+    if any(s.u != s.a_cmd for s in tr.steps):
+        out["Z_X"] = 1
+    if any(s.a_realized != s.u for s in tr.steps):
+        out["Z_E"] = 1
+    if tr.outcome == Outcome.TRAP:
+        out["Z_U"] = 1
+    return out
+
 
 def but_for_relevance(
     *,

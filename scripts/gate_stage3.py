@@ -50,7 +50,8 @@ from rfl_rebuild.env.kernel import (  # noqa: E402
 )
 from rfl_rebuild.solve.dp import solve_reference  # noqa: E402
 from gate_stage2 import (  # noqa: E402
-    LatentCase, _domains, class_local_queries, reference_provider, sigma0,
+    LatentCase, _domains, class_local_queries, fire_of, reference_provider,
+    sigma0,
 )
 from identifiability_gate import CAUSE_KEYS, KAPPAS, TAPES, canonicalise  # noqa: E402
 
@@ -163,7 +164,8 @@ def response(sol, case: LatentCase, q):
                      ctrl.z, ctrl.m, res.a_cmd, res.a_realized,
                      round(res.reward, 6)))
         state, ctrl = res.state, res.control
-    return (tuple(rows), tuple(case.tape().decode_feedback(list(case.Z))))
+    return (tuple(rows), tuple(case.tape().decode_feedback(
+        list(fire_of(sol, case)))))   # A54: fire, not presence
 
 
 def dynamical_key(case: LatentCase):
