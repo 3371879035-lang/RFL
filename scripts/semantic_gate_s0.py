@@ -428,7 +428,7 @@ def main() -> int:
 
     outdir = ROOT / "experiments" / "v01r"
     outdir.mkdir(parents=True, exist_ok=True)
-    out = outdir / "semantic_gate.json"
+    out = outdir / "semantic_gate_s0.json"
     out.write_text(json.dumps(report, indent=1, default=str), encoding="utf-8")
 
     print(f"scanned {n_scan:,} feasible cases to find witnesses")

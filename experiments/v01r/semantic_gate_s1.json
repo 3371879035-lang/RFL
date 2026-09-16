@@ -1,0 +1,166 @@
+{
+ "gate": "S1 \u2014 V0.1R method-facing semantic gate (A59)",
+ "source_fingerprint": "7d4fb74cdb43594e",
+ "status_counts": {
+  "PASS": 9
+ },
+ "overall": "PASS",
+ "items": {
+  "S1_ISOLATION": {
+   "status": "PASS",
+   "title": "forbidden fields structurally unreachable, not merely unread",
+   "observed": {
+    "DirectFeedback_has_state": false,
+    "DirectFeedback_has_a_cmd": false,
+    "DirectFeedback_has_z_in_force": false,
+    "DirectFeedback_has_query": false,
+    "DirectFeedback_has_session": false,
+    "SequenceEvidence_has_query_session": false,
+    "MethodRunResult_has_update_target": false,
+    "QueryReceipt_has_Z_fire": false,
+    "QueryReceipt_has_outcome_tag": false
+   },
+   "note": "This is the core of A59: the negative construction tests matter more than any number of positive ones."
+  },
+  "S1_C0": {
+   "status": "PASS",
+   "title": "zero mutation, no write/update output, p schema valid",
+   "observed": {
+    "arms_run": [
+     "DirectFeedback",
+     "SequenceEvidence",
+     "QueryOnly",
+     "SeqThenQuery"
+    ],
+    "schema_ok": true,
+    "n_receipts": {
+     "DirectFeedback": 0,
+     "SequenceEvidence": 0,
+     "QueryOnly": 4,
+     "SeqThenQuery": 1
+    }
+   },
+   "note": "No write layer exists, so 'no update output' is structural: MethodRunResult has no such field."
+  },
+  "S1_C1_C2": {
+   "status": "PASS",
+   "title": "input views carry no evaluator truth; p_X and p_D are separate coordinates",
+   "observed": {
+    "evidence_fields": [
+     "kappa",
+     "phi",
+     "steps",
+     "z_in_force"
+    ],
+    "feedback_fields": [
+     "claim"
+    ],
+    "prediction_is_5_vector": true
+   },
+   "note": "Separability asserted, accuracy explicitly NOT asserted."
+  },
+  "S1_C3": {
+   "status": "PASS",
+   "title": "process audit returns z^proposal; z^in-force arrives via the learner's own control state; no Z_P verdict is ever returned",
+   "observed": {
+    "proc_audit_offered": true,
+    "response_is_proposal": true,
+    "response_has_no_verdict": true,
+    "z_in_force_via_learner_state": true,
+    "m_t_is_explicit": true
+   },
+   "note": ""
+  },
+  "S1_C5": {
+   "status": "PASS",
+   "title": "p_E and p_U are independent coordinates, so external/unknown is expressible",
+   "observed": {
+    "indices": {
+     "P": 0,
+     "D": 1,
+     "X": 2,
+     "E": 3,
+     "U": 4
+    },
+    "vector_length": 5
+   },
+   "note": "Expressibility only. Any p_E > 0 requirement would be a hypothesis test."
+  },
+  "S1_C8": {
+   "status": "PASS",
+   "title": "a V0.1R call is side-effect free",
+   "observed": {
+    "fingerprint_stable": true
+   },
+   "note": ""
+  },
+  "S1_ORACLE": {
+   "status": "PASS",
+   "title": "p^Oracle == Z^fire exactly",
+   "observed": {
+    "p": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "fire": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "note": "Exact by contract: the ceiling is label plumbing, not a method."
+  },
+  "S1_A50": {
+   "status": "PASS",
+   "title": "Q_safe(H) != Q_semantic(ell_true), and H shrinking GROWS the menu \u2014 proved on a stipulated H, with the truth-menu mutation killed",
+   "observed": {
+    "q_wedge_legal_on_La": true,
+    "q_wedge_illegal_on_Lb": true,
+    "q_wedge_absent_from_menu_H0": true,
+    "menu_H0_is_split_only": true,
+    "menu_independent_of_which_is_true": true,
+    "mutation_exposes_q_wedge": true,
+    "unsafe_submit_raised": true,
+    "H1_size": 1,
+    "q_wedge_enters_menu_after_split": true
+   },
+   "note": ""
+  },
+  "A50_ENVIRONMENT_POWER": {
+   "status": "DIAGNOSTIC_NON_BLOCKING",
+   "title": "whether A50 is load-bearing on the real benchmark",
+   "observed": {
+    "classes_scanned": 401,
+    "truncated": true,
+    "classes_with_mixed_legality": 0,
+    "load_bearing": false,
+    "structural_note": "Each query kind's legality is a function of the factual signature: proc_audit is always legal; audit(t) depends on the trajectory length; decision(t,a) and execution(site) depend on (z,m,s); process(z') depends on (z',kappa,phi). All of those are sigma_0 columns. So legality being class-constant is EXPECTED, not accidental -- but this scan is bounded and therefore does not PROVE the universal claim."
+   },
+   "note": "Metadata only. It does NOT participate in S1 overall: the implementation-level A50 invariant is asserted above and has power regardless of whether this benchmark exercises it.",
+   "witness": null
+  },
+  "S1_NEGATIVE": {
+   "status": "PASS",
+   "title": "the nine required negative cases all fail loudly",
+   "observed": {
+    "p_length_4": "raised (correct)",
+    "p_above_one": "raised (correct)",
+    "p_nan": "raised (correct)",
+    "p_inf": "raised (correct)",
+    "fifth_query_budget": "raised (correct)",
+    "query_outside_registry": "raised (correct)",
+    "oracle_used_as_method": "raised (correct)",
+    "query1_did_not_change_query2_base_world": "raised (correct)",
+    "update_target_absent": "absent (correct)",
+    "query_receipt_has_no_Z_fire": "absent (correct)"
+   },
+   "note": "These are worth more than dozens of positive assertions."
+  }
+ },
+ "acceptance_bar": "a constant p=(0.5,)*5 method passes; any failure of that dummy is a regression"
+}

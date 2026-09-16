@@ -253,18 +253,92 @@ def main() -> int:
         "Exact by contract: the ceiling is label plumbing, not a method.")
 
     # ------------------------------------------------------------------ #
-    # A50: wedge search + MUTATION NEGATIVE CONTROL
+    # S1_A50 — SYNTHETIC, mutation-powered semantic test
     # ------------------------------------------------------------------ #
-    # The mutation control is the decisive part. A correct implementation
-    # passing proves nothing on its own -- we must show the test KILLS the
-    # specific bug it exists for: menu := Q_semantic(ell_true) instead of the
-    # intersection over H.
+    # The question "does the real benchmark contain a mixed-legality wedge" is a
+    # DIFFERENT question from "does QuerySession implement A50". QuerySession
+    # works through an injected probe, so the implementation can be tested
+    # directly on a stipulated H, which is sharper than hoping the environment
+    # happens to supply a witness. The mutation control is what gives the test
+    # power: we must show it KILLS `Q_wrong = Q_semantic(ell_true)`.
+    class StipulatedProbe:
+        """Legality and responses are stipulated, not environmental."""
+
+        def __init__(self, legal_map, resp_map):
+            self._legal = legal_map
+            self._resp = resp_map
+
+        def legal(self, case, q):
+            return q in self._legal[case]
+
+        def execute(self, case, q):
+            return self._resp[(case, q)]
+
+        def fingerprint(self, case):
+            return case
+
+    La, Lb = "ell_a", "ell_b"
+    q_split = ("proc_audit", "split")
+    q_wedge = ("proc_audit", "wedge")
+    syn_reg = tuple(type("R", (), {"spec": s, "kind": "proc_audit"})()
+                    for s in (q_split, q_wedge))
+    syn_probe = StipulatedProbe(
+        legal_map={La: {q_split, q_wedge}, Lb: {q_split}},
+        resp_map={(La, q_split): ("proc_audit", 0),
+                  (Lb, q_split): ("proc_audit", 1),   # differs -> shrinks H
+                  (La, q_wedge): ("proc_audit", 7)},
+    )
+    H0 = (La, Lb)
     a50 = {}
-    wedge = None
-    scanned = 0
+    s0_ = QuerySession(probe=syn_probe, true_case=La, members=H0,
+                       registry=syn_reg, budget=4)
+    s0b = QuerySession(probe=syn_probe, true_case=Lb, members=H0,
+                       registry=syn_reg, budget=4)
+
+    a50["q_wedge_legal_on_La"] = syn_probe.legal(La, q_wedge)
+    a50["q_wedge_illegal_on_Lb"] = not syn_probe.legal(Lb, q_wedge)
+    a50["q_wedge_absent_from_menu_H0"] = q_wedge not in s0_.menu()
+    a50["menu_H0_is_split_only"] = tuple(s0_.menu()) == (q_split,)
+    a50["menu_independent_of_which_is_true"] = s0_.menu() == s0b.menu()
+
+    # MUTATION: Q_wrong = Q_semantic(ell_true) would expose q_wedge on La
+    wrong_menu = tuple(q for q in (q_split, q_wedge) if syn_probe.legal(La, q))
+    a50["mutation_exposes_q_wedge"] = q_wedge in wrong_menu
+
+    # unsafe at H0 must raise, never answer
+    try:
+        QuerySession(probe=syn_probe, true_case=La, members=H0,
+                     registry=syn_reg, budget=4).submit(q_wedge)
+        a50["unsafe_submit_raised"] = False
+    except ProtocolError:
+        a50["unsafe_submit_raised"] = True
+
+    # H shrinks -> Q_safe(H) GROWS: the load-bearing direction of A50
+    s1_ = QuerySession(probe=syn_probe, true_case=La, members=H0,
+                       registry=syn_reg, budget=4)
+    s1_.submit(q_split)
+    a50["H1_size"] = s1_.hypothesis_size
+    a50["q_wedge_enters_menu_after_split"] = q_wedge in s1_.menu()
+
+    ok = all(a50[k] for k in (
+        "q_wedge_legal_on_La", "q_wedge_illegal_on_Lb",
+        "q_wedge_absent_from_menu_H0", "menu_H0_is_split_only",
+        "menu_independent_of_which_is_true", "mutation_exposes_q_wedge",
+        "unsafe_submit_raised", "q_wedge_enters_menu_after_split"))
+    rec("S1_A50", PASS if ok else FAIL,
+        "Q_safe(H) != Q_semantic(ell_true), and H shrinking GROWS the menu — "
+        "proved on a stipulated H, with the truth-menu mutation killed", a50)
+
+    # ------------------------------------------------------------------ #
+    # DIAGNOSTIC (non-blocking): is A50 load-bearing on THIS benchmark?
+    # ------------------------------------------------------------------ #
+    # Bounded scan, and reported as bounded. It supports "no mixed-legality
+    # wedge was found in the classes scanned", NOT the universal claim.
+    scanned_cls = 0
+    mixed = 0
     for sig2, members2 in classes.items():
-        scanned += 1
-        if scanned > 200 or wedge is not None:
+        scanned_cls += 1
+        if scanned_cls > 400:
             break
         by_key = {}
         for m in members2:
@@ -273,69 +347,31 @@ def main() -> int:
         if len(r2) < 2:
             continue
         la = r2[0]
-        fam = class_local_queries(sol, la.kappa, la.phi, sig2[0])
-        for lb in r2[1:]:
-            for q in fam:
-                if probe.legal(la, q) and not probe.legal(lb, q):
-                    wedge = (sig2, members2, la, lb, q)
-                    break
-            if wedge:
-                break
-
-    if wedge:
-        sig2, members2, la, lb, q = wedge
-        Hm = tuple(members2)
-        s_a = QuerySession(probe=probe, true_case=la, members=Hm,
-                           registry=registry, budget=4)
-        s_b = QuerySession(probe=probe, true_case=lb, members=Hm,
-                           registry=registry, budget=4)
-        a50["wedge_found"] = repr(q)
-        a50["q_legal_on_la"] = probe.legal(la, q)
-        a50["q_illegal_on_lb"] = not probe.legal(lb, q)
-        a50["q_absent_from_menu"] = q not in s_a.menu()
-        a50["menus_identical"] = s_a.menu() == s_b.menu()
-        a50["mutation_exposes_q"] = q in (
-            [x for x in registry_specs if probe.legal(la, x)])
-        ok = (a50["q_absent_from_menu"] and a50["menus_identical"]
-              and a50["mutation_exposes_q"])
-        rec("S1_A50", PASS if ok else FAIL,
-            "Q_safe(H) = intersection over H, with the truth-menu mutation KILLED",
-            a50)
-    else:
-        # No wedge: measure whether the bug is even DETECTABLE, by mutation.
-        diff = 0
-        checked = 0
-        for sig3, members3 in classes.items():
-            checked += 1
-            if checked > 400:
-                break
-            by_key = {}
-            for m in members3:
-                by_key.setdefault(dynamical_key(m), m)
-            r3 = list(by_key.values())
-            if len(r3) < 2:
-                continue
-            Hm = tuple(members3)
-            t3 = r3[0]
-            correct = QuerySession(probe=probe, true_case=t3, members=Hm,
-                                   registry=registry, budget=4).menu()
-            wrong = tuple(x for x in registry_specs if probe.legal(t3, x))
-            if set(correct) != set(wrong):
-                diff += 1
-        a50 = {"wedge_found": None, "classes_scanned": checked,
-               "classes_where_correct_menu_differs_from_truth_menu": diff,
-               "why": ("z_in_force and m_t are already part of sigma_0 (they are "
-                       "columns of the factual rows), and decision/execution "
-                       "legality depends only on (z, m, s). So legality is "
-                       "CONSTANT within a factual class under the current kernel, "
-                       "and Q_safe(H) == Q_semantic(ell_true) for every "
-                       "constructible H. The mutation is not merely hard to find, "
-                       "it is observationally identical -- so this test has NO "
-                       "power and may not be reported as PASS.")}
-        status = "NOT_TESTABLE_WITH_CURRENT_WITNESSES"
-        rec("S1_A50", status,
-            "Q_safe(H) = intersection over H — mutation is undetectable here",
-            a50, a50["why"])
+        cols = {}
+        for q in class_local_queries(sol, la.kappa, la.phi, sig2[0]):
+            cols[q] = tuple(probe.legal(c, q) for c in r2)
+        if any(len(set(v)) > 1 for v in cols.values()):
+            mixed += 1
+    items["A50_ENVIRONMENT_POWER"] = {
+        "status": "DIAGNOSTIC_NON_BLOCKING",
+        "title": "whether A50 is load-bearing on the real benchmark",
+        "observed": {"classes_scanned": scanned_cls, "truncated": scanned_cls > 400,
+                     "classes_with_mixed_legality": mixed,
+                     "load_bearing": mixed > 0,
+                     "structural_note":
+                         "Each query kind's legality is a function of the factual "
+                         "signature: proc_audit is always legal; audit(t) depends on "
+                         "the trajectory length; decision(t,a) and execution(site) "
+                         "depend on (z,m,s); process(z') depends on (z',kappa,phi). "
+                         "All of those are sigma_0 columns. So legality being "
+                         "class-constant is EXPECTED, not accidental -- but this "
+                         "scan is bounded and therefore does not PROVE the "
+                         "universal claim."},
+        "note": "Metadata only. It does NOT participate in S1 overall: the "
+                "implementation-level A50 invariant is asserted above and has "
+                "power regardless of whether this benchmark exercises it.",
+        "witness": None,
+    }
 
     # ------------------------------------------------------------------ #
     # negative cases — each must FAIL loudly
@@ -402,41 +438,39 @@ def main() -> int:
         "These are worth more than dozens of positive assertions.")
 
     counts = Counter(v["status"] for v in items.values())
-    non_pass = sum(v for k, v in counts.items() if k != PASS)
-    if counts.get(FAIL, 0):
+    blocking = {k: v for k, v in items.items()
+                if v["status"] != "DIAGNOSTIC_NON_BLOCKING"}
+    bcounts = Counter(v["status"] for v in blocking.values())
+    if bcounts.get(FAIL, 0):
         overall = FAIL
-    elif non_pass:
+    elif sum(v for k, v in bcounts.items() if k != PASS):
         overall = "INCOMPLETE"
     else:
         overall = PASS
 
-    # ---- merge into the S0 artifact as a combined view ---------------- #
-    path = ROOT / "experiments" / "v01r" / "semantic_gate.json"
-    prev = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
-    prev.pop("blocked_disclosure", None)
-    combined = {
-        "gate": "semantic gate — combined S0 (kernel) + V0.1R-S1 (method)",
+    # RAW S1 only. The combined file is rebuilt by the aggregator, never here:
+    # reading the combined file back was what made the artifact recurse.
+    out = ROOT / "experiments" / "v01r" / "semantic_gate_s1.json"
+    out.write_text(json.dumps({
+        "gate": "S1 — V0.1R method-facing semantic gate (A59)",
         "source_fingerprint": hashlib.sha256(
             (ROOT / "src/rfl_rebuild/method/contract.py").read_bytes()
             + (ROOT / "src/rfl_rebuild/method/session.py").read_bytes()
-            + (ROOT / "src/rfl_rebuild/method/runner.py").read_bytes()).hexdigest()[:16],
-        "s0": prev,
-        "s1_v01r": {"status_counts": dict(counts), "overall": overall,
-                    "items": items,
-                    "acceptance_bar": "a constant p=(0.5,)*5 method passes; "
-                                      "any failure of that dummy is a regression"},
-        "blocked_disclosure": (
-            "BLOCKED_NOT_IMPLEMENTED (S0: I1, I2, I6, C6) means the layer does not "
-            "exist. It is never N/A. V0.1R declares its dependency in "
-            "S0.items.V0.1R_DEPENDENCY."),
-    }
-    path.write_text(json.dumps(combined, indent=1, default=str), encoding="utf-8")
+            + (ROOT / "src/rfl_rebuild/method/runner.py").read_bytes()
+        ).hexdigest()[:16],
+        "status_counts": dict(bcounts),
+        "overall": overall,
+        "items": items,
+        "acceptance_bar": "a constant p=(0.5,)*5 method passes; any failure of "
+                          "that dummy is a regression",
+    }, indent=1, default=str), encoding="utf-8")
 
-    print(f"\nS1 status counts: {dict(counts)}")
+    print(f"\nS1 status counts (blocking): {dict(bcounts)}")
     for k in sorted(items):
-        print(f"  {k:<18} {items[k]['status']:<5} {items[k]['title'][:56]}")
+        print(f"  {k:<24} {items[k]['status']:<26} "
+              f"{items[k]['title'][:48]}")
     print(f"\nS1 overall: {overall}")
-    print(f"wrote {path}")
+    print(f"wrote {out}")
     return 0 if overall == PASS else 1
 
 
