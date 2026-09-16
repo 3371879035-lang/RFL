@@ -1615,7 +1615,98 @@ is **not** run here.
 
 ---
 
-## 45. Summary and what remains open
+## 45. A57 — commit repair becomes first-class, and formal Gate E
+
+**The gap.** A56 wrote $do(C_P{=}\text{identity})$ into the repair lattice in
+`02` §5, but the code still had only three `Intervention` kinds — `process`,
+`decision`, `execution` — and `gate_e_precheck.py` simulated the commit repair
+with a boolean bypass (`commit_repair=True`, blanking `option_fault`). That is
+acceptable for a smoke check and **not** acceptable for a formal gate, because it
+distorts four separate things: the repair does not count toward $|r|$; it cannot
+appear in a jointly enumerated candidate such as
+$\{do(C_P{=}\text{identity}), do(d_t{=}d')\}$; the `InterventionSet`
+node-collision and composition rules cannot see it; and $R^{*}_{\text{suff}}$
+cannot express a process repair in a unified type.
+
+**A57 closes it. No world semantics change.** `Intervention(kind="process_commit")`,
+built by `Intervention.commit_identity()`, with its **own structural node**
+`("process_commit",)` distinct from `("process",)`, plus
+`InterventionSet.commit_repair()`. Parameters are rejected, since restoring a
+faithful commit takes none. The rollout priority is frozen at
+
+$$\boxed{do(z{=}z') \;>\; do(C_P{=}\text{identity}) \;>\; Z_P\ \text{fault} \;>\; z^{\text{proposal}}}$$
+
+so strategy replay is the downstream root intervention and the commit repair
+**shadows** the fault. When both are present strategy replay wins and the commit
+repair is merely shadowed — a legal composition, not MALFORMED, which is precisely
+why the two carry distinct nodes.
+
+**Canary held.** Gate_fire re-run after A57: depth histogram **unchanged** at
+$D{=}0$ 1,553, $D{=}1$ 990, $D{=}2$ 230, $D{=}3$ 10, unidentifiable 0, PASS. The
+10 $D{=}3$ classes are recorded in the artifact, and $D_{\text{old}}{=}3
+\Rightarrow D_{\text{new}}{=}3$ holds **10/10**. This was the right regression
+assertion precisely because the commit repair is evaluator-only and must not touch
+the learner's query family.
+
+**Formal Gate E (`scripts/gate_e.py`) — FULL primary feasible support,
+$N = 1{,}038{,}960$, every case, no sampling.**
+
+|$\lvert R^{*}\rvert$| cases |
+|---|---|
+| 0 (factual already succeeds) | 925,800 |
+| 1 | 113,160 |
+| 2 | 0 |
+| 3 | 0 |
+| $\bot$ NO-SUFFICIENT-REPAIR | **0** |
+
+Every failing case is repaired by a **size-1** member, so the size-2/3 expansion
+never fired and the finite lattice is total on this environment. No case was
+`MALFORMED_FACTUAL`.
+
+**All ties kept**, which is the whole point: $\#R^{*}$ ranges from 1 to 17, and the
+mass is not at 1 —
+
+| $\#R^{*}$ | 1 | 2 | 3 | 4 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| cases | 925,800 | 13,680 | 41,040 | 11,160 | 360 | 2,160 | 11,160 | 9,000 | 16,680 | 3,480 | 4,200 | 240 |
+
+A search that stopped at the first sufficient repair would have reported
+$\#R^{*} = 1$ for 113,160 failing cases, destroying the tie structure every
+downstream metric depends on ($|R^{*}| \neq \#R^{*}$).
+
+**Kinds entering a minimal family:** strategy replay 113,160; process commit
+88,320; decision 47,280; execution 23,160.
+
+**The cross cells — A56's claim, validated at full scale:**
+
+| cell | cases |
+|---|---|
+| commit sufficient **and** strategy sufficient | 88,320 |
+| **strategy sufficient, commit not** | **24,840** |
+| commit sufficient, strategy not | **0** |
+
+So the two operations are empirically distinct, and the separation runs one way:
+whenever the commit repair suffices, some strategy replay also suffices, but there
+are **24,840** cases repaired by switching strategy and **not** by restoring a
+faithful commit. Those are exactly the C4 episodes, where the proposal itself is a
+poor option and the fault is not a commit fault. Conflating the two would have
+mislabelled all 24,840.
+
+(The precheck's sampled 663 scales to $663 \times 37 \approx 24{,}531$ against the
+true 24,840 — an independent consistency check on the sampling.)
+
+**A55's invariant, upgraded to trace level.** The precheck only compared final
+outcomes. Gate E compares the full trajectory: for the **388,800** cases with
+$Z_P^{\text{fire}} = 0$, `do(C_P = identity)` reproduces the factual trace
+**step for step** — `trace_noop_ok` 388,800, `trace_changed_without_fault` **0**.
+Outcome equality alone would have passed even if the repair perturbed the run.
+
+**Verdict: Gate E PASS.** Proceeding to the semantic suite `04`, then the Oracle
+ceiling, then the $N_{\text{scenes}}=32$ calibration. Any failure stops the chain.
+
+---
+
+## 46. Summary and what remains open
 
 | # | what | severity | status |
 |---|---|---|---|
@@ -1649,7 +1740,8 @@ section above; the most recent is:
 | **A51** | Gate L splits into Gate_Z and Gate_B, and **both** fail; replacing $Z$ by $B$ is a change of V0.1R's scientific question, not a bug fix | **P0 (spec)** | frozen — superseded by A54 for the target, retained for the split |
 | **A54** | configured / fired / difference-making were one symbol; V0.1R's target becomes $Z^{\text{fire}}$; Gate_fire FAILs on 600 classes, residual **100% $P$** | **P0 (spec)** | frozen — denotation resolved by A55 |
 | **A55** | $Z_P$ is commit/routing integrity (not a bad plan, not unsuited strategy); process proposal audit added; **Gate_fire PASSES**, $B_{\min} = 3$ vs $B_Q = 4$ | **P0 (spec)** | frozen — **first PASS**; V0.1R precondition met |
-| **A56** | semantic propagation of A54/A55 through `02`, `04`, `06`; lattice gains $do(C_P{=}\text{identity})$; arms renamed `QueryOnly`/`SeqThenQuery`; Gate E pre-check clean | high | complete — semantic suite not yet run |
+| **A56** | semantic propagation of A54/A55 through `02`, `04`, `06`; lattice gains $do(C_P{=}\text{identity})$; arms renamed `QueryOnly`/`SeqThenQuery`; Gate E pre-check clean | high | complete |
+| **A57** | commit repair first-class in the kernel (own node, composes, counts in $\lvert r\rvert$); canary 10/10 held; **Gate E PASS** on full support, all ties kept, trace-level no-op invariant clean | high | complete — semantic suite next |
 
 ---
 

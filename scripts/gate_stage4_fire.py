@@ -48,6 +48,7 @@ def main() -> int:
 
     depth_hist = Counter()
     diff_hist = Counter()
+    canary = []
     proved_unbounded = 0
     examples = []
 
@@ -131,6 +132,13 @@ def main() -> int:
                                  "reason": "fixed point, root unseparated"})
         else:
             depth_hist[d] += 1
+            if d == 3:
+                # A57 regression canary: these classes are the ENTIRE margin
+                # between PASS and FAIL at B_Q = 4, so any query-semantics change
+                # must leave them at D = 3.
+                canary.append({"class_index": i, "class_size": len(members),
+                               "n_reps": len(reps),
+                               "n_distinct_fire": len(set(lab))})
 
     print("\nA54 three-regime census over causes present in some world:")
     for k in CAUSE_KEYS:
@@ -167,6 +175,7 @@ def main() -> int:
         "depth_histogram": {str(k): v for k, v in depth_hist.items()},
         "max_adaptive_depth": worst,
         "proved_unbounded": proved_unbounded,
+        "regression_canary_d3": canary,
         "verdict": verdict,
         "three_regime_census": {f"{k[0]}|{k[1]}": v for k, v in census.items()},
         "pres_ne_fire_pairs": n_pres_fire_gap,

@@ -442,6 +442,26 @@ option fault restores a faithful commit. So the repair primitive and the but-for
 construction coincide here by construction, not by accident — and that is exactly
 why the *learner* may not have it.
 
+**A57 makes it first-class in the code, not just in this lattice.** It is
+`Intervention(kind="process_commit")`, built by `Intervention.commit_identity()`,
+with its **own structural node** `("process_commit",)` distinct from
+`("process",)`. That matters mechanically: it counts toward repair cardinality
+$|r|$, it composes into joint candidates such as
+$\{do(C_P{=}\text{identity}), do(d_t{=}d')\}$, the `InterventionSet`
+node-collision rule covers it, and $R^{*}_{\text{suff}}$ can express a process
+repair in the same type as every other member. Simulating it with a boolean flag
+would have distorted all four.
+
+The rollout priority is frozen as
+
+$$\boxed{do(z{=}z') \;>\; do(C_P{=}\text{identity}) \;>\; Z_P\ \text{fault} \;>\; z^{\text{proposal}}}$$
+
+Strategy replay is a downstream root intervention that specifies
+$z^{\text{in-force}}$ outright; the commit repair restores the
+proposal→commit identity and therefore **shadows** the fault. When both are
+present strategy replay wins and the commit repair is merely shadowed — that is a
+legal composition, not MALFORMED, and it is why the two carry distinct nodes.
+
 ### 5.1 The execution primitive acts on one cell
 
 $$\boxed{do\bigl(C_X(s^{*}, a^{cmd}) = a^{cmd}\bigr) \text{ is the execution primitive}}$$

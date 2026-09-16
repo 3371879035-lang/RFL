@@ -481,6 +481,15 @@ class Intervention:
         if self.kind == "process":
             if self.option not in option_ids():
                 raise MalformedIntervention("process needs a valid option id")
+        elif self.kind == "process_commit":
+            # A57: the A55 process repair do(C_P = identity). It takes no
+            # parameters -- restoring a faithful commit is a single operation
+            # with no argument -- so there is nothing to validate beyond the
+            # absence of stray fields.
+            if any(x is not None for x in (self.t, self.action, self.option, self.site)):
+                raise MalformedIntervention(
+                    "process_commit takes no parameters"
+                )
         elif self.kind == "decision":
             if self.t is None or self.action is None:
                 raise MalformedIntervention("decision needs t and action")
@@ -497,6 +506,12 @@ class Intervention:
     def node(self) -> tuple:
         if self.kind == "process":
             return ("process",)
+        if self.kind == "process_commit":
+            # A57: its OWN structural node, distinct from ("process",), so that
+            # {do(z=z'), do(C_P=identity)} composes instead of colliding and so
+            # that repair cardinality counts the commit repair like any other
+            # member.
+            return ("process_commit",)
         if self.kind == "decision":
             return ("decision", self.t)
         return ("execution", self.site)
@@ -504,6 +519,11 @@ class Intervention:
     @staticmethod
     def process(option: int) -> "Intervention":
         return Intervention(kind="process", option=option)
+
+    @staticmethod
+    def commit_identity() -> "Intervention":
+        """``do(C_P = identity)`` — the A55 process repair, first-class in A57."""
+        return Intervention(kind="process_commit")
 
     @staticmethod
     def decision(t: int, action: Action) -> "Intervention":
@@ -530,6 +550,17 @@ class InterventionSet:
 
     def process(self) -> Intervention | None:
         return next((iv for iv in self.members if iv.kind == "process"), None)
+
+    def process_commit(self) -> Intervention | None:
+        """A57: the first-class ``do(C_P = identity)`` member, if present."""
+        return next(
+            (iv for iv in self.members if iv.kind == "process_commit"), None
+        )
+
+    @staticmethod
+    def commit_repair() -> "InterventionSet":
+        """The size-1 candidate ``{do(C_P = identity)}``."""
+        return InterventionSet((Intervention.commit_identity(),))
 
     def decision_at(self, t: int) -> Intervention | None:
         return next(
@@ -697,15 +728,24 @@ def rollout(
     ``A_z(m, s)``; a ``do`` or fault that does not is ``MALFORMED``, and a
     *provider* that does not raises :class:`OptionViolation` (A36).
     """
-    # A55: this is the process/commit layer in one place.
+    # A55/A57: this is the process/commit layer in one place.
     #   z^proposal  = base_option
     #   C_P         = identity unless a P fault is present
     #   z^in-force  = z0
-    # A `do(z = z')` is strategy replay: it sets z^in-force outright, bypassing
-    # the commit edge, and is NOT a process repair.
+    # Priority is FROZEN as
+    #   do(z=z')  >  do(C_P=identity)  >  Z_P fault  >  z^proposal
+    # A `do(z = z')` is strategy replay: a downstream root intervention that sets
+    # z^in-force outright, bypassing the commit edge. It is NOT a process repair.
+    # A `do(C_P = identity)` restores a faithful commit, so it makes z0 the
+    # proposal and SHADOWS the fault. When both are present, strategy replay wins
+    # and the commit repair is merely shadowed -- that is a legal composition, not
+    # MALFORMED, and it is why the two carry distinct structural nodes.
     proc = interventions.process()
+    commit = interventions.process_commit()
     if proc is not None:
         z0 = proc.option
+    elif commit is not None:
+        z0 = base_option
     elif option_fault is not None:
         z0 = option_fault
     else:
