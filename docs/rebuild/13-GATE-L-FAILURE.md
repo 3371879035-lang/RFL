@@ -199,6 +199,7 @@ the task's query set, and it is not taken here.
 
 Read out with `scripts/a52_quotient.py` — **no environment edit, no new target,
 no added query**; it only asks what ontology the current interface supports.
+Logged as **A52**.
 
 Two worlds are equivalent when no history-dependent safe policy separates them.
 That relation is exactly "no single query separates the pair", and it is
