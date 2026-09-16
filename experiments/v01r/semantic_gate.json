@@ -1,47 +1,167 @@
 {
- "gate": "S0 \u2014 Semantic Kernel Gate (A58)",
- "source_fingerprint": "658c67aa96b0d333",
- "cases_scanned": 173161,
- "status_counts": {
-  "PASS": 12,
-  "BLOCKED_NOT_IMPLEMENTED": 4
- },
- "overall": "PASS",
- "items": {
-  "I3": {
-   "status": "PASS",
-   "title": "|R*| != #R*: minimal cardinality and tie count are separate",
-   "observed": {
-    "|R*|=1": 113160,
-    "cases_with_#R*>1": 113160,
-    "max_#R*": 17
-   },
-   "note": "Reuses formal Gate E's full-support result; a search stopping at the first sufficient repair would have collapsed all of these to #R*=1.",
-   "witness": {
-    "kappa": 0,
-    "phi": 0,
-    "Z": "00110",
-    "fire": "00110",
-    "base_option": 1,
-    "option_fault": null,
-    "decision": "None",
-    "controller": "ControllerFault(state=State(x=0, y=2, t=0, kappa=0, phi=0), cmd=3, realized=4)",
-    "plant": "PlantFault(t=5, realized=4)",
-    "trap": "None",
-    "factual_outcome": "COLLISION"
-   }
+ "gate": "semantic gate \u2014 combined S0 (kernel) + V0.1R-S1 (method)",
+ "source_fingerprint": "422ed1459a25e0b6",
+ "s0": {
+  "gate": "S0 \u2014 Semantic Kernel Gate (A58)",
+  "source_fingerprint": "658c67aa96b0d333",
+  "cases_scanned": 173161,
+  "status_counts": {
+   "PASS": 12,
+   "BLOCKED_NOT_IMPLEMENTED": 4
   },
-  "I4": {
-   "status": "PASS",
-   "title": "Z^pres only from injection, Z^fire only from a forward fire receipt, B only from the evaluator counterfactual",
-   "observed": {
-    "X_only_case_reconstructed_as_D": false,
-    "D_only_case_reconstructed_as_X": false,
-    "E_fired_case_reconstructed_as_X": false
+  "overall": "PASS",
+  "items": {
+   "I3": {
+    "status": "PASS",
+    "title": "|R*| != #R*: minimal cardinality and tie count are separate",
+    "observed": {
+     "|R*|=1": 113160,
+     "cases_with_#R*>1": 113160,
+     "max_#R*": 17
+    },
+    "note": "Reuses formal Gate E's full-support result; a search stopping at the first sufficient repair would have collapsed all of these to #R*=1.",
+    "witness": {
+     "kappa": 0,
+     "phi": 0,
+     "Z": "00110",
+     "fire": "00110",
+     "base_option": 1,
+     "option_fault": null,
+     "decision": "None",
+     "controller": "ControllerFault(state=State(x=0, y=2, t=0, kappa=0, phi=0), cmd=3, realized=4)",
+     "plant": "PlantFault(t=5, realized=4)",
+     "trap": "None",
+     "factual_outcome": "COLLISION"
+    }
    },
-   "note": "Each mis-reconstruction probe must come out False: if the truth were derived from learner-visible behaviour it would go True.",
-   "witness": {
-    "C1": {
+   "I4": {
+    "status": "PASS",
+    "title": "Z^pres only from injection, Z^fire only from a forward fire receipt, B only from the evaluator counterfactual",
+    "observed": {
+     "X_only_case_reconstructed_as_D": false,
+     "D_only_case_reconstructed_as_X": false,
+     "E_fired_case_reconstructed_as_X": false
+    },
+    "note": "Each mis-reconstruction probe must come out False: if the truth were derived from learner-visible behaviour it would go True.",
+    "witness": {
+     "C1": {
+      "kappa": 0,
+      "phi": 0,
+      "Z": "00100",
+      "fire": "00100",
+      "base_option": 0,
+      "option_fault": null,
+      "decision": "None",
+      "controller": "ControllerFault(state=State(x=0, y=2, t=0, kappa=0, phi=0), cmd=3, realized=4)",
+      "plant": "None",
+      "trap": "None",
+      "factual_outcome": "SUCCESS"
+     },
+     "C2": {
+      "kappa": 0,
+      "phi": 0,
+      "Z": "01000",
+      "fire": "01000",
+      "base_option": 1,
+      "option_fault": null,
+      "decision": "DecisionOverride(t=0, action=4)",
+      "controller": "None",
+      "plant": "None",
+      "trap": "None",
+      "factual_outcome": "SUCCESS"
+     },
+     "C5": {
+      "kappa": 0,
+      "phi": 0,
+      "Z": "00010",
+      "fire": "00010",
+      "base_option": 0,
+      "option_fault": null,
+      "decision": "None",
+      "controller": "None",
+      "plant": "PlantFault(t=0, realized=4)",
+      "trap": "None",
+      "factual_outcome": "SUCCESS"
+     }
+    }
+   },
+   "I5": {
+    "status": "PASS",
+    "title": "Replay reproduces StepResult, control, outcome, reward, option fields exactly, and the trace genuinely depends on the truth",
+    "observed": {
+     "deterministic_second_run_identical": true,
+     "fields_compared": [
+      "x",
+      "y",
+      "t",
+      "kappa",
+      "phi",
+      "z",
+      "m",
+      "a_cmd",
+      "u",
+      "a_realized",
+      "reward",
+      "terminal",
+      "outcome",
+      "illegal",
+      "trace.outcome",
+      "trace.control.z",
+      "trace.control.m",
+      "trace.base_option",
+      "trace.option_in_force"
+     ],
+     "truth_perturbations_that_moved_the_trace": 1,
+     "truth_perturbations_tried": 1
+    },
+    "note": "Comparing outcome alone would pass even if the replay perturbed the run; the perturbation count proves the comparison is not vacuous.",
+    "witness": {
+     "kappa": 0,
+     "phi": 0,
+     "Z": "10000",
+     "fire": "10000",
+     "base_option": 0,
+     "option_fault": 1,
+     "decision": "None",
+     "controller": "None",
+     "plant": "None",
+     "trap": "None",
+     "factual_outcome": "SUCCESS"
+    }
+   },
+   "C0": {
+    "status": "PASS",
+    "title": "no fault: healthy factual success, Z^fire = 0, feedback schema ok",
+    "observed": {
+     "factual_outcome": "SUCCESS",
+     "fire": "00000",
+     "feedback_is_len5_onehot": true
+    },
+    "note": "Kernel half only. The 'no update path was invoked' half is BLOCKED: there is no update layer to invoke.",
+    "witness": {
+     "kappa": 0,
+     "phi": 0,
+     "Z": "00000",
+     "fire": "00000",
+     "base_option": 0,
+     "option_fault": null,
+     "decision": "None",
+     "controller": "None",
+     "plant": "None",
+     "trap": "None",
+     "factual_outcome": "SUCCESS"
+    }
+   },
+   "C1": {
+    "status": "PASS",
+    "title": "execution-only: u != a_cmd while the plant is faithful",
+    "observed": {
+     "fire": "00100",
+     "n_steps_u_ne_a_cmd": 1,
+     "n_steps_plant_deviated": 0
+    },
+    "note": "Truth half only; the write half is BLOCKED.",
+    "witness": {
      "kappa": 0,
      "phi": 0,
      "Z": "00100",
@@ -53,8 +173,19 @@
      "plant": "None",
      "trap": "None",
      "factual_outcome": "SUCCESS"
+    }
+   },
+   "C2": {
+    "status": "PASS",
+    "title": "decision-only: override reached, controller faithful",
+    "observed": {
+     "fire": "01000",
+     "override_t": 0,
+     "n_steps": 7,
+     "n_steps_u_ne_a_cmd": 0
     },
-    "C2": {
+    "note": "Truth half only; the write half is BLOCKED.",
+    "witness": {
      "kappa": 0,
      "phi": 0,
      "Z": "01000",
@@ -66,8 +197,68 @@
      "plant": "None",
      "trap": "None",
      "factual_outcome": "SUCCESS"
+    }
+   },
+   "C3": {
+    "status": "PASS",
+    "title": "commit integrity: z^proposal != z^in-force",
+    "observed": {
+     "fire": "10000",
+     "z_proposal": 0,
+     "z_in_force": 1,
+     "proposal_audit_exposes_mismatch": true,
+     "commit_repair_is_its_own_node": true,
+     "commit_repair_outcome": "SUCCESS"
     },
-    "C5": {
+    "note": "z^proposal is NOT required to be optimal -- the case only needs the commit edge to be unfaithful. Write half BLOCKED.",
+    "witness": {
+     "kappa": 0,
+     "phi": 0,
+     "Z": "10000",
+     "fire": "10000",
+     "base_option": 0,
+     "option_fault": 1,
+     "decision": "None",
+     "controller": "None",
+     "plant": "None",
+     "trap": "None",
+     "factual_outcome": "SUCCESS"
+    }
+   },
+   "C4": {
+    "status": "PASS",
+    "title": "strategy granularity: no singleton decision repair suffices, a do(z=z') does -- and there is no commit fault",
+    "observed": {
+     "fire": "00000",
+     "z_proposal": 0,
+     "n_strategy_repairs_sufficient": 3,
+     "has_Z_P_fault": false
+    },
+    "note": "This is a lattice statement about repair granularity, NOT the definition of Z_P; the witness has Z_P^fire = 0 to make that explicit.",
+    "witness": {
+     "kappa": 0,
+     "phi": 2,
+     "Z": "00000",
+     "fire": "00000",
+     "base_option": 0,
+     "option_fault": null,
+     "decision": "None",
+     "controller": "None",
+     "plant": "None",
+     "trap": "None",
+     "factual_outcome": "COLLISION"
+    }
+   },
+   "C5": {
+    "status": "PASS",
+    "title": "environment fault: plant deviated, controller faithful",
+    "observed": {
+     "fire": "00010",
+     "n_steps_plant_deviated": 1,
+     "n_steps_u_ne_a_cmd": 0
+    },
+    "note": "Kernel half only; the method-output half needs the V0.1R inference arm and is BLOCKED.",
+    "witness": {
      "kappa": 0,
      "phi": 0,
      "Z": "00010",
@@ -80,337 +271,298 @@
      "trap": "None",
      "factual_outcome": "SUCCESS"
     }
+   },
+   "C7": {
+    "status": "PASS",
+    "title": "tied repairs: |R*| = 1 with #R* >= 2, every tied candidate replays to success",
+    "observed": {
+     "n_tied_minimal_repairs": 13,
+     "tied_candidates_replayed_ok": 13,
+     "kinds": [
+      "decision",
+      "execution",
+      "strategy_replay"
+     ]
+    },
+    "note": "Asserted on a constructed failing episode, not read off Gate E.",
+    "witness": {
+     "kappa": 0,
+     "phi": 0,
+     "Z": "00110",
+     "fire": "00110",
+     "base_option": 1,
+     "option_fault": null,
+     "decision": "None",
+     "controller": "ControllerFault(state=State(x=0, y=2, t=0, kappa=0, phi=0), cmd=3, realized=4)",
+     "plant": "PlantFault(t=5, realized=4)",
+     "trap": "None",
+     "factual_outcome": "COLLISION"
+    }
+   },
+   "C8": {
+    "status": "PASS",
+    "title": "external plant fault with U* = empty (factual already succeeds)",
+    "observed": {
+     "fire": "00010",
+     "factual_outcome": "SUCCESS"
+    },
+    "note": "Truth half only; the 'no learning runtime may write Q/C_X' half is BLOCKED.",
+    "witness": {
+     "kappa": 0,
+     "phi": 0,
+     "Z": "00010",
+     "fire": "00010",
+     "base_option": 0,
+     "option_fault": null,
+     "decision": "None",
+     "controller": "None",
+     "plant": "PlantFault(t=0, realized=4)",
+     "trap": "None",
+     "factual_outcome": "SUCCESS"
+    }
+   },
+   "I1": {
+    "status": "BLOCKED_NOT_IMPLEMENTED",
+    "title": "write-space disjointness across units",
+    "observed": {
+     "layer": "responsibility / update / write-space",
+     "present_in_src": [
+      "__init__.py",
+      "__pycache__",
+      "env",
+      "solve"
+     ]
+    },
+    "note": "No implementation exists. NOT marked N/A: this must be converted to a real PASS/FAIL when the write layer lands, and V0.2R depends on it.",
+    "witness": null
+   },
+   "I2": {
+    "status": "BLOCKED_NOT_IMPLEMENTED",
+    "title": "no write without a responsible unit",
+    "observed": {
+     "layer": "responsibility / update / write-space",
+     "present_in_src": [
+      "__init__.py",
+      "__pycache__",
+      "env",
+      "solve"
+     ]
+    },
+    "note": "No implementation exists. NOT marked N/A: this must be converted to a real PASS/FAIL when the write layer lands, and V0.2R depends on it.",
+    "witness": null
+   },
+   "I6": {
+    "status": "BLOCKED_NOT_IMPLEMENTED",
+    "title": "update budget per episode",
+    "observed": {
+     "layer": "responsibility / update / write-space",
+     "present_in_src": [
+      "__init__.py",
+      "__pycache__",
+      "env",
+      "solve"
+     ]
+    },
+    "note": "No implementation exists. NOT marked N/A: this must be converted to a real PASS/FAIL when the write layer lands, and V0.2R/V0.3R depends on it.",
+    "witness": null
+   },
+   "C6": {
+    "status": "BLOCKED_NOT_IMPLEMENTED",
+    "title": "write collision between two units",
+    "observed": {
+     "layer": "responsibility / update / write-space",
+     "present_in_src": [
+      "__init__.py",
+      "__pycache__",
+      "env",
+      "solve"
+     ]
+    },
+    "note": "No implementation exists. NOT marked N/A: this must be converted to a real PASS/FAIL when the write layer lands, and V0.2R depends on it.",
+    "witness": null
+   },
+   "V0.1R_DEPENDENCY": {
+    "status": "PASS",
+    "title": "V0.1R depends on I3/I4/I5 and the kernel halves only",
+    "observed": {
+     "needs": [
+      "I3",
+      "I4",
+      "I5",
+      "C0-kernel",
+      "C1-truth",
+      "C2-truth",
+      "C3",
+      "C4",
+      "C5-kernel",
+      "C7",
+      "C8-truth"
+     ],
+     "does_not_need": [
+      "I1",
+      "I2",
+      "I6",
+      "C6",
+      "C0-no-write",
+      "C1-write",
+      "C2-write",
+      "C3-write",
+      "C5-method",
+      "C8-no-write"
+     ]
+    },
+    "note": "V0.1R has no update path, so the write invariants are vacuous for it. That is NOT evidence they hold, and they stay BLOCKED_NOT_IMPLEMENTED.",
+    "witness": null
    }
-  },
-  "I5": {
-   "status": "PASS",
-   "title": "Replay reproduces StepResult, control, outcome, reward, option fields exactly, and the trace genuinely depends on the truth",
-   "observed": {
-    "deterministic_second_run_identical": true,
-    "fields_compared": [
-     "x",
-     "y",
-     "t",
-     "kappa",
-     "phi",
-     "z",
-     "m",
-     "a_cmd",
-     "u",
-     "a_realized",
-     "reward",
-     "terminal",
-     "outcome",
-     "illegal",
-     "trace.outcome",
-     "trace.control.z",
-     "trace.control.m",
-     "trace.base_option",
-     "trace.option_in_force"
-    ],
-    "truth_perturbations_that_moved_the_trace": 1,
-    "truth_perturbations_tried": 1
-   },
-   "note": "Comparing outcome alone would pass even if the replay perturbed the run; the perturbation count proves the comparison is not vacuous.",
-   "witness": {
-    "kappa": 0,
-    "phi": 0,
-    "Z": "10000",
-    "fire": "10000",
-    "base_option": 0,
-    "option_fault": 1,
-    "decision": "None",
-    "controller": "None",
-    "plant": "None",
-    "trap": "None",
-    "factual_outcome": "SUCCESS"
-   }
-  },
-  "C0": {
-   "status": "PASS",
-   "title": "no fault: healthy factual success, Z^fire = 0, feedback schema ok",
-   "observed": {
-    "factual_outcome": "SUCCESS",
-    "fire": "00000",
-    "feedback_is_len5_onehot": true
-   },
-   "note": "Kernel half only. The 'no update path was invoked' half is BLOCKED: there is no update layer to invoke.",
-   "witness": {
-    "kappa": 0,
-    "phi": 0,
-    "Z": "00000",
-    "fire": "00000",
-    "base_option": 0,
-    "option_fault": null,
-    "decision": "None",
-    "controller": "None",
-    "plant": "None",
-    "trap": "None",
-    "factual_outcome": "SUCCESS"
-   }
-  },
-  "C1": {
-   "status": "PASS",
-   "title": "execution-only: u != a_cmd while the plant is faithful",
-   "observed": {
-    "fire": "00100",
-    "n_steps_u_ne_a_cmd": 1,
-    "n_steps_plant_deviated": 0
-   },
-   "note": "Truth half only; the write half is BLOCKED.",
-   "witness": {
-    "kappa": 0,
-    "phi": 0,
-    "Z": "00100",
-    "fire": "00100",
-    "base_option": 0,
-    "option_fault": null,
-    "decision": "None",
-    "controller": "ControllerFault(state=State(x=0, y=2, t=0, kappa=0, phi=0), cmd=3, realized=4)",
-    "plant": "None",
-    "trap": "None",
-    "factual_outcome": "SUCCESS"
-   }
-  },
-  "C2": {
-   "status": "PASS",
-   "title": "decision-only: override reached, controller faithful",
-   "observed": {
-    "fire": "01000",
-    "override_t": 0,
-    "n_steps": 7,
-    "n_steps_u_ne_a_cmd": 0
-   },
-   "note": "Truth half only; the write half is BLOCKED.",
-   "witness": {
-    "kappa": 0,
-    "phi": 0,
-    "Z": "01000",
-    "fire": "01000",
-    "base_option": 1,
-    "option_fault": null,
-    "decision": "DecisionOverride(t=0, action=4)",
-    "controller": "None",
-    "plant": "None",
-    "trap": "None",
-    "factual_outcome": "SUCCESS"
-   }
-  },
-  "C3": {
-   "status": "PASS",
-   "title": "commit integrity: z^proposal != z^in-force",
-   "observed": {
-    "fire": "10000",
-    "z_proposal": 0,
-    "z_in_force": 1,
-    "proposal_audit_exposes_mismatch": true,
-    "commit_repair_is_its_own_node": true,
-    "commit_repair_outcome": "SUCCESS"
-   },
-   "note": "z^proposal is NOT required to be optimal -- the case only needs the commit edge to be unfaithful. Write half BLOCKED.",
-   "witness": {
-    "kappa": 0,
-    "phi": 0,
-    "Z": "10000",
-    "fire": "10000",
-    "base_option": 0,
-    "option_fault": 1,
-    "decision": "None",
-    "controller": "None",
-    "plant": "None",
-    "trap": "None",
-    "factual_outcome": "SUCCESS"
-   }
-  },
-  "C4": {
-   "status": "PASS",
-   "title": "strategy granularity: no singleton decision repair suffices, a do(z=z') does -- and there is no commit fault",
-   "observed": {
-    "fire": "00000",
-    "z_proposal": 0,
-    "n_strategy_repairs_sufficient": 3,
-    "has_Z_P_fault": false
-   },
-   "note": "This is a lattice statement about repair granularity, NOT the definition of Z_P; the witness has Z_P^fire = 0 to make that explicit.",
-   "witness": {
-    "kappa": 0,
-    "phi": 2,
-    "Z": "00000",
-    "fire": "00000",
-    "base_option": 0,
-    "option_fault": null,
-    "decision": "None",
-    "controller": "None",
-    "plant": "None",
-    "trap": "None",
-    "factual_outcome": "COLLISION"
-   }
-  },
-  "C5": {
-   "status": "PASS",
-   "title": "environment fault: plant deviated, controller faithful",
-   "observed": {
-    "fire": "00010",
-    "n_steps_plant_deviated": 1,
-    "n_steps_u_ne_a_cmd": 0
-   },
-   "note": "Kernel half only; the method-output half needs the V0.1R inference arm and is BLOCKED.",
-   "witness": {
-    "kappa": 0,
-    "phi": 0,
-    "Z": "00010",
-    "fire": "00010",
-    "base_option": 0,
-    "option_fault": null,
-    "decision": "None",
-    "controller": "None",
-    "plant": "PlantFault(t=0, realized=4)",
-    "trap": "None",
-    "factual_outcome": "SUCCESS"
-   }
-  },
-  "C7": {
-   "status": "PASS",
-   "title": "tied repairs: |R*| = 1 with #R* >= 2, every tied candidate replays to success",
-   "observed": {
-    "n_tied_minimal_repairs": 13,
-    "tied_candidates_replayed_ok": 13,
-    "kinds": [
-     "decision",
-     "execution",
-     "strategy_replay"
-    ]
-   },
-   "note": "Asserted on a constructed failing episode, not read off Gate E.",
-   "witness": {
-    "kappa": 0,
-    "phi": 0,
-    "Z": "00110",
-    "fire": "00110",
-    "base_option": 1,
-    "option_fault": null,
-    "decision": "None",
-    "controller": "ControllerFault(state=State(x=0, y=2, t=0, kappa=0, phi=0), cmd=3, realized=4)",
-    "plant": "PlantFault(t=5, realized=4)",
-    "trap": "None",
-    "factual_outcome": "COLLISION"
-   }
-  },
-  "C8": {
-   "status": "PASS",
-   "title": "external plant fault with U* = empty (factual already succeeds)",
-   "observed": {
-    "fire": "00010",
-    "factual_outcome": "SUCCESS"
-   },
-   "note": "Truth half only; the 'no learning runtime may write Q/C_X' half is BLOCKED.",
-   "witness": {
-    "kappa": 0,
-    "phi": 0,
-    "Z": "00010",
-    "fire": "00010",
-    "base_option": 0,
-    "option_fault": null,
-    "decision": "None",
-    "controller": "None",
-    "plant": "PlantFault(t=0, realized=4)",
-    "trap": "None",
-    "factual_outcome": "SUCCESS"
-   }
-  },
-  "I1": {
-   "status": "BLOCKED_NOT_IMPLEMENTED",
-   "title": "write-space disjointness across units",
-   "observed": {
-    "layer": "responsibility / update / write-space",
-    "present_in_src": [
-     "__init__.py",
-     "__pycache__",
-     "env",
-     "solve"
-    ]
-   },
-   "note": "No implementation exists. NOT marked N/A: this must be converted to a real PASS/FAIL when the write layer lands, and V0.2R depends on it.",
-   "witness": null
-  },
-  "I2": {
-   "status": "BLOCKED_NOT_IMPLEMENTED",
-   "title": "no write without a responsible unit",
-   "observed": {
-    "layer": "responsibility / update / write-space",
-    "present_in_src": [
-     "__init__.py",
-     "__pycache__",
-     "env",
-     "solve"
-    ]
-   },
-   "note": "No implementation exists. NOT marked N/A: this must be converted to a real PASS/FAIL when the write layer lands, and V0.2R depends on it.",
-   "witness": null
-  },
-  "I6": {
-   "status": "BLOCKED_NOT_IMPLEMENTED",
-   "title": "update budget per episode",
-   "observed": {
-    "layer": "responsibility / update / write-space",
-    "present_in_src": [
-     "__init__.py",
-     "__pycache__",
-     "env",
-     "solve"
-    ]
-   },
-   "note": "No implementation exists. NOT marked N/A: this must be converted to a real PASS/FAIL when the write layer lands, and V0.2R/V0.3R depends on it.",
-   "witness": null
-  },
-  "C6": {
-   "status": "BLOCKED_NOT_IMPLEMENTED",
-   "title": "write collision between two units",
-   "observed": {
-    "layer": "responsibility / update / write-space",
-    "present_in_src": [
-     "__init__.py",
-     "__pycache__",
-     "env",
-     "solve"
-    ]
-   },
-   "note": "No implementation exists. NOT marked N/A: this must be converted to a real PASS/FAIL when the write layer lands, and V0.2R depends on it.",
-   "witness": null
-  },
-  "V0.1R_DEPENDENCY": {
-   "status": "PASS",
-   "title": "V0.1R depends on I3/I4/I5 and the kernel halves only",
-   "observed": {
-    "needs": [
-     "I3",
-     "I4",
-     "I5",
-     "C0-kernel",
-     "C1-truth",
-     "C2-truth",
-     "C3",
-     "C4",
-     "C5-kernel",
-     "C7",
-     "C8-truth"
-    ],
-    "does_not_need": [
-     "I1",
-     "I2",
-     "I6",
-     "C6",
-     "C0-no-write",
-     "C1-write",
-     "C2-write",
-     "C3-write",
-     "C5-method",
-     "C8-no-write"
-    ]
-   },
-   "note": "V0.1R has no update path, so the write invariants are vacuous for it. That is NOT evidence they hold, and they stay BLOCKED_NOT_IMPLEMENTED.",
-   "witness": null
   }
  },
- "blocked_disclosure": "BLOCKED_NOT_IMPLEMENTED means the layer does not exist. It is never N/A, and a version gate consuming this file must state whether the version depends on each blocked item."
+ "s1_v01r": {
+  "status_counts": {
+   "PASS": 8,
+   "BLOCKED_NOT_IMPLEMENTED": 1
+  },
+  "overall": "INCOMPLETE",
+  "items": {
+   "S1_ISOLATION": {
+    "status": "PASS",
+    "title": "forbidden fields structurally unreachable, not merely unread",
+    "observed": {
+     "DirectFeedback_has_state": false,
+     "DirectFeedback_has_a_cmd": false,
+     "DirectFeedback_has_z_in_force": false,
+     "DirectFeedback_has_query": false,
+     "DirectFeedback_has_session": false,
+     "SequenceEvidence_has_query_session": false,
+     "MethodRunResult_has_update_target": false,
+     "QueryReceipt_has_Z_fire": false,
+     "QueryReceipt_has_outcome_tag": false
+    },
+    "note": "This is the core of A59: the negative construction tests matter more than any number of positive ones."
+   },
+   "S1_C0": {
+    "status": "PASS",
+    "title": "zero mutation, no write/update output, p schema valid",
+    "observed": {
+     "arms_run": [
+      "DirectFeedback",
+      "SequenceEvidence",
+      "QueryOnly",
+      "SeqThenQuery"
+     ],
+     "schema_ok": true,
+     "n_receipts": {
+      "DirectFeedback": 0,
+      "SequenceEvidence": 0,
+      "QueryOnly": 4,
+      "SeqThenQuery": 1
+     }
+    },
+    "note": "No write layer exists, so 'no update output' is structural: MethodRunResult has no such field."
+   },
+   "S1_C1_C2": {
+    "status": "PASS",
+    "title": "input views carry no evaluator truth; p_X and p_D are separate coordinates",
+    "observed": {
+     "evidence_fields": [
+      "kappa",
+      "phi",
+      "rows",
+      "z_in_force"
+     ],
+     "feedback_fields": [
+      "claim"
+     ],
+     "prediction_is_5_vector": true
+    },
+    "note": "Separability asserted, accuracy explicitly NOT asserted."
+   },
+   "S1_C3": {
+    "status": "PASS",
+    "title": "process audit returns z^proposal; z^in-force arrives via the learner's own control state; no Z_P verdict is ever returned",
+    "observed": {
+     "proc_audit_offered": true,
+     "response_is_proposal": true,
+     "response_has_no_verdict": true,
+     "z_in_force_via_learner_state": true
+    },
+    "note": ""
+   },
+   "S1_C5": {
+    "status": "PASS",
+    "title": "p_E and p_U are independent coordinates, so external/unknown is expressible",
+    "observed": {
+     "indices": {
+      "P": 0,
+      "D": 1,
+      "X": 2,
+      "E": 3,
+      "U": 4
+     },
+     "vector_length": 5
+    },
+    "note": "Expressibility only. Any p_E > 0 requirement would be a hypothesis test."
+   },
+   "S1_C8": {
+    "status": "PASS",
+    "title": "a V0.1R call is side-effect free",
+    "observed": {
+     "fingerprint_stable": true
+    },
+    "note": ""
+   },
+   "S1_ORACLE": {
+    "status": "PASS",
+    "title": "p^Oracle == Z^fire exactly",
+    "observed": {
+     "p": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+     ],
+     "fire": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    "note": "Exact by contract: the ceiling is label plumbing, not a method."
+   },
+   "S1_A50": {
+    "status": "BLOCKED_NOT_IMPLEMENTED",
+    "title": "Q_safe(H) = intersection over H \u2014 wedge not constructible here",
+    "observed": {
+     "menus_identical_for_different_true_world": true,
+     "some_query_legal_on_true_but_excluded_from_menu": false,
+     "menu_is_strict_subset_of_legal_on_true": false,
+     "n_unsafe_on_H_but_legal_on_true": 0,
+     "unsafe_submit_raised": "not-constructible",
+     "menu_is_a_true_intersection_over_H": true
+    },
+    "note": "The menu is still computed as a true intersection over H and is identical whichever member is treated as true, and those two are asserted above. But without a query that is legal on the true world and unsafe on H, the menu could still be truth-derived and this test would not notice -- so it is NOT reported as PASS (A58 discipline: never fake a pass, never write N/A). The wedge is known to exist: gate_stage3.json records classes with queries dropped by legality. Source the witness from that artifact rather than a blind scan."
+   },
+   "S1_NEGATIVE": {
+    "status": "PASS",
+    "title": "the nine required negative cases all fail loudly",
+    "observed": {
+     "p_length_4": "raised (correct)",
+     "p_above_one": "raised (correct)",
+     "p_nan": "raised (correct)",
+     "p_inf": "raised (correct)",
+     "fifth_query_budget": "raised (correct)",
+     "query_outside_registry": "raised (correct)",
+     "oracle_used_as_method": "raised (correct)",
+     "query1_did_not_change_query2_base_world": "raised (correct)",
+     "update_target_absent": "absent (correct)",
+     "query_receipt_has_no_Z_fire": "absent (correct)"
+    },
+    "note": "These are worth more than dozens of positive assertions."
+   }
+  },
+  "acceptance_bar": "a constant p=(0.5,)*5 method passes; any failure of that dummy is a regression"
+ },
+ "blocked_disclosure": "BLOCKED_NOT_IMPLEMENTED (S0: I1, I2, I6, C6) means the layer does not exist. It is never N/A. V0.1R declares its dependency in S0.items.V0.1R_DEPENDENCY."
 }
