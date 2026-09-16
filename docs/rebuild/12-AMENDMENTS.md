@@ -1196,57 +1196,81 @@ identifiability semantics changed.
 
 ---
 
-## 39. A51 — Gate L fails, and the defect is in the gate's label, not the world
+## 39. A51 — Gate L splits in two, and both gates fail
 
 **Found by**: running Gate L to completion under A50. Stage 3 had left 2,695
 classes ``INCONCLUSIVE_NEEDS_ADAPTIVE``, which reads like "the non-adaptive
 fallback was too weak". Stage 4 shows the adaptive machinery does not rescue
-them either.
+them either: $H$ shrinks legally and $\mathcal Q_{\text{safe}}(H)$ grows, and
+still no finite depth reaches a single target. That is a theorem about the
+observation–intervention interface, not a missing feature.
 
-**The result.** Of $2{,}749$ multi-$Z$ classes, $54$ are decidable at $D = 1$ and
-$2{,}695$ are **provably unidentifiable at any finite depth**. Not "deeper than
-4": the bottom-up closure reaches a fixed point with the root unseparated, and
-the fixed point of a monotone predicate over a finite lattice is exactly the set
-of masks separable at some finite depth. Raising the cap from 4 to 8 recovered
-exactly zero classes.
+**Withdrawn, and recorded because it was nearly a real error.** The first
+reaction was to *replace* the gate's target $Z$ with $B$ and call it a criterion
+fix. That is not a bug fix:
 
-**The mechanism.** Every one of the 2,695 admits an airtight pairwise witness —
-two feasible cases with different $Z$, the same $\sigma_0$, and the same response
-to *every* legal query. Attribution of the disagreeing cause keys: `U` alone
-2,435, `X` alone 218, `X+E` 42. The trap term dominates because
-`identifiability_gate.canonicalise` takes `[domain[0], domain[-1]]` under the
-frozen order and is **deliberately outcome-blind**, while `_domains` populates
-`U` with `Trap(cell, t)` for every open cell at every step of the healthy trace.
-Most of those traps cannot fire, so the canonical first/last element is generally
-a trap with no effect on the trajectory, the feedback, or the outcome.
+$$\boxed{\text{changing the gate target from } Z \text{ to } B \;\neq\; \text{fixing a criterion bug}}$$
 
-**The error, stated plainly.** The gate demands that $Z$ — *fault presence* — be
-recoverable. A fault with no consequence is observationally identical to its
-absence, at every budget, by construction. What RFL needs identified is $B$ —
-*but-for relevance* — and $R^\ast$. A2 already separated these two; A51 is the
-same conflation reappearing one layer down, in the gate's *criterion* rather than
-in its *rows*.
+$Z \neq B$ is load-bearing in this project, and in an overdetermined world a
+genuinely present fault can have $B_i = 0$ — two real faults can each be
+non-difference-makers because they are redundant with one another. So the swap
+**changes V0.1R's scientific question**. `06-V01R.md` has V0.1R claiming to
+recover *which faults occurred*; licensing that with a $B$-gate would let a
+learner fail to recover $Z$ and still pass. The target is therefore **not**
+overwritten.
 
-**Why this is not a bug to fix.** No query can expose a fault with no effect, so
-"add a legal query" is unavailable. $B_{CF}$ is irrelevant. The environment is
-not at fault: `canonicalise`'s outcome-blindness is a deliberate design property
-and must be preserved, because an outcome-conditioned domain would let the gate
-choose the worlds that make it pass.
+**The result instead — two gates:**
 
-**Resolution — decided: `03` §4's option 1.** The gate's target becomes $B$;
-$Z$ is retained as the mechanism flag. The canonical domains are untouched, so
-`canonicalise`'s outcome-blindness is preserved exactly, and only the label the
-gate demands separation of changes. This is also the smaller change to the chain,
-since $R_{\text{causal}}$ is already defined on $B$. Option 2 (restricting the
-domains to trace-realizable faults) was **not** adopted: it does not explain the
-218 `X`-only or 42 `X+E` witnesses, and it would have put an outcome-blindness
-exception into the generator to fix a defect that lives in the criterion.
-Recorded in full in `13-GATE-L-FAILURE.md`; **frozen before any seed**, which is
-where the project still is.
+$$\boxed{\text{Gate}_Z:\ \text{fault-presence identifiability}} \qquad
+  \boxed{\text{Gate}_B:\ \text{but-for-relevance identifiability}}$$
+
+| gate | target | verdict |
+|---|---|---|
+| **Gate_Z** | $Z$ | **FAIL** — 2,695 / 2,749 multi-$Z$ classes provably unidentifiable at any finite depth |
+| **Gate_B** | $B$ | **FAIL** — 432 classes provably unidentifiable at any finite depth |
+
+This is the *stronger* statement: Gate_Z does not fail merely because $Z$ is too
+demanding. Even after retreating to but-for relevance — the weakest target that
+is still action-relevant — the learner's query set remains insufficient.
+
+**Root cause of Gate_Z.** `identifiability_gate.canonicalise` takes
+`[domain[0], domain[-1]]` under the frozen order and is **deliberately
+outcome-blind**, while `_domains` populates `U` with `Trap(cell, t)` for every
+open cell at every step of the healthy trace. Most of those traps cannot fire, so
+the canonical first/last element is generally a trap with no effect on the
+trajectory, the feedback, or the outcome. A fault that cannot fire is
+observationally identical to its absence at every budget, by construction.
+Attribution of the unbounded classes' witness pairs: `U` alone 2,435,
+`X` alone 218, `X+E` 42.
+
+**Root cause of Gate_B, and why it is not patchable.** $B_i$ is defined by
+*removing* fault $i$ and comparing outcomes, but the learner's intervention
+lattice
+
+$$\mathcal I = \{do(z{=}z')\} \cup \{do(d_t{=}d')\} \cup \{do(C_X(s^\ast,a^{cmd}){=}a^{cmd})\} \cup \{\emptyset\}$$
+
+contains **no operation that removes a fault**. A process query changes
+`base_option`; it does not switch $Z_P$ off. Attribution of the 432: `E` 294,
+`P` 108, and no `X`, `D` or `U` term.
+
+Adding $do(Z_i = \text{off})$ is **rejected and the rejection is frozen**: that
+operation *is* the but-for test, so using it to certify that $B$ is identifiable
+installs the ground-truth construction itself as a diagnostic query, and the gate
+would pass by construction while measuring nothing. Same class of error as
+A50(d) — silently promoting a structure the evaluator has into a structure the
+learner may access.
+
+**Consequences frozen here.** $B_{CF}$ is **not** raised (it buys exactly zero
+classes; $\max_C D(C) = 1$ over every decidable class, so the budget was never
+the binding constraint). The environment is **not** tuned. The unbounded classes
+are **not** dropped. **V0.1R seed collection is paused**, because `06-V01R.md`'s
+go/no-go requires Gate L to PASS and it does not pass under either reading.
+
+Full record: `13-GATE-L-FAILURE.md`. Quotient analysis: A52.
 
 ---
 
-## 40. Summary and what remains open
+## 41. Summary and what remains open
 
 | # | what | severity | status |
 |---|---|---|---|
@@ -1277,7 +1301,54 @@ section above; the most recent is:
 
 | # | what | severity | status |
 |---|---|---|---|
-| **A51** | Gate L demands $Z$ (presence) be recoverable, but effectless faults are indistinguishable from absence at any budget; 2,695/2,749 multi-$Z$ classes provably unidentifiable | **P0 (spec)** | resolution decided: gate on $B$ (`13`) |
+| **A51** | Gate L splits into Gate_Z and Gate_B, and **both** fail; replacing $Z$ by $B$ is a change of V0.1R's scientific question, not a bug fix | **P0 (spec)** | frozen — V0.1R seed collection paused |
+
+---
+
+## 40. A52 — the identifiable quotient is too coarse to merge
+
+**Found by**: reading out what the current interface supports, without changing
+anything — no environment edit, no new target, no added query.
+
+Define $b \sim b'$ iff some latent world carrying $b$ and some world carrying
+$b'$ cannot be told apart by any history-dependent safe query policy. The
+relation is exactly "no single query separates the pair": a tree splits worlds
+only along query responses, and if $r_1, r_3$ were split while neither
+$r_1, r_2$ nor $r_2, r_3$ is, then $r_2$ is legal on that query and must return
+one of the two responses, differing from the other — so one of those pairs was
+split. Hence it is transitive, and components of the complement-of-separability
+graph give the quotient **exactly**, not approximately.
+
+**Result** (`scripts/a52_quotient.py`, `outputs/rebuild/a52_quotient.json`):
+723 classes span more than one $B$; 432 carry an inseparable $B$ pair; every such
+per-class component holds exactly **two** $B$-vectors; 17 inseparable pairs
+collapse to **7** components of $\mathcal B/{\sim}$; collapsing the $P$ and $E$
+coordinates makes **all 432 vanish**, and $\{P, E\}$ is the minimal such set —
+size 2.
+
+$$\boxed{\widetilde{\mathcal B} = \mathcal B / \sim \;\text{keeps}\; (D, X, U) \;\text{and discards}\; (P, E)}$$
+
+**Why this blocks the merge.** The two coordinates the interface cannot separate
+are **exactly Process and Environment** — the distinction this project exists to
+study. Merging them is not a bookkeeping move; it deletes the independent
+variable. So `03` §4's option 1 is **unavailable here**, not because merging is
+illegitimate in general but because this particular quotient destroys the
+question.
+
+**What remains.** Neither merge (destroys the axis) nor $do(Z_i{=}\text{off})$
+(circular, A51) is available. The only remaining direction is a genuinely new
+diagnostic capability — a process-audit channel for $P$, an independent
+plant/environment channel for $E$ — and it must first be argued that a *real*
+learner could possess it, then the whole gate re-run. That argument is not made
+here, and no query is added.
+
+There is a deeper reason to state plainly, because it bounds what any repair can
+achieve: $B_i$ is *defined* as the outcome difference caused by applying the
+repair of fault $i$. So $B$ is identifiable exactly to the extent the learner can
+already apply repairs — and repair is what the chain is trying to *learn*
+(V0.3R). A gate that certifies $B$ by granting repair queries certifies nothing.
+Gate_B's failure is therefore not an oversight but a load-bearing feature of the
+task as currently posed.
 
 ### The pattern across the three rounds
 

@@ -160,28 +160,35 @@ to separate makes the full-signature map injective, so Gate L would **PASS** —
 while a learner holding four queries can never separate them. The gate would then
 license an experiment whose failure is guaranteed by the budget.
 
-**The condition is therefore stated in terms of the budget.** Note also what is
-being separated: the target is $B$, but-for relevance, **not** $Z$, fault
-presence. A fault that is present but has no effect on any trajectory, feedback
-or outcome is observationally identical to its absence at every budget, so
-demanding that $Z$ be recovered makes the gate unachievable for reasons that have
-nothing to do with the learner. This was Gate L's actual failure; see A51 and
-`13-GATE-L-FAILURE.md`.
+**The condition is therefore stated in terms of the budget.** Note also that
+*there are two gates here, not one*, because $Z$ and $B$ ask different questions
+and one does not substitute for the other:
+
+$$\boxed{\text{Gate}_Z:\ \text{fault-presence identifiability}} \qquad
+  \boxed{\text{Gate}_B:\ \text{but-for-relevance identifiability}}$$
+
+$Z \neq B$ is load-bearing. A fault can be present with $B_i = 0$ — it may never
+fire, or it may be redundant with another fault in an overdetermined world. Every
+class must be separable under **Gate_Z** for V0.1R's claim (*which faults
+occurred*) to be licensed, and under **Gate_B** for the weaker claim (*which
+faults matter*) to be licensed. Both are reported; neither is silently
+substituted for the other. See A51 and `13-GATE-L-FAILURE.md`.
 
 Primary form — adaptive, which is what a method actually does since it chooses its
 next query from what it has seen:
 
 $$\boxed{B_{\min}^{\text{adaptive}} = \min_{\Pi}\; \max_{\ell \in \mathcal L}\; \mathrm{depth}_{\Pi}(\ell) \;\le\; B_{CF}}$$
 
-where $\Pi$ ranges over decision trees whose internal node at depth $d$ issues a
-query from $\mathcal Q_{\text{learner}}(H)$ — legal on the *current hypothesis set*
-$H$, which is A50 — and branches on the observed outcome. Two worlds are
-separated when their $B$ vectors differ.
+computed twice, once with worlds separated when their $Z$ vectors differ and once
+with them separated when their $B$ vectors differ. $\Pi$ ranges over decision
+trees whose internal node at depth $d$ issues a query from
+$\mathcal Q_{\text{learner}}(H)$ — legal on the *current hypothesis set* $H$,
+which is A50 — and branches on the observed outcome.
 
 Tractable fallback, run first because it is cheap: a **non-adaptive separating
 subset**
 
-$$\boxed{\exists\, S \subseteq \mathcal Q_{\text{learner}},\; |S| \le B_{CF}:\; \text{the } S\text{-signature separates all } B}$$
+$$\boxed{\exists\, S \subseteq \mathcal Q_{\text{learner}},\; |S| \le B_{CF}:\; \text{the } S\text{-signature separates all targets}}$$
 
 The fallback is conservative in the right direction — if a non-adaptive set of
 size $\le B_{CF}$ separates, then so does an adaptive tree of depth $\le B_{CF}$,
@@ -189,6 +196,11 @@ but not conversely. So a fallback PASS is sound and a fallback FAIL is
 inconclusive rather than fatal; the matrix reports which form was used. Stage 4
 computes the primary form exactly, so the fallback is now only a cheap
 cross-check.
+
+$\mathcal B / {\sim}$ — the quotient of $B$ by indistinguishability under the
+current interface — is an output of the gate, not an input. It is what remains
+identifiable when no query is added and no target is changed, and it is read out
+before any decision to merge labels or to add a diagnostic capability.
 
 ### 1.5 Consequence
 
@@ -477,8 +489,10 @@ The read-out required by the gate:
 | number of candidate latent cases $\lvert\mathcal L_{\text{cand}}\rvert$ | reported |
 | feasible cases, and the malformed exclusion table | reported |
 | number of distinct signature classes | reported |
-| $B_{\min}^{\text{adaptive}} = \max_C D(C)$ (§1.8) | **must be $\le B_{CF}$** |
-| the separation target, $B$ or $Z$ | reported; **$B$**, with $Z$ retained as the mechanism flag (A51) |
+| $B_{\min}^{\text{adaptive}} = \max_C D(C)$ (§1.8) | **must be $\le B_{CF}$ — under BOTH targets** |
+| Gate_Z verdict (separate $Z$) | reported; **FAIL** ($13$) |
+| Gate_B verdict (separate $B$) | reported; **FAIL** ($13$) |
+| the identifiable quotient $\mathcal B/{\sim}$ | reported — what the interface supports before any merge or added query |
 | classes with $D(C) = 0$ (single $Z$, no query needed) | reported |
 | classes that are root dead ends ($\mathcal Q_{\text{safe}}(C) = \emptyset$) | reported |
 | the separating query set $S$ actually used | reported — which queries are actually needed |

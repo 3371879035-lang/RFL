@@ -85,32 +85,63 @@ for repair, for $R^\ast$ — is $B$ and $R^\ast$. A fault that never fires has
 $B = 0$ and no repair, and demanding that a learner distinguish it is demanding
 the impossible and the useless at once.
 
-## 4. Resolution — decided
+## 4. Resolution — two gates, not one, and both fail
 
-`03` §4 offers merge or add-a-query. Adding a query cannot work here: no query
-can reveal a fault with no consequence. So the resolution is a label change.
+`03` §4 offers merge or add-a-query. Adding a query cannot work for Gate_Z: no
+query can reveal a fault with no consequence.
 
-**DECIDED: option (1). The gate's target becomes $B$; $Z$ is retained as the
-world's mechanism flag.** The criterion is now: *every but-for-relevant cause
-pattern is separable within $B_{CF}$*. `canonicalise`'s outcome-blindness is
-preserved exactly — the canonical domains are untouched — and only the label the
-gate demands separation of changes. This is also the smaller change to the chain,
-because V0.2R's $R_{\text{causal}}$ is already defined on $B$.
+**A proposed resolution to replace $Z$ by $B$ as Gate L's target is WITHDRAWN.**
+It was argued as a bug fix and it is not one. $Z \neq B$ is a load-bearing
+distinction in this project, and in an overdetermined world a genuinely present
+fault can have $B_i = 0$ — two real faults can each be non-difference-makers
+because they are redundant with each other. So
 
-Option (2), restricting the canonical domains to trace-realizable faults, was
-**not** adopted. It is not sufficient on its own (the 218 `X`-only and 42 `X+E`
-witnesses are not explained by the trap term), and adopting it would have put an
-outcome-blindness exception into the generator to fix a defect that lives in the
-criterion. The domains stay as they are.
+$$\boxed{\text{changing the gate target from } Z \text{ to } B \;\neq\; \text{fixing a criterion bug}}$$
 
-Consequence to keep straight: a fault that is present but has $B_i = 0$ is
-**not** required to be recovered, and a learner that fails to recover it is not
-wrong. Downstream, $Z$ remains available to the evaluator as the mechanism flag,
-so metrics that need ground-truth mechanism (e.g. the malformed-exclusion table)
-are unaffected; metrics that need *what to repair* use $B$ and $R^\ast$, as they
-always did.
+It is **changing V0.1R's scientific question**. V0.1R as specified in
+`06-V01R.md` claims to recover *which faults occurred*; licensing that claim with
+a $B$-gate would be illegitimate, because a learner can fail to recover $Z$ and
+still pass.
 
-Logged as **A51** in `12-AMENDMENTS.md`, frozen before any seed.
+The target is therefore **not** overwritten. Gate L splits in two, and both are
+reported:
+
+$$\boxed{\text{Gate}_Z:\ \text{fault-presence identifiability}} \qquad
+  \boxed{\text{Gate}_B:\ \text{but-for-relevance identifiability}}$$
+
+| gate | target | verdict |
+|---|---|---|
+| **Gate_Z** | $Z$, fault presence | **FAIL** — 2,695 / 2,749 multi-$Z$ classes provably unidentifiable at any depth; dominated by dormant faults, chiefly an untriggered $U$ |
+| **Gate_B** | $B$, but-for relevance | **FAIL** — 432 classes provably unidentifiable at any depth; residual concentrated in $P$ / $E$ |
+
+This is the *stronger* statement, and it is the one to freeze:
+
+> Gate_Z does not fail merely because $Z$ is too demanding. Even after retreating
+> to but-for relevance — the weakest target that is still action-relevant —
+> the current learner query set remains insufficient.
+
+**Consequence for the chain.** `06-V01R.md`'s go/no-go lists "Identifiability
+Gate L: PASS — every cause separable within $B_{CF}$". That row is now
+unsatisfied under **both** readings, so **V0.1R seed collection is paused**: a
+**FAIL** under either gate, and certainly under both, prohibits proceeding.
+
+Two legitimate directions remain, and neither is taken here:
+
+* if the identifiable quotient $B/{\sim}$ (§7 and `a52_quotient.json`) preserves
+  the distinction the project actually studies — Process vs Environment — then a
+  formal amendment $B \to \widetilde B$ is available, justified *by the failed
+  gate* rather than chosen to make a method pass;
+* if the quotient is too coarse to preserve that distinction, no merge is
+  available and a genuinely new diagnostic capability is required — one that must
+  first be argued for as something a real learner could possess.
+
+$do(Z_i = \text{off})$ is **rejected** as that capability, and the rejection is
+frozen: $B_i = \mathbf{1}[Y(do(Z_i{=}0)) \neq Y]$, so handing the learner
+$do(Z_i{=}0)$ in order to certify that $B_i$ is identifiable installs the
+ground-truth construction itself as a diagnostic query. It is the same error as
+A50(d): silently promoting a structure the evaluator knows into a structure the
+learner may access. Gate_Z and Gate_B are therefore both reported as **FAILED**,
+and closing either is a separate amendment.
 
 ## 7. Gate L re-run under the $B$ criterion
 
@@ -164,6 +195,46 @@ So Gate L remains FAILED under the decided criterion, on 432 classes, for a
 reason that is now precisely located. Resolving it is a separate amendment about
 the task's query set, and it is not taken here.
 
+## 7b. The identifiable quotient, and why the merge is unavailable
+
+Read out with `scripts/a52_quotient.py` — **no environment edit, no new target,
+no added query**; it only asks what ontology the current interface supports.
+
+Two worlds are equivalent when no history-dependent safe policy separates them.
+That relation is exactly "no single query separates the pair", and it is
+transitive: a tree splits worlds only along query responses, so if $r_1, r_3$
+were split while neither $r_1, r_2$ nor $r_2, r_3$ is, then $r_2$ is legal on
+that query and must return one of the two responses and differ from the other —
+one of those pairs was split. Hence components of the complement-of-separability
+graph give $\mathcal B/{\sim}$ **exactly**.
+
+* 723 classes span more than one $B$; 432 carry an inseparable $B$ pair.
+* Every such per-class component holds exactly **two** $B$-vectors.
+* 17 inseparable pairs $\to$ **7** components of $\mathcal B/{\sim}$.
+* Collapsing the $P$ and $E$ coordinates makes **all 432 vanish**;
+  $\{P, E\}$ is the minimal such set, size 2.
+
+$$\boxed{\widetilde{\mathcal B} = \mathcal B/\sim \;\text{keeps}\; (D, X, U)
+\;\text{and discards}\; (P, E)}$$
+
+**This is why §4's option 1 is unavailable.** The two coordinates the interface
+cannot separate are *exactly Process and Environment*. Merging them is not
+bookkeeping; it deletes the independent variable this project exists to study.
+The merge is illegitimate here not in general, but because this particular
+quotient destroys the question.
+
+**There is a deeper bound, and it closes the obvious escape.** $B_i$ is *defined*
+as the outcome difference produced by applying the repair of fault $i$. So $B$ is
+identifiable exactly to the extent the learner can already apply repairs — and
+repair is what the chain is trying to *learn* in V0.3R. A gate that certifies $B$
+by granting repair queries certifies nothing. Gate_B's failure is therefore not
+an oversight to be patched but a load-bearing property of the task as posed.
+
+The only direction left is a genuinely new diagnostic capability — a process
+audit for $P$, an independent plant/environment channel for $E$ — and it must
+first be argued that a *real* learner could possess it, after which the entire
+gate is re-run. That argument is not made here.
+
 ## 8. What is not happening
 
 * $B_{CF}$ is **not** being raised. It buys literally nothing here.
@@ -172,15 +243,16 @@ the task's query set, and it is not taken here.
 
 ## 9. Reproduce
 
-```
-python scripts/stage4_unidentifiable.py    # the proof and the attribution
-python scripts/gate_stage4.py              # the depth table at B_CF = 4, target Z
-python scripts/gate_stage4_B.py            # the same, target B (the decided criterion)
+```bash
+python scripts/stage4_unidentifiable.py    # the Gate_Z proof and the attribution
+python scripts/gate_stage4.py              # depth table at B_CF = 4, target Z
+python scripts/gate_stage4_B.py            # the same, target B
+python scripts/a52_quotient.py             # B/~ and the minimal merge
 python scripts/verify_stage4_full.py       # V4, two algorithms, all classes
 python scripts/verify_stage4_witnesses.py  # V3, all 54 positive claims
 python scripts/capacity_bound.py           # counting, no search
 ```
 
 Artifacts: `outputs/rebuild/stage4_unidentifiable.json`, `gate_stage4.json`,
-`gate_stage4_B.json`, `verify_stage4_full.json`, `verify_stage4.json`,
-`capacity_bound.json`.
+`gate_stage4_B.json`, `a52_quotient.json`, `verify_stage4_full.json`,
+`verify_stage4.json`, `capacity_bound.json`.
