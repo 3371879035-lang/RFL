@@ -10,6 +10,10 @@ from .contract import (  # noqa: F401
     ProcessProposalResponse, ProtocolError, QueryObservation, QueryReceipt,
     RolloutResponse,
 )
+from .methods import (  # noqa: F401
+    UNIFORM_OVER_FEASIBLE_WORLDS, WEIGHT, DirectFeedbackMethod, PublicSupport,
+    QueryOnlyMethod, SeqThenQueryMethod, SequenceEvidenceMethod,
+)
 from .runner import (  # noqa: F401
     ARMS, blind_drain, make_evidence, make_feedback, make_step, run_arm,
 )
@@ -22,4 +26,7 @@ __all__ = [
     "ProtocolError", "QueryObservation", "QueryReceipt", "RolloutResponse",
     "ARMS", "blind_drain", "make_evidence", "make_feedback", "make_step",
     "run_arm", "QuerySession",
+    "UNIFORM_OVER_FEASIBLE_WORLDS", "WEIGHT", "DirectFeedbackMethod",
+    "PublicSupport", "QueryOnlyMethod", "SeqThenQueryMethod",
+    "SequenceEvidenceMethod",
 ]
