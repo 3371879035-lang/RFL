@@ -1857,7 +1857,61 @@ would make S1 pass for the wrong reason and pre-empt the experiment.
 
 ---
 
-## 48. Summary and what remains open
+## 48. A62 — the support constructor bypassed typed isolation
+
+**Found by development calibration, which is exactly what development is for.**
+`calibration_dev.json` recorded AUPRC 0.9824 for `SequenceEvidence` **and**
+`QueryOnly` — identical to four decimal places, from two arms with deliberately
+different information interfaces. That coincidence was the tell.
+
+**The defect is outside the type boundary.** `build_partition()` keys classes on
+the complete $\sigma_0 = (\text{rows}, \text{feedback})$, and `calibration.py` then
+passed `PublicSupport(worlds=reps)` to every arm and initialised the query session
+with `members=reps`. So `SequenceEvidence` was silently conditioned on the
+feedback claim and `QueryOnly` on the factual sequence, despite neither typed
+input containing them. A59's types were correct; a constructor handed over the
+answer anyway.
+
+**A second, independent defect:** scenes were drawn from factual classes rather
+than independently generated episodes, so the metrics were an estimate of the
+wrong population — not the protocol's unit.
+
+**Fixed:** the frozen scene DGP is written down (κ and $z^{\text{proposal}}$
+uniform, tape measure unchanged with $P(\texttt{error\_flag}{=}1)=0.4$,
+$Z_i^{\text{pres}} \sim \mathrm{Bernoulli}(0.2)$ on non-empty canonical domains,
+fault parameters uniform within them); the arms' populations are redefined with
+$H_{\text{seq}}(I) = \{\ell : \mathrm{rows}(\ell) = I\}$, **rows-only**, and
+`QueryOnly` starts from the **global prior support** rather than the true class;
+marginals use $P_{\text{DGP}}$ instead of the placeholder $w_\ell = 1$; and
+`_freeze` no longer uses Python `hash()` as a semantic key, which would have
+reintroduced the `PYTHONHASHSEED` nondeterminism this rebuild already removed
+once. A comment claiming coverage-greedy scene selection that the code did not
+implement is gone.
+
+**$0.2$ is not tuning.** It is the value the existing "causes are sparse"
+specification implies: $\mathbb{E}[|Z|] = 1$ and $P(|Z| \le 1) \approx 0.737$.
+
+**dev_v1 is kept unchanged** and marked *development design diagnostic — invalid
+for discriminative-range inference because the support was conditioned on the
+full `(rows, feedback)` factual class*. It is **not** evidence that the benchmark
+is too easy; that question is still open.
+
+**Pre-registered before dev_v2**, so no third round of benchmark editing is
+available: if dev_v2 still shows $\mathrm{SequenceEvidence} \approx 0.98$ and
+$\mathrm{SeqThenQuery} \approx 1$, that is **accepted** and we go to the
+confirmatory run. The frozen primary hypothesis is
+$\text{SeqThenQuery} > \text{DirectFeedback} + \Delta_{\min}$, *not*
+$\text{SeqThenQuery} > \text{SequenceEvidence} + \Delta_{\min}$; the correct
+reading is that the factual sequence already carries most of the diagnosis
+information and queries resolve residual ambiguity, with a ceiling-limited
+incremental contrast. Natural separation is nicer but is **not** a PASS
+condition. Only **one** fresh dev_v2 is allowed.
+
+Full text: `15-SCENE-DGP.md`.
+
+---
+
+## 49. Summary and what remains open
 
 | # | what | severity | status |
 |---|---|---|---|

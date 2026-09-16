@@ -39,34 +39,56 @@ from .contract import N_CAUSES, Prediction
 
 # FROZEN: the prior. Do not replace with enumeration frequencies.
 UNIFORM_OVER_FEASIBLE_WORLDS = "uniform-over-feasible-worlds"
-WEIGHT = 1.0
+DGP_MEASURE = "frozen-scene-DGP"          # A62: P_DGP(ell), see 15-SCENE-DGP.md
 
 
 @dataclass(frozen=True, slots=True)
 class PublicSupport:
+    """The declared hypothesis space. MUST be independent of the true world.
+
+    A62: an earlier revision handed the arms the true world's full factual class,
+    whose key is ``sigma_0 = (rows, feedback)``. That conditioned
+    ``SequenceEvidence`` on the feedback claim and ``QueryOnly`` on the factual
+    sequence *through the support constructor*, bypassing the typed isolation
+    entirely -- which is why those two arms scored identically. The support is now
+    required to be a public object built from the DGP, and callers must not pass a
+    class keyed on the true world's feedback.
+
+    ``weights`` carries ``P_DGP(ell)``. ``w_l = 1`` was only ever a stand-in for a
+    measure that had not been specified yet (A61 said so explicitly); with the DGP
+    frozen (A62) the marginals use the real weights.
+    """
+
     worlds: tuple
     signature: Mapping          # world -> observable signature (hashable)
     fire: Mapping               # world -> 5-tuple of Z^fire
     response: Mapping           # (world, query) -> learner-facing response
-    prior: str = UNIFORM_OVER_FEASIBLE_WORLDS
+    prior: str = DGP_MEASURE
+    weights: Mapping | None = None
 
     def __post_init__(self) -> None:
-        if self.prior != UNIFORM_OVER_FEASIBLE_WORLDS:
-            raise ValueError(
-                "the prior must be the frozen uniform-over-feasible-worlds; "
-                "enumeration frequency is not a prior")
+        if self.prior not in (DGP_MEASURE, UNIFORM_OVER_FEASIBLE_WORLDS):
+            raise ValueError(f"unknown prior {self.prior!r}")
+
+    def _w(self, world) -> float:
+        if self.weights is None:
+            return 1.0
+        return float(self.weights[world])
 
     def marginals(self, H: Sequence) -> tuple:
-        """``p_i(H)`` with explicit uniform weights."""
+        """``p_i(H)`` with the declared measure over worlds."""
         if not H:
             return tuple(0.0 for _ in range(N_CAUSES))
         tot = 0.0
         acc = [0.0] * N_CAUSES
         for w in H:
-            tot += WEIGHT
+            ww = self._w(w)
+            tot += ww
             f = self.fire[w]
             for i in range(N_CAUSES):
-                acc[i] += WEIGHT * f[i]
+                acc[i] += ww * f[i]
+        if tot <= 0.0:
+            return tuple(0.0 for _ in range(N_CAUSES))
         return tuple(a / tot for a in acc)
 
 
@@ -212,7 +234,21 @@ def _unwrap(resp):
 
 
 def _freeze(raw):
-    try:
-        return hash(raw)
-    except TypeError:
-        return repr(raw)
+    """Canonicalise a response into a nested immutable tuple.
+
+    A62: this used ``hash(raw)``, which reintroduces exactly the
+    ``PYTHONHASHSEED`` nondeterminism this rebuild removed once already (the v0.4
+    WMD spread), and which also admits collisions as a semantic key. A canonical
+    tuple has neither problem.
+    """
+    if raw is None:
+        return ("none",)
+    if isinstance(raw, tuple):
+        return tuple(_freeze(x) for x in raw)
+    if isinstance(raw, list):
+        return tuple(_freeze(x) for x in raw)
+    if isinstance(raw, dict):
+        return tuple(sorted((_freeze(k), _freeze(v)) for k, v in raw.items()))
+    if isinstance(raw, (str, int, float, bool)):
+        return raw
+    return repr(raw)

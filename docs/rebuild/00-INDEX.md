@@ -56,6 +56,7 @@ every algorithmic choice below is a consequence of a design decision above it.
 | **12** | [`12-AMENDMENTS.md`](12-AMENDMENTS.md) | append-only amendment log: eight corrections raised before implementation, four of which would have changed the meaning of an experiment |
 | **13** | [`13-GATE-L-FAILURE.md`](13-GATE-L-FAILURE.md) | Gate L fails: 2,695 of 2,749 multi-$Z$ classes are provably unidentifiable at any finite budget, and the defect is in the gate's label ($Z$ vs $B$), not in the world |
 | **14** | [`14-V01R-METHOD-CONTRACT.md`](14-V01R-METHOD-CONTRACT.md) | the frozen V0.1R method boundary: interfaces, runner-enforced arm isolation, A50 in the API, and the S1 assertion map |
+| **15** | [`15-SCENE-DGP.md`](15-SCENE-DGP.md) | the frozen scene DGP, the four arms' hypothesis populations, and why dev_v1 is void for discriminative-range inference |
 
 ---
 

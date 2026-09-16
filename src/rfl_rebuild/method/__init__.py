@@ -11,8 +11,8 @@ from .contract import (  # noqa: F401
     RolloutResponse,
 )
 from .methods import (  # noqa: F401
-    UNIFORM_OVER_FEASIBLE_WORLDS, WEIGHT, DirectFeedbackMethod, PublicSupport,
-    QueryOnlyMethod, SeqThenQueryMethod, SequenceEvidenceMethod,
+    DGP_MEASURE, UNIFORM_OVER_FEASIBLE_WORLDS, DirectFeedbackMethod,
+    PublicSupport, QueryOnlyMethod, SeqThenQueryMethod, SequenceEvidenceMethod,
 )
 from .runner import (  # noqa: F401
     ARMS, blind_drain, make_evidence, make_feedback, make_step, run_arm,
@@ -26,7 +26,7 @@ __all__ = [
     "ProtocolError", "QueryObservation", "QueryReceipt", "RolloutResponse",
     "ARMS", "blind_drain", "make_evidence", "make_feedback", "make_step",
     "run_arm", "QuerySession",
-    "UNIFORM_OVER_FEASIBLE_WORLDS", "WEIGHT", "DirectFeedbackMethod",
+    "UNIFORM_OVER_FEASIBLE_WORLDS", "DGP_MEASURE", "DirectFeedbackMethod",
     "PublicSupport", "QueryOnlyMethod", "SeqThenQueryMethod",
     "SequenceEvidenceMethod",
 ]
