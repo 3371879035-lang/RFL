@@ -1,6 +1,6 @@
 # 14 — V0.1R method contract
 
-Status: **frozen — A59.** This is the interface contract and the assertion map for
+Status: frozen — logged as **A59**. This is the interface contract and the assertion map for
 V0.1R's method-facing semantic gate. It specifies **what crosses the boundary**,
 not what any algorithm does. No algorithm is specified here.
 
