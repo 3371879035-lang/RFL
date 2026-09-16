@@ -236,11 +236,65 @@ audit for $P$, an independent plant/environment channel for $E$ — and it must
 first be argued that a *real* learner could possess it, after which the entire
 gate is re-run. That argument is not made here.
 
+## 10. A53 — the plant audit, and why no observability can close Gate_B
+
+The decided diagnostic was added (`03` §3.1): an on-demand, budgeted
+`audit_plant_input(t) → u_t`, cost 1, counted in the total query budget $B_Q$
+(value unchanged at 4). Full re-run of **both** gates:
+
+| | before A53 | after A53 |
+|---|---|---|
+| Gate_Z residual | 2,695 | **2,665** — still FAIL |
+| Gate_B residual | 432 | **261** — still FAIL |
+| $\mathcal B/{\sim}$ components | 7 | 6 |
+
+$B_Q$ is still not binding in either gate (largest finite depth: 2 under Gate_Z,
+3 under Gate_B). The audit bought 171 real classes and no budget increase would
+buy the rest.
+
+**The 109 surviving `E` witnesses settle the question.** Saved in
+`a53_e_witnesses.json`; in all 109, the plant fault fires on the factual rollout
+in *both* worlds, the controller fault in neither, and the two worlds are
+**identical through the audit — every $u_t$ agrees**. They still differ in $B_E$,
+because they differ in latent parameters (`base_option`, `trap`) that have no
+factual effect yet change the outcome of the *fault-removed* rollout. Minimal
+witness, class 11:
+
+```
+world_a  Z=[1,0,0,1,0]  base_option=0  plant=PlantFault(t=0, realized=4)  trap=None
+world_b  Z=[1,0,0,1,1]  base_option=2  plant=PlantFault(t=0, realized=4)  trap=Trap((3,4),4)
+B_a=[0,0,0,0,0]   B_b=[0,0,0,1,0]        (differ in E only)
+chain (t,a_cmd,u,a_realized), identical in both:
+  [(0,3,3,4), (1,3,3,3), (2,1,1,1), (3,1,1,1), (4,3,3,3),
+   (5,3,3,3), (6,0,0,0), (7,0,0,0), (8,3,3,3)]
+```
+
+$$\boxed{B \text{ is counterfactual; no factual telemetry, however rich, can identify it}}$$
+
+$q^{plant}_t$ reads the factual trajectory; $B_E$ asks what would have happened
+had the plant fault been removed. The gap is between factual and counterfactual,
+not between visible and hidden, so **escalating the audit is futile in
+principle** — which is why it was not escalated.
+
+This closes the last non-circular route. The only remaining way to identify $B$
+is to *apply* the repair, and $do(Z_i{=}\text{off})$ is rejected (A51) because it
+is the but-for test itself.
+
+**V0.1R stays paused.** Even had Gate_B passed, V0.1R's primary target is $Z$,
+and Gate_Z remains dominated by dormant $U$ faults — faults with no behavioural
+consequence whose *presence* is nonetheless demanded. No diagnostic on the action
+path addresses that; it is a separate problem.
+
 ## 8. What is not happening
 
-* $B_{CF}$ is **not** being raised. It buys literally nothing here.
-* The environment is **not** being tuned to make the gate pass.
-* The 2,695 unbounded classes are **not** being dropped. They are the finding.
+* $B_Q$ is **not** being raised. It is not the binding constraint under either
+  gate — the largest finite adaptive depth is 2 (Gate_Z) and 3 (Gate_B) against a
+  budget of 4 — so raising it buys nothing.
+* The environment is **not** being tuned to make the gates pass, and the fault
+  support and label set are **not** changed.
+* The residual classes are **not** being dropped. They are the finding.
+* The plant audit is **not** being escalated toward "seeing $E$". Section 10
+  shows that would be futile in principle, not merely unhelpful.
 
 ## 9. Reproduce
 

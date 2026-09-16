@@ -213,7 +213,11 @@ def main() -> int:
     print(f"proved unidentifiable at any depth: {proved_unbounded}")
     print(verdict)
 
-    print("\nresidual 432: which B components the unseparable witness differs on")
+    print("\nresidual: which B components the unseparable witness differs on")
+    print("  (per-class FIRST witness; coordinates shown are the ones that pair "
+          "happens\nto differ on, so this is a pointer to the obstruction, not an "
+          "additive\naxis count — the same class can be attributed to a different "
+          "coordinate\nwhen the query family changes)")
     for k in sorted(b_diff, key=lambda x: -b_diff[x]):
         print(f"  {'+'.join(k):<28} {b_diff[k]}")
 

@@ -143,6 +143,15 @@ def class_local_queries(sol, kappa: int, phi: int, rows: tuple) -> frozenset:
     One execution query per **ControllerSite** — the frozen primitive
     ``do(C_X(s*,a^cmd)=a^cmd)`` takes no alternative action, so a site with four
     other legal actions is still exactly one query.
+
+    A53 adds one more family: ``("audit", t)``, the on-demand plant-input audit
+    ``q^plant_t = audit_plant_input(t)`` whose response is ``u_t``, the low-level
+    command the plant actually received. It is included here because its
+    availability is class-local in exactly the same way: every member of a
+    factual class shares ``sigma_0``, hence the same timestep structure, so the
+    audit is legal on the whole class and cannot be MALFORMED. It changes no
+    world and reads no ``Z``, ``M`` or ``B`` — only the interface telemetry the
+    real system already produces.
     """
     out = set()
     z_seen = {r[5] for r in rows}
@@ -151,6 +160,7 @@ def class_local_queries(sol, kappa: int, phi: int, rows: tuple) -> frozenset:
             if zp != zf:
                 out.add(("process", zp))
     for (_x, _y, t, kp, ph, z, m, a_cmd, _realized, _r) in rows:
+        out.add(("audit", t))
         cell = (_x, _y)
         if cell == K.GOAL:
             continue

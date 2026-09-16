@@ -1270,7 +1270,97 @@ Full record: `13-GATE-L-FAILURE.md`. Quotient analysis: A52.
 
 ---
 
-## 41. Summary and what remains open
+## 41. A53 — a budgeted plant-input audit query, and why it cannot be enough
+
+**Decision taken**: add an independent plant-side diagnostic **before** any
+process audit. Not $u_t \in obs_t$ permanently, but an on-demand, budgeted query
+
+$$\boxed{q^{plant}_t = \mathrm{audit\_plant\_input}(t), \qquad \text{response} = u_t, \qquad \operatorname{cost} = 1}$$
+
+where $u_t$ is the low-level command the plant actually received — the middle
+link of $a^{cmd}_t \to C_X \to u_t \to P \to a^{realized}_t$. Since $a^{cmd}_t$
+and $a^{realized}_t$ stay visible, one paid audit exposes the whole chain and
+lets the learner separate $u_t \neq a^{cmd}_t$ (controller/internal) from
+$a^{realized}_t \neq u_t$ (external plant).
+
+**Why $E$ first.** The boundary already exists in the SCM and needs no new
+ontology; reading an actuator bus, a command echo or a low-level control log is
+ordinary practice in real robot, AV, industrial-control and software-execution
+systems. It is not a but-for oracle: it does not execute $do(Z_E{=}0)$ and does
+not report $B_E$ — it returns a mechanism signal and leaves the conclusion to the
+learner. A process audit would have required deciding first what $Z_P$ *means*
+(planner chose badly / proposal swapped in the commit layer / strategy unsuited
+to context — three different things), and the SCM does not yet carry enough
+structure to do that without quietly rewriting the ontology. So Process is left
+untouched.
+
+**What is rejected, and frozen.** Publishing $u_t$ every step for free:
+`01` already fixes $u_t \neq a^{cmd}_t \Rightarrow$ internal and
+$a^{realized}_t \neq u_t \Rightarrow$ external, so free $u_t$ turns the $X/E$
+structural distinction into a read-off instead of an inference. A diagnostic
+capability must be a **resource**, not an oracle field. Also rejected: ever
+returning `plant_fault`, $B_E$, or success/failure.
+
+Because queries are no longer all counterfactual rollouts the total budget is
+written $B_Q$. The **value is unchanged** at $B_Q = 4$: this is a renaming, not a
+loosened threshold.
+
+**Result of the full re-run** (Gate_Z and Gate_B both recomputed):
+
+| | before A53 | after A53 |
+|---|---|---|
+| Gate_Z residual | 2,695 | **2,665** — still FAIL |
+| Gate_B residual | 432 | **261** — still FAIL |
+| Gate_B witnesses attributed to `E` | 294 | 109 |
+| Gate_B witnesses attributed to `P` | 108 | 122 |
+| $\mathcal B/{\sim}$ components | 7 | 6 |
+
+$B_Q$ is still not the binding constraint in either gate: the largest finite
+adaptive depth is **2** under Gate_Z and **3** under Gate_B, both below 4. So the
+audit bought real classes (171 of Gate_B's 432 became decidable) but no budget
+increase would buy the rest.
+
+The `P` figure rising from 108 to 122 is not a regression. It is the per-class
+*first* unseparable witness, and when the query family changes, a different pair
+becomes the first one found. The attribution locates an obstruction; it is not an
+additive count over axes. Recorded so the number is not misread later.
+
+**The structural finding, which is the real result.** The 109 surviving `E`
+witnesses were extracted and saved (`a53_e_witnesses.json`). In **all 109**:
+
+* the plant fault **does** fire on the factual rollout, in **both** worlds;
+* the controller fault fires in **neither**;
+* the two worlds are **identical through the audit — every $u_t$ agrees**.
+
+They nevertheless differ in $B_E$. The two worlds differ only in latent
+parameters (`base_option`, `trap`) that have **no factual effect at all**, yet
+change the outcome of the *fault-removed* rollout — and $B_E$ is exactly whether
+that rollout's outcome changes.
+
+$$\boxed{B \text{ is a counterfactual quantity; no factual telemetry, however rich, can identify it}}$$
+
+So escalating the audit is not merely discouraged, it is **futile in principle**:
+$q^{plant}_t$ reads the factual trajectory, while $B_E$ asks what would have
+happened in a world where the plant fault was removed. No amount of observability
+crosses that gap, because the gap is between factual and counterfactual, not
+between visible and hidden.
+
+This closes the last non-circular route. Identifying $B$ requires *applying* the
+repair, and $do(Z_i{=}\text{off})$ is rejected (A51) precisely because it is the
+but-for test itself. Gate_B's failure is load-bearing.
+
+**Consequences.** Gate_Z and Gate_B are both **FAILED**. Merge is still
+unavailable — $\widetilde{\mathcal B}$ still discards exactly $(P, E)$ (A52), and
+those are Process and Environment. **V0.1R seed collection remains paused**, and
+A53 does not change that even if Gate_B had passed, because V0.1R's primary
+target is $Z$ and Gate_Z is dominated by dormant $U$ faults: faults with **no
+behavioural consequence whatsoever** whose *presence* is nonetheless demanded.
+Inferring that a consequence-free hidden fault "occurred" is a separate problem
+and is not addressed by any diagnostic on the action path.
+
+---
+
+## 42. Summary and what remains open
 
 | # | what | severity | status |
 |---|---|---|---|

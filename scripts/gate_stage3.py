@@ -54,7 +54,8 @@ from gate_stage2 import (  # noqa: E402
 )
 from identifiability_gate import CAUSE_KEYS, KAPPAS, TAPES, canonicalise  # noqa: E402
 
-B_CF = 4
+B_Q = 4      # total query budget (A53): an audit query costs 1, like any other
+B_CF = B_Q   # retained name; the budget is no longer only counterfactual rollouts
 VERDICT_PASS = "PASS_NONADAPTIVE"
 VERDICT_INC = "INCONCLUSIVE_NEEDS_ADAPTIVE"
 # A50 retired "FAIL_UNIDENTIFIABLE_EVEN_UNBOUNDED": a non-adaptive miss at B_CF
@@ -117,7 +118,31 @@ def to_intervention(q) -> Intervention:
 
 
 def response(sol, case: LatentCase, q):
-    """``sigma(ell, q)`` — the full counterfactual ``I_t``, feedback included."""
+    """``sigma(ell, q)`` — the full counterfactual ``I_t``, feedback included.
+
+    A53: ``q = ("audit", t)`` is NOT a counterfactual rollout. It is the factual
+    trajectory's own interface telemetry, so it is served by replaying the
+    factual world and reading ``u_t`` — the low-level command the plant received.
+    It returns the MECHANISM SIGNAL, never a verdict: not ``plant_fault``, not
+    ``B_E``, not a success/failure. The learner still has to infer the conclusion,
+    and it can, because ``a_cmd`` and ``a_realized`` remain visible as before, so
+    one paid audit exposes the chain ``a_cmd -> u_t -> a_realized``.
+    """
+    if q[0] == "audit":
+        t = q[1]
+        try:
+            tr = K.rollout(
+                kappa=case.kappa, tape=case.tape(),
+                command_provider=reference_provider(sol),
+                base_option=case.base_option, mask=case.mask(),
+                option_fault=case.option_fault)
+        except (MalformedIntervention, OptionViolation):
+            return None
+        # steps[i] is the transition taken at time i
+        if t < 0 or t >= len(tr.steps):
+            return None
+        return ("audit", tr.steps[t].u)
+
     try:
         tr = K.rollout(
             kappa=case.kappa, tape=case.tape(),

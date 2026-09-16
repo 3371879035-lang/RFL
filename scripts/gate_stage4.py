@@ -47,7 +47,9 @@ from gate_stage3 import (  # noqa: E402
 )
 from rfl_rebuild.solve.dp import solve_reference  # noqa: E402
 
-B_CF = 4
+from gate_stage3 import B_Q  # noqa: E402
+
+B_CF = B_Q   # A53: the budget counts ALL queries, not only counterfactual ones
 INF = 999
 
 

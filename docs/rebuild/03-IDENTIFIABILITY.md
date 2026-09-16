@@ -374,20 +374,60 @@ budget rather than the method. **Gate L is the one that gates V0.1R.**
 
 ## 3. The legal query set for the learner
 
-### 3.1 Intervention queries — deterministic, hold $\omega$ fixed
+### 3.1 The queries available to the learner
+
+Two kinds, and the difference matters for the budget: **interventions** change the
+world and read the resulting rollout; **audits** change nothing and read telemetry
+the real system already produces.
+
+*Interventions* — deterministic, hold $\omega$ fixed:
 
 | query | notation | cost | reveals |
 |---|---|---|---|
 | factual rollout | $q_\varnothing$ | 0 | the observed episode |
-| decision replay | $do(d_t = d')$, $\omega$ fixed | 1 rollout | whether that decision was the operative one |
-| strategy replay | $do(z = z')$, $\omega$ fixed | 1 rollout | whether the process is the right granularity |
-| controller probe | $do\bigl(C_X(s^{*},a^{cmd}) = a^{cmd}\bigr)$, $\omega$ fixed | 1 rollout | whether execution is the operative fault |
+| decision replay | $do(d_t = d')$, $\omega$ fixed | 1 | whether that decision was the operative one |
+| strategy replay | $do(z = z')$, $\omega$ fixed | 1 | whether the process is the right granularity |
+| controller probe | $do\bigl(C_X(s^{*},a^{cmd}) = a^{cmd}\bigr)$, $\omega$ fixed | 1 | whether execution is the operative fault |
 
 The controller probe is the **single-cell** primitive of `02-SCM.md` §5.0. The
 first draft of this table still carried $do(C_X = C')$, the whole-table form that
 A7 replaced in `02` but not here — so the two documents disagreed about what a
 size-1 execution intervention *is*, and the identifiability analysis would have
 been run against a different intervention lattice than the one the learner uses.
+
+*Audits* — **A53**. On-demand, budgeted, non-intervening:
+
+| query | notation | cost | response |
+|---|---|---|---|
+| plant-input audit | $q^{plant}_t = \mathrm{audit\_plant\_input}(t)$ | 1 | $u_t$ |
+
+$u_t$ is the low-level command the plant actually received, i.e. the middle link
+of $a^{cmd}_t \to C_X \to u_t \to P \to a^{realized}_t$. It is **not** an
+$obs_t$ field: the system produces this telemetry on every step, but a learner
+must spend budget to read it. Since $a^{cmd}_t$ and $a^{realized}_t$ are already
+visible, one paid audit exposes the whole chain and lets the learner separate
+
+$$u_t \neq a^{cmd}_t \;\Rightarrow\; \text{controller/internal execution problem},
+\qquad
+a^{realized}_t \neq u_t \;\Rightarrow\; \text{external plant problem}.$$
+
+Three properties are normative and are what keep this from being an oracle:
+
+* it **returns the mechanism signal $u_t$, never a verdict**. It must not return
+  `plant_fault`, must not return $B_E$, and must not return success or failure.
+  The conclusion is still the learner's to infer;
+* it **changes no world and no fault**, reads no $Z$, $M$ or $B$, and is available
+  only at timesteps that exist on the factual trajectory — which is already
+  learner-visible, so the same class shares the same audit family and the A50
+  legality question does not arise for it;
+* it is **rejected** as a substitute for $do(Z_i = \text{off})$. Publishing $u_t$
+  every step for free would also be rejected: it would turn the $X/E$ structural
+  distinction into a read-off rather than an inference.
+
+Because queries are no longer all counterfactual rollouts, the total query budget
+is written $B_Q$. The **value is unchanged** at $B_Q = 4$ — this is a renaming of
+the symbol, not a loosening of the threshold, and $B_Q$ is not raised anywhere in
+this document.
 
 ### 3.2 The resample query is a different kind of object
 
