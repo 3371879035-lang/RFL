@@ -1512,7 +1512,110 @@ Also recorded: Gate_B now needs depth **4** for 20 classes, so for the secondary
 
 ---
 
-## 44. Summary and what remains open
+## 44. A56 — semantic propagation of A54/A55, and the Gate E pre-check
+
+**Scope, deliberately narrow: no environment change, no new query, no new
+mechanism.** A54 and A55 changed the ontology, so every document that still
+described the old world had to be brought forward *before* the semantic suite ran.
+Running `04` first would have tested the old world.
+
+**`02-SCM.md`**
+
+* §1's $Z_P$ row now reads *process commit/routing integrity*, not "the policy the
+  episode is being run under is wrong for this context".
+* §3's consequence is rewritten. It used to argue that knowing $z^{\text{in-force}}$
+  leaves open whether it was right for the context, so $Z_P$ is non-trivial "in
+  the match between $z$ and the state". **A55 removed that reading.** $Z_P$ stays
+  non-trivial for a structural reason instead: $I_t$ exposes $z^{\text{in-force}}$
+  but not $z^{\text{proposal}}$, so the commit edge must be audited.
+* §4's target line: V0.1R predicts $Z^{\text{fire}}$.
+* §5's lattice gains the missing member:
+
+$$\mathcal I = \{do(z{=}z')\}_{\text{strategy replay}} \cup \boxed{\{do(C_P{=}\text{identity})\}}_{\text{process repair}} \cup \{do(d_t{=}d')\} \cup \{do(C_X{=}a^{cmd})\} \cup \{\varnothing\}$$
+
+  with a new §5.0 laying out the three operations and whose they are. Without it,
+  Gate E, $R^{*}_{\text{suff}}$ and V0.2R would keep treating "switch strategy" and
+  "repair the commit layer" as the same thing, i.e. A55 would have fixed diagnosis
+  while the repair ontology silently slid back.
+* §5.1 splits what one formula used to conflate: **what $Z_P$ is** (a commit fault;
+  repair $do(C_P{=}\text{identity})$) versus **what "the process is the right
+  granularity" is** (a lattice statement, *not* the definition of $Z_P$).
+
+**`04-SEMANTIC-INVARIANTS.md`**
+
+* **I4** restated, because it was in danger of prohibiting what A54 requires:
+  $Z^{\text{pres}}$ comes from generation truth, $Z^{\text{fire}}$ from a **forward
+  mechanism-fire receipt** emitted by the run, $B$ from the evaluator's
+  counterfactual. The prohibition stands unchanged — *no code path may infer a
+  cause label from ordinary learner-visible behaviour after the fact* — and the
+  line is **forward receipt versus retrospective inference**, not "from the
+  machinery" versus "from a rollout".
+* **C3** is now a commit-integrity case with a falsifiable signature: a method
+  shown $z^{\text{proposal}}$ and $z^{\text{in-force}}$ that still blames a local
+  decision fails.
+* **C4** keeps the strategy-level statement and is now explicitly **not** the
+  definition of $Z_P$. The two come apart in both directions, so the old sentence
+  ("distinguishes a genuine process fault from a co-occurrence of locals") is
+  removed.
+
+**`06-V01R.md`**
+
+* §2's target is $Z^{\text{fire}}$; §3.1's Oracle ceiling is taken on
+  $Z^{\text{fire}}$.
+* The budget-bearing arms are renamed **`QueryOnly` / `SeqThenQuery`**. This is
+  semantic, not cosmetic: Gate_fire's PASS *depends on* the A53 plant audit and
+  the A55 process audit, so an arm restricted to counterfactual rollouts would
+  have a strictly narrower information set than the gate credited. The gate would
+  have been certifying a method that cannot exist. Interventions and audits now
+  share one $B_Q$, each costing 1.
+* $B_{CF} \to B_Q$ throughout.
+
+**Terminology correction.** $\boxed{\text{Semantic suite }(04) \neq \text{Gate E}}$.
+`04` is the **implementation semantics hard gate** — it asserts on the code's
+outputs, and any failure blocks every version's seed collection. Gate E asks a
+different question: whether the **evaluator truth and repair ontology are
+well-defined** at all. Both must be clean, and they are not the same check.
+
+**Gate E pre-check (`scripts/gate_e_precheck.py`, ~28{,}080 feasible cases
+sampled 1-in-37).** Two questions, both about whether A55 broke the lattice:
+
+*well-definedness* — $do(C_P{=}\text{identity})$ must be a no-op exactly when
+there is no commit fault, or it would be "repairing" nothing and contaminating
+$R^{*}$. Measured: **0 cases** where the commit repair is active without a fault.
+
+*constituent totality* — every failing case must have something in the lattice
+that repairs it, and an empty candidate set must be counted rather than silently
+becoming an empty $R^{*}$. Measured: `no_repair_needed` 25,043,
+`size1_repairable` 3,037, **`not_size1_repairable` 0**. The lattice is total for
+size-1 repairs.
+
+*the A55-specific separation*, which is the interesting number: among failing
+cases the commit repair suffices for **2,374** while a strategy replay is needed
+for **663**. So the two operations are empirically distinct, not merely
+semantically — there are 663 cases where switching the strategy repairs the
+episode and restoring a faithful commit does not. Those are precisely the C4
+episodes, where the proposal itself is a poor option and the fault is *not* a
+commit fault. Conflating the two would have mislabelled all 663.
+
+Of 17,573 P-fired sampled cases, the commit repair changed the outcome in 3,202
+and left it unchanged in the rest — consistent with A54's "fired but redundant"
+regime: the trajectory changes, the outcome does not.
+
+**Regression canary.** The **10 Gate_fire classes at $D = 3$** are the entire
+margin between PASS and FAIL ($B_Q = 4$). They are recorded as a canary: any
+future query-semantics change must first confirm none of them slides from $D = 3$
+to $> 4$. With one unit of slack, a silent regression here would flip the gate.
+
+**Execution order from here** (all four must pass before seed collection resumes):
+
+$$\text{A56} \rightarrow \text{Gate E} \rightarrow \text{Semantic suite }(04) \rightarrow \text{Oracle ceiling} \rightarrow N_{\text{scenes}}{=}32 \text{ calibration}$$
+
+A56 is complete. Gate E's lattice question is answered above; the semantic suite
+is **not** run here.
+
+---
+
+## 45. Summary and what remains open
 
 | # | what | severity | status |
 |---|---|---|---|
@@ -1546,6 +1649,7 @@ section above; the most recent is:
 | **A51** | Gate L splits into Gate_Z and Gate_B, and **both** fail; replacing $Z$ by $B$ is a change of V0.1R's scientific question, not a bug fix | **P0 (spec)** | frozen — superseded by A54 for the target, retained for the split |
 | **A54** | configured / fired / difference-making were one symbol; V0.1R's target becomes $Z^{\text{fire}}$; Gate_fire FAILs on 600 classes, residual **100% $P$** | **P0 (spec)** | frozen — denotation resolved by A55 |
 | **A55** | $Z_P$ is commit/routing integrity (not a bad plan, not unsuited strategy); process proposal audit added; **Gate_fire PASSES**, $B_{\min} = 3$ vs $B_Q = 4$ | **P0 (spec)** | frozen — **first PASS**; V0.1R precondition met |
+| **A56** | semantic propagation of A54/A55 through `02`, `04`, `06`; lattice gains $do(C_P{=}\text{identity})$; arms renamed `QueryOnly`/`SeqThenQuery`; Gate E pre-check clean | high | complete — semantic suite not yet run |
 
 ---
 

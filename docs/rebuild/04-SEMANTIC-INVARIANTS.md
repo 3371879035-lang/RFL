@@ -49,10 +49,33 @@ $$|R^{*}| = \text{size of the minimal sufficient set},\qquad \#R^{*} = \text{num
 Both are reported. Neither is inferred from the other. Metrics that assume a
 unique repair are ill-defined.
 
-### I4 — No label reconstruction from traces
+### I4 — No label reconstruction from traces; fire receipts are not reconstruction
 
-Cause labels and repair labels come only from the forward generation
-(`02-SCM.md` §6). Any code path that derives a cause from a rollout is prohibited.
+**A54 restates this invariant, and A56 propagates the restatement**, because it
+was in danger of being read as prohibiting something the design now requires.
+
+$$Z^{\text{pres}} \text{ comes from the generation truth}, \qquad Z^{\text{fire}} \text{ comes from a forward mechanism-fire receipt}$$
+
+Concretely:
+
+* $Z^{\text{pres}}$ is the generator's own injection record (`02-SCM.md` §6). It
+  is never inferred from anything.
+* $Z^{\text{fire}}$ is produced by `kernel.fired_mechanisms` during the **forward
+  execution**: the run reports which mechanisms it actually executed
+  ($z^{\text{in-force}} \neq z^{\text{proposal}}$, override reached,
+  $u_t \neq a^{cmd}_t$, $a^{realized}_t \neq u_t$, terminated in trap). This is an
+  execution receipt emitted *by* the run, not a label inferred *about* the run
+  afterwards.
+* $B$ is the evaluator's counterfactual construction and is likewise never
+  inferred from behaviour.
+
+The prohibition stands and is unchanged in force: **no code path may infer a cause
+label from ordinary learner-visible behaviour after the fact.** The distinction is
+forward receipt versus retrospective inference, not "labels from the machinery"
+versus "labels from a rollout" — the fire vector *is* read off a rollout, and
+that is legitimate precisely because the mechanism reads it as the execution
+happens, from fields the learner cannot see, and asserts nothing about what a
+learner could conclude.
 
 *Legacy failure this prevents:* `scene_from_trace` derived a decision fault from
 `realized != reference`, which duplicated every execution fault as a decision
@@ -98,20 +121,38 @@ $$a^{cmd}_t \text{ poor},\qquad a^{realized}_t = a^{cmd}_t$$
 
 Required: $U_D = 1$, $U_X = 0$; the actuator must **not** be written.
 
-### C3 — Process wrong, every local decision defensible
+### C3 — Commit-integrity fault, every local decision defensible
 
-Each $d_t$ is locally reasonable given its context, yet the episode fails because
-$z$ is wrong for this context.
+**A55: this case is no longer "the process is wrong for the context".** The
+planner proposed $z^{\text{proposal}}$; the process/commit layer ran something
+else:
 
-Required: the process level is blamed, and no local decision is written.
+$$z^{\text{in-force}} \neq z^{\text{proposal}}, \qquad Z_P^{\text{fire}} = 1$$
+
+Each $d_t$ is locally defensible *given the option actually in force*, so no local
+decision is at fault. The proposal need **not** be optimal or even correct — that
+is the point of the case, and it is what separates it from a "bad strategy".
+
+Required: the process/commit level is blamed, no local decision is written, and
+the repair is $do(C_P = \text{identity})$. Note the falsifiable signature: if a
+method is shown $z^{\text{proposal}}$ and $z^{\text{in-force}}$ via
+`audit_process_proposal()` and still blames a decision, it fails this case.
 
 ### C4 — No local repair suffices; a strategy change does
 
 $$\forall t, d': \{do(d_t = d')\} \text{ insufficient},\qquad \exists z': \{do(z=z')\} \text{ suffices}$$
 
-Required: a process-level candidate **must** be present in $R^{*}$. This is the
-case that distinguishes a genuine process fault (§5.1 of `02-SCM.md`) from a
-co-occurrence of locals.
+Required: a process-level candidate **must** be present in $R^{*}$.
+
+**A55: this is a statement about the repair lattice, and it is explicitly NOT the
+definition of $Z_P$.** The earlier text said this case "distinguishes a genuine
+process fault from a co-occurrence of locals", which conflated *process-granularity
+repair* (`02` §5.1) with the *commit-integrity fault* (A55). The two can come
+apart in both directions: a C4-shaped episode can exist with
+$z^{\text{in-force}} = z^{\text{proposal}}$ and no commit fault at all (the
+proposal itself is simply a poor option, and $do(z=z')$ is the only route), and a
+C3 commit fault can be repairable by a single local intervention. C4 asserts the
+lattice statement only; the fault label is C3's business.
 
 ### C5 — Environment fault
 

@@ -17,7 +17,7 @@ Five exogenous causes, each independently assignable:
 
 | symbol | name | what it means when active |
 |---|---|---|
-| $Z_P$ | process / strategy | the *policy the episode is being run under* is wrong for this context |
+| $Z_P$ | process **commit/routing integrity** | the process/commit layer did **not** faithfully commit the planner's $z^{\text{proposal}}$; $z^{\text{in-force}} \neq z^{\text{proposal}}$ (A55). It does **not** mean the proposal was a bad plan, nor that it was unsuited to the context |
 | $Z_D$ | decision | a specific $a^{cmd}_t$ is a poor choice **in its context** |
 | $Z_X$ | execution | the body failed to carry out a correct command |
 | $Z_E$ | environment | an external perturbation changed the world, not the agent |
@@ -313,10 +313,22 @@ Two consequences, both binding:
    (`03-IDENTIFIABILITY.md` §2.1). A field the policy may read but the
    identifiability analysis may not is an undeclared third category, and `01` §2.2
    forbids exactly that: every field is either in `obs` or in the hidden set.
-2. **$Z_P$ does not become trivial.** Knowing *which* option is in force does not
-   tell the learner whether that option was the right one for this context — that
-   still requires counterfactuals. The fault is in the *match* between $z$ and the
-   state, not in $z$ itself.
+2. **$Z_P$ does not become trivial — but not for the reason first written here.**
+   An earlier revision said the fault is "in the *match* between $z$ and the
+   state, not in $z$ itself", i.e. that knowing the option in force leaves open
+   whether it was the right one for the context. **A55 removed that reading.**
+   $Z_P$ is a **commit/routing integrity fault**:
+
+   $$\kappa \rightarrow z^{\text{proposal}} \rightarrow C_P \rightarrow z^{\text{in-force}} \rightarrow Q_D(s,z,m,\cdot) \rightarrow a^{cmd}$$
+
+   Healthy means $C_P(z^{\text{proposal}}) = z^{\text{proposal}}$, and
+   $Z_P^{\text{fire}} = \mathbf 1[z^{\text{in-force}} \neq z^{\text{proposal}}]$.
+   The proposal itself is **not** required to be optimal or even correct: the
+   fault is an unfaithful commit, not a bad plan. So $Z_P$ stays non-trivial for
+   a structural reason — $I_t$ exposes $z^{\text{in-force}}$ but **not**
+   $z^{\text{proposal}}$ — and a learner must spend a process-proposal audit
+   (`03` §3.1) to see the commit edge. "Was this option right for the context?"
+   is a *different*, normative question (`11` §6.4) and is not $Z_P$.
 
 Note that $m$ depends on the trajectory ($\delta_z$ consumes $s'$), so $x^D$ is
 deterministic given the episode; it carries no information about the fault beyond
@@ -386,7 +398,7 @@ already optimal may be unrepairable.
 
 This is exactly the split the four-version chain needs:
 
-$$\text{V0.1R predicts } Z \qquad\qquad \text{V0.2R predicts } R^{*}$$
+$$\text{V0.1R predicts } Z^{\text{fire}} \qquad\qquad \text{V0.2R predicts } R^{*}$$
 
 and it removes a confusion that ran through the whole legacy project, where
 "attribution" was asked to be simultaneously a diagnosis and a prescription.
@@ -397,12 +409,40 @@ and it removes a confusion that ran through the whole legacy project, where
 
 The admissible intervention space is
 
-$$\mathcal I = \underbrace{\{do(z = z')\}_{z' \in \mathcal Z}}_{\text{process}} \;\cup\; \underbrace{\{do(d_t = d')\}_{t, d'}}_{\text{decision}} \;\cup\; \underbrace{\{do(C_X(s, a) = a)\}_{(s,a)}}_{\text{execution}} \;\cup\; \{\varnothing\}$$
+$$\mathcal I = \underbrace{\{do(z = z')\}_{z' \in \mathcal Z}}_{\text{strategy replay}} \;\cup\; \underbrace{\{do(C_P = \text{identity})\}}_{\text{process repair}} \;\cup\; \underbrace{\{do(d_t = d')\}_{t, d'}}_{\text{decision}} \;\cup\; \underbrace{\{do(C_X(s, a) = a)\}_{(s,a)}}_{\text{execution}} \;\cup\; \{\varnothing\}$$
 
 with $\varnothing$ meaning *change nothing* — which is a legal repair and must be
 a legal answer.
 
-### 5.0 The execution primitive acts on one cell
+### 5.0 $do(C_P = \text{identity})$ is the process repair, and it is evaluator-only
+
+**A55.** Replacing the in-force option is *not* the same operation as repairing
+the commit layer, and the earlier lattice conflated them by having only
+$do(z=z')$ under "process":
+
+$$\boxed{do(C_P = \text{identity}) \quad\text{restores}\quad z^{\text{in-force}} = z^{\text{proposal}}}$$
+
+| operation | what it does | whose |
+|---|---|---|
+| $do(z = z')$ | runs option $z'$ for the whole episode, bypassing the commit edge | **learner's** — *strategy replay* |
+| $do(C_P = \text{identity})$ | restores a faithful commit, leaving $z^{\text{proposal}}$ untouched | **evaluator's** — process repair |
+| $\mathrm{audit\_process\_proposal}()$ | reports $z^{\text{proposal}}$; changes nothing | **learner's**, cost 1 |
+
+They must not be conflated (`11` §6.4). Strategy replay changes the answer for
+reasons that have nothing to do with integrity — it replaces the option outright
+— so treating it as a process repair would let $R^{*}$ claim credit for a
+strategy change while nominally fixing a commit. And $do(C_P=\text{identity})$
+stays **out of the learner's query set**: admitting it would be
+$do(Z_P{=}\text{off})$, which certifies $B$ by handing over the very operation
+that defines it (`12-AMENDMENTS.md` **A51**).
+
+Note that $do(C_P=\text{identity})$ is what the but-for construction for $B_P$
+already evaluates (`kernel.but_for_relevance`, the `Z_P` trial): dropping the
+option fault restores a faithful commit. So the repair primitive and the but-for
+construction coincide here by construction, not by accident — and that is exactly
+why the *learner* may not have it.
+
+### 5.1 The execution primitive acts on one cell
 
 $$\boxed{do\bigl(C_X(s^{*}, a^{cmd}) = a^{cmd}\bigr) \text{ is the execution primitive}}$$
 
@@ -472,12 +512,26 @@ $$\boxed{a' \in A_z(m_t, s_t) \setminus \{\pi_D^{*}(s_t, z, m_t)\}}$$
 
 within the option, not adjacent to it.
 
-### 5.1 The corrected definition of a process fault
+### 5.1 The corrected definition of a process fault — and of process *granularity*
 
-$$\boxed{\text{Process fault} \iff \exists\, z' : \{do(z=z')\} \text{ suffices, and no single local intervention suffices}}$$
+Two different statements used to share one formula here. A55 separates them.
 
-That is: **the process is the right granularity to intervene at** — not "two
-things are broken". A process fault is *not* defined as $|R^{*}| > 1$.
+**What $Z_P$ is** (the fault, §1 and `11` §6.4): a commit/routing integrity
+failure, $z^{\text{in-force}} \neq z^{\text{proposal}}$. Its repair is
+$do(C_P = \text{identity})$, evaluator-only.
+
+**What "the process is the right granularity" is** (a statement about the repair
+lattice, *not* the definition of $Z_P$):
+
+$$\boxed{\text{process-granularity repair} \iff \exists\, z' : \{do(z=z')\} \text{ suffices, and no single local intervention suffices}}$$
+
+That is: **the process is the right level to intervene at** — not "two things are
+broken". It is *not* defined as $|R^{*}| > 1$, and it is **not** the definition of
+$Z_P$. A run can have process-granularity repair available with no commit fault at
+all, and a commit fault can be repairable by a single local intervention. Reading
+the formula as a definition of $Z_P$ is precisely the conflation A55 removes:
+$do(z=z')$ replaces the option outright, whereas $do(C_P=\text{identity})$ repairs
+the commit edge and leaves $z^{\text{proposal}}$ alone.
 
 This is the direct fix for the legacy failure, where the definition effectively
 became "minimal size > 1", and where a reconstruction bug then manufactured
