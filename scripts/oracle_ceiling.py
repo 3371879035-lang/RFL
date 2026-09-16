@@ -172,7 +172,8 @@ def main() -> int:
         "gate": "A60 — Oracle ceiling / metric plumbing gate",
         "fixture": {
             "n_scenes": len(chosen),
-            "size": FIXTURE_SIZE,
+            "minimum_fixture_size": FIXTURE_SIZE,
+            "actual_size": len(chosen),
             "case_fingerprints": [p for _c, _f, p in chosen],
             "per_cause_positive": [sum(row[i] for row in Y)
                                    for i in range(N_CAUSES)],
@@ -180,8 +181,17 @@ def main() -> int:
                                    for i in range(N_CAUSES)],
             "has_scene_with_yP_ne_yD": have_pd,
             "has_scene_with_fire_ne_pres": have_fire_pres,
-            "selection": "deterministic: earliest-first over the canonical "
-                         "enumeration, constraints satisfied then FIXTURE_SIZE",
+            "selection": (
+                "deterministic. Scan the canonical enumeration in fixed order "
+                "into a pool, then take earliest-first items until at least "
+                "minimum_fixture_size scenes are held AND every cause has both a "
+                "positive and a negative scene. Then continue appending from the "
+                "pool, still earliest-first, until the y_P != y_D and "
+                "Z^fire != Z^pres constraints are also met. Because those two "
+                "constraints can require scenes beyond the minimum, the actual "
+                "size may exceed minimum_fixture_size; that is expected, and "
+                "actual_size is reported separately so the two are never "
+                "conflated."),
         },
         "oracle": {"metrics": asdict(m),
                    "expected": EXACT, "tolerance": TOL,
