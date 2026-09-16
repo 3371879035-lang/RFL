@@ -1788,7 +1788,76 @@ against.
 
 ---
 
-## 47. Summary and what remains open
+## 47. A59 — the V0.1R method contract
+
+**Two boundary failures were visible before any code was written**, and this
+amendment freezes the contract that prevents both. Full text:
+`14-V01R-METHOD-CONTRACT.md`.
+
+**V0.1R must not grow a responsibility output.** V0.1R is diagnosis only — its
+output is a five-dimensional $p$ and nothing else. Credit assignment, repair and
+update belong to V0.2R/V0.3R (`06-V01R.md` §6). Adding a $U$ output now would
+implement V0.2R inside V0.1R and destroy the version split that exists precisely
+to keep diagnosis and prescription apart.
+
+**Arm isolation must hold by construction, not by promise.** If every arm gets
+the same complete scene and is trusted not to read a field, the comparison
+measures discipline instead of information. Arms therefore receive **different
+types**.
+
+Four consequences that are easy to get wrong:
+
+* **`Prediction` splits into two typed fields.** $p_i \in [0,1]$ with
+  $\sum_i p_i$ **unconstrained** is the object Brier/ECE are computed on;
+  $s^{\text{raw}} \in \mathbb{R}^5$ is a *separate* diagnostic field. `06` §2
+  already required normalising methods to report unnormalised scores, but the
+  interface had not made them different types — and merging them makes "the
+  probability" ambiguous at exactly the point calibration is measured.
+* **The sequence arms receive $I^{\text{factual}}_{0:T}$, not bare
+  $\text{obs}_{0:T}$.** Gate_fire counts the learner's own $z^{\text{in-force}}$
+  and $m$ as legal information and A55's process diagnosis *requires*
+  $z^{\text{in-force}}$; an `obs`-only arm would be strictly narrower than the
+  gate credited — the same defect A56 fixed on the arm names.
+* **`QueryOnly`'s blind selection is executed by the runner.** Query *addresses*
+  are partly derived from the factual trajectory (an execution probe needs a
+  site, a decision replay and a plant audit need a timestep), so handing the
+  addresses over leaks sequence evidence through the query menu. The runner
+  selects from the arm's safe family with a frozen blind policy and the method
+  sees only responses. Only `SeqThenQuery` selects its own next query.
+* **A50 lives in the API, not only in the gate scripts.** A method must never
+  receive `MALFORMED`, `ILLEGAL_IN_THIS_WORLD` or
+  `QUERY_REJECTED_BECAUSE_HIDDEN_FAULT`: unsafe queries simply **do not exist in
+  the candidate set**, so a refusal is not a representable response and there is
+  nothing to encode. Exposing the rejection would leak a function of hidden $M$ —
+  the error A50(d) already rejected. And every query is an **independent probe**
+  replayed from the same factual latent world; only the information history and
+  the remaining budget persist across queries.
+
+**What S1 asserts, and what it refuses to assert.** `04` says the semantic suite
+does not test attribution accuracy, so the V0.1R method-facing assertions test
+**interface and information-flow semantics only**: zero world/model mutation and
+no write output (C0); the input view carries no evaluator truth and $p_X$/$p_D$
+are separable coordinates (C1/C2); the process audit returns $z^{\text{proposal}}$
+with no $Z_P$ verdict and $z^{\text{in-force}}$ arriving via the learner's control
+state (C3); $p_E$ and $p_U$ exist as independent coordinates so "external /
+unknown" is *expressible* (C5); the call is side-effect free (C8). It must **not**
+demand $p_X > p_D$ or $p_E > 0$ — that is a scientific hypothesis, and a working
+method mislabelled as a semantic bug. Acceptance is deliberately weak in the right
+way: a trivially dumb method must be able to walk the whole interface and pass.
+
+`Oracle` is the sole exception and must be exact: $p^{\text{Oracle}} =
+Z^{\text{fire}}$.
+
+**Implementation order, frozen:**
+
+$$\text{Method API} \rightarrow \text{arm isolation runner} \rightarrow \text{query-session budget/legality} \rightarrow \text{V0.1R semantic S1}$$
+
+The failure mode to avoid is writing a clever `SeqThenQuery` at this step: it
+would make S1 pass for the wrong reason and pre-empt the experiment.
+
+---
+
+## 48. Summary and what remains open
 
 | # | what | severity | status |
 |---|---|---|---|

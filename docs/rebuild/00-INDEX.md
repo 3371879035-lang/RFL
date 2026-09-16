@@ -55,6 +55,7 @@ every algorithmic choice below is a consequence of a design decision above it.
 | **11** | [`11-ENVIRONMENT.md`](11-ENVIRONMENT.md) | the concrete task, the four options, the controller/plant split, the tape-addressing rule, and every deferred value with its default |
 | **12** | [`12-AMENDMENTS.md`](12-AMENDMENTS.md) | append-only amendment log: eight corrections raised before implementation, four of which would have changed the meaning of an experiment |
 | **13** | [`13-GATE-L-FAILURE.md`](13-GATE-L-FAILURE.md) | Gate L fails: 2,695 of 2,749 multi-$Z$ classes are provably unidentifiable at any finite budget, and the defect is in the gate's label ($Z$ vs $B$), not in the world |
+| **14** | [`14-V01R-METHOD-CONTRACT.md`](14-V01R-METHOD-CONTRACT.md) | the frozen V0.1R method boundary: interfaces, runner-enforced arm isolation, A50 in the API, and the S1 assertion map |
 
 ---
 
