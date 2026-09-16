@@ -1,0 +1,307 @@
+{
+ "gate": "A60 \u2014 Oracle ceiling / metric plumbing gate",
+ "fixture": {
+  "n_scenes": 66,
+  "size": 64,
+  "case_fingerprints": [
+   "1454aa7c5928d90de680cb9f",
+   "2bde1443a5a2c40731a1d560",
+   "8fe4211431e92e65dfb4c7ed",
+   "1f8fc2ec55858d3ea466e4c4",
+   "ef952ef18d96d0a54f969fee",
+   "f853f6652e3d2e643f73321c",
+   "9f004524963d79771bc0d7f0",
+   "fdfa23f2d4f6fc644d7faaaf",
+   "41570979f520c2123e2b854c",
+   "5871e230cbcdc0c9df8025e8",
+   "6b0b099f427e865c61d658e9",
+   "838e6af3e9eec5859ac92d8f",
+   "13221b709a99956aaa53a70c",
+   "a1c7a1265292e9060d54b270",
+   "999b4ccd99081ee74487b51d",
+   "ea146a13a80307994f5a6875",
+   "4d2a3c7d67f4a534f70e8f50",
+   "7cc1b2249966fc640a56b589",
+   "0a91d53e42dabcd16995ee5b",
+   "4777d665d8ca8298ffc2d50e",
+   "4cf9cf50d8deff923ba9ada0",
+   "af33d4171eacc64387b6de78",
+   "be4b155e4939bf552358b3dc",
+   "514dc912c32f1a9b1a826484",
+   "189ff88e6d8feb104c3be251",
+   "77e979c15eb0c0080eecbb9a",
+   "d1af35a8430b572ee5545b22",
+   "d3b8e6d80b4eaeb95d5b2060",
+   "6fc2950c90c7f9871aaf90ff",
+   "3e05bf7a8ff9baede18cfddd",
+   "d1803a9ba253b7bb4782472b",
+   "11e24d327e86de6224b0086a",
+   "f155dac25e7092a06836bda1",
+   "26b4764e271719fc0c4eb067",
+   "d67fb15121af173e045194c7",
+   "745f7bf5fb4b10ca6a32d025",
+   "8683d092c531fa7a7dcba156",
+   "9936a598e135b0c3fd550120",
+   "92bc8e0dff34ee69ccec3ae6",
+   "b9bcf5032113dd36371259e1",
+   "72f985ed0b05142fd22014ea",
+   "30c5ae552a1bff8c34989320",
+   "1013029b090868c8086a2651",
+   "fec8933b8ab9a3349e839b3a",
+   "201fca888fe59adb5ba89441",
+   "e2ec3a70bdd7075e1a892687",
+   "d53460155f7494dd13dc6fb1",
+   "3a76ef7827ff887e84883090",
+   "3a84ad88f7d98426710625f7",
+   "c86c45ce1a843010cbf671a4",
+   "f701d8b7e146c008f7c852e0",
+   "bbcd06c8928c28f8b21826ce",
+   "ae51f9066e6003c814ec847d",
+   "a9ab4bc12fd9a58e20220d1d",
+   "bbcd6d01189bbbd10f420430",
+   "d4f784bc6177d1fa2f63e075",
+   "efad8859ba87cd7c931d8ad4",
+   "6afbb052f2bb94f74aceb0a9",
+   "8a423c05bfd10cd24955ca2f",
+   "ab36f2c2c6b6e2c256fba9e7",
+   "a79be5c4a4c784f730146cf6",
+   "5b97ae9849eb17a9696dbcd5",
+   "94aa5c5523f1a38efca70446",
+   "99d5bdfb1a15d52ec9b1bf15",
+   "ce6af070fa0857831db0ca31",
+   "60e1b2aaa8f0192e748b8955"
+  ],
+  "per_cause_positive": [
+   38,
+   1,
+   25,
+   30,
+   1
+  ],
+  "per_cause_negative": [
+   28,
+   65,
+   41,
+   36,
+   65
+  ],
+  "has_scene_with_yP_ne_yD": true,
+  "has_scene_with_fire_ne_pres": true,
+  "selection": "deterministic: earliest-first over the canonical enumeration, constraints satisfied then FIXTURE_SIZE"
+ },
+ "oracle": {
+  "metrics": {
+   "macro_auprc": 1.0,
+   "macro_auroc": 1.0,
+   "exact_set_accuracy": 1.0,
+   "hamming": 0.0,
+   "brier": 0.0,
+   "ece": 0.0,
+   "auprc": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "auroc": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "ece_per_cause": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "n_scenes": 66
+  },
+  "expected": {
+   "macro_auprc": 1.0,
+   "macro_auroc": 1.0,
+   "exact_set_accuracy": 1.0,
+   "hamming": 0.0,
+   "brier": 0.0,
+   "ece": 0.0
+  },
+  "tolerance": 1e-12,
+  "exact_ceiling_met": true
+ },
+ "mutations": {
+  "swap_PD_columns": {
+   "metrics": {
+    "macro_auprc": 0.6781715247791721,
+    "macro_auroc": 0.737967032967033,
+    "exact_set_accuracy": 0.4090909090909091,
+    "hamming": 0.23636363636363636,
+    "brier": 0.23636363636363636,
+    "ece": 0.2363636363636364,
+    "auprc": [
+     0.3757061087443453,
+     0.015151515151515152,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "auroc": [
+     0.48214285714285715,
+     0.2076923076923077,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "ece_per_cause": [
+     0.5909090909090909,
+     0.5909090909090909,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "n_scenes": 66
+   },
+   "killed": true
+  },
+  "target_Z_pres_instead_of_Z_fire": {
+   "metrics": {
+    "macro_auprc": 0.7416630250648149,
+    "macro_auroc": 0.8900479466333124,
+    "exact_set_accuracy": 0.2727272727272727,
+    "hamming": 0.17575757575757575,
+    "brier": 0.17575757575757575,
+    "ece": 0.17575757575757578,
+    "auprc": [
+     1.0,
+     1.0,
+     0.8703799999103531,
+     0.8122940997726953,
+     0.02564102564102564
+    ],
+    "auroc": [
+     1.0,
+     1.0,
+     0.8536585365853658,
+     0.8888888888888888,
+     0.7076923076923077
+    ],
+    "ece_per_cause": [
+     0.0,
+     0.0,
+     0.18181818181818182,
+     0.12121212121212122,
+     0.5757575757575758
+    ],
+    "n_scenes": 66
+   },
+   "killed": true
+  },
+  "force_softmax_sum_to_1": {
+   "metrics": {
+    "macro_auprc": 1.0,
+    "macro_auroc": 1.0,
+    "exact_set_accuracy": 0.5606060606060606,
+    "hamming": 0.18484848484848485,
+    "brier": 0.05151515151515151,
+    "ece": 0.09696969696969697,
+    "auprc": [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "auroc": [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "ece_per_cause": [
+     0.20454545454545456,
+     0.0,
+     0.10353535353535354,
+     0.16666666666666666,
+     0.010101010101010102
+    ],
+    "n_scenes": 66
+   },
+   "killed": true
+  },
+  "shift_predictions_by_one_row": {
+   "metrics": {
+    "macro_auprc": 0.45382707731821287,
+    "macro_auroc": 0.68378806459551,
+    "exact_set_accuracy": 0.5909090909090909,
+    "hamming": 0.12121212121212122,
+    "brier": 0.12121212121212122,
+    "ece": 0.12121212121212122,
+    "auprc": [
+     0.8932474242412284,
+     0.015384615384615385,
+     0.634214479712195,
+     0.7111373521015104,
+     0.015151515151515152
+    ],
+    "auroc": [
+     0.9379699248120301,
+     0.49230769230769234,
+     0.7102439024390244,
+     0.7861111111111111,
+     0.49230769230769234
+    ],
+    "ece_per_cause": [
+     0.060606060606060635,
+     0.030303030303030304,
+     0.2727272727272727,
+     0.2121212121212121,
+     0.030303030303030304
+    ],
+    "n_scenes": 66
+   },
+   "killed": true
+  },
+  "flip_one_prediction": {
+   "metrics": {
+    "macro_auprc": 0.9,
+    "macro_auroc": 0.9984615384615385,
+    "exact_set_accuracy": 0.9848484848484849,
+    "hamming": 0.0030303030303030303,
+    "brier": 0.0030303030303030303,
+    "ece": 0.0030303030303030303,
+    "auprc": [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     0.5
+    ],
+    "auroc": [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     0.9923076923076923
+    ],
+    "ece_per_cause": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.015151515151515152
+    ],
+    "n_scenes": 66
+   },
+   "killed": true
+  }
+ },
+ "must_kill": [
+  "swap_PD_columns",
+  "target_Z_pres_instead_of_Z_fire"
+ ],
+ "verdict": "PASS",
+ "pipeline_note": "Oracle is fed through rfl_rebuild.eval, the same code every real arm will use. There is no oracle-only metric path. p is five independent marginals (A59), so ECE does per-cause binary calibration and then a macro average -- NOT a 5-class softmax."
+}
