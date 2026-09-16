@@ -128,7 +128,16 @@ def response(sol, case: LatentCase, q):
     ``B_E``, not a success/failure. The learner still has to infer the conclusion,
     and it can, because ``a_cmd`` and ``a_realized`` remain visible as before, so
     one paid audit exposes the chain ``a_cmd -> u_t -> a_realized``.
+    A55: ``q = ("proc_audit",)`` is the process-integrity provenance query. Its
+    response is ``z^proposal``, the option the upstream planner proposed. Like
+    the plant audit it changes nothing and returns a MECHANISM ARTIFACT, never a
+    verdict: not ``process_fault``, not ``proposal_corrupted``, not ``Z_P``.
+    ``z^in-force`` is already in ``I_t``, so one paid audit exposes the commit
+    edge ``z^proposal -> z^in-force`` and the learner infers the fault itself.
     """
+    if q[0] == "proc_audit":
+        return ("proc_audit", case.base_option)
+
     if q[0] == "audit":
         t = q[1]
         try:

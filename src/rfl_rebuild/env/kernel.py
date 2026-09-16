@@ -697,6 +697,12 @@ def rollout(
     ``A_z(m, s)``; a ``do`` or fault that does not is ``MALFORMED``, and a
     *provider* that does not raises :class:`OptionViolation` (A36).
     """
+    # A55: this is the process/commit layer in one place.
+    #   z^proposal  = base_option
+    #   C_P         = identity unless a P fault is present
+    #   z^in-force  = z0
+    # A `do(z = z')` is strategy replay: it sets z^in-force outright, bypassing
+    # the commit edge, and is NOT a process repair.
     proc = interventions.process()
     if proc is not None:
         z0 = proc.option
@@ -816,8 +822,19 @@ def fired_mechanisms(
 
     Each mechanism is read off the factual rollout, with no counterfactual:
 
-    ``Z_P``  the option in force differs from ``base_option`` -- the process
-             substitution actually took effect;
+    ``Z_P``  ``z^in-force != z^proposal`` -- A55: the process/commit layer did
+             not faithfully commit what the planner proposed. The chain is
+             ``kappa -> z^proposal -> C_P -> z^in-force -> Q_D(s,z,m,.) -> a^cmd``
+             and healthy means ``C_P(z^proposal) = z^proposal``. The code
+             identifiers map onto it as ``base_option == z^proposal`` and
+             ``RolloutTrace.option_in_force == z^in-force``; nothing in the world
+             dynamics changed, the two quantities were only given their structure.
+             $Z_P$ does **not** mean "the planner chose a bad strategy" (that
+             needs a reference for "bad", and using $z^{*}$ would restore the
+             solver->generator circularity A19 removed) nor "the strategy is
+             unsuited to the context" (a normative/performance relation, not an
+             exogenous injection). It is commit/routing integrity, and nothing
+             else;
     ``Z_D``  the episode was still alive at the override's timestep, so the
              override was reached and applied;
     ``Z_X``  some step has ``u != a_cmd``   -- the controller emitted something
@@ -840,7 +857,10 @@ def fired_mechanisms(
         return {k: 0 for k in keys}
 
     out = {k: 0 for k in keys}
-    if option_fault is not None and tr.option_in_force != base_option:
+    # A55 definition, in full:  Z_P^fire = 1[z^in-force != z^proposal].
+    # `rollout` guarantees z^in-force == z^proposal whenever no P fault is
+    # present, so this is exactly "the commit layer substituted something".
+    if tr.option_in_force != base_option:
         out["Z_P"] = 1
     if mask.decision is not None and len(tr.steps) > mask.decision.t:
         out["Z_D"] = 1
@@ -881,6 +901,13 @@ def but_for_relevance(
         return {k: 0 for k in ("Z_P", "Z_D", "Z_X", "Z_E", "Z_U")}
 
     trials = {
+        # A55: the Z_P trial IS the evaluator-side operation do(C_P = identity).
+        # Dropping `option_fault` restores z^in-force = z^proposal, i.e. a
+        # faithful commit. It remains a but-for CONSTRUCTION and is deliberately
+        # NOT in the learner's query set -- adding it would be do(Z_P = off),
+        # which certifies B by handing over the operation that defines it (A51).
+        # It is a distinct operation from `do(z = z')`: that one is strategy
+        # replay ("run option z' for the whole episode"), not process repair.
         "Z_P": (mask, None),
         "Z_D": (dataclasses.replace(mask, decision=None), option_fault),
         "Z_X": (dataclasses.replace(mask, controller=None), option_fault),

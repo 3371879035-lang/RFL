@@ -482,9 +482,53 @@ This is also the structural replacement for `scene_from_trace`: causes are never
 
 See `12-AMENDMENTS.md` **A2** and **A54**.
 
-### 6.4 $Z_P$ does not consult $z^{*}$
+### 6.4 $Z_P$ denotes commit/routing integrity — and does not consult $z^{*}$
 
-$$\boxed{Z_P:\ z \leftarrow z' \sim \text{Uniform}\bigl(\mathcal Z \setminus \{z\}\bigr)}$$
+**A55 fixes the denotation, because the earlier wording was ambiguous in a way
+that mis-described the generator.** $Z_P$ is **not** "the planner chose a bad
+strategy", and **not** "the strategy program is unsuited to the context". It is
+
+$$\boxed{Z_P = \text{process commit / routing integrity fault}}$$
+
+with the explicit chain
+
+$$\boxed{\kappa \rightarrow z^{\text{proposal}} \rightarrow C_P \rightarrow z^{\text{in-force}} \rightarrow Q_D(s,z,m,\cdot) \rightarrow a^{cmd}}$$
+
+where $C_P$ is the process commit/router. Healthy means a faithful commit:
+
+$$C_P\bigl(z^{\text{proposal}}\bigr) = z^{\text{proposal}}$$
+
+and when $Z_P^{\text{pres}} = 1$, the commit layer runs **some other** option:
+
+$$z^{\text{in-force}} \leftarrow z' \sim \text{Uniform}\bigl(\mathcal Z \setminus \{z^{\text{proposal}}\}\bigr)$$
+
+so that
+
+$$\boxed{Z_P^{\text{fire}} = \mathbf 1\bigl[z^{\text{in-force}} \neq z^{\text{proposal}}\bigr]}$$
+
+**$z^{\text{proposal}}$ is not required to be optimal, or even correct.** That is
+the whole point: the fault is that the commit layer was unfaithful, not that the
+planner was wrong. The two code identifiers acquire their structure from this and
+nothing else changes in the world dynamics — `base_option` **is** $z^{\text{proposal}}$
+and `RolloutTrace.option_in_force` **is** $z^{\text{in-force}}$.
+
+Because the draw excludes $z^{\text{proposal}}$ itself, $P$ fires whenever it is
+present. That is not stipulated anywhere; it falls out, and it is what A54's
+census measured independently ($P$ had no dormant cases while every other
+mechanism did).
+
+**Why the other two readings are rejected.** *"The planner chose a bad strategy"*
+requires a reference for "bad". Using $z^{*}$ would restore the solver →
+generator circularity A19 removed — $z^{*}$ is DP-derived, computed at step 2 of
+the execution order, while the generator runs at step 1. Without such a
+reference there is no structural definition of "wrong". *"The strategy is unsuited
+to the context"* is a normative/performance relation
+$\text{option-suitability}(z,\kappa,\phi)$, not an exogenous fault injection, and
+calling a uniform random substitution "the strategy itself is wrong" would be a
+mislabelling. Both remain open research questions; neither belongs inside the
+current $Z_P$.
+
+$$\boxed{Z_P:\ z^{\text{proposal}} \leftarrow z' \sim \text{Uniform}\bigl(\mathcal Z \setminus \{z^{\text{proposal}}\}\bigr)}$$
 
 **No reference to $z^{*}$ appears in the generator.** An earlier revision wrote
 $z' \neq z^{*}$, which reintroduces the circularity A19 removed: $z^{*}$ is a
@@ -498,7 +542,22 @@ visible rather than assumed away.
 
 $$\text{the context-appropriate option } z^{*} = \arg\max_z V_z^{*} \text{ is a \textbf{derived reporting quantity}, computed after the DP}$$
 
-It is never a generation input. See `12-AMENDMENTS.md` **A28**.
+It is never a generation input. See `12-AMENDMENTS.md` **A28** and **A55**.
+
+**Three operations that must not be conflated.** A55 separates them explicitly:
+
+| operation | meaning | whose |
+|---|---|---|
+| `audit_process_proposal()` | returns $z^{\text{proposal}}$; read-only | **learner's**, cost 1 |
+| $do(z = z')$ | run option $z'$ for the whole episode | **learner's**, strategy replay |
+| $do(C_P = \text{identity})$ | restore $z^{\text{in-force}} = z^{\text{proposal}}$ | **evaluator only** |
+
+The last one is the but-for construction for $B_P$, and it stays out of the
+learner's query set: admitting it would be $do(Z_P{=}\text{off})$, which certifies
+$B$ by handing over the very operation that defines it (A51). Strategy replay is
+also *not* a process repair — it replaces the option outright rather than
+repairing the commit edge, so it can change the answer for reasons that have
+nothing to do with integrity.
 
 ### 6.5 $do(z = z')$ is an episode-start intervention
 

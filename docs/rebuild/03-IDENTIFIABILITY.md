@@ -395,34 +395,47 @@ A7 replaced in `02` but not here — so the two documents disagreed about what a
 size-1 execution intervention *is*, and the identifiability analysis would have
 been run against a different intervention lattice than the one the learner uses.
 
-*Audits* — **A53**. On-demand, budgeted, non-intervening:
+*Audits* — **A53**, **A55**. On-demand, budgeted, non-intervening:
 
 | query | notation | cost | response |
 |---|---|---|---|
 | plant-input audit | $q^{plant}_t = \mathrm{audit\_plant\_input}(t)$ | 1 | $u_t$ |
+| process-proposal audit | $q^{proc} = \mathrm{audit\_process\_proposal}()$ | 1 | $z^{\text{proposal}}$ |
 
 $u_t$ is the low-level command the plant actually received, i.e. the middle link
-of $a^{cmd}_t \to C_X \to u_t \to P \to a^{realized}_t$. It is **not** an
-$obs_t$ field: the system produces this telemetry on every step, but a learner
+of $a^{cmd}_t \to C_X \to u_t \to P \to a^{realized}_t$. $z^{\text{proposal}}$ is
+the option the upstream planner proposed, i.e. the first link of
+$\kappa \to z^{\text{proposal}} \to C_P \to z^{\text{in-force}}$.
+$z^{\text{in-force}}$ is already in $I_t$, so one paid audit exposes the commit
+edge and the learner infers a commit/routing fault itself. Both are **not**
+$obs_t$ fields: the system produces the telemetry on every step, but a learner
 must spend budget to read it. Since $a^{cmd}_t$ and $a^{realized}_t$ are already
-visible, one paid audit exposes the whole chain and lets the learner separate
+visible, one paid plant audit exposes
 
 $$u_t \neq a^{cmd}_t \;\Rightarrow\; \text{controller/internal execution problem},
 \qquad
 a^{realized}_t \neq u_t \;\Rightarrow\; \text{external plant problem}.$$
 
-Three properties are normative and are what keep this from being an oracle:
+Three properties are normative and are what keep these from being oracles:
 
-* it **returns the mechanism signal $u_t$, never a verdict**. It must not return
-  `plant_fault`, must not return $B_E$, and must not return success or failure.
-  The conclusion is still the learner's to infer;
-* it **changes no world and no fault**, reads no $Z$, $M$ or $B$, and is available
-  only at timesteps that exist on the factual trajectory — which is already
-  learner-visible, so the same class shares the same audit family and the A50
-  legality question does not arise for it;
-* it is **rejected** as a substitute for $do(Z_i = \text{off})$. Publishing $u_t$
-  every step for free would also be rejected: it would turn the $X/E$ structural
-  distinction into a read-off rather than an inference.
+* they **return mechanism signals, never verdicts**. Not `plant_fault`, not
+  `process_fault`, not `proposal_corrupted`, not $B_E$, not $Z_P$, not
+  success/failure. The conclusion is still the learner's to infer;
+* they **change no world and no fault**, read no $Z$, $M$ or $B$, and are
+  available only at timesteps that exist on the factual trajectory (for
+  $q^{plant}$) or unconditionally (for $q^{proc}$, since "what was proposed" is
+  well posed in every world) — so the same class shares the same audit family and
+  the A50 legality question does not arise for them;
+* they are **rejected** as substitutes for $do(Z_i = \text{off})$. For $P$ the
+  but-for construction is $do(C_P = \text{identity})$, restoring
+  $z^{\text{in-force}} = z^{\text{proposal}}$; it is the **evaluator's** and stays
+  out of the learner's set. Publishing either signal every step for free would
+  also be rejected: it would turn the structural distinctions into read-offs
+  rather than inferences.
+
+Three operations must not be conflated (`11` §6.4): auditing the proposal is
+read-only; $do(z = z')$ is *strategy replay* and not a process repair; removing
+the process fault is the evaluator's but-for construction.
 
 Because queries are no longer all counterfactual rollouts, the total query budget
 is written $B_Q$. The **value is unchanged** at $B_Q = 4$ — this is a renaming of

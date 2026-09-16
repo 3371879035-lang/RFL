@@ -1468,7 +1468,51 @@ before anything is instrumented. No new query is added in A54.
 
 ---
 
-## 43. Summary and what remains open
+## 43. A55 — $Z_P$ is commit/routing integrity, and Gate_fire PASSES
+
+**Denotation fixed.** A54 left one question open — what $Z_P$ actually *denotes* —
+because three readings were live and they are different mechanisms. It is now
+fixed and frozen:
+
+$$\boxed{Z_P = \text{process commit / routing integrity fault}}$$
+
+$$\boxed{\kappa \rightarrow z^{\text{proposal}} \rightarrow C_P \rightarrow z^{\text{in-force}} \rightarrow Q_D(s,z,m,\cdot) \rightarrow a^{cmd}}$$
+
+Healthy: $C_P(z^{\text{proposal}}) = z^{\text{proposal}}$. Faulty:
+$z^{\text{in-force}} \leftarrow z' \sim \text{Uniform}(\mathcal Z \setminus \{z^{\text{proposal}}\})$.
+Hence $Z_P^{\text{fire}} = \mathbf 1[z^{\text{in-force}} \neq z^{\text{proposal}}]$.
+
+$z^{\text{proposal}}$ is **not** required to be optimal or even correct. The fault is an unfaithful *commit*, not a bad plan. This is the only one of the three candidate readings that matches what the generator actually does, and it needs no dynamics change at all: `base_option` **is** $z^{\text{proposal}}$ and `RolloutTrace.option_in_force` **is** $z^{\text{in-force}}$.
+
+**The other two readings are rejected.** *"The planner chose a bad strategy"* needs a reference for "bad"; using $z^{*}$ restores the solver → generator circularity A19 removed, and without such a reference "wrong" has no structural definition. *"The strategy is unsuited to the context"* is a normative relation $\text{option-suitability}(z,\kappa,\phi)$, not an exogenous injection, and relabelling a uniform substitution as "the strategy itself is wrong" would be exactly the ontology drift A54 was called to stop.
+
+**The process audit, parallel to A53.** $q^{proc} = \mathrm{audit\_process\_proposal}()$, response $z^{\text{proposal}}$, cost 1. Since $z^{\text{in-force}}$ is already in $I_t$, one paid audit exposes the commit edge and the learner infers the fault. It returns a **provenance artifact** — never `process_fault`, never `proposal_corrupted`, never $Z_P$. The parallel with A53's $a^{cmd} \to u_t \to a^{realized}_t$ is exact.
+
+**Three operations, kept apart** (`11` §6.4): `audit_process_proposal()` is the learner's and read-only; $do(z=z')$ is the learner's strategy replay and **not** a process repair; $do(C_P = \text{identity})$, which restores $z^{\text{in-force}} = z^{\text{proposal}}$, is the **evaluator's** but-for construction and stays out of the learner's query set — admitting it would be $do(Z_P{=}\text{off})$ (A51).
+
+**Result:**
+
+| gate | target | before A55 | after A55 |
+|---|---|---|---|
+| **Gate_fire** | $Z^{\text{fire}}$ | FAIL, 600 | **PASS** — 0 unidentifiable |
+| Gate_Z | $Z^{\text{pres}}$, diagnostic | FAIL 2,713 | FAIL 2,713 |
+| Gate_B | $B$, secondary/non-blocking | FAIL 245 | FAIL 135 |
+
+Gate_fire depth histogram: $D = 0$ 1,553, $D = 1$ 990, $D = 2$ 230, $D = 3$ 10, unbounded **0**. So $B_{\min}^{\text{adaptive}} = 3 \le B_Q = 4$.
+
+$$\boxed{\text{Gate\_fire PASS at } B_Q = 4}$$
+
+The 600-class residual A54 measured was **100% $P$**, and the process proposal audit closes all of it. $E$ had already been closed by A53's plant audit, and $X$, $D$, $U$ by the A54 split.
+
+**Recorded honestly: the margin is one unit.** $B_{\min}^{\text{adaptive}} = 3$ against a budget of 4. Every previous gate had slack of 3 or more, so this is the first time the budget is anywhere near binding — a single added identifiability requirement would break it. $B_Q$ is **not** raised here, and this is the reason to keep it at 4 rather than the reason to relax it.
+
+Also recorded: Gate_B now needs depth **4** for 20 classes, so for the secondary endpoint the budget *is* binding. That is reported as-is; Gate_B is not blocking (`11` §6.2).
+
+**V0.1R's identifiability precondition is met for the first time.** Seed collection may resume, subject to the remaining go/no-go rows (semantic suite, oracle ceiling, calibration). It is not started here.
+
+---
+
+## 44. Summary and what remains open
 
 | # | what | severity | status |
 |---|---|---|---|
@@ -1500,7 +1544,8 @@ section above; the most recent is:
 | # | what | severity | status |
 |---|---|---|---|
 | **A51** | Gate L splits into Gate_Z and Gate_B, and **both** fail; replacing $Z$ by $B$ is a change of V0.1R's scientific question, not a bug fix | **P0 (spec)** | frozen — superseded by A54 for the target, retained for the split |
-| **A54** | configured / fired / difference-making were one symbol; V0.1R's target becomes $Z^{\text{fire}}$; Gate_fire FAILs on 600 classes, residual **100% $P$** | **P0 (spec)** | frozen — next step is the $Z_P$ denotation decision |
+| **A54** | configured / fired / difference-making were one symbol; V0.1R's target becomes $Z^{\text{fire}}$; Gate_fire FAILs on 600 classes, residual **100% $P$** | **P0 (spec)** | frozen — denotation resolved by A55 |
+| **A55** | $Z_P$ is commit/routing integrity (not a bad plan, not unsuited strategy); process proposal audit added; **Gate_fire PASSES**, $B_{\min} = 3$ vs $B_Q = 4$ | **P0 (spec)** | frozen — **first PASS**; V0.1R precondition met |
 
 ---
 

@@ -181,8 +181,16 @@ def class_local_queries(sol, kappa: int, phi: int, rows: tuple) -> frozenset:
     audit is legal on the whole class and cannot be MALFORMED. It changes no
     world and reads no ``Z``, ``M`` or ``B`` — only the interface telemetry the
     real system already produces.
+
+    A55 adds the parallel one for process integrity: ``("proc_audit",)``, the
+    provenance query ``q^proc = audit_process_proposal()`` whose response is
+    ``z^proposal`` — the option the upstream planner actually proposed. It is
+    always available, since "what did the planner propose" is well posed in every
+    world, and it is informative precisely because ``z^in-force`` is already
+    visible in ``I_t`` while ``z^proposal`` is not.
     """
     out = set()
+    out.add(("proc_audit",))
     z_seen = {r[5] for r in rows}
     for zf in z_seen:
         for zp in K.option_ids():

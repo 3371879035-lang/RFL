@@ -326,6 +326,48 @@ $$z^{proposal} \rightarrow \text{process/commit layer} \rightarrow z^{\text{in f
 
 first. No query is added here.
 
+## 12. A55 — Gate_fire PASSES
+
+$Z_P$'s denotation was the last open question: planner chose a bad strategy?
+correct proposal swapped in a commit layer? strategy unsuited to context? Fixed
+as the second, in its strict form — the commit layer failed to faithfully commit
+what the planner proposed, and **the proposal need not be optimal or correct**:
+
+$$\boxed{Z_P = \text{process commit / routing integrity fault}}, \qquad
+\kappa \rightarrow z^{\text{proposal}} \rightarrow C_P \rightarrow z^{\text{in-force}} \rightarrow a^{cmd}$$
+
+The other two readings are rejected: "bad plan" needs a reference for "bad" and
+$z^{*}$ would restore the solver→generator circularity A19 removed; "unsuited
+strategy" is a normative relation, not an exogenous injection. No world dynamics
+changed — `base_option` **is** $z^{\text{proposal}}$, `option_in_force` **is**
+$z^{\text{in-force}}$.
+
+Added the parallel audit $q^{proc} = \mathrm{audit\_process\_proposal}() \to z^{\text{proposal}}$,
+cost 1, and re-ran:
+
+| gate | target | before A55 | after A55 |
+|---|---|---|---|
+| **Gate_fire** | $Z^{\text{fire}}$ | FAIL, 600 | **PASS** |
+| Gate_Z | $Z^{\text{pres}}$, diagnostic | FAIL 2,713 | FAIL 2,713 |
+| Gate_B | $B$, secondary/non-blocking | FAIL 245 | FAIL 135 |
+
+Gate_fire: $D = 0$ 1,553, $D = 1$ 990, $D = 2$ 230, $D = 3$ 10, unidentifiable
+**0**. So $B_{\min}^{\text{adaptive}} = 3 \le B_Q = 4$.
+
+$$\boxed{\text{Gate\_fire PASS at } B_Q = 4}$$
+
+The 600-class residual A54 measured was 100% $P$ and is closed entirely by the
+process proposal audit.
+
+**The margin is one unit.** $3$ against a budget of $4$, where every earlier gate
+had three or more units of slack. This is the first time $B_Q$ is anywhere near
+binding, and a single added identifiability requirement would break it. Recorded
+so that the pass is read with its actual width. $B_Q$ is not raised.
+
+**V0.1R's identifiability precondition is met for the first time.** Seed
+collection may resume subject to the remaining go/no-go rows (`06-V01R.md` §7),
+which have not been run.
+
 ## 8. What is not happening
 
 * $B_Q$ is **not** being raised. It is not the binding constraint under either
