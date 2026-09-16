@@ -121,6 +121,7 @@ def main() -> int:
     print(f"partition: {len(classes):,} classes from {n_feasible:,} feasible cases")
 
     depth_hist = Counter()
+    b_diff = Counter()
     proved_unbounded = 0
     nondeterministic_B = 0
     z_was_unbounded_but_B_is_not = 0
@@ -157,11 +158,43 @@ def main() -> int:
         if d is None:
             proved_unbounded += 1
             depth_hist["unbounded"] += 1
+            # attribute the residual: find two reps with different B that no
+            # query legal on both can tell apart. A tree can only split along
+            # query responses, so such a pair is unidentifiable at any budget.
+            tables = []
+            from gate_stage3 import response as _resp
+            for q, _l, _p in queries:
+                t = {}
+                for j, mm in enumerate(reps):
+                    r = _resp(sol, mm, q)
+                    if r is not None:
+                        t[j] = r
+                tables.append(t)
+            found = None
+            n = len(reps)
+            for a in range(n):
+                for b in range(a + 1, n):
+                    if lab[a] == lab[b]:
+                        continue
+                    if all(not (a in t and b in t and t[a] != t[b])
+                           for t in tables):
+                        found = (lab[a], lab[b])
+                        break
+                if found:
+                    break
+            if found:
+                keys = tuple(CAUSE_KEYS[p] for p in range(5)
+                             if found[0][p] != found[1][p])
+                b_diff[keys] += 1
+            else:
+                b_diff[("<no pair; needs 3+ worlds>",)] += 1
             if len(examples) < 20:
                 examples.append({"class_index": i, "class_size": len(members),
                                  "n_reps": len(reps),
                                  "n_distinct_B": len(set(lab)),
                                  "n_distinct_Z": len({m.Z for m in members}),
+                                 "witness_B_differs_on":
+                                     list(b_diff and (keys if found else [])),
                                  "reason": "fixed point, root unseparated"})
         else:
             depth_hist[d] += 1
@@ -180,6 +213,10 @@ def main() -> int:
     print(f"proved unidentifiable at any depth: {proved_unbounded}")
     print(verdict)
 
+    print("\nresidual 432: which B components the unseparable witness differs on")
+    for k in sorted(b_diff, key=lambda x: -b_diff[x]):
+        print(f"  {'+'.join(k):<28} {b_diff[k]}")
+
     if examples:
         print("\nresidual failures (first few):")
         for e in examples[:6]:
@@ -192,6 +229,7 @@ def main() -> int:
         "depth_histogram": {str(k): v for k, v in depth_hist.items()},
         "max_adaptive_depth": worst,
         "proved_unbounded": proved_unbounded,
+        "residual_witness_B_components": {"+".join(k): v for k, v in b_diff.items()},
         "verdict": verdict,
         "examples": examples,
     }, indent=1, default=str), encoding="utf-8")

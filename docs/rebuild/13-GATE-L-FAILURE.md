@@ -112,21 +112,75 @@ always did.
 
 Logged as **A51** in `12-AMENDMENTS.md`, frozen before any seed.
 
-## 5. What is not happening
+## 7. Gate L re-run under the $B$ criterion
+
+Re-running with $B$ as the target (`scripts/gate_stage4_B.py`; $B$ from
+`kernel.but_for_relevance` with $\omega$ held fixed; representatives deduplicated
+on $(\text{dynamical\_key}, B)$ so that worlds agreeing on all dynamics but
+disagreeing on $B$ stay distinct):
+
+| verdict | under $Z$ | under $B$ |
+|---|---|---|
+| $D = 0$ | 172 | 2,198 |
+| $D = 1$ | 54 | 291 |
+| provably unidentifiable at any depth | 2,695 | **432** |
+
+So the relabel removes $84\%$ of the failures but **does not close the gate**.
+Gate L still FAILS, on 432 classes.
+
+The residual is *not* a budget problem, and this is the sharpest form of the
+finding: $\max_C D(C) = 1$ over every decidable class. The budget $B_{CF} = 4$ is
+generous and no increase helps; the obstruction is that 432 classes contain two
+worlds that no legal query can tell apart.
+
+Attribution of the disagreeing $B$ components across those 432:
+
+| component | classes |
+|---|---|
+| `E` (plant relevance) | **294** |
+| `P` (process relevance) | 108 |
+
+No `X`, `D` or `U` term appears, and every one of the 432 has a pairwise witness.
+
+**This is a different defect from §3, and it is about the query set, not the
+label.** $B_i$ is defined by *removing* fault $i$ and comparing outcomes, but the
+learner's intervention lattice is
+
+$$\mathcal I = \{do(z = z')\} \cup \{do(d_t = d')\} \cup \{do(C_X(s^\ast, a^{cmd}) = a^{cmd})\} \cup \{\emptyset\},$$
+
+which contains **no operation that removes a fault**. A process query changes
+`base_option`; it does not switch $Z_P$ off. So two worlds can agree on every
+query the learner may issue while differing on whether removing the plant or
+process fault would have changed the outcome.
+
+The obvious repair — add $do(Z_i = \text{off})$ to the learner's set — is
+**rejected here**, and the reason matters: $do(Z_i=\text{off})$ *is* the but-for
+test. Certifying that $B$ is identifiable by handing the learner the operation
+that defines $B$ is circular, and it is the same class of mistake as A50(d)
+(exposing a function of hidden $M$ to the learner for free). Gate L would pass by
+construction and measure nothing.
+
+So Gate L remains FAILED under the decided criterion, on 432 classes, for a
+reason that is now precisely located. Resolving it is a separate amendment about
+the task's query set, and it is not taken here.
+
+## 8. What is not happening
 
 * $B_{CF}$ is **not** being raised. It buys literally nothing here.
 * The environment is **not** being tuned to make the gate pass.
 * The 2,695 unbounded classes are **not** being dropped. They are the finding.
 
-## 6. Reproduce
+## 9. Reproduce
 
 ```
 python scripts/stage4_unidentifiable.py    # the proof and the attribution
-python scripts/gate_stage4.py              # the depth table at B_CF = 4
+python scripts/gate_stage4.py              # the depth table at B_CF = 4, target Z
+python scripts/gate_stage4_B.py            # the same, target B (the decided criterion)
 python scripts/verify_stage4_full.py       # V4, two algorithms, all classes
 python scripts/verify_stage4_witnesses.py  # V3, all 54 positive claims
 python scripts/capacity_bound.py           # counting, no search
 ```
 
 Artifacts: `outputs/rebuild/stage4_unidentifiable.json`, `gate_stage4.json`,
-`verify_stage4_full.json`, `verify_stage4.json`, `capacity_bound.json`.
+`gate_stage4_B.json`, `verify_stage4_full.json`, `verify_stage4.json`,
+`capacity_bound.json`.
