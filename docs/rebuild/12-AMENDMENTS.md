@@ -1233,13 +1233,16 @@ not at fault: `canonicalise`'s outcome-blindness is a deliberate design property
 and must be preserved, because an outcome-conditioned domain would let the gate
 choose the worlds that make it pass.
 
-**Resolution.** `03` §4's option 1 — change the label. Either gate on $B$ (with
-$Z$ retained as the mechanism flag; $R_{\text{causal}}$ is already defined on
-$B$), or additionally restrict the canonical domains to faults the healthy trace
-can manifest, decided by trace geometry alone. The 218 `X`-only and 42 `X+E`
-witnesses show the second is not sufficient alone. Recorded in full in
-`13-GATE-L-FAILURE.md`; **frozen before any seed**, which is where the project
-still is.
+**Resolution — decided: `03` §4's option 1.** The gate's target becomes $B$;
+$Z$ is retained as the mechanism flag. The canonical domains are untouched, so
+`canonicalise`'s outcome-blindness is preserved exactly, and only the label the
+gate demands separation of changes. This is also the smaller change to the chain,
+since $R_{\text{causal}}$ is already defined on $B$. Option 2 (restricting the
+domains to trace-realizable faults) was **not** adopted: it does not explain the
+218 `X`-only or 42 `X+E` witnesses, and it would have put an outcome-blindness
+exception into the generator to fix a defect that lives in the criterion.
+Recorded in full in `13-GATE-L-FAILURE.md`; **frozen before any seed**, which is
+where the project still is.
 
 ---
 
@@ -1274,7 +1277,7 @@ section above; the most recent is:
 
 | # | what | severity | status |
 |---|---|---|---|
-| **A51** | Gate L demands $Z$ (presence) be recoverable, but effectless faults are indistinguishable from absence at any budget; 2,695/2,749 multi-$Z$ classes provably unidentifiable | **P0 (spec)** | open — resolution chosen in `13` |
+| **A51** | Gate L demands $Z$ (presence) be recoverable, but effectless faults are indistinguishable from absence at any budget; 2,695/2,749 multi-$Z$ classes provably unidentifiable | **P0 (spec)** | resolution decided: gate on $B$ (`13`) |
 
 ### The pattern across the three rounds
 

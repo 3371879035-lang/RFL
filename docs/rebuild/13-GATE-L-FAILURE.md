@@ -85,30 +85,32 @@ for repair, for $R^\ast$ — is $B$ and $R^\ast$. A fault that never fires has
 $B = 0$ and no repair, and demanding that a learner distinguish it is demanding
 the impossible and the useless at once.
 
-## 4. Resolution
+## 4. Resolution — decided
 
 `03` §4 offers merge or add-a-query. Adding a query cannot work here: no query
 can reveal a fault with no consequence. So the resolution is a label change.
 
-The choice below is **not** mine to make silently, because it changes what $Z$
-means for every downstream version, V0.2R included.
+**DECIDED: option (1). The gate's target becomes $B$; $Z$ is retained as the
+world's mechanism flag.** The criterion is now: *every but-for-relevant cause
+pattern is separable within $B_{CF}$*. `canonicalise`'s outcome-blindness is
+preserved exactly — the canonical domains are untouched — and only the label the
+gate demands separation of changes. This is also the smaller change to the chain,
+because V0.2R's $R_{\text{causal}}$ is already defined on $B$.
 
-* **(1) Gate on $B$, not on $Z$.** The gate's requirement becomes "every
-  but-for-relevant cause pattern is separable within $B_{CF}$", with $Z$ retained
-  as the world's mechanism flag and $B$ as the identifiability target. Keeps the
-  canonical domain outcome-blind; changes the gate's criterion. V0.2R's
-  $R_{\text{causal}}$ is already defined on $B$, so this is the smaller change to
-  the chain.
-* **(2) Restrict the canonical domains to realizable faults.** Keep $Z$ as the
-  gate's target, but enumerate only faults that the healthy trace can actually
-  manifest, decided by trace geometry alone (e.g. a trap is admissible only at a
-  cell/time the agent can enter) — still pre-declared and still outcome-blind.
-  The 218 `X`-only and 42 `X+E` witnesses show this will **not** be sufficient on
-  its own, so (2) would have to be combined with (1).
+Option (2), restricting the canonical domains to trace-realizable faults, was
+**not** adopted. It is not sufficient on its own (the 218 `X`-only and 42 `X+E`
+witnesses are not explained by the trap term), and adopting it would have put an
+outcome-blindness exception into the generator to fix a defect that lives in the
+criterion. The domains stay as they are.
 
-Either way this is an amendment under `12-AMENDMENTS.md`, argued and frozen
-**before** any seed is collected, which is where the project is now: no rebuild
-seed has been run.
+Consequence to keep straight: a fault that is present but has $B_i = 0$ is
+**not** required to be recovered, and a learner that fails to recover it is not
+wrong. Downstream, $Z$ remains available to the evaluator as the mechanism flag,
+so metrics that need ground-truth mechanism (e.g. the malformed-exclusion table)
+are unaffected; metrics that need *what to repair* use $B$ and $R^\ast$, as they
+always did.
+
+Logged as **A51** in `12-AMENDMENTS.md`, frozen before any seed.
 
 ## 5. What is not happening
 
