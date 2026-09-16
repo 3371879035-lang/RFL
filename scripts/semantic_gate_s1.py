@@ -222,10 +222,12 @@ def main() -> int:
     c3 = {"proc_audit_offered": bool(proc)}
     if proc:
         rc = psess.submit(proc[0])
-        c3["response_is_proposal"] = (rc.response == ("proc_audit", true.base_option))
+        c3["response_is_proposal"] = (getattr(rc.response, "proposal", None)
+                                      == true.base_option)
         c3["response_has_no_verdict"] = (
             "Z_P" not in repr(rc.response) and "fault" not in repr(rc.response))
         c3["z_in_force_via_learner_state"] = hasattr(evidence, "z_in_force")
+        c3["m_t_is_explicit"] = hasattr(evidence, "m_trajectory")
     rec("S1_C3", PASS if all(c3.values()) else FAIL,
         "process audit returns z^proposal; z^in-force arrives via the learner's own "
         "control state; no Z_P verdict is ever returned", c3)
@@ -251,59 +253,89 @@ def main() -> int:
         "Exact by contract: the ceiling is label plumbing, not a method.")
 
     # ------------------------------------------------------------------ #
-    # A50 sibling pair: menu from H, not from the true world's legality
+    # A50: wedge search + MUTATION NEGATIVE CONTROL
     # ------------------------------------------------------------------ #
+    # The mutation control is the decisive part. A correct implementation
+    # passing proves nothing on its own -- we must show the test KILLS the
+    # specific bug it exists for: menu := Q_semantic(ell_true) instead of the
+    # intersection over H.
     a50 = {}
-    sibling = next((m for m in members if m is not true), None)
-    if sibling is not None:
-        s_true = QuerySession(probe=probe, true_case=true, members=members,
-                              registry=registry, budget=4)
-        s_sib = QuerySession(probe=probe, true_case=sibling, members=members,
-                             registry=registry, budget=4)
-        a50["menus_identical_for_different_true_world"] = (
-            s_true.menu() == s_sib.menu())
-        legal_on_true = {q for q in registry_specs if probe.legal(true, q)}
-        a50["some_query_legal_on_true_but_excluded_from_menu"] = bool(
-            legal_on_true - set(s_true.menu()))
-        a50["menu_is_strict_subset_of_legal_on_true"] = (
-            set(s_true.menu()) < legal_on_true or
-            bool(legal_on_true - set(s_true.menu())))
-        # a query that is unsafe on H must raise, not answer
-        unsafe = [q for q in registry_specs
-                  if probe.legal(true, q)
-                  and not all(probe.legal(c, q) for c in members)]
-        a50["n_unsafe_on_H_but_legal_on_true"] = len(unsafe)
-        if unsafe:
-            try:
-                s_true.submit(unsafe[0])
-                a50["unsafe_submit_raised"] = False
-            except ProtocolError:
-                a50["unsafe_submit_raised"] = True
-        else:
-            a50["unsafe_submit_raised"] = "not-constructible"
-    wedge = bool(a50.get("some_query_legal_on_true_but_excluded_from_menu"))
-    a50["menu_is_a_true_intersection_over_H"] = all(
-        all(probe.legal(c, q) for c in members) for q in s_true.menu()
-    ) if sibling is not None else False
+    wedge = None
+    scanned = 0
+    for sig2, members2 in classes.items():
+        scanned += 1
+        if scanned > 200 or wedge is not None:
+            break
+        by_key = {}
+        for m in members2:
+            by_key.setdefault(dynamical_key(m), m)
+        r2 = list(by_key.values())
+        if len(r2) < 2:
+            continue
+        la = r2[0]
+        fam = class_local_queries(sol, la.kappa, la.phi, sig2[0])
+        for lb in r2[1:]:
+            for q in fam:
+                if probe.legal(la, q) and not probe.legal(lb, q):
+                    wedge = (sig2, members2, la, lb, q)
+                    break
+            if wedge:
+                break
 
     if wedge:
-        a50_ok = (a50.get("menus_identical_for_different_true_world")
-                  and a50.get("menu_is_a_true_intersection_over_H"))
-        rec("S1_A50", PASS if a50_ok else FAIL,
-            "Q_safe(H) = intersection over H, PROVED by a query that is legal on "
-            "the true world yet excluded from the menu", a50)
+        sig2, members2, la, lb, q = wedge
+        Hm = tuple(members2)
+        s_a = QuerySession(probe=probe, true_case=la, members=Hm,
+                           registry=registry, budget=4)
+        s_b = QuerySession(probe=probe, true_case=lb, members=Hm,
+                           registry=registry, budget=4)
+        a50["wedge_found"] = repr(q)
+        a50["q_legal_on_la"] = probe.legal(la, q)
+        a50["q_illegal_on_lb"] = not probe.legal(lb, q)
+        a50["q_absent_from_menu"] = q not in s_a.menu()
+        a50["menus_identical"] = s_a.menu() == s_b.menu()
+        a50["mutation_exposes_q"] = q in (
+            [x for x in registry_specs if probe.legal(la, x)])
+        ok = (a50["q_absent_from_menu"] and a50["menus_identical"]
+              and a50["mutation_exposes_q"])
+        rec("S1_A50", PASS if ok else FAIL,
+            "Q_safe(H) = intersection over H, with the truth-menu mutation KILLED",
+            a50)
     else:
-        rec("S1_A50", "BLOCKED_NOT_IMPLEMENTED",
-            "Q_safe(H) = intersection over H — wedge not constructible here",
-            a50,
-            "The menu is still computed as a true intersection over H and is "
-            "identical whichever member is treated as true, and those two are "
-            "asserted above. But without a query that is legal on the true world "
-            "and unsafe on H, the menu could still be truth-derived and this test "
-            "would not notice -- so it is NOT reported as PASS (A58 discipline: "
-            "never fake a pass, never write N/A). The wedge is known to exist: "
-            "gate_stage3.json records classes with queries dropped by legality. "
-            "Source the witness from that artifact rather than a blind scan.")
+        # No wedge: measure whether the bug is even DETECTABLE, by mutation.
+        diff = 0
+        checked = 0
+        for sig3, members3 in classes.items():
+            checked += 1
+            if checked > 400:
+                break
+            by_key = {}
+            for m in members3:
+                by_key.setdefault(dynamical_key(m), m)
+            r3 = list(by_key.values())
+            if len(r3) < 2:
+                continue
+            Hm = tuple(members3)
+            t3 = r3[0]
+            correct = QuerySession(probe=probe, true_case=t3, members=Hm,
+                                   registry=registry, budget=4).menu()
+            wrong = tuple(x for x in registry_specs if probe.legal(t3, x))
+            if set(correct) != set(wrong):
+                diff += 1
+        a50 = {"wedge_found": None, "classes_scanned": checked,
+               "classes_where_correct_menu_differs_from_truth_menu": diff,
+               "why": ("z_in_force and m_t are already part of sigma_0 (they are "
+                       "columns of the factual rows), and decision/execution "
+                       "legality depends only on (z, m, s). So legality is "
+                       "CONSTANT within a factual class under the current kernel, "
+                       "and Q_safe(H) == Q_semantic(ell_true) for every "
+                       "constructible H. The mutation is not merely hard to find, "
+                       "it is observationally identical -- so this test has NO "
+                       "power and may not be reported as PASS.")}
+        status = "NOT_TESTABLE_WITH_CURRENT_WITNESSES"
+        rec("S1_A50", status,
+            "Q_safe(H) = intersection over H — mutation is undetectable here",
+            a50, a50["why"])
 
     # ------------------------------------------------------------------ #
     # negative cases — each must FAIL loudly
@@ -350,8 +382,12 @@ def main() -> int:
         fresh = QuerySession(probe=probe, true_case=true, members=members,
                              registry=registry, budget=4)
         fresh.submit(qa)
-        ind["qb_same_after_qa"] = (fresh.submit(qb).response
-                                   == probe.execute(true, qb))
+        after = fresh.submit(qb).response
+        control = QuerySession(probe=probe, true_case=true, members=members,
+                               registry=registry, budget=4)
+        before = control.submit(qb).response      # same type, no q_a asked
+        ind["qb_same_after_qa"] = (after == before)
+        ind["session_independence_helper"] = not fresh.independence_violated(qa, qb)
         ind["base_world_immutable"] = probe.fingerprint(true) == fpr_before
 
     neg["query1_did_not_change_query2_base_world"] = (
@@ -366,11 +402,10 @@ def main() -> int:
         "These are worth more than dozens of positive assertions.")
 
     counts = Counter(v["status"] for v in items.values())
+    non_pass = sum(v for k, v in counts.items() if k != PASS)
     if counts.get(FAIL, 0):
         overall = FAIL
-    elif counts.get("BLOCKED_NOT_IMPLEMENTED", 0):
-        # A58: a version gate may only pass when every item IT NEEDS is PASS.
-        # An unproven assertion is not a pass, so this is not PASS.
+    elif non_pass:
         overall = "INCOMPLETE"
     else:
         overall = PASS
