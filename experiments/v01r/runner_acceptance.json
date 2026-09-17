@@ -4,7 +4,7 @@
   "2_sequence_and_seqthenquery_same_rows_belief": true,
   "3_feedback_absent_from_sequence_belief": true,
   "4_sample_to_support_bijection": true,
-  "5_blind_isolation_q0_identical": "NOT_RUN_BUDGET"
+  "5_blind_isolation_q0_identical": true
  },
  "detail": {
   "1": {
@@ -29,14 +29,17 @@
    "mapped_zero": 0
   },
   "5": {
-   "error": "legality budget exceeded",
-   "legality_evals_used": 199560,
-   "budget": 200000,
-   "note": "Full-prior legality for the FIRST registry entry exceeds the declared budget. Reported as not run rather than replaced by a cheaper check."
+   "q0_index": 0,
+   "q0_repeat": 0,
+   "query": [
+    "proc_audit"
+   ],
+   "legality_evals_used": 1038960,
+   "budget": 1400000
   }
  },
  "n_worlds": 1038960,
  "n_blocks": 547,
  "registry_size": 9437,
- "status": "INCOMPLETE"
+ "status": "PASS"
 }
