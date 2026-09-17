@@ -316,11 +316,17 @@ prove the locator runs, not that it inverts.
 
 $$\boxed{\text{Cause identification does not imply site identification.}}$$
 
-> Under the current SCM, even with $Z^{\text{fire}}$ given, $X_{0.2} =
-> (I^{\text{factual}}, Z^{\text{fire}})$ does not uniquely determine the indexed
-> $\Gamma^\ast$ in every information class: 14 of 893 classes admit multiple
-> compatible responsibility truths, carrying **0.19% of DGP mass**, each with
-> exactly two alternatives differing by one unit.
+> Under the current SCM, even with $Z^{\text{fire}}$ given, $X^{\text{loc}}_{0.2} =
+> (\text{rows}, Z^{\text{fire}})$ does not uniquely determine the indexed
+> $\Gamma^\ast$ in every information class: 14 of 893 **locator** information
+> classes admit multiple compatible responsibility truths, carrying **0.19% of DGP
+> mass**, each with exactly two alternatives differing by one unit.
+
+The full learner-visible observational partition $X^{\text{obs}}_{0.2} =
+(\text{rows}, \text{feedback}, Z^{\text{fire}})$ is **4,513** classes, not 893 —
+the feedback channel splits all 893. The 893 figure and the 14/893 fraction are
+statements about $X^{\text{loc}}$, which is what A72/A73 hand the locator; $X_{0.2}$
+must never again be used to denote both objects (A73, `12` §60).
 
 This is an **identifiability negative result, not a method's poor performance** —
 it holds against a perfect $Z^{\text{fire}}_{\text{truth}}$. That is markedly

@@ -2498,12 +2498,19 @@ $$\Gamma^-(x) = \bigcap_{\ell \in H(x)} \Gamma^\ast(\ell), \qquad
 
 | quantity | value |
 |---|---|
-| information classes $(block, fire\_code)$ | 893 |
+| locator information classes $X^{\text{loc}} = (\text{rows}, Z^{\text{fire}}_{\text{truth}})$, keyed $(block, fire\_code)$ | 893 |
 | classes with mixed $\Gamma^\ast$ | **14** = 1.57% of **classes** |
 | **DGP mass in mixed classes** | **0.1881% of mass** |
 | ambiguity-set size histogram | $\{2: 14\}$ |
 | $\lvert\Gamma^+\rvert - \lvert\Gamma^-\rvert$ | mean 0.031, max 2 |
 | domain-closure violations / generic leaks | 0 / 0 |
+
+$\boxed{\text{These are 14 of 893 \textbf{locator} information classes } X^{\text{loc}}\text{, per A73 (12 §60).}}$
+The full learner-visible *observational* partition, $X^{\text{obs}} = (\text{rows},
+\text{feedback}, Z^{\text{fire}})$, is **4,513** classes — the feedback channel
+splits all 893. Neither 14/893 nor 893 itself is a statement about
+$X^{\text{obs}}$. The **class** figure must also not be read as a scene
+probability.
 
 $$\boxed{\text{Cause identification does not imply site identification}}$$
 
@@ -2716,7 +2723,142 @@ A70–A72 supersede is A69's **reading** of what V0.2R can claim, not its interf
 its typing or its information-flow boundary; `17` §9 states that the typed
 contract and S2 are correct regardless.
 
-## 60. Summary and what remains open
+## 60. A73 — the locator evidence quotient, and the public feasible support
+
+**Why A72's wording was not tight enough.** A72 wrote the locator's input as
+$X_{0.2} = (I^{\text{factual}}, Z^{\text{fire}}_{\text{truth}})$ and left
+"learner-visible factual evidence" unqualified. But `sigma0` returns it as **two
+parts**:
+
+$$\texttt{sigma0} = \bigl(\text{rows},\ \text{feedback}\bigr), \qquad
+\text{rows} = (x, y, t, \kappa, \phi, z, m, a^{cmd}, a^{realized}, r)$$
+
+and `feedback` $=$ `decode_feedback`($Z^{\text{fire}}$) is driven by
+`(error_flag, cause_rank)`, which **never appear in rows**. So one symbol $X_{0.2}$
+was naming two different objects, and the phrase "893 information classes" was
+silently describing the partition obtained **after discarding feedback**. Measured
+on the full support:
+
+$$\bigl|X^{\text{obs}}\text{-classes}\bigr| = 4513, \qquad
+\bigl|X^{\text{loc}}\text{-classes}\bigr| = 893$$
+
+and **100%** of the 893 locator classes are split by the feedback channel (845
+into 5, 48 into 6), covering 100% of the DGP mass. $4513/893 = 5.0538$.
+
+$$\boxed{\text{one symbol may not again denote both objects}}$$
+
+**The quotient, frozen.**
+
+$$X^{\text{obs}}_{0.2} = (\text{rows}, \text{feedback}, Z^{\text{fire}}_{\text{truth}}),
+\qquad
+X^{\text{loc}}_{0.2} = (\text{rows}, Z^{\text{fire}}_{\text{truth}})$$
+
+$$q : X^{\text{obs}}_{0.2} \longrightarrow X^{\text{loc}}_{0.2}, \qquad
+q(\text{rows}, \text{feedback}, Z^{\text{fire}}) = (\text{rows}, Z^{\text{fire}})$$
+
+$$\boxed{\bigl|X^{\text{loc}}\text{-classes}\bigr| = 893 \text{ is the }
+\texttt{CausalSetLocator} \text{ main gate}}$$
+
+$4513$ is the full observational refinement. It is a fact about the environment,
+**not** the gate.
+
+**This is not "pretending feedback does not exist."** V0.2R hands over
+$Z^{\text{fire}}_{\text{truth}}$ on purpose, so the feedback channel is a report
+about a quantity already given, and the only thing it adds is the nuisance pair.
+Declaring it out of the locator's input is therefore a **stronger** localisation
+claim: the locator must invert from strictly less evidence.
+
+**But redundancy may not be assumed — it must be proven.** Four exact invariances
+must be discharged first:
+
+$$\text{rows},\quad Z^{\text{fire}},\quad \Gamma_{\text{desc}},\quad
+\text{feasibility} \quad\text{all invariant under } (error\_flag, cause\_rank)$$
+
+and then the envelope equality over **all 4,513** observational classes:
+
+$$\boxed{\Gamma^-_{\text{obs}}(x) = \Gamma^-_{\text{loc}}\bigl(q(x)\bigr),
+\qquad
+\Gamma^+_{\text{obs}}(x) = \Gamma^+_{\text{loc}}\bigl(q(x)\bigr)}$$
+
+$$\boxed{\text{one violation} \;\Rightarrow\; \text{rows-only is void and the main
+gate reverts to } 4513}$$
+
+So the rule is **prove feedback is target-preserving, then quotient** — never fix
+a representative and hope. Only *after* the gate passes may `PublicSCMView` choose
+a canonical nuisance representative, e.g. $(\texttt{error\_flag},
+\texttt{cause\_rank}) = (0,0)$, precisely because rows, fire, descriptor and
+feasibility are constant on that nuisance equivalence class.
+
+**A71's 14/893 must be re-read.** Henceforth
+
+$$\boxed{\text{14 of 893 } \textbf{locator} \text{ information classes } X^{\text{loc}}}$$
+
+It must not be read as a fraction of the full learner-visible observational
+partition, which is $4513$.
+
+**Second half: $\mathcal L_{\text{public}}$ is the feasible canonical grammar set,
+not the grammar product.** A72 defined it as "A43 canonical structural support as a
+set, with probabilities erased", which still under-specified feasibility:
+
+$$\boxed{\mathcal L_{\text{public}} = \{\text{A43 canonical grammar candidates
+that pass public forward-feasibility}\}}$$
+
+$$\text{canonical grammar} \to \text{public factual rollout} \to
+\text{reject MALFORMED / OptionViolation} \to \mathcal L_{\text{public}}$$
+
+No DGP probability, no DGP weight, no world id — but the **same feasibility
+semantics as `DenseSupport`**. Without this the locator is judged against a world
+set it was never allowed to stand on: enumerating a grammatical but infeasible
+hypothetical world would contribute a $\Gamma_{\text{desc}}$ outside
+$\Gamma^+_{\text{eval}}$ and fail the gate for a reason that is not the locator's.
+The support difference has **two** independent sources — enlarging the domain, and
+feasibility filtering — and A72 closed only the first.
+
+**Route C's semantic source, frozen.** The migration source is
+
+$$\texttt{gate\_stage2}.\_domains \;+\;
+\texttt{identifiability\_gate}.\texttt{canonicalise}$$
+
+because `support_build.py` builds `DenseSupport` from exactly that path. The second
+enumeration — `identifiability_gate.legal_fault_domains`, which returns **tuples**
+and lacks the `Trap` `ValueError` guard that `_domains` carries — may later be
+re-pointed at the same public grammar but **is not the truth source**. The
+extraction regression compares **normalised canonical structural tuples**, not
+bytes, in the frozen order:
+
+```text
+P: option_id
+D: (t, action)
+X: (x, y, t, kappa, phi, cmd, realized)
+E: (t, realized)
+U: (t, x, y)
+```
+
+$$\boxed{\texttt{canonical(new\_grammar(ctx))} =
+\texttt{canonical(old\_\_domains(ctx))} \quad \text{for every public base context}}$$
+
+Old code may switch to the new public implementation only after that holds
+everywhere.
+
+**Support closure, as an exact set not a subset.** The subset condition is the
+minimum; because the endpoint is *exact* inversion, the requirement is
+
+$$\boxed{\{\Gamma^\ast(\tilde\ell) : \tilde\ell \in \mathcal C_{\text{SCM}}(X)\}
+= \{\Gamma^\ast(\ell) : \ell \in H_{\text{eval}}(X)\} \quad \forall X \in
+\{1,\dots,893\}}$$
+
+from which $\Gamma^+_{\text{CSL}} = \Gamma^+_{\text{eval}}$ and
+$\Gamma^-_{\text{CSL}} = \Gamma^-_{\text{eval}}$ follow. This way 893/893 validates
+the **candidate-world set semantics itself**, not merely the final output.
+
+**Order in force.**
+
+$$\boxed{\text{A73} \to 4513{\to}893 \text{ envelope gate} \to \text{grammar
+extraction} \to \text{public-support exact-set regression} \to
+\texttt{PublicSCMView} \to \texttt{CausalSetLocator} \to 893/893\ \Gamma^+/\Gamma^-
+\to \text{X/E mutation} \to \text{corrected census}}$$
+
+## 61. Summary and what remains open
 
 | # | what | severity | status |
 |---|---|---|---|
@@ -2753,8 +2895,9 @@ section above; the most recent is:
 | **A56** | semantic propagation of A54/A55 through `02`, `04`, `06`; lattice gains $do(C_P{=}\text{identity})$; arms renamed `QueryOnly`/`SeqThenQuery`; Gate E pre-check clean | high | complete |
 | **A57** | commit repair first-class in the kernel (own node, composes, counts in $\lvert r\rvert$); canary 10/10 held; **Gate E PASS** on full support, all ties kept, trace-level no-op invariant clean | high | complete — semantic suite next |
 | **A69** | V0.2R typed information boundary: three native alphabets with a frozen evaluator-side $\eta_R$ that must not read $Z^{\text{fire}}_{\text{truth}}$; episode-local $\Gamma(I)$; `OracleCreditAdapter` separated from the ordinary method path; $\varnothing \neq \{\texttt{Unknown/NoWrite}\}$; `agent_writeable` assigned including `Strategy = false`; S2 as interface/typing/information-flow only | **P0 (spec)** | frozen — interface and typing; later scientific *reading* amended by A70–A72 (`17` §9). **Logged late: mechanical provenance registration only** |
-| **A71** | truth was built from **generic** type names while predictions are concrete addresses, so A70's census was systematically false-negative; truth is now indexed from $R^{\text{mech}}$ descriptors, **A70's numbers are voided**, and $Z^{\text{fire}} \not\Rightarrow \Gamma^\ast$ — cause identification does **not** imply site identification (14/893 mixed classes, 0.1881% of DGP mass) | **P0** | frozen — identifiability negative against a perfect $Z^{\text{fire}}_{\text{truth}}$ |
+| **A71** | truth was built from **generic** type names while predictions are concrete addresses, so A70's census was systematically false-negative; truth is now indexed from $R^{\text{mech}}$ descriptors, **A70's numbers are voided**, and $Z^{\text{fire}} \not\Rightarrow \Gamma^\ast$ — cause identification does **not** imply site identification (14 of 893 **locator** classes $X^{\text{loc}}$, 0.1881% of DGP mass) | **P0** | frozen — identifiability negative against a perfect $Z^{\text{fire}}_{\text{truth}}$ |
 | **A72** | `PublicSCMView` / `CausalSetLocator` grant recorded: factual-consistency inversion (simulate hypothetical worlds) is not an intervention query; $\hat\Gamma_{\text{CSL}} = \Gamma^+$ with $\Gamma^-$ as the certain diagnostic, $B_Q = 0$, equivalence to be gated at 893/893 against an **independently sourced** $\Gamma^+_{\text{eval}}$ | **P0 (spec)** | frozen — implementation and gate pending |
+| **A73** | locator evidence quotient and public feasible support: $X^{\text{loc}}_{0.2}=(\text{rows},Z^{\text{fire}})$ with $q$ dropping the redundant feedback channel, so **893 is the locator main gate** and $X^{\text{obs}}=(rows,feedback,Z^{\text{fire}})$'s **4,513** is only the observational refinement; $\mathcal L_{\text{public}}$ = canonical grammar candidates **passing public forward-feasibility**; route C's semantic source is `gate_stage2._domains` + `canonicalise`; support closure as **exact set** | **P0 (spec)** | frozen — rows-only **licensed by the 4513→893 gate** (9/9 PASS); one violation voids it and reverts the gate to 4513 |
 
 ---
 
