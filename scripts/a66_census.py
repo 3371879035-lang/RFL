@@ -321,7 +321,8 @@ def main() -> int:
                                                "in the open.",
            "gate_e_comparison": "Gate E's old PASS was under the pre-A65 ontology "
                                 "and is a regression reference only."}
-    path = ROOT / "experiments" / "v01r" / "a66_census.json"
+    path = ROOT / "experiments" / "v01r" / (
+        "a66_census_slice.json" if limit < len(sup) else "a66_census.json")
     path.write_text(json.dumps(out, indent=1, default=str), encoding="utf-8")
     print(f"\nwrote {path}")
     return 0
