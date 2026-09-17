@@ -83,12 +83,32 @@ def main() -> int:
             totals[f"err={err},z={z}"] = dgp.slice_total(ctx)
     worst = max(abs(v - 1.0) for v in totals.values())
 
+    # ---- ONE restricted support, used by BOTH sides of the comparison ----- #
+    # A62 rev: the exact mass was computed on kappa=0 while the MC sampled from
+    # the FULL KAPPAS, so the two figures 0.00782 and 0.00862 were merely close,
+    # not the same distribution. Constructing a real restricted DGP and asserting
+    # the supports are equal is what makes the comparison mean anything.
+    R_KAPPAS = (KAPPAS[0],)
+    dgp_r = SceneDGP(kappas=R_KAPPAS, options=K.option_ids(), tapes=TAPES,
+                     domains=domains, is_feasible=is_feasible)
+    assert set(dgp_r.kappas) == set(R_KAPPAS)
+    # Cross-check on the WORLD-level conditional, which is the part that must not
+    # depend on the kappa support. The context-level log-prob deliberately does
+    # NOT agree: restricting the support renormalises it (log 1/|K| goes from
+    # log(1/2) to 0), so equality there would be the surprising outcome.
+    _c = SceneContext(kappa=R_KAPPAS[0], phase=0, error_flag=0, cause_rank=0,
+                      base_option=0)
+    _Zz = [0, 0, 0, 0, 0]
+    assert abs(dgp_r.world_log_prob(_c, _Zz, [-1] * 5)
+               - dgp.world_log_prob(_c, _Zz, [-1] * 5)) < 1e-12
+
     rng = random.Random(20250814)
     hist, avail = Counter(), Counter()
     rejected = accepted = 0
     while accepted < N_MC:
-        ctx = dgp.sample_context(rng)
-        Z, params = dgp.sample_world(rng, ctx)
+        ctx = dgp_r.sample_context(rng)
+        assert ctx.kappa in R_KAPPAS
+        Z, params = dgp_r.sample_world(rng, ctx)
         if is_feasible(ctx, Z, params):
             accepted += 1
             hist[sum(Z)] += 1
@@ -96,22 +116,15 @@ def main() -> int:
         else:
             rejected += 1
 
-    # ---- exact feasible mass over a RESTRICTED, fully enumerable support -- #
-    # Stage2's 127,440/1,166,400 is an enumeration RATIO, not a probability mass
-    # under the sparse DGP, so it cannot predict the rejection rate. What can is
-    # A = sum over feasible worlds of P_raw, computed exactly here on a support
-    # small enough to enumerate, and then matched by the sampler ON THE SAME
-    # RESTRICTED SUPPORT. That is the equality
-    #     sampler rejection conditioning == support feasibility conditioning.
-    R_KAPPAS = (KAPPAS[0],)
+    # exact feasible mass on the SAME restricted support
     ctxs = [SceneContext(kappa=k, phase=ph, error_flag=e, cause_rank=r,
                          base_option=z)
-            for k in R_KAPPAS for ph in dgp.phase_mass for e in (0, 1)
-            for r in range(dgp.n_cause_rank) for z in dgp.options]
+            for k in R_KAPPAS for ph in dgp_r.phase_mass for e in (0, 1)
+            for r in range(dgp_r.n_cause_rank) for z in dgp_r.options]
     A_raw = A_feas = 0.0
     for ctx in ctxs:
         dm = domains(ctx)
-        pc = pow(2.718281828459045, dgp.context_log_prob(ctx))
+        pc = pow(2.718281828459045, dgp_r.context_log_prob(ctx))
         A_raw += pc
         for bits in range(1 << 5):
             Z = [(bits >> i) & 1 for i in range(5)]
@@ -119,7 +132,7 @@ def main() -> int:
                 continue
             for combo in itertools.product(*[range(len(dm[i])) if Z[i] else [-1]
                                              for i in range(5)]):
-                m = pow(2.718281828459045, dgp.world_log_prob(ctx, Z, list(combo)))
+                m = pow(2.718281828459045, dgp_r.world_log_prob(ctx, Z, list(combo)))
                 if is_feasible(ctx, Z, combo):
                     A_feas += pc * m
     p_reject_exact = 1.0 - (A_feas / A_raw if A_raw else 0.0)
@@ -158,6 +171,9 @@ def main() -> int:
         "slice_totals": totals, "worst_abs_error": worst,
         "conditional_normalisation": "PASS" if exact_ok else "FAIL",
         "restricted_support_kappas": list(R_KAPPAS),
+        "exact_support_kappas": sorted(dgp_r.kappas),
+        "empirical_support_kappas": sorted(dgp_r.kappas),
+        "supports_identical": sorted(dgp_r.kappas) == sorted(R_KAPPAS),
         "p_reject_exact": p_reject_exact,
         "p_reject_empirical": p_reject_mc,
         "rejected": rejected, "accepted": accepted,
