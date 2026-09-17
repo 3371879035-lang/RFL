@@ -139,6 +139,7 @@ def main() -> int:
     crosstab = Counter()
     ties_mech = Counter()
     ties_rescue = Counter()
+    ambiguity_live = False
     total_w = total_w_scanned = 0.0
 
     for wid in range(min(limit, len(sup))):
@@ -175,6 +176,12 @@ def main() -> int:
             bsz = min(b_sizes)
             counts["mech_b_size_%d" % bsz] += 1
             mass["mech_b_size_%d" % bsz] += w
+            # Compare the two readings PER WORLD. An earlier check inferred
+            # liveness from the aggregate histograms and produced a false
+            # positive, because reading (b) has no size-0 entry to compare when
+            # no cause is repairable -- an accounting gap, not a disagreement.
+            if bsz != len(a_mech):
+                ambiguity_live = True
         ties_mech[len(b_sizes)] += 1
 
         base_ok = ftr.outcome == Outcome.SUCCESS
@@ -215,12 +222,6 @@ def main() -> int:
     # `counts` holds SEVERAL overlapping classifications (mech_a, mech_b, rescue),
     # so summing it double- and triple-counts worlds. Usable = scanned - malformed.
     n = int(total_w_scanned - counts["malformed"])
-    # Whether the R^mech ambiguity (undo every firing vs undo at least one) is
-    # currently vacuous: it is exactly when every repairable cause has a single
-    # primitive, in which case readings (a) and (b) coincide.
-    ambiguity_live = any(
-        counts.get(f"mech_a_size_{k}", 0) != counts.get(f"mech_b_size_{k}", 0)
-        for k in range(0, 6))
     print(f"A66 census on the first {limit:,} worlds "
           f"({total_w:.4f} of DGP mass, {n:,} usable)\n")
     print("R^mech, reading (a) undo EVERY firing / (b) undo at least one:")
