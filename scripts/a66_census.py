@@ -54,8 +54,20 @@ from rfl_rebuild.method.support import DenseSupport  # noqa: E402
 from rfl_rebuild.solve.dp import solve_reference  # noqa: E402
 
 CACHE = ROOT / "experiments" / "v01r" / "support_cache"
-REPAIRABLE = {"P", "D", "X"}          # causes with an agent-side primitive
-UNREPAIRABLE = {"E", "U"}
+# A67: pi_credit, frozen. Mechanism-repair DESCRIPTOR -> credit unit. P/D/X have
+# executable agent interventions; E and U have structural descriptors with no
+# agent write, which is the only way ExternalPlant and Unknown/NoWrite can enter
+# Gamma* at all.
+GAMMA_OF_DESCRIPTOR = {
+    "commit": "ProcessCommit",
+    "decision": "Decision_t",
+    "execution": "ControllerSite",
+    "external_plant": "ExternalPlant",
+    "unknown_terminal": "Unknown/NoWrite",
+}
+AGENT_WRITEABLE = {"ProcessCommit": True, "Decision_t": True,
+                   "ControllerSite": True, "ExternalPlant": False,
+                   "Unknown/NoWrite": False}
 
 
 def main() -> int:
@@ -91,23 +103,45 @@ def main() -> int:
                           option_fault=b.get("P"), decision=b.get("D"),
                           controller=b.get("X"), plant=b.get("E"), trap=b.get("U"))
 
-    def mech_primitives(case):
-        """{cause: [Intervention, ...]} for the causes that have a primitive."""
+    def mech_primitives(case, ftr, fire):
+        """{cause: [mechanism-repair descriptor]} for causes that have one.
+
+        A67: R^mech is a set of mechanism-repair DESCRIPTORS, not only executable
+        agent interventions. P/D/X have executable ones; E and U have structural
+        descriptors with no agent write, which is how ExternalPlant and
+        Unknown/NoWrite can ever enter Gamma* at all.
+        """
         out: dict = {}
         if case.option_fault is not None:
-            out["P"] = [Intervention.commit_identity()]
+            out["P"] = [("commit", Intervention.commit_identity())]
         if case.decision is not None:
-            st = State(x=K.START[0], y=K.START[1], t=case.decision.t,
-                       kappa=case.kappa, phi=case.phi)
-            nominal = sol.best_action(st, case.base_option, 0)
-            out["D"] = [Intervention.decision(case.decision.t, nominal)]
+            # The override's nominal action is pi*(s_t, z_t, m_t) at the FACTUAL
+            # pre-action state of time t. An earlier version used START, the
+            # proposal option and m=0 -- all three are lookup keys of pi_D*, so
+            # that produced the wrong nominal action for every later override.
+            nominal = _override_nominal(case, ftr)
+            if nominal is not None:
+                out["D"] = [("decision",
+                             Intervention.decision(case.decision.t, nominal))]
         if case.controller is not None:
-            # ControllerFault carries (state, cmd, realized); the A7 single-cell
-            # primitive is defined on the SITE the fault acted at.
             f = case.controller
-            out["X"] = [Intervention.execution(ControllerSite(state=f.state,
-                                                              cmd=f.cmd))]
+            out["X"] = [("execution", Intervention.execution(
+                ControllerSite(state=f.state, cmd=f.cmd)))]
+        if case.plant is not None:
+            out["E"] = [("external_plant", None)]     # non-agent descriptor
+        if fire[CAUSE_KEYS.index("U")] == 1:
+            out["U"] = [("unknown_terminal", None)]   # non-agent descriptor
         return out
+
+    def _override_nominal(case, ftr):
+        """pi*(s_t, z_t, m_t) at the factual pre-action state of the override."""
+        st = State(x=K.START[0], y=K.START[1], t=0, kappa=case.kappa, phi=case.phi)
+        ctrl = K.initial_control(ftr.option_in_force)
+        for res in ftr.steps:
+            if st.t == case.decision.t:
+                return sol.best_action(st, ctrl.z, ctrl.m)
+            st, ctrl = res.state, res.control
+        return None
 
     def outcome_after(case, members):
         try:
@@ -158,31 +192,43 @@ def main() -> int:
             counts["malformed"] += 1
             continue
 
-        prims = mech_primitives(case)
-        fired_repairable = [k for k in REPAIRABLE
-                            if fire[CAUSE_KEYS.index(k)] == 1 and k in prims]
+        prims = mech_primitives(case, ftr, fire)
+        fired_repaired = [k for k in CAUSE_KEYS
+                          if fire[CAUSE_KEYS.index(k)] == 1 and k in prims]
 
-        # reading (a): undo EVERY firing -> the union of that cause's primitives
-        a_mech = tuple(iv for k in sorted(fired_repairable) for iv in prims[k])
-        # reading (b): undo at least one firing per repairable fired cause
-        per_cause_choices = [prims[k] for k in sorted(fired_repairable)]
+        # reading (a): undo EVERY firing -> all descriptors of those causes
+        a_kinds = tuple(kind for k in fired_repaired
+                        for kind, _iv in prims[k])
+        # reading (b): undo at least one firing per fired repairable cause
+        per_cause_choices = [prims[k] for k in fired_repaired]
         b_sizes = set()
         if per_cause_choices:
             for combo in itertools.product(*per_cause_choices):
                 b_sizes.add(len(combo))
-        counts["mech_a_size_%d" % len(a_mech)] += 1
-        mass["mech_a_size_%d" % len(a_mech)] += w
+        counts["mech_a_size_%d" % len(a_kinds)] += 1
+        mass["mech_a_size_%d" % len(a_kinds)] += w
+        for kind in a_kinds:
+            counts[f"mech_kind_{kind}"] += 1
         if b_sizes:
             bsz = min(b_sizes)
             counts["mech_b_size_%d" % bsz] += 1
             mass["mech_b_size_%d" % bsz] += w
-            # Compare the two readings PER WORLD. An earlier check inferred
-            # liveness from the aggregate histograms and produced a false
-            # positive, because reading (b) has no size-0 entry to compare when
-            # no cause is repairable -- an accounting gap, not a disagreement.
-            if bsz != len(a_mech):
+            if bsz != len(a_kinds):
                 ambiguity_live = True
         ties_mech[len(b_sizes)] += 1
+        # A67 structural check: <=1 mechanism primitive per cause per world
+        if max((len(prims[k]) for k in prims), default=0) > 1:
+            counts["mech_multi_primitive_per_cause"] += 1
+
+        # A67: the projection, frozen. E and U enter Gamma* INDEPENDENTLY of any
+        # rescue -- that is the whole point of separating them from Unknown.
+        gamma_star = []
+        for k in fired_repaired:
+            for kind, _iv in prims[k]:
+                gamma_star.append(GAMMA_OF_DESCRIPTOR[kind])
+        if not gamma_star:
+            gamma_star = ["Unknown/NoWrite"]      # NoWrite, not "we don't know"
+        crosstab["gamma_star_" + "|".join(sorted(set(gamma_star)))] += 1
 
         base_ok = ftr.outcome == Outcome.SUCCESS
         if base_ok:
@@ -191,33 +237,47 @@ def main() -> int:
             best_rescue_kinds = {"none"}
             rescue_size = 0
         else:
-            good = []
-            for kind, mem in rescue_candidates(case, ftr):
-                if outcome_after(case, mem) == Outcome.SUCCESS:
-                    good.append(kind)
+            # P0-2: a singleton miss is NOT bottom. Enumerate pairs, then
+            # triples, before concluding anything -- Gate E's old singleton
+            # result is a regression reference, not an inherited theorem.
+            cands = rescue_candidates(case, ftr)
+            good, found_size = [], None
+            for size in (1, 2, 3):
+                for combo in itertools.combinations(cands, size):
+                    nodes = [iv.node() for _kd, mem in combo for iv in mem]
+                    if len(nodes) != len(set(nodes)):
+                        continue
+                    mem = tuple(iv for _kd, mm in combo for iv in mm)
+                    if outcome_after(case, mem) == Outcome.SUCCESS:
+                        good.append(combo)
+                if good:
+                    found_size = size
+                    break
             ties_rescue[len(good)] += 1
             if good:
-                rescue_size = 1
-                counts["rescue_size_1"] += 1
-                mass["rescue_size_1"] += w
-                best_rescue_kinds = set(good)
+                rescue_size = found_size
+                counts[f"rescue_size_{found_size}"] += 1
+                mass[f"rescue_size_{found_size}"] += w
+                best_rescue_kinds = {kd for combo in good for kd, _m in combo}
             else:
                 rescue_size = None
-                counts["rescue_BOT"] += 1
-                mass["rescue_BOT"] += w
+                counts["rescue_UNRESOLVED_GT3"] += 1
+                mass["rescue_UNRESOLVED_GT3"] += w
                 best_rescue_kinds = {"none"}
 
         # the cross-tab that A65 exists to expose
-        has_mech = bool(a_mech)
+        has_mech = bool(a_kinds)
+        has_strategy_rescue = "strategy" in (best_rescue_kinds or set())
         if has_mech and rescue_size == 0:
             crosstab["mech_present_and_already_succeeded"] += 1
-        elif has_mech and "strategy" in (best_rescue_kinds or set()):
+        elif has_mech and has_strategy_rescue:
             crosstab["mech_present_and_strategy_also_rescues"] += 1
         elif has_mech and "commit" in (best_rescue_kinds or set()):
             crosstab["mech_present_and_commit_rescues"] += 1
-        elif not has_mech and rescue_size == 1 and "strategy" in (
-                best_rescue_kinds or set()):
+        elif not has_mech and has_strategy_rescue:
             crosstab["NO_mech_but_strategy_rescues"] += 1
+        if has_strategy_rescue and "ExternalPlant" in gamma_star:
+            crosstab["PLANT_FAULT_and_strategy_rescues_truth_still_ExternalPlant"] += 1
 
     # `counts` holds SEVERAL overlapping classifications (mech_a, mech_b, rescue),
     # so summing it double- and triple-counts worlds. Usable = scanned - malformed.
