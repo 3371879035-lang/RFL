@@ -1,0 +1,42 @@
+{
+ "checks": {
+  "1_queryonly_prior_is_global_and_truth_independent": true,
+  "2_sequence_and_seqthenquery_same_rows_belief": true,
+  "3_feedback_absent_from_sequence_belief": true,
+  "4_sample_to_support_bijection": true,
+  "5_blind_isolation_q0_identical": "NOT_RUN_BUDGET"
+ },
+ "detail": {
+  "1": {
+   "fp": "61614097c7b75d0c2ce261c4bd42c2be",
+   "blocks": 547,
+   "true_a_block": 0,
+   "true_b_block": 1
+  },
+  "2": {
+   "active_blocks": 1,
+   "is_the_rows_block": true,
+   "block_size": 9000
+  },
+  "3": {
+   "same_block": true,
+   "feedback_differs": true,
+   "beliefs_identical": true
+  },
+  "4": {
+   "sampled": 500,
+   "mapped_one": 500,
+   "mapped_zero": 0
+  },
+  "5": {
+   "error": "legality budget exceeded",
+   "legality_evals_used": 199560,
+   "budget": 200000,
+   "note": "Full-prior legality for the FIRST registry entry exceeds the declared budget. Reported as not run rather than replaced by a cheaper check."
+  }
+ },
+ "n_worlds": 1038960,
+ "n_blocks": 547,
+ "registry_size": 9437,
+ "status": "INCOMPLETE"
+}
