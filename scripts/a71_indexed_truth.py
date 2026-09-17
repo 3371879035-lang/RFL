@@ -119,12 +119,15 @@ def main() -> int:
                          | {f"Decision_{t}" for t in ts} | sites)
 
     groups = defaultdict(set)
+    group_mass = defaultdict(float)
     n_dom_violation = 0
     n_generic_leak = 0
-    multi_primitive = 0
     inner = 0
+    world_mass_in_mixed = 0.0
+    ambiguity_hist = {}
     for wid in range(n):
         inner += 1
+        w = sup.weight(wid)
         case = rebuild(wid)
         fc = sup.field(wid, "fire_code")
         gs = gamma_star_indexed(case, fc, wid)
@@ -133,36 +136,56 @@ def main() -> int:
             n_dom_violation += 1
         if any(u in ("Decision_t", "ControllerSite") for u in gs):
             n_generic_leak += 1
-        # real multiplicity: how many DESCRIPTORS does a single cause contribute?
-        # At most one fault object per cause, so this is a structural check that
-        # can actually fail, unlike the bit test it replaces.
-        for i in range(5):
-            if (fc >> i) & 1:
-                cnt = 1
-                if cnt > 1:
-                    multi_primitive += 1
-        groups[(sup.field(wid, "block_id"), fc)].add(gs)
+        key = (sup.field(wid, "block_id"), fc)
+        groups[key].add(gs)
+        group_mass[key] += w
+
+    # SCHEMA THEOREM, not a test. LatentCase carries P/D/X/E/U as SINGLE-VALUED
+    # fields, so each cause has at most one descriptor BY CONSTRUCTION and a
+    # dynamic counter could never fail. Two earlier versions pretended otherwise:
+    # the first checked ((zc >> i) & 1) > 1, which is unsatisfiable for a bit, and
+    # the second assigned cnt = 1 and tested cnt > 1, which is unsatisfiable for a
+    # constant. Both reported PASS. If the schema ever admits multi-fault lists per
+    # cause, A66's (a)-vs-(b) ambiguity reopens and a real check must replace this.
+    schema_theorem = ("at most one mechanism descriptor per cause per world, "
+                      "because LatentCase stores each cause as a single field")
 
     mixed = {k: v for k, v in groups.items() if len(v) > 1}
+    for k in mixed:
+        world_mass_in_mixed += group_mass[k]
+        ambiguity_hist[len(groups[k])] = ambiguity_hist.get(len(groups[k]), 0) + 1
+
+    # Gamma^- and Gamma^+ per information class: the evaluator-side envelope that
+    # A72 will freeze as the causal locator's target.
+    gamma_minus = {k: frozenset.intersection(*v) for k, v in groups.items()}
+    gamma_plus = {k: frozenset.union(*v) for k, v in groups.items()}
+    slack = [len(gamma_plus[k]) - len(gamma_minus[k]) for k in groups]
+
     checks = {
         "gamma_star_subset_of_episode_domain": n_dom_violation == 0,
         "no_generic_unit_leak": n_generic_leak == 0,
-        "one_descriptor_per_cause_structural": multi_primitive == 0,
     }
     ok = all(checks.values())
+    total_mass = sum(group_mass.values())
     print(f"A71 over {inner:,} worlds (scope limit={limit or 'full'})\n")
     print(f"  information classes (block, fire_code): {len(groups):,}")
     print(f"  classes with MIXED Gamma*:              {len(mixed):,} "
-          f"({len(mixed)/max(len(groups),1):.1%})")
+          f"({len(mixed)/max(len(groups),1):.2%} of CLASSES)")
+    print(f"  DGP mass in mixed classes:              "
+          f"{world_mass_in_mixed/max(total_mass,1e-30):.4%} of MASS")
     print(f"  domain-closure violations:              {n_dom_violation}")
     print(f"  generic-unit leaks:                     {n_generic_leak}")
+    print(f"  ambiguity-set size histogram (#Gamma* per mixed class): "
+          f"{dict(sorted(ambiguity_hist.items()))}")
+    print(f"  |Gamma+| - |Gamma-| over classes: mean "
+          f"{sum(slack)/len(slack):.3f}, max {max(slack)}")
     for k in sorted(checks):
         print(f"  {k:<42} {checks[k]}")
     print(f"\nA71: {'ALL PASS' if ok else 'FAIL'}")
+    print(f"\n  SCHEMA THEOREM (not a test): {schema_theorem}")
     if mixed:
-        ex = list(mixed.items())[:2]
         print("\nfirst mixed classes (Gamma* not determined by X_0.2):")
-        for k, v in ex:
+        for k, v in list(mixed.items())[:2]:
             print(f"  block={k[0]} fire={k[1]:05b} -> {len(v)} distinct Gamma*")
             for g in list(v)[:2]:
                 print(f"     {sorted(g)}")
