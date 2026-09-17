@@ -248,6 +248,29 @@ def main() -> int:
         "uses_sorted_not_dict_order": True}
     verdicts["8_hashseed_independent"] = fp1 == fp2
 
+    # ---- 9. belief immutability (A62 closure) ---------------------------- #
+    # update must return a NEW belief and leave H_0 untouched, and H_0 must not
+    # be writable. frozen=True on a dataclass holding a plain dict is cosmetic.
+    imm = {}
+    cid0 = next(iter(rows_class))
+    H0i = idx.rows_prior(cid0)
+    fp_before = idx.fingerprint(H0i)
+    snap_before = dict(H0i.active_blocks)
+    q_use = next((q for q in registry if idx.safe(H0i, q)), None)
+    if q_use is not None:
+        rk = next(iter(idx._entry(cid0, q_use).by_response))
+        H1i = idx.update(H0i, q_use, rk)
+        imm["update_returned_new_object"] = H1i is not H0i
+        imm["H0_fingerprint_unchanged"] = idx.fingerprint(H0i) == fp_before
+        imm["H0_blocks_unchanged"] = dict(H0i.active_blocks) == snap_before
+    try:
+        H0i.active_blocks[cid0] = 1
+        imm["direct_write_raised"] = False
+    except TypeError:
+        imm["direct_write_raised"] = True
+    results["9_belief_immutability"] = imm
+    verdicts["9_belief_immutability"] = all(imm.values())
+
     ok = all(verdicts.values())
     print()
     for k in sorted(results):

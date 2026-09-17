@@ -44,6 +44,7 @@ materialising a bitmask.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from types import MappingProxyType
 from typing import Callable, Mapping, Sequence
 
 N_TARGETS = 32          # 5-bit Z^fire code
@@ -201,10 +202,21 @@ class GlobalSupportIndex:
 
 @dataclass(frozen=True, slots=True)
 class BeliefState:
+    """An IMMUTABLE belief. ``update`` returns a new one; the old one never moves.
+
+    A62 closure: ``frozen=True`` alone was cosmetic here, because the field was a
+    plain ``dict`` and ``object.__setattr__`` only replaced it with another
+    ``dict``. External code could still write ``belief.active_blocks[cid] = ...``,
+    which silently breaks "update returns a new belief". Wrapping in
+    ``MappingProxyType`` closes it at the point of use.
+    """
+
     active_blocks: Mapping = field(default_factory=dict)
 
     def __post_init__(self) -> None:
-        object.__setattr__(self, "active_blocks", dict(self.active_blocks))
+        if not isinstance(self.active_blocks, MappingProxyType):
+            object.__setattr__(self, "active_blocks",
+                               MappingProxyType(dict(self.active_blocks)))
         for cid, m in self.active_blocks.items():
-            if not isinstance(m, int) or m <= 0:
+            if not isinstance(m, int) or isinstance(m, bool) or m <= 0:
                 raise ValueError("each local mask must be a positive int bitset")
