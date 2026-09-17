@@ -101,6 +101,104 @@ rather than "sequence evidence smuggled in through query addresses". Only
 
 ---
 
+### 3.2 `QueryOnly`'s query universe is global, and so is its blind policy
+
+**A62 closure.** §3.1 said `QueryOnly`'s blind selection is executed by the
+runner so that query *addresses* never reach the method. That is necessary and
+**not sufficient**. If the runner picks from `class_local_queries(true factual
+rows)`, then even though the method never sees an address, the *response
+distribution* has been conditioned on the true sequence: a query only this
+factual scene could have generated is a query chosen by the answer.
+
+So the universe is frozen before anything is sampled:
+
+$$\boxed{\mathcal Q_{\text{global}} \text{ is fixed before any scene is drawn, and is identical for every true world}}$$
+
+It may **not** read $I^{\text{factual}}$, the feedback, the rows block, or the
+true world. Only the environment, the action set and the query grammar.
+
+`QueryOnly` starts at $H^{Q}_0 = H_{\text{global}}$, and at step $t$:
+
+$$Q_{\text{safe}}(H_t) = \{q \in \mathcal Q_{\text{global}} : q \text{ legal in every } \ell \in H_t\}$$
+
+the blind policy takes the first safe query in the **global canonical registry
+order**, the runner executes it, and
+$H_{t+1} = \{\ell \in H_t : O(\ell, q_t) = o_t\}$.
+
+**Why this does not contradict A59.** The method still receives responses and no
+addresses. But because $q_t$ is a deterministic function of the public prior, the
+public policy and the response history, the method *can* derive which query was
+executed. That is not a leak: nothing in the derivation depends on the true
+factual sequence. A59 forbids shipping the address; it does not forbid the method
+from recomputing a public function.
+
+**The registry order is explicit, not `repr`- or set-derived**, so query order
+cannot pick up Python implementation details across processes:
+
+```text
+proc_audit                         -> (0,)
+audit(t)                           -> (1, t)
+process(z)                         -> (2, z)
+decision(t, a)                     -> (3, t, a)
+execution(x, y, t, kappa, phi, cmd) -> (4, x, y, t, kappa, phi, cmd)
+```
+
+**Stream, do not materialise.** Under the global prior a full
+`candidate_queries()` tuple would evaluate legality for a million worlds across
+the whole registry. The blind policy only needs the first safe query:
+
+```text
+for q in global_registry:
+    if safe(H, q):
+        return q
+```
+
+### 3.3 The reusable runtime support refuses to load on any mismatch
+
+The full support is $1{,}038{,}960$ canonical worlds in $547$ rows-only blocks,
+stored densely — `world_id` in $[0,N)$ as `uint32`, block id `uint16`, `Z_code`
+and `fire_code` at 5 bits, inactive params pinned to $-1$ — with a `LatentCase`
+rebuilt on demand rather than a million live objects, and one immutable index
+shared by all four arms and every scene.
+
+The loader checks a manifest rather than trusting that a file exists:
+`support_schema_version`, `n_worlds = 1,038,960`, `n_rows_blocks = 547`,
+`atom_schema`, `DGP_semantics_fingerprint`, the observation/fire/kernel
+fingerprint, `weight_sum`, and a cache content digest.
+
+$$\boxed{\text{any mismatch} \Rightarrow \text{REFUSE TO LOAD}}$$
+
+Silently continuing would let a changed kernel, fire definition or DGP run
+against a stale million-world cache.
+
+The sample-to-support map is bucketed by `context_id` — there are only
+$2 \times 6 \times 2 \times 60 \times 4 = 5760$ contexts, each holding roughly 200
+raw patterns — with a local binary search, rather than a million-key tuple dict.
+
+**The committed `global_support.json` is a stale validation artifact and must not
+be read as truth or as a cache.** It predates the A62 metadata cleanup and still
+carries the mislabelled shifted sum under `A_full`. Runners read the runtime
+support builder/cache, never that JSON.
+
+### 3.4 Runner acceptance
+
+1. `QueryOnly`: $H_0 = H_{\text{global}}$, and the initial fingerprint is the same
+   for different true scenes.
+2. `SequenceEvidence` and `SeqThenQuery`: $H_0 = H_{\text{rows}}(I)$, identical.
+3. Same rows, different feedback: $H_0(\ell_a) = H_0(\ell_b)$.
+4. A sampled accepted scene matches **exactly one** `world_id`.
+5. Blind isolation: $q_0(\ell_a) = q_0(\ell_b)$ for any two true scenes, and the
+   next query is identical given identical response history.
+6. The raw run artifact stores, per scene, world id/fingerprint, arm predictions,
+   query traces, and initial/final belief fingerprints — the byte-comparison
+   objects for Test 8.
+
+Test 8 runs in two layers so it does not enumerate the cache twice: a **runtime**
+test (two processes, one shared immutable cache, `PYTHONHASHSEED=1/999`, raw run
+artifact byte-identical) and a **builder determinism** test (a small frozen
+support slice built independently under two hash seeds, requiring identical cache
+and manifest digests).
+
 ## 4. A50 lives in the API, not only in the gate scripts
 
 A method must **never** receive any of
