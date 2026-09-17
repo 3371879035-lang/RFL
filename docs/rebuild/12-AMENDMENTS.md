@@ -2150,7 +2150,96 @@ result here may be cited for them.
 
 ---
 
-## 52. Summary and what remains open
+## 52. A65 — V0.2R object and type semantics
+
+**V0.1R is CLOSED at `8f35766`.** After that, no further change to benchmark, DGP,
+method, endpoint or experiment design; errata only.
+
+**Why V0.2R cannot start from `07` as written.** `07` presents V0.2R as "causal
+truth $\to$ credit representation" and takes
+
+$$R^\ast = \text{minimal sufficient intervention set}$$
+
+as *the* repair truth, then compares module / trajectory / causal / repair
+representations against it. A55–A64 make that too coarse. The specific
+counterexample is A57's:
+
+$$do(C_P = \text{identity}) \quad\text{vs}\quad do(z = z')$$
+
+The first repairs the process-commit **mechanism**; the second may merely route
+around it by running a different strategy. A rescue that succeeds therefore does
+not imply that `Strategy` should carry the learning responsibility, and the
+implicit identity
+
+$$\text{minimal sufficient rescue} \Rightarrow \text{credit truth}$$
+
+is **withdrawn**.
+
+**Five objects, not two:**
+
+$$\boxed{C^{\text{fire}} \neq R^{\text{mech}} \neq R^{\text{rescue}} \neq \Gamma^{\text{credit}} \neq W^{\text{update}}}$$
+
+with $C^{\text{fire}}$ the closed V0.1R object, $R^{\text{mech}}$ the intervention
+that restores a faulty mechanism, $R^{\text{rescue}}$ any intervention that makes
+the episode succeed, $\Gamma^{\text{credit}}$ V0.2R's actual subject, and
+$W^{\text{update}}$ V0.3R's. Where $R^{\text{mech}}$ and $R^{\text{rescue}}$ differ,
+that difference *is* the structure V0.2R exists to study.
+
+**Input contract**, stated precisely rather than as "receives cause truth":
+
+$$X_{0.2} = (I^{\text{factual}}_{0:T}, Z^{\text{fire}}_{\text{truth}})$$
+
+No latent fault parameters, no repair truth of either kind, no responsibility
+truth, no write target. The asymmetry with V0.1R is deliberate: V0.1R was handed
+no truth and had to infer it; V0.2R is handed the answer to V0.1R's question and
+tested on the next one.
+
+**Credit-unit ontology, re-frozen.** `07`'s `Plan / Decision_t / Execution_t /
+Process` no longer matches the SCM: `Strategy` and `ProcessCommit` were one label
+over two mechanisms, and one `Execution` swallowed the controller/plant boundary
+A53 exists to expose.
+
+$$\Gamma = \{\text{Strategy}, \text{ProcessCommit}, \text{Decision}_t, \text{ControllerSite}, \text{ExternalPlant}, \text{Unknown/NoWrite}\}$$
+
+`Unknown/NoWrite` must remain **expressible**: a method forced to name a
+responsible unit is pushed toward false credit by construction.
+
+**Two repair truths, and a frozen projection.** Both $\mathcal R^{\text{mech},\ast}$
+and $\mathcal R^{\text{rescue},\ast}$ are minimised and **ties retained**
+($|R^\ast| \neq \#R^\ast$). Responsibility truth is then
+
+$$\Gamma^\ast(\ell) = \{\pi_{\text{credit}}(r) : r \in \mathcal R^{\text{mech},\ast}(\ell)\}$$
+
+projected **from $R^{\text{mech}}$, never from $R^{\text{rescue}}$** — otherwise
+rescuing an outcome by switching strategy mints `Strategy` credit for a process
+fault. $\pi_{\text{credit}}$ is total and declared, including on the empty repair,
+which maps to `Unknown/NoWrite`.
+
+**Endpoints revised.** `InterventionSufficiency` is **not** adopted as primary: it
+needs a `credit unit → canonical intervention` conversion that is already most of
+V0.3R's repair primitive, so a representation comparison would be measured partly
+through a repair rule. Primary is instead set-valued —
+$\text{CreditCoverage}$ and $\text{FalseCreditRate}$ — asking whether the
+representation expresses *the right place to change at all*.
+`OutcomeRepairSufficiency` demotes to secondary/evaluator diagnostic.
+
+**Old Gate E does not carry over.** Its PASS ($|R^\ast| = 0$: 925,800;
+$|R^\ast| = 1$: 113,160; none needing 2+) was under the old ontology and never
+separated the two repair truths, so it is a **regression reference**, not a
+prerequisite theorem. A **new exhaustive census** runs on the existing
+1,038,960-world `DenseSupport` reporting **DGP-weighted mass alongside world
+counts** — V0.1R already showed those can differ by an order of magnitude.
+
+Full text: `16-V02R-SEMANTICS.md`. Order:
+A65 → A66 enumerator → A67 projection + set-valued truth → new Gate E census →
+rewrite `07` endpoints → method contract → smoke/dev/confirmatory.
+
+**The next step is not a method.** It is answering, in the ontology, whether
+"where to change" means repairing the fault or compensating for the outcome.
+
+---
+
+## 53. Summary and what remains open
 
 | # | what | severity | status |
 |---|---|---|---|

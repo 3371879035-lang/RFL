@@ -57,6 +57,7 @@ every algorithmic choice below is a consequence of a design decision above it.
 | **13** | [`13-GATE-L-FAILURE.md`](13-GATE-L-FAILURE.md) | Gate L fails: 2,695 of 2,749 multi-$Z$ classes are provably unidentifiable at any finite budget, and the defect is in the gate's label ($Z$ vs $B$), not in the world |
 | **14** | [`14-V01R-METHOD-CONTRACT.md`](14-V01R-METHOD-CONTRACT.md) | the frozen V0.1R method boundary: interfaces, runner-enforced arm isolation, A50 in the API, and the S1 assertion map |
 | **15** | [`15-SCENE-DGP.md`](15-SCENE-DGP.md) | the frozen scene DGP, the four arms' hypothesis populations, and why dev_v1 is void for discriminative-range inference |
+| **16** | [`16-V02R-SEMANTICS.md`](16-V02R-SEMANTICS.md) | the V0.2R objects: $C^{\text{fire}} \neq R^{\text{mech}} \neq R^{\text{rescue}} \neq \Gamma^{\text{credit}} \neq W^{\text{update}}$, the re-frozen credit-unit ontology, and the set-valued responsibility truth |
 
 ---
 
