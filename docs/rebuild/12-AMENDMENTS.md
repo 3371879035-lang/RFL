@@ -1969,7 +1969,67 @@ to the macro will be unstable. That is a property of the frozen DGP.
 
 ---
 
-## 51. Summary and what remains open
+## 51. A64 — the confirmatory run: PASS, and U is unevaluable at every feasible N
+
+**Run.** Namespace `v01r_conf_v1`, $N = 400$ drawn as one deterministic sequence
+from the frozen DGP, four non-overlapping blocks of 100, 165 distinct rows
+blocks, 15,903,240 memoised rollouts. All 400 scenes were generated and all four
+arms ran on every one.
+
+**Primary contrast, pre-registered as `SeqThenQuery` vs `DirectFeedback` on macro
+AUPRC against $\Delta_{\min} = 0.05$:**
+
+| | alt | base | delta | position |
+|---|---|---|---|---|
+| cumulative | 1.0000 | 0.3899 | **0.6101** | **ABOVE** |
+| block 1 (n=100) | | | 0.6313 | ABOVE |
+| block 2 | | | 0.5159 | ABOVE |
+| block 3 | | | 0.5918 | ABOVE |
+| block 4 | | | 0.6230 | ABOVE |
+
+**The delta is not outlier-driven**, which the protocol requires checking before
+the mean can be read: tie fraction 0.555, **178 wins and 0 losses**, two-sided
+sign test $p \approx 5.2\times10^{-54}$, and the top-5 scenes account for only
+**5.2%** of the total delta. So the effect is broad and every block clears
+$\Delta_{\min}$ on its own, not merely in aggregate.
+
+Verdict: **PASS**.
+
+**U is unevaluable at every feasible N, not merely thin at 32.** Coverage at
+$N=400$ is $+[75, 63, 59, 62, \mathbf{0}]$. A63's warning predicted ~4
+U-positives at $N=400$; the measured count over all 405 sampled scenes is **0**,
+so the true rate is below ~0.25% and the A63 estimate was wrong in the
+optimistic direction. `U` is NOT_EVALUABLE at $N=5$, 32 and 400 alike.
+
+That has a **good** consequence the A63 note did not anticipate: the macro口径 is
+$\{P, D, X, E\}$ at both dev_v2 and confirmatory, so **the two are directly
+comparable** after all. It also means $U$ contributes nothing to the primary
+endpoint at any planned $N$, and the freeze/thaw probe that $U$ was meant to carry
+is not exercised by this benchmark at all.
+
+**A gate defect found and fixed here.** The confirmatory artifact reported FAIL
+while `failed_gating_checks` was empty, because
+`coverage_every_cause_has_both_classes_INFORMATIONAL` — explicitly marked
+INFORMATIONAL by A63 — was still being ANDed into the verdict. The rule was
+wrong, not the data, so the verdict was **recomputed from the stored artifact**
+without redrawing a single scene or repeating the 15.9M rollouts. The script
+(`scripts/recompute_verdict.py`) records the original FAIL, the reason, and that
+nothing was redrawn.
+
+**Limitation, stated plainly.**
+$\text{macro AUPRC}(\texttt{SeqThenQuery}) = 1.0000$ exactly, i.e. that arm is at
+the ceiling of the endpoint. The contrast against `DirectFeedback` is
+correspondingly large, but a saturated arm means **no further improvement by
+`SeqThenQuery`-class methods is measurable on this benchmark**, and the ordering
+among the three non-trivial arms (0.3899 / 0.6892 / 0.7169) is where residual
+discriminative range actually lives. Per `15-SCENE-DGP.md` §4 this is accepted
+rather than tuned away — the frozen primary hypothesis is the contrast against
+`DirectFeedback`, which is met — but it bounds what this benchmark can be used to
+claim in future versions.
+
+---
+
+## 52. Summary and what remains open
 
 | # | what | severity | status |
 |---|---|---|---|

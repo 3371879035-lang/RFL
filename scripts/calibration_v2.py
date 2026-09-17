@@ -301,7 +301,12 @@ def main() -> int:
     ev = metrics["SequenceEvidence"]["evaluable_causes"]
     dev_only["not_evaluable_causes_are_named"] = (
         metrics["SequenceEvidence"]["macro_over"] != "all causes") if nev else True
-    applied = checks if stage == "smoke" else {**checks, **dev_only}
+    # A63: the coverage check is INFORMATION, not a gate. Averaging it into the
+    # verdict is exactly what A63 forbids -- it is a property of the frozen DGP
+    # (U fires in ~0 of 405 sampled scenes), not a defect of any method.
+    applied = (checks if stage == "smoke" else
+               {**checks, **{k: v for k, v in dev_only.items()
+                             if not k.endswith("_INFORMATIONAL")}})
     verdict = "PASS" if all(applied.values()) else "FAIL"
 
     primary = None
