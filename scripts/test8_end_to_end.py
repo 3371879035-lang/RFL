@@ -85,25 +85,25 @@ class Probe:
     def response(self, case, q):
         from gate_stage3 import response as R
         if q[0] == "execution":
-            # registry spells an execution probe flat; the Gate entry point wants
-            # a ControllerSite. Same query, so adapt rather than duplicate logic.
             from rfl_rebuild.env.kernel import ControllerSite, State
             site = ControllerSite(
                 state=State(x=q[1], y=q[2], t=q[3], kappa=q[4], phi=q[5]),
                 cmd=q[6])
             q = ("execution", site)
         return R(sol, case, q)
+    def rows_of(self, support, wid):
+        case = self.rebuild(support, wid)
+        return sigma0(sol, case)[0][0]
 
 probe = Probe()
 memo = ResponseMemo(sup, probe)
+rows_index = sup.build_rows_index(probe)
 
-blocks = sorted(sup._worlds_of)[:8]
-fixture = []
-for bid in blocks[:6]:
-    members = sup.block_members(bid)[:7]
-    for wid in members:
-        fixture.append(wid)
-fixture = fixture[:6]
+# SIX distinct rows blocks. The earlier fixture took block_members(bid)[:7] for
+# each of six blocks and then truncated to 6, so every fixture world came from
+# the FIRST block -- which is why SequenceEvidence showed one distinct prediction
+# and layer C only ever exercised one (rows, Q_syn) pair.
+fixture = [sup.block_members(bid)[0] for bid in sorted(sup._worlds_of)[:6]]
 
 def fp(belief):
     return hashlib.sha256("|".join(f"{b}:{m}" for b,m in
@@ -126,10 +126,11 @@ records = []
 for wid in fixture:
     ev, claim = evidence_for(wid)
     p_df = arm_direct_feedback(sup, claim).p
-    p_se = arm_sequence_evidence(sup, wid).p
+    p_se = arm_sequence_evidence(sup, ev, rows_index).p
     p_qo, t_qo, H_qo = arm_query_only(sup, registry, memo, budget=4, true_wid=wid)
-    p_st, t_st, H_st = arm_seq_then_query(sup, registry, memo, ev, wid, ridx,
-                                          budget=4, option_ids=K.option_ids(),
+    p_st, t_st, H_st = arm_seq_then_query(sup, ev, rows_index, registry, memo,
+                                          wid, ridx, budget=4,
+                                          option_ids=K.option_ids(),
                                           option_actions=actions)
     records.append({
         "world_id": wid,
@@ -173,12 +174,24 @@ def main() -> int:
     checks = {
         "A_predictions_and_traces_byte_identical": same,
         "fixture_fixed_and_nond_ev": len(recs) == N_FIXTURE,
+        "fixture_spans_six_distinct_blocks":
+            len({r["block_id"] for r in recs}) == 6,
+        "queryonly_trace_has_no_repeats": all(
+            len(r["query_trace_QueryOnly"]) == len(set(r["query_trace_QueryOnly"]))
+            for r in recs),
+        "proc_audit_asked_at_most_once": all(
+            r["query_trace_QueryOnly"].count(0) <= 1 for r in recs),
+        "seqthenquery_trace_has_no_repeats": all(
+            len(r["query_trace_SeqThenQuery"])
+            == len(set(r["query_trace_SeqThenQuery"])) for r in recs),
         "queryonly_used_a_query": used["QueryOnly"] > 0,
         "seqthenquery_used_a_query": used["SeqThenQuery"] > 0,
         "no_arm_exceeded_B_Q": max(maxq.values()) <= 4,
         "seqthenquery_differs_from_sequence_evidence": any(
             r["predictions"]["SeqThenQuery"] != r["predictions"]["SequenceEvidence"]
             for r in recs),
+        "evidence_only_initialisation":
+            len({r["belief_fp_initial"]["SeqThenQuery"] for r in recs}) == 6,
     }
     ok = all(checks.values())
     for k in sorted(checks):

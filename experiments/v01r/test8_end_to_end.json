@@ -2,27 +2,32 @@
  "checks": {
   "A_predictions_and_traces_byte_identical": true,
   "fixture_fixed_and_nond_ev": true,
+  "fixture_spans_six_distinct_blocks": true,
+  "queryonly_trace_has_no_repeats": true,
+  "proc_audit_asked_at_most_once": true,
+  "seqthenquery_trace_has_no_repeats": true,
   "queryonly_used_a_query": true,
   "seqthenquery_used_a_query": true,
   "no_arm_exceeded_B_Q": true,
-  "seqthenquery_differs_from_sequence_evidence": true
+  "seqthenquery_differs_from_sequence_evidence": true,
+  "evidence_only_initialisation": true
  },
  "status": "PASS",
  "distinct_predictions_per_arm": {
-  "DirectFeedback": 2,
-  "SequenceEvidence": 1,
-  "QueryOnly": 2,
-  "SeqThenQuery": 2
+  "DirectFeedback": 4,
+  "SequenceEvidence": 6,
+  "QueryOnly": 6,
+  "SeqThenQuery": 4
  },
  "scenes_using_a_query": {
   "QueryOnly": 6,
-  "SeqThenQuery": 6
+  "SeqThenQuery": 5
  },
  "max_trace_len": {
   "QueryOnly": 4,
-  "SeqThenQuery": 1
+  "SeqThenQuery": 2
  },
- "rollouts": 1137960,
+ "rollouts": 2969400,
  "n_fixture": 6,
  "consumes_smoke_or_dev_scenes": false,
  "fixture_note": "Fixed non-development slice: the first 40 worlds of six rows blocks, first 6 taken. Deterministic and reusable."

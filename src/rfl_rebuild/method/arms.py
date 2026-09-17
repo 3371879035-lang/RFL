@@ -98,27 +98,39 @@ def arm_direct_feedback(support, claim) -> Prediction:
     return Prediction(p=(p + (0.0,) * 5)[:5])
 
 
-def arm_sequence_evidence(support, true_wid) -> Prediction:
-    bid = support.field(true_wid, "block_id")
+def arm_sequence_evidence(support, evidence, rows_index) -> Prediction:
+    """``H = H_rows(I)`` located from the EVIDENCE, never from the true world."""
+    bid = rows_index[repr(_rows_key(evidence))]
     return Prediction(p=support.marginals(support.rows_prior(bid)))
 
 
+def _rows_key(evidence):
+    return tuple((s.x, s.y, s.t, s.kappa, s.phi, s.z, s.m, s.a_cmd,
+                  s.a_realized, round(s.reward, 6)) for s in evidence.steps)
+
+
 def arm_query_only(support, registry, memo, *, budget: int, true_wid: int):
-    """Global prior; runner's blind policy; responses only. Returns (pred, trace, H)."""
+    """Global prior; runner's blind policy; responses only.
+
+    The blind policy is ``first safe UNASKED query in global canonical order``.
+    Without the ``asked`` set the policy re-asks ``proc_audit`` -- registry index
+    0, legal in every world -- on every step, so a trace of length 4 would be
+    ``[0,0,0,0]``: four executions of one query, not four probes. That also
+    matches A61's original blind-order semantics, which walked the order once.
+    """
     H = support.global_prior()
     trace = []
+    asked: set = set()
     for _ in range(budget):
-        i = first_safe(registry, lambda q: memo.safe(H, q))
+        i = _first_safe_unasked(registry, asked, lambda q: memo.safe(H, q))
         if i is None:
             break
         q = registry[i]
-        # The blind RULE is a function of (H, registry) only, so the chosen query
-        # does not depend on the true world. The RESPONSE does, so the runner
-        # takes the child that contains the true world.
         kids = memo.partition(H, q)
         nxt = _child_with(support, kids, true_wid)
         if nxt is None:
             break
+        asked.add(i)
         trace.append(i)
         H = nxt
         if not H.active_blocks:
@@ -126,10 +138,17 @@ def arm_query_only(support, registry, memo, *, budget: int, true_wid: int):
     return Prediction(p=support.marginals(H)), trace, H
 
 
-def arm_seq_then_query(support, registry, memo, evidence, true_wid, ridx,
-                       *, budget: int, option_ids, option_actions):
-    """Rows prior; Q_syn(I); greedy A61 score; responses only."""
-    bid = support.field(true_wid, "block_id")
+def _first_safe_unasked(registry, asked, safe):
+    for i, q in enumerate(registry):
+        if i not in asked and safe(q):
+            return i
+    return None
+
+
+def arm_seq_then_query(support, evidence, rows_index, registry, memo, true_wid,
+                       ridx, *, budget: int, option_ids, option_actions):
+    """Rows prior FROM EVIDENCE; Q_syn(I); greedy A61 score; responses only."""
+    bid = rows_index[repr(_rows_key(evidence))]
     H = support.rows_prior(bid)
     Q_syn = synth_queries(evidence, options=option_ids,
                           option_actions=option_actions, registry_index=ridx)

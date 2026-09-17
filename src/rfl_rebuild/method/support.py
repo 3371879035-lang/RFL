@@ -107,6 +107,39 @@ class DenseSupport:
         from .belief import BeliefState
         return BeliefState(active_blocks={block_id: self.full_mask(block_id)})
 
+    def build_rows_index(self, probe, sample_per_block: int = 3) -> dict:
+        """``repr(factual rows) -> block_id``, derived from the cache itself.
+
+        Needed so a method can locate its rows block from ``FactualEvidence``
+        ALONE, instead of the runner handing it the true world's ``block_id``.
+        Those are numerically equivalent and semantically not: the whole point of
+        the dev_v1 fix is that ``H_seq`` is built from learner-visible evidence,
+        not from truth.
+
+        Costs one representative probe per block (547), not a cache rebuild --
+        ``worlds_of_block`` is already on disk. ``sample_per_block`` extra worlds
+        per block are checked to confirm the block really is rows-homogeneous;
+        if it is not, the index is not well defined and we refuse rather than
+        return a map that silently picks one.
+        """
+        idx: dict = {}
+        for bid, members in self._worlds_of.items():
+            key = None
+            for wid in members[:max(1, sample_per_block)]:
+                rows = probe.rows_of(self, wid)
+                k = repr(rows)
+                if key is None:
+                    key = k
+                elif k != key:
+                    raise SupportMismatch(
+                        f"block {bid} is not rows-homogeneous: {k} vs {key}")
+            idx.setdefault(key, bid)
+        if len(idx) != len(self._worlds_of):
+            raise SupportMismatch(
+                f"rows index collapsed {len(self._worlds_of)} blocks into "
+                f"{len(idx)} signatures; the map would be ambiguous")
+        return idx
+
     def find_world(self, context_id: int, Z_code: int, params: tuple):
         """Sample -> support lookup: bucketed by context, local binary search.
 
