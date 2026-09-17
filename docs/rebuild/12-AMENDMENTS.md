@@ -1911,7 +1911,65 @@ Full text: `15-SCENE-DGP.md`.
 
 ---
 
-## 49. Summary and what remains open
+## 50. A63 — NOT_EVALUABLE per-cause metrics, and what dev_v2 measured
+
+**The problem.** dev_v2 FAILED its coverage check because cause `U` had **zero
+positive scenes** in the 32-scene batch, which made every macro value `nan`. A54's
+census predicted exactly this: of 692,640 cause-world pairs in which $U$ is
+present, $U$ *fires* in only 34,320 (~5%), so with $\mathrm{Bernoulli}(0.2)$
+presence $P(U \text{ present} \wedge \text{fired}) \approx 1\%$ and the expected
+U-positive count at $N = 32$ is ~0.3. Observing zero is the predicted outcome,
+not a defect.
+
+**The convention, frozen here.** A per-cause metric is **NOT_EVALUABLE** when the
+batch contains no scene of that class. It is never `nan` and never silently
+averaged as zero. The macro is taken over the **evaluable** causes and the
+artifact names both sets. `Metrics.__post_init__` refuses a macro whose
+`macro_over` says "all causes" while `not_evaluable_causes` is non-empty, so the
+convention cannot be bypassed by constructing the object differently.
+
+$$\boxed{\text{a per-cause metric undefined on the batch is NOT\_EVALUABLE, and the macro names its set}}$$
+
+**This does not turn a coverage gap into a pass.** dev_v2's original FAIL stays on
+record in `calibration_dev_v2.json`; the re-report is a separate artifact that
+drew **no new scenes**, because only the arithmetic convention changed and
+spending development scenes to re-derive reporting would have been waste.
+
+**What dev_v2 then measured** — the point of the whole A62 exercise:
+
+| arm | dev_v1 (leaky) | dev_v2 (corrected) |
+|---|---|---|
+| `DirectFeedback` | 0.3999 | 0.5322 |
+| `SequenceEvidence` | 0.9824 | **0.6369** |
+| `QueryOnly` | 0.9824 | **0.6390** |
+| `SeqThenQuery` | 1.0000 | 1.0000 |
+
+Evaluable causes $P, D, X, E$; $U$ NOT_EVALUABLE.
+
+$$\boxed{\text{the dev\_v1 leak was worth about } 0.35 \text{ AUPRC to } \texttt{SequenceEvidence}}$$
+
+Two arms with deliberately different information interfaces had scored
+*identically* to four decimal places because the support constructor handed both
+the full $(\text{rows}, \text{feedback})$ class. After A62 they separate, and the
+gap is the measured cost of that leak. `DirectFeedback` also moved because the
+scenes differ, so only the `SequenceEvidence`/`QueryOnly` collapse is attributable
+to the leak itself.
+
+**One concern remains, pre-registered and deliberately not acted on.**
+`SeqThenQuery` is still exactly 1.0000. `15-SCENE-DGP.md` §4 already fixes what to
+do: if dev_v2 still shows saturation, **accept it and proceed to the confirmatory
+run without making the benchmark harder.** The frozen primary hypothesis is
+$\text{SeqThenQuery} > \text{DirectFeedback} + \Delta_{\min}$, not a comparison
+against `SequenceEvidence`, so a ceiling-limited incremental query contrast is a
+property of the result rather than a defect to tune away.
+
+**Warning recorded before the confirmatory run:** at $N = 400$ the expected
+U-positive count is ~4. `AUPRC_U` will be defined but thin, and its contribution
+to the macro will be unstable. That is a property of the frozen DGP.
+
+---
+
+## 51. Summary and what remains open
 
 | # | what | severity | status |
 |---|---|---|---|

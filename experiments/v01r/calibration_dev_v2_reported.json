@@ -1,0 +1,219 @@
+{
+ "stage": "dev",
+ "namespace": "v01r_dev_v2",
+ "n_scenes": 32,
+ "reporting_convention": "A63 NOT_EVALUABLE",
+ "n_blocks": 30,
+ "coverage_positives": [
+  5,
+  7,
+  4,
+  4,
+  0
+ ],
+ "coverage_negatives": [
+  27,
+  25,
+  28,
+  28,
+  32
+ ],
+ "evaluable_causes": [
+  "P",
+  "D",
+  "X",
+  "E"
+ ],
+ "not_evaluable_causes": [
+  "U"
+ ],
+ "macro_over": "evaluable causes only: P,D,X,E",
+ "checks": {
+  "all_four_arms_ran_on_every_scene": true,
+  "all_outputs_finite": true,
+  "no_arm_exceeded_B_Q": true,
+  "world_fingerprints_unchanged": true,
+  "evaluable_causes_nonempty": true,
+  "not_evaluable_causes_are_named": true,
+  "seqthenquery_used_a_query": true,
+  "queryonly_used_a_query": true,
+  "query_changed_inference_on_at_least_one_scene": true,
+  "predictions_not_all_identical_constant": true
+ },
+ "verdict": "PASS",
+ "metrics_raw_material_only": {
+  "DirectFeedback": {
+   "macro_auprc": 0.5322053305007579,
+   "macro_auroc": 0.7716468253968254,
+   "exact_set_accuracy": 0.59375,
+   "hamming": 0.125,
+   "brier": 0.125,
+   "ece": 0.125,
+   "auprc": [
+    0.2855938697318008,
+    0.7383503401360544,
+    0.6976190476190476,
+    0.407258064516129,
+    NaN
+   ],
+   "auroc": [
+    0.6444444444444445,
+    0.8885714285714286,
+    0.7321428571428571,
+    0.8214285714285714,
+    NaN
+   ],
+   "ece_per_cause": [
+    0.1875,
+    0.09375,
+    0.09375,
+    0.125,
+    0.125
+   ],
+   "n_scenes": 32,
+   "evaluable_causes": [
+    "P",
+    "D",
+    "X",
+    "E"
+   ],
+   "not_evaluable_causes": [
+    "U"
+   ],
+   "macro_over": "evaluable causes only: P,D,X,E"
+  },
+  "SequenceEvidence": {
+   "macro_auprc": 0.6369047619047619,
+   "macro_auroc": 0.9181547619047619,
+   "exact_set_accuracy": 0.65625,
+   "hamming": 0.0875,
+   "brier": 0.046790373217847944,
+   "ece": 0.024496561444087833,
+   "auprc": [
+    0.42857142857142855,
+    1.0,
+    0.6428571428571428,
+    0.47619047619047616,
+    NaN
+   ],
+   "auroc": [
+    0.8333333333333334,
+    1.0,
+    0.9241071428571429,
+    0.9151785714285714,
+    NaN
+   ],
+   "ece_per_cause": [
+    0.05773856775777228,
+    0.0,
+    0.004498839009289518,
+    0.03574883900928953,
+    0.0
+   ],
+   "n_scenes": 32,
+   "evaluable_causes": [
+    "P",
+    "D",
+    "X",
+    "E"
+   ],
+   "not_evaluable_causes": [
+    "U"
+   ],
+   "macro_over": "evaluable causes only: P,D,X,E"
+  },
+  "QueryOnly": {
+   "macro_auprc": 0.639001106295361,
+   "macro_auroc": 0.8082589285714286,
+   "exact_set_accuracy": 0.71875,
+   "hamming": 0.06875,
+   "brier": 0.057310092518160216,
+   "ece": 0.02419593976229922,
+   "auprc": [
+    1.0,
+    0.6764714581484768,
+    0.28750000000000003,
+    0.592032967032967,
+    NaN
+   ],
+   "auroc": [
+    1.0,
+    0.8,
+    0.6875,
+    0.7455357142857143,
+    NaN
+   ],
+   "ece_per_cause": [
+    0.01146509740259734,
+    0.038904078377723104,
+    0.030173814165053096,
+    0.016240769103823337,
+    0.001311728395061561
+   ],
+   "n_scenes": 32,
+   "evaluable_causes": [
+    "P",
+    "D",
+    "X",
+    "E"
+   ],
+   "not_evaluable_causes": [
+    "U"
+   ],
+   "macro_over": "evaluable causes only: P,D,X,E"
+  },
+  "SeqThenQuery": {
+   "macro_auprc": 1.0,
+   "macro_auroc": 1.0,
+   "exact_set_accuracy": 1.0,
+   "hamming": 0.0,
+   "brier": 0.0,
+   "ece": 0.0,
+   "auprc": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    NaN
+   ],
+   "auroc": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    NaN
+   ],
+   "ece_per_cause": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "n_scenes": 32,
+   "evaluable_causes": [
+    "P",
+    "D",
+    "X",
+    "E"
+   ],
+   "not_evaluable_causes": [
+    "U"
+   ],
+   "macro_over": "evaluable causes only: P,D,X,E"
+  }
+ },
+ "provenance": {
+  "source_artifact": "calibration_dev_v2.json",
+  "scenes_redrawn": false,
+  "note": "Same 32 scenes and same predictions as calibration_dev_v2. Only the reporting convention changed, so no development scene was spent re-deriving arithmetic."
+ },
+ "pre_amendment_verdict_stands": {
+  "artifact": "calibration_dev_v2.json",
+  "verdict": "FAIL",
+  "failed_check": "every_fired_cause_has_pos_and_neg",
+  "note": "dev_v2 FAILS under the pre-A63 gate and that is kept on record. A63 does not turn a coverage gap into a pass; it makes the primary endpoint reportable when a cause is unevaluable, and names which causes are."
+ },
+ "confirmatory_warning": "U fires in ~1% of scenes, so at N=400 the expected U-positive count is ~4. AUPRC_U will be defined but thin, and its contribution to the macro will be unstable. This is a property of the frozen DGP, not of any method, and it is recorded before the confirmatory run.",
+ "discipline": "If this batch exposed a design problem, the same 32 may not then be declared calibration-PASS. No new batch was drawn, so that rule is not engaged -- but neither is it evaded: the original FAIL is preserved above."
+}

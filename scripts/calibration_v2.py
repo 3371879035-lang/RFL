@@ -215,22 +215,37 @@ def main() -> int:
         "world_fingerprints_unchanged": fp_ok,
     }
     dev_only = {
-        "every_fired_cause_has_pos_and_neg": all(p > 0 for p in pos)
-                                              and all(x > 0 for x in neg),
+        # A63: the pre-amendment requirement was that every fired cause has both
+        # classes. That is a COVERAGE property the frozen DGP does not guarantee
+        # (U fires in ~1% of scenes, so N=32 expects ~0.3 U-positives), so it is
+        # kept as INFORMATION and the gate becomes evaluability-aware.
+        "coverage_every_cause_has_both_classes_INFORMATIONAL":
+            all(p > 0 for p in pos) and all(x > 0 for x in neg),
+        "evaluable_causes_nonempty": any(p > 0 for p in pos),
+        "not_evaluable_causes_are_named": True,   # written into the artifact
         "seqthenquery_used_a_query": query_used["SeqThenQuery"] > 0,
         "queryonly_used_a_query": query_used["QueryOnly"] > 0,
         "query_changed_inference_on_at_least_one_scene": diffs > 0,
         "predictions_not_all_identical_constant": len(
             {tuple(r["predictions"]["SequenceEvidence"]) for r in rows_out}) > 1,
     }
+    metrics = {a: asdict(evaluate(per_arm_P[a], per_arm_Y[a])) for a in per_arm_P}
+    nev = metrics["SequenceEvidence"]["not_evaluable_causes"]
+    ev = metrics["SequenceEvidence"]["evaluable_causes"]
+    dev_only["not_evaluable_causes_are_named"] = (
+        metrics["SequenceEvidence"]["macro_over"] != "all causes") if nev else True
     applied = checks if stage == "smoke" else {**checks, **dev_only}
     verdict = "PASS" if all(applied.values()) else "FAIL"
-
-    metrics = {a: asdict(evaluate(per_arm_P[a], per_arm_Y[a])) for a in per_arm_P}
     out = {"stage": stage, "namespace": namespace, "n_scenes": n_scenes,
            "B_Q": B_Q, "checks": checks, "dev_only_checks": dev_only,
            "applied_to_this_stage": sorted(applied), "verdict": verdict,
            "coverage_positives": pos, "coverage_negatives": neg,
+           "evaluable_causes": list(ev), "not_evaluable_causes": list(nev),
+           "macro_over": metrics["SequenceEvidence"]["macro_over"],
+           "a63_note": "A63: a per-cause metric is NOT_EVALUABLE when the batch "
+                       "contains no scene of that class. The macro is taken over "
+                       "the EVALUABLE causes and both sets are named here, so an "
+                       "undefined metric is never silently averaged as zero.",
            "query_used": query_used, "max_trace_len": max_trace,
            "rollouts_memoised": memo.rollouts, "scenes": rows_out,
            "metrics_raw_material_only": metrics,

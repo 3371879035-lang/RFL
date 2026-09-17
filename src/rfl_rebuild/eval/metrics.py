@@ -38,6 +38,28 @@ class Metrics:
     auroc: tuple
     ece_per_cause: tuple
     n_scenes: int
+    # A63: a per-cause metric can be UNDEFINED because the batch contains no
+    # scene of that class. That is a property of the batch, not of the method, so
+    # it is reported as NOT_EVALUABLE rather than as nan -- and the macro is taken
+    # over the EVALUABLE causes only, with the two sets named in the artifact.
+    evaluable_causes: tuple = ()
+    not_evaluable_causes: tuple = ()
+    macro_over: str = "all causes"
+
+    def __post_init__(self) -> None:
+        if self.macro_over == "all causes" and self.not_evaluable_causes:
+            raise ValueError(
+                "macro_over must name the evaluable set when some cause is "
+                "NOT_EVALUABLE; silently averaging over all five would treat an "
+                "undefined per-cause metric as zero")
+
+
+NOT_EVALUABLE = "NOT_EVALUABLE"
+
+
+def _definition(x) -> bool:
+    """A per-cause metric is defined iff the batch has both classes."""
+    return isinstance(x, float) and not (x != x)      # not NaN
 
 
 def _check(P, Y):
@@ -137,13 +159,23 @@ def evaluate(P, Y) -> Metrics:
     ham = sum(sum((p[i] > THRESHOLD) != (y[i] == 1)
                   for i in range(N_CAUSES))
               for p, y in zip(P, Y)) / (len(P) * N_CAUSES)
+    ev = tuple(CAUSES[i] for i in range(N_CAUSES) if _definition(auprcs[i]))
+    nev = tuple(CAUSES[i] for i in range(N_CAUSES) if not _definition(auprcs[i]))
+    if not ev:
+        raise ValueError(
+            "no cause is evaluable on this batch; the primary endpoint is "
+            "undefined and must be reported as such")
+    idx = [i for i in range(N_CAUSES) if CAUSES[i] in ev]
     return Metrics(
-        macro_auprc=sum(auprcs) / N_CAUSES,
-        macro_auroc=sum(aurocs) / N_CAUSES,
+        macro_auprc=sum(auprcs[i] for i in idx) / len(idx),
+        macro_auroc=sum(aurocs[i] for i in idx) / len(idx),
         exact_set_accuracy=exact, hamming=ham, brier=brier(P, Y),
-        ece=sum(eces) / N_CAUSES,
+        ece=sum(eces[i] for i in idx) / len(idx),
         auprc=tuple(auprcs), auroc=tuple(aurocs), ece_per_cause=tuple(eces),
         n_scenes=len(P),
+        evaluable_causes=ev, not_evaluable_causes=nev,
+        macro_over=("all causes" if not nev else
+                    "evaluable causes only: " + ",".join(ev)),
     )
 
 
