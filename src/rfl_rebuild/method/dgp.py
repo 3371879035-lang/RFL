@@ -72,14 +72,17 @@ class SceneDGP:
     p_cause = P_CAUSE
 
     def __init__(self, *, kappas: Sequence[int], options: Sequence[int],
-                 tapes: Sequence, domains: Callable, is_feasible: Callable,
-                 n_cause_rank: int = N_CAUSE_RANK):
+                 tapes: Sequence, domains: Callable, is_feasible: Callable):
         self.kappas = tuple(kappas)
         self.options = tuple(options)
         self.tapes = tuple(tapes)
         self._domains = domains
         self._is_feasible = is_feasible
-        self.n_cause_rank = n_cause_rank
+        # A62 closure: the protocol fixes the tape's rank key at 60 values, so
+        # the constructor refuses anything else rather than offering a
+        # generalisation nothing uses. A configurable rank count would let
+        # SceneContext.is_valid and the sampler disagree about the support.
+        self.n_cause_rank = N_CAUSE_RANK
         if not (self.kappas and self.options and self.tapes):
             raise ValueError("DGP needs non-empty kappa, option and tape supports")
         # P0-1: the phase mass is built ONCE and read by BOTH the sampler and
@@ -137,7 +140,10 @@ class SceneDGP:
         ``(0, -1)``, ``(0, 0)`` and ``(0, 999)`` were three encodings of one
         world each receiving the same probability.
         """
-        if len(Z) != N_CAUSES or not ctx.is_valid:
+        if len(Z) != N_CAUSES or len(param_index) != N_CAUSES or not ctx.is_valid:
+            # A62 closure: param_index length was unchecked, so a short tuple
+            # raised IndexError and a long one had its tail silently ignored --
+            # two ways for one world to stop having one encoding.
             return -math.inf
         dm = self._domains(ctx)
         lp = 0.0

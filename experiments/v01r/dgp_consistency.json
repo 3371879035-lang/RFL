@@ -21,14 +21,15 @@
  },
  "worst_abs_error": 2.220446049250313e-16,
  "conditional_normalisation": "PASS",
- "feasibility_slice": {
-  "raw_worlds": 81,
-  "feasible_worlds": 81,
-  "kept_fraction": 1.0,
-  "raw_mass": 0.0002083333333333339,
-  "feasible_mass": 0.0002083333333333339,
-  "mass_kept_fraction": 1.0
- },
+ "restricted_support_kappas": [
+  0
+ ],
+ "p_reject_exact": 0.007816666667560868,
+ "p_reject_empirical": 0.008624962823436106,
+ "rejected": 174,
+ "accepted": 20000,
+ "rejection_conditioning_matches": "PASS",
+ "mc_tolerance": 0.01,
  "n_mc": 20000,
  "mc_absZ": {
   "0": 0.3521,
@@ -40,6 +41,6 @@
  "mc_p_le1": 0.76545,
  "analytic_p_le1_all_causes_available": 0.7372800000000002,
  "mean_available_causes": 4.75365,
- "note": "Draws use WHOLE-SCENE rejection, so the sampler targets P_raw(ell | ell in F). The empirical P(|Z|<=1) is compared with the all-five-causes-available figure for orientation only; contexts with an empty canonical domain force Z_i to 0 and push it UP. feasibility_slice carries the exact conditioning mass.",
+ "note": "Draws use WHOLE-SCENE rejection, so the sampler targets P_raw(ell | ell in F). The exact mass A is computed on a RESTRICTED enumerable support and the sampler is matched to it on the same restricted support; Stage2's 127,440/1,166,400 is an enumeration ratio, not a probability mass under the sparse DGP, and was NOT used as the target.",
  "consumes_smoke_or_dev_scenes": false
 }
