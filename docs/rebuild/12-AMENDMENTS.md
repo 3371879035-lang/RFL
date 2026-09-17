@@ -2840,6 +2840,49 @@ $$\boxed{\texttt{canonical(new\_grammar(ctx))} =
 Old code may switch to the new public implementation only after that holds
 everywhere.
 
+**Measured at extraction** (`scripts/a73_grammar_equivalence.py`), over all
+**5,760** public base contexts — $2$ kappas $\times$ $720$ tapes $\times$
+**$4$** options: raw legal domains, canonical domains, and canonical sizes/order
+all **0 mismatches**. The regression compares A73's normalised structural form and
+**not** bytes, because one historical implementation returns objects and the other
+returns tuples.
+
+Two corrections this measurement forced:
+
+* `option_ids()` has **4** entries, not 6. An earlier review figure of $8{,}640$
+  contexts (and the arithmetic "$6$ options $\times$ $32$ presence patterns") was
+  wrong; the base-context count is $5{,}760$ and the canonical candidate space
+  measures **1,166,400** assignments (~202.5 per context). The "thousands, not
+  millions" performance argument survives, but the earlier constant does not.
+* The `Trap` `ValueError` guard fires on **0** contexts. The guarded and unguarded
+  enumerations are therefore **behaviourally identical** on the frozen map and
+  horizon. `_domains` is the truth source because `support_build.py` builds
+  `DenseSupport` through it — **not** because `legal_fault_domains` is observably
+  broken. The earlier statement in review that the tuple variant "would raise" is
+  an overstatement and is **corrected**: the divergence is latent, not observed,
+  and would only appear if the map or horizon changed.
+
+**`support_build.domains()` is re-pointed** to the public grammar, and gated on an
+end-to-end check that the rebuild reproduces the committed support manifest
+(`scripts/a73_support_digest_regression.py`) — the grammar determines the candidate
+parameter set, so a matching `content_digest` over $1{,}038{,}960$ worlds is the
+strongest available statement that the public grammar and the frozen evaluator
+support are the same object.
+
+**Measured at the re-pointing**: the rebuild takes **11.8 min** and reproduces
+$n_{\text{worlds}} = 1{,}038{,}960$, $n_{\text{rows\_blocks}} = 547$,
+$\text{weight\_sum} = 1.0$ and
+$\texttt{content\_digest} = \texttt{8ecaf60d0b9af30f}$ — **all five identical** to
+the committed manifest. The regression calls `build()` directly and never reaches
+`sup.save()`, so the 115 MB regenerable payload is not overwritten by the
+verification.
+
+**Deliberately left on the historical path.** `a71_indexed_truth.py` and
+`a73_quotient_gate.py` keep calling `gate_stage2._domains + canonicalise`. That is
+a feature, not an oversight: it keeps those gates an **independent
+implementation** cross-check of the public grammar instead of letting both sides
+share one bug.
+
 **Support closure, as an exact set not a subset.** The subset condition is the
 minimum; because the endpoint is *exact* inversion, the requirement is
 

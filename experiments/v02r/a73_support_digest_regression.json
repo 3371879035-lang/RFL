@@ -1,0 +1,64 @@
+{
+ "frozen_manifest": {
+  "schema_version": 1,
+  "n_worlds": 1038960,
+  "n_rows_blocks": 547,
+  "atom_schema": [
+   "kappa",
+   "phase",
+   "error_flag",
+   "cause_rank",
+   "proposal",
+   "Z_code",
+   "p0",
+   "p1",
+   "p2",
+   "p3",
+   "p4",
+   "block_id",
+   "fire_code"
+  ],
+  "dgp_fingerprint": "full",
+  "kernel_fingerprint": "full",
+  "weight_sum": 1.0,
+  "content_digest": "8ecaf60d0b9af30f",
+  "payload_files": [
+   "support_cache.json (full, 110.2 MB)",
+   "support_cache_slice.json (slice)"
+  ],
+  "note": "The dense payload is a REGENERABLE build product and is gitignored: python scripts/support_build.py --full rebuilds it in ~20 min. This manifest is committed so the expected cache identity is durable and readable without the payload. DenseSupport.load() refuses to load a payload whose manifest does not match."
+ },
+ "rebuilt": {
+  "n_worlds": 1038960,
+  "n_rows_blocks": 547,
+  "atom_schema": [
+   "kappa",
+   "phase",
+   "error_flag",
+   "cause_rank",
+   "proposal",
+   "Z_code",
+   "p0",
+   "p1",
+   "p2",
+   "p3",
+   "p4",
+   "block_id",
+   "fire_code"
+  ],
+  "weight_sum": 1.0,
+  "content_digest": "8ecaf60d0b9af30f"
+ },
+ "rebuild_seconds": 707.2349231243134,
+ "checks": {
+  "n_worlds_identical": true,
+  "n_rows_blocks_identical": true,
+  "atom_schema_identical": true,
+  "weight_sum_identical": true,
+  "content_digest_identical": true
+ },
+ "status": "PASS",
+ "verdict": "public grammar reproduces the frozen support EXACTLY",
+ "saved_payload": false,
+ "note": "build() called directly; sup.save() is never reached, so the frozen support_cache.json was not overwritten"
+}

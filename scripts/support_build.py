@@ -30,9 +30,10 @@ sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(ROOT / "scripts"))
 
 from gate_stage2 import (  # noqa: E402
-    LatentCase, _domains, fire_of, reference_provider, sigma0,
+    LatentCase, fire_of, reference_provider, sigma0,
 )
-from identifiability_gate import CAUSE_KEYS, KAPPAS, TAPES, canonicalise  # noqa: E402
+from identifiability_gate import CAUSE_KEYS, KAPPAS, TAPES  # noqa: E402
+from rfl_rebuild.env import fault_grammar  # noqa: E402
 from rfl_rebuild.env import kernel as K  # noqa: E402
 from rfl_rebuild.env.kernel import SemanticTape  # noqa: E402
 from rfl_rebuild.method.belief import fire_code  # noqa: E402
@@ -49,12 +50,20 @@ OUT = ROOT / "experiments" / "v01r" / "support_cache"
 
 def build(sol, provider, kappas, tag):
     def domains(ctx):
+        # A73 route C: the single public grammar, not a second copy of it.
+        # Proven exact against `gate_stage2._domains + canonicalise` over all
+        # 5,760 public base contexts, raw and canonical, by
+        # `scripts/a73_grammar_equivalence.py`; and the rebuild reproduces the
+        # committed content digest, by `scripts/a73_support_digest_regression.py`.
+        # The container type is unchanged (tuple of lists) so nothing downstream
+        # sees a different object.
         tape = SemanticTape(phase=ctx.phase, error_flag=ctx.error_flag,
                             cause_rank=ctx.cause_rank)
         tr = K.rollout(kappa=ctx.kappa, tape=tape, command_provider=provider,
                        base_option=ctx.base_option)
-        d = _domains(sol, ctx.kappa, tape, ctx.base_option, tr)
-        return tuple(canonicalise(d[k]) for k in CAUSE_KEYS)
+        d = fault_grammar.legal_fault_domains(
+            sol, ctx.kappa, tape, ctx.base_option, tr)
+        return tuple(fault_grammar.canonicalise(d[k]) for k in CAUSE_KEYS)
 
     def build_case(ctx, Z, params):
         dm = domains(ctx)
