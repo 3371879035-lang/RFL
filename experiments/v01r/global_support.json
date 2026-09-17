@@ -1,0 +1,37 @@
+{
+ "n_support_worlds": 1038960,
+ "n_rows_blocks": 547,
+ "expected_n": 1038960,
+ "n_raw_worlds": 1166400,
+ "n_infeasible": 127440,
+ "A_full": 11628.076171875005,
+ "checks": {
+  "1_support_cardinality": {
+   "status": true,
+   "observed": 1038960,
+   "expected": 1038960
+  },
+  "2_canonical_key_unique": {
+   "status": true,
+   "duplicates": 0
+  },
+  "3_raw_support_equality": {
+   "status": true,
+   "min_log_prob_finite": true
+  },
+  "4_sample_support_bijection": {
+   "status": true,
+   "one": 2000,
+   "zero": 0,
+   "many": 0
+  },
+  "5_prior_mass": {
+   "status": true,
+   "A_full": 11628.076171875005,
+   "weight_sum": 1.0
+  }
+ },
+ "status": "PASS",
+ "atom": "DGP canonical world (kappa, phase, error_flag, cause_rank, z^proposal, Z, params) with inactive params pinned to -1. dynamical_key is NOT used: it drops error_flag and cause_rank.",
+ "population": "all DGP-feasible canonical worlds; NOT the Gate classes and NOT anything identifiability-filtered."
+}
