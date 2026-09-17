@@ -112,9 +112,15 @@ def main() -> int:
         Unknown/NoWrite can ever enter Gamma* at all.
         """
         out: dict = {}
-        if case.option_fault is not None:
+        # A67 basis: FIRED mechanisms. An earlier version gated P/D/X/E on fault
+        # PRESENCE (`case.option_fault is not None` etc.) and U on FIRE, which is
+        # inconsistent and materially different -- a67_structural.json measures
+        # 1,541,400 (world, cause) pairs where presence differs from fire, because
+        # A54 showed dormant faults are common. There is nothing to repair in a
+        # mechanism that never executed.
+        if fire[CAUSE_KEYS.index("P")] == 1:
             out["P"] = [("commit", Intervention.commit_identity())]
-        if case.decision is not None:
+        if fire[CAUSE_KEYS.index("D")] == 1:
             # The override's nominal action is pi*(s_t, z_t, m_t) at the FACTUAL
             # pre-action state of time t. An earlier version used START, the
             # proposal option and m=0 -- all three are lookup keys of pi_D*, so
@@ -123,11 +129,11 @@ def main() -> int:
             if nominal is not None:
                 out["D"] = [("decision",
                              Intervention.decision(case.decision.t, nominal))]
-        if case.controller is not None:
+        if fire[CAUSE_KEYS.index("X")] == 1:
             f = case.controller
             out["X"] = [("execution", Intervention.execution(
                 ControllerSite(state=f.state, cmd=f.cmd)))]
-        if case.plant is not None:
+        if fire[CAUSE_KEYS.index("E")] == 1:
             out["E"] = [("external_plant", None)]     # non-agent descriptor
         if fire[CAUSE_KEYS.index("U")] == 1:
             out["U"] = [("unknown_terminal", None)]   # non-agent descriptor
