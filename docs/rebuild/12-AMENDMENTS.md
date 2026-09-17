@@ -1987,25 +1987,101 @@ AUPRC against $\Delta_{\min} = 0.05$:**
 | block 3 | | | 0.5918 | ABOVE |
 | block 4 | | | 0.6230 | ABOVE |
 
-**The delta is not outlier-driven**, which the protocol requires checking before
-the mean can be read: tie fraction 0.555, **178 wins and 0 losses**, two-sided
-sign test $p \approx 5.2\times10^{-54}$, and the top-5 scenes account for only
-**5.2%** of the total delta. So the effect is broad and every block clears
-$\Delta_{\min}$ on its own, not merely in aggregate.
+**The delta is not block-driven, and separately, the per-scene diagnostic is
+broad.** These are two different statements on two different quantities, and an
+earlier draft merged them into one overclaim:
+
+* **Primary, batch-level macro AUPRC:** the contrast clears $\Delta_{\min}$ in
+  **each of the four 100-scene blocks independently** (0.6313, 0.5159, 0.5918,
+  0.6230), not merely in aggregate. So it is not carried by one block.
+* **Per-scene diagnostic, Brier:** $178$ scenes improve, $0$ worsen, tie fraction
+  $0.555$, two-sided sign test $p \approx 5.2\times10^{-54}$, and the top-5 scenes
+  supply only $5.2\%$ of the total Brier improvement.
+
+The sign test is **not** a significance test of the AUPRC difference. AUPRC is
+undefined at $n=1$, so the per-scene distribution can only be computed on a
+per-scene-defined score; Brier is that score and is labelled a shape diagnostic
+in `_contrast`. Writing it as an AUPRC sign test would have been a false claim
+about what was tested.
 
 Verdict: **PASS**.
 
-**U is unevaluable at every feasible N, not merely thin at 32.** Coverage at
-$N=400$ is $+[75, 63, 59, 62, \mathbf{0}]$. A63's warning predicted ~4
-U-positives at $N=400$; the measured count over all 405 sampled scenes is **0**,
-so the true rate is below ~0.25% and the A63 estimate was wrong in the
-optimistic direction. `U` is NOT_EVALUABLE at $N=5$, 32 and 400 alike.
+**U is unevaluable at every PRE-REGISTERED $N$, and the exact reason is now
+known.** Coverage at $N=400$ is $+[75, 63, 59, 62, \mathbf{0}]$. Across all three
+planned sizes the sampled scene count is $5 + 32 + 400 = 437$, with **zero**
+U-positives in every one.
 
-That has a **good** consequence the A63 note did not anticipate: the macro口径 is
-$\{P, D, X, E\}$ at both dev_v2 and confirmatory, so **the two are directly
-comparable** after all. It also means $U$ contributes nothing to the primary
-endpoint at any planned $N$, and the freeze/thaw probe that $U$ was meant to carry
-is not exercised by this benchmark at all.
+Two things must not be said about that, and an earlier draft said both:
+
+* **Zero observations do not bound the rate by $1/N$.** The correct one-sided 95%
+  bound from $0/400$ is $1 - 0.05^{1/400} \approx 0.75\%$, and from $0/437$
+  about $0.68\%$ — not $0.25\%$.
+* **The zeros do not prove A63's estimate wrong by statistics.** They are simply
+  the likely outcome, as the exact computation below shows.
+
+$$\boxed{U \text{ produced no positives at any pre-registered } N \in \{5, 32, 400\}}$$
+
+That is the defensible statement. "Unevaluable at any feasible $N$" is not: as
+long as $P(Z_U^{\text{fire}} = 1) > 0$, a large enough $N$ would eventually draw
+one.
+
+**Exact DGP marginals, from the cache, costing no rollouts and no scenes.**
+The dense support already stores every feasible world's DGP weight and
+`fire_code`, so no sample-based inference is needed at all:
+
+$$P(Z_i^{\text{fire}} = 1) = \sum_{\ell \in \mathcal F} w_\ell \, \mathbf 1[\text{bit } i]$$
+
+| cause | $P(Z_i^{\text{fire}} = 1)$ |
+|---|---|
+| P | 0.193762 |
+| D | 0.133613 |
+| X | 0.156763 |
+| E | 0.160047 |
+| **U** | **0.002041** |
+
+So U is roughly **ten times rarer** than the other four, and at $N = 400$ the
+expected U-positive count is $0.8165$ with
+
+$$P(\text{observe zero at } N{=}400) = 0.4416, \qquad
+  P(\text{observe zero at all three sizes}) = 0.4095.$$
+
+The observed zeros are therefore **unremarkable**: they were the single most
+likely outcome. A63's "~1%" estimate was indeed wrong, but in a way the exact
+computation settles outright rather than a way the samples could convict — and
+the sample-derived bound ($0.75\%$) still contains the true value ($0.204\%$), so
+nothing about the observations was inconsistent. The practical consequence is
+structural, not statistical: U fires about twice per thousand scenes, so a
+benchmark that wants to evaluate the $U$ channel needs an $N$ an order of
+magnitude larger than any planned here.
+
+**What this establishes, and what it does not.** The frozen primary hypothesis is
+met, on fresh confirmatory data:
+
+$$\boxed{\text{under the frozen DGP, information boundary and } B_Q = 4,
+  \text{ sequence evidence + targeted queries diagnose } Z^{\text{fire}}
+  \text{ far better than believing feedback directly}}$$
+
+with $\Delta\text{AUPRC} = 0.6101 \gg \Delta_{\min} = 0.05$, reproduced in
+direction and threshold by all four blocks. This is the first genuine
+confirmatory empirical result in the rebuild.
+
+It supports **evidence and feedback interpretation $\rightarrow$ fired-mechanism
+attribution**, i.e. V0.1R, and nothing further. It does **not** show that better
+attribution yields better responsibility assignment, better selective update, or
+a better learned policy, so it cannot be written up as "reinforcement feedback
+learning works". The correct claim is that **the first link of the framework —
+feedback interpretation and fault attribution — passed a pre-registered
+confirmatory experiment.**
+
+**The benchmark has largely finished its job.** With
+$\text{AUPRC}(\texttt{SeqThenQuery}) = 1.0000$ exactly, this benchmark **cannot**
+compare a better attribution algorithm against the current `SeqThenQuery`: there
+is no headroom. Its future role is a **V0.1R regression and semantic benchmark**,
+not an attribution leaderboard. The residual discriminative range is
+
+$$0.3899 \;\rightarrow\; 0.6892 \;\rightarrow\; 0.7169,$$
+
+the three non-trivial arms, not the saturated one.
 
 **A gate defect found and fixed here.** The confirmatory artifact reported FAIL
 while `failed_gating_checks` was empty, because
@@ -2017,15 +2093,31 @@ without redrawing a single scene or repeating the 15.9M rollouts. The script
 nothing was redrawn.
 
 **Limitation, stated plainly.**
-$\text{macro AUPRC}(\texttt{SeqThenQuery}) = 1.0000$ exactly, i.e. that arm is at
-the ceiling of the endpoint. The contrast against `DirectFeedback` is
-correspondingly large, but a saturated arm means **no further improvement by
-`SeqThenQuery`-class methods is measurable on this benchmark**, and the ordering
-among the three non-trivial arms (0.3899 / 0.6892 / 0.7169) is where residual
-discriminative range actually lives. Per `15-SCENE-DGP.md` §4 this is accepted
-rather than tuned away — the frozen primary hypothesis is the contrast against
-`DirectFeedback`, which is met — but it bounds what this benchmark can be used to
-claim in future versions.
+$\text{macro AUPRC}(\texttt{SeqThenQuery}) = 1.0000$ exactly, i.e. that arm sits
+at the ceiling of the endpoint, and its AUROC, exact-set, Hamming, Brier and ECE
+are saturated too. The contrast against `DirectFeedback` is correspondingly
+large, but a saturated arm means **no further improvement by
+`SeqThenQuery`-class methods is measurable on this benchmark**. Per
+`15-SCENE-DGP.md` §4 this is accepted rather than tuned away, and the
+consequence is drawn above: the benchmark becomes a regression artefact rather
+than a leaderboard.
+
+**Accounting note.** One verdict was recomputed rather than re-run, and the
+distinction matters for how this result may be cited. The confirmatory artifact
+originally reported FAIL while `failed_gating_checks` was empty, because
+`coverage_every_cause_has_both_classes_INFORMATIONAL` — explicitly made
+informational by A63 — was still being ANDed into the verdict. The rule was
+wrong, not the data. The verdict was recomputed **from the stored artifact**,
+without redrawing a scene or repeating the 15.9M rollouts, and
+`scripts/recompute_verdict.py` records the original FAIL, the reason, and that
+nothing was redrawn. No prediction, no scene and no metric was altered.
+
+**Also corrected in this amendment after review**, because the first draft's
+wording outran its data: the $0/400$ figure is $0/437$ counting all three planned
+sizes; the claim that the true U rate is below $0.25\%$ is withdrawn (the correct
+zero-observation bound is $\approx 0.75\%$ from $0/400$); the Brier sign test is
+not an AUPRC significance test; and "unevaluable at any feasible $N$" is
+narrowed to the three pre-registered sizes.
 
 ---
 
