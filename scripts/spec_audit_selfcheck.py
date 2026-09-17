@@ -60,15 +60,17 @@ def check(name: str, ok: bool, detail: str = "") -> None:
 
 print("spec_audit power test -- each case breaks one thing and expects a report")
 
-# --- baseline: the unmutated tree must be clean of *dangling* amendments except
-# the known historical gap A69. If this drifts, the cases below prove nothing.
+# --- baseline: the unmutated tree must report nothing dangling. A69 used to be
+# the one known historical gap, and this assertion pinned it; now that A69 is
+# logged, the baseline is empty and the A69 case below keeps that hole closed.
 base = run_with(lambda name, text: text)
 print(f"\nbaseline: dangling = {base['dangling_amendments']}")
-check("baseline dangling set is exactly ['A69'] (the known historical gap)",
-      base["dangling_amendments"] == ["A69"],
+check("baseline dangling set is empty ([] -- A69 is logged)",
+      base["dangling_amendments"] == [],
       f"got {base['dangling_amendments']}")
-check("baseline defines A71 and A72",
-      "A71" in base["amendments_defined"] and "A72" in base["amendments_defined"])
+check("baseline defines A69, A71 and A72",
+      {"A69", "A71", "A72"} <= set(base["amendments_defined"]),
+      f"missing {sorted({'A69', 'A71', 'A72'} - set(base['amendments_defined']))}")
 check("baseline scans a non-trivial number of headings",
       base["numbered_headings_scanned_in_other_docs"] > 100,
       f"scanned {base['numbered_headings_scanned_in_other_docs']}")
@@ -130,6 +132,22 @@ r5 = run_with(lambda name, text: (
     if name == "13-GATE-L-FAILURE.md" else text))
 check("a bare heading mention is a reference, not a definition",
       "A88" in r5["dangling_amendments"], f"dangling={r5['dangling_amendments']}")
+
+# --- case 6: the A69 hole. A69 was logged late, found only by the `logged as`
+# scan; removing its formal heading must reopen exactly that hole, so this repair
+# is pinned by a power test rather than only by the baseline turning green.
+print("\ncase 6: delete the `## 59. A69 -- ...` heading from 12-AMENDMENTS.md")
+r6 = run_with(lambda name, text: (
+    replace_once(text, "## 59. A69 \u2014", "## 59. Z69 \u2014")
+    if name == "12-AMENDMENTS.md" else text))
+check("A69 is reported dangling when its heading is removed",
+      "A69" in r6["dangling_amendments"], f"dangling={r6['dangling_amendments']}")
+check("the report attributes it to the 'logged as' scan (17's Status line)",
+      any("logged as" in s for s in r6["amendment_reference_sources"].get("A69", [])),
+      f"{r6['amendment_reference_sources'].get('A69')}")
+check("the baseline is otherwise still clean (only A69 reopens)",
+      r6["dangling_amendments"] == ["A69"],
+      f"dangling={r6['dangling_amendments']}")
 
 print()
 if failures:

@@ -2585,7 +2585,138 @@ reference); $\hat\Gamma_{\text{CSL}}$ may only be re-derived from $X$ through
 lookup. A mutation merging the controller/plant mechanism boundary must be killed
 by the X/E swap classes A71 found.
 
-## 59. Summary and what remains open
+## 59. A69 — the V0.2R typed information boundary
+
+*Logged late rather than out of order by intent: the A-number is the identifier,
+and the section number only reflects when the entry was written. It appears after
+A72 because the gap was found by the registration audit that A72's round added.*
+
+**Why this entry exists.** `17-V02R-METHOD-CONTRACT.md` opens with
+
+```text
+Status: frozen — logged as **A69**.
+```
+
+and A69 never received an entry here. The reference-graph audit could not see it:
+only a bold `**Axx**` in a non-amendment document counted as a reference, so a
+`Status: … logged as Axx` line formed no edge, and the audit reported a closed
+graph. This entry is **mechanical provenance registration**: it records what `17`
+§1–§7 already froze and introduces no claim, no threshold, no experiment and no
+new semantics. It is not A73.
+
+**The type problem, frozen.** The three candidate representations do not live in
+one space,
+
+$$\hat U_{\text{module}} \subseteq \{H, L\}, \qquad
+\hat U_{\text{trajectory}} \subseteq \{\text{Episode}\}, \qquad
+\hat U_{\text{causal}} \subseteq \Gamma(I)$$
+
+while the primary endpoints are set operations **on $\Gamma$**. So a frozen,
+evaluator-side semantic expansion is required:
+
+$$\eta_R : \mathcal U_R \times I^{\text{factual}} \longrightarrow 2^{\Gamma(I)},
+\qquad \boxed{\eta_R \text{ must not read } Z^{\text{fire}}_{\text{truth}}}$$
+
+$\eta_R$ is **not** the conversion rule A67 demoted: it names which credit units a
+native proposal means and executes no repair. The `credit unit → canonical
+intervention` conversion is a V0.3R primitive and stays out of the primary
+comparison, or a representation comparison would quietly become a repair-algorithm
+comparison. The **method** may read $Z^{\text{fire}}_{\text{truth}}$ — V0.2R hands
+it over on purpose — but the **expansion** may not, or a coarse schema's expander
+could use cause truth to pick out exactly the right fine units, which is the
+evaluator upgrading a coarse schema into a causal one for free.
+
+**Episode-local credit domain.**
+
+$$\Gamma(I) = \{\texttt{Strategy}, \texttt{ProcessCommit}, \texttt{ExternalPlant},
+\texttt{Unknown/NoWrite}\} \cup \{\texttt{Decision}_t : t \in I\}
+\cup \{\texttt{ControllerSite}_t : t \in I\}$$
+
+Episode-local, so a method **cannot name a timestep or site that never occurred**.
+
+**Native alphabets and expansions, frozen.**
+
+$$\eta_{\text{module}}(H) = \{\texttt{Strategy}, \texttt{ProcessCommit},
+\texttt{ExternalPlant}, \texttt{Unknown/NoWrite}\}$$
+
+$$\eta_{\text{module}}(L) = \{\texttt{Decision}_t : t \in I\}
+\cup \{\texttt{ControllerSite}_t : t \in I\}$$
+
+$$\eta_{\text{trajectory}}(\{\text{Episode}\}) = \Gamma(I), \qquad
+\eta_{\text{causal}} = \mathrm{id}$$
+
+The two module halves are disjoint and their union is $\Gamma(I)$, so a coarse
+representation can express any truth at coarse granularity and pays FCR for the
+units it over-covers. **A rejected alternative is recorded:** mapping
+`ExternalPlant` and `Unknown/NoWrite` to *neither* half would make
+$R_{\text{module}}$ structurally unable to express an external fault, scoring
+Coverage $= 0$ on every plant-fault episode for a reason unrelated to the
+representation's quality. Because $R_{\text{module}}$'s alphabet is only $\{H,L\}$,
+the evaluator expands — never the method, or $R_{\text{module}}$ would degenerate
+into $R_{\text{causal}}$.
+
+**Oracle separation.** $R_{\text{repair}}$ is **not** a fourth method; it is a
+reference ceiling and the interface must separate it:
+
+$$\texttt{OracleCreditAdapter}(\Gamma^\ast) \longrightarrow \Gamma^\ast$$
+
+evaluator-only, taking truth directly and **not** $X_{0.2}$, and sharing no entry
+point with the ordinary method path — otherwise A59's risk repeats, a type that
+claims to be an oracle while sharing the inference route.
+
+**Abstention is not a verdict.**
+
+$$\varnothing \neq \{\texttt{Unknown/NoWrite}\}, \qquad
+\boxed{\text{Coverage} = 0, \quad \text{FCR} = 0 \text{ for } \hat\Gamma = \varnothing}$$
+
+$\varnothing$ is abstention — nothing proposed; `{Unknown/NoWrite}` is a
+substantive verdict that the ontology contains no writable mechanism to blame.
+They must not be scored alike, and there is **no automatic relabelling** of
+abstention into `Unknown/NoWrite`. Set-valued output is retained, no API may
+demand a single-label argmax: $|\hat\Gamma| \ge 0$ and $|\Gamma^\ast| \ge 1$.
+
+**`agent_writeable`, assigned here.** A67 left `Strategy` unassigned, so the
+definition is stated rather than inferred:
+
+> `agent_writeable(u) = true` iff V0.3R's frozen update primitive is permitted to
+> write persistently to unit $u$.
+
+`ProcessCommit`, `Decision_t`, `ControllerSite` are `true` (A67);
+`ExternalPlant`, `Unknown/NoWrite` are `false` (A67); **`Strategy` is `false`,
+assigned here** — a rescue atom, not a credit target, and it never appears in
+$\Gamma^\ast$. Inferring `true` from $do(z = z')$ is exactly the mistake avoided:
+being able to perform a runtime intervention is not the same as V0.3R being
+permitted a persistent write.
+
+**S2 — interface, typing and information-flow semantics only.** S2 does **not**
+test which representation is more accurate; that is the experiment. Nine
+assertions: input invariance under hidden changes; no support identity; alphabet
+closure; expansion truth-independence; `ExternalPlant` survives scoring; rescue
+cannot move truth; abstention $\neq$ NoWrite; oracle exactness; side-effect
+freedom. Acceptance bar as in S1 — a trivially dumb method must be able to walk
+the whole interface and pass. **S2 proves the pipe, never the method.**
+
+**Forbidden inputs, with the boundary drawn here:** latent $M$, $Z^{\text{pres}}$,
+$\mathcal R^{\text{mech}}$, $\mathcal R^{\text{rescue}}$, $\Gamma^\ast$, world id,
+rows-block id, the `DenseSupport` hypothesis set, DGP weights, any
+`outcome_after(intervention)` oracle, any write target. Allowed, because it is
+public mechanism knowledge rather than evaluator truth: the public $\Gamma$
+ontology and its `agent_writeable` flags, the environment/action grammar, and a
+**read-only** $\pi_D^\ast(s,z,m)$ view. $B_Q = 0$ — no query session, no
+counterfactual evaluator calls. V0.2R is not V0.1R with a different head: there is
+nothing to query.
+
+$$\boxed{\text{frozen — interface/type contract; later scientific interpretation amended by A70–A72}}$$
+
+**Scope fence.** `17` §1–§7 are A69. `17` §8 is A72's locator grant, and `17`
+§9–§10 are later: the order in force and the three-methods degeneracy exposed
+*after* A69 was frozen. That degeneracy is deliberately **not** recorded here as
+A69's content — it was not known at the freeze, and it is not backfilled. What
+A70–A72 supersede is A69's **reading** of what V0.2R can claim, not its interface,
+its typing or its information-flow boundary; `17` §9 states that the typed
+contract and S2 are correct regardless.
+
+## 60. Summary and what remains open
 
 | # | what | severity | status |
 |---|---|---|---|
@@ -2621,6 +2752,7 @@ section above; the most recent is:
 | **A55** | $Z_P$ is commit/routing integrity (not a bad plan, not unsuited strategy); process proposal audit added; **Gate_fire PASSES**, $B_{\min} = 3$ vs $B_Q = 4$ | **P0 (spec)** | frozen — **first PASS**; V0.1R precondition met |
 | **A56** | semantic propagation of A54/A55 through `02`, `04`, `06`; lattice gains $do(C_P{=}\text{identity})$; arms renamed `QueryOnly`/`SeqThenQuery`; Gate E pre-check clean | high | complete |
 | **A57** | commit repair first-class in the kernel (own node, composes, counts in $\lvert r\rvert$); canary 10/10 held; **Gate E PASS** on full support, all ties kept, trace-level no-op invariant clean | high | complete — semantic suite next |
+| **A69** | V0.2R typed information boundary: three native alphabets with a frozen evaluator-side $\eta_R$ that must not read $Z^{\text{fire}}_{\text{truth}}$; episode-local $\Gamma(I)$; `OracleCreditAdapter` separated from the ordinary method path; $\varnothing \neq \{\texttt{Unknown/NoWrite}\}$; `agent_writeable` assigned including `Strategy = false`; S2 as interface/typing/information-flow only | **P0 (spec)** | frozen — interface and typing; later scientific *reading* amended by A70–A72 (`17` §9). **Logged late: mechanical provenance registration only** |
 | **A71** | truth was built from **generic** type names while predictions are concrete addresses, so A70's census was systematically false-negative; truth is now indexed from $R^{\text{mech}}$ descriptors, **A70's numbers are voided**, and $Z^{\text{fire}} \not\Rightarrow \Gamma^\ast$ — cause identification does **not** imply site identification (14/893 mixed classes, 0.1881% of DGP mass) | **P0** | frozen — identifiability negative against a perfect $Z^{\text{fire}}_{\text{truth}}$ |
 | **A72** | `PublicSCMView` / `CausalSetLocator` grant recorded: factual-consistency inversion (simulate hypothetical worlds) is not an intervention query; $\hat\Gamma_{\text{CSL}} = \Gamma^+$ with $\Gamma^-$ as the certain diagnostic, $B_Q = 0$, equivalence to be gated at 893/893 against an **independently sourced** $\Gamma^+_{\text{eval}}$ | **P0 (spec)** | frozen — implementation and gate pending |
 
