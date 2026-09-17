@@ -2039,8 +2039,18 @@ $$P(Z_i^{\text{fire}} = 1) = \sum_{\ell \in \mathcal F} w_\ell \, \mathbf 1[\tex
 | E | 0.160047 |
 | **U** | **0.002041** |
 
-So U is roughly **ten times rarer** than the other four, and at $N = 400$ the
-expected U-positive count is $0.8165$ with
+So U fires at roughly **1/79 of the average of the other four causes**, i.e. about
+**65–95 times rarer** depending on which cause it is compared with
+($P/U = 94.9$, $D/U = 65.5$, $X/U = 76.8$, $E/U = 78.4$ over the exact values
+above). An earlier draft said "about ten times rarer", which contradicted its own
+table by an order of magnitude — the two "orders of magnitude" must be kept
+separate:
+
+* **occurrence rate:** U is **65–95×** rarer than the other four causes;
+* **sample size for ~10 U-positives:** $N \approx 10 / 0.002041 \approx 4900$,
+  about **12× larger** than $N = 400$.
+
+At $N = 400$ the expected U-positive count is $0.8165$ with
 
 $$P(\text{observe zero at } N{=}400) = 0.4416, \qquad
   P(\text{observe zero at all three sizes}) = 0.4095.$$
@@ -2051,8 +2061,10 @@ computation settles outright rather than a way the samples could convict — and
 the sample-derived bound ($0.75\%$) still contains the true value ($0.204\%$), so
 nothing about the observations was inconsistent. The practical consequence is
 structural, not statistical: U fires about twice per thousand scenes, so a
-benchmark that wants to evaluate the $U$ channel needs an $N$ an order of
-magnitude larger than any planned here.
+benchmark that wants roughly ten U-positives needs $N \approx 4900$ — about an
+order of magnitude beyond the largest $N$ planned here.
+
+**V0.1R frozen claim.**
 
 **What this establishes, and what it does not.** The frozen primary hypothesis is
 met, on fresh confirmatory data:
@@ -2116,8 +2128,25 @@ nothing was redrawn. No prediction, no scene and no metric was altered.
 wording outran its data: the $0/400$ figure is $0/437$ counting all three planned
 sizes; the claim that the true U rate is below $0.25\%$ is withdrawn (the correct
 zero-observation bound is $\approx 0.75\%$ from $0/400$); the Brier sign test is
-not an AUPRC significance test; and "unevaluable at any feasible $N$" is
-narrowed to the three pre-registered sizes.
+not an AUPRC significance test; "unevaluable at any feasible $N$" is narrowed to
+the three pre-registered sizes; and "about ten times rarer" is **withdrawn as an
+arithmetic error** and replaced by the exact ratios ($P/U = 94.9$, $D/U = 65.5$,
+$X/U = 76.8$, $E/U = 78.4$, i.e. 65–95×, about $1/79$ of the other four's
+average).
+
+**Frozen claim (V0.1R closed).**
+
+> Under the frozen DGP, information boundary and $B_Q = 4$, sequence evidence plus
+> targeted queries diagnose $Z^{\text{fire}}$ far better than believing feedback
+> directly: $\Delta\text{AUPRC} = 0.6101$ in the pre-registered $N = 400$
+> confirmatory experiment, exceeding $\Delta_{\min} = 0.05$, with all four
+> independent 100-scene blocks clearing the threshold on their own.
+
+$$\boxed{\text{V0.1R establishes feedback interpretation} \rightarrow \text{attribution, and nothing further}}$$
+
+It does **not** establish attribution $\rightarrow$ responsibility $\rightarrow$
+selective update $\rightarrow$ better policy. Those are V0.2R onward, and no
+result here may be cited for them.
 
 ---
 
