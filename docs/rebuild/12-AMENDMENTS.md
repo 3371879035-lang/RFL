@@ -2462,7 +2462,130 @@ $$\boxed{\text{V0.3R conditions on the A65/A67 working ontology } \Gamma}$$
 
 ---
 
-## 57. Summary and what remains open
+## 57. A71 — indexed responsibility truth, and cause identification ≠ site identification
+
+**The P0.** A67/A70 built the truth as generic **type names** — `"Decision_t"`,
+`"ControllerSite"` — while `credit.py` expands predictions into concrete
+episode-local addresses (`Decision_3`, `ControllerSite_x_y_t_cmd`), and
+`eta_causal` even rejects units outside `shape.gamma()`. Intersecting a generic
+truth against concrete predictions yields the **empty set**, so the A70 census
+produced systematic false negatives on every D/X component. The Fine reference hid
+it by comparing the truth against itself, and `distinct_gamma_star = 21` was the
+tell: a genuinely indexed truth cannot have only five-label-combination
+granularity.
+
+$$\boxed{\text{A70's census numbers are INVALID and are not inherited}}$$
+
+**The consequence is larger than the bug.** Five fire bits say *which kind* fired,
+not *which timestep or site*, so
+
+$$Z^{\text{fire}}_{\text{truth}} \;\not\Rightarrow\; \Gamma^\ast$$
+
+unless latent $M$ is handed over, which A65/A69 forbid. That **falsifies A70's
+premise** that "for each fired cause emit $\pi_{\text{credit}}(\text{descriptor})$"
+is the ceiling. A70's other conclusion stands (V0.2R cannot validate the ontology,
+the scoring ontology being self-defined), but "V0.2R is only a granularity study"
+does **not** stand.
+
+**Built:** truth from $R^{\text{mech}}$ **descriptors**, so D/X carry addresses;
+$\Gamma^\ast(\ell) \subseteq \Gamma(I_\ell)$ checked for all $\ell$; no generic
+unit remains in any truth; and $\Gamma^-/\Gamma^+$ per information class.
+
+$$\Gamma^-(x) = \bigcap_{\ell \in H(x)} \Gamma^\ast(\ell), \qquad
+\Gamma^+(x) = \bigcup_{\ell \in H(x)} \Gamma^\ast(\ell)$$
+
+**Measured**, full support, $1{,}038{,}960$ worlds:
+
+| quantity | value |
+|---|---|
+| information classes $(block, fire\_code)$ | 893 |
+| classes with mixed $\Gamma^\ast$ | **14** = 1.57% of **classes** |
+| **DGP mass in mixed classes** | **0.1881% of mass** |
+| ambiguity-set size histogram | $\{2: 14\}$ |
+| $\lvert\Gamma^+\rvert - \lvert\Gamma^-\rvert$ | mean 0.031, max 2 |
+| domain-closure violations / generic leaks | 0 / 0 |
+
+$$\boxed{\text{Cause identification does not imply site identification}}$$
+
+The ambiguity is thin on **both** counts — 1.57% of classes but 0.19% of DGP mass,
+each mixed class with exactly two alternatives differing by one unit. The class
+figure must not be read as a scene probability.
+
+**Verified mechanism, not an artefact.** Worlds 4702 and 4704 share block 38 and
+fire `01101` with identical rows, but world 4702 has the controller fault at
+$(0,2,t{=}0)$ and the plant fault at $t{=}4$, while 4704 has them **swapped**. A
+controller fault at one timestep combined with a plant fault at another produces
+the same observation as the exchange, while the `ControllerSite` address differs.
+
+This is an **identifiability negative result that holds against a perfect
+$Z^{\text{fire}}_{\text{truth}}$**, not a method's poor performance — markedly
+stronger than a purpose-built fallible decoder. Claim condition: credit
+localisation **under a known SCM**, not a general learner.
+
+**Two vacuous tests found and withdrawn here.** The first check was
+`((zc >> i) & 1) > 1`, unsatisfiable because a bit is 0 or 1; its replacement
+assigned `cnt = 1` and tested `cnt > 1`, unsatisfiable for a constant. **Both
+reported PASS and neither could fail.** The proposition is now a *schema theorem*:
+`LatentCase` stores P/D/X/E/U as single-valued fields, so one descriptor per cause
+is *by construction*. If the schema ever admits multi-fault lists, A66's
+(a)-vs-(b) ambiguity reopens and a real check must replace it.
+
+## 58. A72 — set identification, and the one capability the locator is granted
+
+**A new grant, recorded rather than assumed.** A69 allowed only the
+environment/action grammar and a read-only $\pi_D^\ast$, and forbade DenseSupport,
+world ids, DGP weights, $M$, both repair truths, $\Gamma^\ast$ and any
+`outcome_after` oracle. The locator additionally needs forward simulation, so:
+
+> `CausalSetLocator` may use the frozen public SCM and its structural
+> fault-support grammar to forward-simulate **hypothetical** latent worlds and
+> retain those whose learner-visible factual evidence and fired-cause vector equal
+> $X_{0.2}$. This is **factual-consistency inversion**, not an intervention query.
+> It may not access the factual world's latent assignment, DenseSupport identities
+> or weights, repair/rescue truth, $\Gamma^\ast$, or any evaluator counterfactual
+> oracle.
+
+$$\boxed{\text{simulate a hypothetical factual world} \;\neq\; \text{intervene on the true world}}$$
+
+The left side is model inversion; the right side is the counterfactual query
+already forbidden. $B_Q = 0$ is unchanged.
+
+$$\mathcal C_{\text{SCM}}(X) = \{\tilde\ell \in \mathcal L_{\text{public}} :
+\operatorname{Obs}_{\text{learner}}(\operatorname{Rollout}(\tilde\ell)) = I^{\text{factual}},\;
+Z^{\text{fire}}(\tilde\ell) = Z^{\text{fire}}_{\text{truth}}\}$$
+
+with $\mathcal L_{\text{public}}$ generated **on the spot** from the public SCM
+schema and finite fault grammar — **not** DenseSupport.
+
+$$\boxed{\hat\Gamma_{\text{CSL}}(X) = \Gamma^+(X)}$$
+
+with $\Gamma^-$ reported alongside as the *certain* responsibility diagnostic. A
+mixed class therefore does not guess a site; it reports both addresses as
+compatible. That is exactly why the locator is **not** the oracle: `OracleCredit`
+receives the true $\Gamma^\ast$, `CausalSetLocator` reaches only the envelope $X$
+supports.
+
+**The whitelist is an interface, not a promise.** `PublicSCMView` exposes the
+public fault grammar, forward factual rollout, read-only $\pi_D^\ast$ and the
+descriptor→credit mapping; it does **not** expose `Intervention` / repair / rescue,
+`DenseSupport`, DGP probability, or a truth-world handle. Allowed additionally:
+public kernel transition and event order, public admissible-parameter domains and
+structural feasibility rules, and enumerating *hypothetical* $Z^{\text{pres}}, M$
+with their own internal $u$, $a^{realized}$, $Z^{\text{fire}}$. Forbidden:
+comparing a candidate against anything beyond the learner-visible fields inside
+$X_{0.2}$ and the given $Z^{\text{fire}}$ — in particular not the real world's
+hidden $u$, plant input or proposal provenance.
+
+$$\boxed{\hat\Gamma_{\text{CSL}}(X) = \Gamma^+_{\text{eval}}(X) \quad \forall X \in \{1,\dots,893\}}$$
+
+The two sides must be **independently sourced**: $\Gamma^+_{\text{eval}}$ may be
+enumerated from DenseSupport plus the indexed truth (it is the evaluator
+reference); $\hat\Gamma_{\text{CSL}}$ may only be re-derived from $X$ through
+`PublicSCMView`. Only then is it **exact SCM set inversion** rather than a support
+lookup. A mutation merging the controller/plant mechanism boundary must be killed
+by the X/E swap classes A71 found.
+
+## 59. Summary and what remains open
 
 | # | what | severity | status |
 |---|---|---|---|
@@ -2498,6 +2621,8 @@ section above; the most recent is:
 | **A55** | $Z_P$ is commit/routing integrity (not a bad plan, not unsuited strategy); process proposal audit added; **Gate_fire PASSES**, $B_{\min} = 3$ vs $B_Q = 4$ | **P0 (spec)** | frozen — **first PASS**; V0.1R precondition met |
 | **A56** | semantic propagation of A54/A55 through `02`, `04`, `06`; lattice gains $do(C_P{=}\text{identity})$; arms renamed `QueryOnly`/`SeqThenQuery`; Gate E pre-check clean | high | complete |
 | **A57** | commit repair first-class in the kernel (own node, composes, counts in $\lvert r\rvert$); canary 10/10 held; **Gate E PASS** on full support, all ties kept, trace-level no-op invariant clean | high | complete — semantic suite next |
+| **A71** | truth was built from **generic** type names while predictions are concrete addresses, so A70's census was systematically false-negative; truth is now indexed from $R^{\text{mech}}$ descriptors, **A70's numbers are voided**, and $Z^{\text{fire}} \not\Rightarrow \Gamma^\ast$ — cause identification does **not** imply site identification (14/893 mixed classes, 0.1881% of DGP mass) | **P0** | frozen — identifiability negative against a perfect $Z^{\text{fire}}_{\text{truth}}$ |
+| **A72** | `PublicSCMView` / `CausalSetLocator` grant recorded: factual-consistency inversion (simulate hypothetical worlds) is not an intervention query; $\hat\Gamma_{\text{CSL}} = \Gamma^+$ with $\Gamma^-$ as the certain diagnostic, $B_Q = 0$, equivalence to be gated at 893/893 against an **independently sourced** $\Gamma^+_{\text{eval}}$ | **P0 (spec)** | frozen — implementation and gate pending |
 
 ---
 

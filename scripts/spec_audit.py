@@ -162,14 +162,66 @@ def audit() -> dict:
     missing_paths = [p for p in DECLARED_PATHS if not (ROOT / p).exists()]
 
     # Amendment references must resolve to an amendment heading.
+    #
+    # "Defined" is sourced *only* from the formal headings of the amendment log.
+    # Everything else below is a *reference* source, and a reference to an
+    # amendment that has no heading is the failure mode this guards: A71 and A72
+    # were fully specified in `17` and named in `17`'s own headings, yet the
+    # audit reported clean, because only bold `**Axx**` in a non-amendment doc
+    # counted as a reference. The graph closed while two amendments were
+    # un-logged -- a query that passes is not evidence that the subject is right.
     amend_doc = docs.get("12-AMENDMENTS.md", "")
-    defined_amendments = set(re.findall(r"^##\s+\d+\.\s+(A\d+)\s+—", amend_doc, re.M))
-    referenced_amendments: set[str] = set()
+    defined_amendments = set(
+        re.findall(r"^#{2,6}\s+\d+\.\s+(A\d+)\b", amend_doc, re.M)
+    )
+
+    # Reference sources, kept separate so a failure names its own origin.
+    ref_sources: dict[str, set[str]] = {}
+    headings_scanned = 0
+    headed: list[str] = []
+
+    def note(amend: str, origin: str) -> None:
+        ref_sources.setdefault(amend, set()).add(origin)
+
+    # A range such as `A55–A64` references both endpoints; the interior is a
+    # human-readable span, not a claim, so it is deliberately not expanded.
+    def head_refs(text: str, doc: str) -> None:
+        for m in re.finditer(r"\b(A\d+)\s*[–—-]\s*(A\d+)\b", text):
+            note(m.group(1), f"{doc}: range {m.group(1)}-{m.group(2)}")
+            note(m.group(2), f"{doc}: range {m.group(1)}-{m.group(2)}")
+
     for name, raw in docs.items():
+        if name == "12-AMENDMENTS.md":
+            continue
+        # (a) bold mentions, the original source
         for m in re.finditer(r"\*\*(A\d+)\*\*", raw):
-            if name != "12-AMENDMENTS.md":
-                referenced_amendments.add(m.group(1))
+            note(m.group(1), f"{name}: bold")
+        # (b) numbered headings: a heading-level declaration is a definition in
+        # the reader's eyes, so it must be logged as one. The `\.?` is load
+        # bearing: `## 8. A72 — ...` has a period after the number and `### 8.4
+        # A71's claim` does not, and a regex without it silently matched only the
+        # sub-numbered form -- catching A71 and missing A72.
+        for m in re.finditer(r"^#{1,6}\s+(\d+(?:\.\d+)*)\.?\s+(\S.*)$", raw, re.M):
+            headings_scanned += 1
+            for a in re.findall(r"\b(A\d+)\b", m.group(2)):
+                note(a, f"{name}: heading §{m.group(1)}")
+                headed.append(f"{name} §{m.group(1)} names {a}")
+            head_refs(m.group(2), f"{name} §{m.group(1)}")
+        # (c) explicit status declarations, e.g. "Status: ... logged as A66"
+        for m in re.finditer(r"(?i)logged as\s+\**\s*(A\d+)\b", raw):
+            note(m.group(1), f"{name}: 'logged as'")
+        # (d) explicit retirement notices naming an amendment
+        for m in re.finditer(r"(?i)(?:retired|withdrawn|superseded)\s+(?:by|as)\s+\**\s*(A\d+)\b",
+                             raw):
+            note(m.group(1), f"{name}: 'superseded by'")
+
+    referenced_amendments = set(ref_sources)
     dangling_amendments = sorted(referenced_amendments - defined_amendments)
+
+    # Same failure, seen from the log's side: a formal heading is present but the
+    # amendment is not carried into the summary tables, so a reader who starts at
+    # the summary never learns it exists.
+    summary_amendments = set(re.findall(r"^\|\s*\**\s*(A\d+)\s*\**\s*\|", amend_doc, re.M))
 
     # UTF-8 integrity.
     mojibake: list[tuple[str, str]] = []
@@ -192,6 +244,10 @@ def audit() -> dict:
                         (name, f"line {lineno}: {m.group(0)[:40]}", why)
                     )
 
+    # Amendment headings that no summary table mentions. Diagnostic, not fatal:
+    # the remedy is editorial, and the log has carried this gap since A22.
+    unsummarised = sorted(defined_amendments - summary_amendments)
+
     return {
         "documents": sorted(names),
         "documents_without_numbered_sections": unnumbered,
@@ -203,6 +259,12 @@ def audit() -> dict:
         "amendments_defined": sorted(defined_amendments),
         "amendments_referenced": sorted(referenced_amendments),
         "dangling_amendments": dangling_amendments,
+        "amendment_reference_sources": {
+            k: sorted(v) for k, v in sorted(ref_sources.items())
+        },
+        "numbered_headings_scanned_in_other_docs": headings_scanned,
+        "amendments_named_in_other_doc_headings": sorted(set(headed)),
+        "amendments_defined_but_not_in_summary": unsummarised,
         "mojibake": mojibake,
         "retired_semantics": retired_hits,
     }
@@ -248,14 +310,33 @@ def main() -> int:
 
     if r["dangling_amendments"]:
         ok = False
-        print("\nAMENDMENT REFERENCES WITH NO SUCH AMENDMENT:")
+        print("\nAMENDMENT REFERENCES WITH NO SUCH AMENDMENT HEADING IN 12:")
         for a in r["dangling_amendments"]:
             print(f"  {a}")
+            for origin in r["amendment_reference_sources"].get(a, []):
+                print(f"      referenced by {origin}")
+        print(
+            "  A heading-level or 'logged as' declaration is a definition in the\n"
+            "  reader's eyes. If the amendment exists in prose but has no `## NN.\n"
+            "  Axx —` heading in 12-AMENDMENTS.md, the reference graph closes while\n"
+            "  the amendment is un-logged and this audit reports clean."
+        )
     print(
         f"\namendments defined: {len(r['amendments_defined'])} "
         f"{r['amendments_defined']}; referenced from other docs: "
         f"{r['amendments_referenced']}"
     )
+    print(
+        f"numbered headings scanned in other docs: "
+        f"{r['numbered_headings_scanned_in_other_docs']}; amendments named "
+        f"therein: {r['amendments_named_in_other_doc_headings']}"
+    )
+
+    if r["amendments_defined_but_not_in_summary"]:
+        print(
+            f"\nDEFINED BUT ABSENT FROM THE SUMMARY TABLE (editorial, non-blocking): "
+            f"{r['amendments_defined_but_not_in_summary']}"
+        )
 
     if r["mojibake"]:
         ok = False
