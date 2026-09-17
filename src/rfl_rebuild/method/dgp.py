@@ -72,14 +72,30 @@ class SceneDGP:
     p_cause = P_CAUSE
 
     def __init__(self, *, kappas: Sequence[int], options: Sequence[int],
-                 tapes: Sequence, domains: Callable, n_cause_rank: int = N_CAUSE_RANK):
+                 tapes: Sequence, domains: Callable, is_feasible: Callable,
+                 n_cause_rank: int = N_CAUSE_RANK):
         self.kappas = tuple(kappas)
         self.options = tuple(options)
         self.tapes = tuple(tapes)
         self._domains = domains
+        self._is_feasible = is_feasible
         self.n_cause_rank = n_cause_rank
         if not (self.kappas and self.options and self.tapes):
             raise ValueError("DGP needs non-empty kappa, option and tape supports")
+        # P0-1: the phase mass is built ONCE and read by BOTH the sampler and
+        # log_prob. A62 rev1 sampled the phase with rng.choice but never paid
+        # P(phi) in log_prob, so log_prob != log P_sampler at the context level.
+        # Equal phase frequencies would have cancelled in a normalised
+        # posterior, but "it cancels by coincidence" is not a single measure.
+        counts: dict = {}
+        for t in self.tapes:
+            counts[t.phase] = counts.get(t.phase, 0) + 1
+        n = len(self.tapes)
+        self.phase_mass = {ph: c / n for ph, c in counts.items()}
+
+    def phase_log_prob(self, phase: int) -> float:
+        p = self.phase_mass.get(phase)
+        return -math.inf if p is None else math.log(p)
 
     # ---- context level --------------------------------------------------- #
     def context_log_prob(self, ctx: SceneContext) -> float:
@@ -87,36 +103,62 @@ class SceneDGP:
             return -math.inf
         if ctx.kappa not in self.kappas or ctx.base_option not in self.options:
             return -math.inf
-        if not any(t.phase == ctx.phase for t in self.tapes):
+        lp = self.phase_log_prob(ctx.phase)
+        if lp == -math.inf:
             return -math.inf
-        lp = 0.0
         lp -= math.log(len(self.kappas))
         lp -= math.log(len(self.options))
         lp += _L_P_ERR if ctx.error_flag == 1 else _L_1M_ERR
         lp -= math.log(self.n_cause_rank)
         return lp
 
+    def context_total(self) -> float:
+        """``sum over contexts of P(ctx)`` — must be exactly 1 (P0-1)."""
+        tot = 0.0
+        for kappa in self.kappas:
+            for phase in self.phase_mass:
+                for err in (0, 1):
+                    for rank in range(self.n_cause_rank):
+                        for z in self.options:
+                            ctx = SceneContext(kappa=kappa, phase=phase,
+                                               error_flag=err, cause_rank=rank,
+                                               base_option=z)
+                            tot += math.exp(self.context_log_prob(ctx))
+        return tot
+
     # ---- world level ----------------------------------------------------- #
     def world_log_prob(self, ctx: SceneContext, Z: Sequence[int],
                        param_index: Sequence[int]) -> float:
-        """``log P(Z, params | ctx)`` — conditional part of the measure."""
-        if len(Z) != N_CAUSES or ctx.is_valid is False:
+        """``log P(Z, params | ctx)`` — conditional part of the measure.
+
+        Canonical representation is ENFORCED, not assumed: ``Z_i in {0,1}``,
+        ``Z_i = 0 => param_i = -1``, and ``Z_i = 1 => 0 <= param_i < |D_i|``. A62
+        rev1 ignored ``param_index`` entirely when ``Z_i = 0``, so
+        ``(0, -1)``, ``(0, 0)`` and ``(0, 999)`` were three encodings of one
+        world each receiving the same probability.
+        """
+        if len(Z) != N_CAUSES or not ctx.is_valid:
             return -math.inf
         dm = self._domains(ctx)
         lp = 0.0
         for i in range(N_CAUSES):
+            zi = Z[i]
+            if zi not in (0, 1):
+                return -math.inf
             d = dm[i]
-            if not d:
-                if Z[i] != 0:
-                    return -math.inf          # cannot be present with no domain
-                continue
-            if Z[i] == 0:
+            if zi == 0:
+                if param_index[i] != -1:
+                    return -math.inf
+                if not d:
+                    continue
                 lp += _L_1M_CAUSE
             else:
-                lp += _L_P_CAUSE
+                if not d:
+                    return -math.inf      # cannot be present with no domain
                 if not (0 <= param_index[i] < len(d)):
                     return -math.inf
-                lp -= math.log(len(d))        # uniform within the canonical domain
+                lp += _L_P_CAUSE
+                lp -= math.log(len(d))    # uniform within the canonical domain
         return lp
 
     def log_prob(self, ctx: SceneContext, Z: Sequence[int],
@@ -125,8 +167,16 @@ class SceneDGP:
 
     # ---- sampling, from the same measure --------------------------------- #
     def sample_context(self, rng) -> SceneContext:
+        r = rng.random()
+        acc = 0.0
+        phase = next(iter(self.phase_mass))
+        for ph, p in self.phase_mass.items():
+            acc += p
+            if r <= acc:
+                phase = ph
+                break
         return SceneContext(kappa=rng.choice(self.kappas),
-                            phase=rng.choice(self.tapes).phase,
+                            phase=phase,
                             error_flag=1 if rng.random() < self.p_error_flag else 0,
                             cause_rank=rng.randrange(self.n_cause_rank),
                             base_option=rng.choice(self.options))
@@ -147,12 +197,34 @@ class SceneDGP:
                 params.append(-1)
         return tuple(Z), tuple(params)
 
+    # ---- feasibility conditioning (P0-2) --------------------------------- #
+    def sample_scene(self, rng, max_tries: int = 10_000):
+        """Draw from ``P_raw(ell | ell in F)`` by REJECTING THE WHOLE SCENE.
+
+        Stage2 already measured 127,440 MALFORMED factual cases out of 1,166,400
+        candidates, so this is not hypothetical: raw draws land outside F often.
+        The frozen definition is
+
+            P_scene(ell) = P_raw(ell | ell in F)
+
+        and the cleanest implementation is whole-scene rejection -- draw a new
+        context too, not just new faults. Resampling faults under a FIXED context
+        would give P(ctx) P(world | ctx, F), which is a different distribution.
+        """
+        for _ in range(max_tries):
+            ctx = self.sample_context(rng)
+            Z, params = self.sample_world(rng, ctx)
+            if self._is_feasible(ctx, Z, params):
+                return ctx, Z, params
+        raise RuntimeError("feasibility rejection did not terminate")
+
     # ---- the enumerable slice used by the exact consistency test --------- #
     def slice_total(self, ctx: SceneContext) -> float:
         """``sum over all (Z, params) of P(Z, params | ctx)``.
 
         Must be 1: this is the exact check that the sampler and the prior use one
-        measure. Only usable on a context small enough to enumerate.
+        measure. Only usable on a context small enough to enumerate. Parameter
+        indices obey the canonical encoding (``-1`` iff the cause is off).
         """
         dm = self._domains(ctx)
         tot = 0.0
@@ -160,10 +232,10 @@ class SceneDGP:
             Z = [(bits >> i) & 1 for i in range(N_CAUSES)]
             if any(Z[i] == 1 and not dm[i] for i in range(N_CAUSES)):
                 continue
-            # sum over parameter assignments
+            params = [0 if Z[i] == 1 else -1 for i in range(N_CAUSES)]
             combos = 1
             for i in range(N_CAUSES):
                 if Z[i] == 1:
                     combos *= len(dm[i])
-            tot += math.exp(self.world_log_prob(ctx, Z, [0] * N_CAUSES)) * combos
+            tot += math.exp(self.world_log_prob(ctx, Z, params)) * combos
         return tot

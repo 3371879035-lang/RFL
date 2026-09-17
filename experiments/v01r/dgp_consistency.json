@@ -1,4 +1,14 @@
 {
+ "context_total": 1.0000000000000757,
+ "context_normalisation": "PASS",
+ "phase_mass": {
+  "0": 0.16666666666666666,
+  "1": 0.16666666666666666,
+  "2": 0.16666666666666666,
+  "3": 0.16666666666666666,
+  "4": 0.16666666666666666,
+  "5": 0.16666666666666666
+ },
  "slice_totals": {
   "err=0,z=0": 1.0000000000000002,
   "err=0,z=1": 1.0000000000000002,
@@ -10,19 +20,26 @@
   "err=1,z=3": 1.0000000000000002
  },
  "worst_abs_error": 2.220446049250313e-16,
- "exact_normalisation": "PASS",
+ "conditional_normalisation": "PASS",
+ "feasibility_slice": {
+  "raw_worlds": 81,
+  "feasible_worlds": 81,
+  "kept_fraction": 1.0,
+  "raw_mass": 0.0002083333333333339,
+  "feasible_mass": 0.0002083333333333339,
+  "mass_kept_fraction": 1.0
+ },
  "n_mc": 20000,
  "mc_absZ": {
-  "0": 0.3507,
-  "1": 0.40755,
-  "2": 0.19445,
-  "3": 0.04225,
-  "4": 0.00485,
-  "5": 0.0002
+  "0": 0.3521,
+  "1": 0.41335,
+  "2": 0.18995,
+  "3": 0.04,
+  "4": 0.0046
  },
- "mc_p_le1": 0.7582500000000001,
+ "mc_p_le1": 0.76545,
  "analytic_p_le1_all_causes_available": 0.7372800000000002,
- "mean_available_causes": 4.7469,
- "note": "The empirical P(|Z|<=1) is expected to EXCEED the all-available 0.737, because contexts with an empty canonical domain force Z_i to 0 and reduce |Z|. The two are printed side by side so the gap is visible rather than smoothed over.",
+ "mean_available_causes": 4.75365,
+ "note": "Draws use WHOLE-SCENE rejection, so the sampler targets P_raw(ell | ell in F). The empirical P(|Z|<=1) is compared with the all-five-causes-available figure for orientation only; contexts with an empty canonical domain force Z_i to 0 and push it UP. feasibility_slice carries the exact conditioning mass.",
  "consumes_smoke_or_dev_scenes": false
 }
