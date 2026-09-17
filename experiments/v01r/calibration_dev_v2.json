@@ -1,0 +1,1652 @@
+{
+ "stage": "dev",
+ "namespace": "v01r_dev_v2",
+ "n_scenes": 32,
+ "B_Q": 4,
+ "checks": {
+  "all_four_arms_ran_on_every_scene": true,
+  "all_outputs_finite": true,
+  "no_arm_exceeded_B_Q": true,
+  "world_fingerprints_unchanged": true
+ },
+ "dev_only_checks": {
+  "every_fired_cause_has_pos_and_neg": false,
+  "seqthenquery_used_a_query": true,
+  "queryonly_used_a_query": true,
+  "query_changed_inference_on_at_least_one_scene": true,
+  "predictions_not_all_identical_constant": true
+ },
+ "applied_to_this_stage": [
+  "all_four_arms_ran_on_every_scene",
+  "all_outputs_finite",
+  "every_fired_cause_has_pos_and_neg",
+  "no_arm_exceeded_B_Q",
+  "predictions_not_all_identical_constant",
+  "query_changed_inference_on_at_least_one_scene",
+  "queryonly_used_a_query",
+  "seqthenquery_used_a_query",
+  "world_fingerprints_unchanged"
+ ],
+ "verdict": "FAIL",
+ "coverage_positives": [
+  5,
+  7,
+  4,
+  4,
+  0
+ ],
+ "coverage_negatives": [
+  27,
+  25,
+  28,
+  28,
+  32
+ ],
+ "query_used": {
+  "QueryOnly": 32,
+  "SeqThenQuery": 26
+ },
+ "max_trace_len": {
+  "QueryOnly": 4,
+  "SeqThenQuery": 2
+ },
+ "rollouts_memoised": 6682800,
+ "scenes": [
+  {
+   "scene": 0,
+   "world_id": 383087,
+   "block_id": 210,
+   "fire": [
+    0,
+    1,
+    0,
+    0,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "QueryOnly": [
+     0.0,
+     0.11111111111111253,
+     0.0987654320987662,
+     0.08779149519890384,
+     0.0
+    ],
+    "SeqThenQuery": [
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "trace_len": {
+    "QueryOnly": 4,
+    "SeqThenQuery": 0
+   }
+  },
+  {
+   "scene": 1,
+   "world_id": 757705,
+   "block_id": 374,
+   "fire": [
+    0,
+    0,
+    1,
+    0,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "SequenceEvidence": [
+     0.0,
+     0.0,
+     0.5294117647058811,
+     0.47058823529411786,
+     0.0
+    ],
+    "QueryOnly": [
+     0.0,
+     0.11111111111110447,
+     0.09876543209875399,
+     0.08779149519888971,
+     0.0
+    ],
+    "SeqThenQuery": [
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ]
+   },
+   "trace_len": {
+    "QueryOnly": 4,
+    "SeqThenQuery": 1
+   }
+  },
+  {
+   "scene": 2,
+   "world_id": 198972,
+   "block_id": 103,
+   "fire": [
+    0,
+    1,
+    0,
+    0,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "QueryOnly": [
+     0.0,
+     0.5789473684212811,
+     0.47368421052634896,
+     0.0947368421052625,
+     0.0
+    ],
+    "SeqThenQuery": [
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "trace_len": {
+    "QueryOnly": 4,
+    "SeqThenQuery": 0
+   }
+  },
+  {
+   "scene": 3,
+   "world_id": 984995,
+   "block_id": 527,
+   "fire": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     0.15108808290155637,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "QueryOnly": [
+     0.0,
+     0.11111111111111253,
+     0.0987654320987662,
+     0.08779149519890384,
+     0.0
+    ],
+    "SeqThenQuery": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "trace_len": {
+    "QueryOnly": 4,
+    "SeqThenQuery": 1
+   }
+  },
+  {
+   "scene": 4,
+   "world_id": 330363,
+   "block_id": 140,
+   "fire": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     0.1495016611295687,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "QueryOnly": [
+     0.0,
+     0.11111111111110447,
+     0.09876543209875399,
+     0.08779149519888971,
+     0.0
+    ],
+    "SeqThenQuery": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "trace_len": {
+    "QueryOnly": 4,
+    "SeqThenQuery": 1
+   }
+  },
+  {
+   "scene": 5,
+   "world_id": 599113,
+   "block_id": 277,
+   "fire": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     0.31367292225200943,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "QueryOnly": [
+     0.0,
+     0.11111111111110447,
+     0.09876543209875399,
+     0.08779149519888971,
+     0.0
+    ],
+    "SeqThenQuery": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "trace_len": {
+    "QueryOnly": 4,
+    "SeqThenQuery": 1
+   }
+  },
+  {
+   "scene": 6,
+   "world_id": 721497,
+   "block_id": 390,
+   "fire": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     0.15108808290155637,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "QueryOnly": [
+     0.0,
+     0.11111111111111253,
+     0.0987654320987662,
+     0.08779149519890384,
+     0.0
+    ],
+    "SeqThenQuery": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "trace_len": {
+    "QueryOnly": 4,
+    "SeqThenQuery": 1
+   }
+  },
+  {
+   "scene": 7,
+   "world_id": 151371,
+   "block_id": 52,
+   "fire": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     0.1495016611295687,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "QueryOnly": [
+     0.0,
+     0.11111111111110447,
+     0.09876543209875399,
+     0.08779149519888971,
+     0.0
+    ],
+    "SeqThenQuery": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "trace_len": {
+    "QueryOnly": 4,
+    "SeqThenQuery": 1
+   }
+  },
+  {
+   "scene": 8,
+   "world_id": 450865,
+   "block_id": 255,
+   "fire": [
+    0,
+    0,
+    0,
+    1,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     0.0,
+     0.0,
+     0.5294117647058811,
+     0.47058823529411786,
+     0.0
+    ],
+    "QueryOnly": [
+     0.0,
+     0.11111111111111253,
+     0.0987654320987662,
+     0.08779149519890384,
+     0.0
+    ],
+    "SeqThenQuery": [
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0
+    ]
+   },
+   "trace_len": {
+    "QueryOnly": 4,
+    "SeqThenQuery": 1
+   }
+  },
+  {
+   "scene": 9,
+   "world_id": 814554,
+   "block_id": 414,
+   "fire": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     0.31367292225200943,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "QueryOnly": [
+     0.0,
+     0.11111111111110447,
+     0.09876543209875399,
+     0.08779149519888971,
+     0.0
+    ],
+    "SeqThenQuery": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "trace_len": {
+    "QueryOnly": 4,
+    "SeqThenQuery": 1
+   }
+  },
+  {
+   "scene": 10,
+   "world_id": 144108,
+   "block_id": 62,
+   "fire": [
+    0,
+    1,
+    0,
+    0,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "QueryOnly": [
+     0.0,
+     0.5789473684212811,
+     0.47368421052634896,
+     0.0947368421052625,
+     0.0
+    ],
+    "SeqThenQuery": [
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "trace_len": {
+    "QueryOnly": 4,
+    "SeqThenQuery": 0
+   }
+  },
+  {
+   "scene": 11,
+   "world_id": 179035,
+   "block_id": 94,
+   "fire": [
+    1,
+    0,
+    0,
+    0,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     0.30698429886301964,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "QueryOnly": [
+     1.0,
+     0.11111111111110489,
+     0.0,
+     0.09876543209875434,
+     0.020987654320984976
+    ],
+    "SeqThenQuery": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "trace_len": {
+    "QueryOnly": 4,
+    "SeqThenQuery": 1
+   }
+  },
+  {
+   "scene": 12,
+   "world_id": 152182,
+   "block_id": 53,
+   "fire": [
+    1,
+    0,
+    0,
+    0,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "SequenceEvidence": [
+     0.31367292225200943,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "QueryOnly": [
+     1.0,
+     0.11111111111110489,
+     0.0,
+     0.09876543209875434,
+     0.020987654320984976
+    ],
+    "SeqThenQuery": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "trace_len": {
+    "QueryOnly": 4,
+    "SeqThenQuery": 1
+   }
+  },
+  {
+   "scene": 13,
+   "world_id": 332550,
+   "block_id": 140,
+   "fire": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     0.1495016611295687,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "QueryOnly": [
+     0.0,
+     0.11111111111110447,
+     0.09876543209875399,
+     0.08779149519888971,
+     0.0
+    ],
+    "SeqThenQuery": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "trace_len": {
+    "QueryOnly": 4,
+    "SeqThenQuery": 1
+   }
+  },
+  {
+   "scene": 14,
+   "world_id": 125587,
+   "block_id": 86,
+   "fire": [
+    0,
+    1,
+    0,
+    0,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "QueryOnly": [
+     0.0,
+     0.11111111111110447,
+     0.09876543209875399,
+     0.08779149519888971,
+     0.0
+    ],
+    "SeqThenQuery": [
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "trace_len": {
+    "QueryOnly": 4,
+    "SeqThenQuery": 0
+   }
+  },
+  {
+   "scene": 15,
+   "world_id": 249936,
+   "block_id": 89,
+   "fire": [
+    1,
+    0,
+    0,
+    0,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "SequenceEvidence": [
+     0.29930203914053105,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "QueryOnly": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SeqThenQuery": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "trace_len": {
+    "QueryOnly": 4,
+    "SeqThenQuery": 1
+   }
+  },
+  {
+   "scene": 16,
+   "world_id": 388230,
+   "block_id": 182,
+   "fire": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     0.30698429886301964,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "QueryOnly": [
+     0.0,
+     0.11111111111110447,
+     0.09876543209875399,
+     0.08779149519888971,
+     0.0
+    ],
+    "SeqThenQuery": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "trace_len": {
+    "QueryOnly": 4,
+    "SeqThenQuery": 1
+   }
+  },
+  {
+   "scene": 17,
+   "world_id": 241497,
+   "block_id": 97,
+   "fire": [
+    0,
+    0,
+    1,
+    0,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "SequenceEvidence": [
+     0.28251121076230507,
+     0.0,
+     0.499999999999979,
+     0.499999999999979,
+     0.0
+    ],
+    "QueryOnly": [
+     0.0,
+     0.578947368421276,
+     0.47368421052634485,
+     0.09473684210526168,
+     0.0
+    ],
+    "SeqThenQuery": [
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ]
+   },
+   "trace_len": {
+    "QueryOnly": 4,
+    "SeqThenQuery": 2
+   }
+  },
+  {
+   "scene": 18,
+   "world_id": 986928,
+   "block_id": 505,
+   "fire": [
+    0,
+    0,
+    1,
+    0,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     0.13513513513513264,
+     0.0,
+     0.5000000000000007,
+     0.5000000000000007,
+     0.0
+    ],
+    "QueryOnly": [
+     0.0,
+     0.5789473684212811,
+     0.47368421052634896,
+     0.0947368421052625,
+     0.0
+    ],
+    "SeqThenQuery": [
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ]
+   },
+   "trace_len": {
+    "QueryOnly": 4,
+    "SeqThenQuery": 2
+   }
+  },
+  {
+   "scene": 19,
+   "world_id": 474207,
+   "block_id": 229,
+   "fire": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     0.1495016611295687,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "QueryOnly": [
+     0.0,
+     0.11111111111110447,
+     0.09876543209875399,
+     0.08779149519888971,
+     0.0
+    ],
+    "SeqThenQuery": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "trace_len": {
+    "QueryOnly": 4,
+    "SeqThenQuery": 1
+   }
+  },
+  {
+   "scene": 20,
+   "world_id": 734650,
+   "block_id": 362,
+   "fire": [
+    1,
+    0,
+    0,
+    0,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     0.29930203914053105,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "QueryOnly": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SeqThenQuery": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "trace_len": {
+    "QueryOnly": 4,
+    "SeqThenQuery": 1
+   }
+  },
+  {
+   "scene": 21,
+   "world_id": 201535,
+   "block_id": 134,
+   "fire": [
+    0,
+    1,
+    0,
+    0,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "QueryOnly": [
+     0.0,
+     0.11111111111110447,
+     0.09876543209875399,
+     0.08779149519888971,
+     0.0
+    ],
+    "SeqThenQuery": [
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "trace_len": {
+    "QueryOnly": 4,
+    "SeqThenQuery": 0
+   }
+  },
+  {
+   "scene": 22,
+   "world_id": 257709,
+   "block_id": 117,
+   "fire": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     0.15108808290155637,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "QueryOnly": [
+     0.0,
+     0.11111111111111253,
+     0.0987654320987662,
+     0.08779149519890384,
+     0.0
+    ],
+    "SeqThenQuery": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "trace_len": {
+    "QueryOnly": 4,
+    "SeqThenQuery": 1
+   }
+  },
+  {
+   "scene": 23,
+   "world_id": 259683,
+   "block_id": 150,
+   "fire": [
+    0,
+    1,
+    0,
+    0,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "QueryOnly": [
+     0.0,
+     0.5789473684212811,
+     0.47368421052634896,
+     0.0947368421052625,
+     0.0
+    ],
+    "SeqThenQuery": [
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "trace_len": {
+    "QueryOnly": 4,
+    "SeqThenQuery": 0
+   }
+  },
+  {
+   "scene": 24,
+   "world_id": 192229,
+   "block_id": 132,
+   "fire": [
+    0,
+    0,
+    0,
+    1,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     0.0,
+     0.0,
+     0.5294117647058811,
+     0.47058823529411786,
+     0.0
+    ],
+    "QueryOnly": [
+     0.0,
+     0.11111111111110447,
+     0.09876543209875399,
+     0.08779149519888971,
+     0.0
+    ],
+    "SeqThenQuery": [
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0
+    ]
+   },
+   "trace_len": {
+    "QueryOnly": 4,
+    "SeqThenQuery": 1
+   }
+  },
+  {
+   "scene": 25,
+   "world_id": 110547,
+   "block_id": 52,
+   "fire": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     0.1495016611295687,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "QueryOnly": [
+     0.0,
+     0.11111111111110447,
+     0.09876543209875399,
+     0.08779149519888971,
+     0.0
+    ],
+    "SeqThenQuery": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "trace_len": {
+    "QueryOnly": 4,
+    "SeqThenQuery": 1
+   }
+  },
+  {
+   "scene": 26,
+   "world_id": 813106,
+   "block_id": 445,
+   "fire": [
+    0,
+    0,
+    1,
+    0,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     0.0,
+     0.0,
+     0.5294117647058811,
+     0.47058823529411786,
+     0.0
+    ],
+    "QueryOnly": [
+     0.0,
+     0.11111111111110447,
+     0.09876543209875399,
+     0.08779149519888971,
+     0.0
+    ],
+    "SeqThenQuery": [
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ]
+   },
+   "trace_len": {
+    "QueryOnly": 4,
+    "SeqThenQuery": 1
+   }
+  },
+  {
+   "scene": 27,
+   "world_id": 663561,
+   "block_id": 317,
+   "fire": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     0.1495016611295687,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "QueryOnly": [
+     0.0,
+     0.11111111111110447,
+     0.09876543209875399,
+     0.08779149519888971,
+     0.0
+    ],
+    "SeqThenQuery": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "trace_len": {
+    "QueryOnly": 4,
+    "SeqThenQuery": 1
+   }
+  },
+  {
+   "scene": 28,
+   "world_id": 751218,
+   "block_id": 366,
+   "fire": [
+    1,
+    0,
+    0,
+    0,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     0.1495016611295687,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "QueryOnly": [
+     1.0,
+     0.0,
+     0.0,
+     0.08571428571429002,
+     0.0
+    ],
+    "SeqThenQuery": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "trace_len": {
+    "QueryOnly": 4,
+    "SeqThenQuery": 1
+   }
+  },
+  {
+   "scene": 29,
+   "world_id": 321537,
+   "block_id": 138,
+   "fire": [
+    0,
+    0,
+    0,
+    1,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     0.252336448598089,
+     0.0,
+     0.5263157894736972,
+     0.473684210526306,
+     0.0
+    ],
+    "QueryOnly": [
+     0.24999999999999853,
+     0.0,
+     0.0,
+     1.0,
+     0.0
+    ],
+    "SeqThenQuery": [
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0
+    ]
+   },
+   "trace_len": {
+    "QueryOnly": 4,
+    "SeqThenQuery": 2
+   }
+  },
+  {
+   "scene": 30,
+   "world_id": 20507,
+   "block_id": 8,
+   "fire": [
+    0,
+    0,
+    0,
+    1,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     0.28251121076230507,
+     0.0,
+     0.499999999999979,
+     0.499999999999979,
+     0.0
+    ],
+    "QueryOnly": [
+     0.11688311688311635,
+     0.05194805194805157,
+     0.0,
+     1.0,
+     0.0
+    ],
+    "SeqThenQuery": [
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0
+    ]
+   },
+   "trace_len": {
+    "QueryOnly": 4,
+    "SeqThenQuery": 2
+   }
+  },
+  {
+   "scene": 31,
+   "world_id": 537903,
+   "block_id": 294,
+   "fire": [
+    0,
+    1,
+    0,
+    0,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     0.18367346938775875,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "QueryOnly": [
+     0.0,
+     0.578947368421276,
+     0.47368421052634485,
+     0.09473684210526168,
+     0.0
+    ],
+    "SeqThenQuery": [
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "trace_len": {
+    "QueryOnly": 4,
+    "SeqThenQuery": 1
+   }
+  }
+ ],
+ "metrics_raw_material_only": {
+  "DirectFeedback": {
+   "macro_auprc": NaN,
+   "macro_auroc": NaN,
+   "exact_set_accuracy": 0.59375,
+   "hamming": 0.125,
+   "brier": 0.125,
+   "ece": 0.125,
+   "auprc": [
+    0.2855938697318008,
+    0.7383503401360544,
+    0.6976190476190476,
+    0.407258064516129,
+    NaN
+   ],
+   "auroc": [
+    0.6444444444444445,
+    0.8885714285714286,
+    0.7321428571428571,
+    0.8214285714285714,
+    NaN
+   ],
+   "ece_per_cause": [
+    0.1875,
+    0.09375,
+    0.09375,
+    0.125,
+    0.125
+   ],
+   "n_scenes": 32
+  },
+  "SequenceEvidence": {
+   "macro_auprc": NaN,
+   "macro_auroc": NaN,
+   "exact_set_accuracy": 0.65625,
+   "hamming": 0.0875,
+   "brier": 0.046790373217847944,
+   "ece": 0.019597249155270266,
+   "auprc": [
+    0.42857142857142855,
+    1.0,
+    0.6428571428571428,
+    0.47619047619047616,
+    NaN
+   ],
+   "auroc": [
+    0.8333333333333334,
+    1.0,
+    0.9241071428571429,
+    0.9151785714285714,
+    NaN
+   ],
+   "ece_per_cause": [
+    0.05773856775777228,
+    0.0,
+    0.004498839009289518,
+    0.03574883900928953,
+    0.0
+   ],
+   "n_scenes": 32
+  },
+  "QueryOnly": {
+   "macro_auprc": NaN,
+   "macro_auroc": NaN,
+   "exact_set_accuracy": 0.71875,
+   "hamming": 0.06875,
+   "brier": 0.057310092518160216,
+   "ece": 0.01961909748885169,
+   "auprc": [
+    1.0,
+    0.6764714581484768,
+    0.28750000000000003,
+    0.592032967032967,
+    NaN
+   ],
+   "auroc": [
+    1.0,
+    0.8,
+    0.6875,
+    0.7455357142857143,
+    NaN
+   ],
+   "ece_per_cause": [
+    0.01146509740259734,
+    0.038904078377723104,
+    0.030173814165053096,
+    0.016240769103823337,
+    0.001311728395061561
+   ],
+   "n_scenes": 32
+  },
+  "SeqThenQuery": {
+   "macro_auprc": NaN,
+   "macro_auroc": NaN,
+   "exact_set_accuracy": 1.0,
+   "hamming": 0.0,
+   "brier": 0.0,
+   "ece": 0.0,
+   "auprc": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    NaN
+   ],
+   "auroc": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    NaN
+   ],
+   "ece_per_cause": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "n_scenes": 32
+  }
+ },
+ "gate_semantics": "SMOKE = plumbing only, no scientific judgement. DEV = testability only; it deliberately does NOT require SeqThenQuery to beat DirectFeedback.",
+ "discipline": "If this batch exposes a design problem, the same 32 may then NOT be declared calibration-PASS: keep this artifact and re-run under a new namespace."
+}
