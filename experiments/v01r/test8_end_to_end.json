@@ -1,0 +1,29 @@
+{
+ "checks": {
+  "A_predictions_and_traces_byte_identical": true,
+  "fixture_fixed_and_nond_ev": true,
+  "queryonly_used_a_query": true,
+  "seqthenquery_used_a_query": true,
+  "no_arm_exceeded_B_Q": true,
+  "seqthenquery_differs_from_sequence_evidence": true
+ },
+ "status": "PASS",
+ "distinct_predictions_per_arm": {
+  "DirectFeedback": 2,
+  "SequenceEvidence": 1,
+  "QueryOnly": 2,
+  "SeqThenQuery": 2
+ },
+ "scenes_using_a_query": {
+  "QueryOnly": 6,
+  "SeqThenQuery": 6
+ },
+ "max_trace_len": {
+  "QueryOnly": 4,
+  "SeqThenQuery": 1
+ },
+ "rollouts": 1137960,
+ "n_fixture": 6,
+ "consumes_smoke_or_dev_scenes": false,
+ "fixture_note": "Fixed non-development slice: the first 40 worlds of six rows blocks, first 6 taken. Deterministic and reusable."
+}
