@@ -219,13 +219,134 @@ interface and pass. S2 proves the pipe, never the method.
 
 ---
 
-## 8. Order
+## 8. A72 — set identification, and the one capability the locator is granted
 
-$$\boxed{\text{A69 (this)} \rightarrow \text{typed method contract code} \rightarrow \text{S2} \rightarrow \text{implementation} \rightarrow \text{smoke/dev/confirmatory}}$$
+*(This section appears ahead of sections 9 and 10 in the file because of how the
+document grew, but it is numbered for logical order: 9 states the three native
+rules and the degeneracy they expose, and section 8.4 records the claim those
+rules settled. Read 9 and 10 first if you are following the argument.)*
+
+### 8.0 The capability, frozen verbatim
+
+> CausalSetLocator may use the frozen public SCM and its structural fault-support
+> grammar to forward-simulate hypothetical latent worlds and retain those whose
+> learner-visible factual evidence and fired-cause vector equal $X_{0.2}$. This is
+> **factual-consistency inversion**, not an intervention query. It may not access
+> the factual world's latent assignment, DenseSupport identities or weights,
+> repair/rescue truth, $\Gamma^\ast$, or any evaluator counterfactual oracle.
+
+A69 allowed only the environment/action grammar and a read-only $\pi_D^\ast$, and
+forbade DenseSupport, world ids, DGP weights, $M$, repair truth, $\Gamma^\ast$ and
+`outcome_after`. The inversion capability is therefore a **new grant**, and it is
+recorded as an amendment rather than assumed to be public knowledge.
+
+$$\boxed{\text{simulate a hypothetical factual world} \;\neq\; \text{intervene on the true world}}$$
+
+The left side is model inversion; the right side is the evaluator counterfactual
+query A65/A69 already forbid. $B_Q = 0$ is unchanged.
+
+### 8.1 The compatible set, and the two envelopes
+
+$$\mathcal C_{\text{SCM}}(X) = \bigl\{\tilde\ell \in \mathcal L_{\text{public}} :
+\operatorname{Obs}_{\text{learner}}(\operatorname{Rollout}(\tilde\ell)) = I^{\text{factual}},\;
+Z^{\text{fire}}(\tilde\ell) = Z^{\text{fire}}_{\text{truth}}\bigr\}$$
+
+$\mathcal L_{\text{public}}$ is the candidate space **generated on the spot** from
+the public SCM schema and the public finite fault grammar. It is **not**
+DenseSupport.
+
+$$\Gamma^-(X) = \bigcap_{\tilde\ell \in \mathcal C_{\text{SCM}}(X)} \Gamma_{\text{desc}}(\tilde\ell),
+\qquad
+\Gamma^+(X) = \bigcup_{\tilde\ell \in \mathcal C_{\text{SCM}}(X)} \Gamma_{\text{desc}}(\tilde\ell)$$
+
+$$\boxed{\hat\Gamma_{\text{CSL}}(X) = \Gamma^+(X)}$$
+
+with $\Gamma^-$ reported alongside as the *certain* responsibility diagnostic. A
+mixed class therefore does not guess a site; it says honestly that two addresses
+are each compatible with the observation. That is set identification, and it is
+why the locator cannot be the oracle: `OracleCredit` receives the true
+$\Gamma^\ast(\tilde\ell)$; `CausalSetLocator` can only reach the envelope that
+$X$ itself supports.
+
+### 8.2 The whitelist is an interface, not a promise
+
+The locator does **not** import the full kernel API. It receives a restricted
+
+```text
+PublicSCMView
+  public fault grammar
+  forward factual rollout
+  reference-policy view (read-only pi_D*)
+  public descriptor -> credit ontology
+```
+
+and no `Intervention` / repair / rescue, no `DenseSupport`, no DGP probability, no
+truth-world handle. A59 already showed why a documented promise is weaker than a
+type: this way the whitelist is a fact about the object, not a convention.
+
+**Allowed:** public kernel transition and event order; public fault-mechanism
+schema; public admissible-parameter domains and structural feasibility rules; the
+public $\Gamma$ ontology and descriptor→credit mapping; read-only $\pi_D^\ast$;
+enumerating *hypothetical* $Z^{\text{pres}}, M$ and forward-simulating them,
+including their own internal $u$, $a^{realized}$ and $Z^{\text{fire}}$.
+
+**Not allowed:** reading the factual world's real latent values; comparing a
+candidate against anything beyond the learner-visible fields inside $X_{0.2}$ and
+the given $Z^{\text{fire}}$ — in particular not against the real world's hidden
+$u$, plant input or proposal provenance; DenseSupport, block id, world id, DGP
+weights, class frequencies, or any precomputed `(block, fire) -> Gamma+` table;
+either repair truth; the real $\Gamma^\ast$; any repair/rescue oracle; any
+`do(...)`.
+
+### 8.3 The 893-class equivalence gate
+
+$$\boxed{\hat\Gamma_{\text{CSL}}(X) = \Gamma^+_{\text{eval}}(X) \quad \forall X \in \{1,\dots,893\}}$$
+
+The two sides must be **independently sourced**: $\Gamma^+_{\text{eval}}$ may be
+enumerated from DenseSupport plus the indexed truth, because it is the evaluator
+reference; $\hat\Gamma_{\text{CSL}}$ may only be re-derived from $X$ through
+`PublicSCMView`. Only if 893/893 agree may we say the locator implements an
+**exact SCM set inversion** rather than a support lookup.
+
+**Mutation control:** deliberately merging the controller/plant mechanism boundary
+must be killed by the X/E swap classes A71 found. Without that, the gate would
+prove the locator runs, not that it inverts.
+
+### 8.4 A71's claim, frozen
+
+$$\boxed{\text{Cause identification does not imply site identification.}}$$
+
+> Under the current SCM, even with $Z^{\text{fire}}$ given, $X_{0.2} =
+> (I^{\text{factual}}, Z^{\text{fire}})$ does not uniquely determine the indexed
+> $\Gamma^\ast$ in every information class: 14 of 893 classes admit multiple
+> compatible responsibility truths, carrying **0.19% of DGP mass**, each with
+> exactly two alternatives differing by one unit.
+
+This is an **identifiability negative result, not a method's poor performance** —
+it holds against a perfect $Z^{\text{fire}}_{\text{truth}}$. That is markedly
+stronger than a purpose-built fallible decoder.
+
+**Claim condition, stated honestly:** this is credit localisation / set
+identification **under a known SCM**. It is not a claim that a general learner
+which does not know the world's mechanisms has learned to locate responsibility.
+
+### 8.5 Order
+
+$$\boxed{\text{A72 (this)} \rightarrow \texttt{PublicSCMView} \rightarrow \texttt{CausalSetLocator} \rightarrow 893/893 \rightarrow \text{corrected representation census}}$$
+
 
 ---
 
-## 9. The three methods' native rules — and a degeneracy that must be decided first
+## 9. Order
+
+$$\boxed{\text{A69 native alphabets + semantic expansion} \rightarrow \text{typed method contract} \rightarrow \text{S2} \rightarrow \text{implementation} \rightarrow \text{smoke/dev/confirmatory}}$$
+
+That ladder applied before A70. A70 removed the smoke/dev/confirmatory rung from
+V0.2R **primary** in favour of an exact full-support census, and A71 then falsified
+A70's own premise that a causal rule is the ceiling, so the order in force is now
+the one recorded in §8.5.
+
+## 10. The three methods' native rules — and a degeneracy that must be decided first
 
 Frozen so far: what each method may **see** ($X_{0.2}$, identical, no query, a
 read-only $\pi_D^\ast$ view) and what alphabet each may **emit**. Not yet frozen:

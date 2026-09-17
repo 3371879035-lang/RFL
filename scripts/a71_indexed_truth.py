@@ -195,17 +195,35 @@ def main() -> int:
     p.write_text(json.dumps({
         "n_worlds": inner, "n_information_classes": len(groups),
         "n_mixed_classes": len(mixed),
-        "mixed_fraction": len(mixed) / max(len(groups), 1),
+        "mixed_fraction_of_classes": len(mixed) / max(len(groups), 1),
+        "mixed_dgp_mass": world_mass_in_mixed / max(total_mass, 1e-30),
+        "total_mass": total_mass,
+        "ambiguity_truth_count_histogram": {str(k): v for k, v in
+                                            sorted(ambiguity_hist.items())},
+        "gamma_plus_minus_slack_mean": sum(slack) / len(slack),
+        "gamma_plus_minus_slack_max": max(slack),
+        "schema_theorem": schema_theorem,
         "checks": checks, "status": "PASS" if ok else "FAIL",
-        "finding": ("If mixed classes are non-empty, then Gamma* is NOT determined "
-                    "by X_0.2, i.e. credit localisation retains irreducible "
-                    "ambiguity even with cause truth known -- which also falsifies "
-                    "A70's premise that a causal rule is the ceiling."),
+        "finding": ("Cause identification does not imply site identification. "
+                    "Even with Z^fire given, X_0.2 does not uniquely determine the "
+                    "indexed Gamma* in every information class. The ambiguity is "
+                    "thin on both counts: 1.57% of CLASSES but 0.19% of DGP MASS, "
+                    "and every mixed class has exactly two compatible truths "
+                    "differing by a single unit."),
+        "reading_warning": ("14/893 is a CLASS fraction. Reading it as a scene "
+                            "probability would be wrong by nearly an order of "
+                            "magnitude; mixed_dgp_mass is the probability."),
         "generic_bug_fixed": "the truth is now built from R^mech descriptors with "
                              "addresses, so it lives in the same space as the "
                              "predictions; A67's generic 'Decision_t' / "
                              "'ControllerSite' would intersect concretely-expanded "
                              "predictions as the empty set",
+        "gamma_envelope": {
+            "definition": "Gamma^-(x) = intersection over l in H(x) of Gamma*(l); "
+                          "Gamma^+(x) = union",
+            "role": "evaluator-side reference; A72 freezes Gamma^+ as the "
+                    "CausalSetLocator's target",
+        },
     }, indent=1, default=str), encoding="utf-8")
     print(f"wrote {p}")
     return 0 if ok else 1

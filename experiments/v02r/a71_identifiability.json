@@ -2,12 +2,25 @@
  "n_worlds": 1038960,
  "n_information_classes": 893,
  "n_mixed_classes": 14,
- "mixed_fraction": 0.015677491601343786,
+ "mixed_fraction_of_classes": 0.015677491601343786,
+ "mixed_dgp_mass": 0.001881222626741064,
+ "total_mass": 1.000000000000001,
+ "ambiguity_truth_count_histogram": {
+  "2": 14
+ },
+ "gamma_plus_minus_slack_mean": 0.03135498320268757,
+ "gamma_plus_minus_slack_max": 2,
+ "schema_theorem": "at most one mechanism descriptor per cause per world, because LatentCase stores each cause as a single field",
  "checks": {
   "gamma_star_subset_of_episode_domain": true,
   "no_generic_unit_leak": true
  },
  "status": "PASS",
- "finding": "If mixed classes are non-empty, then Gamma* is NOT determined by X_0.2, i.e. credit localisation retains irreducible ambiguity even with cause truth known -- which also falsifies A70's premise that a causal rule is the ceiling.",
- "generic_bug_fixed": "the truth is now built from R^mech descriptors with addresses, so it lives in the same space as the predictions; A67's generic 'Decision_t' / 'ControllerSite' would intersect concretely-expanded predictions as the empty set"
+ "finding": "Cause identification does not imply site identification. Even with Z^fire given, X_0.2 does not uniquely determine the indexed Gamma* in every information class. The ambiguity is thin on both counts: 1.57% of CLASSES but 0.19% of DGP MASS, and every mixed class has exactly two compatible truths differing by a single unit.",
+ "reading_warning": "14/893 is a CLASS fraction. Reading it as a scene probability would be wrong by nearly an order of magnitude; mixed_dgp_mass is the probability.",
+ "generic_bug_fixed": "the truth is now built from R^mech descriptors with addresses, so it lives in the same space as the predictions; A67's generic 'Decision_t' / 'ControllerSite' would intersect concretely-expanded predictions as the empty set",
+ "gamma_envelope": {
+  "definition": "Gamma^-(x) = intersection over l in H(x) of Gamma*(l); Gamma^+(x) = union",
+  "role": "evaluator-side reference; A72 freezes Gamma^+ as the CausalSetLocator's target"
+ }
 }
