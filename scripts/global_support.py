@@ -148,20 +148,31 @@ def main() -> int:
     c2 = (dup == 0 and len(seen_keys) == N)
 
     # ---- closure 5: prior mass ------------------------------------------- #
+    # The shifted sum is NOT P_raw(F). Written out so the artifact carries
+    # physically meaningful quantities:
+    #     S_shift = sum_l exp(log P_raw(l) - m),  m = max_l log P_raw(l)
+    #     A = P_raw(F) = exp(m) * S_shift
+    # Normalised weights are unaffected either way, since
+    #     exp(log P_l - m) / sum_j exp(log P_j - m) = P_l / sum_j P_j
     log_w = []
     for (kappa, phase, ef, cr, z, Z, params, bid, fc) in W:
         ctx = SceneContext(kappa=kappa, phase=phase, error_flag=ef,
                            cause_rank=cr, base_option=z)
         log_w.append(dgp.log_prob(ctx, Z, params))
-    lse = max(log_w)
-    ws = [pow(EXACT, lw - lse) for lw in log_w]
-    A_full = sum(ws)
-    weights = [w / A_full for w in ws]
+    max_log_prob = max(log_w)
+    shifted = [pow(EXACT, lw - max_log_prob) for lw in log_w]
+    S_shift = sum(shifted)
+    log_feasible_mass = max_log_prob + math.log(S_shift)
+    feasible_mass = pow(EXACT, log_feasible_mass)
+    weights = [s / S_shift for s in shifted]
     c5 = abs(sum(weights) - 1.0) < 1e-9
 
-    # ---- closure 3: raw support equality --------------------------------- #
-    # every support world has strictly positive raw probability
-    c3 = all(math.isfinite(lw) for lw in log_w) and A_full > 0.0
+    # ---- closure 3: every INCLUDED world has strictly positive raw mass --- #
+    # Named for what it checks. That every INFEASIBLE raw world is absent is not
+    # verified here; it follows from the enumeration's `if not is_feasible:
+    # continue` together with closures 1 and 2, and is reported as such rather
+    # than as an independent observation.
+    c3 = all(math.isfinite(lw) for lw in log_w) and S_shift > 0.0
 
     # ---- closure 4: sample -> support bijection -------------------------- #
     key_to_one = {k: True for k in seen_keys}
@@ -181,11 +192,24 @@ def main() -> int:
         "1_support_cardinality": {"status": bool(c1), "observed": N,
                                   "expected": EXPECTED_N},
         "2_canonical_key_unique": {"status": bool(c2), "duplicates": dup},
-        "3_raw_support_equality": {"status": bool(c3),
-                                   "min_log_prob_finite": c3},
-        "4_sample_support_bijection": {"status": bool(c4), "one": one,
-                                       "zero": zero, "many": many},
-        "5_prior_mass": {"status": bool(c5), "A_full": A_full,
+        "3_support_worlds_have_positive_raw_mass": {
+            "status": bool(c3), "all_log_prob_finite": c3,
+            "note": "Checks only that INCLUDED worlds have positive raw mass. "
+                    "That infeasible raw worlds are ABSENT follows from the "
+                    "enumeration's continue plus closures 1 and 2, and is a "
+                    "combined invariant, not a separate observation."},
+        "4_sample_support_bijection": {
+            "status": bool(c4), "one": one, "zero": zero, "many": many,
+            "note": "many=0 is DERIVED from closure 2 (canonical uniqueness): "
+                    "key_to_one is a dict, so the many-counter has no increment "
+                    "path and could not have observed a duplicate even if one "
+                    "existed. Reported as derived rather than as an independent "
+                    "measurement."},
+        "5_prior_mass": {"status": bool(c5),
+                         "max_log_prob": max_log_prob,
+                         "shifted_mass_sum": S_shift,
+                         "log_feasible_mass": log_feasible_mass,
+                         "feasible_mass": feasible_mass,
                          "weight_sum": sum(weights)},
     }
     ok = all(v["status"] for v in checks.values())
@@ -200,8 +224,15 @@ def main() -> int:
     out.write_text(json.dumps({
         "n_support_worlds": N, "n_rows_blocks": len(rows_sig_to_id),
         "expected_n": EXPECTED_N, "n_raw_worlds": n_raw_worlds,
-        "n_infeasible": n_infeasible, "A_full": A_full,
+        "n_infeasible": n_infeasible, "max_log_prob": max_log_prob,
+        "shifted_mass_sum": S_shift, "log_feasible_mass": log_feasible_mass,
+        "feasible_mass": feasible_mass,
         "checks": checks, "status": "PASS" if ok else "FAIL",
+        "artifact_note": "The committed artifact from the first build still "
+                         "carries the mislabelled 'A_full' = shifted sum and the "
+                         "old closure-3 name; this script must be re-run (~20 min) "
+                         "to regenerate it. The normalised weights were always "
+                         "correct.",
         "atom": "DGP canonical world (kappa, phase, error_flag, cause_rank, "
                 "z^proposal, Z, params) with inactive params pinned to -1. "
                 "dynamical_key is NOT used: it drops error_flag and cause_rank.",
