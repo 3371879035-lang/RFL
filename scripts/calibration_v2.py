@@ -45,7 +45,15 @@ from rfl_rebuild.method.support import DenseSupport  # noqa: E402
 from rfl_rebuild.solve.dp import solve_reference  # noqa: E402
 
 B_Q = 4
-STAGES = {"smoke": (5, "v01r_smoke_v2"), "dev": (32, "v01r_dev_v2")}
+# A62/A63: the confirmatory namespace is separate from both development ones and
+# is not reused (`06-V01R.md` §5.2). N=400 is drawn as one deterministic sequence
+# from (DGP, namespace); the four non-overlapping 100-scene blocks are the first,
+# second, third and fourth 100 of that sequence, so cumulative AND fresh-block
+# readings are both available without redrawing anything.
+STAGES = {"smoke": (5, "v01r_smoke_v2"),
+          "dev": (32, "v01r_dev_v2"),
+          "conf": (400, "v01r_conf_v1")}
+CONF_BLOCK = 100
 CACHE = ROOT / "experiments" / "v01r" / "support_cache"
 
 
@@ -93,6 +101,49 @@ class Probe:
 
     def legal(self, case, q):
         return self.response(case, q) is not None
+
+
+def _contrast(P_alt, P_base, Y):
+    """Pre-registered primary contrast, reported BEFORE looking at the mean.
+
+    The per-scene delta distribution is zero-inflated and heavy-tailed (most
+    scenes move nothing, a few move a lot), so the mean alone is not readable.
+    Every quantity the protocol requires is emitted: tie fraction, median,
+    trimmed mean, sign test, and the top-5 share of the total delta.
+    """
+    from rfl_rebuild.eval import evaluate
+    d = []
+    for p_alt, p_base, y in zip(P_alt, P_base, Y):
+        d.append(evaluate([p_alt], [y]).macro_auprc
+                 - evaluate([p_base], [y]).macro_auprc)
+    s = sorted(d)
+    n = len(s)
+    ties = sum(1 for x in s if abs(x) < 1e-12)
+    trimmed = s[int(0.1 * n):n - int(0.1 * n)] if n >= 10 else s
+    total = sum(s)
+    top5 = sum(sorted(s, reverse=True)[:5])
+    wins = sum(1 for x in s if x > 0)
+    loss = sum(1 for x in s if x < 0)
+    mean = total / n
+    return {"n": n, "mean_delta": mean,
+            "median_delta": s[n // 2] if n % 2 else 0.5 * (s[n // 2 - 1] + s[n // 2]),
+            "trimmed_mean_delta": sum(trimmed) / len(trimmed),
+            "tie_fraction": ties / n, "wins": wins, "losses": loss,
+            "sign_test_p_two_sided": _binom_two_sided(wins, wins + loss),
+            "top5_share_of_total_delta": (top5 / total) if abs(total) > 1e-15 else None,
+            "delta_min": 0.05,
+            "position_vs_delta_min": ("ABOVE" if mean > 0.05 else
+                                      "BELOW" if mean < -0.05 else "WITHIN")}
+
+
+def _binom_two_sided(k, n):
+    if n == 0:
+        return None
+    from math import comb
+    obs = comb(n, k)
+    tot = sum(comb(n, i) for i in range(n + 1))
+    return sum(comb(n, i) for i in range(n + 1)
+               if comb(n, i) <= obs) / tot
 
 
 def main() -> int:
@@ -236,6 +287,24 @@ def main() -> int:
         metrics["SequenceEvidence"]["macro_over"] != "all causes") if nev else True
     applied = checks if stage == "smoke" else {**checks, **dev_only}
     verdict = "PASS" if all(applied.values()) else "FAIL"
+
+    # Confirmatory: the primary contrast is SeqThenQuery vs DirectFeedback on
+    # macro AUPRC, against the pre-registered Delta_min = 0.05. Reported per
+    # 100-scene block AND cumulative, because the frozen protocol requires the
+    # fresh block to be readable on its own.
+    primary = None
+    if stage == "conf":
+        blocks = {}
+        for b0 in range(0, n_scenes, CONF_BLOCK):
+            idx = list(range(b0, min(b0 + CONF_BLOCK, n_scenes)))
+            blocks[f"block_{b0//CONF_BLOCK + 1}"] = _contrast(
+                [per_arm_P["SeqThenQuery"][i] for i in idx],
+                [per_arm_P["DirectFeedback"][i] for i in idx],
+                [per_arm_Y["SeqThenQuery"][i] for i in idx])
+        primary = {"delta_min": 0.05, "per_block": blocks,
+                   "cumulative": _contrast(per_arm_P["SeqThenQuery"],
+                                           per_arm_P["DirectFeedback"],
+                                           per_arm_Y["SeqThenQuery"])}
     out = {"stage": stage, "namespace": namespace, "n_scenes": n_scenes,
            "B_Q": B_Q, "checks": checks, "dev_only_checks": dev_only,
            "applied_to_this_stage": sorted(applied), "verdict": verdict,
@@ -246,6 +315,7 @@ def main() -> int:
                        "contains no scene of that class. The macro is taken over "
                        "the EVALUABLE causes and both sets are named here, so an "
                        "undefined metric is never silently averaged as zero.",
+           "primary_contrast": primary,
            "query_used": query_used, "max_trace_len": max_trace,
            "rollouts_memoised": memo.rollouts, "scenes": rows_out,
            "metrics_raw_material_only": metrics,
