@@ -2239,7 +2239,93 @@ rewrite `07` endpoints → method contract → smoke/dev/confirmatory.
 
 ---
 
-## 54. A68 — the full mechanism-repair / rescue census
+## 53. A66 — the mechanism-repair and rescue enumerators
+
+**Two truths, two enumerators.** $R^{\text{mech}}$ is structural — it needs no
+counterfactual simulation. $R^{\text{rescue}}$ needs it and is enumerated the way
+Gate E enumerated $R^\ast_{\text{suff}}$.
+
+**P0 fixed before any full run: the $Z_D$ repair address was wrong.** The
+mechanism repair is $do(d_t = \pi^\ast(s_t, z_t, m_t))$, and all three arguments
+are lookup keys of $\pi_D^\ast$. The first version substituted START, the proposal
+option and $m = 0$, which gives the wrong nominal action for every override not at
+START. The address now comes from the factual pre-action state at the override's
+timestep, walked exactly as `walk_transition` does. $R^{\text{mech}}$ remains
+structural; only its address was wrong.
+
+**P0 fixed: a singleton miss is not bottom.** The first version recorded
+`rescue_BOT` whenever no single intervention sufficed — quietly leaning on Gate E's
+old singleton result, which A65 had just demoted to a regression reference. The
+search now enumerates pairs then triples before concluding, reporting
+`rescue_UNRESOLVED_GT3` only then. On the full support that count is **0**, so the
+singleton claim is now *measured* rather than inherited.
+
+**P0 fixed: the basis is FIRE, not presence.** A67's rules are stated on fired
+mechanisms, A65's input contract is $(I^{\text{factual}}, Z^{\text{fire}}_{\text{truth}})$,
+and V0.1R's closed object is $Z^{\text{fire}}$ — but the census gated
+$\Gamma^\ast$ on fault *presence* for P/D/X/E. Writing the A67 structural test
+measured the size of that inconsistency at **1,541,400 $(world, cause)$ pairs**
+where presence differs from fire. Gating on presence lets a dormant mechanism mint
+credit, which is the same class of error as crediting a rescue.
+
+**Definition ambiguity reported, not resolved.** "Restore the mechanism" can mean
+undo *every* firing of that cause or undo at least one; both readings are computed.
+`a67_structural.json` settles it on a **structural** basis rather than as slice
+luck: at most one mechanism primitive per cause per world holds over the whole
+support, because each cause carries at most one fault object, so the two readings
+coincide. The counter stays in the census so the ambiguity reopens if a future
+schema admits multi-site same-cause faults.
+
+## 54. A67 — the credit projection, frozen
+
+**$\Gamma^\ast$ locates responsibility for the faulty MECHANISM, never for the
+outcome**, so $R^{\text{rescue}}$ can never change the primary credit truth:
+
+$$\boxed{Z_E^{\text{fire}} = 1 \Rightarrow \texttt{ExternalPlant} \in \Gamma^\ast \quad\text{independent of } R^{\text{rescue}}}$$
+
+$$\boxed{Z_U^{\text{fire}} = 1 \Rightarrow \texttt{Unknown/NoWrite} \in \Gamma^\ast \quad\text{independent of } R^{\text{rescue}}}$$
+
+`ExternalPlant` is **not** `Unknown/NoWrite`: it is a definite credit *location*
+with agent-writability zero. $\boxed{\text{credit location} \neq \text{agent writeability}}$
+and `ExternalPlant` stays in the metric denominator, because it is still the
+correct answer to a *location* task; acting on `agent_writeable = false` is
+V0.3R's business. `U` is not erased when an agent fault co-fires: the truth is
+set-valued, e.g. $\{\texttt{ProcessCommit}, \texttt{Unknown/NoWrite}\}$. No fired
+mechanism gives $\{\texttt{Unknown/NoWrite}\}$, read as **NoWrite**.
+
+**$R^{\text{mech}}$ is descriptors, not only executable interventions:**
+
+$$R^{\text{mech}} = R^{\text{mech}}_{\text{agent}} \cup R^{\text{mech}}_{\text{nonagent}}$$
+
+with the frozen mapping $do(C_P{=}\text{identity}) \mapsto \texttt{ProcessCommit}$,
+$do(d_t = \pi^\ast(s_t,z_t,m_t)) \mapsto \texttt{Decision}_t$,
+$do(C_X(\text{site}){=}a^{cmd}) \mapsto \texttt{ControllerSite}$,
+$\rho_E \mapsto \texttt{ExternalPlant}$, $\rho_U \mapsto \texttt{Unknown/NoWrite}$.
+Without the non-agent branch, `ExternalPlant` could never enter $\Gamma^\ast$ and
+A65's ontology would fail on its own terms; it also avoids fabricating an agent-side
+$do(E = \text{identity})$ that nobody can execute.
+
+**Endpoints.** `InterventionSufficiency` is **not** primary: it requires a
+`credit unit → canonical intervention` conversion that is already most of V0.3R's
+repair primitive. Primary is
+
+$$\text{Coverage} = \frac{|\hat\Gamma \cap \Gamma^\ast|}{|\Gamma^\ast|},
+\qquad
+\text{FCR} = \frac{|\hat\Gamma \setminus \Gamma^\ast|}{\max(1, |\hat\Gamma|)}$$
+
+so predicting $\{\texttt{Strategy}\}$ when the truth is $\{\texttt{ExternalPlant}\}$
+scores FCR = 1 **even though the strategy rescue succeeded**, and
+$\{\texttt{ExternalPlant}, \texttt{Strategy}\}$ scores coverage 1 with FCR = 1/2.
+That is what resists "report every possible rescue".
+`OutcomeRepairSufficiency` demotes to secondary.
+
+**Structural tests, all 1,038,960 worlds, no rollouts:** `pi_credit_total`,
+`agent_writeable_complete`, `strategy_never_credit_truth` (**`Strategy` in
+$\Gamma^\ast$ zero times**), `gamma_star_never_empty`, `external_plant_rule_holds`,
+`unknown_nowrite_rule_holds`, `one_primitive_per_cause_per_world` — **7/7 PASS**,
+21 distinct $\Gamma^\ast$ sets.
+
+## 55. A68 — the full mechanism-repair / rescue census
 
 **Setup.** All $1{,}038{,}960$ worlds, DGP mass $1.0$, fire basis (A66 P0),
 $\pi_{\text{credit}}$ frozen (A67), singleton→pairs→triples rescue search (A66
@@ -2303,7 +2389,7 @@ run. The census is truth-side only.
 
 ---
 
-## 55. Summary and what remains open
+## 56. Summary and what remains open
 
 | # | what | severity | status |
 |---|---|---|---|
