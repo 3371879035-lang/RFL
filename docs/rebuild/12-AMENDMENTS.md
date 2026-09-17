@@ -2384,8 +2384,8 @@ is recorded because a reader comparing the two artifacts would otherwise see a
 contradiction.
 
 **What this does not do.** It does not license a V0.2R method. `07`'s endpoints are
-not yet rewritten (A67 §7), the method contract does not exist, and no arm has been
-run. The census is truth-side only.
+not yet rewritten (see A67, section 7 of `16-V02R-SEMANTICS.md`); the method
+contract does not exist and no arm has been run. The census is truth-side only.
 
 ---
 

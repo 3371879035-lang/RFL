@@ -131,7 +131,12 @@ def audit() -> dict:
         if not secs:
             unnumbered.append(name)
 
-        for m in re.finditer(r"([0-9]{2})\s*§\s*([0-9]+(?:\.[0-9]+)*)", text):
+        # The two digits must not be preceded by a letter or digit. Without the
+        # lookbehind, "A67 §7" parses as "document 67, section 7", so an
+        # amendment label followed by a section sign produced a phantom
+        # no-such-document problem.
+        for m in re.finditer(r"(?<![A-Za-z0-9])([0-9]{2})\s*§\s*([0-9]+(?:\.[0-9]+)*)",
+                             text):
             refs_checked += 1
             target = by_num.get(m.group(1))
             if target is None:
