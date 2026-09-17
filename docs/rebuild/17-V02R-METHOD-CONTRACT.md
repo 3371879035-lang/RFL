@@ -222,3 +222,71 @@ interface and pass. S2 proves the pipe, never the method.
 ## 8. Order
 
 $$\boxed{\text{A69 (this)} \rightarrow \text{typed method contract code} \rightarrow \text{S2} \rightarrow \text{implementation} \rightarrow \text{smoke/dev/confirmatory}}$$
+
+---
+
+## 9. The three methods' native rules — and a degeneracy that must be decided first
+
+Frozen so far: what each method may **see** ($X_{0.2}$, identical, no query, a
+read-only $\pi_D^\ast$ view) and what alphabet each may **emit**. Not yet frozen:
+how each derives its proposal. That is algorithm, and it is frozen here — except
+that writing it down exposes a structural problem.
+
+### 9.1 The proposed minimal rules
+
+| method | rule, from $X_{0.2}$ alone |
+|---|---|
+| $R_{\text{module}}$ | emit `H` if any fired cause projects to a non-indexed unit; emit `L` if any projects to an indexed unit; both when both |
+| $R_{\text{trajectory}}$ | always emit `{Episode}` — the coarsest baseline, deliberately uninformative |
+| $R_{\text{causal}}$ | for each fired cause, emit $\pi_{\text{credit}}(\text{descriptor}_i)$ |
+
+All three are deterministic functions of $(I^{\text{factual}}, Z^{\text{fire}})$ and
+none reads $M$, a repair truth, or $\Gamma^\ast$.
+
+### 9.2 The degeneracy
+
+Because V0.2R **hands over $Z^{\text{fire}}_{\text{truth}}$**, A67's projection is
+a deterministic function of the input:
+
+$$\Gamma^\ast = \pi_{\text{credit}} \circ Z^{\text{fire}}_{\text{truth}}$$
+
+So the rule in §9.1 for $R_{\text{causal}}$ computes $\Gamma^\ast$ **exactly**. That
+makes $R_{\text{causal}}$ coincide with `OracleCreditAdapter`:
+
+$$\boxed{R_{\text{causal}} \equiv \text{the ceiling, under } X_{0.2}}$$
+
+Three consequences, and they are not equivalent:
+
+1. **The causal-versus-ceiling contrast is degenerate.** It cannot distinguish an
+   ontology that is right from one that is merely self-consistent, because both
+   sides are the same function.
+2. **The informative contrasts are coarse-versus-fine only**: how much does
+   `H/L` or `{Episode}` lose relative to the rebuild's factorisation. That is a
+   real and answerable question, but it is a *granularity* result, not evidence
+   that the causal factorisation is correct.
+3. **"V0.2R compares credit representations" is therefore weaker than it reads.**
+   What V0.2R can establish is that a coarse schema loses information; it cannot
+   establish that `Strategy / ProcessCommit / Decision_t / ControllerSite /
+   ExternalPlant / Unknown/NoWrite` is the *right* ontology, because it never has
+   to compete with a wrong-but-fine alternative.
+
+### 9.3 Three ways out, none taken here
+
+* **(a) Accept it.** Report V0.2R as a granularity study, and say so in the write-up
+  rather than implying an ontology competition. Cheapest and honest, but gives up
+  the original claim in `07`.
+* **(b) Remove $Z^{\text{fire}}$ from $X_{0.2}$** so the method must infer it. This
+  restores a genuine inference problem but re-imports V0.1R's attribution error
+  into V0.2R, which is exactly what V0.2R's "isolate the error" design exists to
+  prevent.
+* **(c) Give $R_{\text{causal}}$ its own factorisation rule that is not
+  $\pi_{\text{credit}}$** — e.g. one that can merge or split units and therefore can
+  be wrong — so the causal schema has to compete rather than copy. This is the only
+  route that makes the original claim testable, and it means defining a *second*,
+  fallible causal rule whose relationship to $\pi_{\text{credit}}$ is itself the
+  thing under test.
+
+**This is a scientific-question decision, not an implementation detail**, and it
+changes what V0.2R is allowed to claim. It is deliberately not resolved here. The
+typed contract and S2 are unaffected: they are correct under all three routes.
+
