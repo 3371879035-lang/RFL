@@ -58,6 +58,7 @@ every algorithmic choice below is a consequence of a design decision above it.
 | **14** | [`14-V01R-METHOD-CONTRACT.md`](14-V01R-METHOD-CONTRACT.md) | the frozen V0.1R method boundary: interfaces, runner-enforced arm isolation, A50 in the API, and the S1 assertion map |
 | **15** | [`15-SCENE-DGP.md`](15-SCENE-DGP.md) | the frozen scene DGP, the four arms' hypothesis populations, and why dev_v1 is void for discriminative-range inference |
 | **16** | [`16-V02R-SEMANTICS.md`](16-V02R-SEMANTICS.md) | the V0.2R objects: $C^{\text{fire}} \neq R^{\text{mech}} \neq R^{\text{rescue}} \neq \Gamma^{\text{credit}} \neq W^{\text{update}}$, the re-frozen credit-unit ontology, and the set-valued responsibility truth |
+| **17** | [`17-V02R-METHOD-CONTRACT.md`](17-V02R-METHOD-CONTRACT.md) | the V0.2R method boundary: native alphabets, the evaluator-side semantic expansion $\eta_R$, the forbidding of truth in the expansion, and the S2 assertion map |
 
 ---
 
