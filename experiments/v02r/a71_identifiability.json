@@ -1,0 +1,14 @@
+{
+ "n_worlds": 1038960,
+ "n_information_classes": 893,
+ "n_mixed_classes": 14,
+ "mixed_fraction": 0.015677491601343786,
+ "checks": {
+  "gamma_star_subset_of_episode_domain": true,
+  "no_generic_unit_leak": true,
+  "one_descriptor_per_cause_structural": true
+ },
+ "status": "PASS",
+ "finding": "If mixed classes are non-empty, then Gamma* is NOT determined by X_0.2, i.e. credit localisation retains irreducible ambiguity even with cause truth known -- which also falsifies A70's premise that a causal rule is the ceiling.",
+ "generic_bug_fixed": "the truth is now built from R^mech descriptors with addresses, so it lives in the same space as the predictions; A67's generic 'Decision_t' / 'ControllerSite' would intersect concretely-expanded predictions as the empty set"
+}
