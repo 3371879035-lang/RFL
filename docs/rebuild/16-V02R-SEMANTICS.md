@@ -104,13 +104,77 @@ $$\pi_{\text{credit}}: R^{\text{mech}} \longrightarrow \Gamma$$
 
 $$\boxed{\Gamma^\ast(\ell) = \{\,\pi_{\text{credit}}(r) : r \in \mathcal R^{\text{mech},\ast}(\ell)\,\}}$$
 
-Three consequences worth stating, because each is a place the old design leaked:
+### 6.0 $\Gamma^\ast$ answers "where is the fault", never "how to rescue it"
 
-* the projection is from **$R^{\text{mech}}$, not $R^{\text{rescue}}$** — rescuing an
-  outcome by switching strategy must not mint `Strategy` credit for a process fault;
-* $\Gamma^\ast$ is **set-valued**, so tie structure survives into the endpoint;
-* $\pi_{\text{credit}}$ must be a total, declared function on the repair lattice,
-  including the empty repair (which maps to `Unknown/NoWrite`, not to nothing).
+$$\boxed{\Gamma^\ast \text{ locates responsibility for the faulty mechanism, not for the outcome}}$$
+
+so $R^{\text{rescue}}$ **can never change the primary credit truth**. This is the
+rule that stops A65's separation from being quietly undone at the
+`ExternalPlant` boundary.
+
+$$\boxed{Z_E^{\text{fire}} = 1 \;\Longrightarrow\; \texttt{ExternalPlant} \in \Gamma^\ast, \quad \text{independent of } R^{\text{rescue}}}$$
+
+even when a strategy replay happens to rescue the episode. If a representation
+credits `Strategy` there, that is a **FalseCredit**, and `ExternalPlant` is *not*
+`Unknown/NoWrite`: it is a definite credit location whose agent-writability is
+zero. The two axes are distinct:
+
+$$\boxed{\text{credit location} \neq \text{agent writeability}}$$
+
+Likewise
+
+$$\boxed{Z_U^{\text{fire}} = 1 \;\Longrightarrow\; \texttt{Unknown/NoWrite} \in \Gamma^\ast, \quad \text{independent of } R^{\text{rescue}}}$$
+
+and it is **not erased** when an agent fault co-fires: $Z_P^{\text{fire}} = 1$ with
+$Z_U^{\text{fire}} = 1$ gives the set-valued
+$\Gamma^\ast = \{\texttt{ProcessCommit}, \texttt{Unknown/NoWrite}\}$. An episode
+with no fired mechanism at all gives $\Gamma^\ast = \{\texttt{Unknown/NoWrite}\}$,
+read as **NoWrite** — "there is nothing to write" — not as "we do not know what
+happened".
+
+### 6.1 $R^{\text{mech}}$ is descriptors, not only executable interventions
+
+P/D/X have executable agent interventions; E and U have a **structural repair
+descriptor** and no agent-side write. So
+
+$$R^{\text{mech}} = R^{\text{mech}}_{\text{agent}} \cup R^{\text{mech}}_{\text{nonagent}}$$
+
+and the frozen mapping is
+
+| descriptor | $\pi_{\text{credit}}$ |
+|---|---|
+| $do(C_P = \text{identity})$ | `ProcessCommit` |
+| $do(d_t = \pi^\ast(s_t, z_t, m_t))$ | `Decision_t` |
+| $do(C_X(\text{site}) = a^{cmd})$ | `ControllerSite` |
+| $\rho_E = \texttt{ExternalPlantFault}$ | `ExternalPlant` |
+| $\rho_U = \texttt{UnknownTerminal/NoAgentRepair}$ | `Unknown/NoWrite` |
+
+The descriptor split matters: with only agent primitives, `ExternalPlant` could
+never enter $\Gamma^\ast$ and A65's ontology would fail on its own terms. It also
+avoids fabricating an agent-executable $do(E = \text{identity})$ that does not
+exist.
+
+**The $Z_D$ address is the factual pre-action state.** The repair is
+$do(d_t = \pi^\ast(s_t, z_t, m_t))$ where $(s_t, z_t, m_t)$ is the state actually
+in force at the override's timestep — all three are lookup keys of $\pi_D^\ast$, so
+substituting START, the proposal option or $m = 0$ yields the wrong nominal action.
+`R^{\text{mech}}$ remains *structural* — no counterfactual simulation — but its
+address comes from where the fault actually happened.
+
+Each credit unit carries
+
+```text
+credit_unit      agent_writeable
+ProcessCommit    true
+Decision_t       true
+ControllerSite   true
+ExternalPlant    false
+Unknown/NoWrite  false
+```
+
+`Strategy` is a legitimate **rescue atom** but is **not** mechanism-credit truth
+under the current SCM. That is not an ontology gap; it is the distinction V0.2R
+exists to measure.
 
 ## 7. Endpoints, revised
 
@@ -121,10 +185,22 @@ be measured partly through a repair rule, reintroducing exactly the contaminatio
 this amendment removes.
 
 **Primary, on set-valued credit truth:**
-$$\text{CreditCoverage}, \qquad \text{FalseCreditRate}$$
 
-which ask whether the representation expresses *the right place to change at all*,
-before any repair is executed.
+$$\text{Coverage}(\hat\Gamma, \Gamma^\ast) = \frac{|\hat\Gamma \cap \Gamma^\ast|}{|\Gamma^\ast|}$$
+
+$$\boxed{\text{FCR}(\hat\Gamma, \Gamma^\ast) = \frac{|\hat\Gamma \setminus \Gamma^\ast|}{\max(1, |\hat\Gamma|)}}$$
+
+computed over the **full credit ontology**, not a writable subset. So:
+
+| truth | prediction | Coverage | FCR |
+|---|---|---|---|
+| $\{\texttt{ExternalPlant}\}$ | $\{\texttt{ExternalPlant}\}$ | 1 | 0 |
+| $\{\texttt{ExternalPlant}\}$ | $\{\texttt{Strategy}\}$ even if strategy rescues | 0 | 1 |
+| $\{\texttt{ExternalPlant}\}$ | $\{\texttt{ExternalPlant}, \texttt{Strategy}\}$ | 1 | 1/2 |
+
+`ExternalPlant` must **not** be excluded from the denominator: it is unwritable
+but it is still the correct answer to a *location* task. Deciding not to execute
+an agent update on `agent_writeable = false` is V0.3R's business, not V0.2R's.
 
 **Secondary / evaluator diagnostic:** `OutcomeRepairSufficiency`.
 
