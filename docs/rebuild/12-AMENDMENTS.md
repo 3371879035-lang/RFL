@@ -2389,7 +2389,80 @@ contract does not exist and no arm has been run. The census is truth-side only.
 
 ---
 
-## 56. Summary and what remains open
+## 56. A70 — V0.2R is an exact granularity census, not an ontology competition
+
+**The degeneracy, restated so it cannot be read as a bug.** Under
+
+$$X_{0.2} = (I^{\text{factual}}, Z^{\text{fire}}_{\text{truth}})$$
+
+A67's projection is a deterministic function of the input, so "for each fired cause
+emit $\pi_{\text{credit}}(\text{descriptor}_i)$" computes $\Gamma^\ast$ exactly and
+a $R_{\text{causal}}$ defined that way is **identical to the ceiling**. That is a
+logical consequence of the input contract, not an implementation defect.
+
+**Route (b) rejected**: removing $Z^{\text{fire}}$ from $X_{0.2}$ re-imports
+V0.1R's attribution error into V0.2R and destroys the version layering that
+V0.2R's "isolate the error" design exists to create.
+
+**Route (c) rejected, and `17` §9.3's reasoning for it was WRONG.** It claimed a
+fallible causal rule would make "is the six-unit ontology correct?" testable. It
+would not: the scoring truth is $\Gamma^\ast =
+\pi_{\text{credit}}(\mathcal R^{\text{mech},\ast})$, so the *correct answer is
+already defined by the current ontology*. A purpose-built wrong-but-fine rule
+judged against $\Gamma^\ast$ can only show *this rule does not match the current
+ontology*, never that the current ontology is closer to true learning
+responsibility than another. It would replace
+
+$$R_{\text{causal}} = \text{ceiling} \quad\text{with}\quad
+\text{fallible causal inference} < \text{ceiling},$$
+
+buying spread in the numbers while quietly changing the question from *is this
+representation right* to *can this decoder rebuild the representation we
+predefined*.
+
+$$\boxed{\text{V0.2R cannot validate the }\Gamma\text{ ontology; it measures how much information each granularity loses under a FIXED }\Gamma}$$
+
+**Redesign.** $R_{\text{causal}}$ stops being a competitor and becomes the **Fine /
+Identity Reference** $E_\Gamma(\ell) = \Gamma^\ast(\ell)$, with
+$\text{Coverage} = 1$ and $\text{FCR} = 0$ **by construction** — its win is not an
+empirical finding and must never be reported as one. $R_{\text{module}}$ and
+$R_{\text{trajectory}}$ are the two genuine coarse encodings, and what is studied
+is the **over-credit introduced by compression**. `07`'s "if H/L wins it is
+adopted, if it loses it is removed" is **withdrawn**: against an identity reference
+there is nothing for H/L to win.
+
+**Primary is an EXACT census, not a staged experiment:**
+
+$$\mathbb{E}_{\text{DGP}}[\text{Coverage}],\quad
+\mathbb{E}_{\text{DGP}}[\text{FCR}],\quad
+\mathbb{E}_{\text{DGP}}[\#\hat\Gamma]$$
+
+over all $1{,}038{,}960$ DGP-feasible worlds, with **DGP-weighted mass and
+world-count averages side by side**. All three rules are deterministic and the
+population is enumerable, so
+
+$$\boxed{\text{smoke } 5 \to \text{dev } 32 \to \text{confirmatory } 400 \text{ is removed from V0.2R primary}}$$
+
+Drawing 400 scenes to approximate an exactly computable quantity has no
+statistical content. `OutcomeRepairSufficiency` and the blunt probe may remain as
+sampled **secondary** experiments, but they cannot decide between representations
+nor establish ontology correctness.
+
+**May claim** (if the census shows the Fine reference lossless and the coarse ones
+degrading): under the A65/A67 frozen ontology, coarse representations produce a
+precisely quantifiable **over-credit on responsibility** while the fine $\Gamma$
+representation is lossless. **May not claim** experimental validation of the
+six-unit ontology: that needs an **external criterion not defined by
+$\Gamma^\ast$**, which can only come from downstream consequences
+$\text{representation} \to \text{repair/update} \to \text{collateral / utility / transfer}$.
+
+**Consequence for V0.3R:** it must no longer say "fix the V0.2R winner" but
+
+$$\boxed{\text{V0.3R conditions on the A65/A67 working ontology } \Gamma}$$
+
+---
+
+## 57. Summary and what remains open
 
 | # | what | severity | status |
 |---|---|---|---|
