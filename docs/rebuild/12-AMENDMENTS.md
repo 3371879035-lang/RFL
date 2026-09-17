@@ -2239,7 +2239,71 @@ rewrite `07` endpoints → method contract → smoke/dev/confirmatory.
 
 ---
 
-## 53. Summary and what remains open
+## 54. A68 — the full mechanism-repair / rescue census
+
+**Setup.** All $1{,}038{,}960$ worlds, DGP mass $1.0$, fire basis (A66 P0),
+$\pi_{\text{credit}}$ frozen (A67), singleton→pairs→triples rescue search (A66
+P0-2). No smoke/dev/confirmatory scene touched.
+
+$$|R^{\text{mech}}|:\quad
+\begin{array}{c|rrrrr}
+ & 0 & 1 & 2 & 3 & 4\\\hline
+\text{worlds} & 17{,}280 & 419{,}400 & 472{,}200 & 127{,}920 & 2{,}160\\
+\text{DGP mass} & \mathbf{0.438594} & 0.480699 & 0.076610 & 0.004081 & 0.000016
+\end{array}$$
+
+$$\mathcal R^{\text{rescue},\ast}:\quad |R^\ast| = 0:\ 925{,}800\ (0.93614),
+\qquad |R^\ast| = 1:\ 113{,}160\ (0.06386), \qquad \texttt{UNRESOLVED\_GT3}:\ \mathbf{0}$$
+
+**The count and the mass invert, and that is the headline.** $|R^{\text{mech}}| = 0$
+is the *rarest* count (17,280 worlds) yet carries the **largest** mass (43.9%):
+"no mechanism repair needed" means every cause stayed dormant, which under
+$\mathrm{Bernoulli}(0.2)$ is the high-probability regime. Conversely
+$|R^{\text{mech}}| = 2$ is the most *common* count (472,200 worlds) at only 7.7%
+mass. A census reporting only world counts would have described the benchmark
+backwards. This is the concrete payoff of A65's requirement to report
+DGP-weighted mass alongside counts.
+
+**Singleton sufficiency is now measured, not inherited.** `UNRESOLVED_GT3 = 0`
+over the full support. A66's P0-2 refused to conclude this from Gate E's old
+result because A65 demoted Gate E to a regression reference; the claim is now
+earned by the full enumeration, and the `rescue_size` histogram is
+$0:925{,}800$, $1:113{,}160$, with no larger size needed.
+
+**The $\pi_{\text{credit}}$ rules hold at full scale:**
+
+| check | result |
+|---|---|
+| `mech_multi_primitive_per_cause` | **0** — the A66 (a)/(b) ambiguity is schema-guaranteed vacuous, not slice luck |
+| `ambiguity_live` | False |
+| `#R^{\text{mech}}` ties | $\{0: 17{,}280,\ 1: 1{,}021{,}680\}$ — no ties anywhere |
+
+**The discrimination witness scales.** `PLANT_FAULT_and_strategy_rescues_truth_still_ExternalPlant`
+is **33,960** worlds (99 on the 3,000-world slice, so it scaled as expected), and
+`NO_mech_but_strategy_rescues` is 1,080. These are the worlds where a strategy
+replay rescues the outcome while the frozen truth remains `ExternalPlant` (or
+where no mechanism was repaired at all but a strategy replay still rescued):
+exactly the cases where crediting `Strategy` must cost FalseCreditRate.
+
+`mech_present_and_already_succeeded` = 909,600 and
+`mech_present_and_strategy_also_rescues` = 112,080.
+
+**Reporting gap, recorded rather than papered over.** The per-kind masses
+(`mech_kind_*`) were never accumulated — the counter was incremented and the mass
+was not — so the artifact shows `mass=0.00000` beside `count=326,520` for
+`external_plant`. The quantity is not lost: the exact firing marginals already
+exist in `exact_fire_marginals.json` ($P = 0.193762$, $D = 0.133613$,
+$X = 0.156763$, $E = 0.160047$, $U = 0.002041$), so nothing needs re-running. It
+is recorded because a reader comparing the two artifacts would otherwise see a
+contradiction.
+
+**What this does not do.** It does not license a V0.2R method. `07`'s endpoints are
+not yet rewritten (A67 §7), the method contract does not exist, and no arm has been
+run. The census is truth-side only.
+
+---
+
+## 55. Summary and what remains open
 
 | # | what | severity | status |
 |---|---|---|---|
