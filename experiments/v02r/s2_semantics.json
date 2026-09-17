@@ -1,0 +1,88 @@
+{
+ "checks": {
+  "eta_module_partition_disjoint_and_covering": true,
+  "eta_trajectory_is_full_domain": true,
+  "eta_causal_is_identity": true,
+  "eta_R_cannot_read_truth": true,
+  "eta_R_truth_independent_observed": true,
+  "alphabet_closure_enforced": true,
+  "input_has_no_forbidden_field": true,
+  "no_query_budget": true,
+  "external_plant_unwritable_but_scoreable": true,
+  "strategy_credit_is_penalised": true,
+  "abstention_differs_from_nowrite": true,
+  "empty_truth_refused": true,
+  "oracle_exact_and_type_separated": true,
+  "oracle_takes_truth_not_input": true,
+  "writability_complete": true,
+  "dumb_method_walks_interface": true
+ },
+ "detail": {
+  "eta_module": {
+   "H": [
+    "ExternalPlant",
+    "ProcessCommit",
+    "Strategy",
+    "Unknown/NoWrite"
+   ],
+   "L": [
+    "ControllerSite_s1",
+    "ControllerSite_s2",
+    "Decision_0",
+    "Decision_1",
+    "Decision_2"
+   ]
+  },
+  "eta_signatures": {
+   "module": [
+    "p",
+    "shape"
+   ],
+   "trajectory": [
+    "p",
+    "shape"
+   ],
+   "causal": [
+    "p",
+    "shape"
+   ]
+  },
+  "alphabet_closure": {
+   "ModuleProposal": true,
+   "TrajectoryProposal": true,
+   "CausalProposal": true
+  },
+  "input_fields": [
+   "evidence",
+   "fire_truth",
+   "shape"
+  ],
+  "worked_table": {
+   "truth_exact": [
+    1.0,
+    0.0
+   ],
+   "strategy_only": [
+    0.0,
+    1.0
+   ],
+   "both": [
+    1.0,
+    0.5
+   ]
+  },
+  "writability": {
+   "ControllerSite_s1": true,
+   "ControllerSite_s2": true,
+   "Decision_0": true,
+   "Decision_1": true,
+   "Decision_2": true,
+   "ExternalPlant": false,
+   "ProcessCommit": true,
+   "Strategy": false,
+   "Unknown/NoWrite": false
+  }
+ },
+ "status": "PASS",
+ "scope": "interface/typing/information-flow only; NOT which representation is more accurate"
+}
