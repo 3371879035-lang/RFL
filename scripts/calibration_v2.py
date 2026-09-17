@@ -104,18 +104,27 @@ class Probe:
 
 
 def _contrast(P_alt, P_base, Y):
-    """Pre-registered primary contrast, reported BEFORE looking at the mean.
+    """Pre-registered primary contrast, reported BEFORE the mean is read.
 
-    The per-scene delta distribution is zero-inflated and heavy-tailed (most
-    scenes move nothing, a few move a lot), so the mean alone is not readable.
-    Every quantity the protocol requires is emitted: tie fraction, median,
-    trimmed mean, sign test, and the top-5 share of the total delta.
+    The primary quantity is BATCH-LEVEL macro AUPRC: a per-cause AUPRC is only
+    defined when the evaluated set contains both classes, so it cannot be
+    computed on a single scene. An earlier version called evaluate() per scene
+    and crashed on a 400-scene run AFTER all the expensive work was done --
+    wasting the run. So:
+
+      * ``batch_macro_delta`` is the primary: macro AUPRC over the whole block,
+        minus the same for the baseline.
+      * the per-scene distribution uses a PER-SCENE-DEFINED score, the Brier
+        score, and is labelled as such. It is a diagnostic of shape (tie
+        fraction, median, sign test, top-5 concentration), never the endpoint.
     """
     from rfl_rebuild.eval import evaluate
-    d = []
-    for p_alt, p_base, y in zip(P_alt, P_base, Y):
-        d.append(evaluate([p_alt], [y]).macro_auprc
-                 - evaluate([p_base], [y]).macro_auprc)
+
+    def brier1(p, y):
+        return sum((p[i] - y[i]) ** 2 for i in range(5)) / 5.0
+
+    d = [brier1(pb, y) - brier1(pa, y)          # positive = alt better
+         for pa, pb, y in zip(P_alt, P_base, Y)]
     s = sorted(d)
     n = len(s)
     ties = sum(1 for x in s if abs(x) < 1e-12)
@@ -124,16 +133,23 @@ def _contrast(P_alt, P_base, Y):
     top5 = sum(sorted(s, reverse=True)[:5])
     wins = sum(1 for x in s if x > 0)
     loss = sum(1 for x in s if x < 0)
-    mean = total / n
-    return {"n": n, "mean_delta": mean,
-            "median_delta": s[n // 2] if n % 2 else 0.5 * (s[n // 2 - 1] + s[n // 2]),
-            "trimmed_mean_delta": sum(trimmed) / len(trimmed),
+    macro_alt = evaluate(P_alt, Y).macro_auprc
+    macro_base = evaluate(P_base, Y).macro_auprc
+    delta = macro_alt - macro_base
+    return {"n": n,
+            "batch_macro_auprc_alt": macro_alt,
+            "batch_macro_auprc_base": macro_base,
+            "batch_macro_delta": delta,
+            "per_scene_score": "Brier (diagnostic only; AUPRC is undefined at n=1)",
+            "mean_per_scene_brier_delta": total / n,
+            "median": s[n // 2] if n % 2 else 0.5 * (s[n // 2 - 1] + s[n // 2]),
+            "trimmed_mean": sum(trimmed) / len(trimmed),
             "tie_fraction": ties / n, "wins": wins, "losses": loss,
             "sign_test_p_two_sided": _binom_two_sided(wins, wins + loss),
             "top5_share_of_total_delta": (top5 / total) if abs(total) > 1e-15 else None,
             "delta_min": 0.05,
-            "position_vs_delta_min": ("ABOVE" if mean > 0.05 else
-                                      "BELOW" if mean < -0.05 else "WITHIN")}
+            "position_vs_delta_min": ("ABOVE" if delta > 0.05 else
+                                      "BELOW" if delta < -0.05 else "WITHIN")}
 
 
 def _binom_two_sided(k, n):
@@ -288,23 +304,7 @@ def main() -> int:
     applied = checks if stage == "smoke" else {**checks, **dev_only}
     verdict = "PASS" if all(applied.values()) else "FAIL"
 
-    # Confirmatory: the primary contrast is SeqThenQuery vs DirectFeedback on
-    # macro AUPRC, against the pre-registered Delta_min = 0.05. Reported per
-    # 100-scene block AND cumulative, because the frozen protocol requires the
-    # fresh block to be readable on its own.
     primary = None
-    if stage == "conf":
-        blocks = {}
-        for b0 in range(0, n_scenes, CONF_BLOCK):
-            idx = list(range(b0, min(b0 + CONF_BLOCK, n_scenes)))
-            blocks[f"block_{b0//CONF_BLOCK + 1}"] = _contrast(
-                [per_arm_P["SeqThenQuery"][i] for i in idx],
-                [per_arm_P["DirectFeedback"][i] for i in idx],
-                [per_arm_Y["SeqThenQuery"][i] for i in idx])
-        primary = {"delta_min": 0.05, "per_block": blocks,
-                   "cumulative": _contrast(per_arm_P["SeqThenQuery"],
-                                           per_arm_P["DirectFeedback"],
-                                           per_arm_Y["SeqThenQuery"])}
     out = {"stage": stage, "namespace": namespace, "n_scenes": n_scenes,
            "B_Q": B_Q, "checks": checks, "dev_only_checks": dev_only,
            "applied_to_this_stage": sorted(applied), "verdict": verdict,
@@ -326,7 +326,31 @@ def main() -> int:
                          f"{n_scenes} may then NOT be declared calibration-PASS: "
                          f"keep this artifact and re-run under a new namespace."}
     path = ROOT / "experiments" / "v01r" / f"calibration_{stage}_v2.json"
+    # CRASH SAFETY: write the expensive part FIRST. The previous 400-scene run
+    # died in the reporting code after generating every scene and running every
+    # arm, and lost all of it. A reporting bug must not be able to do that.
     path.write_text(json.dumps(out, indent=1, default=str), encoding="utf-8")
+
+    if stage == "conf":
+        try:
+            blocks = {}
+            for b0 in range(0, n_scenes, CONF_BLOCK):
+                idx = list(range(b0, min(b0 + CONF_BLOCK, n_scenes)))
+                blocks[f"block_{b0//CONF_BLOCK + 1}"] = _contrast(
+                    [per_arm_P["SeqThenQuery"][i] for i in idx],
+                    [per_arm_P["DirectFeedback"][i] for i in idx],
+                    [per_arm_Y["SeqThenQuery"][i] for i in idx])
+            out["primary_contrast"] = {
+                "delta_min": 0.05, "per_block": blocks,
+                "cumulative": _contrast(per_arm_P["SeqThenQuery"],
+                                        per_arm_P["DirectFeedback"],
+                                        per_arm_Y["SeqThenQuery"])}
+        except Exception as exc:                      # pragma: no cover
+            out["primary_contrast"] = {
+                "error": f"{type(exc).__name__}: {exc}",
+                "note": "reporting failed; the scene data above is intact and the "
+                        "contrast can be recomputed from it without redrawing"}
+        path.write_text(json.dumps(out, indent=1, default=str), encoding="utf-8")
 
     for k in sorted(applied):
         print(f"  {k:<52} {applied[k]}")
