@@ -20,14 +20,14 @@ sys.path.insert(0, str(ROOT / "src"))
 from rfl_rebuild.b1 import (  # noqa: E402
     APPLIED, EVALUABLE_NOOP, ILL_TYPED, LAWS, NO_VALID_ALTERNATIVE, PATCH_SLICE,
     PROTOCOL_ERROR, AddressPlan, DeleteFactualPatch, LocalOracleRestore, NoWrite,
-    NoWriteRef, ProtocolError, SetAlternative, TargetRecord, Tier,
+    NoWriteRef, ProtocolError, SetAlternative, SliceDescriptor, TargetRecord, Tier,
     fingerprint, independent_treatment_count, law_metadata,
     run_patch_law_with_envelope,
 )
 from rfl_rebuild.env import kernel as K  # noqa: E402
 from rfl_rebuild.env.kernel import State  # noqa: E402
 from rfl_rebuild.learner.store import (  # noqa: E402
-    DECISION, DecisionAddress, Edit, LearnerPersistentState, StoreTransactionError,
+    DECISION, PROCESS, DecisionAddress, Edit, LearnerPersistentState, StoreTransactionError,
 )
 
 UP, DOWN, LEFT, RIGHT, WAIT = K.UP, K.DOWN, K.LEFT, K.RIGHT, K.WAIT
@@ -557,6 +557,163 @@ def test_8q_the_frozen_cell_table_is_what_is_declared():
         PATCH_SLICE.fields(Tier.L2_COUNTERFACTUAL)
     assert set(PATCH_SLICE.cells) == set(Tier), \
         "every tier must be declared, ill-typed cells included"
+
+
+_Z0, _Z1 = K.option_ids()[0], K.option_ids()[1]
+
+
+def _two_entry_slice():
+    """A slice whose owner map collapses two PROCESS entries onto one context.
+
+    Deliberately not $D_Q$: the point is the **generic** rule, and a descriptor is the
+    only way to reach $k>1$ without inventing a science object. ``extract`` is empty
+    because every cell declares no field.
+    """
+    return SliceDescriptor(
+        name="TestTwoEntry",
+        store=PROCESS,
+        scalar=False,
+        owner=lambda address: A,
+        view=lambda state: dict(state.process_overrides),
+        cells={t: (ILL_TYPED if t is Tier.L2_COUNTERFACTUAL else frozenset())
+               for t in Tier},
+        extract={},
+    )
+
+
+class _TwoEntryLaw:
+    """One address-plan, two entries: the first writes the identity, the second changes.
+
+    This is the shape the generic contract claims to support and the receipt rule has to
+    honour. With a first-entry-only rule the receipt says "unchanged" while the
+    fingerprint moves, and the ledger invariant kills the run instead of reporting
+    ``APPLIED`` — the old behaviour, pinned by this gate.
+    """
+
+    name = "TwoEntry"
+    alias_of = None
+    tier = Tier.L0_FACTUAL
+
+    def plan(self, addresses, targets):
+        from rfl_rebuild.b1.laws import LawPlan
+        return LawPlan(self.name, tuple(
+            AddressPlan(a, (Edit(PROCESS, _Z0, _Z0), Edit(PROCESS, _Z1, _Z0)))
+            for a in addresses))
+
+
+def test_8s_a_multi_entry_address_plan_reports_applied_from_any_entry():
+    """$k>1$ must be real, not a renamed $k\\le1$ (A77 §65.9).
+
+    Entry 1 writes the identity, which canonicalises to a deletion and changes nothing;
+    entry 2 creates an override. One credited context, therefore **one** receipt, and it
+    must be ``APPLIED`` with ``store_changed=True`` because *some* entry changed.
+    """
+    s = LearnerPersistentState()
+    res = run_patch_law_with_envelope(_TwoEntryLaw(), s, (A,), envelope(),
+                                      spec=_two_entry_slice())
+    assert res.ledger.n_addressed == 1, "two entries is still one addressed context"
+    r = res.ledger.receipts[0]
+    assert r.address == A
+    assert r.store_changed is True, "entry 2 changed the store"
+    assert r.status == APPLIED, \
+        "a changed entry must make the receipt APPLIED, not EVALUABLE_NOOP"
+    assert res.ledger.n_changed_addresses == 1
+    assert res.ledger.fingerprint_pre != res.ledger.fingerprint_post
+    assert dict(s.process_overrides) == {_Z1: _Z0}, \
+        "only the second entry should have landed"
+
+
+def test_8s2_a_multi_entry_plan_that_changes_nothing_is_still_a_noop():
+    """The other side of the same rule: ``any`` over an all-no-op plan is false."""
+    class _BothIdentity(_TwoEntryLaw):
+        name = "TwoEntryNoop"
+
+        def plan(self, addresses, targets):
+            from rfl_rebuild.b1.laws import LawPlan
+            return LawPlan(self.name, tuple(
+                AddressPlan(a, (Edit(PROCESS, _Z0, _Z0), Edit(PROCESS, _Z1, _Z1)))
+                for a in addresses))
+
+    s = LearnerPersistentState()
+    res = run_patch_law_with_envelope(_BothIdentity(), s, (A,), envelope(),
+                                      spec=_two_entry_slice())
+    r = res.ledger.receipts[0]
+    assert r.store_changed is False and r.status == EVALUABLE_NOOP
+    assert res.ledger.fingerprint_pre == res.ledger.fingerprint_post
+
+
+def test_8t_a_descriptor_missing_an_extractor_fails_at_construction():
+    """The contract boundary, not the read path.
+
+    With ``cells[L1] = {"alternative"}`` and no extractor, ``deliver`` used to raise a
+    bare ``KeyError: alternative`` from inside the projection. A descriptor is built once
+    and used for every scene, so the failure belongs where it is constructed.
+    """
+    with pytest.raises(ProtocolError) as ei:
+        SliceDescriptor(
+            name="Broken", store=DECISION, scalar=False,
+            owner=lambda address: address,
+            view=lambda state: dict(state.decision_overrides),
+            cells={t: (frozenset({"alternative"}) if t is Tier.L1_CORRECTIVE
+                       else (ILL_TYPED if t is Tier.L2_COUNTERFACTUAL
+                             else frozenset()))
+                   for t in Tier},
+            extract={})
+    assert "extractor" in str(ei.value)
+
+
+def test_8t2_a_descriptor_must_declare_every_tier():
+    """An undeclared cell would be discovered only when a law first ran in it."""
+    with pytest.raises(ProtocolError) as ei:
+        SliceDescriptor(
+            name="Partial", store=DECISION, scalar=False,
+            owner=lambda address: address,
+            view=lambda state: dict(state.decision_overrides),
+            cells={Tier.L0_FACTUAL: frozenset()},
+            extract={})
+    assert "every tier" in str(ei.value)
+
+
+def test_8t3_a_non_bool_scalar_flag_is_rejected():
+    with pytest.raises(ProtocolError) as ei:
+        SliceDescriptor(
+            name="Coerced", store=DECISION, scalar=0, owner=lambda a: a,
+            view=lambda state: dict(state.decision_overrides),
+            cells={t: (ILL_TYPED if t is Tier.L2_COUNTERFACTUAL else frozenset())
+                   for t in Tier},
+            extract={})
+    assert "not a bool" in str(ei.value)
+
+
+def test_8u_the_cell_table_and_extractors_are_read_only():
+    """``frozen=True`` freezes the binding, not the dicts behind it.
+
+    Editing the cells in place would edit the frozen information contract at runtime,
+    which is exactly what making the table executable was meant to prevent.
+    """
+    with pytest.raises(TypeError):
+        PATCH_SLICE.cells[Tier.L0_FACTUAL] = frozenset({"rogue"})
+    with pytest.raises(TypeError):
+        PATCH_SLICE.extract["rogue"] = lambda record: None
+    assert PATCH_SLICE.fields(Tier.L0_FACTUAL) == frozenset(), \
+        "the mutation attempt must not have landed"
+
+
+def test_8v_tier_has_no_truth_value():
+    """A77 §65.1's "no truthiness inference", mechanically.
+
+    ``type(tier) is Tier`` stops another value posing as a tier, but every enum member is
+    truthy by default, so ``if tier:`` would silently collapse all four. Raising turns a
+    silent wrong branch into a fail-stop.
+    """
+    for tier in Tier:
+        with pytest.raises(ProtocolError):
+            bool(tier)
+    with pytest.raises(ProtocolError):
+        if Tier.L0_FACTUAL:                          # pragma: no cover
+            pass
+    assert (Tier.L0_FACTUAL is Tier.L0_FACTUAL) is True, "identity still works"
+    assert Tier.L0_FACTUAL != Tier.L1_CORRECTIVE, "comparison still works"
 
 
 def test_8r_the_reference_mechanism_shares_one_plan_and_is_not_a_treatment():

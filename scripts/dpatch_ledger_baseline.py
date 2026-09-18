@@ -11,7 +11,10 @@ $$\boxed{\text{a regression guard generated after the change is not a regression
 Two scene families, so the baseline covers more than one shape of outcome:
 
 * **real scenes** — every $(\kappa, \varphi, z_0)$ healthy trace, every credited
-  decision context, each arm, healthy and pre-patched states;
+  decision context, each arm, healthy and pre-patched states. **Every** $\varphi$ in
+  ``K.PHASE_DOMAIN``, not a sample: $\varphi$ is part of the frozen ``State`` and of the
+  canonical receipt address, and no frozen quotient folds it away, so a sampled $\varphi$
+  would leave part of the address space unguarded;
 * **synthetic envelope family** — a three-address envelope with
   `alternative = {UP, None, DOWN}`, which is what exercises
   ``NO_VALID_ALTERNATIVE`` and the "already holds the target" no-op without needing
@@ -20,10 +23,18 @@ Two scene families, so the baseline covers more than one shape of outcome:
 Also recorded, because A77 §65.12's fourth condition is about them: ``law_metadata()``,
 ``independent_treatment_count()``, the alias plan identity, and the four arm names.
 
+$$\boxed{2 \times 6 \times 4 \times 4\ \text{arms} \times 2\ \text{pre-states}
++ 12\ \text{synthetic} = 396}$$
+
 Usage::
 
-    python scripts/dpatch_ledger_baseline.py --capture   # before the refactor
-    python scripts/dpatch_ledger_baseline.py --verify    # after it, must be identical
+    # BEFORE the refactor, in a worktree of the pre-refactor revision:
+    python scripts/dpatch_ledger_baseline.py --capture
+    # after it, at HEAD:
+    python scripts/dpatch_ledger_baseline.py --verify
+
+``--verify`` writes ``experiments/v03r/dpatch_ledger_verification.json``, so the
+comparison is a committed artifact rather than a line in a commit message.
 """
 
 from __future__ import annotations
@@ -60,6 +71,20 @@ def _sha(text: str) -> str:
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
+def _rel(path: pathlib.Path) -> str:
+    """Display a path relative to ROOT when it is inside it.
+
+    The baseline is captured in a **worktree** of the pre-refactor revision while the
+    artifact is written into the main checkout, so an unconditional ``relative_to(ROOT)``
+    crashed *after* writing the file. A print at the end of a run must not be able to
+    turn a successful capture into a non-zero exit.
+    """
+    try:
+        return str(path.relative_to(ROOT))
+    except ValueError:
+        return str(path)
+
+
 def _legal_alt(addr: DecisionAddress) -> int:
     allowed = option_actions(addr.z, ControlState(z=addr.z, m=addr.m), addr.state)
     return allowed[-1]
@@ -72,7 +97,7 @@ def _patched(state: LearnerPersistentState, addr: DecisionAddress) -> None:
 def real_scene_entries(sol) -> list[dict]:
     entries: list[dict] = []
     for kappa in (0, 1):
-        for phi in (0, 2):
+        for phi in K.PHASE_DOMAIN:
             for z0 in K.option_ids():
                 provider = lambda s, c: sol.best_action(s, c.z, c.m)   # noqa: E731
                 tr = K.rollout(
@@ -142,11 +167,19 @@ def structural_record() -> dict:
 def probe() -> dict:
     sol = solve_reference()
     entries = real_scene_entries(sol) + synthetic_entries()
+    import rfl_rebuild.b1 as _b1
     return {
         "check": "D_patch ledger canonical bytes, pre-refactor baseline",
         "git_rev_at_capture": subprocess.run(
             ["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True,
             text=True).stdout.strip(),
+        # Evidence that the capture really ran against the intended source tree: when
+        # the baseline is taken in a worktree of the pre-refactor revision, this points
+        # into that worktree, not into the main checkout.
+        "b1_source": str(_b1.__file__),
+        "kappa_domain": [0, 1],
+        "phi_domain": list(K.PHASE_DOMAIN),
+        "option_ids": list(K.option_ids()),
         "n_entries": len(entries),
         "structural": structural_record(),
         "entries": entries,
@@ -158,6 +191,9 @@ def main() -> int:
     ap.add_argument("--capture", action="store_true")
     ap.add_argument("--verify", action="store_true")
     ap.add_argument("--json", default=str(DEFAULT_JSON))
+    ap.add_argument("--verification-json",
+                    default=str(ROOT / "experiments" / "v03r"
+                                / "dpatch_ledger_verification.json"))
     args = ap.parse_args()
     if not (args.capture or args.verify):
         ap.error("choose --capture or --verify")
@@ -173,7 +209,8 @@ def main() -> int:
         path.write_text(json.dumps(now, indent=2) + "\n", encoding="utf-8")
         print(f"captured {now['n_entries']} ledger canonicals")
         print(f"  git rev : {now['git_rev_at_capture']}")
-        print(f"  written : {path.relative_to(ROOT)}")
+        print(f"  b1 from : {now['b1_source']}")
+        print(f"  written : {_rel(path)}")
         return 0
 
     if not path.exists():
@@ -205,11 +242,37 @@ def main() -> int:
             sbad.append(k)
             print(f"  STRUCTURAL CHANGED {k}: {v!r} -> {now['structural'].get(k)!r}")
 
+    ok = bad == 0 and not sbad and len(old) == len(new)
+    payload = {
+        "check": "D_patch ledger canonical bytes, refactor verification",
+        "baseline_rev": base["git_rev_at_capture"],
+        "verification_rev": now["git_rev_at_capture"],
+        "baseline_b1_source": base.get("b1_source"),
+        "verification_b1_source": now["b1_source"],
+        "n_baseline": len(old),
+        "n_recomputed": len(new),
+        "canonical_mismatches": bad,
+        "structural_mismatches": len(sbad),
+        "structural_mismatch_keys": sbad,
+        "missing_keys": missing,
+        "added_keys": added,
+        "status": "EXACT" if ok else "DRIFTED",
+        "obligation": (
+            "A77 §65.12 condition 1: the generic slice refactor must move no D_patch "
+            "ledger byte. A DRIFTED status voids the refactor commit"
+        ),
+    }
+    vpath = pathlib.Path(args.verification_json)
+    if not vpath.is_absolute():
+        vpath = ROOT / vpath
+    vpath.parent.mkdir(parents=True, exist_ok=True)
+    vpath.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+
     print(f"\n  baseline entries          : {len(old)} (from {base['git_rev_at_capture']})")
     print(f"  recomputed entries        : {len(new)}")
     print(f"  canonical byte mismatches : {bad}")
     print(f"  structural mismatches     : {len(sbad)}")
-    ok = bad == 0 and not sbad and len(old) == len(new)
+    print(f"  written                   : {_rel(vpath)}")
     print("  LEDGER BASELINE " + ("REPRODUCED EXACTLY" if ok else "DRIFTED"))
     return 0 if ok else 1
 

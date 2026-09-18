@@ -85,6 +85,48 @@ MUTATIONS: tuple[tuple[str, str, pathlib.Path, str, str, str], ...] = (
         f"{TESTS}::test_8j_a_law_cannot_re_acquire_a_store_handle",
     ),
     (
+        "receipt_first_entry_only",
+        "the receipt tests only the first entry of an address-plan, so a k>1 plan that "
+        "changed the store reports EVALUABLE_NOOP and the ledger invariant kills the run",
+        RUNNER,
+        "        changed = any(\n"
+        "            pre_view.get(e.address, _MISSING) != post_view.get(e.address, _MISSING)\n"
+        "            for e in p.edits)",
+        "        changed = (pre_view.get(p.edits[0].address) !=\n"
+        "                   post_view.get(p.edits[0].address)) if p.edits else False",
+        f"{TESTS}::test_8s_a_multi_entry_address_plan_reports_applied_from_any_entry",
+    ),
+    (
+        "descriptor_extractor_unchecked",
+        "a cell field with no extractor is accepted at construction and blows up as a "
+        "KeyError inside delivery",
+        TIER,
+        "        if missing_extractors:",
+        "        if False:                   # MUTATED: extractor check disabled",
+        f"{TESTS}::test_8t_a_descriptor_missing_an_extractor_fails_at_construction",
+    ),
+    (
+        "cells_left_mutable",
+        "the cell table is left as a plain dict, so the frozen information contract can "
+        "be edited in place at runtime",
+        TIER,
+        '        object.__setattr__(self, "cells", MappingProxyType(dict(self.cells)))',
+        "        pass  # MUTATED: cells left mutable",
+        f"{TESTS}::test_8u_the_cell_table_and_extractors_are_read_only",
+    ),
+    (
+        "tier_truthiness",
+        "Tier keeps a truth value, so `if tier:` silently collapses all four members "
+        "into one branch",
+        TIER,
+        "    def __bool__(self) -> bool:                      # pragma: no cover - always raises\n"
+        "        raise ProtocolError(",
+        "    def __bool__(self) -> bool:                      # MUTATED\n"
+        "        return True\n"
+        "        raise ProtocolError(",
+        f"{TESTS}::test_8v_tier_has_no_truth_value",
+    ),
+    (
         "envelope_superset",
         "the envelope is accepted as a superset of the credited set",
         TARGETS,

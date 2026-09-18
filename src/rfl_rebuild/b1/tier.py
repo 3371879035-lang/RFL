@@ -61,12 +61,25 @@ class Tier(Enum):
     An ``Enum`` and deliberately not an ``IntEnum``: nothing in the design compares
     tiers numerically, and an integer-valued member would let ``0``, ``True`` and ``1``
     all pass for $L_0$ — the same class of accident the boolean flag produced.
+
+    **Truthiness is refused, not merely discouraged** (§65.1's "no truthiness
+    inference"). ``type(tier) is Tier`` stops another *value* posing as a tier; it does
+    not stop ``if tier:`` collapsing all four members into one branch, because every
+    enum member is truthy by default. Raising here turns that into a fail-stop rather
+    than a silent wrong branch:
+
+    $$\boxed{\texttt{bool(Tier.x)}\ \Longrightarrow\ \texttt{PROTOCOL\_ERROR}}$$
     """
 
     L0_FACTUAL = "L0_factual"
     L1_CORRECTIVE = "L1_corrective"
     L2_COUNTERFACTUAL = "L2_counterfactual"
     L3_ORACLE = "L3_oracle"
+
+    def __bool__(self) -> bool:                      # pragma: no cover - always raises
+        raise ProtocolError(
+            f"Tier is opaque (A77 §65.1): {self.name} has no truth value; test identity "
+            "with `is`, and dispatch on the cell, never on truthiness")
 
 
 class _IllTyped:
@@ -90,6 +103,29 @@ class SliceDescriptor:
     declared field name to the function that reads it from the evaluator-side record, so
     the delivery is a projection over *declared* names and a record that grows a field
     cannot silently widen what a law sees.
+
+    **The descriptor validates and freezes itself.** ``@dataclass(frozen=True)`` freezes
+    the *attribute binding*, not the dicts behind it, and it validates nothing, so an
+    earlier version allowed both of these:
+
+    * ``cells[L1] = {"alternative"}`` with ``extract = {}`` — accepted at construction,
+      then ``deliver`` raised a bare ``KeyError: alternative`` from inside the read path
+      instead of the ``PROTOCOL_ERROR`` the contract promises. The same "the error path
+      crashes first" defect this project keeps finding;
+    * ``PATCH_SLICE.cells[Tier.L0_FACTUAL] = frozenset({"anything"})`` — the frozen
+      information contract could be edited in place at runtime, which is precisely what
+      making the cell table executable was supposed to prevent.
+
+    So construction is now the contract boundary:
+
+    $$\boxed{\operatorname{keys}(\texttt{cells}) = \texttt{Tier}}$$
+
+    every value is either :data:`ILL_TYPED` or a ``frozenset[str]``, and
+
+    $$\boxed{\bigcup_{\ell\ \text{well-typed}} \text{fields}(\alpha,\ell) \subseteq
+    \operatorname{keys}(\texttt{extract})}$$
+
+    with ``cells`` and ``extract`` rebound as read-only mappings.
     """
 
     name: str
@@ -99,6 +135,46 @@ class SliceDescriptor:
     view: Callable[[LearnerPersistentState], dict]
     cells: Mapping[Tier, Any]
     extract: Mapping[str, Callable[[Any], Any]]
+
+    def __post_init__(self) -> None:
+        if type(self.scalar) is not bool:
+            raise ProtocolError(
+                f"{self.name}: scalar={self.scalar!r} is not a bool; whether a store is "
+                "scalar-valued decides the ledger's accounting domain, so it may not be "
+                "coerced or inferred")
+        for attr in ("owner", "view"):
+            if not callable(getattr(self, attr)):
+                raise ProtocolError(f"{self.name}: {attr} must be callable")
+        if set(self.cells) != set(Tier):
+            missing = sorted(t.name for t in set(Tier) - set(self.cells))
+            extra = sorted(repr(k) for k in set(self.cells) - set(Tier))
+            raise ProtocolError(
+                f"{self.name}: the cell table must declare every tier; missing {missing}, "
+                f"unknown {extra}. An undeclared cell would be discovered only when a "
+                "law first ran in it")
+        declared: set = set()
+        for tier, cell in self.cells.items():
+            if cell is ILL_TYPED:
+                continue
+            if not isinstance(cell, frozenset) or not all(
+                    isinstance(f, str) for f in cell):
+                raise ProtocolError(
+                    f"{self.name}: cell {tier.name} is {cell!r}; a well-typed cell must "
+                    "be a frozenset of field names (or ILL_TYPED)")
+            declared |= set(cell)
+        missing_extractors = sorted(declared - set(self.extract))
+        if missing_extractors:
+            raise ProtocolError(
+                f"{self.name}: cell field(s) {missing_extractors} have no extractor; the "
+                "failure would otherwise surface as a KeyError inside delivery, not as a "
+                "protocol error at the contract boundary")
+        for field_name, extractor in self.extract.items():
+            if not callable(extractor):
+                raise ProtocolError(
+                    f"{self.name}: extractor for {field_name!r} is not callable")
+        # Freeze the contents, not just the binding.
+        object.__setattr__(self, "cells", MappingProxyType(dict(self.cells)))
+        object.__setattr__(self, "extract", MappingProxyType(dict(self.extract)))
 
     def fields(self, tier: Tier) -> frozenset:
         r"""``fields(α, ℓ)``, or a ``PROTOCOL_ERROR`` for an ill-typed cell."""

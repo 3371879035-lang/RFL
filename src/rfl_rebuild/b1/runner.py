@@ -68,6 +68,11 @@ from rfl_rebuild.learner.store import LearnerPersistentState, StoreTransactionEr
 
 __all__ = ["B1Result", "run_patch_law", "run_patch_law_with_envelope"]
 
+#: Distinguishes "this entry is absent from the store view" from every storable value,
+#: including ``None`` (which is not a storable value here, but is a legal *deletion*
+#: marker in an :class:`~rfl_rebuild.learner.store.Edit`).
+_MISSING = object()
+
 
 @dataclass(frozen=True, slots=True)
 class B1Result:
@@ -221,10 +226,22 @@ def _run(law: "_Law", tier: Tier, pre_state: LearnerPersistentState,
     fp_post = fingerprint(pre_state)
 
     # ---- statuses, derived from the STORE, never from scalar accounting --- #
+    #
+    # The receipt is per ADDRESS-PLAN, so "changed" must be a property of the whole plan:
+    #
+    # $$\boxed{\text{changed}(x) = \exists e \in \text{Plan}(x): pre[e] \neq post[e]}$$
+    #
+    # The first version tested ``p.edits[0]`` only. On $D_{patch}$ that is invisible —
+    # the owner map is the identity, so a legal plan has one entry — but the generic
+    # structure admits $k>1$, and with a no-op first entry and a changing second one the
+    # receipt said "unchanged" while the fingerprint moved, so the ledger invariant
+    # killed the run instead of reporting ``APPLIED``. The address-plan is the unit
+    # A77 §65.9 froze, and the receipt has to be computed on the same unit.
     receipts = []
     for p in plan.plans:
-        entry = p.edits[0].address if p.edits else p.address
-        changed = pre_view.get(entry) != post_view.get(entry)
+        changed = any(
+            pre_view.get(e.address, _MISSING) != post_view.get(e.address, _MISSING)
+            for e in p.edits)
         if not p.edits and p.status is not None:
             status = p.status          # a declared reason, e.g. NO_VALID_ALTERNATIVE
         else:

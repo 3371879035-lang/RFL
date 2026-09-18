@@ -1,14 +1,14 @@
 {
   "check": "b1 interface gate mutation self-check",
-  "n_mutations": 9,
-  "n_gate_is_real": 9,
+  "n_mutations": 13,
+  "n_gate_is_real": 13,
   "n_not_a_gate": 0,
   "tree_restored_byte_identical": true,
   "file_digests": {
     "src\\rfl_rebuild\\b1\\laws.py": "096888fc4a7e0bace5a373eaef7ed30350d7cf6ba374bedb15578431f2d75417",
-    "src\\rfl_rebuild\\b1\\runner.py": "8bbe5621f276c988769ab1bef63de0e972357fdf49b62fdcc53f51ebe07ab5e0",
-    "src\\rfl_rebuild\\b1\\targets.py": "32d09a132f57ce1e62b054c4305c797c6f500cff04ab5af67e1b839284fe0d55",
-    "src\\rfl_rebuild\\b1\\tier.py": "29619c0e1239dd7d2b0eb25136e6976831913e844905368bf3c1ebdb61e7f32b"
+    "src\\rfl_rebuild\\b1\\runner.py": "96a52ffd4d5f1ff4aa5e20248445487f47833fcbc56018ae3e6a85d4d01f35ca",
+    "src\\rfl_rebuild\\b1\\targets.py": "d3720c61ff793975f9f4b947e8f9d418322be88fe11025f07b0c39b94c1d3076",
+    "src\\rfl_rebuild\\b1\\tier.py": "2e3477f51e824ea1785df987bf9f68cb6ec3986cc60ccfe3575d2f4f2da2a9bc"
   },
   "results": [
     {
@@ -46,6 +46,46 @@
       "hole": "a law may declare plan(self, addresses, targets, snapshot) again",
       "gate": "test_8j_a_law_cannot_re_acquire_a_store_handle",
       "site": "src\\rfl_rebuild\\b1\\runner.py",
+      "matched": 1,
+      "exit_code": 1,
+      "tail": "!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "receipt_first_entry_only",
+      "hole": "the receipt tests only the first entry of an address-plan, so a k>1 plan that changed the store reports EVALUABLE_NOOP and the ledger invariant kills the run",
+      "gate": "test_8s_a_multi_entry_address_plan_reports_applied_from_any_entry",
+      "site": "src\\rfl_rebuild\\b1\\runner.py",
+      "matched": 1,
+      "exit_code": 1,
+      "tail": "!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "descriptor_extractor_unchecked",
+      "hole": "a cell field with no extractor is accepted at construction and blows up as a KeyError inside delivery",
+      "gate": "test_8t_a_descriptor_missing_an_extractor_fails_at_construction",
+      "site": "src\\rfl_rebuild\\b1\\tier.py",
+      "matched": 1,
+      "exit_code": 1,
+      "tail": "!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "cells_left_mutable",
+      "hole": "the cell table is left as a plain dict, so the frozen information contract can be edited in place at runtime",
+      "gate": "test_8u_the_cell_table_and_extractors_are_read_only",
+      "site": "src\\rfl_rebuild\\b1\\tier.py",
+      "matched": 1,
+      "exit_code": 1,
+      "tail": "!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "tier_truthiness",
+      "hole": "Tier keeps a truth value, so `if tier:` silently collapses all four members into one branch",
+      "gate": "test_8v_tier_has_no_truth_value",
+      "site": "src\\rfl_rebuild\\b1\\tier.py",
       "matched": 1,
       "exit_code": 1,
       "tail": "!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
