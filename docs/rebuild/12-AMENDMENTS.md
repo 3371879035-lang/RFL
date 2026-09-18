@@ -3675,15 +3675,23 @@ the old rollout**.
 
 ## 63. A76 — V0.3R B1 update-law contract
 
-**Status: draft — pending review; no implementation authorised.** B1 is specified
-here and implemented nowhere: no `kernel.py` change, no store, no run. A75 (§62) owns
-*where a write is legal*; this section owns only
+**Status: frozen — specification only.** B1 is specified here and implemented nowhere:
+no `kernel.py` change, no store, no run. A75 (§62) owns *where a write is legal*; this
+section owns only
 
 $$\boxed{\text{given a legal persistent write address, what update operation is applied?}}$$
 
 $$W^{\text{update}} \longrightarrow \Delta W$$
 
 Attribution, target selection and B2 are **out of scope** and must not reappear here.
+The review closed over two rounds: the first draft's unreachability proof for the $a^+$
+guard was **withdrawn and replaced by measurement** (§63.3), the counterfactual was
+rewritten as a full-episode replay with a prefix invariant (§63.4), A75's global
+`OracleRestore` was moved out of the matrix in favour of a locality-matched
+`LocalOracleRestore` (§63.8), and the credit-unit→store-key map became the explicit
+$\rho_A$ resolver (§63.10); the second round renamed the address-level status so as not
+to collide with A63's `NOT_EVALUABLE` (§63.3). **Any further change to this section
+requires a new amendment; it is not to be rewritten in place.**
 
 ### 63.1 Information tiers, frozen
 
@@ -3765,7 +3773,35 @@ Since it is established by enumeration and not by a structural proof, this is an
 **exhaustive support invariant**, and it must be re-measured if the D domain or the
 support changes.
 
-**The guard is live, so `NOT_EVALUABLE` enters the reporting rules.**
+**The guard is live, so the address carries a status — but not `NOT_EVALUABLE`.**
+
+$$\boxed{a^+ \text{ absent} \;\Rightarrow\;
+\begin{cases}\texttt{status} = \texttt{NO\_VALID\_ALTERNATIVE}\\
+\Delta W = 0\\
+\text{the scene remains in the population}\end{cases}}$$
+
+$\texttt{NOT\_EVALUABLE}$ already means something else and must not be reused here. A63
+(§50) freezes it for a **metric or cause with no evaluable class**, which is *dropped
+from the macro denominator* — the opposite of what is needed at a
+`NO_VALID_ALTERNATIVE` address, where the future consequence stays perfectly evaluable
+and the scene must **not** be dropped. A75 §62.12 already uses `NOT_EVALUABLE` in that
+A63 sense, for the `RecoveryFraction` denominator, so reusing it at the address level
+would collide **inside the same document**.
+
+**Ledger status taxonomy, frozen.** Three different ways of "no write happened" must
+not be conflated:
+
+$$\boxed{\{\texttt{APPLIED},\ \texttt{EVALUABLE\_NOOP},\
+\texttt{NO\_VALID\_ALTERNATIVE},\ \texttt{PROTOCOL\_ERROR}\}}$$
+
+| status | meaning |
+|---|---|
+| `APPLIED` | the law wrote at least one scalar |
+| `EVALUABLE_NOOP` | the law ran and correctly changed nothing (e.g. `DeleteFactualPatch` with no patch) |
+| `NO_VALID_ALTERNATIVE` | the law's target does not exist at this address, so the law could not run |
+| `PROTOCOL_ERROR` | an invariant broke — atomicity (§63.10) or the CF prefix equality (§63.4) |
+
+and the address-level rules:
 
 * affected: the $a^+$-dependent laws only — `SetAlternative`,
   `CounterfactualReturnWrite`, `DualReturnWrite`. `FactualReturnWrite` and
@@ -3774,15 +3810,14 @@ support changes.
   prohibited: a half-committed `DualReturnWrite` would violate §63.10's atomicity, and
   writing only the factual entry would silently turn the arm into `FactualReturnWrite`
   at exactly those addresses;
-* the address is recorded `NOT_EVALUABLE` in the ledger with $\Delta W = 0$; it still
-  counts as an addressed context, with no scalar change — the same treatment
-  `DeleteFactualPatch`'s patchless case gets;
+* it still counts as an **addressed context** with no scalar change, so the budget of
+  §63.10 is unaffected;
 * the **scene stays in the population**. Excluding it would be selection bias, and a
   systematic one: the empty-alt addresses *are* co-fault addresses, so dropping them
   would silently delete the composition cases A75 §62.9 exists to validate;
-* the `NOT_EVALUABLE` count and fraction are reported **per arm and per fire pattern**,
-  because the rate is pattern-dependent (0% for `D` alone, 2.38% and 4.76% for the two
-  co-fault patterns) and an aggregate would hide a co-fault-specific effect.
+* the `NO_VALID_ALTERNATIVE` count and fraction are reported **per arm and per fire
+  pattern**, because the rate is pattern-dependent (0% for `D` alone, 2.38% and 4.76%
+  for the two co-fault patterns) and an aggregate would hide a co-fault-specific effect.
 
 ### 63.4 The counterfactual target
 
@@ -3809,7 +3844,7 @@ $$G_t^{CF} = \sum_{j=t}^{T_{CF}-1} r_j^{CF}$$
 and the extraction carries a mechanical invariant:
 
 $$\boxed{\text{trace}^{CF}_{0:t-1} = \text{trace}^{F}_{0:t-1}
-\quad\text{else PROTOCOL ERROR}}$$
+\quad\text{else } \texttt{PROTOCOL\_ERROR} \text{ (§63.3)}}$$
 
 The two traces must agree on everything before the intervention — if they differ, the
 counterfactual is not counterfactual to *this* episode and the number is meaningless.
@@ -3871,9 +3906,9 @@ $L_0$ — **`DeleteFactualPatch`**, a **total** operation:
 
 $$\boxed{P_D^L \leftarrow P_D^L \setminus \{x_t\}}$$
 
-If no patch exists at that address, $\Delta W = 0$ and the ledger records a **no-op**.
-It must **not** be labelled `NOT_EVALUABLE`, or the patchless cases — which in T are
-all of them — would be selectively excluded.
+If no patch exists at that address, $\Delta W = 0$ and the ledger records
+`EVALUABLE_NOOP` (§63.3). It must **not** be recorded as an evaluability failure, or the
+patchless cases — which in T are all of them — would be selectively excluded.
 
 $L_1$ — **`SetAlternative`**:
 
@@ -3957,6 +3992,19 @@ Both are $L_3$ in information terms — each needs the architecture's healthy re
 but they differ in **scope**, and scope is what locality constrains. Which one B2 uses
 as its denominator is a **B2** decision and is deliberately not settled here.
 
+**Aliases, not new treatments.** Only $D_Q$'s local oracle is a genuinely new
+operation. On the other three architectures it coincides with a lower-tier law applied
+at the credited address:
+
+$$\texttt{LocalOracleRestore} = \texttt{DeleteFactualPatch} \ \text{on}\ D_{patch},
+\qquad = X_{id}\ \text{on}\ X, \qquad = P_{id}\ \text{on}\ P$$
+
+$$\boxed{\text{these aliases are NOT counted as new independent treatments}}$$
+
+A tier is an **information envelope**, not a requirement that each level introduce a new
+algorithm — `NoWrite` likewise repeats at every tier. Writing the aliases out is what
+stops the same operation being counted twice when the arm list is assembled.
+
 As in A75, the ledger counts only addresses and scalars that actually changed, so a
 restore that touches nothing already-healthy is not billed as an edit.
 
@@ -4039,9 +4087,14 @@ separately (A75 §62.9).
 
 ### 63.12 What this amendment does not do
 
-* it implements nothing, and in particular does not add $C_P^L$ or $C_X^L$, which
-  A75 §62.11 specifies but does not build; $P_{id}$ and $X_{id}$ therefore have no
-  referent yet, and **B1 cannot be run before that extension lands**;
+* it implements nothing. The two nodes are **not** in the same state, and A75 §62.4
+  already records the difference: $P_{id}$ has **no** ordinary baseline $C_P^L$ channel
+  and **no** store, so it has no referent at all; whereas $X_{id}$ **already** has the
+  baseline read channel (`controller`), a persistent caller-owned mapping, and the
+  address `ControllerSite(s, a^{cmd})` — what it lacks is A75's **contract check** on
+  the learner-owned baseline output. The earlier phrasing that both "have no referent
+  yet" was wrong for $X$: its referent exists, but the write path is not yet a legal
+  V0.3R learner path. **B1 cannot be run before those two extensions land**;
 * it does not define any B2 endpoint or formula ($HarmRate$, $\Delta G$,
   `RecoveryFraction` remain open). **Which** $L_3$ object serves as their denominator —
   the locality-matched `LocalOracleRestore` of §63.9 or A75's global `OracleRestore` —
@@ -4095,7 +4148,7 @@ section above; the most recent is:
 | **A73** | locator evidence quotient and public feasible support: $X^{\text{loc}}_{0.2}=(\text{rows},Z^{\text{fire}})$ with $q$ dropping the redundant feedback channel, so **893 is the locator main gate** and $X^{\text{obs}}=(rows,feedback,Z^{\text{fire}})$'s **4,513** is only the observational refinement; $\mathcal L_{\text{public}}$ = canonical grammar candidates **passing public forward-feasibility**; route C's semantic source is `gate_stage2._domains` + `canonicalise`; support closure as **exact set** | **P0 (spec)** | frozen — rows-only **licensed by the 4513→893 gate** (9/9 PASS); one violation voids it and reverts the gate to 4513. **Its census Module row and endpoint-degeneracy claim are VOIDED by A74** |
 | **A74** | the A73 census chose Module's H/L from $\Gamma^\ast$ instead of $Z^{\text{fire}}$, so evaluator truth entered the proposal construction; footprint is exactly $Z^{\text{fire}}=00000$ (**17,280 worlds, 43.86% of DGP mass**), where the frozen rule abstains but reading the truth emitted $H$, turning abstention into a coarse substantive verdict (violating $\varnothing \neq \{\texttt{Unknown/NoWrite}\}$). Corrected: Module Cov(count/mass) **0.9834/0.5614**, FCR **0.7958/0.4622**; the co-primary pair is **not** degenerate — Coverage punishes abstention, FCR over-credit | **P0 (census/implementation)** | frozen — semantic canary + information-flow assertion added, both with demonstrated power; **no design change**, only the frozen rule restored |
 | **A75** | V0.3R semantic rebase: the subject becomes the **persistent learning update**, not runtime repair, with $R^{\text{mech}} \neq W^{\text{update}}$; $B_0: \Gamma_r^\ast \to \mathcal W(\Gamma_r^\ast)$ outputs a candidate family; seven ownership criteria including **addressable** and **contract-preserving** (learner baseline has **no fault privilege**); **regime-specific** stratification $S_{T,\pm}$ / $S_{P,\pm}$ with **no whole-support primary mean**; regimes **T** (harm / non-internalisation), **P** (benefit / recovery, future endogenous to $\Delta W$), **I** (secondary, no numbers yet); a **new** persistent-manifestation family $J^L = (J_P^L, J_D^L, J_X^L)$ defined by **(predicate, source-separated intermediate)** while **$Z^{\text{fire}}$ is left untouched**; **$\Gamma_T^\ast \neq \Gamma_P^\ast$** with formal manifestation address sets; a fair decision defect family at the induced-policy layer with address-count budgets; a split `FutureConsequenceView` / `UpdateLedger` with **dependency closure**, a **constructor-flow gate** and a laundering mutation; and two authorised-but-unimplemented kernel extensions | **P0 (spec)** | **frozen — specification only, no implementation authorised**; further change requires a new amendment; `08` still to be rebased |
-| **A76** | V0.3R B1 update-law contract: B1 owns only $W^{\text{update}} \to \Delta W$; four information tiers $L_0$–$L_3$; Decision targets rewritten as **local return-to-go** $G_t^F$ / $G_t^{CF}$; the counterfactual is a **full-episode replay** with only $do(d_t{=}a_t^+)$ added and a prefix-equality invariant, never a suffix simulator; the $-1$ constant and $+1$ target **retired** (not rescaled); `PositiveAlternative` retired as information-deficient at $L_1$; the $a^+$ guard is **live** (3,600 empty-alt addresses, co-fault only) so `NOT_EVALUABLE` enters the reporting rules; a locality-matched `LocalOracleRestore` inside the matrix with A75's global `OracleRestore` outside it; the $\rho_A$ credit-unit→store-key resolver; and three execution invariants (regime-blind, address locality, snapshot + atomic commit) | **P0 (spec)** | **draft — pending review; no implementation authorised** |
+| **A76** | V0.3R B1 update-law contract: B1 owns only $W^{\text{update}} \to \Delta W$; four information tiers $L_0$–$L_3$; Decision targets as **local return-to-go** $G_t^F$ / $G_t^{CF}$; the counterfactual is a **full-episode replay** with only $do(d_t{=}a_t^+)$ added plus a prefix-equality invariant, never a suffix simulator; the $-1$ constant and $+1$ target **retired** (not rescaled); `PositiveAlternative` retired as information-deficient at $L_1$; the $a^+$ guard is **live** (3,600 empty-alt addresses, co-fault only: `D+E` 2.38%, `X+D` 4.76%, `D` alone 0%) so the address carries `NO_VALID_ALTERNATIVE` with a frozen ledger taxonomy `{APPLIED, EVALUABLE_NOOP, NO_VALID_ALTERNATIVE, PROTOCOL_ERROR}` — **not** A63's `NOT_EVALUABLE`; a locality-matched `LocalOracleRestore` inside the matrix with A75's global `OracleRestore` outside it and the lower-tier aliases declared non-treatments; the $\rho_A$ credit-unit→store-key resolver; and three execution invariants (regime-blind, address locality, snapshot + atomic commit) | **P0 (spec)** | **frozen — specification only, no implementation authorised**; further change requires a new amendment |
 
 ---
 
