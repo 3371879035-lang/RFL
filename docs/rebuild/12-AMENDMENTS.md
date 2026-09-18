@@ -4141,6 +4141,383 @@ separately (A75 §62.9).
 * it is a **draft**: the B1 review has not closed, and this section must not be cited
   as frozen until it has.
 
+## 65. A77 — the $D_Q$ row: information contract, $Q$ store, and the scalar ledger
+
+**Status:** **P0 (spec).** **Frozen — specification only. This amendment authorises no
+implementation**; the $D_{patch}$ slice stays as built, and each later step is a separate
+commit under §65.12's order. Further change requires a new amendment.
+
+This specifies the $D_Q$ row of A76 §63.9, and the one thing that must change before it can
+exist: `requires_alternative`, a boolean, is not an information contract.
+
+### 65.1 The tier is a closed opaque enum, declared exactly once
+
+$$\boxed{\texttt{Tier} = \{L_0^{\text{factual}},\ L_1^{\text{corrective}},\
+L_2^{\text{counterfactual}},\ L_3^{\text{oracle}}\}}$$
+
+Every law declares **exactly one** tier. The undeclared value is the sentinel `None`, never a
+default tier, and the accepted type is tested as `type(tier) is Tier`. An opaque `Enum`, not
+an `IntEnum` and not a `bool`: no ordering, no arithmetic, no truthiness inference. `0`,
+`True`, `1`, `"L0_factual"` and `Tier` itself are all rejected.
+
+The two failures the boolean caused, and which this replaces: $D_Q$'s $L_0$ arm **needs** an
+envelope, and the absent $L_1$ cell of $D_Q$ had the **same encoding** as "$L_0$ needs
+nothing".
+
+### 65.2 Delivery is a property of the cell, and the field set is exact
+
+$$\boxed{\text{fields}(\textbf{architecture},\ \ell) = \text{the complete field set handed
+to every law in that cell}}$$
+
+$$\boxed{\text{a law receives exactly } \text{fields}(\alpha,\ell)\text{ — no more, no less}}$$
+
+This is keyed by **architecture**, not by a store kind: a value-free store does not imply an
+empty $L_0$ field set ($X_{id}$ is $L_0$ and carries the factual $a^{cmd}$), and two
+value-free architectures do not share $L_1$ content ($P$'s is $z^{\text{proposal}}$, which is
+$\rho_P$'s *key*, and is why $P_{id}$ is $L_1$). Two rows are frozen here:
+
+| architecture | $L_0$ | $L_1$ | $L_2$ | $L_3$ |
+|---|---|---|---|---|
+| $D_{patch}$ | $\varnothing$ | $\{a^+\}$ | ill-typed | $\varnothing$ |
+| $D_Q$ | $\{a_t^F,\ G_t^F\}$ | **no substantive treatment** (§65.3) | $\{a_t^F,\ G_t^F,\ a_t^+,\ G_t^{CF}(a_t^+)\}$ | $\varnothing$ |
+
+$X$ and $P$ keep A76 §63.7 unchanged and get their own rows when implemented.
+
+$$\boxed{F_t := (a_t^F,\ G_t^F)}$$
+
+The action is in the field set because $Q_D^L$'s entry is indexed by it and neither the
+credited address nor the envelope otherwise carries it.
+
+**Exactness.** $\operatorname{keys}(\text{envelope}) = \text{fields}(\alpha,\ell)$: an extra
+delivered field is a `PROTOCOL_ERROR`, exactly as a non-credited address key is. The
+$D_{patch}$ rule is the special case $\text{fields}=\varnothing$.
+
+**Same cell, same envelope.**
+
+$$\boxed{\text{same cell} \Rightarrow \text{same information envelope}}$$
+
+All arms in a cell receive the identical field set, whether or not they read every field, and
+**the reference is constructed through the same field construction as the treatments**. The
+only difference permitted between arms of one cell is the update law, i.e. the write set. If a
+field constructor fails with `PROTOCOL_ERROR`, it fails for the cell — the reference may not
+bypass it and emit a normal result, or the treatment and reference populations diverge.
+
+**Where $Q_D^\ast$ may appear.**
+
+$$\boxed{Q_D^\ast \in \text{read path} \cup \text{identity canonicalisation and scalar
+accounting} \cup \text{evaluator-side target and reference validation}}$$
+
+and it is delivered to no law. $L_3$ is a statement of **semantic authorisation** ("restore
+the credited context to the architecture's healthy referent"), not of what is handed over.
+
+**Typed compatibility, executable.**
+
+$$\boxed{\text{a law that }\textbf{writes a scalar store}\ \wedge\ \ell = L_1
+\Longrightarrow \texttt{PROTOCOL\_ERROR}}$$
+
+$L_1$ supplies $a^+$ **without its value**, and on a scalar store every write is a value. The
+rule constrains **writing** laws; it does not make `NoWrite` ill-typed.
+
+### 65.3 The same-tier reference is an object
+
+$$\boxed{D_Q\times L_1 \text{ has no substantive compatible treatment } \Rightarrow
+\text{ no comparison cell } \Rightarrow \text{ no same-tier reference}}$$
+
+$$\boxed{\texttt{NoWriteRef}(\ell): \text{ one instance per cell with a substantive treatment}}$$
+
+All instances share **the same** no-op plan function object and differ only in the tier they
+declare; they are not independent treatments. The $D_{patch}$ slice's registered `NoWrite`
+**is** its $\ell = L_0$ instance, so its registry and arm table are unchanged.
+
+The tier is recorded in the **arm/cell descriptor**, not in the per-address receipt and not in
+`UpdateLedger.canonical()`.
+
+### 65.4 The $Q$ store and the injected reference view
+
+$$\boxed{\texttt{QAddress}(s,z,m,a)}, \qquad
+owner_Q\bigl(\texttt{QAddress}(s,z,m,a)\bigr) = \texttt{DecisionAddress}(s,z,m)$$
+
+| key | role | budgeted |
+|---|---|---|
+| `DecisionAddress` | credited context, ledger receipt, locality unit | **yes**, $B_{\text{addr}}$ |
+| `QAddress` | one scalar entry in that context's row | no — reported as $N_{\text{scalar}}$ |
+
+$$Q_D^L : \texttt{QAddress} \rightharpoonup \mathbb{R}_{\text{finite}}, \qquad
+Q^{\text{eff}}(x,a) = \begin{cases} Q_D^L(x,a), & (x,a) \in Q_D^L\\
+Q_D^\ast(x,a), & \text{otherwise}\end{cases}$$
+
+$$\boxed{\text{an absent entry means ``no deviation'', not ``the value is } 0\text{''}}$$
+
+$$Q_D^L(x,a) \leftarrow Q_D^\ast(x,a) \;\Longrightarrow\; Q_D^L.\text{pop}(x,a)$$
+
+$$\boxed{\texttt{QReferenceView} \text{ is injected, frozen and read-only};
+\quad \text{no store or runner code calls } \texttt{solve\_reference()}}$$
+
+$$a_t^L = \arg\max_{a \in A_z(m,s)} Q^{\text{eff}}(x_t,a) \quad\text{(lowest action index)}$$
+
+$$\boxed{P_D^L \neq \varnothing \ \wedge\ Q_D^L \neq \varnothing \Longrightarrow
+\texttt{PROTOCOL\_ERROR}}$$
+
+No priority is defined between the two stores: $D_{patch}$ and $D_Q$ are different
+architecture treatments, no legal experiment populates both, and the check is a
+**construction-time precondition** evaluated before any episode or read adapter exists.
+
+`fingerprint()` gains a fourth component over `QAddress` rows in which the value is encoded
+with `float.hex()`; NaN and infinities are rejected at the transaction boundary.
+
+### 65.5 Domain closure
+
+$$\boxed{\operatorname{dom}(Q_D^L) \subseteq \operatorname{dom}(\texttt{QReferenceView}),
+\qquad \text{all values finite}}$$
+
+$$\boxed{\operatorname{dom}(\texttt{QReferenceView}) = \{(x,a) : x \text{ a legal decision
+context},\ a \in A_z(m,s)\}}$$
+
+Violations fail stop at the transaction boundary. The reference domain is data-dependent
+rather than a closed enum, so the slice passes the transaction an injected **domain oracle**.
+An entry outside it would change the fingerprint and clear `healthy` while the read path never
+reads it — a persistent defect invisible in behaviour.
+
+**Exhaustive-support invariant.** On the frozen support the reference row set **is** the
+admissible-entry set: 13,824 rows, **0** with `set(row) != set(A_z(m,s))` (0 partial, 0
+inadmissible extras), row-size histogram $\{1{:}2592, 2{:}1728, 3{:}6480, 4{:}1872, 5{:}1152\}$
+identical to the $\lvert A_z(m,s)\rvert$ histogram row for row. This is what makes the domain
+contract a checkable predicate. Re-measure if the solver or the grid changes.
+
+### 65.6 $F_t$, $G_t^F$, and the return-to-go fold
+
+$$\boxed{F_t = f\bigl(I^{\text{factual}}_{0:T}\bigr)}$$
+
+$$\boxed{a_t^F = \text{rows}[t].a^{cmd}, \qquad
+G_t^F = \sum_{j=t}^{T_F-1} \text{rows}[j].reward}$$
+
+$F_t$ is built from the **learner-visible rows only** — the row tuple of the observation model,
+which already carries `a_cmd` and `reward`. It is not built from the evaluator's latent trace.
+The two are numerically identical on any consistent run; the same value reached by a different
+construction path is a different information contract, so the builder's input type is the rows
+and it is handed no trace, mask, reference or world identity.
+
+$$\boxed{G_T = 0, \qquad G_j = r_j + G_{j+1} \quad (j = T-1, \ldots, t)}$$
+
+**The return-to-go uses the frozen reverse Bellman fold, for $G^F$ and $G^{CF}$ alike.**
+Left-to-right `sum`, `math.fsum`, and any other reordering are **prohibited**. The reason is
+not numerical taste: on a healthy trajectory $G_t^F$ must be **bit-identical** to
+$Q_D^\ast(x_t,a_t^F)$, or the write lands next to the reference instead of on it, the
+canonicalisation to deletion never fires, and a minimal override appears — clearing `healthy`
+and corrupting $N_{\text{scalar}}$, $\Sigma$ and the fingerprint. No epsilon
+canonicalisation may be introduced to paper over it; that would add a free parameter.
+
+Measured on the healthy support (48 trajectories $= \kappa \times \varphi \times z_0$, 278
+decision addresses): the frozen fold is bit-identical to the DP at **278/278**, while
+left-to-right `sum` and `math.fsum` each mismatch **92/278**. `fsum` is the more accurate
+summation and still fails: what must match is the DP's *construction path*, not the real
+number.
+
+Note, recorded because it is what makes the fold exact: `solve_reference` has two branches,
+`row[a] = res.reward` when the step is terminal and `res.reward + v[next]` otherwise, so the
+final step's value is $r$ rather than $r + 0$. The two agree bitwise for every finite float
+except $-0.0$, and no reward on this support is $-0.0$ (measured: 0 occurrences). The clause
+above is normative in the form written; the terminal-branch equivalence is the reason it holds.
+
+$G_t^F$ is never replaced by $Q_D^\ast$: a faulted episode's observed suffix return is the
+target, and substituting the reference would make the $L_0$ law an oracle in disguise.
+
+### 65.7 $G_t^{CF}$ is a full-episode replay
+
+$$\text{config}^{CF} = \bigl(\kappa, \tau, \text{mask}, z^{\text{fault}}, z_0,
+\text{controller}, C_P^L, \texttt{DecisionReadView}_{pre}, \text{mode A}\bigr)
+\equiv \text{config}^{F}$$
+
+$$\boxed{\texttt{DecisionReadView}_{pre} = \text{the complete pre-update decision read path}
+}$$
+
+$$\boxed{\text{interventions}^{CF} = \bigl(\text{interventions}^{F} \setminus
+\{do(d_t{=}\cdot)\}\bigr) \cup \{do(d_t = a_t^+)\}}$$
+
+$$\boxed{G_t^{CF}(a_t^+) = \sum_{j=t}^{T_{CF}-1} r_j^{CF}}$$
+
+One full-episode replay from $t = 0$ under the factual episode's own configuration, differing
+in **exactly one** thing: the decision node at $t$. It is never a suffix simulator.
+
+The decision read path is part of the configuration because the replay visits steps **after**
+$t$ and the decision channel there consults the learner's persistent state. Omitting it would
+silently revert to the reference provider whenever an existing learner decision defect is met,
+violating A76's "all targets from the same pre-update learner state" and measuring $G_t^{CF}$
+against a different learner than $G_t^F$. The factual trace is likewise produced under the
+frozen pre-update learner state.
+
+Replacement rather than addition is required: two decisions at one $t$ are `MALFORMED`, so
+"add" is ill-defined exactly when a factual intervention already sits at $t$.
+
+$$\boxed{\text{rows}\bigl(\text{trace}^{CF}\bigr)[0:t] = \text{rows}\bigl(\text{trace}^{F}\bigr)[0:t]
+\quad \text{else } \texttt{PROTOCOL\_ERROR}}$$
+
+over the observation model's row schema, whose rows already carry $z$ and $m$, so this single
+comparison subsumes the option-in-force and context equalities. A violation is a fail-stop —
+never a $0$ target, which would enter B2 indistinguishable from a legitimate zero
+counterfactual return. The invariant is a second witness, not the closure of the
+decision-view requirement: it fires only when the divergence lands in the prefix.
+
+The frozen kernel already supports this — `do(d_t)` exists with priority
+`do(d_t) > Z_D > command_provider` — so no kernel extension is required.
+
+### 65.8 The $D_Q$ law matrix
+
+| tier | arm | write | plan entries $k$ |
+|---|---|---|---|
+| reference | `NoWriteRef(ℓ)` | — | 0 |
+| $L_0$ | `FactualReturnWrite` | $Q_D^L(x_t,a_t^F) \leftarrow G_t^F$ | 1 |
+| $L_1$ | **— none —** | — | — |
+| $L_2$ | `CounterfactualReturnWrite` | $Q_D^L(x_t,a_t^+) \leftarrow G_t^{CF}(a_t^+)$ | 1 |
+| $L_2$ | `DualReturnWrite` | both, one transaction | 2 |
+| $L_3$ | `LocalOracleRestore` | restore the credited row (§65.9) | $0 \le k \le \lvert A_z(m,s)\rvert$ |
+
+$\alpha = 1$ for the $L_0$/$L_2$ arms; the $L_3$ restore is not a backup and has no $\alpha$.
+$\alpha < 1$ is a secondary sensitivity study and may never pick a winner or rescue a primary
+result.
+
+$$\text{write set}\bigl(\texttt{CounterfactualReturnWrite}\bigr) = \{(x_t,a_t^+)\}, \qquad
+\text{write set}\bigl(\texttt{DualReturnWrite}\bigr) = \{(x_t,a_t^F),(x_t,a_t^+)\}$$
+
+$$\boxed{\text{the entry write-sets are in a subset relation; the treatments are not
+equivalent and must not be collapsed}}$$
+
+Both targets are computed from the pre-update state and committed atomically; the factual
+entry may not be read as part of computing the counterfactual one. At most two entries change
+at one addressed context, which carries exactly **one** receipt.
+
+$\lvert\text{independent treatments}\rvert(D_Q) = 4$ — references excluded; the $L_3$ arm is a
+genuinely new operation on this architecture (A76 §63.8).
+
+The absence of an $L_1$ arm is enforced by §65.2's scalar-write rule and exact field delivery,
+not by the registry's silence.
+
+**Zero revisit.** $\text{update applied} \not\Rightarrow \text{the future trajectory revisits
+the updated address}$. Such a run is **kept and scored**. Future exposure is a B2 variable: it
+is not one of A75's $S_{r,\pm}$ or $S_{T,\pm}/S_{P,\pm}$ populations, it may not redefine
+them, and nothing is removed from a denominator because of it.
+
+### 65.9 owner-based locality, and the row operation
+
+$$\boxed{\forall e \in \text{Plan}(x):\ owner_\alpha(e.\text{address}) = x}, \qquad
+\boxed{\{\text{Plan}.\text{address}\} = \text{the credited addresses, each exactly once}}$$
+
+Each credited context has exactly one address-plan, of $k$ entry edits, and exactly **one**
+receipt whatever $k$ is; the whole scene's edits enter **one** transaction. On $D_{patch}$
+$owner$ is the identity, so the equality "credited = plan = edit" is this rule's special case,
+not the rule.
+
+Two plan-shape rules, so that no semantics is invented for states that cannot arise: an
+address-plan contains **either** entry edits **or** one row operation, never both; and two
+entry edits to the same `QAddress` in one address-plan are a `PROTOCOL_ERROR` (last-write-wins
+would make the result depend on edit order).
+
+$$\boxed{L_3:\ \text{delete every override in the credited context's row, returning it to }
+Q_D^\ast}$$
+
+The law emits the row-scoped structural operation; the slice lowers it against the pre-state:
+
+$$\texttt{RestoreRow}(x_t) \longrightarrow \{Q_D^L(x_t,a) \leftarrow \bot\}_{a \in A_z(m,s),\
+(x_t,a) \in Q_D^L}$$
+
+so $k$ is the number of overrides actually present in that row, every lowered delete changes
+the store, and $owner_Q(\texttt{RestoreRow}(x_t)) = x_t$ keeps it under the same locality rule
+as an entry edit. Lowering needs no reference: `RestoreRow` returns the row to $Q_D^\ast$ by
+construction, never by writing $Q_D^\ast$ values. Reference-valued entries are never stored
+explicitly — that is the whole content of the $L_3$ choice, and it is why the delivery is
+empty.
+
+### 65.10 The scalar ledger
+
+$$\boxed{\text{scalar\_metrics\_applicable} = \text{the slice's store is scalar-valued}}$$
+
+A property of the slice, not of the outcome: true for every $D_Q$ run including one that
+changed nothing.
+
+$$\boxed{\Delta(e)=\begin{cases}
+\lvert q_{\text{post}} - q_{\text{pre}}\rvert, & \text{override} \to \text{override}\\
+\lvert q_{\text{post}} - Q_D^\ast(e)\rvert, & \bot \to \text{override}\\
+\lvert Q_D^\ast(e) - q_{\text{pre}}\rvert, & \text{override} \to \bot
+\end{cases}}$$
+
+$$N_{\text{scalar}} = \#\{e : \text{the entry changed}\}, \quad \Sigma = \sum_e \Delta(e),
+\quad \text{Max} = \max_e \Delta(e)$$
+
+The delta is measured against the **effective** $Q$, not against an arbitrary zero: in a
+sparse store "absent" is $Q_D^\ast(e)$, not $0$.
+
+$$\boxed{N_{\text{scalar}} = 0 \iff \Sigma = 0 \iff fp_{\text{pre}} = fp_{\text{post}}
+\qquad\text{within the scalar slice}}$$
+
+This holds because canonicalisation leaves every genuinely changed entry with
+$q_{\text{post}} \neq Q_D^\ast(e)$, $q_{\text{pre}} \neq Q_D^\ast(e)$ or
+$q_{\text{pre}} \neq q_{\text{post}}$, so $\Delta(e) > 0$; the ledger is thereby a canary for
+the canonicalisation rule. Enforced alongside it: $N_{\text{scalar}} = 0 \iff$
+`n_changed_addresses` $= 0$; $N_{\text{scalar}} \ge$ `n_changed_addresses`;
+$0 \le \text{Max} \le \Sigma$ with $\text{Max} > 0 \iff \Sigma > 0$; and per addressed context
+$N_{\text{scalar}} \le 2$ for `DualReturnWrite` and $\le \lvert A_z(m,s)\rvert$ for
+`LocalOracleRestore`.
+
+A75 §62.9 stands unrepealed: these numbers are accounting, they may not determine a status,
+and `APPLIED` remains "the store changed".
+
+### 65.11 Gate obligations
+
+Each is an obligation on the implementation, with the failure it must be able to detect.
+
+| # | obligation | failure it detects |
+|---|---|---|
+| G1 | tier is a `Tier` and nothing else | an integer or boolean tier silently accepted |
+| G2 | delivery equals `fields(α,ℓ)` exactly | a law handed a field its cell excludes, or an $L_0$ law handed $a_t^+$ |
+| G3 | scalar-write law at $L_1$ rejected | `PositiveAlternative` returning under a new name |
+| G4 | the $L_0$ arm is unaffected by the $L_2$ constructor | the whole cell built unconditionally |
+| G5 | CF prefix equality fails stop | a replay built from the wrong config |
+| G6 | empty store reproduces the baseline policy row for row | an invented tie-break in the read path |
+| G7 | $\Delta$ against $Q_D^\ast$ for created/deleted entries | a near-reference write reading as a huge edit |
+| G8 | $L_3$ writes only the credited row | a widened restore |
+| G9 | `DualReturnWrite` is one atomic transaction | a half-committed pair |
+| G10 | no $L_1$ $D_Q$ arm is registered or scored | a stub $L_1$ scalar law |
+| G11 | `FactualReturnWrite` targets $G_t^F$, not $Q_D^\ast$ | the $L_0$ law becoming an oracle |
+| G12 | the $D_{patch}$ suite and its ledger bytes are unchanged by the slice refactor | the refactor moving a patch number |
+| G13 | co-residence is a construction-time fail-stop | two stores silently resolved by a priority |
+| G14 | the canonicalisation canary holds | an assumed rather than enforced equivalence |
+| G15 | the CF config carries `DecisionReadView_pre` | a replay reverting to the reference provider |
+| G16 | a non-total reference row fails stop | a `KeyError` escaping the read path |
+| G17 | $F_t$'s builder accepts rows only | the $L_0$ builder reading the trace |
+| G18 | $L_3$ delivery is empty | reference values delivered to a law |
+| G19 | locality is checked through $owner$ | an edit owned by another credited context |
+| G20 | the $Q$ domain oracle is enforced at commit | an entry the read path can never read |
+| G21 | the reference instances share one plan and do not count as treatments | a reference inflating the arm count |
+
+The return-to-go fold (§65.6) is a G5-class obligation: left-to-right `sum` or `fsum` must be
+observably rejected on a healthy trajectory.
+
+### 65.12 What this amendment does not do
+
+* it implements nothing. Every step below is a separate commit, in this order, and no commit
+  may mix the refactor with new semantics:
+
+$$\boxed{\text{generic slice refactor only} \rightarrow \text{Q store / read substrate}
+\rightarrow L_0\ \texttt{FactualReturnWrite} \rightarrow L_2\ \text{CF builder} + \text{laws}}$$
+
+* the first step is a refactor of **one** implementation of totality, locality, atomicity and
+  exact delivery, and its acceptance conditions are: $D_{patch}$ ledger `canonical()` bytes
+  unchanged for every arm; the observable preimage digest reproduced exactly; the existing
+  interface gates still killable; and no $Q$, $F_t$ or $G^{CF}$ semantics in the commit. The
+  later addition of the $Q$ fingerprint component is an encoding change that this condition
+  does not govern;
+* no B2 endpoint is specified. `HarmRate`, `ΔG`, `RecoveryFraction`, the `NOT_EVALUABLE`
+  denominator rule and the exposure variable's schema are B2's, as is the choice of which
+  oracle is B2's denominator (A76 §63.8);
+* no $X$ or $P$ field row is specified (§65.2);
+* no regime I numbers, and no attempt to settle $T/P$ semantics;
+* no ledger schema change: the tier lives in the arm descriptor, and moving it or the $Q$
+  fingerprint component into the canonical ledger is a versioned schema change of its own;
+* no claim about $\Gamma$: $\Gamma^+$ and the truth share one $\pi_{\text{credit}}$, so every
+  census measures over-credit under a **fixed** ontology and does not validate it.
+
+---
+
 ## 64. Summary and what remains open
 
 | # | what | severity | status |
@@ -4184,6 +4561,7 @@ section above; the most recent is:
 | **A74** | the A73 census chose Module's H/L from $\Gamma^\ast$ instead of $Z^{\text{fire}}$, so evaluator truth entered the proposal construction; footprint is exactly $Z^{\text{fire}}=00000$ (**17,280 worlds, 43.86% of DGP mass**), where the frozen rule abstains but reading the truth emitted $H$, turning abstention into a coarse substantive verdict (violating $\varnothing \neq \{\texttt{Unknown/NoWrite}\}$). Corrected: Module Cov(count/mass) **0.9834/0.5614**, FCR **0.7958/0.4622**; the co-primary pair is **not** degenerate — Coverage punishes abstention, FCR over-credit | **P0 (census/implementation)** | frozen — semantic canary + information-flow assertion added, both with demonstrated power; **no design change**, only the frozen rule restored |
 | **A75** | V0.3R semantic rebase: the subject becomes the **persistent learning update**, not runtime repair, with $R^{\text{mech}} \neq W^{\text{update}}$; $B_0: \Gamma_r^\ast \to \mathcal W(\Gamma_r^\ast)$ outputs a candidate family; seven ownership criteria including **addressable** and **contract-preserving** (learner baseline has **no fault privilege**); **regime-specific** stratification $S_{T,\pm}$ / $S_{P,\pm}$ with **no whole-support primary mean**; regimes **T** (harm / non-internalisation), **P** (benefit / recovery, future endogenous to $\Delta W$), **I** (secondary, no numbers yet); a **new** persistent-manifestation family $J^L = (J_P^L, J_D^L, J_X^L)$ defined by **(predicate, source-separated intermediate)** while **$Z^{\text{fire}}$ is left untouched**; **$\Gamma_T^\ast \neq \Gamma_P^\ast$** with formal manifestation address sets; a fair decision defect family at the induced-policy layer with address-count budgets; a split `FutureConsequenceView` / `UpdateLedger` with **dependency closure**, a **constructor-flow gate** and a laundering mutation; and two authorised-but-unimplemented kernel extensions | **P0 (spec)** | **frozen — specification only, no implementation authorised**; further change requires a new amendment; `08` still to be rebased |
 | **A76** | V0.3R B1 update-law contract: B1 owns only $W^{\text{update}} \to \Delta W$; four information tiers $L_0$–$L_3$; Decision targets as **local return-to-go** $G_t^F$ / $G_t^{CF}$; the counterfactual is a **full-episode replay** with only $do(d_t{=}a_t^+)$ added plus a prefix-equality invariant, never a suffix simulator; the $-1$ constant and $+1$ target **retired** (not rescaled); `PositiveAlternative` retired as information-deficient at $L_1$; the $a^+$ guard is **live** (3,600 empty-alt addresses, co-fault only: `D+E` 2.38%, `X+D` 4.76%, `D` alone 0%), with a **per-addressed-context** ledger taxonomy `{APPLIED, EVALUABLE_NOOP, NO_VALID_ALTERNATIVE, PROTOCOL_ERROR}` in which `APPLIED` means the **store changed** (architecture-neutral, not "a scalar was written"), `N_scalar` is accounting only, and `PROTOCOL_ERROR` is a **fail-stop excluded from B2 scoring**; a locality-matched `LocalOracleRestore` inside the matrix with A75's global `OracleRestore` outside it and the lower-tier aliases declared non-treatments; the $\rho_A$ credit-unit→store-key resolver; and three execution invariants (regime-blind, address locality, snapshot + atomic commit) | **P0 (spec)** | **frozen — specification only, no implementation authorised** (dated from the taxonomy correction); further change requires a new amendment |
+| **A77** | the $D_Q$ row, and the information contract that replaces the boolean `requires_alternative`: a closed opaque `Tier` enum declared exactly once with a `None` sentinel; delivery as an **exact per-(architecture, tier) field set** — $D_Q$'s $L_0=\{a_t^F,G_t^F\}$, $L_2=\{a_t^F,G_t^F,a_t^+,G_t^{CF}\}$, $L_3=\varnothing$ — with **same cell ⇒ same envelope**, the reference constructed through the same field construction, and `scalar write law ∧ L_1 ⇒ PROTOCOL_ERROR`; `NoWriteRef(ℓ)` as one object per cell with a substantive treatment, sharing one no-op plan and excluded from the treatment count; the $Q$ store as a sparse override table on an **injected frozen** `QReferenceView` (`QAddress` entries inside a `DecisionAddress` budget, identity canonicalisation to deletion, co-residence of $P_D^L$ and $Q_D^L$ a **construction-time** `PROTOCOL_ERROR`); **domain closure** $\operatorname{dom}(Q_D^L)\subseteq\operatorname{dom}(\texttt{QReferenceView})$ with the 13,824-row census as its evidence; $F_t=(a_t^F,G_t^F)$ built from the **learner-visible rows only**; the **frozen reverse Bellman fold** for $G^F$ and $G^{CF}$ (`sum`/`fsum`/reordering prohibited — measured 278/278 exact vs 92/278 mismatch); $G_t^{CF}$ as a full replay carrying `DecisionReadView_pre` with the intervention at $t$ **replaced**; the $D_Q$ matrix (4 independent treatments, no $L_1$ cell, `LocalOracleRestore` a genuinely new row-scoped operation); **owner-based locality** with one address-plan and one receipt per credited context and the row operation lowered by the slice; and the scalar ledger with an **effective-$Q$** $\Delta$ and $N_{\text{scalar}}=0 \iff \Sigma=0 \iff fp_{\text{pre}}=fp_{\text{post}}$ | **P0 (spec)** | **frozen — specification only, no implementation authorised**; implementation in the frozen order: slice refactor → $Q$ store/read → $L_0$ → $L_2$ |
 
 ---
 

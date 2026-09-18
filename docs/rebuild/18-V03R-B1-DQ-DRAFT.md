@@ -1,5 +1,14 @@
 # 18 — V0.3R B1: the $D_Q$ row — implementation draft (revision 3)
 
+$$\boxed{\text{SUPERSEDED BY A77 (\S65). Not normative.}}$$
+
+The normative text is `12-AMENDMENTS.md` **§65 (A77)**. This document is retained as the
+review record: it carries the reasoning, the rejected alternatives and the interface rework
+that produced §65, none of which belongs in a frozen contract. **Where the two differ, §65
+governs.**
+
+The rest of this header is kept as written for revision 3, before the freeze.
+
 $$\boxed{\text{DRAFT — for review. Not frozen, not authorised, no code written.}}$$
 
 This is the implementation draft A76 §63.13 and the $D_{patch}$ slice left owed. It pins

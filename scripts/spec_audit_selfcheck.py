@@ -129,12 +129,17 @@ check("the report attributes it to the 'logged as' scan",
       f"{r3['amendment_reference_sources'].get('A99')}")
 
 # --- case 4: a range must take both endpoints.
-print("\ncase 4: add a heading naming the range `A55-A77` to document 13")
+#
+# The fixture number moved when A77 was frozen: this case used `A55-A77` as "one
+# logged endpoint, one un-logged", and logging A77 expired exactly that property.
+# The assertion was right; the fixture had to follow the log. A96 is chosen because
+# nothing assigns it and nothing is expected to soon.
+print("\ncase 4: add a heading naming the range `A55-A96` to document 13")
 r4 = run_with(lambda name, text: (
-    replace_once(text, "## 10. ", "## 10. A55\u2013A77 boundary note\n\n## 10. ")
+    replace_once(text, "## 10. ", "## 10. A55\u2013A96 boundary note\n\n## 10. ")
     if name == "13-GATE-L-FAILURE.md" else text))
 check("a range endpoint that is un-logged is reported",
-      "A77" in r4["dangling_amendments"], f"dangling={r4['dangling_amendments']}")
+      "A96" in r4["dangling_amendments"], f"dangling={r4['dangling_amendments']}")
 check("the logged endpoint of the range is not falsely reported",
       "A55" not in r4["dangling_amendments"])
 

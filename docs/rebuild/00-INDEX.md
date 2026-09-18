@@ -1,7 +1,7 @@
 # RFL-Rebuild — frozen research specification
 
 $$\boxed{\text{V0.1R CLOSED};\quad \text{V0.2R CLOSED (A74)};\quad
-\text{V0.3R pending semantic rebase};\quad \text{V0.4R not started in rebuild}}$$
+\text{V0.3R rebased (A75), B1 specified (A76, A77)};\quad \text{V0.4R not started in rebuild}}$$
 
 **Status:** the specification is complete, and this directory now holds **three
 different kinds of artifact**: the **frozen specification**, the **implementation and
@@ -220,20 +220,28 @@ governs any future change to `kernel.py`.
 
 ### 7.2 The current next step
 
-$$\boxed{\text{V0.3R semantic rebase before any V0.3R implementation}}$$
+$$\boxed{\text{the V0.3R rebase has landed (A75); B1 implementation runs in A77 §65.12's order}}$$
 
-`08-V03R.md` is **not** ready to implement from. It still identifies the process
-fault with $do(z = z')$, whereas the frozen reading is
+The semantic rebase this section used to ask for **is A75** (§62): the subject is the
+persistent learning update, not runtime repair, with the regime-specific populations and the
+$J^L$ manifestation family that go with it. A76 (§63) then froze the B1 update-law contract
+and A77 (§65) the $D_Q$ row, including the order in which the slice may be built:
+
+$$\text{generic slice refactor only} \rightarrow \text{Q store / read substrate} \rightarrow
+L_0\ \texttt{FactualReturnWrite} \rightarrow L_2\ \text{CF builder} + \text{laws}$$
+
+Each step is a separate commit with its own acceptance conditions (A77 §65.12); the first is a
+refactor of one implementation and must move no $D_{patch}$ number.
+
+`08-V03R.md` is still **not** an implementation source. It still identifies the process fault
+with $do(z = z')$, whereas the frozen reading is
 
 $$\text{mechanism repair} = do(C_P = \mathrm{identity}), \qquad
 do(z = z') = \text{strategy replay / rescue}$$
 
-so `08` carries an error that must not be inherited. The rebase re-freezes the
-repair/update primitive, the external downstream criterion by which the working
-ontology $\Gamma$ is to be judged, and the validation that criterion needs. That is
-a **semantic change**, unlike the synchronization commits that closed V0.2R, and it
-is the next point at which a research decision is required. Until it lands, **no
-V0.3R implementation is authorised.**
+so `08` carries an error that must not be inherited, and rebasing it remains a semantic change
+that has not been made. What changed with A75–A77 is that the B1 path no longer waits on `08`:
+it is specified in the amendment log, and `08` is superseded on that path until it is rebased.
 
 ---
 
