@@ -2975,8 +2975,20 @@ subclass override never ran and the kill set came back **empty**. A no-op mutati
 would have read as "the gate is robust". That is precisely why the kill set is
 recorded instead of a boolean.
 
-**The corrected census, and a degenerate endpoint.** `scripts/a73_census.py`, all
-$1{,}038{,}960$ worlds, co-primary `Coverage` / `FCR`:
+**The corrected census, and a degenerate endpoint.**
+
+$$\boxed{\text{VOIDED BY A74 (12 §61)}}$$
+
+The `Module` row below, the $\text{Coverage} \equiv 1$ box and the "degenerates to
+FCR alone" conclusion are **invalid**: this census chose H/L from $\Gamma^\ast$
+instead of $Z^{\text{fire}}$, so the object it scored was not the frozen
+$R_{\text{module}}$. Kept as written because the log is append-only; A74 records the
+correction and the rule that
+$\text{Coverage}(\varnothing, \Gamma^\ast) = \text{FCR}(\varnothing, \Gamma^\ast)
+= 0$. The rest of this section stands: the 57 distinct indexed $\Gamma^\ast$ sets, the
+0.1881% mass, and the claim boundary.
+
+`scripts/a73_census.py`, all $1{,}038{,}960$ worlds, co-primary `Coverage` / `FCR`:
 
 | representation | Cov(count) | Cov(mass) | FCR(count) | FCR(mass) | $\lvert\hat\Gamma\rvert$(count) |
 |---|---|---|---|---|---|
@@ -3033,7 +3045,91 @@ extraction} \to \text{public-support exact-set regression} \to
 \texttt{PublicSCMView} \to \texttt{CausalSetLocator} \to 893/893\ \Gamma^+/\Gamma^-
 \to \text{X/E mutation} \to \text{corrected census}}$$
 
-## 61. Summary and what remains open
+## 61. A74 — the A73 census built the Module proposal from evaluator truth
+
+**The defect.** A73's census constructed `Module` by reading $\Gamma^\ast$ to choose
+its native H/L proposal:
+
+```python
+h = {u for u in truth if not is_indexed(u)}
+l = {u for u in truth if is_indexed(u)}
+```
+
+But `17` §9.1's frozen $R_{\text{module}}$ rule derives the proposal from the
+**fired causes**. It is a function of $X^{\text{obs}}$ and must not read
+$\Gamma^\ast$:
+
+$$H \iff Z_P^{\text{fire}} \lor Z_E^{\text{fire}} \lor Z_U^{\text{fire}},
+\qquad
+L \iff Z_D^{\text{fire}} \lor Z_X^{\text{fire}}$$
+
+Most worlds agree by accident, because $P/E/U \to H$ and $D/X \to L$. The footprint
+is exactly one case:
+
+$$\boxed{Z^{\text{fire}} = 00000}$$
+
+The frozen rule has no fired cause, so it emits
+$\hat U_{\text{module}} = \varnothing$ — **abstention**. A67's truth there is
+$\Gamma^\ast = \{\texttt{Unknown/NoWrite}\}$, and A69 §5 froze
+$\varnothing \neq \{\texttt{Unknown/NoWrite}\}$ with
+$\text{Coverage}(\varnothing, \Gamma^\ast) = \text{FCR}(\varnothing, \Gamma^\ast)
+= 0$. Reading the truth classified `Unknown/NoWrite` as non-indexed and emitted $H$,
+converting an abstention into a coarse **substantive verdict** — precisely the
+collapse A69 §5 exists to prevent, and the reason "say nothing is not a verdict" was
+kept so carefully.
+
+$$\boxed{\text{A73's Module row and its endpoint-degeneracy claim are INVALID}}$$
+
+**Measured footprint**: $Z^{\text{fire}} = 00000$ is **17,280 worlds = 43.86% of DGP
+mass** — the modal region, not a corner case.
+
+**Voided, not inherited** (exactly as A71 voided A70's census rather than rewriting
+it):
+
+* A73's `Module` row — Cov 1.0000/1.0000, FCR 0.8083/0.7911, $\lvert\hat\Gamma\rvert$
+  12.88;
+* A73's "$\text{Coverage} \equiv 1$ for all four arms";
+* A73's "the co-primary pair degenerates to FCR alone".
+
+**Corrected**, frozen rule restored, **no design change**:
+
+| representation | Cov(count) | Cov(mass) | FCR(count) | FCR(mass) |
+|---|---|---|---|---|
+| `OracleCredit` | 1.0000 | 1.0000 | 0.0000 | 0.0000 |
+| `CausalSetLocator` | 1.0000 | 1.0000 | 0.0028 | 0.0006 |
+| `Module` | **0.9834** | **0.5614** | **0.7958** | **0.4622** |
+| `Trajectory` | 1.0000 | 1.0000 | 0.9017 | 0.9309 |
+
+`Module` is the **only** arm outside the structural-identity family, and Coverage is
+no longer degenerate — the opposite of A73's claim:
+
+$$\boxed{\text{Coverage punishes abstention; FCR punishes over-credit}}$$
+
+The co-primary pair was never degenerate; A73's leak is what made it look so. The
+$Z^{\text{fire}} = 0$ region is exactly where both endpoints are needed, which is why
+the pair is co-primary at all.
+
+**Two guards, frozen here.**
+
+1. **Semantic canary.** $Z^{\text{fire}} = 00000$ with
+   $\Gamma^\ast = \{\texttt{Unknown/NoWrite}\}$ must give
+   $R_{\text{module}} = \varnothing$,
+   $\hat\Gamma_{\text{module}} = \varnothing$, Coverage $= 0$, FCR $= 0$. Observed on
+   all 17,280 such worlds, **0 failures**. No special case is added:
+   $Z^{\text{fire}} = 0 \Rightarrow H$ is *not* introduced, because that would
+   redefine `Module` after seeing its result.
+2. **Information-flow assertion.** $R_{\text{module}}(X^{\text{obs}})$ must not change
+   when $\Gamma^\ast$ changes while $X^{\text{obs}}$ is held fixed. Tested against six
+   counterfactual truths per fire code: **0 violations** for the frozen rule, and the
+   assertion **rejects A73's defect variant on 21 fire codes** — so it has power
+   rather than being satisfied by construction.
+
+**Claim boundary, unchanged.** This is still over-credit under a **fixed** ontology;
+it does not validate that ontology. And the lesson is the recurring one: every check
+passed and the table looked clean, but the object being scored **was no longer the
+frozen `Module`**.
+
+## 62. Summary and what remains open
 
 | # | what | severity | status |
 |---|---|---|---|
@@ -3072,7 +3168,8 @@ section above; the most recent is:
 | **A69** | V0.2R typed information boundary: three native alphabets with a frozen evaluator-side $\eta_R$ that must not read $Z^{\text{fire}}_{\text{truth}}$; episode-local $\Gamma(I)$; `OracleCreditAdapter` separated from the ordinary method path; $\varnothing \neq \{\texttt{Unknown/NoWrite}\}$; `agent_writeable` assigned including `Strategy = false`; S2 as interface/typing/information-flow only | **P0 (spec)** | frozen — interface and typing; later scientific *reading* amended by A70–A72 (`17` §9). **Logged late: mechanical provenance registration only** |
 | **A71** | truth was built from **generic** type names while predictions are concrete addresses, so A70's census was systematically false-negative; truth is now indexed from $R^{\text{mech}}$ descriptors, **A70's numbers are voided**, and $Z^{\text{fire}} \not\Rightarrow \Gamma^\ast$ — cause identification does **not** imply site identification (14 of 893 **locator** classes $X^{\text{loc}}$, 0.1881% of DGP mass) | **P0** | frozen — identifiability negative against a perfect $Z^{\text{fire}}_{\text{truth}}$ |
 | **A72** | `PublicSCMView` / `CausalSetLocator` grant recorded: factual-consistency inversion (simulate hypothetical worlds) is not an intervention query; $\hat\Gamma_{\text{CSL}} = \Gamma^+$ with $\Gamma^-$ as the certain diagnostic, $B_Q = 0$, equivalence to be gated at 893/893 against an **independently sourced** $\Gamma^+_{\text{eval}}$ | **P0 (spec)** | frozen — implementation and gate pending |
-| **A73** | locator evidence quotient and public feasible support: $X^{\text{loc}}_{0.2}=(\text{rows},Z^{\text{fire}})$ with $q$ dropping the redundant feedback channel, so **893 is the locator main gate** and $X^{\text{obs}}=(rows,feedback,Z^{\text{fire}})$'s **4,513** is only the observational refinement; $\mathcal L_{\text{public}}$ = canonical grammar candidates **passing public forward-feasibility**; route C's semantic source is `gate_stage2._domains` + `canonicalise`; support closure as **exact set** | **P0 (spec)** | frozen — rows-only **licensed by the 4513→893 gate** (9/9 PASS); one violation voids it and reverts the gate to 4513 |
+| **A73** | locator evidence quotient and public feasible support: $X^{\text{loc}}_{0.2}=(\text{rows},Z^{\text{fire}})$ with $q$ dropping the redundant feedback channel, so **893 is the locator main gate** and $X^{\text{obs}}=(rows,feedback,Z^{\text{fire}})$'s **4,513** is only the observational refinement; $\mathcal L_{\text{public}}$ = canonical grammar candidates **passing public forward-feasibility**; route C's semantic source is `gate_stage2._domains` + `canonicalise`; support closure as **exact set** | **P0 (spec)** | frozen — rows-only **licensed by the 4513→893 gate** (9/9 PASS); one violation voids it and reverts the gate to 4513. **Its census Module row and endpoint-degeneracy claim are VOIDED by A74** |
+| **A74** | the A73 census chose Module's H/L from $\Gamma^\ast$ instead of $Z^{\text{fire}}$, so evaluator truth entered the proposal construction; footprint is exactly $Z^{\text{fire}}=00000$ (**17,280 worlds, 43.86% of DGP mass**), where the frozen rule abstains but reading the truth emitted $H$, turning abstention into a coarse substantive verdict (violating $\varnothing \neq \{\texttt{Unknown/NoWrite}\}$). Corrected: Module Cov(count/mass) **0.9834/0.5614**, FCR **0.7958/0.4622**; the co-primary pair is **not** degenerate — Coverage punishes abstention, FCR over-credit | **P0 (census/implementation)** | frozen — semantic canary + information-flow assertion added, both with demonstrated power; **no design change**, only the frozen rule restored |
 
 ---
 

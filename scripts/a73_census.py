@@ -61,6 +61,64 @@ from rfl_rebuild.solve.dp import solve_reference  # noqa: E402
 CACHE = ROOT / "experiments" / "v01r" / "support_cache"
 ARMS = ("OracleCredit", "CausalSetLocator", "Module", "Trajectory")
 
+#: Frozen ``R_module`` (17 §9.1). The native proposal is a function of
+#: ``Z^fire`` ALONE: P/E/U project to non-indexed units, D/X to indexed ones.
+MODULE_H_CAUSES = (0, 3, 4)      # ProcessCommit, ExternalPlant, Unknown/NoWrite
+MODULE_L_CAUSES = (1, 2)         # Decision_t, ControllerSite_t
+
+#: Counterfactual truths used by the information-flow assertion. Every one of
+#: these is a legal ``Gamma*`` shape (A67 makes it non-empty).
+ALTERNATIVE_TRUTHS = (
+    frozenset({"Unknown/NoWrite"}),
+    frozenset({"ProcessCommit"}),
+    frozenset({"ExternalPlant"}),
+    frozenset({"Decision_0"}),
+    frozenset({"ControllerSite_0_2_0_0"}),
+    frozenset({"ProcessCommit", "ExternalPlant"}),
+)
+
+
+def module_native(fire_code: int, truth=None) -> frozenset:
+    r"""The FROZEN ``R_module`` rule; ``truth`` is ignored and must stay ignored.
+
+    ``truth`` is accepted only so the information-flow assertion has a surface to
+    vary. A73's census instead chose H/L *from* ``Gamma*``, which is the defect A74
+    voids: at ``Z^fire = 00000`` the frozen rule abstains because no cause fired,
+    while reading the truth made ``{Unknown/NoWrite}`` look non-indexed and emit
+    ``H`` -- silently converting abstention into a coarse substantive verdict, the
+    exact collapse A69 §5 froze against.
+    """
+    h = any((fire_code >> i) & 1 for i in MODULE_H_CAUSES)
+    l = any((fire_code >> i) & 1 for i in MODULE_L_CAUSES)
+    return frozenset(({"H"} if h else set()) | ({"L"} if l else set()))
+
+
+def module_native_reading_truth(fire_code: int, truth) -> frozenset:
+    """A73's defect, retained as the information-flow MUTATION CONTROL.
+
+    Identical to the frozen rule except when ``Z^fire = 0``, where it emits ``H``.
+    If the assertion below cannot reject this, the assertion proves nothing.
+    """
+    h = any(not is_indexed(u) for u in truth)
+    l = any(is_indexed(u) for u in truth)
+    return frozenset(({"H"} if h else set()) | ({"L"} if l else set()))
+
+
+def info_flow_violations(proposal_fn, samples) -> list:
+    r"""``R_module(X^{obs})`` must not change when ``Gamma*`` changes.
+
+    ``X^{obs}`` is held fixed by holding ``fire_code`` fixed; only the truth varies.
+    """
+    bad = []
+    for fc in samples:
+        base = proposal_fn(fc, frozenset({"Unknown/NoWrite"}))
+        for alt in ALTERNATIVE_TRUTHS:
+            got = proposal_fn(fc, alt)
+            if got != base:
+                bad.append((fc, tuple(sorted(base)), tuple(sorted(got))))
+                break
+    return bad
+
 
 def factual_shape(case, provider):
     r"""``FactualShape`` of the *factual* episode: sites and timesteps visited.
@@ -109,6 +167,10 @@ def main() -> int:
     locator_covers_truth = True
     hist: dict = {}
     n_ambiguous_worlds = 0.0
+    seen_fire_zero = 0
+    mass_fire_zero = 0.0
+    module_not_abstaining = 0
+    canary_failures = 0
 
     for wid in range(n):
         w = sup.weight(wid)
@@ -119,15 +181,23 @@ def main() -> int:
         truth = reference_gamma_star(case, fc)
 
         shape = factual_shape(case, provider)
-        h = {u for u in truth if not is_indexed(u)}
-        l = {u for u in truth if is_indexed(u)}
-        module = expand("module",
-                        ModuleProposal(frozenset(({"H"} if h else set())
-                                                 | ({"L"} if l else set()))),
-                        shape)
+        # FROZEN rule: H/L from Z^fire, never from Gamma* (A74).
+        module = expand("module", ModuleProposal(module_native(fc)), shape)
         traj = expand("trajectory", TrajectoryProposal(frozenset({"Episode"})),
                       shape)
         csl = gamma_plus_by_class[key]
+
+        # A74 semantic canary: no fired cause => abstention, and abstention is
+        # scored 0/0 rather than relabelled into a verdict.
+        if fc == 0:
+            seen_fire_zero += 1
+            mass_fire_zero += w
+            if (module_native(fc) != frozenset() or module != frozenset()
+                    or coverage(module, truth) != 0.0
+                    or false_credit_rate(module, truth) != 0.0):
+                canary_failures += 1
+            if module != frozenset():
+                module_not_abstaining += 1
 
         preds = {"OracleCredit": truth, "CausalSetLocator": csl,
                  "Module": module, "Trajectory": traj}
@@ -157,11 +227,19 @@ def main() -> int:
         for k in list(a):
             a[k] = a[k] / mass if k.endswith("_w") else a[k] / n
 
+    # ---- the information-flow assertion, and its power --------------------- #
+    samples = sorted({sup.field(wid, "fire_code") for wid in range(0, n, 97)})
+    flow_bad = info_flow_violations(module_native, samples)
+    flow_bad_mutation = info_flow_violations(module_native_reading_truth, samples)
+
     checks = {
         "oracle_credit_is_lossless_by_construction": oracle_exact,
         "mass_scanned_is_one": abs(mass - 1.0) < 1e-9,
         "locator_gamma_plus_always_covers_truth": locator_covers_truth,
         "generic_truth_defect_absent": True,   # truth built from descriptors (A71)
+        "A74_canary_fire_zero_module_abstains_0_0": canary_failures == 0,
+        "A74_info_flow_module_proposal_is_truth_independent": not flow_bad,
+        "A74_info_flow_assertion_has_power": bool(flow_bad_mutation),
     }
     ok = all(checks.values())
 
@@ -180,6 +258,14 @@ def main() -> int:
           f"({100 * n_ambiguous_worlds:.4f}%)")
     print(f"  (A70 reported 21 distinct sets on the generic truth; the indexed "
           f"truth gives {len(hist)})")
+    print(f"\n  A74 canary, Z^fire = 00000 worlds   : {seen_fire_zero:,} "
+          f"({100 * mass_fire_zero:.4f}% of DGP mass)")
+    print(f"    Module abstains (proposal = {{}})  : "
+          f"{seen_fire_zero - module_not_abstaining:,} / {seen_fire_zero:,} "
+          f"(failures: {canary_failures})")
+    print(f"  info-flow violations, frozen rule   : {len(flow_bad)}")
+    print(f"  info-flow violations, A73 mutation  : {len(flow_bad_mutation)} "
+          f"(must be > 0 for the assertion to have power)")
     print(f"\nA73 census: {'PASS' if ok else 'FAIL'}")
 
     out = ROOT / "experiments" / "v02r" / "a73_corrected_census.json"
@@ -192,6 +278,34 @@ def main() -> int:
         "mass_where_gamma_plus_differs_from_truth": n_ambiguous_worlds,
         "checks": checks,
         "status": "PASS" if ok else "FAIL",
+        "A74": {
+            "voids": ("the A73 Module row (Module Cov(count/mass) 1.0000/1.0000, "
+                      "FCR(count/mass) 0.8083/0.7911) and the endpoint-degeneracy "
+                      "claim 'Coverage == 1 for all four arms / co-primary pair "
+                      "degenerates to FCR alone'"),
+            "defect": ("a73_census.py chose H/L from Gamma* instead of Z^fire, so "
+                       "evaluator truth entered the Module proposal construction"),
+            "footprint": ("Z^fire = 00000, where the frozen rule abstains but "
+                          "reading the truth made {Unknown/NoWrite} look "
+                          "non-indexed and emitted H"),
+            "canary": ("Z^fire = 00000 and Gamma* = {Unknown/NoWrite} must give "
+                       "ModuleProposal = {}, Gamma_hat_module = {}, Coverage = 0, "
+                       "FCR = 0"),
+            "info_flow_assertion": ("R_module(X^obs) must not change when Gamma* "
+                                    "changes with X^obs held fixed; rejected the "
+                                    "defect variant on "
+                                    f"{len(flow_bad_mutation)} fire codes"),
+        },
+        "fire_zero_population": {
+            "worlds": seen_fire_zero,
+            "dgp_mass": mass_fire_zero,
+            "module_not_abstaining": module_not_abstaining,
+            "canary_failures": canary_failures,
+        },
+        "info_flow_violations_frozen_rule": len(flow_bad),
+        "info_flow_violations_A73_mutation": len(flow_bad_mutation),
+        "frozen_module_rule": "H iff Z_P or Z_E or Z_U fired; L iff Z_D or Z_X "
+                              "fired; both when both; empty when none (17 9.1)",
         "supersedes": ("experiments/v02r/granularity_census.json (A70) -- those "
                        "numbers are void per A71"),
         "defects_fixed": [
