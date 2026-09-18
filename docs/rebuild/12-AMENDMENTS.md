@@ -3131,10 +3131,17 @@ frozen `Module`**.
 
 ## 62. A75 — V0.3R semantic rebase: persistent learning update
 
-**Status: specification only.** This amendment is a **semantic rebase and
-preregistration**. It authorises **no** implementation: no `kernel.py` change, no
-B1 update formula, no run. Its purpose is to stop three defects from being inherited
-by V0.3R and to stop four distinctions from being re-invented at implementation time.
+**Status: draft — pending semantic review; no implementation authorised.** This is a
+**pre-freeze draft** of the V0.3R rebase. It authorises **no** implementation: no
+`kernel.py` change, no B1 update formula, no run. Review of the first draft found two
+semantic blockers — a shared $S_+/S_0$ spanning both regimes (§62.5) and a provenance
+rule that was interpretive rather than structural (§62.7) — plus two factual wording
+errors in the $Z^{\text{fire}}$ provenance table. All four are corrected in place in
+this revision. The status becomes `frozen — specification only` only after that review
+closes; until then this section must **not** be cited as frozen.
+
+Its purpose is to stop three defects from being inherited by V0.3R and to stop four
+distinctions from being re-invented at implementation time.
 
 **Why it exists.** `08-V03R.md` identifies the process fault with $do(z = z')$,
 which the frozen reading contradicts:
@@ -3221,17 +3228,58 @@ hypotheses**. Current boundary, frozen here:
 | `ExternalPlant`, `Unknown/NoWrite` | — | — | — | $\mathcal W = \{\varnothing\}$ |
 | `Strategy` | — | — | — | rescue atom; not in mechanism-credit write |
 
-### 62.5 $S_+$ / $S_0$ stratification
+### 62.5 Stratification is regime-specific: $S_{T,\pm}$ and $S_{P,\pm}$
+
+The writable projection is defined **per regime**, because the two regimes have
+different truth sources (§62.8):
 
 $$\Gamma_{r,W}^\ast = \{u \in \Gamma_r^\ast : agent\_writeable(u)\}, \qquad
-S_+ = \{\Gamma_{r,W}^\ast \neq \varnothing\}, \qquad
-S_0 = \{\Gamma_{r,W}^\ast = \varnothing\}$$
+r \in \{T, P\}$$
 
-**Measured** on the frozen support (`_diag_v03r_scope.py`, `v03r_scope_diag.json`,
-commits `5fea68f`/`e13c62c`):
+$$\boxed{\text{a single } S_+ / S_0 \text{ pair spanning both regimes is forbidden}}$$
 
-$$P(S_+) = 0.445711, \quad \text{pure } 0.399814, \quad \text{mixed } 0.045898,
-\qquad P(S_0) = 0.554289$$
+A shared symbol would let a mass measured on one regime's population be read as a
+property of the other's. The first draft did exactly that; it is corrected here rather
+than annotated.
+
+#### 62.5.1 Regime T
+
+$$S_{T,+} = \{\Gamma_{T,W}^\ast \neq \varnothing\}, \qquad
+S_{T,0} = \{\Gamma_{T,W}^\ast = \varnothing\}$$
+
+**Measured on the frozen V0.2R support, and these numbers belong to $T$ alone**
+(`_diag_v03r_scope.py`, `v03r_scope_diag.json`, commits `5fea68f`/`e13c62c`):
+
+$$P_T(S_{T,+}) = 0.445711, \quad
+\text{pure } 0.399814, \quad \text{mixed } 0.045898, \qquad
+P_T(S_{T,0}) = 0.554289$$
+
+#### 62.5.2 Regime P
+
+Regime P's population does not exist yet. It therefore has **no measured mass**, and
+none may be quoted for it. What can be frozen now is a construction property.
+
+A P **learning event** requires at least one persistent learner manifestation:
+
+$$\boxed{\mathcal M_P^L \neq \varnothing \text{ is required for a P trigger}}$$
+
+Every manifestation target — `ProcessCommit`, `Decision_t`, `ControllerSite` — is
+writable in the working ontology (A69 §6). Therefore, **on the P trigger population**,
+
+$$\boxed{S_{P,+} = 1, \qquad S_{P,0} = 0}$$
+
+is a **construction result, not a finding**. A persistent defect that does not
+manifest in the current episode is an ordinary future-evaluation episode: it mints no
+$\Gamma_P^\ast$ and triggers no update.
+
+$$\boxed{\text{NoWrite chosen in } S_{P,+} \;\neq\; \text{positive-write-ineligible }
+S_{P,0}}$$
+
+The first says *a writable responsibility location existed and this primitive chose not
+to write*; the second says *the ontology forbids writing*. Collapsing them would let a
+method's own abstention be scored as a boundary.
+
+#### 62.5.3 Rules that hold in both regimes
 
 $$\boxed{\text{the stratum is fixed by the truth boundary, never by whether the
 method actually wrote}}$$
@@ -3239,10 +3287,10 @@ method actually wrote}}$$
 Conditioning on $W^{\text{update}} \neq \varnothing$ would let B0/B1 abstain on hard
 worlds and be scored on easy ones — a selection bias of A74's shape.
 
-$$\boxed{\text{no whole-support primary mean}}$$
+$$\boxed{\text{no whole-support primary mean, in either regime}}$$
 
-$S_+$ answers *how to change correctly*; $S_0$ answers *how to avoid changing
-wrongly*. The two masses are reported together and always.
+$S_{r,+}$ answers *how to change correctly*; $S_{r,0}$ answers *how to avoid changing
+wrongly*. Within each regime the two masses are reported together and always.
 
 ### 62.6 Regimes T, P, I
 
@@ -3283,37 +3331,67 @@ separate object instead:
 
 $$J^L = (J_P^L, J_D^L, J_X^L)$$
 
-$$J_D^L = 1\bigl[\exists t : a_t^{cmd} \notin A_D^\ast(s_t, z_t, m_t)\bigr], \qquad
-A_D^\ast = \arg\max_{a \in A_z(m,s)} Q_D^\ast$$
+$$\boxed{Z^{\text{fire}} = \text{the frozen closed-version factual
+mechanism-execution object}}$$
 
-using the whole argmax **set**, never the tie-broken `best_action`.
+$$\boxed{J^L = \text{the V0.3R learner-origin persistent manifestation object}}$$
 
-$$J_P^L = 1[z^{\text{in-force}} \neq z^{\text{proposal}}] \quad\text{attributable to }
-C_P^L$$
-$$J_X^L = 1[\exists t : u_t^L \neq a_t^{cmd}] \quad\text{attributable to }
-C_X^L$$
+They have **different source semantics**, they **may share a predicate**, they may be
+numerically 1 at the same time, and they are **not required to be mutually
+exclusive**. What keeps Regime P off the old truth chain is not a claim about the
+function $Z^{\text{fire}}$ — which does *not* check provenance — but the source rule of
+§62.8: $\Gamma_T^\ast$ uses the frozen T truth source, $\Gamma_P^\ast$ uses $J^L$ plus
+learner-origin addresses.
 
-$$\boxed{Z^{\text{fire}} \text{ describes a transient injected mechanism};\quad
-J^L \text{ describes a persistent learner defect manifestation}}$$
+**Provenance must be structural, not interpretive.** The first draft wrote the
+predicates against the *final* command, but the frozen priority is
+$do(d_t) > Z_D > \text{provider}$, so a deviation in $a^{cmd}_t$ cannot be attributed
+to the learner baseline; the same holds for $X$ and $P$. A75 therefore names the
+baseline intermediates first:
 
-**Provenance is part of the definition, not an implementation detail.** The
-predicate alone is insufficient, and the three causes differ in exactly how:
+$$\boxed{a_t^L = \text{the learner decision baseline output, before } Z_D / do(d_t)}$$
 
-| object | predicate | provenance required |
+$$\boxed{u_t^L = C_X^L(s_t, a_t^{cmd}), \text{ before } Z_X / do(C_X)}$$
+
+$$\boxed{z_L^{commit} = C_P^L(z^{\text{proposal}}), \text{ before } Z_P / do(C_P)
+/ do(z{=}z')}$$
+
+and only then defines, over the whole argmax **set**
+$A_D^\ast = \arg\max_{a \in A_z(m,s)} Q_D^\ast$ and never the tie-broken
+`best_action`:
+
+$$\boxed{J_D^L = 1[\exists t : a_t^L \notin A_D^\ast(s_t, z_t, m_t)]}$$
+
+$$\boxed{J_X^L = 1[\exists t : u_t^L \neq a_t^{cmd}]}$$
+
+$$\boxed{J_P^L = 1[z_L^{commit} \neq z^{\text{proposal}}]}$$
+
+Provenance is thereby part of the object rather than an implementer's later reading of
+a number, and the address sets of §62.8 are built from the same intermediates.
+
+**The provenance table, corrected.** Note that `fired_mechanisms()` takes no
+`InterventionSet` — it calls `rollout` with the default empty one — so **no evaluator
+`do` participates in the frozen factual $Z^{\text{fire}}$ at all**:
+
+| object | predicate | source |
 |---|---|---|
-| $Z_D^{\text{fire}}$ | `mask.decision` reached | injected mask (transient) |
-| $J_D^L$ | $a^{cmd} \notin A_D^\ast$ | learner baseline store only |
-| $Z_X^{\text{fire}}$ | $\exists t: u \neq a^{cmd}$ | **any** source; value predicate only |
-| $J_X^L$ | $\exists t: u^L \neq a^{cmd}$ | learner baseline controller only |
-| $Z_P^{\text{fire}}$ | $z^{\text{in-force}} \neq z^{\text{proposal}}$ | injected `option_fault` / $do$ |
-| $J_P^L$ | $z^{\text{in-force}} \neq z^{\text{proposal}}$ | learner baseline $C_P^L$ only |
+| $Z_D^{\text{fire}}$ | the override was reached | injected `mask.decision` |
+| $Z_X^{\text{fire}}$ | $\exists t: u_t \neq a^{cmd}_t$ | **value predicate only — no provenance check** |
+| $Z_E^{\text{fire}}$ | $\exists t: a^{realized}_t \neq u_t$ | **value predicate only — no provenance check** |
+| $Z_P^{\text{fire}}$ | factual commit mismatch $z^{\text{in-force}} \neq z^{\text{proposal}}$ in the closed transient world | injected `option_fault` on the frozen support |
+| $J_D^L$ | $\exists t: a^L_t \notin A_D^\ast$ | learner baseline $a^L$ only |
+| $J_X^L$ | $\exists t: u^L_t \neq a^{cmd}_t$ | learner baseline $u^L$ only |
+| $J_P^L$ | $z^{commit}_L \neq z^{\text{proposal}}$ | learner baseline $z^{commit}_L$ only |
 
-$$\boxed{J^L \text{ is } (\text{predicate}, \text{provenance});\text{ neither half
-alone is the object}}$$
+$$\boxed{J^L \text{ is } (\text{predicate}, \text{source}); \text{ neither half alone
+is the object}}$$
 
-Note $Z_X^{\text{fire}}$ and $J_X^L$ share a predicate **verbatim** and are separated
-only by provenance. Defining $J_X^L$ by its predicate would make it a synonym for
-$Z_X^{\text{fire}}$, which is precisely the reuse this section forbids.
+$Z_X^{\text{fire}}$ and $J_X^L$ share a predicate **verbatim**. Separating them by a
+later claim about provenance would make $J_X^L$ a synonym for $Z_X^{\text{fire}}$; the
+intermediates $u^L$ versus $u$ are what actually separate them. Because
+`fired_mechanisms()` accepts `controller=`, a learner-origin deviation passed through
+that channel would make $Z_X^{\text{fire}}$ true as well — which is why the two objects
+are *allowed* to co-fire and are never used interchangeably.
 
 **Measured** (`scripts/_diag_jd_manifestation.py`,
 `a75_jd_manifestation_precheck.json`, commit `5c0ae15`), all six checks PASS:
@@ -3334,7 +3412,7 @@ That is a recorded property of the frozen support, not a change to it. It is als
 why $J_D^L$ uses $A_D^\ast$: the tie-broken definition would manufacture 720 defects
 that do not exist.
 
-### 62.8 Regime-specific credit truth
+### 62.8 Regime-specific credit truth, and the manifestation address sets
 
 A bare $\Gamma^\ast$ must not be used, for the same reason A73 forbade a bare
 $X_{0.2}$:
@@ -3344,14 +3422,56 @@ $$\boxed{\Gamma_T^\ast \neq \Gamma_P^\ast}$$
 $\Gamma_T^\ast$ is the **already-frozen** V0.2R working-ontology truth (A67/A71: built
 from $R^{\text{mech}}$ descriptors, D/X carrying addresses).
 
-$$\boxed{\Gamma_P^\ast = \pi_\Gamma\bigl(J^L,\ \text{manifested addresses}\bigr)}$$
+**Regime source rule, frozen.**
 
-$\pi_\Gamma$ is the same public ontology map; what differs is **what it is applied
-to**. $\Gamma_P^\ast$ may not be computed by applying that map to $R^{\text{mech}}$,
-and $\Gamma_T^\ast$ may not be computed from $J^L$. A reader who sees
-$\Gamma_T^\ast$ and $\Gamma_P^\ast$ must be able to tell which benchmark they are in
-from the symbol alone, so transient repair truth cannot be smuggled into the
+* **T trigger**: transient injected fault semantics only; the learner baseline is
+  healthy before the update.
+* **P trigger**: persistent learner defect semantics only. A P trigger may **not**
+  manufacture its truth from `mask.decision`, `mask.controller` or `option_fault`, nor
+  from an evaluator $do(\cdot)$.
+
+$$\boxed{\Gamma_P^\ast \text{ may come only from learner-owned persistent baseline
+manifestations}}$$
+
+A study that wants a persistent defect **plus** a transient disturbance belongs to
+regime I or to a composition extension: the two sources do not enter a P trigger
+together. This is what makes provenance structural rather than a later judgement.
+
+**Manifestation address sets, formalised.** $J_i^L$ is a bit and cannot carry
+addresses, while the defect family of §62.9 admits $k > 1$ manifestations in one
+episode. The address sets are therefore defined first and the bits are derived from
+them:
+
+$$\mathcal A_P^L(\tau) = \begin{cases}
+\{\texttt{ProcessCommit}\}, & z_L^{commit} \neq z^{\text{proposal}}\\
+\varnothing, & \text{otherwise}
+\end{cases}$$
+
+$$\mathcal A_D^L(\tau) = \{t : a_t^L \notin A_D^\ast(s_t, z_t, m_t)\}$$
+
+$$\mathcal A_X^L(\tau) = \{\operatorname{ControllerSite}(s_t, a_t^{cmd}) :
+u_t^L \neq a_t^{cmd}\}$$
+
+$$J_i^L = 1[\mathcal A_i^L \neq \varnothing], \qquad
+\mathcal M_P^L = \mathcal A_P^L \cup \mathcal A_D^L \cup \mathcal A_X^L$$
+
+$$\boxed{\Gamma_P^\ast = \mathcal A_P^L \;\cup\; \{\texttt{Decision}_t : t \in
+\mathcal A_D^L\} \;\cup\; \{\texttt{ControllerSite}_{site} : site \in
+\mathcal A_X^L\}}$$
+
+Equivalently $\Gamma_P^\ast = \pi_\Gamma(\mathcal M_P^L)$: the same public ontology
+map applied to learner-origin manifestations rather than to $R^{\text{mech}}$. Neither
+direction of inference between the regimes is permitted —
+$\Gamma_P^\ast$ may not be computed from $R^{\text{mech}}$, and $\Gamma_T^\ast$ may not
+be computed from $J^L$. A reader must be able to tell from the symbol alone which
+benchmark they are in, so transient repair truth cannot be smuggled into the
 persistent benchmark.
+
+Writing the address sets out is what removes the last implementation-time invention:
+with only the bits frozen, an implementer would still have to decide whether multiple
+manifestations are all kept, only the first, or canonicalised to one.
+$\Gamma_P^\ast$ keeps **all** of them — consistent with A71, which established that a
+single address is not recoverable from coarse evidence.
 
 ### 62.9 Decision defect family: fairness
 
@@ -3403,7 +3523,7 @@ $$\boxed{\Gamma^\ast,\quad R^{\text{mech}},\quad R^{\text{rescue}},\quad
 $$\boxed{\text{the stratum / regime selector may use evaluator truth; the metric
 itself may not}}$$
 
-Otherwise $S_+/S_0$ and T/P could not be defined at all. Enforcement is a type
+Otherwise $S_{r,\pm}$ and T/P could not be defined at all. Enforcement is a type
 boundary **plus** an AST/import allowlist **plus** a mutation-power test — three
 layers, because A59's lesson is that a documented promise is weaker than a type.
 
@@ -3430,7 +3550,10 @@ digest must be reproduced exactly.
 
 ### 62.12 Deliberately left open — B1 is not decided here
 
-A75 selects **no** update primitive and **no** architecture. Specifically open:
+A75 selects **no** update primitive and **no** architecture. The sets below are
+**candidate ranges, not frozen V0.3R arms**: a later document must not describe them
+as "the V0.3R arms are frozen", because nothing here ranks or prunes them.
+Specifically open:
 
 * **$D$**: $\{D_0 = \text{NoWrite},\ D_{patch}: P_D^L(s,z,m) \mapsto a,\
   D_Q: Q_D^L(s,z,m,a)\}$;
@@ -3472,15 +3595,20 @@ the old rollout**.
 
 ### 62.14 What this amendment does not do
 
+* it is a **pre-freeze draft** (§62 status line): the first draft's shared
+  $S_+/S_0$, its interpretive provenance rule, its `manifested addresses` placeholder
+  and its two `Z`-provenance errors are corrected in this revision, and the section
+  stays `draft` until review closes;
 * it does not change $Z^{\text{fire}}$, $R^{\text{mech}}$, $R^{\text{rescue}}$,
   $\Gamma_T^\ast$, or any V0.1R/V0.2R observable;
 * it does not implement the two kernel extensions of §62.11;
 * it does not select a B1 primitive, an architecture, or a B2 formula;
 * it does not resynchronize `08-V03R.md`, which remains the next artifact to rebase;
-* it aims to leave no follow-up amendment owed: §62.7's provenance rule and §62.8's
-  $\Gamma_T^\ast/\Gamma_P^\ast$ split are the two places where an implementation
-  would otherwise have invented semantics at the point of coding, and both are fixed
-  here rather than deferred.
+* it aims to leave no follow-up amendment owed: §62.7's source-separated
+  intermediates, §62.8's address sets and regime source rule, and §62.5's
+  regime-specific strata are the places where an implementation would otherwise have
+  invented source, address, truth or stratum semantics at the point of coding, and all
+  are fixed here rather than deferred.
 
 ## 63. Summary and what remains open
 
@@ -3523,7 +3651,7 @@ section above; the most recent is:
 | **A72** | `PublicSCMView` / `CausalSetLocator` grant recorded: factual-consistency inversion (simulate hypothetical worlds) is not an intervention query; $\hat\Gamma_{\text{CSL}} = \Gamma^+$ with $\Gamma^-$ as the certain diagnostic, $B_Q = 0$, equivalence to be gated at 893/893 against an **independently sourced** $\Gamma^+_{\text{eval}}$ | **P0 (spec)** | frozen — implementation and gate pending |
 | **A73** | locator evidence quotient and public feasible support: $X^{\text{loc}}_{0.2}=(\text{rows},Z^{\text{fire}})$ with $q$ dropping the redundant feedback channel, so **893 is the locator main gate** and $X^{\text{obs}}=(rows,feedback,Z^{\text{fire}})$'s **4,513** is only the observational refinement; $\mathcal L_{\text{public}}$ = canonical grammar candidates **passing public forward-feasibility**; route C's semantic source is `gate_stage2._domains` + `canonicalise`; support closure as **exact set** | **P0 (spec)** | frozen — rows-only **licensed by the 4513→893 gate** (9/9 PASS); one violation voids it and reverts the gate to 4513. **Its census Module row and endpoint-degeneracy claim are VOIDED by A74** |
 | **A74** | the A73 census chose Module's H/L from $\Gamma^\ast$ instead of $Z^{\text{fire}}$, so evaluator truth entered the proposal construction; footprint is exactly $Z^{\text{fire}}=00000$ (**17,280 worlds, 43.86% of DGP mass**), where the frozen rule abstains but reading the truth emitted $H$, turning abstention into a coarse substantive verdict (violating $\varnothing \neq \{\texttt{Unknown/NoWrite}\}$). Corrected: Module Cov(count/mass) **0.9834/0.5614**, FCR **0.7958/0.4622**; the co-primary pair is **not** degenerate — Coverage punishes abstention, FCR over-credit | **P0 (census/implementation)** | frozen — semantic canary + information-flow assertion added, both with demonstrated power; **no design change**, only the frozen rule restored |
-| **A75** | V0.3R semantic rebase: the subject becomes the **persistent learning update**, not runtime repair, with $R^{\text{mech}} \neq W^{\text{update}}$; $B_0: \Gamma_r^\ast \to \mathcal W(\Gamma_r^\ast)$ outputs a candidate family; seven ownership criteria including **addressable** and **contract-preserving** (learner baseline has **no fault privilege**); $S_+/S_0$ stratification with **no whole-support primary mean**; regimes **T** (harm / non-internalisation), **P** (benefit / recovery, future endogenous to $\Delta W$), **I** (secondary, no numbers yet); a **new** persistent-manifestation family $J^L = (J_P^L, J_D^L, J_X^L)$ defined by **(predicate, provenance)** while **$Z^{\text{fire}}$ is left untouched**; **$\Gamma_T^\ast \neq \Gamma_P^\ast$**; a fair decision defect family at the induced-policy layer with address-count budgets; a typed `FutureConsequenceView`; and two authorised-but-unimplemented kernel extensions | **P0 (spec)** | frozen — **specification only, no implementation authorised**; `08` still to be rebased |
+| **A75** | V0.3R semantic rebase: the subject becomes the **persistent learning update**, not runtime repair, with $R^{\text{mech}} \neq W^{\text{update}}$; $B_0: \Gamma_r^\ast \to \mathcal W(\Gamma_r^\ast)$ outputs a candidate family; seven ownership criteria including **addressable** and **contract-preserving** (learner baseline has **no fault privilege**); **regime-specific** stratification $S_{T,\pm}$ / $S_{P,\pm}$ with **no whole-support primary mean**; regimes **T** (harm / non-internalisation), **P** (benefit / recovery, future endogenous to $\Delta W$), **I** (secondary, no numbers yet); a **new** persistent-manifestation family $J^L = (J_P^L, J_D^L, J_X^L)$ defined by **(predicate, source-separated intermediate)** while **$Z^{\text{fire}}$ is left untouched**; **$\Gamma_T^\ast \neq \Gamma_P^\ast$** with formal manifestation address sets; a fair decision defect family at the induced-policy layer with address-count budgets; a typed `FutureConsequenceView`; and two authorised-but-unimplemented kernel extensions | **P0 (spec)** | **draft — pending semantic review; no implementation authorised**; not to be cited as frozen; `08` still to be rebased |
 
 ---
 
