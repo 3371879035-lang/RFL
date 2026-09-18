@@ -18,10 +18,11 @@ ROOT = pathlib.Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
 from rfl_rebuild.b1 import (  # noqa: E402
-    APPLIED, EVALUABLE_NOOP, LAWS, NO_VALID_ALTERNATIVE, PROTOCOL_ERROR,
-    DeleteFactualPatch, LocalOracleRestore, NoWrite, ProtocolError,
-    SetAlternative, TargetRecord, fingerprint, independent_treatment_count,
-    law_metadata, run_patch_law_with_envelope,
+    APPLIED, EVALUABLE_NOOP, ILL_TYPED, LAWS, NO_VALID_ALTERNATIVE, PATCH_SLICE,
+    PROTOCOL_ERROR, AddressPlan, DeleteFactualPatch, LocalOracleRestore, NoWrite,
+    NoWriteRef, ProtocolError, SetAlternative, TargetRecord, Tier,
+    fingerprint, independent_treatment_count, law_metadata,
+    run_patch_law_with_envelope,
 )
 from rfl_rebuild.env import kernel as K  # noqa: E402
 from rfl_rebuild.env.kernel import State  # noqa: E402
@@ -203,12 +204,12 @@ def test_7b_no_edits_means_no_transaction_at_all(monkeypatch):
 class _OutOfLocalityLaw:
     name = "MaliciousOutOfLocality"
     alias_of = None
-    requires_alternative = False
+    tier = Tier.L0_FACTUAL
 
     def plan(self, addresses, targets):
-        from rfl_rebuild.b1.laws import LawPlan, PlannedWrite
+        from rfl_rebuild.b1.laws import AddressPlan, LawPlan
         rogue = DecisionAddress(state=State(x=0, y=2, t=0, kappa=0, phi=0), z=0, m=0)
-        return LawPlan(self.name, (PlannedWrite(rogue, Edit(DECISION, rogue, UP), None),))
+        return LawPlan(self.name, (AddressPlan(rogue, (Edit(DECISION, rogue, UP),)),))
 
 
 def test_8_a_law_writing_outside_its_credited_addresses_fails_stop():
@@ -228,15 +229,15 @@ class _LaunderingLaw:
 
     name = "MaliciousLaundering"
     alias_of = None
-    requires_alternative = False
+    tier = Tier.L0_FACTUAL
 
     def __init__(self, rogue):
         self._rogue = rogue
 
     def plan(self, addresses, targets):
-        from rfl_rebuild.b1.laws import LawPlan, PlannedWrite
+        from rfl_rebuild.b1.laws import AddressPlan, LawPlan
         return LawPlan(self.name, tuple(
-            PlannedWrite(a, Edit(DECISION, self._rogue, UP), None) for a in addresses))
+            AddressPlan(a, (Edit(DECISION, self._rogue, UP),)) for a in addresses))
 
 
 def test_8b_laundering_a_credited_address_into_a_rogue_edit_fails_stop():
@@ -249,12 +250,12 @@ def test_8b_laundering_a_credited_address_into_a_rogue_edit_fails_stop():
 
 def test_8c_a_plan_that_omits_a_credited_address_fails_stop():
     class _OmitOne:
-        name, alias_of, requires_alternative = "MaliciousOmit", None, False
+        name, alias_of, tier = "MaliciousOmit", None, Tier.L0_FACTUAL
 
         def plan(self, addresses, targets):
-            from rfl_rebuild.b1.laws import LawPlan, PlannedWrite
+            from rfl_rebuild.b1.laws import AddressPlan, LawPlan
             return LawPlan(self.name,
-                           tuple(PlannedWrite(a, None, None) for a in addresses[:-1]))
+                           tuple(AddressPlan(a) for a in addresses[:-1]))
 
     with pytest.raises(ProtocolError):
         run_patch_law_with_envelope(_OmitOne(), LearnerPersistentState(),
@@ -263,13 +264,13 @@ def test_8c_a_plan_that_omits_a_credited_address_fails_stop():
 
 def test_8d_a_plan_that_double_names_an_address_fails_stop():
     class _Double:
-        name, alias_of, requires_alternative = "MaliciousDouble", None, False
+        name, alias_of, tier = "MaliciousDouble", None, Tier.L0_FACTUAL
 
         def plan(self, addresses, targets):
-            from rfl_rebuild.b1.laws import LawPlan, PlannedWrite
+            from rfl_rebuild.b1.laws import AddressPlan, LawPlan
             return LawPlan(self.name,
-                           tuple(PlannedWrite(a, None, None) for a in addresses)
-                           + (PlannedWrite(addresses[0], None, None),))
+                           tuple(AddressPlan(a) for a in addresses)
+                           + (AddressPlan(addresses[0]),))
 
     with pytest.raises(ProtocolError):
         run_patch_law_with_envelope(_Double(), LearnerPersistentState(),
@@ -278,13 +279,13 @@ def test_8d_a_plan_that_double_names_an_address_fails_stop():
 
 def test_8e_an_illegal_plan_shape_fails_stop():
     class _BadShape:
-        name, alias_of, requires_alternative = "MaliciousShape", None, False
+        name, alias_of, tier = "MaliciousShape", None, Tier.L0_FACTUAL
 
         def plan(self, addresses, targets):
-            from rfl_rebuild.b1.laws import LawPlan, PlannedWrite
+            from rfl_rebuild.b1.laws import AddressPlan, LawPlan
             # edit AND status together: not one of the three legal shapes
             return LawPlan(self.name, tuple(
-                PlannedWrite(a, Edit(DECISION, a, None), APPLIED)
+                AddressPlan(a, (Edit(DECISION, a, None),), APPLIED)
                 for a in addresses))
 
     with pytest.raises(ProtocolError):
@@ -294,12 +295,12 @@ def test_8e_an_illegal_plan_shape_fails_stop():
 
 def test_8f_declaring_applied_without_an_edit_fails_stop():
     class _StatusNoEdit:
-        name, alias_of, requires_alternative = "MaliciousStatus", None, False
+        name, alias_of, tier = "MaliciousStatus", None, Tier.L0_FACTUAL
 
         def plan(self, addresses, targets):
-            from rfl_rebuild.b1.laws import LawPlan, PlannedWrite
+            from rfl_rebuild.b1.laws import AddressPlan, LawPlan
             return LawPlan(self.name, tuple(
-                PlannedWrite(a, None, APPLIED) for a in addresses))
+                AddressPlan(a, (), APPLIED) for a in addresses))
 
     with pytest.raises(ProtocolError):
         run_patch_law_with_envelope(_StatusNoEdit(), LearnerPersistentState(),
@@ -311,9 +312,9 @@ def test_8g_a_law_that_does_not_declare_its_tier_fails_stop():
         name, alias_of = "Undeclared", None
 
         def plan(self, addresses, targets):
-            from rfl_rebuild.b1.laws import LawPlan, PlannedWrite
+            from rfl_rebuild.b1.laws import AddressPlan, LawPlan
             return LawPlan(self.name,
-                           tuple(PlannedWrite(a, None, None) for a in addresses))
+                           tuple(AddressPlan(a) for a in addresses))
 
     with pytest.raises(ProtocolError):
         run_patch_law_with_envelope(_NoTier(), LearnerPersistentState(),
@@ -334,13 +335,13 @@ def test_8h_a_real_subclass_that_forgets_its_tier_fails_stop():
         name = "ForgotTier"
 
         def plan(self, addresses, targets):
-            from rfl_rebuild.b1.laws import LawPlan, PlannedWrite
+            from rfl_rebuild.b1.laws import AddressPlan, LawPlan
             return LawPlan(self.name,
-                           tuple(PlannedWrite(a, None, None) for a in addresses))
+                           tuple(AddressPlan(a) for a in addresses))
 
-    assert _Law.requires_alternative is None, \
+    assert _Law.tier is None, \
         "the base tier must be the NOT-DECLARED sentinel, not False"
-    assert "requires_alternative" not in _ForgotTier.__dict__, \
+    assert "tier" not in _ForgotTier.__dict__, \
         "this canary is only meaningful while the subclass really does not declare it"
     with pytest.raises(ProtocolError):
         run_patch_law_with_envelope(_ForgotTier(), LearnerPersistentState(),
@@ -349,19 +350,32 @@ def test_8h_a_real_subclass_that_forgets_its_tier_fails_stop():
 
 @pytest.mark.parametrize("bad_tier", [None, 0, 1, "yes", "False", []])
 def test_8i_a_tier_that_is_not_a_real_bool_fails_stop(bad_tier):
-    """``bool("no") is True`` and ``bool(None) is False``: coercion is not a tier."""
+    """``bool("no") is True`` and ``bool(None) is False``: coercion is not a tier.
+
+    The assertion is on **which** rejection fires, not merely that one did, and that is
+    load-bearing rather than fussy. The cell table is keyed by :class:`Tier` members, so
+    a non-member is refused by the lookup as well — if this test only asserted
+    ``ProtocolError`` it would still pass with the type test deleted, and the mutation
+    would report ``NOT_A_GATE``. Two distinct failures are being separated: "this is not
+    a tier at all" (here) and "this architecture has no cell for this tier" (8m).
+    Additionally, ``[]`` shows why the type test is not merely cosmetic: without it the
+    lookup would raise ``TypeError: unhashable type`` out of ``dict.get`` instead of the
+    ``PROTOCOL_ERROR`` the contract promises.
+    """
     class _BadTier:
         name, alias_of = "BadTier", None
 
         def plan(self, addresses, targets):
-            from rfl_rebuild.b1.laws import LawPlan, PlannedWrite
+            from rfl_rebuild.b1.laws import AddressPlan, LawPlan
             return LawPlan(self.name,
-                           tuple(PlannedWrite(a, None, None) for a in addresses))
+                           tuple(AddressPlan(a) for a in addresses))
 
-    _BadTier.requires_alternative = bad_tier
-    with pytest.raises(ProtocolError):
+    _BadTier.tier = bad_tier
+    with pytest.raises(ProtocolError) as ei:
         run_patch_law_with_envelope(_BadTier(), LearnerPersistentState(),
                                     ADDRESSES, envelope())
+    assert "not a Tier member" in str(ei.value), \
+        f"the wrong rejection fired for tier={bad_tier!r}: {ei.value}"
 
 
 def test_8j_a_law_cannot_re_acquire_a_store_handle():
@@ -373,7 +387,7 @@ def test_8j_a_law_cannot_re_acquire_a_store_handle():
     full learner snapshot (all three stores) to the law API.
     """
     class _ReacquiresSnapshot:
-        name, alias_of, requires_alternative = "Sneaky", None, False
+        name, alias_of, tier = "Sneaky", None, Tier.L1_CORRECTIVE
 
         def plan(self, addresses, targets, snapshot):
             from rfl_rebuild.b1.laws import LawPlan
@@ -419,6 +433,148 @@ def test_8l_the_snapshot_is_not_even_constructed_for_a_law_run(monkeypatch):
 
 
 # --------------------------------------------------------------------------- #
+# 8m-8q. the generic slice structures A77 froze (the refactor's own claims)
+# --------------------------------------------------------------------------- #
+
+class _CellSpy:
+    """Records exactly what the runner delivered, and returns an all-no-op plan."""
+
+    name = "CellSpy"
+    alias_of = None
+    tier = Tier.L1_CORRECTIVE
+    seen: dict = {}
+
+    def plan(self, addresses, targets):
+        from rfl_rebuild.b1.laws import LawPlan
+        _CellSpy.seen["targets"] = targets
+        return LawPlan(self.name, tuple(AddressPlan(a) for a in addresses))
+
+
+def test_8m_a_law_declared_in_an_ill_typed_cell_is_rejected():
+    """A77 §65.2's table becomes executable.
+
+    $L_2$ is ill-typed on a value-free store because every value target is ill-typed
+    there (A76 §63.6). If that cell were declared as an empty field set instead, an
+    $L_2$ law would be accepted as though it were $L_0$ — silently, and with the wrong
+    information contract.
+    """
+    class _DeclaresL2:
+        name, alias_of, tier = "WrongCell", None, Tier.L2_COUNTERFACTUAL
+
+        def plan(self, addresses, targets):
+            from rfl_rebuild.b1.laws import LawPlan
+            return LawPlan(self.name, tuple(AddressPlan(a) for a in addresses))
+
+    assert PATCH_SLICE.cells[Tier.L2_COUNTERFACTUAL] is ILL_TYPED, \
+        "this gate is about the ill-typed cell; the table must still say so"
+    with pytest.raises(ProtocolError) as ei:
+        run_patch_law_with_envelope(_DeclaresL2(), LearnerPersistentState(),
+                                    ADDRESSES, envelope())
+    assert "ill-typed" in str(ei.value)
+
+
+def test_8n_the_delivered_object_is_exactly_the_cells_field_set():
+    """The inner half of A77 §65.2's exactness, and it is **not** vacuous.
+
+    ``fields(D_patch, L1) = {alternative}``. The evaluator-side record also carries
+    ``factual_command``, which exists for validation and is not delivered content, so a
+    law that received the record would see a field its cell excludes.
+    """
+    _CellSpy.seen = {}
+    run_patch_law_with_envelope(_CellSpy(), LearnerPersistentState(), ADDRESSES,
+                                envelope())
+    delivered = _CellSpy.seen["targets"]
+    assert delivered is not None
+    assert set(delivered) == set(ADDRESSES), "the outer domain is the credited set"
+    for a in ADDRESSES:
+        assert set(delivered[a]) == {"alternative"}, \
+            f"{a!r} was delivered {sorted(delivered[a])}"
+        assert "factual_command" not in delivered[a], \
+            "the validator's field leaked into the law's delivery"
+    assert delivered[A]["alternative"] == UP
+
+
+def test_8n2_an_empty_cell_delivers_no_object_at_all():
+    """Not an empty container: ``None``. A law with no fields is handed nothing."""
+    _CellSpy.seen = {}
+    _CellSpy.tier = Tier.L0_FACTUAL
+    try:
+        run_patch_law_with_envelope(_CellSpy(), LearnerPersistentState(), ADDRESSES,
+                                    envelope())
+    finally:
+        _CellSpy.tier = Tier.L1_CORRECTIVE
+    assert _CellSpy.seen["targets"] is None
+
+
+def test_8o_owner_locality_degenerates_to_identity_on_this_architecture():
+    """The generic rule must reduce to the old one, not replace it (A77 §65.9).
+
+    ``owner_patch = id``, so "credited = plan = edit" is the special case. If the
+    refactor had instead dropped the old check without this degeneration, the laundering
+    gate would keep passing for the wrong reason.
+    """
+    for a in ADDRESSES + (State(x=0, y=2, t=0, kappa=0, phi=0),):
+        addr = a if isinstance(a, DecisionAddress) else DecisionAddress(a, 0, 0)
+        assert PATCH_SLICE.owner(addr) == addr, "owner_patch must be the identity"
+    assert PATCH_SLICE.scalar is False
+    assert PATCH_SLICE.store == DECISION
+
+
+def test_8p_two_entry_edits_in_one_address_plan_are_rejected():
+    """New machinery, new failure mode: last-write-wins inside one plan.
+
+    On $D_{patch}$ this is also what bounds an address-plan at one entry, which is how
+    the generic structure reproduces the old "one write per credited address" rule
+    without a special case.
+    """
+    class _TwoEntries:
+        name, alias_of, tier = "TwoEntries", None, Tier.L0_FACTUAL
+
+        def plan(self, addresses, targets):
+            from rfl_rebuild.b1.laws import LawPlan
+            return LawPlan(self.name, tuple(
+                AddressPlan(a, (Edit(DECISION, a, UP), Edit(DECISION, a, DOWN)))
+                for a in addresses))
+
+    s = LearnerPersistentState()
+    with pytest.raises(ProtocolError) as ei:
+        run_patch_law_with_envelope(_TwoEntries(), s, ADDRESSES, envelope())
+    assert "same entry twice" in str(ei.value)
+    assert s.healthy, "the rejected plan must not have touched the store"
+
+
+def test_8q_the_frozen_cell_table_is_what_is_declared():
+    """A77 §65.2's $D_{patch}$ row, pinned as data.
+
+    $L_0$ and $L_3$ declare nothing, $L_1$ declares exactly the alternative, $L_2$ is
+    ill-typed. A future edit that widens a cell — for instance by giving $L_0$ a field
+    "because it is convenient" — has to change this test, which is the point.
+    """
+    assert PATCH_SLICE.fields(Tier.L0_FACTUAL) == frozenset()
+    assert PATCH_SLICE.fields(Tier.L1_CORRECTIVE) == frozenset({"alternative"})
+    assert PATCH_SLICE.fields(Tier.L3_ORACLE) == frozenset()
+    with pytest.raises(ProtocolError):
+        PATCH_SLICE.fields(Tier.L2_COUNTERFACTUAL)
+    assert set(PATCH_SLICE.cells) == set(Tier), \
+        "every tier must be declared, ill-typed cells included"
+
+
+def test_8r_the_reference_mechanism_shares_one_plan_and_is_not_a_treatment():
+    """A77 §65.3: references are objects in a cell, and never counted as treatments."""
+    l0, l3 = NoWriteRef(Tier.L0_FACTUAL), NoWriteRef(Tier.L3_ORACLE)
+    assert l0.plan.__func__ is l3.plan.__func__, \
+        "instances must share one no-op plan function object"
+    assert l0.tier is Tier.L0_FACTUAL and l3.tier is Tier.L3_ORACLE
+    assert NoWrite().tier is Tier.L0_FACTUAL, \
+        "the registered reference keeps the tier its class declares"
+    assert NoWriteRef().tier is None, \
+        "an instance with no declared tier keeps the NOT-DECLARED sentinel"
+    assert independent_treatment_count() == 3, \
+        "instantiating references must not move the frozen count"
+    assert law_metadata()[0] == ("NoWrite", "reference", None)
+
+
+# --------------------------------------------------------------------------- #
 # 9. a failed transaction invalidates the whole run
 # --------------------------------------------------------------------------- #
 
@@ -444,13 +600,13 @@ def test_9_a_substrate_rejection_is_a_fail_stop_with_identical_state():
 
 def test_9b_a_law_that_plans_the_same_address_twice_fails_stop():
     class _DoubleEdit:
-        name, alias_of, requires_alternative = "MaliciousDuplicate", None, False
+        name, alias_of, tier = "MaliciousDuplicate", None, Tier.L0_FACTUAL
 
         def plan(self, addresses, targets):
-            from rfl_rebuild.b1.laws import LawPlan, PlannedWrite
+            from rfl_rebuild.b1.laws import AddressPlan, LawPlan
             return LawPlan(self.name,
-                           (PlannedWrite(A, Edit(DECISION, A, UP), None),
-                            PlannedWrite(A, Edit(DECISION, A, DOWN), None)))
+                           (AddressPlan(A, (Edit(DECISION, A, UP),)),
+                            AddressPlan(A, (Edit(DECISION, A, DOWN),))))
 
     s = LearnerPersistentState()
     with pytest.raises(ProtocolError):
@@ -524,13 +680,13 @@ def test_12_the_next_episode_reads_the_persistent_effect():
 
 def test_12b_a_rolled_back_run_leaves_no_persistent_effect():
     class _DoubleEdit:
-        name, alias_of, requires_alternative = "MaliciousDuplicate", None, False
+        name, alias_of, tier = "MaliciousDuplicate", None, Tier.L0_FACTUAL
 
         def plan(self, addresses, targets):
-            from rfl_rebuild.b1.laws import LawPlan, PlannedWrite
+            from rfl_rebuild.b1.laws import AddressPlan, LawPlan
             return LawPlan(self.name,
-                           (PlannedWrite(A, Edit(DECISION, A, UP), None),
-                            PlannedWrite(A, Edit(DECISION, A, DOWN), None)))
+                           (AddressPlan(A, (Edit(DECISION, A, UP),)),
+                            AddressPlan(A, (Edit(DECISION, A, DOWN),))))
 
     s = LearnerPersistentState()
     with pytest.raises(ProtocolError):
@@ -633,10 +789,11 @@ def test_14b_a_shuffled_target_mapping_is_irrelevant():
 # --------------------------------------------------------------------------- #
 
 def test_15_the_tier_is_declared_by_every_registered_arm():
-    expect = {"NoWrite": False, "DeleteFactualPatch": False,
-              "SetAlternative": True, "LocalOracleRestore": False}
+    expect = {"NoWrite": Tier.L0_FACTUAL, "DeleteFactualPatch": Tier.L0_FACTUAL,
+              "SetAlternative": Tier.L1_CORRECTIVE,
+              "LocalOracleRestore": Tier.L3_ORACLE}
     for law in LAWS:
-        assert getattr(law, "requires_alternative", None) is expect[law.name], \
+        assert getattr(law, "tier", None) is expect[law.name], \
             f"{law.name} declares the wrong information tier"
 
 
@@ -670,7 +827,7 @@ def test_15d_an_l0_law_never_receives_a_non_none_envelope():
     seen = {}
 
     class _Spy:
-        name, alias_of, requires_alternative = "SpyL0", None, False
+        name, alias_of, tier = "SpyL0", None, Tier.L0_FACTUAL
 
         def plan(self, addresses, targets):
             from rfl_rebuild.b1.laws import LawPlan

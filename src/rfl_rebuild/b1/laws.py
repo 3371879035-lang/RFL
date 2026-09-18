@@ -1,35 +1,39 @@
-r"""A76 §63.9 — the $D_{patch}$ row of the compatibility matrix.
+r"""A76 §63.9 / A77 §65.3, §65.8, §65.9 — the $D_{patch}$ arms.
 
 Four registered arms, **three independent treatments**:
 
-| arm | kind |
-|---|---|
-| `NoWrite` | reference |
-| `DeleteFactualPatch` | independent operation ($L_0$) |
-| `SetAlternative` | independent operation ($L_1$) |
-| `LocalOracleRestore` | $L_3$ **alias of `DeleteFactualPatch`** |
+| arm | kind | tier |
+|---|---|---|
+| `NoWrite` | reference | `L0_FACTUAL` |
+| `DeleteFactualPatch` | independent operation | `L0_FACTUAL` |
+| `SetAlternative` | independent operation | `L1_CORRECTIVE` |
+| `LocalOracleRestore` | $L_3$ **alias of `DeleteFactualPatch`** | `L3_ORACLE` |
 
 $$\boxed{\texttt{LocalOracleRestore} \equiv \texttt{DeleteFactualPatch}
 \quad\text{on } D_{patch}}$$
 
-so it is registered as an alias and not implemented a second time: it must produce the
-same transaction, the same post-state, the same per-address statuses and the same
-ledger cost. If any of those differ, that is an implementation bug and the alias test
-catches it.
+so it is an alias and not a second implementation: same transaction, same post-state,
+same per-address statuses, same ledger cost, and the alias test asserts ``plan`` is the
+*same function object*.
 
-A law plans from the credited addresses and — only for a tier that requires it — the
-target envelope, and returns :class:`PlannedWrite` entries. It never computes a status
-that depends on the post-state, and never receives $T/P$, $S_{r,\pm}$, $\Gamma^\ast$,
-a world id or a block id.
+A law plans from the credited addresses and — only for a tier that delivers fields — the
+projected envelope, and returns one **address-plan** per credited context:
 
 $$\boxed{\texttt{plan}(addresses,\ targets)\quad\text{— and nothing else}}$$
 
-**A law is handed no store view at all**: not the persistent state, not a snapshot, not
-a store mapping. A76 §63.1 lets a primitive read *its own* store; being handed the whole
+**A law is handed no store view at all**: not the persistent state, not a snapshot, not a
+store mapping. A76 §63.1 lets a primitive read *its own* store; being handed the whole
 learner snapshot gave a $D$ law an independent handle on $P_D^L$, $C_P^L$ and $C_X^L$ at
-once — A59's shape, and no less a leak for the current four laws happening not to read
-it. A later $D_Q$ law that genuinely needs to read the $D$ store gets a dedicated
-decision-only view, never the snapshot back.
+once — A59's shape. A later $D_Q$ law that genuinely needs to read the $D$ store gets a
+dedicated decision-only view, never the snapshot back.
+
+The plan structure is A77 §65.9's **address-plan**: one per credited context, carrying
+$0..k$ entry edits, and exactly one ledger receipt between them:
+
+$$\boxed{\{\text{Plan}.\text{address}\} = \text{the credited addresses, each exactly once}}$$
+
+On this architecture $k \le 1$, and that is not a special case: two entry edits at one
+context would be two edits to the *same* entry address, which the duplicate rule rejects.
 """
 
 from __future__ import annotations
@@ -38,16 +42,17 @@ from dataclasses import dataclass
 from typing import Mapping, Sequence
 
 from rfl_rebuild.b1.contract import NO_VALID_ALTERNATIVE
-from rfl_rebuild.b1.targets import TargetRecord
+from rfl_rebuild.b1.tier import Tier
 from rfl_rebuild.learner.store import DECISION, DecisionAddress, Edit
 
 __all__ = [
     "LAWS",
+    "AddressPlan",
     "DeleteFactualPatch",
     "LawPlan",
     "LocalOracleRestore",
     "NoWrite",
-    "PlannedWrite",
+    "NoWriteRef",
     "SetAlternative",
     "independent_treatment_count",
     "law_metadata",
@@ -55,25 +60,27 @@ __all__ = [
 
 
 @dataclass(frozen=True, slots=True)
-class PlannedWrite:
-    """One address's planned outcome.
+class AddressPlan:
+    r"""One credited context's planned outcome (§65.9).
 
     Exactly one of three shapes is legal:
 
-    | ``edit`` | ``status`` | meaning |
+    | ``edits`` | ``status`` | meaning |
     |---|---|---|
-    | not ``None`` | ``None`` | a normal candidate write |
-    | ``None`` | ``None`` | an ordinary ``EVALUABLE_NOOP`` |
-    | ``None`` | ``NO_VALID_ALTERNATIVE`` | a legitimate absence of a target |
+    | non-empty | ``None`` | entry edits at this context |
+    | empty | ``None`` | an ordinary ``EVALUABLE_NOOP`` |
+    | empty | ``NO_VALID_ALTERNATIVE`` | a legitimate absence of a target |
 
-    Anything else is a :class:`ProtocolError`. The first version of this docstring said
-    "never both, never neither", which ``NoWrite`` contradicted in the very same
-    commit — it legitimately plans ``edit=None, status=None``.
+    Anything else is a :class:`ProtocolError`. The field is a *tuple* rather than a single
+    edit because A77 §65.9 froze the address-plan as the unit, and on $D_Q$ one context
+    carries two entries (`DualReturnWrite`) or a whole row (`LocalOracleRestore`) while
+    still producing one receipt. There is deliberately no row-operation variant here: that
+    arrives with the architecture that needs it, per §65.12's order.
     """
 
     address: DecisionAddress
-    edit: Edit | None
-    status: str | None
+    edits: tuple[Edit, ...] = ()
+    status: str | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -81,38 +88,33 @@ class LawPlan:
     """A law's whole plan for one scene. The runner commits it in ONE transaction."""
 
     name: str
-    writes: tuple[PlannedWrite, ...]
+    plans: tuple[AddressPlan, ...]
 
     @property
     def edits(self) -> tuple[Edit, ...]:
-        return tuple(w.edit for w in self.writes if w.edit is not None)
+        return tuple(e for p in self.plans for e in p.edits)
 
 
 class _Law:
-    """Base class. Subclasses implement ``plan`` and never see the store itself.
+    r"""Base class. Subclasses implement ``plan`` and never see the store itself.
 
-    ``requires_alternative`` is the **information tier** (A76 §63.1). The base value is
-    the sentinel ``None``, meaning **NOT DECLARED**, and the runner accepts only a real
-    ``bool``:
+    ``tier`` is the **information tier** (A76 §63.1, A77 §65.1). The base value is the
+    sentinel ``None``, meaning **NOT DECLARED**, and the runner accepts only a real
+    :class:`~rfl_rebuild.b1.tier.Tier`:
 
-    $$\\boxed{\\texttt{\\_Law.requires\\_alternative = None}}$$
+    $$\\boxed{\\texttt{\\_Law.tier = None}}$$
 
-    The earlier base value was ``False``, so a subclass that forgot to declare its tier
-    silently inherited the **lowest** tier — the exact outcome the check exists to
-    prevent, and invisible in the ledger. The ``_NoTier`` test looked like it covered
-    this but its class did not inherit ``_Law`` at all, so it tripped ``hasattr`` and
-    the real case was never exercised.
+    An earlier base value was ``requires_alternative = False``, so a subclass that forgot
+    to declare its tier silently inherited the **lowest** tier — the exact outcome the
+    check exists to prevent, and invisible in the ledger. The ``_NoTier`` test looked like
+    it covered this but its class did not inherit ``_Law`` at all, so it tripped
+    ``hasattr`` and the real case was never exercised.
 
-    The tier decides **delivery**, not merely expectation: an $L_0$ law is never handed
-    $a^+$ — not even an envelope object:
-
-    $$\\boxed{L_0\\text{ law must not depend on, nor be delivered, }L_1\\text{
-    corrective content}}$$
-
-    Handing ``targets`` to ``NoWrite`` and trusting it not to look would repeat A59's
+    The tier decides **delivery**, not merely expectation: a law whose cell declares no
+    field is never handed an object at all, and one whose cell is ill-typed cannot be
+    declared. Handing an envelope to a law and trusting it not to look would repeat A59's
     lesson: *the method did not read the higher-tier information* does not imply *the
-    runner did not first condition it on that information*. It would also let a broken
-    target generator fail an $L_0$ arm that has no business needing a target.
+    runner did not first condition it on that information*.
 
     ``plan`` takes **exactly** ``(addresses, targets)``; the runner enforces the
     signature, so a law cannot re-acquire a store handle by adding a parameter.
@@ -120,29 +122,58 @@ class _Law:
 
     name = "?"
     alias_of: str | None = None
-    requires_alternative: bool | None = None      # None == NOT DECLARED
+    tier: Tier | None = None                      # None == NOT DECLARED
 
     def plan(self, addresses: Sequence[DecisionAddress],
-             targets: "Mapping[DecisionAddress, TargetRecord] | None") -> LawPlan:
+             targets: "Mapping[DecisionAddress, Mapping[str, object]] | None") -> LawPlan:
         raise NotImplementedError                # pragma: no cover - abstract
 
     def __repr__(self) -> str:
         return f"<law {self.name}>"
 
 
-class NoWrite(_Law):
-    r"""Propose nothing. Every credited address is ``EVALUABLE_NOOP``.
+class NoWriteRef(_Law):
+    r"""The same-tier **reference**: propose nothing, whatever the cell delivers.
 
-    Not ``APPLIED``: the law ran and correctly changed nothing, which is a different
-    statement from a write having been committed. Requires no target.
+    A77 §65.3 requires the reference to be an *object in the cell*, not a convention: a
+    single law fixed at $L_0$ cannot be the $L_2$ reference, and "the tier is recorded per
+    arm" needs something to record it on. All instances therefore share **one** no-op plan
+    function object and differ only in the tier they declare:
+
+    $$\boxed{\text{the tier is what makes them distinct; the behaviour is what makes them one}}$$
+
+    They are references and never treatments, so they do not increase
+    :func:`independent_treatment_count`. One instance is instantiated per cell that has a
+    substantive treatment, which is why the empty $L_1$ cell of a scalar architecture has
+    no reference at all.
     """
 
     name = "NoWrite"
-    requires_alternative = False
+    alias_of = None
+
+    def __init__(self, tier: Tier | None = None) -> None:
+        # Omitted means "use the tier this class declares", which is how the registered
+        # arm works; passing one declares an instance tier. An instance that ends up with
+        # no tier at all keeps the base sentinel and is rejected by the runner.
+        if tier is not None:
+            self.tier = tier
 
     def plan(self, addresses, targets) -> LawPlan:
-        return LawPlan(self.name,
-                       tuple(PlannedWrite(a, None, None) for a in addresses))
+        return LawPlan(self.name, tuple(AddressPlan(a) for a in addresses))
+
+
+class NoWrite(NoWriteRef):
+    r"""The registered reference of this architecture's cell.
+
+    Every credited address is ``EVALUABLE_NOOP`` — not ``APPLIED``: the law ran and
+    correctly changed nothing, which is a different statement from a write having been
+    committed. This *is* $\texttt{NoWriteRef}(L_0^{\text{factual}})$ on $D_{patch}$; it
+    keeps its own name because the arm table and :func:`law_metadata` are part of the
+    surface the refactor must not move.
+    """
+
+    name = "NoWrite"
+    tier = Tier.L0_FACTUAL
 
 
 class DeleteFactualPatch(_Law):
@@ -155,12 +186,12 @@ class DeleteFactualPatch(_Law):
     """
 
     name = "DeleteFactualPatch"
-    requires_alternative = False
+    tier = Tier.L0_FACTUAL
 
     def plan(self, addresses, targets) -> LawPlan:
         return LawPlan(
             self.name,
-            tuple(PlannedWrite(a, Edit(DECISION, a, None), None) for a in addresses),
+            tuple(AddressPlan(a, (Edit(DECISION, a, None),)) for a in addresses),
         )
 
 
@@ -174,37 +205,46 @@ class SetAlternative(_Law):
       the other addresses are unaffected;
     * a **missing** target record, or no envelope at all, is not handled here at all —
       the runner raises :class:`ProtocolError` before any law runs.
+
+    The law reads ``targets[a]["alternative"]``: the cell's declared field set, not the
+    evaluator-side record. ``factual_command`` exists for validation and is not delivered
+    content.
     """
 
     name = "SetAlternative"
-    requires_alternative = True
+    tier = Tier.L1_CORRECTIVE
 
     def plan(self, addresses, targets) -> LawPlan:
-        writes = []
+        plans = []
         for a in addresses:
-            rec = targets[a]
-            if rec.alternative is None:
-                writes.append(PlannedWrite(a, None, NO_VALID_ALTERNATIVE))
+            alt = targets[a]["alternative"]
+            if alt is None:
+                plans.append(AddressPlan(a, (), NO_VALID_ALTERNATIVE))
             else:
-                writes.append(PlannedWrite(a, Edit(DECISION, a, rec.alternative),
-                                           None))
-        return LawPlan(self.name, tuple(writes))
+                plans.append(AddressPlan(a, (Edit(DECISION, a, alt),)))
+        return LawPlan(self.name, tuple(plans))
 
 
 class LocalOracleRestore(DeleteFactualPatch):
     r"""$L_3$ on $D_{patch}$ — an **alias** of :class:`DeleteFactualPatch`.
 
-    Implemented by *inheritance*, not by a second ``plan``: the operation exists once
-    and this class only carries the alias metadata. The earlier version wrote
+    Implemented by *inheritance*, not by a second ``plan``: the operation exists once and
+    this class only carries the alias metadata. The earlier version wrote
     ``LocalOracleRestore = DeleteFactualPatch`` and then set ``.name`` on it, which
     mutated the shared class — ``DeleteFactualPatch`` lost its own name, the registry
-    contained ``LocalOracleRestore`` twice, and the independent-treatment count came
-    out as 2. The alias test asserts ``plan`` is the *same function object*.
+    contained ``LocalOracleRestore`` twice, and the independent-treatment count came out
+    as 2. The alias test asserts ``plan`` is the *same function object*.
+
+    Its tier is $L_3$ while its behaviour is $L_0$'s, and that is not an inconsistency to
+    paper over: on a value-free store the healthy referent *is* "no override", so the
+    $L_3$ restore canonicalises to a deletion. A77 §65.2 gives this cell
+    $\text{fields}=\varnothing$, so the arm is handed nothing — the same delivery as
+    $L_0$'s, with a different semantic authorisation.
     """
 
     name = "LocalOracleRestore"
     alias_of = "DeleteFactualPatch"
-    requires_alternative = False
+    tier = Tier.L3_ORACLE
 
 
 #: Registration order is fixed so arm enumeration is deterministic.
@@ -220,7 +260,7 @@ def law_metadata() -> tuple:
     for law in LAWS:
         if law.alias_of:
             out.append((law.name, "alias", law.alias_of))
-        elif law.name == "NoWrite":
+        elif issubclass(law, NoWriteRef):
             out.append((law.name, "reference", None))
         else:
             out.append((law.name, "operation", None))
@@ -230,7 +270,15 @@ def law_metadata() -> tuple:
 def independent_treatment_count() -> int:
     """**Three**, not four: ``NoWrite`` + ``DeleteFactualPatch`` + ``SetAlternative``.
 
-    ``LocalOracleRestore`` is an alias on this architecture and must not be counted,
-    nor executed as a fourth arm and reported twice.
+    ``LocalOracleRestore`` is an alias on this architecture and must not be counted, nor
+    executed as a fourth arm and reported twice.
+
+    Scope, stated because A77 §65.3 says something narrower about *references*: this
+    counts the registered arms that are not aliases, and A76 §63.9 wrote the reference
+    among these three. §65.3's rule — that a reference is never a treatment — is what
+    governs the $D_Q$ row, where A77 §65.8 counts **four** and the three `NoWriteRef`
+    instances are additional to them. The two are not in conflict, but they are not the
+    same formula either, so the $D_Q$ count is implemented with that registry rather than
+    inferred here.
     """
     return sum(1 for _n, kind, _a in law_metadata() if kind != "alias")

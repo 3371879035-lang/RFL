@@ -1,13 +1,14 @@
 {
   "check": "b1 interface gate mutation self-check",
-  "n_mutations": 8,
-  "n_gate_is_real": 8,
+  "n_mutations": 9,
+  "n_gate_is_real": 9,
   "n_not_a_gate": 0,
   "tree_restored_byte_identical": true,
   "file_digests": {
-    "src\\rfl_rebuild\\b1\\laws.py": "5ae63c2930b97c11c4a2b0683dc9fcaef3f87f972d45a9ff73ffab5ddb197e6a",
-    "src\\rfl_rebuild\\b1\\runner.py": "b3efee4dfe802af28c6611e433a73ff0d5eb5434ed5676ecc5e96b41582e5eda",
-    "src\\rfl_rebuild\\b1\\targets.py": "32d09a132f57ce1e62b054c4305c797c6f500cff04ab5af67e1b839284fe0d55"
+    "src\\rfl_rebuild\\b1\\laws.py": "096888fc4a7e0bace5a373eaef7ed30350d7cf6ba374bedb15578431f2d75417",
+    "src\\rfl_rebuild\\b1\\runner.py": "8bbe5621f276c988769ab1bef63de0e972357fdf49b62fdcc53f51ebe07ab5e0",
+    "src\\rfl_rebuild\\b1\\targets.py": "32d09a132f57ce1e62b054c4305c797c6f500cff04ab5af67e1b839284fe0d55",
+    "src\\rfl_rebuild\\b1\\tier.py": "29619c0e1239dd7d2b0eb25136e6976831913e844905368bf3c1ebdb61e7f32b"
   },
   "results": [
     {
@@ -25,6 +26,16 @@
       "hole": "the tier is coerced with truthiness instead of being required to be a bool",
       "gate": "test_8i_a_tier_that_is_not_a_real_bool_fails_stop",
       "site": "src\\rfl_rebuild\\b1\\runner.py",
+      "matched": 1,
+      "exit_code": 1,
+      "tail": "!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "ill_typed_cell",
+      "hole": "an ill-typed cell is declared as an empty field set, so a law in it is accepted as though the cell had a treatment",
+      "gate": "test_8m_a_law_declared_in_an_ill_typed_cell_is_rejected",
+      "site": "src\\rfl_rebuild\\b1\\tier.py",
       "matched": 1,
       "exit_code": 1,
       "tail": "!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",

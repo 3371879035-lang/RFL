@@ -6,9 +6,9 @@ Sits above ``rfl_rebuild.learner`` (the substrate) and below B2:
 * this layer owns **what update operation is applied at a legal address**, and nothing
   else — no attribution, no target selection, no endpoint.
 
-The law receives already-resolved addresses and, **only if its tier requires it**,
-already-resolved targets. That is the whole law API — `(addresses, targets)`, enforced
-by the runner rather than assumed:
+The law receives already-resolved addresses and, **only if its cell declares fields**,
+the envelope projected onto exactly those fields. That is the whole law API —
+`(addresses, targets)`, enforced by the runner rather than assumed:
 
 $$\boxed{\text{a law is handed no store view: not the state, not a snapshot}}$$
 
@@ -33,11 +33,12 @@ from rfl_rebuild.b1.contract import (
 )
 from rfl_rebuild.b1.laws import (
     LAWS,
+    AddressPlan,
     DeleteFactualPatch,
     LawPlan,
     LocalOracleRestore,
     NoWrite,
-    PlannedWrite,
+    NoWriteRef,
     SetAlternative,
     independent_treatment_count,
     law_metadata,
@@ -53,24 +54,35 @@ from rfl_rebuild.b1.targets import (
     resolve_credited_units,
     resolve_decision_address,
 )
+from rfl_rebuild.b1.tier import (
+    ILL_TYPED,
+    PATCH_SLICE,
+    SliceDescriptor,
+    Tier,
+)
 
 __all__ = [
     "APPLIED",
     "EVALUABLE_NOOP",
+    "ILL_TYPED",
     "LAWS",
     "NO_VALID_ALTERNATIVE",
+    "PATCH_SLICE",
     "PROTOCOL_ERROR",
     "STATUSES",
+    "AddressPlan",
     "B1Result",
     "DecisionWriteReceipt",
     "DeleteFactualPatch",
     "LawPlan",
     "LocalOracleRestore",
     "NoWrite",
-    "PlannedWrite",
+    "NoWriteRef",
     "ProtocolError",
     "SetAlternative",
+    "SliceDescriptor",
     "TargetRecord",
+    "Tier",
     "UpdateLedger",
     "build_target_envelope",
     "fingerprint",

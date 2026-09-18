@@ -236,8 +236,10 @@ def build_target_envelope(sol, addresses, trace, kappa: int, phi: int,
     function is the only place an envelope for a real scene is produced, and it is where
     $a^+ \neq a^F$ gets grounded in truth rather than in the record.
 
-    The adapter reads truth, which is why it lives here and not in a law. Only laws
-    declaring ``requires_alternative`` are ever handed its output (A76 §63.1).
+    The adapter reads truth, which is why it lives here and not in a law. Its output is
+    never handed to a law directly: the runner projects it onto the cell's declared field
+    set first (A77 §65.2), so ``factual_command`` stops here. Only cells that declare a
+    field are built at all (A76 §63.1).
     """
     ctx = _contexts(trace, kappa, phi)
     out: dict[DecisionAddress, TargetRecord] = {}

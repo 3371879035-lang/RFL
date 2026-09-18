@@ -46,6 +46,7 @@ TESTS = "tests/rebuild/test_b1_patch_slice.py"
 LAWS = SRC / "b1" / "laws.py"
 RUNNER = SRC / "b1" / "runner.py"
 TARGETS = SRC / "b1" / "targets.py"
+TIER = SRC / "b1" / "tier.py"
 
 #: (id, hole, path, old, new, pytest node id)
 MUTATIONS: tuple[tuple[str, str, pathlib.Path, str, str, str], ...] = (
@@ -54,17 +55,26 @@ MUTATIONS: tuple[tuple[str, str, pathlib.Path, str, str, str], ...] = (
         "the base tier sentinel falls back to False, so a subclass that forgets its "
         "tier silently becomes L0",
         LAWS,
-        "    requires_alternative: bool | None = None      # None == NOT DECLARED",
-        "    requires_alternative: bool | None = False     # MUTATED to the old base",
+        "    tier: Tier | None = None                      # None == NOT DECLARED",
+        "    tier: Tier | None = Tier.L0_FACTUAL         # MUTATED to a default",
         f"{TESTS}::test_8h_a_real_subclass_that_forgets_its_tier_fails_stop",
     ),
     (
         "tier_coerced",
         "the tier is coerced with truthiness instead of being required to be a bool",
         RUNNER,
-        "    if type(tier) is not bool:",
+        "    if type(tier) is not Tier:",
         "    if tier is None:            # MUTATED: coercion, not typing",
         f"{TESTS}::test_8i_a_tier_that_is_not_a_real_bool_fails_stop",
+    ),
+    (
+        "ill_typed_cell",
+        "an ill-typed cell is declared as an empty field set, so a law in it is "
+        "accepted as though the cell had a treatment",
+        TIER,
+        "        Tier.L2_COUNTERFACTUAL: ILL_TYPED,",
+        "        Tier.L2_COUNTERFACTUAL: frozenset(),        # MUTATED to a legal cell",
+        f"{TESTS}::test_8m_a_law_declared_in_an_ill_typed_cell_is_rejected",
     ),
     (
         "law_signature",
@@ -111,9 +121,9 @@ MUTATIONS: tuple[tuple[str, str, pathlib.Path, str, str, str], ...] = (
         "snapshot_constructed",
         "the runner still builds the full learner snapshot during a law run",
         RUNNER,
-        "    pre_view = _store_view(pre_state)\n    fp_pre = fingerprint(pre_state)",
+        "    pre_view = spec.view(pre_state)\n    fp_pre = fingerprint(pre_state)",
         "    snapshot = pre_state.snapshot()     # MUTATED\n"
-        "    pre_view = _store_view(pre_state)\n    fp_pre = fingerprint(pre_state)",
+        "    pre_view = spec.view(pre_state)\n    fp_pre = fingerprint(pre_state)",
         f"{TESTS}::test_8l_the_snapshot_is_not_even_constructed_for_a_law_run",
     ),
 )
@@ -168,7 +178,7 @@ def main() -> int:
                                          / "b1_interface_gate_selfcheck.json"))
     args = ap.parse_args()
 
-    before = {p: _digest(p) for p in (LAWS, RUNNER, TARGETS)}
+    before = {p: _digest(p) for p in (LAWS, RUNNER, TARGETS, TIER)}
     results = []
     for key, hole, path, old, new, node in MUTATIONS:
         original = _read(path)
@@ -190,7 +200,7 @@ def main() -> int:
         results.append(entry)
         print(f"[{entry['verdict']:18}] {key:22} -> {entry['gate']}")
 
-    after = {p: _digest(p) for p in (LAWS, RUNNER, TARGETS)}
+    after = {p: _digest(p) for p in (LAWS, RUNNER, TARGETS, TIER)}
     restored = before == after
     real = sum(1 for r in results if r["verdict"] == "GATE_IS_REAL")
     payload = {
