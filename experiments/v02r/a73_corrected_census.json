@@ -49,7 +49,8 @@
   "generic_truth_defect_absent": true,
   "A74_canary_fire_zero_module_abstains_0_0": true,
   "A74_info_flow_module_proposal_is_truth_independent": true,
-  "A74_info_flow_assertion_has_power": true
+  "A74_info_flow_assertion_has_power": true,
+  "A74_module_coverage_drop_equals_abstention_region": true
  },
  "status": "PASS",
  "A74": {
@@ -67,6 +68,16 @@
  },
  "info_flow_violations_frozen_rule": 0,
  "info_flow_violations_A73_mutation": 21,
+ "module_coverage_decomposition": {
+  "predicted_mass": 0.5614063818798074,
+  "observed_mass": 0.5614063818769824,
+  "residual_mass": 2.824962486158711e-12,
+  "predicted_count": 0.9833679833679834,
+  "observed_count": 0.9833679833679834,
+  "residual_count": 0.0,
+  "tolerance": 1e-09,
+  "reading": "Module's Coverage loss is exactly the abstention region; the residual is floating-point summation order, not a second effect"
+ },
  "frozen_module_rule": "H iff Z_P or Z_E or Z_U fired; L iff Z_D or Z_X fired; both when both; empty when none (17 9.1)",
  "supersedes": "experiments/v02r/granularity_census.json (A70) -- those numbers are void per A71",
  "defects_fixed": [

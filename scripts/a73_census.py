@@ -232,6 +232,10 @@ def main() -> int:
     flow_bad = info_flow_violations(module_native, samples)
     flow_bad_mutation = info_flow_violations(module_native_reading_truth, samples)
 
+    COVERAGE_DECOMPOSITION_TOL = 1e-9
+    resid_count = abs(agg["Module"]["cov_c"] - (1.0 - seen_fire_zero / n))
+    resid_mass = abs(agg["Module"]["cov_w"] - (1.0 - mass_fire_zero))
+
     checks = {
         "oracle_credit_is_lossless_by_construction": oracle_exact,
         "mass_scanned_is_one": abs(mass - 1.0) < 1e-9,
@@ -240,6 +244,18 @@ def main() -> int:
         "A74_canary_fire_zero_module_abstains_0_0": canary_failures == 0,
         "A74_info_flow_module_proposal_is_truth_independent": not flow_bad,
         "A74_info_flow_assertion_has_power": bool(flow_bad_mutation),
+        # The decomposition check: Module's Coverage loss must be EXACTLY the
+        # abstention region and nothing else. If any other effect crept into the
+        # Module arm, these identities would break by far more than rounding.
+        #
+        # Tolerance: the left side sums ~1.04M weighted terms, the right side
+        # accumulates the abstention mass separately and subtracts. Different
+        # summation orders give a residual around 1e-12; a real second effect
+        # would be orders of magnitude larger. The residual is reported, not
+        # hidden behind the boolean.
+        "A74_module_coverage_drop_equals_abstention_region": (
+            resid_count < COVERAGE_DECOMPOSITION_TOL
+            and resid_mass < COVERAGE_DECOMPOSITION_TOL),
     }
     ok = all(checks.values())
 
@@ -266,6 +282,12 @@ def main() -> int:
     print(f"  info-flow violations, frozen rule   : {len(flow_bad)}")
     print(f"  info-flow violations, A73 mutation  : {len(flow_bad_mutation)} "
           f"(must be > 0 for the assertion to have power)")
+    print(f"  Module coverage decomposition       : "
+          f"1 - abstention_mass = {1.0 - mass_fire_zero:.15f}, "
+          f"observed {agg['Module']['cov_w']:.15f}, resid {resid_mass:.3e}")
+    print(f"                                        "
+          f"1 - abstention_frac = {1.0 - seen_fire_zero / n:.15f}, "
+          f"observed {agg['Module']['cov_c']:.15f}, resid {resid_count:.3e}")
     print(f"\nA73 census: {'PASS' if ok else 'FAIL'}")
 
     out = ROOT / "experiments" / "v02r" / "a73_corrected_census.json"
@@ -304,6 +326,18 @@ def main() -> int:
         },
         "info_flow_violations_frozen_rule": len(flow_bad),
         "info_flow_violations_A73_mutation": len(flow_bad_mutation),
+        "module_coverage_decomposition": {
+            "predicted_mass": 1.0 - mass_fire_zero,
+            "observed_mass": agg["Module"]["cov_w"],
+            "residual_mass": resid_mass,
+            "predicted_count": 1.0 - seen_fire_zero / n,
+            "observed_count": agg["Module"]["cov_c"],
+            "residual_count": resid_count,
+            "tolerance": COVERAGE_DECOMPOSITION_TOL,
+            "reading": ("Module's Coverage loss is exactly the abstention region; "
+                        "the residual is floating-point summation order, not a "
+                        "second effect"),
+        },
         "frozen_module_rule": "H iff Z_P or Z_E or Z_U fired; L iff Z_D or Z_X "
                               "fired; both when both; empty when none (17 9.1)",
         "supersedes": ("experiments/v02r/granularity_census.json (A70) -- those "
