@@ -1,6 +1,7 @@
 {
  "checks": {
   "import_allowlist_public_scm.py": true,
+  "import_allowlist_causal_locator.py": true,
   "public_surface_is_exactly_the_four_capabilities": true,
   "no_forbidden_name_on_the_surface": true,
   "canonical_nuisance_representative_is_licensed": true,
@@ -40,7 +41,19 @@
    ],
    "disallowed": []
   },
-  "imports_causal_locator.py": "not present (locator not implemented yet)",
+  "imports_causal_locator.py": {
+   "imports": [
+    "__future__",
+    "__future__.annotations",
+    "dataclasses",
+    "dataclasses.dataclass",
+    "rfl_rebuild.method.public_scm",
+    "rfl_rebuild.method.public_scm.EmptyCompatibleSet",
+    "rfl_rebuild.method.public_scm.Hypothesis",
+    "rfl_rebuild.method.public_scm.PublicSCMView"
+   ],
+   "disallowed": []
+  },
   "public_surface": [
    "CANONICAL_CAUSE_RANK",
    "CANONICAL_ERROR_FLAG",
