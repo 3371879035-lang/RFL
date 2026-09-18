@@ -2967,6 +2967,46 @@ subclass override never ran and the kill set came back **empty**. A no-op mutati
 would have read as "the gate is robust". That is precisely why the kill set is
 recorded instead of a boolean.
 
+**The corrected census, and a degenerate endpoint.** `scripts/a73_census.py`, all
+$1{,}038{,}960$ worlds, co-primary `Coverage` / `FCR`:
+
+| representation | Cov(count) | Cov(mass) | FCR(count) | FCR(mass) | $\lvert\hat\Gamma\rvert$(count) |
+|---|---|---|---|---|---|
+| `OracleCredit` | 1.0000 | 1.0000 | 0.0000 | 0.0000 | 1.71 |
+| `CausalSetLocator` | 1.0000 | 1.0000 | 0.0028 | 0.0006 | 1.72 |
+| `Module` | 1.0000 | 1.0000 | 0.8083 | 0.7911 | 12.88 |
+| `Trajectory` | 1.0000 | 1.0000 | 0.9017 | 0.9309 | 17.90 |
+
+Distinct **indexed** $\Gamma^\ast$ sets: **57** — A70 reported 21 on the generic
+truth, which is the tell A71 identified. Mass where $\Gamma^+ \neq \Gamma^\ast$:
+**0.188122%**, reproducing A71's mixed-class mass (0.1881%) by an independent route.
+
+$$\boxed{\text{Coverage} \equiv 1 \text{ for all four arms}}$$
+
+and this is **structural, not empirical**:
+$\text{Coverage}(\hat\Gamma,\Gamma^\ast) = 1 \iff \Gamma^\ast \subseteq \hat\Gamma$,
+and every arm is a superset — `OracleCredit` *is* $\Gamma^\ast$;
+$\Gamma^+ \supseteq \Gamma^\ast$; $\eta_{\text{module}}(H) \cup \eta_{\text{module}}(L)
+= \Gamma(I) \supseteq \Gamma^\ast$ with at least one of $H, L$ always emitted
+because $\Gamma^\ast \neq \varnothing$; and
+$\eta_{\text{trajectory}}(\{\text{Episode}\}) = \Gamma(I)$.
+
+**So the co-primary pair degenerates to FCR alone**, and A69's own design is why: its
+expansions were chosen so that "a coarse representation can express any truth — at
+coarse granularity, and paying FCR for the units it over-covers". That *guarantees*
+maximal Coverage. A69 froze the intent without recording this consequence, and A70's
+voided census could not have shown it either.
+
+This changes no input field, no $\mathcal L_{\text{public}}$ and no locator target,
+so it does **not** meet A73's own trigger for a new amendment. It is recorded here as
+a **measured consequence**; freezing it as a standalone claim is a separate decision.
+
+The headline contrast — the exact inversion over-credits **0.06%** of DGP mass while
+`Module` over-credits **79%** and `Trajectory` **93%** — is subject to the unchanged
+claim boundary: $\Gamma^+$ is built from the same $\pi_{\text{credit}}$ as the truth,
+so this measures over-credit under a **fixed** ontology and does **not** validate
+that ontology.
+
 **Support closure, as an exact set not a subset.** The subset condition is the
 minimum; because the endpoint is *exact* inversion, the requirement is
 

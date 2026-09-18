@@ -1,0 +1,60 @@
+{
+ "n_worlds": 1038960,
+ "arms": [
+  "OracleCredit",
+  "CausalSetLocator",
+  "Module",
+  "Trajectory"
+ ],
+ "aggregate": {
+  "OracleCredit": {
+   "cov_w": 1.0,
+   "fcr_w": 0.0,
+   "size_w": 1.0848192052634906,
+   "cov_c": 1.0,
+   "fcr_c": 0.0,
+   "size_c": 1.706976206976207
+  },
+  "CausalSetLocator": {
+   "cov_w": 1.0,
+   "fcr_w": 0.0006046787014510047,
+   "size_w": 1.0867004278900654,
+   "cov_c": 1.0,
+   "fcr_c": 0.002772002772002891,
+   "size_c": 1.7166782166782166
+  },
+  "Module": {
+   "cov_w": 1.0,
+   "fcr_w": 0.7911310828137157,
+   "size_w": 7.1512133465699925,
+   "cov_c": 1.0,
+   "fcr_c": 0.8083035208038809,
+   "size_c": 12.880803880803882
+  },
+  "Trajectory": {
+   "cov_w": 1.0,
+   "fcr_w": 0.9308937935811211,
+   "size_w": 16.520063155308087,
+   "cov_c": 1.0,
+   "fcr_c": 0.9016684391691713,
+   "size_c": 17.895356895356894
+  }
+ },
+ "distinct_indexed_gamma_star": 57,
+ "mass_where_gamma_plus_differs_from_truth": 0.001881222626741226,
+ "checks": {
+  "oracle_credit_is_lossless_by_construction": true,
+  "mass_scanned_is_one": true,
+  "locator_gamma_plus_always_covers_truth": true,
+  "generic_truth_defect_absent": true
+ },
+ "status": "PASS",
+ "supersedes": "experiments/v02r/granularity_census.json (A70) -- those numbers are void per A71",
+ "defects_fixed": [
+  "truth taken from R^mech descriptors, so D/X carry addresses (generic type names intersected concretely-expanded predictions as the empty set)",
+  "FactualShape built from the FACTUAL masked rollout, not the healthy trace as a70_census.py did",
+  "Module's H/L split taken over the indexed unit space rather than a generic-name table"
+ ],
+ "claim_boundary": "measures over-credit under a FIXED ontology (A65/A67); it does NOT validate that ontology, since Gamma+ is built from the same pi_credit as the truth",
+ "primary_is_exact": "all four rules are deterministic and the population is enumerable, so no smoke/dev/confirmatory ladder is used in V0.2R primary (A70, retained)"
+}

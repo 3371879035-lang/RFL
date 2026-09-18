@@ -143,6 +143,31 @@ def evaluate(make_view, ref, rows_by_class, fire_by_class):
             "empty": empty}
 
 
+def rebuild_case(sol, provider, sup, wid):
+    r"""Reconstruct a support world as a replayable ``LatentCase`` plus its params.
+
+    Module level so the corrected representation census can share it instead of
+    keeping a second copy of the support-decoding logic.
+    """
+    kappa, phi = sup.field(wid, "kappa"), sup.field(wid, "phase")
+    prop = sup.field(wid, "proposal")
+    tape = PublicSCMView._tape(phi)
+    healthy = K.rollout(kappa=kappa, tape=tape, command_provider=provider,
+                        base_option=prop)
+    doms = FG.canonical_domains(sol, kappa, tape, prop, healthy)
+    idx = [sup.field(wid, f"p{i}") for i in range(5)]
+    presence = [(sup.field(wid, "Z_code") >> i) & 1 for i in range(5)]
+    b = FG.assign(doms, presence, idx)
+    case = LatentCase(case_id=0, kappa=kappa, phi=phi,
+                      error_flag=sup.field(wid, "error_flag"),
+                      cause_rank=sup.field(wid, "cause_rank"),
+                      base_option=prop, Z=tuple(presence),
+                      option_fault=b.get("P"), decision=b.get("D"),
+                      controller=b.get("X"), plant=b.get("E"),
+                      trap=b.get("U"))
+    return case, idx
+
+
 def main() -> int:
     sol = solve_reference()
     provider = reference_provider(sol)
@@ -160,22 +185,7 @@ def main() -> int:
         truth_mass[key] += sup.weight(wid)
 
     def rebuild(wid):
-        kappa, phi = sup.field(wid, "kappa"), sup.field(wid, "phase")
-        prop = sup.field(wid, "proposal")
-        tape = PublicSCMView._tape(phi)
-        healthy = K.rollout(kappa=kappa, tape=tape, command_provider=provider,
-                            base_option=prop)
-        doms = FG.canonical_domains(sol, kappa, tape, prop, healthy)
-        idx = [sup.field(wid, f"p{i}") for i in range(5)]
-        presence = [(sup.field(wid, "Z_code") >> i) & 1 for i in range(5)]
-        b = FG.assign(doms, presence, idx)
-        return LatentCase(case_id=0, kappa=kappa, phi=phi,
-                          error_flag=sup.field(wid, "error_flag"),
-                          cause_rank=sup.field(wid, "cause_rank"),
-                          base_option=prop, Z=tuple(presence),
-                          option_fault=b.get("P"), decision=b.get("D"),
-                          controller=b.get("X"), plant=b.get("E"),
-                          trap=b.get("U"))
+        return rebuild_case(sol, provider, sup, wid)
 
     truth_sets: dict = {}
     for key, wids in members.items():
@@ -183,7 +193,7 @@ def main() -> int:
         rows = None
         fc = None
         for wid in wids:
-            case = rebuild(wid)
+            case, _idx = rebuild(wid)
             if rows is None:
                 sig, _err = sigma0(sol, case)
                 rows = sig[0]
