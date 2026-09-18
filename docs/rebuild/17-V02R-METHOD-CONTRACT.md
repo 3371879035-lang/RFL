@@ -394,6 +394,11 @@ the one recorded in §8.5.
 > (b) was rejected for re-importing V0.1R's attribution error, and (c) is moot because
 > the premise it was meant to rescue — that a causal rule is the ceiling — is false.
 > Nothing here is an outstanding decision.
+>
+> Subheading labels `9.1`–`9.3` are intentionally retained as historical anchors from
+> the original section; they are **not** current section numbering. They are not
+> renumbered because the original text is kept verbatim as the record, and because
+> amendment A74 cites `17` §9.1 for the frozen $R_{\text{module}}$ rule.
 
 Frozen so far: what each method may **see** ($X^{\text{obs}}_{0.2}$, identical, no query, a
 read-only $\pi_D^\ast$ view) and what alphabet each may **emit**. Not yet frozen:

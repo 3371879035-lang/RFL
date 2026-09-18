@@ -1,7 +1,15 @@
 # RFL-Rebuild — frozen research specification
 
-**Status:** specification complete, **no implementation and no runs yet**.
-Nothing in this directory is a result. There is no evidence here, only design.
+$$\boxed{\text{V0.1R CLOSED};\quad \text{V0.2R CLOSED (A74)};\quad
+\text{V0.3R pending semantic rebase};\quad \text{V0.4R not started in rebuild}}$$
+
+**Status:** the specification is complete, and this directory now holds **three
+different kinds of artifact**: the **frozen specification**, the **implementation and
+gates** that discharge it, and **frozen evidence** — support manifests, gate
+artifacts, and one census record that is explicitly voided. Each version's document
+states its own status, and no single sentence applies to all of them; a reader who
+needs to know what is design and what is measured should follow the version state
+above into that version's document.
 
 **Branch:** `rebuild` (from `v0.4` / tag `legacy-v0.4.1`).
 **Namespace:** `src/rfl_rebuild/`. The legacy trees `src/rflnext/` and
@@ -159,7 +167,13 @@ $$\boxed{\text{The legacy programme's real output was the specification of how t
 
 ---
 
-## 7. What happens next
+## 7. Execution order — historical, and the current next step
+
+**This section is a record, not a plan.** The chain below was executed in full:
+steps 1–5 are complete, V0.1R is closed and V0.2R is closed. It is kept because it is
+the dependency chain the rebuild actually walked, and because a future reader needs
+to know *why* the kernel had to exist before the DP, and the DP before
+`route_check`.
 
 The order below is the first in this project with no circular dependency. Two
 earlier proposals were rejected: writing `route_check.py` and the identifiability
@@ -171,6 +185,9 @@ when healthy before it can ask whether a local repair rescues the episode
 (**A19**).
 
 $$\boxed{\text{minimal SCM kernel} \to \text{exact reference DP} \to \text{route\_check} \to \text{Gate E/L} \to \text{semantic suite} \to \text{V0.1R}}$$
+
+All six steps below are **done**; they are numbered as the order in which they were
+authorised, not as outstanding work.
 
 1. **`src/rfl_rebuild/env/kernel.py`** — state transition, semantic tape, option
    automata and constraints, `do`-operators. **No training, no RFL, no seeds, no
@@ -190,12 +207,33 @@ $$\boxed{\text{minimal SCM kernel} \to \text{exact reference DP} \to \text{route
 No version may begin collection while a gate upstream of it is failing. Steps 1–5
 produce **no scientific result**; they exist to make step 6 interpretable.
 
-### 7.1 Authorisation boundary
+### 7.1 Authorisation boundary — withdrawn as a live constraint
 
-Only step 1 is authorised. Step 2 is authorised separately **after** the kernel is
-complete, and steps 3–5 after that. `kernel.py` is the single source of truth, so
-it is precisely the artifact that must not be written with any semantics still
-undecided.
+**"Only step 1 is authorised" was true when this section was written and is false
+now.** Every step listed above has been executed and every gate has been run, so the
+staged-authorisation statement is kept as a record of how work was released rather
+than as a current restriction. The reasoning behind it is not withdrawn and is worth
+preserving: `kernel.py` is the single source of truth for what the world is, so it is
+precisely the artifact that must not be written while any semantics of the world
+remain undecided. That principle is what produced the gate chain in §3, and it still
+governs any future change to `kernel.py`.
+
+### 7.2 The current next step
+
+$$\boxed{\text{V0.3R semantic rebase before any V0.3R implementation}}$$
+
+`08-V03R.md` is **not** ready to implement from. It still identifies the process
+fault with $do(z = z')$, whereas the frozen reading is
+
+$$\text{mechanism repair} = do(C_P = \mathrm{identity}), \qquad
+do(z = z') = \text{strategy replay / rescue}$$
+
+so `08` carries an error that must not be inherited. The rebase re-freezes the
+repair/update primitive, the external downstream criterion by which the working
+ontology $\Gamma$ is to be judged, and the validation that criterion needs. That is
+a **semantic change**, unlike the synchronization commits that closed V0.2R, and it
+is the next point at which a research decision is required. Until it lands, **no
+V0.3R implementation is authorised.**
 
 ---
 
