@@ -3721,7 +3721,7 @@ undiscounted return-to-go ($\texttt{row}[a] = \texttt{res.reward} + v[\text{next
 `dp.py`), so $G_t^F$ is on the same scale as the values it is written into. A
 whole-episode return would not be, which is the same defect the `+1` audit found.
 
-### 63.3 The $a^+$ adapter, and a guard that cannot fire
+### 63.3 The $a^+$ adapter, and a guard that is LIVE
 
 B1 does not select its own alternative. One **architecture-blind** adapter supplies it:
 
@@ -3731,38 +3731,92 @@ $$\boxed{a_t^+ = \min\left(A_D^\ast(s_t, z_t, m_t) \setminus \{a_t^F\}\right)},
 The tie-break is the frozen one ("lowest action index"). Every compatible arm uses
 **the same** $a_t^+$: never one for patch and another for $Q$.
 
-**Unreachability, recorded rather than assumed.** $a_t^+$ is undefined iff
-$A_D^\ast \subseteq \{a_t^F\}$, i.e. iff the executed command was the **unique**
-optimum at that context. That cannot occur under the current design:
+**Reachability, measured — and the first draft's proof is withdrawn.** A76 originally
+argued this guard unreachable from the canonical D domain, on the grounds that the
+domain excludes the tie-broken `best_action`. **That argument does not hold.** The
+domain is generated on the **healthy** trace (`fault_grammar.legal_fault_domains` walks
+an unmasked rollout), so
 
-* in **P** the credited address satisfies $a_t^L \notin A_D^\ast$ and the §62.8 source
-  rule forbids a mask override in a P trigger, so $a_t^F = a_t^L \notin A_D^\ast$ and
-  the set-minus is $A_D^\ast \neq \varnothing$;
-* in **T** the canonical D domain excludes the tie-broken `best_action`; if
-  $a^F \notin A_D^\ast$ the set-minus is non-empty, and if $a^F \in A_D^\ast$ it is
-  tied-optimal and distinct from `best_action`, so $|A_D^\ast| \ge 2$;
-* A75 §62.9's defect family requires $a_j^- \notin A_D^\ast$, so it produces no such
-  address either.
+$$a_D \neq \pi_D^\ast(x_{\text{generation}}) \quad\not\Rightarrow\quad
+a_D \neq \text{unique optimum at } x_{\text{factual}}$$
 
-The guard is therefore retained as a **type guard**, with its unreachability asserted
-as a *schema theorem* rather than dressed up as a live safeguard. Because it cannot
-fire on the population, testing it requires a **constructed** address — which is what
-the `pytest` tier of §62.13 is for. It must be re-derived if the D domain or the defect
-family changes.
+because in a co-fault world a P fault changes $z^{\text{in-force}}$, earlier X/E faults
+change the path, and $m$ follows the path. The generation context and the realized
+context are *different contexts*, and the draft conflated them.
+
+**Measured** (`_diag_a76_aplus_guard.py`, `a76_aplus_guard_reachability.json`) by
+reading the **realized** pre-action context at every decision-credited address on the
+frozen support:
+
+| quantity | value |
+|---|---|
+| decision-credited addresses ($\Gamma_T^\ast \ni \texttt{Decision}_t$) | 431,280 |
+| $a^F \notin A_D^\ast$ at the realized context | 388,800 |
+| $a^F$ tied-optimal there | 38,880 |
+| **$a^F$ the unique optimum — EMPTY alternative set** | **3,600** |
+
+$$\boxed{N_{\text{empty-alt}} = 3{,}600 \neq 0}$$
+
+The decomposition is the finding: the empty cases occur **only under a co-fault** —
+`D+E` 1,440 of 60,480 (2.38%) and `X+D` 2,160 of 45,360 (4.76%) — and **never** under
+`D` alone (0 of 127,440). That is exactly the mechanism above: the co-fault moves the
+realized context until the injected decision parameter becomes uniquely optimal there.
+Since it is established by enumeration and not by a structural proof, this is an
+**exhaustive support invariant**, and it must be re-measured if the D domain or the
+support changes.
+
+**The guard is live, so `NOT_EVALUABLE` enters the reporting rules.**
+
+* affected: the $a^+$-dependent laws only — `SetAlternative`,
+  `CounterfactualReturnWrite`, `DualReturnWrite`. `FactualReturnWrite` and
+  `DeleteFactualPatch` do not read $a^+$ and are unaffected;
+* at such an address the law performs **no write at all**. Partial application is
+  prohibited: a half-committed `DualReturnWrite` would violate §63.10's atomicity, and
+  writing only the factual entry would silently turn the arm into `FactualReturnWrite`
+  at exactly those addresses;
+* the address is recorded `NOT_EVALUABLE` in the ledger with $\Delta W = 0$; it still
+  counts as an addressed context, with no scalar change — the same treatment
+  `DeleteFactualPatch`'s patchless case gets;
+* the **scene stays in the population**. Excluding it would be selection bias, and a
+  systematic one: the empty-alt addresses *are* co-fault addresses, so dropping them
+  would silently delete the composition cases A75 §62.9 exists to validate;
+* the `NOT_EVALUABLE` count and fraction are reported **per arm and per fire pattern**,
+  because the rate is pattern-dependent (0% for `D` alone, 2.38% and 4.76% for the two
+  co-fault patterns) and an aggregate would hide a co-fault-specific effect.
 
 ### 63.4 The counterfactual target
 
-$$\boxed{G_t^{CF}(a_t^+) = \text{the suffix return of a rollout that starts from the
-same pre-action } (s_t,z_t,m_t)}$$
+$$\boxed{G_t^{CF}(a_t^+) = \sum_{j=t}^{T_{CF}-1} r_j^{CF}}$$
 
-holding the same exogenous tape, the same **pre-update** learner state and every other
-fault assignment fixed, applying $do(d_t = a_t^+)$ at that credited step alone, and
-continuing under the same **pre-update** learner baseline. $do(d_t)$ is an existing
-kernel primitive with the highest priority, so it overrides any $Z_D$.
+**The counterfactual is produced by a FULL episode replay, not by a suffix rollout.**
+The first draft said "a rollout that starts from the same pre-action
+$(s_t,z_t,m_t)$", which is mathematically the same quantity but is an implementation
+hazard: the canonical `rollout()` starts at the episode origin, so a literal reading
+invites a `rollout_from(s_t,z_t,m_t)` — a second, suffix-only simulator, which is
+exactly the A16/A19 failure mode.
 
-$G_t^{CF}$ and $G_t^F$ are then on **exactly the same reward / step-cost scale by
-construction** — which is what retires the `+1`-versus-$G^{CF}$ mismatch structurally
-rather than by rescaling a constant.
+$$\boxed{\text{replay the whole episode from the same initial conditions, adding only }
+do(d_t = a_t^+) }$$
+
+holding fixed the same latent world, the same exogenous tape, the same **pre-update**
+learner state, and every other fault assignment. $do(d_t)$ is an existing kernel
+primitive with the highest priority, so it overrides any $Z_D$.
+
+The suffix is then **extracted** from that complete trace:
+
+$$G_t^{CF} = \sum_{j=t}^{T_{CF}-1} r_j^{CF}$$
+
+and the extraction carries a mechanical invariant:
+
+$$\boxed{\text{trace}^{CF}_{0:t-1} = \text{trace}^{F}_{0:t-1}
+\quad\text{else PROTOCOL ERROR}}$$
+
+The two traces must agree on everything before the intervention — if they differ, the
+counterfactual is not counterfactual to *this* episode and the number is meaningless.
+This is what makes $G_t^F$ and $G_t^{CF}$ comparable: both are suffix returns of
+traces produced by the **one** kernel simulator, differing only in the single $do$ at
+step $t$, so they are on the same reward / step-cost scale **by construction** rather
+than by rescaling a constant.
 
 ### 63.5 Q-backed laws
 
@@ -3864,18 +3918,47 @@ discrete map with a known healthy reference, so identity restoration is already 
 natural typed operation. For $X$ in regime P, coinciding in content with the mechanism
 repair is **expected** (A75 §62.12) and is not a reason to complicate it.
 
-### 63.8 `OracleRestore` stays a separate $L_3$ ceiling
+### 63.8 Two oracles: the global ceiling is outside the matrix
 
-$$\boxed{\theta_A^L \leftarrow \theta_{A,\text{healthy}}^L}$$
+The first draft put A75's whole-referent `OracleRestore` into the B1 matrix. That
+**contradicts address locality** (§63.10): if a P store holds other persistent defects
+that this trigger did not manifest and did not credit, a whole-store restore repairs
+them too, so
 
-for the architecture's own persistent store $A$: $Q_D^L \leftarrow Q_D^\ast$;
-$P_D^L \leftarrow \varnothing$; $C_X^L \leftarrow$ identity; $C_P^L \leftarrow$ identity.
+$$\boxed{\texttt{OracleRestore} \not\subseteq \text{credited addresses} \quad
+\text{can hold}}$$
 
-It is **not** merged with $X_{id}$/$P_{id}$: those are *local* restorations at the
-credited address using factual content, whereas this restores the **whole** referent to
-the evaluator-known healthy state. Although written as a whole-store restore, the
-ledger counts only the addresses and scalars that actually changed, so unchanged
-entries are not billed as edits.
+The B1 ceiling would then enjoy a write scope no ordinary primitive has, and any
+recovery fraction computed against it would credit the arm for repairs it was never
+allowed to make.
+
+A75 is frozen, so its whole-referent `OracleRestore` is kept as what it is:
+
+| object | scope | role |
+|---|---|---|
+| `OracleRestore` (A75 §62.12) | the architecture's **complete** persistent referent | **global constructional diagnostic ceiling**; **outside** the B1 matrix |
+| $\texttt{LocalOracleRestore}$ (here) | **only** the credited B1 addresses | $L_3$, **inside** the B1 matrix |
+
+$$\boxed{\texttt{LocalOracleRestore} \in L_3 \text{ in the B1 matrix}}$$
+
+per architecture:
+
+$$D_Q:\quad Q_D^L(x_t, \cdot) \leftarrow Q_D^\ast(x_t, \cdot) \quad
+\text{(the credited context's row only)}$$
+
+$$D_{patch}:\quad P_D^L \leftarrow P_D^L \setminus \rho_D(\texttt{Decision}_t)$$
+
+$$X:\quad C_X^L(\rho_X(\texttt{ControllerSite})) \leftarrow a^{cmd}$$
+
+$$P:\quad C_P^L(\rho_P(\texttt{ProcessCommit}, z^{\text{proposal}})) \leftarrow
+z^{\text{proposal}}$$
+
+Both are $L_3$ in information terms — each needs the architecture's healthy reference —
+but they differ in **scope**, and scope is what locality constrains. Which one B2 uses
+as its denominator is a **B2** decision and is deliberately not settled here.
+
+As in A75, the ledger counts only addresses and scalars that actually changed, so a
+restore that touches nothing already-healthy is not billed as an edit.
 
 ### 63.9 The compatibility matrix, frozen
 
@@ -3885,12 +3968,16 @@ entries are not billed as edits.
 | $L_0$ factual-only | `DeleteFactualPatch` | `FactualReturnWrite` | $X_{id}$ | — |
 | $L_1$ corrective content | `SetAlternative` | **— no scalar law** | — | $P_{id}$ |
 | $L_2$ counterfactual return | **ill-typed** | `CounterfactualReturnWrite`, `DualReturnWrite` | — | — |
-| $L_3$ healthy reference | `OracleRestore` | `OracleRestore` | `OracleRestore` | `OracleRestore` |
+| $L_3$ healthy reference | `LocalOracleRestore` | `LocalOracleRestore` | $\texttt{LocalOracleRestore}$ | $\texttt{LocalOracleRestore}$ |
 
 `NoWrite` is available at every tier as the same-tier reference, simply ignoring the
 extra information. The matrix is **typed compatibility, not a Cartesian product**: a
 full product would manufacture arms that are ill-typed or information-deficient, and
 their scores would be artefacts of the pairing rather than of the law.
+
+The $L_3$ row is the **locality-matched** oracle. A75's whole-referent `OracleRestore`
+is deliberately **outside** this table (§63.8): it has a write scope no ordinary
+primitive has, so it is a global diagnostic ceiling rather than a matrix cell.
 
 ### 63.10 Three execution invariants
 
@@ -3902,11 +3989,29 @@ never the primitive's behaviour. The same primitive must use the same implementa
 both regimes; it may read its **own store**, but may not be told which regime it is in.
 This is the same discipline as A75's "the metric may not know which table it is in".
 
-$$\boxed{\text{2. address locality: } \text{WriteSet}(p) \subseteq \text{credited
-writable addresses}}$$
+$$\boxed{\text{2. address locality: } \text{WriteSet}(p) \subseteq
+\rho_A\bigl(\Gamma_{r,W}^\ast, \tau, \text{allowed assisted inputs}\bigr)}$$
 
-B1 may not write an address that was not credited, or credit assignment would be
-redone inside an update-law experiment.
+B1 may not write an address that was not credited, or credit assignment would be redone
+inside an update-law experiment.
+
+**The two sides of that inclusion are not the same type.** A credit unit is not a store
+key, so the map between them is frozen explicitly rather than left to implementation:
+
+$$\boxed{\rho_A : \text{credit unit} \times \text{run} \times \text{allowed assisted
+inputs} \to \text{store address}}$$
+
+$$\rho_D(\texttt{Decision}_t) = (s_t, z_t, m_t)$$
+
+$$\rho_X(\texttt{ControllerSite}) = \text{the site handle } (s_t, a^{cmd}_t)$$
+
+$$\rho_P(\texttt{ProcessCommit},\ z^{\text{proposal}}) = z^{\text{proposal}}$$
+
+$\rho_P$ is the one that needs an **assisted input**, which is precisely why
+$P_{id} \in L_1$ (§63.1) and not $L_0$: the key cannot be computed from the factual rows
+alone. Without $\rho_A$ written out, an implementer would have to decide for themselves
+how a credit unit becomes a store key — and would get a different answer per
+architecture.
 
 $$\boxed{\text{3. snapshot + atomic commit}}$$
 
@@ -3938,14 +4043,15 @@ separately (A75 §62.9).
   A75 §62.11 specifies but does not build; $P_{id}$ and $X_{id}$ therefore have no
   referent yet, and **B1 cannot be run before that extension lands**;
 * it does not define any B2 endpoint or formula ($HarmRate$, $\Delta G$,
-  `RecoveryFraction` remain open, with `OracleRestore` now available as their
-  denominator);
+  `RecoveryFraction` remain open). **Which** $L_3$ object serves as their denominator —
+  the locality-matched `LocalOracleRestore` of §63.9 or A75's global `OracleRestore` —
+  is a B2 decision and is deliberately not settled here;
 * it does not fix $\alpha$ beyond the primary full-backup choice, and forbids using
   $\alpha$ to select a winner;
 * it does not select a winner among the matrix's cells, and does not reduce the
   candidate range to a declared set of V0.3R arms;
-* it is a **draft**: the review of the B1 draft has not yet closed, and this section
-  must not be cited as frozen until it has.
+* it is a **draft**: the B1 review has not closed, and this section must not be cited
+  as frozen until it has.
 
 ## 64. Summary and what remains open
 
@@ -3989,7 +4095,7 @@ section above; the most recent is:
 | **A73** | locator evidence quotient and public feasible support: $X^{\text{loc}}_{0.2}=(\text{rows},Z^{\text{fire}})$ with $q$ dropping the redundant feedback channel, so **893 is the locator main gate** and $X^{\text{obs}}=(rows,feedback,Z^{\text{fire}})$'s **4,513** is only the observational refinement; $\mathcal L_{\text{public}}$ = canonical grammar candidates **passing public forward-feasibility**; route C's semantic source is `gate_stage2._domains` + `canonicalise`; support closure as **exact set** | **P0 (spec)** | frozen — rows-only **licensed by the 4513→893 gate** (9/9 PASS); one violation voids it and reverts the gate to 4513. **Its census Module row and endpoint-degeneracy claim are VOIDED by A74** |
 | **A74** | the A73 census chose Module's H/L from $\Gamma^\ast$ instead of $Z^{\text{fire}}$, so evaluator truth entered the proposal construction; footprint is exactly $Z^{\text{fire}}=00000$ (**17,280 worlds, 43.86% of DGP mass**), where the frozen rule abstains but reading the truth emitted $H$, turning abstention into a coarse substantive verdict (violating $\varnothing \neq \{\texttt{Unknown/NoWrite}\}$). Corrected: Module Cov(count/mass) **0.9834/0.5614**, FCR **0.7958/0.4622**; the co-primary pair is **not** degenerate — Coverage punishes abstention, FCR over-credit | **P0 (census/implementation)** | frozen — semantic canary + information-flow assertion added, both with demonstrated power; **no design change**, only the frozen rule restored |
 | **A75** | V0.3R semantic rebase: the subject becomes the **persistent learning update**, not runtime repair, with $R^{\text{mech}} \neq W^{\text{update}}$; $B_0: \Gamma_r^\ast \to \mathcal W(\Gamma_r^\ast)$ outputs a candidate family; seven ownership criteria including **addressable** and **contract-preserving** (learner baseline has **no fault privilege**); **regime-specific** stratification $S_{T,\pm}$ / $S_{P,\pm}$ with **no whole-support primary mean**; regimes **T** (harm / non-internalisation), **P** (benefit / recovery, future endogenous to $\Delta W$), **I** (secondary, no numbers yet); a **new** persistent-manifestation family $J^L = (J_P^L, J_D^L, J_X^L)$ defined by **(predicate, source-separated intermediate)** while **$Z^{\text{fire}}$ is left untouched**; **$\Gamma_T^\ast \neq \Gamma_P^\ast$** with formal manifestation address sets; a fair decision defect family at the induced-policy layer with address-count budgets; a split `FutureConsequenceView` / `UpdateLedger` with **dependency closure**, a **constructor-flow gate** and a laundering mutation; and two authorised-but-unimplemented kernel extensions | **P0 (spec)** | **frozen — specification only, no implementation authorised**; further change requires a new amendment; `08` still to be rebased |
-| **A76** | V0.3R B1 update-law contract: B1 owns only $W^{\text{update}} \to \Delta W$; four information tiers $L_0$–$L_3$ ($L_0$ learner-feasible, $L_1$ target-assisted, $L_2$ evaluator CF, $L_3$ Oracle ceiling); Decision targets rewritten as **local return-to-go** $G_t^F$ / $G_t^{CF}$ on one common scale; the $-1$ constant and the $+1$ target **retired** (not rescaled), `PositiveAlternative` retired as information-deficient at $L_1$; `FactualReturnWrite`, `CounterfactualReturnWrite`, `DualReturnWrite`, `DeleteFactualPatch`, `SetAlternative`; a **typed compatibility matrix** rather than a Cartesian product; and three execution invariants (regime-blind, address locality, snapshot + atomic commit) | **P0 (spec)** | **draft — pending review; no implementation authorised** |
+| **A76** | V0.3R B1 update-law contract: B1 owns only $W^{\text{update}} \to \Delta W$; four information tiers $L_0$–$L_3$; Decision targets rewritten as **local return-to-go** $G_t^F$ / $G_t^{CF}$; the counterfactual is a **full-episode replay** with only $do(d_t{=}a_t^+)$ added and a prefix-equality invariant, never a suffix simulator; the $-1$ constant and $+1$ target **retired** (not rescaled); `PositiveAlternative` retired as information-deficient at $L_1$; the $a^+$ guard is **live** (3,600 empty-alt addresses, co-fault only) so `NOT_EVALUABLE` enters the reporting rules; a locality-matched `LocalOracleRestore` inside the matrix with A75's global `OracleRestore` outside it; the $\rho_A$ credit-unit→store-key resolver; and three execution invariants (regime-blind, address locality, snapshot + atomic commit) | **P0 (spec)** | **draft — pending review; no implementation authorised** |
 
 ---
 
