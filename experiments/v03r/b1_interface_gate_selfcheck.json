@@ -1,0 +1,94 @@
+{
+  "check": "b1 interface gate mutation self-check",
+  "n_mutations": 8,
+  "n_gate_is_real": 8,
+  "n_not_a_gate": 0,
+  "tree_restored_byte_identical": true,
+  "file_digests": {
+    "src\\rfl_rebuild\\b1\\laws.py": "5ae63c2930b97c11c4a2b0683dc9fcaef3f87f972d45a9ff73ffab5ddb197e6a",
+    "src\\rfl_rebuild\\b1\\runner.py": "b3efee4dfe802af28c6611e433a73ff0d5eb5434ed5676ecc5e96b41582e5eda",
+    "src\\rfl_rebuild\\b1\\targets.py": "32d09a132f57ce1e62b054c4305c797c6f500cff04ab5af67e1b839284fe0d55"
+  },
+  "results": [
+    {
+      "mutation": "undeclared_tier",
+      "hole": "the base tier sentinel falls back to False, so a subclass that forgets its tier silently becomes L0",
+      "gate": "test_8h_a_real_subclass_that_forgets_its_tier_fails_stop",
+      "site": "src\\rfl_rebuild\\b1\\laws.py",
+      "matched": 1,
+      "exit_code": 1,
+      "tail": "!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "tier_coerced",
+      "hole": "the tier is coerced with truthiness instead of being required to be a bool",
+      "gate": "test_8i_a_tier_that_is_not_a_real_bool_fails_stop",
+      "site": "src\\rfl_rebuild\\b1\\runner.py",
+      "matched": 1,
+      "exit_code": 1,
+      "tail": "!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "law_signature",
+      "hole": "a law may declare plan(self, addresses, targets, snapshot) again",
+      "gate": "test_8j_a_law_cannot_re_acquire_a_store_handle",
+      "site": "src\\rfl_rebuild\\b1\\runner.py",
+      "matched": 1,
+      "exit_code": 1,
+      "tail": "!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "envelope_superset",
+      "hole": "the envelope is accepted as a superset of the credited set",
+      "gate": "test_17e_an_extra_non_credited_key_fails_stop",
+      "site": "src\\rfl_rebuild\\b1\\targets.py",
+      "matched": 1,
+      "exit_code": 1,
+      "tail": "!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "envelope_none",
+      "hole": "a None / non-mapping envelope raises TypeError instead of PROTOCOL_ERROR",
+      "gate": "test_17f_a_none_envelope_is_a_protocol_error_not_a_typeerror",
+      "site": "src\\rfl_rebuild\\b1\\targets.py",
+      "matched": 1,
+      "exit_code": 1,
+      "tail": "!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "factual_command",
+      "hole": "a record may carry a factual command that is not an action id",
+      "gate": "test_17g_a_bogus_factual_command_fails_stop",
+      "site": "src\\rfl_rebuild\\b1\\targets.py",
+      "matched": 1,
+      "exit_code": 1,
+      "tail": "!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "credit_unit_order",
+      "hole": "the duplicate guard hashes an untyped credit unit, so an unhashable one crashes with TypeError",
+      "gate": "test_16c_a_non_string_credit_unit_is_a_protocol_error_not_a_crash",
+      "site": "src\\rfl_rebuild\\b1\\targets.py",
+      "matched": 1,
+      "exit_code": 1,
+      "tail": "!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "snapshot_constructed",
+      "hole": "the runner still builds the full learner snapshot during a law run",
+      "gate": "test_8l_the_snapshot_is_not_even_constructed_for_a_law_run",
+      "site": "src\\rfl_rebuild\\b1\\runner.py",
+      "matched": 1,
+      "exit_code": 1,
+      "tail": "!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    }
+  ]
+}

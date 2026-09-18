@@ -17,10 +17,19 @@ same transaction, the same post-state, the same per-address statuses and the sam
 ledger cost. If any of those differ, that is an implementation bug and the alias test
 catches it.
 
-A law plans against a **pre-update snapshot** and returns
-:class:`PlannedWrite` entries. It never touches the store, never computes a status that
-depends on the post-state, and never receives $T/P$, $S_{r,\pm}$, $\Gamma^\ast$,
+A law plans from the credited addresses and — only for a tier that requires it — the
+target envelope, and returns :class:`PlannedWrite` entries. It never computes a status
+that depends on the post-state, and never receives $T/P$, $S_{r,\pm}$, $\Gamma^\ast$,
 a world id or a block id.
+
+$$\boxed{\texttt{plan}(addresses,\ targets)\quad\text{— and nothing else}}$$
+
+**A law is handed no store view at all**: not the persistent state, not a snapshot, not
+a store mapping. A76 §63.1 lets a primitive read *its own* store; being handed the whole
+learner snapshot gave a $D$ law an independent handle on $P_D^L$, $C_P^L$ and $C_X^L$ at
+once — A59's shape, and no less a leak for the current four laws happening not to read
+it. A later $D_Q$ law that genuinely needs to read the $D$ store gets a dedicated
+decision-only view, never the snapshot back.
 """
 
 from __future__ import annotations
@@ -82,9 +91,20 @@ class LawPlan:
 class _Law:
     """Base class. Subclasses implement ``plan`` and never see the store itself.
 
-    ``requires_alternative`` is the **information tier** (A76 §63.1). A law that does
-    not set it is never handed the target envelope at all — not merely expected not to
-    read it:
+    ``requires_alternative`` is the **information tier** (A76 §63.1). The base value is
+    the sentinel ``None``, meaning **NOT DECLARED**, and the runner accepts only a real
+    ``bool``:
+
+    $$\\boxed{\\texttt{\\_Law.requires\\_alternative = None}}$$
+
+    The earlier base value was ``False``, so a subclass that forgot to declare its tier
+    silently inherited the **lowest** tier — the exact outcome the check exists to
+    prevent, and invisible in the ledger. The ``_NoTier`` test looked like it covered
+    this but its class did not inherit ``_Law`` at all, so it tripped ``hasattr`` and
+    the real case was never exercised.
+
+    The tier decides **delivery**, not merely expectation: an $L_0$ law is never handed
+    $a^+$ — not even an envelope object:
 
     $$\\boxed{L_0\\text{ law must not depend on, nor be delivered, }L_1\\text{
     corrective content}}$$
@@ -93,16 +113,18 @@ class _Law:
     lesson: *the method did not read the higher-tier information* does not imply *the
     runner did not first condition it on that information*. It would also let a broken
     target generator fail an $L_0$ arm that has no business needing a target.
+
+    ``plan`` takes **exactly** ``(addresses, targets)``; the runner enforces the
+    signature, so a law cannot re-acquire a store handle by adding a parameter.
     """
 
     name = "?"
     alias_of: str | None = None
-    requires_alternative: bool = False
+    requires_alternative: bool | None = None      # None == NOT DECLARED
 
     def plan(self, addresses: Sequence[DecisionAddress],
-             targets: "Mapping[DecisionAddress, TargetRecord] | None",
-             snapshot) -> LawPlan:            # pragma: no cover - abstract
-        raise NotImplementedError
+             targets: "Mapping[DecisionAddress, TargetRecord] | None") -> LawPlan:
+        raise NotImplementedError                # pragma: no cover - abstract
 
     def __repr__(self) -> str:
         return f"<law {self.name}>"
@@ -118,7 +140,7 @@ class NoWrite(_Law):
     name = "NoWrite"
     requires_alternative = False
 
-    def plan(self, addresses, targets, snapshot) -> LawPlan:
+    def plan(self, addresses, targets) -> LawPlan:
         return LawPlan(self.name,
                        tuple(PlannedWrite(a, None, None) for a in addresses))
 
@@ -135,7 +157,7 @@ class DeleteFactualPatch(_Law):
     name = "DeleteFactualPatch"
     requires_alternative = False
 
-    def plan(self, addresses, targets, snapshot) -> LawPlan:
+    def plan(self, addresses, targets) -> LawPlan:
         return LawPlan(
             self.name,
             tuple(PlannedWrite(a, Edit(DECISION, a, None), None) for a in addresses),
@@ -150,14 +172,14 @@ class SetAlternative(_Law):
       ``EVALUABLE_NOOP``, derived from the store rather than special-cased here;
     * a **verified** absence of $a^+$ → no edit, status ``NO_VALID_ALTERNATIVE``, and
       the other addresses are unaffected;
-    * a **missing** target record is not handled here at all — the runner raises
-      :class:`ProtocolError` before any law runs.
+    * a **missing** target record, or no envelope at all, is not handled here at all —
+      the runner raises :class:`ProtocolError` before any law runs.
     """
 
     name = "SetAlternative"
     requires_alternative = True
 
-    def plan(self, addresses, targets, snapshot) -> LawPlan:
+    def plan(self, addresses, targets) -> LawPlan:
         writes = []
         for a in addresses:
             rec = targets[a]

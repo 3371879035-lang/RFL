@@ -63,7 +63,7 @@ def statuses(result):
 
 def test_1_nowrite_plans_no_edit_and_every_address_is_evaluable_noop():
     s = state_with((A, DOWN))          # even with a patch present
-    plan = NoWrite().plan(ADDRESSES, envelope(), s.snapshot())
+    plan = NoWrite().plan(ADDRESSES, envelope())
     assert plan.edits == (), "NoWrite must create no edit at all"
     res = run_patch_law_with_envelope(NoWrite, s, ADDRESSES, envelope())
     assert set(statuses(res).values()) == {EVALUABLE_NOOP}
@@ -205,7 +205,7 @@ class _OutOfLocalityLaw:
     alias_of = None
     requires_alternative = False
 
-    def plan(self, addresses, targets, snapshot):
+    def plan(self, addresses, targets):
         from rfl_rebuild.b1.laws import LawPlan, PlannedWrite
         rogue = DecisionAddress(state=State(x=0, y=2, t=0, kappa=0, phi=0), z=0, m=0)
         return LawPlan(self.name, (PlannedWrite(rogue, Edit(DECISION, rogue, UP), None),))
@@ -233,7 +233,7 @@ class _LaunderingLaw:
     def __init__(self, rogue):
         self._rogue = rogue
 
-    def plan(self, addresses, targets, snapshot):
+    def plan(self, addresses, targets):
         from rfl_rebuild.b1.laws import LawPlan, PlannedWrite
         return LawPlan(self.name, tuple(
             PlannedWrite(a, Edit(DECISION, self._rogue, UP), None) for a in addresses))
@@ -251,7 +251,7 @@ def test_8c_a_plan_that_omits_a_credited_address_fails_stop():
     class _OmitOne:
         name, alias_of, requires_alternative = "MaliciousOmit", None, False
 
-        def plan(self, addresses, targets, snapshot):
+        def plan(self, addresses, targets):
             from rfl_rebuild.b1.laws import LawPlan, PlannedWrite
             return LawPlan(self.name,
                            tuple(PlannedWrite(a, None, None) for a in addresses[:-1]))
@@ -265,7 +265,7 @@ def test_8d_a_plan_that_double_names_an_address_fails_stop():
     class _Double:
         name, alias_of, requires_alternative = "MaliciousDouble", None, False
 
-        def plan(self, addresses, targets, snapshot):
+        def plan(self, addresses, targets):
             from rfl_rebuild.b1.laws import LawPlan, PlannedWrite
             return LawPlan(self.name,
                            tuple(PlannedWrite(a, None, None) for a in addresses)
@@ -280,7 +280,7 @@ def test_8e_an_illegal_plan_shape_fails_stop():
     class _BadShape:
         name, alias_of, requires_alternative = "MaliciousShape", None, False
 
-        def plan(self, addresses, targets, snapshot):
+        def plan(self, addresses, targets):
             from rfl_rebuild.b1.laws import LawPlan, PlannedWrite
             # edit AND status together: not one of the three legal shapes
             return LawPlan(self.name, tuple(
@@ -296,7 +296,7 @@ def test_8f_declaring_applied_without_an_edit_fails_stop():
     class _StatusNoEdit:
         name, alias_of, requires_alternative = "MaliciousStatus", None, False
 
-        def plan(self, addresses, targets, snapshot):
+        def plan(self, addresses, targets):
             from rfl_rebuild.b1.laws import LawPlan, PlannedWrite
             return LawPlan(self.name, tuple(
                 PlannedWrite(a, None, APPLIED) for a in addresses))
@@ -310,7 +310,7 @@ def test_8g_a_law_that_does_not_declare_its_tier_fails_stop():
     class _NoTier:
         name, alias_of = "Undeclared", None
 
-        def plan(self, addresses, targets, snapshot):
+        def plan(self, addresses, targets):
             from rfl_rebuild.b1.laws import LawPlan, PlannedWrite
             return LawPlan(self.name,
                            tuple(PlannedWrite(a, None, None) for a in addresses))
@@ -318,6 +318,104 @@ def test_8g_a_law_that_does_not_declare_its_tier_fails_stop():
     with pytest.raises(ProtocolError):
         run_patch_law_with_envelope(_NoTier(), LearnerPersistentState(),
                                     ADDRESSES, envelope())
+
+
+def test_8h_a_real_subclass_that_forgets_its_tier_fails_stop():
+    """The canary 8g was *not*.
+
+    ``_NoTier`` does not inherit ``_Law``, so it tripped the ``hasattr`` branch while
+    the case that actually matters — a genuine ``_Law`` subclass that forgets to
+    declare its tier and silently inherits the base value — was never exercised. With
+    the old base value ``False`` this law ran happily as an $L_0$ arm.
+    """
+    from rfl_rebuild.b1.laws import _Law
+
+    class _ForgotTier(_Law):
+        name = "ForgotTier"
+
+        def plan(self, addresses, targets):
+            from rfl_rebuild.b1.laws import LawPlan, PlannedWrite
+            return LawPlan(self.name,
+                           tuple(PlannedWrite(a, None, None) for a in addresses))
+
+    assert _Law.requires_alternative is None, \
+        "the base tier must be the NOT-DECLARED sentinel, not False"
+    assert "requires_alternative" not in _ForgotTier.__dict__, \
+        "this canary is only meaningful while the subclass really does not declare it"
+    with pytest.raises(ProtocolError):
+        run_patch_law_with_envelope(_ForgotTier(), LearnerPersistentState(),
+                                    ADDRESSES, envelope())
+
+
+@pytest.mark.parametrize("bad_tier", [None, 0, 1, "yes", "False", []])
+def test_8i_a_tier_that_is_not_a_real_bool_fails_stop(bad_tier):
+    """``bool("no") is True`` and ``bool(None) is False``: coercion is not a tier."""
+    class _BadTier:
+        name, alias_of = "BadTier", None
+
+        def plan(self, addresses, targets):
+            from rfl_rebuild.b1.laws import LawPlan, PlannedWrite
+            return LawPlan(self.name,
+                           tuple(PlannedWrite(a, None, None) for a in addresses))
+
+    _BadTier.requires_alternative = bad_tier
+    with pytest.raises(ProtocolError):
+        run_patch_law_with_envelope(_BadTier(), LearnerPersistentState(),
+                                    ADDRESSES, envelope())
+
+
+def test_8j_a_law_cannot_re_acquire_a_store_handle():
+    """Deleting the ``snapshot`` argument closes nothing unless it cannot come back.
+
+    A law that declares a valid tier but declares ``plan(self, addresses, targets,
+    snapshot)`` would otherwise be called with two arguments and raise a bare
+    ``TypeError`` — a crash on the error path, and a silent invitation to re-add the
+    full learner snapshot (all three stores) to the law API.
+    """
+    class _ReacquiresSnapshot:
+        name, alias_of, requires_alternative = "Sneaky", None, False
+
+        def plan(self, addresses, targets, snapshot):
+            from rfl_rebuild.b1.laws import LawPlan
+            return LawPlan(self.name, tuple())
+
+    with pytest.raises(ProtocolError) as ei:
+        run_patch_law_with_envelope(_ReacquiresSnapshot(), LearnerPersistentState(),
+                                    ADDRESSES, envelope())
+    assert "snapshot" in str(ei.value).lower() or "parameters" in str(ei.value)
+
+
+def test_8k_the_registered_law_api_is_exactly_addresses_and_targets():
+    """The whole law API, checked rather than documented.
+
+    Bound to an instance, because that is the callable the runner inspects:
+    ``inspect.signature`` drops ``self`` there, so the check is on the argument list a
+    law actually receives.
+    """
+    import inspect
+    for law_cls in LAWS:
+        law = law_cls()
+        params = tuple(inspect.signature(law.plan).parameters)
+        assert params == ("addresses", "targets"), f"{law.name}.plan takes {params}"
+
+
+def test_8l_the_snapshot_is_not_even_constructed_for_a_law_run(monkeypatch):
+    """A law run must not build a learner snapshot it does not hand to anyone.
+
+    Weaker than the signature check and kept as a second, independent witness: with the
+    argument deleted but the snapshot still taken, the leak would be one call away.
+    """
+    calls = []
+    original = LearnerPersistentState.snapshot
+
+    def spy(self):
+        calls.append(1)
+        return original(self)
+
+    monkeypatch.setattr(LearnerPersistentState, "snapshot", spy)
+    run_patch_law_with_envelope(SetAlternative, LearnerPersistentState(),
+                                ADDRESSES, envelope())
+    assert calls == [], "the runner built a learner snapshot during a law run"
 
 
 # --------------------------------------------------------------------------- #
@@ -348,7 +446,7 @@ def test_9b_a_law_that_plans_the_same_address_twice_fails_stop():
     class _DoubleEdit:
         name, alias_of, requires_alternative = "MaliciousDuplicate", None, False
 
-        def plan(self, addresses, targets, snapshot):
+        def plan(self, addresses, targets):
             from rfl_rebuild.b1.laws import LawPlan, PlannedWrite
             return LawPlan(self.name,
                            (PlannedWrite(A, Edit(DECISION, A, UP), None),
@@ -428,7 +526,7 @@ def test_12b_a_rolled_back_run_leaves_no_persistent_effect():
     class _DoubleEdit:
         name, alias_of, requires_alternative = "MaliciousDuplicate", None, False
 
-        def plan(self, addresses, targets, snapshot):
+        def plan(self, addresses, targets):
             from rfl_rebuild.b1.laws import LawPlan, PlannedWrite
             return LawPlan(self.name,
                            (PlannedWrite(A, Edit(DECISION, A, UP), None),
@@ -574,7 +672,7 @@ def test_15d_an_l0_law_never_receives_a_non_none_envelope():
     class _Spy:
         name, alias_of, requires_alternative = "SpyL0", None, False
 
-        def plan(self, addresses, targets, snapshot):
+        def plan(self, addresses, targets):
             from rfl_rebuild.b1.laws import LawPlan
             seen["targets"] = targets
             return LawPlan(self.name, tuple())
@@ -618,6 +716,38 @@ def test_16b_a_duplicated_unit_is_not_silently_collapsed_on_a_real_trace():
         resolve_credited_units(units, trace, kappa, phi)
     ok = resolve_credited_units(("Decision_0", "Decision_1"), trace, kappa, phi)
     assert len(ok) == 2
+
+
+@pytest.mark.parametrize("bad_unit", [["Decision_0"], {"Decision_0": 1}, 0, None,
+                                      True, 1.0, ("Decision_0",)])
+def test_16c_a_non_string_credit_unit_is_a_protocol_error_not_a_crash(bad_unit):
+    """The duplicate guard hashed the unit *before* checking its type.
+
+    ``["Decision_0"]`` therefore raised ``TypeError: unhashable type: 'list'`` out of
+    ``u in seen_units``, and a plain ``0`` raised ``TypeError`` out of ``re.match`` —
+    both instead of the ``PROTOCOL_ERROR`` this module's contract promises. Note the
+    list and the dict are the interesting cases: they are the ones a real caller would
+    produce by forgetting to unpack a unit.
+    """
+    from rfl_rebuild.b1 import resolve_credited_units, resolve_decision_address
+
+    class _T:
+        option_in_force = 0
+        steps = ()
+
+    with pytest.raises(ProtocolError):
+        resolve_credited_units((bad_unit,), _T(), 0, 0)
+    with pytest.raises(ProtocolError):
+        resolve_decision_address(bad_unit, _T(), 0, 0)
+
+
+def test_16d_the_type_check_precedes_the_duplicate_check():
+    """Ordering, not just presence: an unhashable unit must not reach the set."""
+    import inspect
+    from rfl_rebuild.b1 import targets as targets_mod
+    src = inspect.getsource(targets_mod.resolve_credited_units)
+    assert src.index("_require_unit(u)") < src.index("u in seen_units"), \
+        "the type check must run before the duplicate guard hashes the unit"
 
 
 # --------------------------------------------------------------------------- #
@@ -681,6 +811,78 @@ def test_17d_the_builder_rejects_an_address_that_is_not_the_factual_context():
     liar = DecisionAddress(state=A.state, z=3, m=7)     # same t, wrong z/m
     with pytest.raises(ProtocolError):
         build_target_envelope(solve_reference(), (liar,), trace, kappa, phi)
+
+
+ROGUE = DecisionAddress(state=State(x=0, y=2, t=0, kappa=0, phi=0), z=0, m=0)
+
+
+def test_17e_an_extra_non_credited_key_fails_stop():
+    """Containment is not exactness.
+
+    ``{A, B, C, ROGUE}`` satisfies "every credited address has a record", so the earlier
+    check accepted it and handed the $L_1$ law corrective content for an address that
+    was never credited. That ``SetAlternative`` does not currently read the extra key is
+    not the point — the information was delivered.
+    """
+    env = dict(envelope())
+    env[ROGUE] = TargetRecord(ROGUE, DOWN, RIGHT)
+    assert set(env) > set(ADDRESSES), "the test envelope must be a strict superset"
+    with pytest.raises(ProtocolError) as ei:
+        run_patch_law_with_envelope(SetAlternative, LearnerPersistentState(),
+                                    ADDRESSES, env)
+    assert "non-credited key" in str(ei.value)
+
+
+def test_17f_a_none_envelope_is_a_protocol_error_not_a_typeerror():
+    """``a not in targets`` with ``targets=None`` raised ``TypeError: argument of type
+    'NoneType' is not iterable`` where the contract promises ``PROTOCOL_ERROR``."""
+    with pytest.raises(ProtocolError):
+        run_patch_law_with_envelope(SetAlternative, LearnerPersistentState(),
+                                    ADDRESSES, None)
+    for bad in ([], "targets", 0, TargetRecord(A, UP, RIGHT)):
+        with pytest.raises(ProtocolError):
+            run_patch_law_with_envelope(SetAlternative, LearnerPersistentState(),
+                                        ADDRESSES, bad)
+
+
+@pytest.mark.parametrize("bad_factual", [None, -1, 99, True, "RIGHT", 1.0])
+def test_17g_a_bogus_factual_command_fails_stop(bad_factual):
+    """``a^+ != a^F`` is meaningless against a factual command that is not an action."""
+    bad = dict(envelope())
+    bad[A] = TargetRecord(A, UP, bad_factual)
+    with pytest.raises(ProtocolError):
+        run_patch_law_with_envelope(SetAlternative, LearnerPersistentState(),
+                                    ADDRESSES, bad)
+
+
+def test_17h_the_structural_check_does_not_claim_to_ground_the_factual_command():
+    """Recorded so 17g is not read as proving more than it checks.
+
+    A *legal but false* factual command still passes: nothing in a trace-free structural
+    check can tell it from the true one. Grounding is the builder's job, and this gate
+    pins both halves — the hole that remains, and the guarantee that closes it on the
+    only path an envelope for a real scene can take.
+    """
+    lie = dict(envelope())
+    lie[A] = TargetRecord(A, UP, DOWN)          # DOWN is a legal action, but not a^F
+    run_patch_law_with_envelope(SetAlternative, LearnerPersistentState(),
+                                ADDRESSES, lie)     # deliberately accepted
+
+    from rfl_rebuild.b1 import build_target_envelope
+    from rfl_rebuild.env.observation import walk_transition
+    from rfl_rebuild.solve.dp import solve_reference
+    from rfl_rebuild.b1 import resolve_credited_units
+    trace, kappa, phi = _real_trace()
+    rows = list(walk_transition(trace, kappa, phi, trace.option_in_force))
+    by_t = {s.t: (z, m, a_cmd) for (s, z, m, a_cmd, _ar, _rw) in rows}
+    addresses = resolve_credited_units(
+        tuple(f"Decision_{t}" for t in sorted(by_t)), trace, kappa, phi)
+    assert len(addresses) >= 3, "the probe needs a few real decision contexts"
+    built = build_target_envelope(solve_reference(), addresses, trace, kappa, phi)
+    for addr in addresses:
+        _z, _m, a_cmd = by_t[addr.state.t]
+        assert built[addr].factual_command == a_cmd, \
+            "the builder must record the TRACE's factual command"
 
 
 # --------------------------------------------------------------------------- #
