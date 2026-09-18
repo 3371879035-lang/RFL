@@ -2936,6 +2936,37 @@ world's own values, and the rows still agree on every class. It also establishes
 $\mathcal L_{\text{public}} \supseteq \text{support}$ — the candidate space never
 misses the truth.
 
+**Measured — the main gate** (`scripts/a73_locator_gate.py`), **12/12 PASS**:
+
+| layer | result |
+|---|---|
+| 1 evaluator reference | 893 classes |
+| 2 $\Gamma^+$ / $\Gamma^-$ / exact $\Gamma^\ast$ set | **0 / 0 / 0** mismatches over 893 |
+| 2 empty compatible sets | 0 |
+| 3 locator import allowlist | clean — `public_scm` only |
+| 4 mutation: controller/plant boundary erased | **321 classes killed** |
+| 4 kill set vs X-firing classes | **exactly equal** (321 = 321) |
+| 4 kill set ∩ plant-only classes | **empty** (0 of 330) |
+| 4 A71 ambiguous classes killed | **14 / 14** |
+| 4 second control: A71's generic-unit P0 | **579 killed**, exactly the D-or-X classes |
+
+$$\boxed{\hat\Gamma_{\text{CSL}}(X) = \Gamma^+_{\text{eval}}(X) \ \wedge\
+\Gamma^-_{\text{CSL}}(X) = \Gamma^-_{\text{eval}}(X) \quad \forall X \in \{1,\dots,893\}}$$
+
+The two sides use separately written projections (the evaluator's via
+`DenseSupport` + A71's `gamma_star_indexed`, the locator's via `PublicSCMView`), so
+the agreement is evidence rather than a tautology.
+
+**Two notes on the mutation, because a kill count alone can mislead.** The kill set
+is **exactly** the 321 classes where the controller mechanism fires — not merely a
+subset of the 651 X-or-E classes, and disjoint from the 330 plant-only classes — so
+the failure is attributable to the erased boundary rather than to collateral damage.
+And the mutation had to be **repaired before it bit at all**: `credit_units`
+originally called `PublicSCMView.credit_unit` instead of `self.credit_unit`, so the
+subclass override never ran and the kill set came back **empty**. A no-op mutation
+would have read as "the gate is robust". That is precisely why the kill set is
+recorded instead of a boolean.
+
 **Support closure, as an exact set not a subset.** The subset condition is the
 minimum; because the endpoint is *exact* inversion, the requirement is
 

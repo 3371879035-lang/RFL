@@ -105,6 +105,7 @@ class PublicSCMView:
         self._provider = provider if provider is not None else _default_provider(reference)
         self._dom_cache: dict = {}
         self._roll_cache: dict = {}
+        self._fire_cache: dict = {}
 
     # -- internals -------------------------------------------------------- #
     @staticmethod
@@ -176,9 +177,18 @@ class PublicSCMView:
 
     # -- capability 3: fired-mechanism vector ----------------------------- #
     def fire_vector(self, hyp: Hypothesis) -> int | None:
-        """That world's own ``Z^fire`` as a 5-bit mask, or ``None`` if infeasible."""
+        """That world's own ``Z^fire`` as a 5-bit mask, or ``None`` if infeasible.
+
+        Memoised: ``fired_mechanisms`` costs its own rollout, and the locator asks
+        for the fire vector of every hypothesis it enumerates. Without the cache a
+        single 893-class sweep would repeat it once per (class, hypothesis) pair.
+        """
+        key = hyp
+        if key in self._fire_cache:
+            return self._fire_cache[key]
         hit = self._roll(hyp)
         if hit is None:
+            self._fire_cache[key] = None
             return None
         _trace, b = hit
         d = K.fired_mechanisms(kappa=hyp.kappa, tape=self._tape(hyp.phi),
@@ -187,7 +197,9 @@ class PublicSCMView:
                               mask=FaultMask(decision=b["D"], controller=b["X"],
                                              plant=b["E"], trap=b["U"]),
                               option_fault=b["P"])
-        return sum((int(d[k]) & 1) << i for i, k in enumerate(FIRE_KEYS))
+        out = sum((int(d[k]) & 1) << i for i, k in enumerate(FIRE_KEYS))
+        self._fire_cache[key] = out
+        return out
 
     # -- capability 4: hypothetical descriptor -> Gamma unit ------------- #
     @staticmethod
@@ -227,7 +239,12 @@ class PublicSCMView:
             if key == "P":
                 out.add("ProcessCommit")
             else:
-                out.add(PublicSCMView.credit_unit(b[key]))
+                # Dispatch through the INSTANCE, not the class. Calling
+                # `PublicSCMView.credit_unit` here made the method unoverridable,
+                # so A72 8.3's mutation control silently did nothing and the
+                # locator gate's kill set came back empty -- a no-op mutation that
+                # would have read as "the gate is robust".
+                out.add(self.credit_unit(b[key]))
         # A67: an empty mechanism repair is a substantive verdict, not abstention.
         return frozenset(out) if out else frozenset({"Unknown/NoWrite"})
 
