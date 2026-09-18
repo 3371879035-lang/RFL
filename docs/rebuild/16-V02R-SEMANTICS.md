@@ -44,7 +44,24 @@ difference *is* the structure V0.2R exists to study. Conflating them is what mad
 
 ## 3. Input contract
 
-$$X_{0.2} = \bigl(I^{\text{factual}}_{0:T},\; Z^{\text{fire}}_{\text{truth}}\bigr)$$
+A73 split what one symbol used to name. `sigma0` returns the learner-visible
+evidence as **two** parts, `(rows, feedback)`, so "the method input" and "the
+locator input" are different objects and are no longer written alike:
+
+$$X^{\text{obs}}_{0.2} = \bigl(\text{rows},\; \text{feedback},\; Z^{\text{fire}}_{\text{truth}}\bigr)
+\qquad\text{(the full learner-visible observation)}$$
+
+$$X^{\text{loc}}_{0.2} = \bigl(\text{rows},\; Z^{\text{fire}}_{\text{truth}}\bigr)
+\qquad\text{(what \texttt{CausalSetLocator} receives)}$$
+
+$$q : X^{\text{obs}}_{0.2} \to X^{\text{loc}}_{0.2}, \qquad
+q(\text{rows}, \text{feedback}, Z^{\text{fire}}) = (\text{rows}, Z^{\text{fire}})$$
+
+The three representation methods receive $X^{\text{obs}}_{0.2}$; the locator
+receives $X^{\text{loc}}_{0.2}$, because V0.2R already hands over
+$Z^{\text{fire}}_{\text{truth}}$, which makes the feedback channel a report about a
+quantity already given. The bare symbol $X_{0.2}$ must not be used: it named both
+objects, and A73 is why it no longer does.
 
 V0.2R keeps `07`'s good instinct — hand over cause truth so attribution error is
 isolated rather than compounding. But it is written precisely: the method receives

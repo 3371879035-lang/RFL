@@ -2747,6 +2747,14 @@ into 5, 48 into 6), covering 100% of the DGP mass. $4513/893 = 5.0538$.
 
 $$\boxed{\text{one symbol may not again denote both objects}}$$
 
+**Historical occurrences are left as written.** The bare $X_{0.2}$ still appears
+inside A65's, A70's and A72's own frozen text — their definitions, their rejected
+routes, and the verbatim locator grant. Those are the **record**, and rewriting them
+would falsify the log rather than clarify it. This section is their interpretation:
+wherever a frozen passage says $X_{0.2}$, read it as the object that passage was
+about, and the two live specifications (`16` §3, `17` §2) now state the split
+directly rather than relying on this note.
+
 **The quotient, frozen.**
 
 $$X^{\text{obs}}_{0.2} = (\text{rows}, \text{feedback}, Z^{\text{fire}}_{\text{truth}}),

@@ -44,9 +44,20 @@ function of the native proposal and $I^{\text{factual}}$ only.
 
 ## 2. Input contract
 
-$$X_{0.2} = \bigl(I^{\text{factual}}_{0:T},\; Z^{\text{fire}}_{\text{truth}}\bigr)$$
+A73 split what one symbol used to name. `sigma0` returns the learner-visible
+evidence as **two** parts, `(rows, feedback)`, so "the method input" and "the
+locator input" are different objects:
 
-All three real methods receive **identical typed input**. Also allowed, because it
+$$X^{\text{obs}}_{0.2} = \bigl(\text{rows}, \text{feedback}, Z^{\text{fire}}_{\text{truth}}\bigr),
+\qquad
+X^{\text{loc}}_{0.2} = \bigl(\text{rows}, Z^{\text{fire}}_{\text{truth}}\bigr)$$
+
+$$q : X^{\text{obs}}_{0.2} \to X^{\text{loc}}_{0.2}, \qquad
+q(\text{rows}, \text{feedback}, Z^{\text{fire}}) = (\text{rows}, Z^{\text{fire}})$$
+
+All three real methods receive **identical typed input**, namely
+$X^{\text{obs}}_{0.2}$; `CausalSetLocator` receives $X^{\text{loc}}_{0.2}$ (A73,
+`12` §60). Also allowed, because it
 is public mechanism knowledge rather than evaluator truth:
 
 * the public $\Gamma$ ontology and its `agent_writeable` flags;
@@ -88,7 +99,7 @@ so the interface must actually separate it:
 
 $$\texttt{OracleCreditAdapter}(\Gamma^\ast) \longrightarrow \Gamma^\ast$$
 
-evaluator-only, taking truth directly and **not** $X_{0.2}$. It may not share the
+evaluator-only, taking truth directly and **not** $X^{\text{obs}}_{0.2}$. It may not share the
 ordinary method path — otherwise we repeat A59's risk of a type that claims to be
 an oracle while sharing the inference entry point.
 
@@ -354,14 +365,14 @@ the one recorded in §8.5.
 
 ## 10. The three methods' native rules — and a degeneracy that must be decided first
 
-Frozen so far: what each method may **see** ($X_{0.2}$, identical, no query, a
+Frozen so far: what each method may **see** ($X^{\text{obs}}_{0.2}$, identical, no query, a
 read-only $\pi_D^\ast$ view) and what alphabet each may **emit**. Not yet frozen:
 how each derives its proposal. That is algorithm, and it is frozen here — except
 that writing it down exposes a structural problem.
 
 ### 9.1 The proposed minimal rules
 
-| method | rule, from $X_{0.2}$ alone |
+| method | rule, from $X^{\text{obs}}_{0.2}$ alone |
 |---|---|
 | $R_{\text{module}}$ | emit `H` if any fired cause projects to a non-indexed unit; emit `L` if any projects to an indexed unit; both when both |
 | $R_{\text{trajectory}}$ | always emit `{Episode}` — the coarsest baseline, deliberately uninformative |
@@ -380,7 +391,7 @@ $$\Gamma^\ast = \pi_{\text{credit}} \circ Z^{\text{fire}}_{\text{truth}}$$
 So the rule in §9.1 for $R_{\text{causal}}$ computes $\Gamma^\ast$ **exactly**. That
 makes $R_{\text{causal}}$ coincide with `OracleCreditAdapter`:
 
-$$\boxed{R_{\text{causal}} \equiv \text{the ceiling, under } X_{0.2}}$$
+$$\boxed{R_{\text{causal}} \equiv \text{the ceiling, under } X^{\text{obs}}_{0.2}}$$
 
 Three consequences, and they are not equivalent:
 
@@ -402,7 +413,7 @@ Three consequences, and they are not equivalent:
 * **(a) Accept it.** Report V0.2R as a granularity study, and say so in the write-up
   rather than implying an ontology competition. Cheapest and honest, but gives up
   the original claim in `07`.
-* **(b) Remove $Z^{\text{fire}}$ from $X_{0.2}$** so the method must infer it. This
+* **(b) Remove $Z^{\text{fire}}$ from $X^{\text{obs}}_{0.2}$** so the method must infer it. This
   restores a genuine inference problem but re-imports V0.1R's attribution error
   into V0.2R, which is exactly what V0.2R's "isolate the error" design exists to
   prevent.
