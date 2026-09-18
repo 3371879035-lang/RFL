@@ -1,0 +1,17 @@
+{
+ "n_worlds": 1038960,
+ "n_malformed": 0,
+ "world_order": "ascending world id, one line per world",
+ "serialization": "explicit f-string rows (x,y,t,kappa,phi,z,m,a_cmd,a_realized,reward:.6f) joined by '|', then ':' then the feedback bits; Python hash() is never used",
+ "observable_digest": "6034b9c75056424a3dec42c6363c370dbb980d289e8c16a653558bd9eadb4cc6",
+ "observable_digest16": "6034b9c75056424a",
+ "component_digests": {
+  "rows_only": "ca2d7a0557c7c54575bb8f2acfa539c1987d733235109acb60cad71a032b13e8",
+  "terminal_feedback_only": "35f46205b35a220dda25ffd968970c3422a674d2fc5d80aa750797e5db76daac",
+  "reward_column_only": "48153949aeabc5d77ba4f50395678e0e47864ec100cff01629c2803efc616af5",
+  "action_columns_only": "f05fd06bb380ab1f78bcbf0f3971367943f2cff070564242448876750650bb2e"
+ },
+ "why_not_content_digest": "support.content_digest hashes only _DENSE_FIELDS (kappa, phase, error_flag, cause_rank, proposal, Z_code, p0..p4, block_id, fire_code) -- integer partition fields. The observable payload is not hashed, so a payload change that leaves the partition intact could pass it unchanged",
+ "obligation": "after the kernel patch this script must reproduce observable_digest EXACTLY; a mismatch means the patch changed a closed version's world regardless of the support digest",
+ "elapsed_seconds": 482.0
+}
