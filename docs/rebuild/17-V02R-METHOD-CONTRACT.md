@@ -365,6 +365,36 @@ the one recorded in §8.5.
 
 ## 10. The three methods' native rules — and a degeneracy that must be decided first
 
+> **HISTORICAL DECISION POINT — SUPERSEDED BY A70–A74.** The text of this section is
+> kept as the record of a decision that was open when it was written. **Its central
+> derivation is now false**, so it must not be read as current. What replaced it:
+>
+> $$Z^{\text{fire}} \;\not\Rightarrow\; \Gamma^\ast_{\text{indexed}}$$
+>
+> A71 falsified the identity $\Gamma^\ast = \pi_{\text{credit}} \circ Z^{\text{fire}}_{\text{truth}}$
+> that the whole argument below rests on: five fire bits say *which kind* fired, not
+> *which timestep or site*, so D/X carry addresses that the bits cannot supply.
+> Consequently $R_{\text{causal}} \equiv \text{OracleCredit}$ is **false**, and the
+> "causal rule is the ceiling" premise with it.
+>
+> The current object is instead
+>
+> $$X^{\text{loc}} = (\text{rows}, Z^{\text{fire}}_{\text{truth}}), \qquad
+> \hat\Gamma_{\text{CSL}}(X^{\text{loc}}) = \Gamma^+(X^{\text{loc}})$$
+>
+> an exact **set** inversion from the public SCM through `PublicSCMView`, gated at
+> **893/893** against an independently sourced evaluator reference, with
+> $\Gamma^-$ as the diagnostic. The unidentifiability is real but thin:
+> **14 of 893 locator classes**, carrying **0.1881% of DGP mass** (A71). And the
+> census no longer crowns a winner at all — A70 replaced the sampled ladder with an
+> exact full-support enumeration, and A74 voided that census's `Module` row after
+> finding evaluator truth in its proposal construction.
+>
+> **The (a)/(b)/(c) fork below is therefore closed**, not open: (a) is what was done,
+> (b) was rejected for re-importing V0.1R's attribution error, and (c) is moot because
+> the premise it was meant to rescue — that a causal rule is the ceiling — is false.
+> Nothing here is an outstanding decision.
+
 Frozen so far: what each method may **see** ($X^{\text{obs}}_{0.2}$, identical, no query, a
 read-only $\pi_D^\ast$ view) and what alphabet each may **emit**. Not yet frozen:
 how each derives its proposal. That is algorithm, and it is frozen here — except
