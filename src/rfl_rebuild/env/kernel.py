@@ -461,6 +461,28 @@ class OptionViolation(Exception):
     """
 
 
+class LearnerContractViolation(Exception):
+    """A learner-owned baseline left the domain its channel is contracted to.
+
+    A75 §62.11 / §62.3. **Deliberately not an** :class:`OptionViolation` **subclass**,
+    and it must not be added to any ``except (MalformedIntervention,
+    OptionViolation)``. Those are caught by the old gates to mean "this candidate is
+    an ordinary rejected case"; a learner-baseline contract breach is a new
+    **fail-fast protocol violation** and must not be swallowed as routine.
+
+    The contract binds only a baseline that actually **takes control**:
+
+    * ``C_P^L`` — when neither ``do(z=z')``, ``do(C_P=identity)`` nor ``Z_P`` governs,
+      it must return an option id in ``option_ids()``;
+    * ``C_X^L`` — when neither ``do(C_X)`` nor ``Z_X`` governs, it must return ``u``
+      in ``A_z(m, s)``.
+
+    Transient faults keep the **fault privilege** of leaving ``A_z``; that freedom is
+    what makes them faults. The check therefore lives *inside* the baseline branch and
+    is never applied to the final ``u`` or ``a_realized``.
+    """
+
+
 @dataclass(frozen=True, slots=True)
 class Intervention:
     """One element of the intervention lattice ``I`` (02 §5).
@@ -635,14 +657,28 @@ def step(
     site = ControllerSite(state=state, cmd=a_eff)
 
     # --- C_X(s, a^cmd) -> u, in priority order ----------------------------- #
-    u = a_eff
-    if controller is not None and site in controller:
-        u = controller[site]
-    if mask.controller is not None and mask.controller.state == state \
-            and mask.controller.cmd == a_eff:
-        u = mask.controller.realized
+    # A75 §62.11 rewrites this as strict top-priority branches rather than a
+    # base-then-overwrite cascade, so that the learner contract can bind exactly the
+    # channel that takes control:
+    #     do(C_X) > Z_X > C_X^L > identity
     if site_repairs is not None and site in site_repairs:
-        u = site_repairs[site]
+        u = site_repairs[site]                       # evaluator do(C_X)
+    elif (mask.controller is not None and mask.controller.state == state
+            and mask.controller.cmd == a_eff):
+        u = mask.controller.realized                 # transient Z_X keeps fault privilege
+    elif controller is not None and site in controller:
+        u = controller[site]                         # learner-owned baseline C_X^L
+        # Criterion 7 (A75 §62.3): a learner baseline may not expand the behavioural
+        # domain of its node. Checked ONLY here -- a uniform check on the final u
+        # would delete the fault privilege that Z_X and Z_E exist to exercise.
+        if u not in option_actions(control.z, control, state):
+            raise LearnerContractViolation(
+                f"at t={state.t}, the learner baseline C_X^L mapped "
+                f"{ACTIONS[a_eff]} to {ACTIONS[u]}, which is outside "
+                f"A_z(m,s) for option {option_name(control.z)} (m={control.m})"
+            )
+    else:
+        u = a_eff                                    # identity
 
     # --- P(s, u, eps_E) -> a^realized -------------------------------------- #
     a_realized = u
@@ -693,6 +729,12 @@ def step(
 
 CommandProvider = Callable[[State, ControlState], int]
 
+#: A75 §62.11: the ordinary **learner** baseline for the process/commit layer.
+#: Maps ``z^proposal`` to the option it commits. ``None`` means ``C_P^L = identity``.
+#: Deliberately a provider and not a store: A75 fixes the *read channel* here and
+#: leaves the persistent store representation to the layer above.
+ProcessCommitProvider = Callable[[int], int]
+
 
 def rollout(
     *,
@@ -704,6 +746,7 @@ def rollout(
     option_fault: int | None = None,
     interventions: InterventionSet = InterventionSet(),
     controller: Mapping[ControllerSite, Action] | None = None,
+    learner_process_commit: ProcessCommitProvider | None = None,
     reward_mode: str = "A",
 ) -> "RolloutTrace":
     """Run one episode under a fixed intervention set.
@@ -733,13 +776,20 @@ def rollout(
     #   C_P         = identity unless a P fault is present
     #   z^in-force  = z0
     # Priority is FROZEN as
-    #   do(z=z')  >  do(C_P=identity)  >  Z_P fault  >  z^proposal
+    #   do(z=z')  >  do(C_P=identity)  >  Z_P fault  >  C_P^L(z^proposal)
     # A `do(z = z')` is strategy replay: a downstream root intervention that sets
     # z^in-force outright, bypassing the commit edge. It is NOT a process repair.
     # A `do(C_P = identity)` restores a faithful commit, so it makes z0 the
     # proposal and SHADOWS the fault. When both are present, strategy replay wins
     # and the commit repair is merely shadowed -- that is a legal composition, not
     # MALFORMED, and it is why the two carry distinct structural nodes.
+    #
+    # A75 §62.11 adds `C_P^L`: the ordinary LEARNER baseline for this layer, which
+    # the kernel did not have (both nodes above are evaluator channels). It is
+    # written as the lowest-priority BRANCH, not as a base value that gets
+    # overwritten, so a shadowed provider is never called and cannot side-effect.
+    # `learner_process_commit=None` means C_P^L = identity, so an absent provider
+    # reproduces the closed world exactly.
     proc = interventions.process()
     commit = interventions.process_commit()
     if proc is not None:
@@ -748,8 +798,15 @@ def rollout(
         z0 = base_option
     elif option_fault is not None:
         z0 = option_fault
+    elif learner_process_commit is not None:
+        z0 = learner_process_commit(base_option)     # learner-owned baseline C_P^L
+        if z0 not in option_ids():
+            raise LearnerContractViolation(
+                f"the learner baseline C_P^L mapped the proposal {base_option} to "
+                f"{z0!r}, which is not an option id"
+            )
     else:
-        z0 = base_option
+        z0 = base_option                             # C_P^L = identity
     control = initial_control(z0)
 
     state = State(x=START[0], y=START[1], t=0, kappa=kappa, phi=tape.phase)

@@ -59,6 +59,7 @@ def canon_feedback(fb) -> str:
 
 
 def main() -> int:
+    verify_mode = "--verify" in sys.argv
     sol = solve_reference()
     provider = reference_provider(sol)
     sup = DenseSupport.load(CACHE, expected_kernel_fingerprint="full",
@@ -120,6 +121,39 @@ def main() -> int:
         "elapsed_seconds": None,
     }
     payload["elapsed_seconds"] = round(time.time() - t0, 1)
+
+    if verify_mode:
+        # Compare against the committed preimage WITHOUT overwriting it. The
+        # preimage is the record; this is the confirmation.
+        prior = json.loads(OUT.read_text(encoding="utf-8"))
+        same = payload["observable_digest"] == prior["observable_digest"]
+        comp = {k: payload["component_digests"][k] == prior["component_digests"][k]
+                for k in prior["component_digests"]}
+        report = {
+            "mode": "verify",
+            "preimage_digest": prior["observable_digest"],
+            "recomputed_digest": payload["observable_digest"],
+            "observable_digest_matches": same,
+            "component_matches": comp,
+            "component_mismatches": sorted(k for k, ok in comp.items() if not ok),
+            "n_worlds": n,
+            "n_malformed": n_malformed,
+            "elapsed_seconds": payload["elapsed_seconds"],
+            "obligation": prior["obligation"],
+        }
+        vout = OUT.with_name("closed_world_observable_verification.json")
+        vout.write_text(json.dumps(report, indent=1), encoding="utf-8")
+        print("closed-world observation preimage VERIFICATION")
+        print(f"  preimage   : {prior['observable_digest']}")
+        print(f"  recomputed : {payload['observable_digest']}")
+        print(f"  [{'PASS' if same else 'FAIL'}] observable_digest matches")
+        for k, ok in comp.items():
+            print(f"  [{'PASS' if ok else 'FAIL'}] {k}")
+        if not same or not all(comp.values()):
+            print("\nMISMATCH: the patch changed a closed version's world, "
+                  "regardless of what the support digest says")
+        print(f"wrote {vout}")
+        return 0 if (same and all(comp.values())) else 1
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(payload, indent=1), encoding="utf-8")
