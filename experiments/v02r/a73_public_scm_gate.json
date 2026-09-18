@@ -1,0 +1,79 @@
+{
+ "checks": {
+  "import_allowlist_public_scm.py": true,
+  "public_surface_is_exactly_the_four_capabilities": true,
+  "no_forbidden_name_on_the_surface": true,
+  "canonical_nuisance_representative_is_licensed": true,
+  "representative_is_zero_zero": true,
+  "truth_in_candidate_space_for_every_class": true,
+  "forward_reproduces_evaluator_rows_for_every_class": true,
+  "fire_vector_reproduces_evaluator_fire_for_every_class": true,
+  "classes_checked_is_893": true,
+  "credit_units_never_returns_the_empty_set": true,
+  "clean_worlds_give_Unknown_NoWrite": true,
+  "EmptyCompatibleSet_is_a_ProtocolError": true
+ },
+ "details": {
+  "imports_public_scm.py": {
+   "imports": [
+    "__future__",
+    "__future__.annotations",
+    "dataclasses",
+    "dataclasses.dataclass",
+    "rfl_rebuild.env",
+    "rfl_rebuild.env.fault_grammar",
+    "rfl_rebuild.env.kernel",
+    "rfl_rebuild.env.kernel.ControllerFault",
+    "rfl_rebuild.env.kernel.DecisionOverride",
+    "rfl_rebuild.env.kernel.FaultMask",
+    "rfl_rebuild.env.kernel.MalformedIntervention",
+    "rfl_rebuild.env.kernel.OptionViolation",
+    "rfl_rebuild.env.kernel.PlantFault",
+    "rfl_rebuild.env.kernel.SemanticTape",
+    "rfl_rebuild.env.kernel.Trap",
+    "rfl_rebuild.env.observation",
+    "rfl_rebuild.env.observation.learner_rows",
+    "rfl_rebuild.method.credit",
+    "rfl_rebuild.method.credit.ProtocolError",
+    "typing",
+    "typing.Any"
+   ],
+   "disallowed": []
+  },
+  "imports_causal_locator.py": "not present (locator not implemented yet)",
+  "public_surface": [
+   "CANONICAL_CAUSE_RANK",
+   "CANONICAL_ERROR_FLAG",
+   "credit_unit",
+   "credit_units",
+   "fire_vector",
+   "forward",
+   "hypotheses",
+   "proposals"
+  ],
+  "quotient_gate_status": "PASS",
+  "classes_checked": 893,
+  "truth_in_candidate_space": 893,
+  "rows_reproduced": 893,
+  "fire_reproduced": 893,
+  "first_failures": []
+ },
+ "status": "PASS",
+ "allowed_public_surface": [
+  "CANONICAL_CAUSE_RANK",
+  "CANONICAL_ERROR_FLAG",
+  "credit_unit",
+  "credit_units",
+  "fire_vector",
+  "forward",
+  "hypotheses",
+  "proposals"
+ ],
+ "package_import_allowlist": [
+  "env.fault_grammar",
+  "env.kernel",
+  "env.observation",
+  "method.credit"
+ ],
+ "verdict": "boundary holds and the candidate space contains the truth"
+}

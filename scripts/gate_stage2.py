@@ -54,19 +54,17 @@ EXPECTED_CLEAN = 5_760
 # --------------------------------------------------------------------------- #
 # The one timeline both sigma_0 and Q(C) use
 # --------------------------------------------------------------------------- #
+#
+# A73 route C: `walk_transition` and the row tuple now live in
+# `rfl_rebuild.env.observation`, because the method side (`PublicSCMView`) must
+# forward-simulate a hypothetical world and report the same learner-visible
+# evidence. Keeping a copy here would have made two implementations of the
+# observation model. Re-exported under the historical name so existing importers
+# and the historical call sites are unchanged.
 
-def walk_transition(trace, kappa: int, phi: int, z_in_force: int):
-    """Yield ``(s_pre, z, m, a_cmd, a_realized, reward)`` per step.
-
-    ``StepResult.state`` is the state *after* the move, so pairing it with the
-    pre-action control state produced a mixed timeline. One helper, used by both
-    the signature and the query family, is the only way to keep them aligned.
-    """
-    state = State(x=K.START[0], y=K.START[1], t=0, kappa=kappa, phi=phi)
-    ctrl = K.initial_control(z_in_force)
-    for res in trace.steps:
-        yield state, ctrl.z, ctrl.m, res.a_cmd, res.a_realized, res.reward
-        state, ctrl = res.state, res.control
+from rfl_rebuild.env.observation import (  # noqa: E402,F401
+    ROW_SCHEMA, learner_rows, walk_transition,
+)
 
 
 # --------------------------------------------------------------------------- #
@@ -154,11 +152,7 @@ def sigma0(sol, case: LatentCase):
         return None, ("OPTION_VIOLATION", str(exc)[:70])
 
     z_in_force = tr.option_in_force
-    rows = tuple(
-        (s.x, s.y, s.t, s.kappa, s.phi, z, m, a_cmd, a_realized, round(r, 6))
-        for (s, z, m, a_cmd, a_realized, r)
-        in walk_transition(tr, case.kappa, case.phi, z_in_force)
-    )
+    rows = learner_rows(tr, case.kappa, case.phi)
     # A54: the feedback channel reports what HAPPENED, so it is driven by the
     # fire vector. Driving it by presence let a truthful claim point at a
     # dormant fault that never executed.

@@ -2883,6 +2883,59 @@ a feature, not an oversight: it keeps those gates an **independent
 implementation** cross-check of the public grammar instead of letting both sides
 share one bug.
 
+**`PublicSCMView`, and the extraction it forced.** The view must forward-simulate a
+hypothetical world and report what a learner would have seen, so it needs the *same*
+timeline and the *same* rows as `sigma0`. Those lived in `scripts/gate_stage2.py`,
+and copying them would have created a second implementation of the observation
+model — the very defect route C removed for the grammar. So `walk_transition` and
+the row tuple moved to `src/rfl_rebuild/env/observation.py`, with `ROW_SCHEMA` now
+naming the frozen fields; `gate_stage2` **re-exports the same function objects**, so
+there is still one implementation, and `sigma0` calls `learner_rows`. That is also
+where the observation model belongs: **the row tuple is the definition of
+$X^{\text{loc}}$**.
+
+**Measured at that re-pointing**: the full rebuild again takes ~11.4 min and again
+reproduces $\texttt{content\_digest} = \texttt{8ecaf60d0b9af30f}$, so relocating the
+observation model changed nothing. (The digest is the sensitive detector here: the
+rows feed `block_id`, which is part of the digest's payload.)
+
+The view exposes exactly the four capabilities and nothing else:
+
+| capability | method |
+|---|---|
+| canonical public fault hypotheses | `hypotheses(kappa, phi)`, `proposals()` |
+| forward factual rollout | `forward(hyp)` |
+| fired-mechanism vector | `fire_vector(hyp)` |
+| hypothetical descriptor → $\Gamma$ unit | `credit_unit(descriptor)`, `credit_units(hyp)` |
+
+$\kappa$ and $\phi$ are inputs, not secrets — they appear verbatim in the
+learner-visible rows. `proposal` is **not**: the evidence carries
+$z^{\text{in-force}}$ only (A55), so it is enumerated. The canonical nuisance
+representative $(\texttt{error\_flag}, \texttt{cause\_rank}) = (0,0)$ is fixed here,
+and the gate **requires A73's quotient artifact to read PASS** before it is
+allowed — the licence is tied to its evidence instead of asserted.
+
+**Measured** (`scripts/a73_public_scm_gate.py`), 12/12 PASS:
+
+| check | result |
+|---|---|
+| import allowlist, AST and prefix-based | clean: kernel / fault_grammar / observation / credit only |
+| public attribute surface | exactly the four capabilities + 2 constants |
+| no forbidden name on the surface | clean |
+| canonical nuisance representative licensed | quotient gate PASS |
+| truth inside `hypotheses(kappa, phi)` | **893 / 893** classes |
+| `forward` reproduces the evaluator's rows | **893 / 893** |
+| `fire_vector` reproduces the evaluator's $Z^{\text{fire}}$ | **893 / 893** |
+| `credit_units` never returns $\varnothing$ | 0 collapses |
+| clean worlds give `{Unknown/NoWrite}` | consistent |
+| `EmptyCompatibleSet` is a `ProtocolError` | yes |
+
+The round-trip is an **independent** confirmation of I1: the view fixes
+$(\texttt{error\_flag}, \texttt{cause\_rank}) = (0,0)$ while the evaluator uses each
+world's own values, and the rows still agree on every class. It also establishes
+$\mathcal L_{\text{public}} \supseteq \text{support}$ — the candidate space never
+misses the truth.
+
 **Support closure, as an exact set not a subset.** The subset condition is the
 minimum; because the endpoint is *exact* inversion, the requirement is
 
