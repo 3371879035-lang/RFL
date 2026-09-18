@@ -49,8 +49,17 @@ __all__ = [
 class PlannedWrite:
     """One address's planned outcome.
 
-    Either ``edit`` is a substrate transaction edit, or ``status`` declares why no edit
-    was planned. Never both, never neither.
+    Exactly one of three shapes is legal:
+
+    | ``edit`` | ``status`` | meaning |
+    |---|---|---|
+    | not ``None`` | ``None`` | a normal candidate write |
+    | ``None`` | ``None`` | an ordinary ``EVALUABLE_NOOP`` |
+    | ``None`` | ``NO_VALID_ALTERNATIVE`` | a legitimate absence of a target |
+
+    Anything else is a :class:`ProtocolError`. The first version of this docstring said
+    "never both, never neither", which ``NoWrite`` contradicted in the very same
+    commit — it legitimately plans ``edit=None, status=None``.
     """
 
     address: DecisionAddress
@@ -71,13 +80,27 @@ class LawPlan:
 
 
 class _Law:
-    """Base class. Subclasses implement ``plan`` and never see the store itself."""
+    """Base class. Subclasses implement ``plan`` and never see the store itself.
+
+    ``requires_alternative`` is the **information tier** (A76 §63.1). A law that does
+    not set it is never handed the target envelope at all — not merely expected not to
+    read it:
+
+    $$\\boxed{L_0\\text{ law must not depend on, nor be delivered, }L_1\\text{
+    corrective content}}$$
+
+    Handing ``targets`` to ``NoWrite`` and trusting it not to look would repeat A59's
+    lesson: *the method did not read the higher-tier information* does not imply *the
+    runner did not first condition it on that information*. It would also let a broken
+    target generator fail an $L_0$ arm that has no business needing a target.
+    """
 
     name = "?"
     alias_of: str | None = None
+    requires_alternative: bool = False
 
     def plan(self, addresses: Sequence[DecisionAddress],
-             targets: Mapping[DecisionAddress, TargetRecord],
+             targets: "Mapping[DecisionAddress, TargetRecord] | None",
              snapshot) -> LawPlan:            # pragma: no cover - abstract
         raise NotImplementedError
 
@@ -89,10 +112,11 @@ class NoWrite(_Law):
     r"""Propose nothing. Every credited address is ``EVALUABLE_NOOP``.
 
     Not ``APPLIED``: the law ran and correctly changed nothing, which is a different
-    statement from a write having been committed.
+    statement from a write having been committed. Requires no target.
     """
 
     name = "NoWrite"
+    requires_alternative = False
 
     def plan(self, addresses, targets, snapshot) -> LawPlan:
         return LawPlan(self.name,
@@ -109,6 +133,7 @@ class DeleteFactualPatch(_Law):
     """
 
     name = "DeleteFactualPatch"
+    requires_alternative = False
 
     def plan(self, addresses, targets, snapshot) -> LawPlan:
         return LawPlan(
@@ -130,6 +155,7 @@ class SetAlternative(_Law):
     """
 
     name = "SetAlternative"
+    requires_alternative = True
 
     def plan(self, addresses, targets, snapshot) -> LawPlan:
         writes = []
@@ -156,6 +182,7 @@ class LocalOracleRestore(DeleteFactualPatch):
 
     name = "LocalOracleRestore"
     alias_of = "DeleteFactualPatch"
+    requires_alternative = False
 
 
 #: Registration order is fixed so arm enumeration is deterministic.

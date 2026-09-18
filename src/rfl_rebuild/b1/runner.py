@@ -1,16 +1,28 @@
 r"""A76 §63.10 — the B1 slice pipeline.
 
 $$\text{credited units} \xrightarrow{\rho_D} \texttt{DecisionAddress}
-\xrightarrow{\text{target envelope}} \text{planned edits}
+\xrightarrow{\text{target envelope, only if required}} \text{planned edits}
 \xrightarrow{\text{ONE atomic transaction}} \text{post state}
 \xrightarrow{} \texttt{UpdateLedger}$$
 
-One scene commits **exactly once**. Three credited addresses, one of which has no
-valid alternative, must not become ``apply(a1); skip(a2); apply(a3)`` — that would
-destroy multi-address order independence and re-introduce an order-dependent result.
+Three invariants this module owns, each of which an earlier version got wrong:
 
-If ``apply_transaction`` itself raises, the whole run is a fail-stop ``PROTOCOL_ERROR``;
-it is never returned as an ordinary result for B2 to score.
+**Information tier.** The target envelope is built **only** for a law that declares
+``requires_alternative``. An $L_0$ arm is never handed $a^+$ and is not affected by the
+target generator failing — *the method did not read the higher-tier information* does
+not imply *the runner did not first condition it on that information* (A59).
+
+**Plan totality.** A plan must name **every** credited address **exactly once**. A law
+that omits an address or names one twice is a ``PROTOCOL_ERROR``, otherwise a law could
+shrink ``N_addressed`` itself.
+
+**Locality.** A planned write is legal only if the credited address, the plan's
+address and the *edit's own* address all agree. Checking only the plan's address let a
+plan legitimately name ``A`` while editing ``ROGUE``.
+
+One scene commits **exactly once**. If ``apply_transaction`` raises, the whole run is a
+fail-stop ``PROTOCOL_ERROR``; it is never returned as an ordinary result for B2 to
+score.
 """
 
 from __future__ import annotations
@@ -21,6 +33,7 @@ from typing import Sequence
 from rfl_rebuild.b1.contract import (
     APPLIED,
     EVALUABLE_NOOP,
+    NO_VALID_ALTERNATIVE,
     DecisionWriteReceipt,
     ProtocolError,
     UpdateLedger,
@@ -31,6 +44,7 @@ from rfl_rebuild.b1.targets import (
     TargetRecord,
     build_target_envelope,
     resolve_credited_units,
+    validate_envelope,
 )
 from rfl_rebuild.learner.store import (
     DECISION,
@@ -43,7 +57,7 @@ __all__ = ["B1Result", "run_patch_law", "run_patch_law_with_envelope"]
 
 @dataclass(frozen=True, slots=True)
 class B1Result:
-    """The ledger and the post-state. The law is not handed the store."""
+    """The ledger and the post-state. The law is never handed the store."""
 
     ledger: UpdateLedger
     post_state: LearnerPersistentState
@@ -53,30 +67,90 @@ def _store_view(state: LearnerPersistentState) -> dict:
     return dict(state.decision_overrides)
 
 
+def _validate_plan(plan: LawPlan, addresses: Sequence) -> None:
+    r"""Plan shape and totality.
+
+    $$\{w.\text{address} : w \in \text{plan.writes}\} = \text{credited},
+    \quad\text{each exactly once}$$
+
+    and every write is one of the three legal shapes.
+    """
+    planned = [w.address for w in plan.writes]
+    if len(planned) != len(set(planned)):
+        raise ProtocolError(
+            f"law {plan.name} planned the same address more than once; a duplicate "
+            "would double-count a receipt")
+    credited = set(addresses)
+    missing = credited - set(planned)
+    extra = set(planned) - credited
+    if missing:
+        raise ProtocolError(
+            f"law {plan.name} omitted credited address(es) {sorted(map(repr, missing))}"
+            "; every credited address needs exactly one write plan, or a law could "
+            "shrink N_addressed itself")
+    if extra:
+        raise ProtocolError(
+            f"law {plan.name} planned non-credited address(es) "
+            f"{sorted(map(repr, extra))}; credit assignment must not be redone inside "
+            "a write-law experiment")
+    for w in plan.writes:
+        if w.edit is not None:
+            if w.status is not None:
+                raise ProtocolError(
+                    f"law {plan.name} planned both an edit and a status "
+                    f"({w.status!r}) at {w.address!r}")
+            if w.edit.store != DECISION:
+                raise ProtocolError(
+                    f"law {plan.name} planned an edit to the {w.edit.store} store, "
+                    "which is outside this slice")
+            if w.edit.address != w.address:
+                raise ProtocolError(
+                    f"law {plan.name} planned a write at {w.address!r} but the edit "
+                    f"targets {w.edit.address!r}; the credited address, the plan's "
+                    "address and the edit's address must all agree")
+        else:
+            if w.status not in (None, NO_VALID_ALTERNATIVE):
+                raise ProtocolError(
+                    f"law {plan.name} declared status {w.status!r} at {w.address!r} "
+                    "with no edit; the only legal no-edit status is "
+                    f"{NO_VALID_ALTERNATIVE}")
+
+
+def _tier(law) -> bool:
+    """Read a law's declared information tier.
+
+    A law that does not declare one is malformed: defaulting silently would either
+    hand an $L_0$ arm corrective content or leave an $L_1$ arm without it, and in both
+    cases the tier error would be invisible in the ledger.
+    """
+    if not hasattr(law, "requires_alternative"):
+        raise ProtocolError(
+            f"law {getattr(law, 'name', law)!r} does not declare its information tier "
+            "(requires_alternative); a law must state whether it needs the "
+            "alternative envelope")
+    return bool(law.requires_alternative)
+
+
 def _run(law: "_Law | type[_Law]", pre_state: LearnerPersistentState,
-         addresses: Sequence, targets, scalar_note: bool = False) -> B1Result:
+         addresses: Sequence, targets) -> B1Result:
     if isinstance(law, type):
         law = law()
+    if _tier(law):
+        if targets is None:
+            raise ProtocolError(
+                f"law {law.name} requires the alternative envelope but none was "
+                "provided")
+    else:
+        # An L0 / reference arm is never delivered L1 corrective content.
+        targets = None
+
     snapshot = pre_state.snapshot()
     pre_view = _store_view(pre_state)
     fp_pre = fingerprint(pre_state)
 
     # ---- the law plans against the PRE snapshot, touching nothing --------- #
     plan = law.plan(addresses, targets, snapshot)
-
-    # ---- locality: a law may not write outside the credited addresses ----- #
-    credited = set(addresses)
-    for w in plan.writes:
-        if w.address not in credited:
-            raise ProtocolError(
-                f"law {plan.name} planned a write at {w.address!r}, which is not a "
-                "credited address; credit assignment must not be redone inside a "
-                "write-law experiment")
-        if w.edit is not None:
-            if w.edit.store != DECISION:
-                raise ProtocolError(
-                    f"law {plan.name} planned an edit to the {w.edit.store} store, "
-                    "which is outside this slice")
+    _validate_plan(plan, addresses)
 
     # ---- ONE transaction for the whole scene ----------------------------- #
     edits = plan.edits
@@ -95,12 +169,8 @@ def _run(law: "_Law | type[_Law]", pre_state: LearnerPersistentState,
     for w in plan.writes:
         changed = pre_view.get(w.address) != post_view.get(w.address)
         if w.edit is None and w.status is not None:
-            # the law declared a reason for not writing (e.g. NO_VALID_ALTERNATIVE)
-            status = w.status
+            status = w.status          # a declared reason, e.g. NO_VALID_ALTERNATIVE
         else:
-            # APPLIED iff the store actually differs at this address. This is the
-            # architecture-neutral criterion: a patch store is value-free, so
-            # neither N_scalar nor any delta could decide it.
             status = APPLIED if changed else EVALUABLE_NOOP
         receipts.append(DecisionWriteReceipt(address=w.address, status=status,
                                              store_changed=changed))
@@ -118,26 +188,25 @@ def run_patch_law_with_envelope(law, pre_state: LearnerPersistentState,
                                 targets) -> B1Result:
     """Run a law against an already-built address list and target envelope.
 
-    The total-envelope rule is enforced here, before the law runs:
-
-    * an address with **no record** → :class:`ProtocolError`;
-    * an address whose record carries ``alternative is None`` → a legitimate
-      ``NO_VALID_ALTERNATIVE``, handled by the law.
-
-    Conflating those two would let a target generator that dropped a row masquerade as
-    the 3,600 genuine empty-alternative addresses.
+    A law that does not require the envelope is unaffected by it: a missing record
+    cannot fail an $L_0$ arm. For a law that does require it, the envelope is
+    structurally validated first — presence, key/record address agreement, and $a^+$
+    admissibility — because it is called *verified*.
     """
-    for a in addresses:
-        if a not in targets:
-            raise ProtocolError(
-                f"no target record for credited address {a!r}; a missing record is a "
-                "protocol failure, not a verified absence of an alternative")
+    if isinstance(law, type):
+        law = law()
+    if _tier(law):
+        validate_envelope(addresses, targets)
     return _run(law, pre_state, addresses, targets)
 
 
 def run_patch_law(law, pre_state: LearnerPersistentState, credited_units,
                   trace, kappa: int, phi: int, sol) -> B1Result:
-    """Resolve, build targets, plan, and commit in one transaction."""
+    """Resolve, build targets **only if the law needs them**, plan, commit once."""
+    if isinstance(law, type):
+        law = law()
     addresses = resolve_credited_units(credited_units, trace, kappa, phi)
-    targets = build_target_envelope(sol, addresses, trace, kappa, phi)
-    return run_patch_law_with_envelope(law, pre_state, addresses, targets)
+    targets = None
+    if _tier(law):
+        targets = build_target_envelope(sol, addresses, trace, kappa, phi)
+    return _run(law, pre_state, addresses, targets)

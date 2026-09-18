@@ -169,16 +169,40 @@ class UpdateLedger:
         return json.dumps(payload, sort_keys=True, separators=(",", ":"))
 
     def check_fingerprint_invariants(self) -> None:
-        r"""The ledger canary, enforced rather than merely reported."""
-        if not self.store_changed:
-            bad = [r.canon() for r in self.receipts if r.status == APPLIED]
-            if bad:
+        r"""Per-receipt and aggregate invariants, enforced rather than reported.
+
+        $$\boxed{r.\text{status} = \texttt{APPLIED} \iff r.\text{store\_changed}}$$
+
+        checked for **every** receipt, and
+
+        $$\boxed{fp_{\text{pre}} \neq fp_{\text{post}} \iff \exists r:
+        r.\text{store\_changed}}$$
+
+        as the aggregate. The first version branched on the **global** fingerprint
+        first, so in a scene where A really changed and B was mislabelled
+        ``APPLIED, store_changed=False``, the global test took the ``else`` branch and
+        B's inconsistency was never looked at. A per-address error needs a per-address
+        check.
+
+        ``PROTOCOL_ERROR`` is a fail-stop, never a receipt status in a successful
+        ledger, and an unknown status is rejected outright.
+        """
+        for r in self.receipts:
+            if r.status not in (APPLIED, EVALUABLE_NOOP, NO_VALID_ALTERNATIVE):
                 raise ProtocolError(
-                    f"APPLIED receipt(s) but the learner-state fingerprint did not "
-                    f"change: {bad}")
-        else:
-            for r in self.receipts:
-                if r.status != APPLIED and r.store_changed:
-                    raise ProtocolError(
-                        f"receipt {r.canon()} reports {r.status} yet its address "
-                        "changed")
+                    f"receipt {r.canon()} carries status {r.status!r}, which is not a "
+                    "legal per-address outcome"
+                    + (" (PROTOCOL_ERROR is a fail-stop, not a receipt status)"
+                       if r.status == PROTOCOL_ERROR else ""))
+            if (r.status == APPLIED) != r.store_changed:
+                raise ProtocolError(
+                    f"receipt {r.canon()} reports status {r.status} with "
+                    f"store_changed={r.store_changed}; APPLIED must hold exactly when "
+                    "the store at that address changed")
+
+        any_changed = any(r.store_changed for r in self.receipts)
+        if any_changed != self.store_changed:
+            raise ProtocolError(
+                "the learner-state fingerprint change and the per-address changes "
+                f"disagree: fingerprint_changed={self.store_changed}, "
+                f"any_address_changed={any_changed}")

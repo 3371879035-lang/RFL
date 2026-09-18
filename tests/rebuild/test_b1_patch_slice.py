@@ -20,8 +20,8 @@ sys.path.insert(0, str(ROOT / "src"))
 from rfl_rebuild.b1 import (  # noqa: E402
     APPLIED, EVALUABLE_NOOP, LAWS, NO_VALID_ALTERNATIVE, PROTOCOL_ERROR,
     DeleteFactualPatch, LocalOracleRestore, NoWrite, ProtocolError,
-    SetAlternative, TargetRecord, independent_treatment_count, law_metadata,
-    run_patch_law_with_envelope,
+    SetAlternative, TargetRecord, fingerprint, independent_treatment_count,
+    law_metadata, run_patch_law_with_envelope,
 )
 from rfl_rebuild.env import kernel as K  # noqa: E402
 from rfl_rebuild.env.kernel import State  # noqa: E402
@@ -203,6 +203,7 @@ def test_7b_no_edits_means_no_transaction_at_all(monkeypatch):
 class _OutOfLocalityLaw:
     name = "MaliciousOutOfLocality"
     alias_of = None
+    requires_alternative = False
 
     def plan(self, addresses, targets, snapshot):
         from rfl_rebuild.b1.laws import LawPlan, PlannedWrite
@@ -217,32 +218,149 @@ def test_8_a_law_writing_outside_its_credited_addresses_fails_stop():
     assert s.healthy, "the rogue write must not have landed"
 
 
+class _LaunderingLaw:
+    """Names a **credited** address in the plan but edits a rogue one.
+
+    The earlier runner checked ``w.address in credited`` and ``w.edit.store ==
+    DECISION`` but never ``w.edit.address == w.address``, so this passed the locality
+    gate and actually wrote ``ROGUE`` — an address that was never credited.
+    """
+
+    name = "MaliciousLaundering"
+    alias_of = None
+    requires_alternative = False
+
+    def __init__(self, rogue):
+        self._rogue = rogue
+
+    def plan(self, addresses, targets, snapshot):
+        from rfl_rebuild.b1.laws import LawPlan, PlannedWrite
+        return LawPlan(self.name, tuple(
+            PlannedWrite(a, Edit(DECISION, self._rogue, UP), None) for a in addresses))
+
+
+def test_8b_laundering_a_credited_address_into_a_rogue_edit_fails_stop():
+    rogue = DecisionAddress(state=State(x=0, y=2, t=0, kappa=0, phi=0), z=0, m=0)
+    s = LearnerPersistentState()
+    with pytest.raises(ProtocolError):
+        run_patch_law_with_envelope(_LaunderingLaw(rogue), s, ADDRESSES, envelope())
+    assert s.healthy, "the laundered write must not have landed"
+
+
+def test_8c_a_plan_that_omits_a_credited_address_fails_stop():
+    class _OmitOne:
+        name, alias_of, requires_alternative = "MaliciousOmit", None, False
+
+        def plan(self, addresses, targets, snapshot):
+            from rfl_rebuild.b1.laws import LawPlan, PlannedWrite
+            return LawPlan(self.name,
+                           tuple(PlannedWrite(a, None, None) for a in addresses[:-1]))
+
+    with pytest.raises(ProtocolError):
+        run_patch_law_with_envelope(_OmitOne(), LearnerPersistentState(),
+                                    ADDRESSES, envelope())
+
+
+def test_8d_a_plan_that_double_names_an_address_fails_stop():
+    class _Double:
+        name, alias_of, requires_alternative = "MaliciousDouble", None, False
+
+        def plan(self, addresses, targets, snapshot):
+            from rfl_rebuild.b1.laws import LawPlan, PlannedWrite
+            return LawPlan(self.name,
+                           tuple(PlannedWrite(a, None, None) for a in addresses)
+                           + (PlannedWrite(addresses[0], None, None),))
+
+    with pytest.raises(ProtocolError):
+        run_patch_law_with_envelope(_Double(), LearnerPersistentState(),
+                                    ADDRESSES, envelope())
+
+
+def test_8e_an_illegal_plan_shape_fails_stop():
+    class _BadShape:
+        name, alias_of, requires_alternative = "MaliciousShape", None, False
+
+        def plan(self, addresses, targets, snapshot):
+            from rfl_rebuild.b1.laws import LawPlan, PlannedWrite
+            # edit AND status together: not one of the three legal shapes
+            return LawPlan(self.name, tuple(
+                PlannedWrite(a, Edit(DECISION, a, None), APPLIED)
+                for a in addresses))
+
+    with pytest.raises(ProtocolError):
+        run_patch_law_with_envelope(_BadShape(), LearnerPersistentState(),
+                                    ADDRESSES, envelope())
+
+
+def test_8f_declaring_applied_without_an_edit_fails_stop():
+    class _StatusNoEdit:
+        name, alias_of, requires_alternative = "MaliciousStatus", None, False
+
+        def plan(self, addresses, targets, snapshot):
+            from rfl_rebuild.b1.laws import LawPlan, PlannedWrite
+            return LawPlan(self.name, tuple(
+                PlannedWrite(a, None, APPLIED) for a in addresses))
+
+    with pytest.raises(ProtocolError):
+        run_patch_law_with_envelope(_StatusNoEdit(), LearnerPersistentState(),
+                                    ADDRESSES, envelope())
+
+
+def test_8g_a_law_that_does_not_declare_its_tier_fails_stop():
+    class _NoTier:
+        name, alias_of = "Undeclared", None
+
+        def plan(self, addresses, targets, snapshot):
+            from rfl_rebuild.b1.laws import LawPlan, PlannedWrite
+            return LawPlan(self.name,
+                           tuple(PlannedWrite(a, None, None) for a in addresses))
+
+    with pytest.raises(ProtocolError):
+        run_patch_law_with_envelope(_NoTier(), LearnerPersistentState(),
+                                    ADDRESSES, envelope())
+
+
 # --------------------------------------------------------------------------- #
 # 9. a failed transaction invalidates the whole run
 # --------------------------------------------------------------------------- #
 
-class _DuplicateEditLaw:
-    name = "MaliciousDuplicate"
-    alias_of = None
+def test_9_a_substrate_rejection_is_a_fail_stop_with_identical_state():
+    """A legitimate law over a credited address the substrate refuses.
 
-    def plan(self, addresses, targets, snapshot):
-        from rfl_rebuild.b1.laws import LawPlan, PlannedWrite
-        return LawPlan(self.name,
-                       (PlannedWrite(A, Edit(DECISION, A, UP), None),
-                        PlannedWrite(A, Edit(DECISION, A, DOWN), None)))
-
-
-def test_9_a_failed_transaction_is_a_fail_stop_with_identical_state():
-    s = state_with((C, LEFT))
-    fp_before = __import__("rfl_rebuild.b1", fromlist=["x"]).fingerprint(s)
+    The plan is well-formed — ``DeleteFactualPatch`` names every credited address
+    exactly once — so the failure comes from the substrate, which is the path this
+    gate is about. The earlier version used a law that planned one address twice,
+    which the tightened plan-totality check now catches *earlier*; that case is gate
+    8d and this is a genuinely different failure.
+    """
+    malformed = DecisionAddress(state="oops", z=1, m=0)
+    credited = (A, malformed)
+    s = state_with((A, DOWN), (C, LEFT))
+    fp_before = fingerprint(s)
     with pytest.raises(ProtocolError):
-        run_patch_law_with_envelope(_DuplicateEditLaw(), s, (A, C), envelope())
-    fp_after = __import__("rfl_rebuild.b1", fromlist=["x"]).fingerprint(s)
-    assert fp_before == fp_after, "a rejected transaction leaves the store identical"
-    assert dict(s.decision_overrides) == {C: LEFT}
+        run_patch_law_with_envelope(DeleteFactualPatch, s, credited, envelope())
+    assert fingerprint(s) == fp_before, "a rejected transaction leaves the store identical"
+    assert dict(s.decision_overrides) == {A: DOWN, C: LEFT}, \
+        "the good address's delete must not land either"
 
 
-def test_9b_protocol_error_is_a_separate_hierarchy():
+def test_9b_a_law_that_plans_the_same_address_twice_fails_stop():
+    class _DoubleEdit:
+        name, alias_of, requires_alternative = "MaliciousDuplicate", None, False
+
+        def plan(self, addresses, targets, snapshot):
+            from rfl_rebuild.b1.laws import LawPlan, PlannedWrite
+            return LawPlan(self.name,
+                           (PlannedWrite(A, Edit(DECISION, A, UP), None),
+                            PlannedWrite(A, Edit(DECISION, A, DOWN), None)))
+
+    s = LearnerPersistentState()
+    with pytest.raises(ProtocolError):
+        run_patch_law_with_envelope(_DoubleEdit(), s, (A,), envelope())
+    assert s.healthy
+
+
+def test_9c_protocol_error_is_a_separate_hierarchy():
     from rfl_rebuild.method.credit import ProtocolError as CreditProtocolError
     from rfl_rebuild.learner.store import StoreTransactionError
     assert not issubclass(ProtocolError, CreditProtocolError)
@@ -307,16 +425,36 @@ def test_12_the_next_episode_reads_the_persistent_effect():
 
 
 def test_12b_a_rolled_back_run_leaves_no_persistent_effect():
+    class _DoubleEdit:
+        name, alias_of, requires_alternative = "MaliciousDuplicate", None, False
+
+        def plan(self, addresses, targets, snapshot):
+            from rfl_rebuild.b1.laws import LawPlan, PlannedWrite
+            return LawPlan(self.name,
+                           (PlannedWrite(A, Edit(DECISION, A, UP), None),
+                            PlannedWrite(A, Edit(DECISION, A, DOWN), None)))
+
     s = LearnerPersistentState()
     with pytest.raises(ProtocolError):
-        run_patch_law_with_envelope(_DuplicateEditLaw(), s, (A, C), envelope())
+        run_patch_law_with_envelope(_DoubleEdit(), s, (A,), envelope())
     assert s.snapshot().decision_provider(lambda st, c: WAIT)(
         A.state, K.ControlState(z=A.z, m=A.m)) == WAIT
 
 
 # --------------------------------------------------------------------------- #
-# 13. the law layer cannot see regime, truth or scenario identity
+# 13. the law layer has no independent handle on regime, truth or identity
 # --------------------------------------------------------------------------- #
+#
+# SCOPE OF THIS CLAIM, stated precisely. What is checked is that a law has no
+# independent ``regime`` / ``fire_code`` / ``Gamma*`` / ``world_id`` / ``block_id`` /
+# ``phase`` / ``kappa`` parameter or attribute, and that those identifiers do not
+# appear in the law CODE.
+#
+# It does NOT follow that a law is semantically blind to kappa and phi: it receives
+# ``DecisionAddress(state, z, m)`` and ``state`` carries ``kappa`` and ``phi``, so
+# ``address.state.kappa`` is readable. That is not an A76 violation -- rho_D is
+# *defined* to include the full s_t -- but this gate must not be reported as proving
+# more than it does. An earlier revision listed phase/kappa here without that caveat.
 
 _FORBIDDEN = ("regime", "fire_code", "Gamma", "world_id", "block_id", "S_T",
               "S_P", "phase", "kappa")
@@ -351,6 +489,21 @@ def test_13c_no_forbidden_identifier_appears_in_the_law_CODE():
     assert not bad, f"forbidden identifiers in law code: {bad}"
 
 
+def test_13d_the_gate_is_about_handles_not_semantic_blindness():
+    """Recorded so the gate is not read as proving more than it checks.
+
+    A law *can* read ``address.state.kappa``; rho_D is defined to include the full
+    ``s_t``, so this is expected rather than a leak. What must not exist is an
+    independent channel carrying regime, truth or scenario identity.
+    """
+    assert A.state.kappa == 0 and hasattr(A.state, "phi")
+    with pytest.raises(ProtocolError):
+        # and there is no way to hand a law such a channel: the tier check is the
+        # only thing the runner consults besides the addresses and the envelope
+        import rfl_rebuild.b1.runner as runner
+        runner._tier(type("NoTier", (), {"name": "x"})())
+
+
 # --------------------------------------------------------------------------- #
 # 14. order independence, including the ledger bytes
 # --------------------------------------------------------------------------- #
@@ -375,6 +528,209 @@ def test_14b_a_shuffled_target_mapping_is_irrelevant():
     r2 = run_patch_law_with_envelope(SetAlternative, LearnerPersistentState(),
                                      ADDRESSES, shuffled)
     assert r1.ledger.canonical() == r2.ledger.canonical()
+
+
+# --------------------------------------------------------------------------- #
+# 15. information-tier isolation: L0 must not be delivered L1 content
+# --------------------------------------------------------------------------- #
+
+def test_15_the_tier_is_declared_by_every_registered_arm():
+    expect = {"NoWrite": False, "DeleteFactualPatch": False,
+              "SetAlternative": True, "LocalOracleRestore": False}
+    for law in LAWS:
+        assert getattr(law, "requires_alternative", None) is expect[law.name], \
+            f"{law.name} declares the wrong information tier"
+
+
+def test_15b_l0_arms_survive_a_broken_target_generator(monkeypatch):
+    """The canary: make the envelope builder explode, and the L0 arms must not care."""
+    import rfl_rebuild.b1.runner as runner
+
+    def boom(*a, **kw):
+        raise AssertionError("the target envelope must not be built for this arm")
+
+    monkeypatch.setattr(runner, "build_target_envelope", boom)
+    for law in (NoWrite, DeleteFactualPatch, LocalOracleRestore):
+        res = runner.run_patch_law(law, LearnerPersistentState(), (),
+                                   trace=None, kappa=0, phi=0, sol=None)
+        assert res.ledger.n_addressed == 0
+
+
+def test_15c_the_l1_arm_does_require_the_envelope(monkeypatch):
+    import rfl_rebuild.b1.runner as runner
+
+    def boom(*a, **kw):
+        raise AssertionError("the L1 arm does need the envelope")
+
+    monkeypatch.setattr(runner, "build_target_envelope", boom)
+    with pytest.raises(AssertionError):
+        runner.run_patch_law(SetAlternative, LearnerPersistentState(), (),
+                             trace=None, kappa=0, phi=0, sol=None)
+
+
+def test_15d_an_l0_law_never_receives_a_non_none_envelope():
+    seen = {}
+
+    class _Spy:
+        name, alias_of, requires_alternative = "SpyL0", None, False
+
+        def plan(self, addresses, targets, snapshot):
+            from rfl_rebuild.b1.laws import LawPlan
+            seen["targets"] = targets
+            return LawPlan(self.name, tuple())
+
+    run_patch_law_with_envelope(_Spy(), LearnerPersistentState(), (), envelope())
+    assert seen["targets"] is None, \
+        "an L0 law must not even be handed the envelope object"
+
+
+def test_15e_a_missing_record_cannot_fail_an_l0_arm():
+    """A broken envelope must not take down an arm that needs no target."""
+    s = state_with((A, DOWN))
+    res = run_patch_law_with_envelope(DeleteFactualPatch, s, ADDRESSES, {})
+    assert res.ledger.n_addressed == 3
+    assert dict(res.post_state.decision_overrides) == {}
+
+
+# --------------------------------------------------------------------------- #
+# 16. duplicate credited units fail stop rather than being de-duplicated
+# --------------------------------------------------------------------------- #
+
+def test_16_duplicate_credited_units_fail_stop():
+    """The earlier guard sat behind a filter that had already removed every duplicate,
+    so it could never fire and two ``Decision_3`` entries silently became one address
+    — changing N_addressed and the budget."""
+    from rfl_rebuild.b1 import resolve_credited_units
+
+    class _T:
+        option_in_force = 0
+        steps = ()
+
+    with pytest.raises(ProtocolError):
+        resolve_credited_units(("Decision_0", "Decision_0"), _T(), 0, 0)
+
+
+def test_16b_a_duplicated_unit_is_not_silently_collapsed_on_a_real_trace():
+    from rfl_rebuild.b1 import resolve_credited_units
+    trace, kappa, phi = _real_trace()
+    units = ("Decision_0", "Decision_1", "Decision_0")
+    with pytest.raises(ProtocolError):
+        resolve_credited_units(units, trace, kappa, phi)
+    ok = resolve_credited_units(("Decision_0", "Decision_1"), trace, kappa, phi)
+    assert len(ok) == 2
+
+
+# --------------------------------------------------------------------------- #
+# 17. envelope structural integrity
+# --------------------------------------------------------------------------- #
+
+def test_17_a_record_keyed_by_one_address_but_describing_another_fails_stop():
+    env = dict(envelope())
+    rec = env[A]
+    env[A] = TargetRecord(address=B, alternative=rec.alternative,
+                          factual_command=rec.factual_command)
+    with pytest.raises(ProtocolError):
+        run_patch_law_with_envelope(SetAlternative, LearnerPersistentState(),
+                                    ADDRESSES, env)
+
+
+RUSH0 = DecisionAddress(state=State(x=0, y=2, t=0, kappa=0, phi=0), z=0, m=0)
+RESTRICTIVE = (RUSH0,)
+
+
+def restrictive_envelope(alt):
+    return {RUSH0: TargetRecord(RUSH0, alt, RIGHT)}
+
+
+@pytest.mark.parametrize("bad_value", [WAIT, UP, DOWN, LEFT, 99, True, 1.0, "UP"])
+def test_17b_an_inadmissible_or_non_action_target_fails_stop(bad_value):
+    """A store would accept it and the runner would report APPLIED; the breach would
+    only surface in a later episode's decision adapter."""
+    # rush at START admits only RIGHT, so every other action id is inadmissible
+    with pytest.raises(ProtocolError):
+        run_patch_law_with_envelope(SetAlternative, LearnerPersistentState(),
+                                    RESTRICTIVE, restrictive_envelope(bad_value))
+
+
+def test_17c_a_target_equal_to_the_factual_command_fails_stop():
+    bad = dict(envelope())
+    bad[A] = TargetRecord(A, RIGHT, RIGHT)
+    with pytest.raises(ProtocolError):
+        run_patch_law_with_envelope(SetAlternative, LearnerPersistentState(),
+                                    ADDRESSES, bad)
+
+
+def _real_trace():
+    """A genuine factual trace for tests that need real contexts."""
+    from rfl_rebuild.env.kernel import SemanticTape
+    from rfl_rebuild.solve.dp import solve_reference
+    sol = solve_reference()
+    provider = lambda s, c: sol.best_action(s, c.z, c.m)   # noqa: E731
+    tr = K.rollout(kappa=0, tape=SemanticTape(phase=0, error_flag=0, cause_rank=0),
+                   command_provider=provider, base_option=1)
+    return tr, 0, 0
+
+
+def test_17d_the_builder_rejects_an_address_that_is_not_the_factual_context():
+    from rfl_rebuild.b1 import build_target_envelope
+    from rfl_rebuild.solve.dp import solve_reference
+    trace, kappa, phi = _real_trace()
+    real = DecisionAddress(state=A.state, z=1, m=0)     # the actual (z, m) at t=1
+    good = build_target_envelope(solve_reference(), (real,), trace, kappa, phi)
+    assert real in good
+    liar = DecisionAddress(state=A.state, z=3, m=7)     # same t, wrong z/m
+    with pytest.raises(ProtocolError):
+        build_target_envelope(solve_reference(), (liar,), trace, kappa, phi)
+
+
+# --------------------------------------------------------------------------- #
+# 18. per-receipt ledger invariant, not just the aggregate
+# --------------------------------------------------------------------------- #
+
+def test_18_a_locally_wrong_receipt_is_caught_even_when_the_global_digest_moved():
+    """A wrote, B did not, and B is mislabelled ``APPLIED, store_changed=False``.
+
+    The earlier check branched on the GLOBAL fingerprint first, so with A's change
+    present it took the ``else`` branch and never looked at B.
+    """
+    from rfl_rebuild.b1 import DecisionWriteReceipt, UpdateLedger
+    good = DecisionWriteReceipt(address=A, status=APPLIED, store_changed=True)
+    bad = DecisionWriteReceipt(address=B, status=APPLIED, store_changed=False)
+    led = UpdateLedger(receipts=(good, bad), fingerprint_pre="p", fingerprint_post="q")
+    with pytest.raises(ProtocolError):
+        led.check_fingerprint_invariants()
+
+
+def test_18b_a_non_applied_receipt_whose_address_changed_is_caught():
+    from rfl_rebuild.b1 import DecisionWriteReceipt, UpdateLedger
+    bad = DecisionWriteReceipt(address=A, status=EVALUABLE_NOOP, store_changed=True)
+    led = UpdateLedger(receipts=(bad,), fingerprint_pre="p", fingerprint_post="q")
+    with pytest.raises(ProtocolError):
+        led.check_fingerprint_invariants()
+
+
+def test_18c_protocol_error_is_never_a_receipt_status():
+    from rfl_rebuild.b1 import DecisionWriteReceipt, UpdateLedger
+    bad = DecisionWriteReceipt(address=A, status=PROTOCOL_ERROR, store_changed=False)
+    led = UpdateLedger(receipts=(bad,), fingerprint_pre="p", fingerprint_post="p")
+    with pytest.raises(ProtocolError):
+        led.check_fingerprint_invariants()
+
+
+def test_18d_an_unknown_receipt_status_is_rejected():
+    from rfl_rebuild.b1 import DecisionWriteReceipt, UpdateLedger
+    bad = DecisionWriteReceipt(address=A, status="MAYBE", store_changed=False)
+    led = UpdateLedger(receipts=(bad,), fingerprint_pre="p", fingerprint_post="p")
+    with pytest.raises(ProtocolError):
+        led.check_fingerprint_invariants()
+
+
+def test_18e_the_aggregate_must_agree_with_the_per_address_changes():
+    from rfl_rebuild.b1 import DecisionWriteReceipt, UpdateLedger
+    r = DecisionWriteReceipt(address=A, status=EVALUABLE_NOOP, store_changed=False)
+    led = UpdateLedger(receipts=(r,), fingerprint_pre="p", fingerprint_post="q")
+    with pytest.raises(ProtocolError):
+        led.check_fingerprint_invariants()
 
 
 # --------------------------------------------------------------------------- #
