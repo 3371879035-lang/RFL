@@ -3131,14 +3131,13 @@ frozen `Module`**.
 
 ## 62. A75 — V0.3R semantic rebase: persistent learning update
 
-**Status: draft — pending semantic review; no implementation authorised.** This is a
-**pre-freeze draft** of the V0.3R rebase. It authorises **no** implementation: no
-`kernel.py` change, no B1 update formula, no run. Review of the first draft found two
-semantic blockers — a shared $S_+/S_0$ spanning both regimes (§62.5) and a provenance
-rule that was interpretive rather than structural (§62.7) — plus two factual wording
-errors in the $Z^{\text{fire}}$ provenance table. All four are corrected in place in
-this revision. The status becomes `frozen — specification only` only after that review
-closes; until then this section must **not** be cited as frozen.
+**Status: frozen — specification only.** The V0.3R semantic rebase. It authorises
+**no** implementation: no `kernel.py` change, no B1 update formula, no run. The review
+closed over three rounds — the first draft's shared $S_+/S_0$ (§62.5), its interpretive
+provenance rule (§62.7), its `manifested addresses` placeholder and two
+$Z$-provenance errors were corrected in the second, and §62.10's derived-feature
+laundering hole in the third. **Any further change to this section requires a new
+amendment; it is not to be rewritten in place.**
 
 Its purpose is to stop three defects from being inherited by V0.3R and to stop four
 distinctions from being re-invented at implementation time.
@@ -3507,25 +3506,86 @@ Claiming global superiority from a single defect stratum is forbidden.
 (one corrupted value flips the row's argmax) and, independently, in a patch-backed
 store (one override entry). Identical command sequences and identical $J_D^L$.
 
-### 62.10 B2 externality boundary
+### 62.10 B2 externality: dependency closure, two views, and a constructor gate
 
-B2's input type is frozen now; its formulas are not:
+B2's input **types** are frozen now; its formulas are not.
 
-$$\boxed{\texttt{FutureConsequenceView}}$$
+**The hole this closes.** The first draft forbade the metric from *reaching*
+$\Gamma^\ast, R^{\text{mech}}, R^{\text{rescue}}, \pi_{\text{credit}}$. But
 
-It may expose only future reward/return, outcome/success, trajectory and actions,
-learner-state change and collateral, and subsequent behaviour. A metric implementation
-**must not** be able to reach
+$$\boxed{\text{the metric not seeing the truth} \;\not\Rightarrow\; \text{the
+metric's input was not built from it}}$$
 
-$$\boxed{\Gamma^\ast,\quad R^{\text{mech}},\quad R^{\text{rescue}},\quad
-\pi_{\text{credit}}}$$
+An evaluator can compute $c = \text{Collateral}(\Delta W, \Gamma_P^\ast)$ and place
+the already-computed scalar into the view. The metric imports nothing forbidden, and
+neither a type boundary nor an AST scan can see it:
 
-$$\boxed{\text{the stratum / regime selector may use evaluator truth; the metric
-itself may not}}$$
+$$\boxed{\text{forbidden truth} \to \text{derived feature} \to
+\texttt{FutureConsequenceView} \to \text{metric}}$$
 
-Otherwise $S_{r,\pm}$ and T/P could not be defined at all. Enforcement is a type
-boundary **plus** an AST/import allowlist **plus** a mutation-power test — three
-layers, because A59's lesson is that a documented promise is weaker than a type.
+This is A59's shape again: the method API leaked nothing, but the support constructor
+had already conditioned on feedback.
+
+**Dependency closure, frozen.** It is the *dependencies of the features*, not the
+metric's imports, that must be clean:
+
+$$F \in \texttt{FutureConsequenceView} \;\Longrightarrow\;
+\mathrm{Deps}(F) \cap \mathcal H_{\text{forbidden}} = \varnothing$$
+
+$$\mathcal H_{\text{forbidden}} = \{Z^{\text{fire}},\ J^L,\ \Gamma_T^\ast,\
+\Gamma_P^\ast,\ R^{\text{mech}},\ R^{\text{rescue}},\ \pi_{\text{credit}}\}$$
+
+These may additionally not enter a **per-scene** metric:
+
+$$S_{T,\pm},\quad S_{P,\pm},\quad world\_id,\quad block\_id$$
+
+$$\boxed{\text{the selector may use truth to choose the report table; the metric may
+not learn which table it is in}}$$
+
+A scene may be routed into a stratum outside the metric. Once it enters, the metric
+must not be able to tell whether it is P, mixed, or Decision-truth — otherwise the
+stratification of §62.5 leaks back in as a feature.
+
+**Two views, not one.** "What was written" and "what happened next" must not travel
+in the same object, or the first cannot be checked against the second.
+
+1. $\texttt{FutureConsequenceView}$ — only genuinely external future rollout
+   information:
+
+   $$\boxed{\texttt{FutureConsequenceView} = \{\text{future rewards},\
+   \text{outcomes},\ \text{trajectories},\ \text{actions/observations}\}}$$
+
+   plus the ordinary time indices needed to compute them. **Its constructor must
+   itself be truth-blind** — that is the fourth gate layer below.
+
+2. $\texttt{UpdateLedger}$ — cost accounting, **not** an external criterion:
+
+   $$N_{\text{addresses}},\quad N_{\text{scalar}},\quad
+   \textstyle\sum\lvert\Delta\theta\rvert,\quad \max\lvert\Delta\theta\rvert,\quad
+   \text{pre/post learner-state fingerprints}$$
+
+**`CrossUnitCollateral` is not automatically a B2 primary.** If its definition needs
+$\Gamma^\ast$, it cannot be used to adjudicate $\Gamma$ externally: that is
+self-justification, the same error A70 and A74 were voided for. It may be a B2 primary
+only if it rests on future **behavioural spillover**, or on pure parameter-diffusion /
+write-quality measures; otherwise it is a secondary diagnostic, and its dependency must
+be stated where it is used rather than inherited from the name.
+
+**Gate layers, now four.**
+
+$$\text{type boundary} \;+\; \text{AST/import allowlist} \;+\;
+\text{constructor-flow} \;+\; \text{mutation power}$$
+
+$$\boxed{\texttt{FutureConsequenceViewBuilder} \text{ itself cannot access forbidden
+truth}}$$
+
+and the mutation that proves it: fabricate
+
+$$fake\_feature = 1[\texttt{Decision}_t \in \Gamma_P^\ast]$$
+
+and attempt to place it in the view. **The gate must kill it.** Without that mutation
+the check would demonstrate only that the *metric* does not import truth, not that the
+whole $\text{truth} \to \text{metric input}$ path is closed.
 
 ### 62.11 Two authorised kernel semantic extensions (specified, not implemented)
 
@@ -3595,20 +3655,23 @@ the old rollout**.
 
 ### 62.14 What this amendment does not do
 
-* it is a **pre-freeze draft** (§62 status line): the first draft's shared
-  $S_+/S_0$, its interpretive provenance rule, its `manifested addresses` placeholder
-  and its two `Z`-provenance errors are corrected in this revision, and the section
-  stays `draft` until review closes;
+* it is a **frozen specification** (§62 status line), closed over three review rounds:
+  the shared $S_+/S_0$, the interpretive provenance rule, the `manifested addresses`
+  placeholder and the two $Z$-provenance errors were corrected in the second, and
+  §62.10's derived-feature laundering hole — a metric whose input was built from
+  forbidden truth while importing none of it — in the third. Further change requires a
+  new amendment, not an in-place rewrite;
 * it does not change $Z^{\text{fire}}$, $R^{\text{mech}}$, $R^{\text{rescue}}$,
   $\Gamma_T^\ast$, or any V0.1R/V0.2R observable;
 * it does not implement the two kernel extensions of §62.11;
 * it does not select a B1 primitive, an architecture, or a B2 formula;
 * it does not resynchronize `08-V03R.md`, which remains the next artifact to rebase;
 * it aims to leave no follow-up amendment owed: §62.7's source-separated
-  intermediates, §62.8's address sets and regime source rule, and §62.5's
-  regime-specific strata are the places where an implementation would otherwise have
-  invented source, address, truth or stratum semantics at the point of coding, and all
-  are fixed here rather than deferred.
+  intermediates, §62.8's address sets and regime source rule, §62.5's regime-specific
+  strata, and §62.10's dependency closure plus constructor-flow gate are the places
+  where an implementation would otherwise have invented source, address, truth,
+  stratum or metric-input semantics at the point of coding, and all are fixed here
+  rather than deferred.
 
 ## 63. Summary and what remains open
 
@@ -3651,7 +3714,7 @@ section above; the most recent is:
 | **A72** | `PublicSCMView` / `CausalSetLocator` grant recorded: factual-consistency inversion (simulate hypothetical worlds) is not an intervention query; $\hat\Gamma_{\text{CSL}} = \Gamma^+$ with $\Gamma^-$ as the certain diagnostic, $B_Q = 0$, equivalence to be gated at 893/893 against an **independently sourced** $\Gamma^+_{\text{eval}}$ | **P0 (spec)** | frozen — implementation and gate pending |
 | **A73** | locator evidence quotient and public feasible support: $X^{\text{loc}}_{0.2}=(\text{rows},Z^{\text{fire}})$ with $q$ dropping the redundant feedback channel, so **893 is the locator main gate** and $X^{\text{obs}}=(rows,feedback,Z^{\text{fire}})$'s **4,513** is only the observational refinement; $\mathcal L_{\text{public}}$ = canonical grammar candidates **passing public forward-feasibility**; route C's semantic source is `gate_stage2._domains` + `canonicalise`; support closure as **exact set** | **P0 (spec)** | frozen — rows-only **licensed by the 4513→893 gate** (9/9 PASS); one violation voids it and reverts the gate to 4513. **Its census Module row and endpoint-degeneracy claim are VOIDED by A74** |
 | **A74** | the A73 census chose Module's H/L from $\Gamma^\ast$ instead of $Z^{\text{fire}}$, so evaluator truth entered the proposal construction; footprint is exactly $Z^{\text{fire}}=00000$ (**17,280 worlds, 43.86% of DGP mass**), where the frozen rule abstains but reading the truth emitted $H$, turning abstention into a coarse substantive verdict (violating $\varnothing \neq \{\texttt{Unknown/NoWrite}\}$). Corrected: Module Cov(count/mass) **0.9834/0.5614**, FCR **0.7958/0.4622**; the co-primary pair is **not** degenerate — Coverage punishes abstention, FCR over-credit | **P0 (census/implementation)** | frozen — semantic canary + information-flow assertion added, both with demonstrated power; **no design change**, only the frozen rule restored |
-| **A75** | V0.3R semantic rebase: the subject becomes the **persistent learning update**, not runtime repair, with $R^{\text{mech}} \neq W^{\text{update}}$; $B_0: \Gamma_r^\ast \to \mathcal W(\Gamma_r^\ast)$ outputs a candidate family; seven ownership criteria including **addressable** and **contract-preserving** (learner baseline has **no fault privilege**); **regime-specific** stratification $S_{T,\pm}$ / $S_{P,\pm}$ with **no whole-support primary mean**; regimes **T** (harm / non-internalisation), **P** (benefit / recovery, future endogenous to $\Delta W$), **I** (secondary, no numbers yet); a **new** persistent-manifestation family $J^L = (J_P^L, J_D^L, J_X^L)$ defined by **(predicate, source-separated intermediate)** while **$Z^{\text{fire}}$ is left untouched**; **$\Gamma_T^\ast \neq \Gamma_P^\ast$** with formal manifestation address sets; a fair decision defect family at the induced-policy layer with address-count budgets; a typed `FutureConsequenceView`; and two authorised-but-unimplemented kernel extensions | **P0 (spec)** | **draft — pending semantic review; no implementation authorised**; not to be cited as frozen; `08` still to be rebased |
+| **A75** | V0.3R semantic rebase: the subject becomes the **persistent learning update**, not runtime repair, with $R^{\text{mech}} \neq W^{\text{update}}$; $B_0: \Gamma_r^\ast \to \mathcal W(\Gamma_r^\ast)$ outputs a candidate family; seven ownership criteria including **addressable** and **contract-preserving** (learner baseline has **no fault privilege**); **regime-specific** stratification $S_{T,\pm}$ / $S_{P,\pm}$ with **no whole-support primary mean**; regimes **T** (harm / non-internalisation), **P** (benefit / recovery, future endogenous to $\Delta W$), **I** (secondary, no numbers yet); a **new** persistent-manifestation family $J^L = (J_P^L, J_D^L, J_X^L)$ defined by **(predicate, source-separated intermediate)** while **$Z^{\text{fire}}$ is left untouched**; **$\Gamma_T^\ast \neq \Gamma_P^\ast$** with formal manifestation address sets; a fair decision defect family at the induced-policy layer with address-count budgets; a split `FutureConsequenceView` / `UpdateLedger` with **dependency closure**, a **constructor-flow gate** and a laundering mutation; and two authorised-but-unimplemented kernel extensions | **P0 (spec)** | **frozen — specification only, no implementation authorised**; further change requires a new amendment; `08` still to be rebased |
 
 ---
 
