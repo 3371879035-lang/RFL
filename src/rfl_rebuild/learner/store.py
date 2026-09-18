@@ -62,20 +62,29 @@ from types import MappingProxyType
 from typing import Any, Callable, Mapping
 
 from rfl_rebuild.env.kernel import (
+    ACTIONS as _ACTIONS,
     Action,
     CommandProvider,
     ControlState,
     ControllerSite,
+    LearnerContractViolation,
     ProcessCommitProvider,
     State,
+    option_actions,
+    option_ids as _option_ids,
+    option_name,
 )
 
 __all__ = [
+    "CONTROLLER",
+    "DECISION",
+    "PROCESS",
     "DecisionAddress",
     "Edit",
     "LearnerPersistentState",
     "LearnerSnapshot",
     "StoreTransactionError",
+    "is_option_id",
 ]
 
 DECISION = "decision"
@@ -158,15 +167,39 @@ class LearnerSnapshot:
         r"""$P_D^L >$ ``base_provider``.
 
         On a patch hit the base provider is **not called** — the same
-        shadowed-channel discipline the kernel now applies to ``C_P^L``: a channel
-        that has been overridden must not have hidden side effects.
+        shadowed-channel discipline the kernel applies to ``C_P^L``: a channel that
+        has been overridden must not have hidden side effects.
+
+        **This adapter is also where the decision channel's contract is enforced.** It
+        is the one place that knows whether an output came from a learner patch or
+        from the ordinary base provider, so it can give them different exception
+        types without the kernel needing a provenance flag:
+
+        | source | illegal output raises |
+        |---|---|
+        | $P_D^L$ learner patch | :class:`LearnerContractViolation` |
+        | ordinary base provider | ``OptionViolation`` (unchanged, A36) |
+        | $do(d_t)$ / $Z_D$ | ``MalformedIntervention`` (unchanged) |
+
+        Shadowing is automatically correct: ``rollout`` resolves
+        $do(d_t) > Z_D > \text{command\_provider}$, so a shadowed patch adapter is
+        never called and cannot raise early.
         """
 
         def provider(state: State, control: ControlState) -> Action:
-            hit = self._decision.get(DecisionAddress(state=state, z=control.z,
-                                                     m=control.m))
-            if hit is not None:
-                return hit
+            addr = DecisionAddress(state=state, z=control.z, m=control.m)
+            if addr in self._decision:
+                a = self._decision[addr]
+                # The base path is deliberately NOT checked here: a base provider
+                # that escapes its option keeps raising OptionViolation.
+                if not _is_action(a) or a not in option_actions(control.z, control,
+                                                                state):
+                    raise LearnerContractViolation(
+                        f"a decision patch at {addr!r} holds {_action_name(a)}, which "
+                        f"is not an action id inside A_z(m,s) for option "
+                        f"{option_name(control.z)} (m={control.m})"
+                    )
+                return a
             return base_provider(state, control)
 
         return provider
@@ -247,11 +280,17 @@ class LearnerPersistentState:
         edits = tuple(edits)
 
         # ---- validate, changing nothing --------------------------------- #
+        # VALIDATE FIRST, then check for duplicate keys. The other order hashes the
+        # address before it has been typed, so an unhashable bad address such as
+        # `Edit(DECISION, [], RIGHT)` raised `TypeError: unhashable type: 'list'`
+        # instead of the StoreTransactionError this method's contract promises --
+        # the same "the error path itself crashes" defect as the kernel's old
+        # `ACTIONS[u]`. After _validate_edit every surviving address is hashable.
+        for e in edits:
+            _validate_edit(e)
+
         seen: set[tuple[str, Any]] = set()
         for e in edits:
-            if e.store not in _STORES:
-                raise StoreTransactionError(
-                    f"unknown store {e.store!r}; expected one of {_STORES}")
             key = (e.store, e.address)
             if key in seen:
                 raise StoreTransactionError(
@@ -260,7 +299,6 @@ class LearnerPersistentState:
                     "edit order, which A76 forbids"
                 )
             seen.add(key)
-            _validate_edit(e)
 
         # ---- build the candidate, then commit once ---------------------- #
         cand_d = dict(self._decision)
@@ -288,29 +326,68 @@ class LearnerPersistentState:
 
 
 def _validate_edit(e: Edit) -> None:
+    """Static type and domain check. **Not** an admissibility or locality check.
+
+    The substrate answers "is this a well-typed edit"; it does not answer "should
+    this address be written". Reachability and credit locality belong to
+    $\\rho_A$/B1, and keeping the two apart is what stops a substrate bug being
+    mistaken for a locality bug.
+    """
+    if e.store not in _STORES:
+        raise StoreTransactionError(
+            f"unknown store {e.store!r}; expected one of {_STORES}")
     if e.store == DECISION:
-        if not isinstance(e.address, DecisionAddress):
-            raise StoreTransactionError(
-                f"the decision store is keyed by DecisionAddress, got "
-                f"{type(e.address).__name__}")
+        _require_decision_address(e.address)
         if e.value is not None and not _is_action(e.value):
             raise StoreTransactionError(
                 f"a decision override must be an action id, got {e.value!r}")
     elif e.store == PROCESS:
-        if not _is_int(e.address):
+        if not is_option_id(e.address):
             raise StoreTransactionError(
                 f"the process store is keyed by an option id, got {e.address!r}")
-        if e.value is not None and not _is_int(e.value):
+        if e.value is not None and not is_option_id(e.value):
+            # Without this the store accepted any int, so `P_override[99] = 1` could
+            # never be reached by a legal z^proposal yet still made `healthy` False --
+            # a persistent defect invisible in behaviour.
             raise StoreTransactionError(
                 f"a process override must be an option id, got {e.value!r}")
     else:
-        if not isinstance(e.address, ControllerSite):
-            raise StoreTransactionError(
-                f"the controller store is keyed by ControllerSite, got "
-                f"{type(e.address).__name__}")
+        _require_controller_site(e.address)
         if e.value is not None and not _is_action(e.value):
             raise StoreTransactionError(
                 f"a controller override must be an action id, got {e.value!r}")
+
+
+def _require_decision_address(addr: object) -> None:
+    if not isinstance(addr, DecisionAddress):
+        raise StoreTransactionError(
+            f"the decision store is keyed by DecisionAddress, got "
+            f"{type(addr).__name__}")
+    # The dataclass itself validates nothing, so `DecisionAddress(state="oops",
+    # z=99, m="x")` is a well-formed instance of the type and would otherwise be
+    # stored. Its fields are checked here.
+    if not isinstance(addr.state, State):
+        raise StoreTransactionError(
+            f"DecisionAddress.state must be a State, got {addr.state!r}")
+    if not is_option_id(addr.z):
+        raise StoreTransactionError(
+            f"DecisionAddress.z must be an option id, got {addr.z!r}")
+    if not _is_int(addr.m):
+        raise StoreTransactionError(
+            f"DecisionAddress.m must be an integer, got {addr.m!r}")
+
+
+def _require_controller_site(site: object) -> None:
+    if not isinstance(site, ControllerSite):
+        raise StoreTransactionError(
+            f"the controller store is keyed by ControllerSite, got "
+            f"{type(site).__name__}")
+    if not isinstance(site.state, State):
+        raise StoreTransactionError(
+            f"ControllerSite.state must be a State, got {site.state!r}")
+    if not _is_action(site.cmd):
+        raise StoreTransactionError(
+            f"ControllerSite.cmd must be an action id, got {site.cmd!r}")
 
 
 def _is_int(v: object) -> bool:
@@ -318,6 +395,20 @@ def _is_int(v: object) -> bool:
     return isinstance(v, int) and not isinstance(v, bool)
 
 
+def is_option_id(v: object) -> bool:
+    r"""$\text{true integer} \land v \in \texttt{option\_ids()}$.
+
+    The runtime $C_P^L$ contract still lets an *external* provider return anything
+    and have the kernel raise ``LearnerContractViolation``; this predicate is about
+    what our own canonical store is willing to persist.
+    """
+    return _is_int(v) and v in _option_ids()
+
+
 def _is_action(v: object) -> bool:
-    from rfl_rebuild.env.kernel import ACTIONS
-    return _is_int(v) and 0 <= v < len(ACTIONS)
+    return _is_int(v) and 0 <= v < len(_ACTIONS)
+
+
+def _action_name(a: object) -> str:
+    """Render an action for a message **without** indexing out of range."""
+    return _ACTIONS[a] if _is_action(a) else repr(a)

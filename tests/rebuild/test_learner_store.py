@@ -305,28 +305,170 @@ def test_decision_address_is_hashable_and_typed():
 
 
 # --------------------------------------------------------------------------- #
-# the decision channel's rejection type — an open question, recorded
+# the decision channel's rejection type — unified at the adapter
 # --------------------------------------------------------------------------- #
 
-def test_an_illegal_decision_patch_is_rejected():
-    """An illegal decision patch must not reach the world.
+def test_an_illegal_decision_patch_raises_the_contract_violation():
+    """A patch HIT that is illegal is a learner-baseline contract breach.
 
-    NOTE the asymmetry, reported rather than silently fixed: this raises
-    ``OptionViolation``, because a decision override enters the kernel as the
-    ``policy`` source and the kernel's existing A36 check owns that path, whereas the
-    ``C_P^L`` and ``C_X^L`` channels raise ``LearnerContractViolation``. Unifying the
-    type would mean either touching the kernel's closed-version policy check or having
-    the adapter pre-validate; both are semantic choices, so the current behaviour is
-    asserted as-is and left for the next round.
+    The adapter is the boundary that knows whether an output came from $P_D^L$ or
+    from the ordinary base provider, so it raises ``LearnerContractViolation`` and
+    the kernel stays untouched.
     """
     s = LearnerPersistentState()
     # at START for `rush` the admissible set is exactly {RIGHT}, so WAIT is illegal
     bad = DecisionAddress(state=START0, z=0, m=0)
     s.apply_transaction([Edit(DECISION, bad, WAIT)])
-    with pytest.raises(OptionViolation):
+    with pytest.raises(K.LearnerContractViolation):
         K.rollout(kappa=0, tape=TAPE,
                   command_provider=s.snapshot().decision_provider(base_provider),
                   base_option=0)
+
+
+def test_an_illegal_base_provider_still_raises_the_option_violation():
+    """The base path keeps A36: a base provider escaping its option is not a learner
+    contract breach, and the adapter must not reclassify it."""
+    s = LearnerPersistentState()          # healthy: every lookup is a miss
+
+    def illegal_base(state, ctrl):
+        return WAIT                       # WAIT is not in A_z for rush at START
+
+    with pytest.raises(OptionViolation):
+        K.rollout(kappa=0, tape=TAPE,
+                  command_provider=s.snapshot().decision_provider(illegal_base),
+                  base_option=0)
+
+
+def test_an_illegal_patch_shadowed_by_zd_never_raises():
+    """A shadowed patch adapter is never called, so it cannot raise early."""
+    from rfl_rebuild.env.kernel import DecisionOverride, FaultMask
+    s = LearnerPersistentState()
+    bad = DecisionAddress(state=WITNESS_STATE, z=DETOUR, m=0)
+    s.apply_transaction([Edit(DECISION, bad, WAIT)])
+    override = FaultMask(decision=DecisionOverride(t=WITNESS_STATE.t, action=UP))
+    trace = K.rollout(kappa=0, tape=TAPE,
+                      command_provider=s.snapshot().decision_provider(base_provider),
+                      base_option=DETOUR, mask=override)
+    assert trace.steps[WITNESS_STATE.t].a_cmd == UP, "Z_D must win"
+
+
+def test_an_illegal_patch_shadowed_by_do_never_raises():
+    from rfl_rebuild.env.kernel import Intervention, InterventionSet
+    s = LearnerPersistentState()
+    bad = DecisionAddress(state=WITNESS_STATE, z=DETOUR, m=0)
+    s.apply_transaction([Edit(DECISION, bad, WAIT)])
+    do_t = InterventionSet((Intervention.decision(WITNESS_STATE.t, UP),))
+    trace = K.rollout(kappa=0, tape=TAPE,
+                      command_provider=s.snapshot().decision_provider(base_provider),
+                      base_option=DETOUR, interventions=do_t)
+    assert trace.steps[WITNESS_STATE.t].a_cmd == UP, "do(d_t) must win"
+
+
+# --------------------------------------------------------------------------- #
+# the error path must not crash before it reports
+# --------------------------------------------------------------------------- #
+
+@pytest.mark.parametrize("bad_address", [[], {}, {1: 2}, ([],), object()])
+def test_unhashable_or_odd_addresses_report_the_transaction_error(bad_address):
+    """Validation must run BEFORE the duplicate-key set hashes the address.
+
+    The previous order produced ``TypeError: unhashable type: 'list'`` from the set
+    membership test, so the error path crashed instead of raising the
+    ``StoreTransactionError`` this method promises — the same defect class as the
+    kernel's old inline ``ACTIONS[u]``.
+    """
+    s = LearnerPersistentState()
+    with pytest.raises(StoreTransactionError):
+        s.apply_transaction([Edit(DECISION, bad_address, RIGHT)])
+    assert s.healthy
+
+
+def test_duplicate_detection_still_works_after_reordering():
+    s = LearnerPersistentState()
+    with pytest.raises(StoreTransactionError):
+        s.apply_transaction([Edit(CONTROLLER, SITE, LEGAL_ALT),
+                             Edit(CONTROLLER, SITE, None)])
+    assert s.healthy
+
+
+# --------------------------------------------------------------------------- #
+# the process store is keyed by OPTION ids, not by any integer
+# --------------------------------------------------------------------------- #
+
+@pytest.mark.parametrize("key,value", [(99, 1), (1, 99), (-7, 2), (0, -1),
+                                       (True, 1), (1.0, 1), (1, True)])
+def test_process_edits_outside_the_option_domain_are_rejected(key, value):
+    """``P_override[99] = 1`` can never be reached by a legal ``z^proposal`` yet would
+    still make the state unhealthy — a persistent defect invisible in behaviour."""
+    s = LearnerPersistentState()
+    with pytest.raises(StoreTransactionError):
+        s.apply_transaction([Edit(PROCESS, key, value)])
+    assert s.healthy
+
+
+def test_every_legal_option_id_is_accepted_as_a_process_key_and_value():
+    for z in K.option_ids():
+        for v in K.option_ids():
+            s = LearnerPersistentState()
+            s.apply_transaction([Edit(PROCESS, z, v)])
+            if v == z:
+                assert s.healthy, "identity canonicalises to deletion"
+            else:
+                assert dict(s.process_overrides) == {z: v}
+
+
+def test_option_id_predicate_is_exported_and_strict():
+    from rfl_rebuild.learner import is_option_id
+    for z in K.option_ids():
+        assert is_option_id(z)
+    for bad in (99, -1, True, 1.0, "1", None):
+        assert not is_option_id(bad), f"{bad!r} must not be an option id"
+
+
+# --------------------------------------------------------------------------- #
+# typed addresses actually validate their fields
+# --------------------------------------------------------------------------- #
+
+@pytest.mark.parametrize("addr", [
+    DecisionAddress(state="oops", z=DETOUR, m=0),
+    DecisionAddress(state=WITNESS_STATE, z=99, m=0),
+    DecisionAddress(state=WITNESS_STATE, z=True, m=0),
+    DecisionAddress(state=WITNESS_STATE, z=DETOUR, m="x"),
+    DecisionAddress(state=WITNESS_STATE, z=DETOUR, m=1.0),
+])
+def test_decision_address_fields_are_checked(addr):
+    """The dataclass validates nothing on its own, so the store must."""
+    s = LearnerPersistentState()
+    with pytest.raises(StoreTransactionError):
+        s.apply_transaction([Edit(DECISION, addr, RIGHT)])
+    assert s.healthy
+
+
+@pytest.mark.parametrize("site", [
+    ControllerSite(state="oops", cmd=RIGHT),
+    ControllerSite(state=WITNESS_STATE, cmd=99),
+    ControllerSite(state=WITNESS_STATE, cmd=True),
+    ControllerSite(state=WITNESS_STATE, cmd=1.0),
+])
+def test_controller_site_fields_are_checked(site):
+    s = LearnerPersistentState()
+    with pytest.raises(StoreTransactionError):
+        s.apply_transaction([Edit(CONTROLLER, site, LEGAL_ALT)])
+    assert s.healthy
+
+
+def test_the_substrate_checks_types_not_locality():
+    """A well-typed address that is merely unreachable must still be storable.
+
+    The substrate answers "is this a well-typed edit"; reachability and credit
+    locality belong to rho_A / B1. Conflating them would make a locality question look
+    like a substrate bug.
+    """
+    s = LearnerPersistentState()
+    unreachable = DecisionAddress(state=State(x=4, y=2, t=11, kappa=1, phi=5),
+                                  z=DETOUR, m=1)
+    s.apply_transaction([Edit(DECISION, unreachable, RIGHT)])
+    assert dict(s.decision_overrides) == {unreachable: RIGHT}
 
 
 # --------------------------------------------------------------------------- #

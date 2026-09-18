@@ -11,22 +11,30 @@ What lives here is only the *substrate*: a state that can persist across episode
 be read safely, be changed atomically, and be snapshotted exactly. It contains **no
 update law** — no `DeleteFactualPatch`, no `SetAlternative`, no `LocalOracleRestore`,
 no `FactualReturnWrite`, no ledger status. Those are law-execution receipts and belong
-to the layer above; a store that names them would make the next bug
+to the layer above; a store that named them would make the next bug
 indistinguishable between substrate and law.
 """
 
 from rfl_rebuild.learner.store import (
+    CONTROLLER,
+    DECISION,
+    PROCESS,
     DecisionAddress,
     Edit,
     LearnerPersistentState,
     LearnerSnapshot,
     StoreTransactionError,
+    is_option_id,
 )
 
 __all__ = [
+    "CONTROLLER",
+    "DECISION",
+    "PROCESS",
     "DecisionAddress",
     "Edit",
     "LearnerPersistentState",
     "LearnerSnapshot",
     "StoreTransactionError",
+    "is_option_id",
 ]
