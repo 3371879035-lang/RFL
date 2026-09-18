@@ -3129,7 +3129,360 @@ it does not validate that ontology. And the lesson is the recurring one: every c
 passed and the table looked clean, but the object being scored **was no longer the
 frozen `Module`**.
 
-## 62. Summary and what remains open
+## 62. A75 — V0.3R semantic rebase: persistent learning update
+
+**Status: specification only.** This amendment is a **semantic rebase and
+preregistration**. It authorises **no** implementation: no `kernel.py` change, no
+B1 update formula, no run. Its purpose is to stop three defects from being inherited
+by V0.3R and to stop four distinctions from being re-invented at implementation time.
+
+**Why it exists.** `08-V03R.md` identifies the process fault with $do(z = z')$,
+which the frozen reading contradicts:
+
+$$\text{mechanism repair} = do(C_P = \mathrm{identity}), \qquad
+do(z = z') = \text{strategy replay / rescue}$$
+
+But the deeper problem is the *subject*: `08` treats a **runtime mechanism repair**
+as the thing V0.3R studies, which glues $R^{\text{mech}}$ to $W^{\text{update}}$ — the
+one merge A65's five-way split exists to prevent. `08` is therefore **not
+resynchronized** and V0.3R must not be implemented from it (recorded in `07`'s
+status block).
+
+### 62.1 The subject, frozen
+
+$$\boxed{\text{V0.3R studies the persistent learning update, not runtime repair}}$$
+
+$$\Gamma_r^\ast \;\longrightarrow\; \mathcal W(\Gamma_r^\ast) \;\longrightarrow\;
+W^{\text{update}} \;\longrightarrow\; \Delta W \;\longrightarrow\; Y^{\text{future}},
+\qquad r \in \{T, P\}$$
+
+$$\boxed{R^{\text{mech}} \neq W^{\text{update}}}$$
+
+$R^{\text{mech}}$ is retained as an **evaluator semantic reference** — it says which
+faulty mechanism a credit location corresponds to — and may **never** be converted
+automatically into a persistent write. The two differ in *who performs them*
+(evaluator intervention vs learner state write) and, as §62.12 shows, sometimes also
+in *content*; the invariant is that no rule may infer the second from the first.
+
+### 62.2 Read channel / persistent store / addressable target
+
+$$\boxed{\text{read channel} \;\neq\; \text{persistent backing state} \;\neq\;
+\text{addressable write target}}$$
+
+A kernel read channel existing does **not** establish that a persistent, writable
+object exists behind it. A legal persistent target must satisfy all seven:
+
+$$\boxed{\begin{aligned}
+&1.\ learner\text{-owned}\\
+&2.\ persistent\\
+&3.\ future\text{-read}\\
+&4.\ non\text{-environment}\\
+&5.\ non\text{-evaluator-}do\\
+&6.\ addressable\\
+&7.\ contract\text{-preserving}
+\end{aligned}}$$
+
+### 62.3 Contract preservation, and the privilege split
+
+**Learner baseline has no fault privilege.** For the current option system the
+command must satisfy $a^{cmd} \in A_z(m,s)$, and a learner-owned controller baseline
+may not bypass $A_z$ through its output $u$. Transient faults keep the **fault
+privilege** — $Z_X$/$Z_E$ exist precisely because a fault *may* violate the contract:
+
+$$\boxed{\text{fault privilege is fault semantics, not a learner privilege}}$$
+
+**Measured, and the reason this is criterion 7 rather than a style rule**
+(`scripts/_diag_controller_channel.py`, artifact `controller_channel_check.json`,
+commit `0038a39`). `rollout` checks `a_cmd` against `option_actions` but never checks
+the controller channel's output $u$, which becomes $a^{realized}$; and no caller in
+the repository passes a non-`None` controller mapping, so the channel is a **latent**
+extension point that V0.3R would open. Over the 13,824 $(s,z,m)$ entries with a
+non-empty admissible set: 9,504 have $A_z(m,s)$ equal to all legal actions; 4,320
+admit a legal action outside $A_z$; and **576** of those admit one that reaches a
+strictly closer cell than every admissible action. Independently,
+`ReferenceSolution.q[(s,z,m)]` is keyed only over `option_actions`, so the exact
+reference DP **does not define a value** for leaving the option at all — the
+evaluator could not score the deviation even in principle. A learner write with the
+fault privilege would therefore let the future return reward a route the experiment
+never defined.
+
+### 62.4 B0 outputs a candidate family, not an answer
+
+$$\boxed{B_0 : \Gamma_r^\ast \longrightarrow \mathcal W(\Gamma_r^\ast)}$$
+
+**not** $\Gamma^\ast \to W^\ast$. $\mathcal W$ is the set of **legal persistent-write
+hypotheses**. Current boundary, frozen here:
+
+| credit location | baseline read channel | persistent store | address | V0.3R must |
+|---|---|---|---|---|
+| `ControllerSite` | `controller` mapping | caller-owned mapping | `ControllerSite(s,a^{cmd})` | add the contract check; B1 may write |
+| `Decision_t` | `command_provider` | **not fixed by the kernel** | **not fixed** | provide the architecture explicitly |
+| `ProcessCommit` | **none** | none | none | create a $C_P^L$ baseline path first (§62.11) |
+| `ExternalPlant`, `Unknown/NoWrite` | — | — | — | $\mathcal W = \{\varnothing\}$ |
+| `Strategy` | — | — | — | rescue atom; not in mechanism-credit write |
+
+### 62.5 $S_+$ / $S_0$ stratification
+
+$$\Gamma_{r,W}^\ast = \{u \in \Gamma_r^\ast : agent\_writeable(u)\}, \qquad
+S_+ = \{\Gamma_{r,W}^\ast \neq \varnothing\}, \qquad
+S_0 = \{\Gamma_{r,W}^\ast = \varnothing\}$$
+
+**Measured** on the frozen support (`_diag_v03r_scope.py`, `v03r_scope_diag.json`,
+commits `5fea68f`/`e13c62c`):
+
+$$P(S_+) = 0.445711, \quad \text{pure } 0.399814, \quad \text{mixed } 0.045898,
+\qquad P(S_0) = 0.554289$$
+
+$$\boxed{\text{the stratum is fixed by the truth boundary, never by whether the
+method actually wrote}}$$
+
+Conditioning on $W^{\text{update}} \neq \varnothing$ would let B0/B1 abstain on hard
+worlds and be scored on easy ones — a selection bias of A74's shape.
+
+$$\boxed{\text{no whole-support primary mean}}$$
+
+$S_+$ answers *how to change correctly*; $S_0$ answers *how to avoid changing
+wrongly*. The two masses are reported together and always.
+
+### 62.6 Regimes T, P, I
+
+**T — transient incident.** Trigger uses the existing transient fault semantics;
+future episodes are the clean baseline. Its role is **not** positive-primitive
+ranking:
+
+$$\boxed{T\text{'s primary role is harm / erroneous internalisation}}$$
+
+NoWrite is the reference arm. Because the healthy baseline *is* the exact reference
+($\pi_D^\ast$ from the frozen DP, identity controller, faithful commit), NoWrite
+**weakly dominates** any write that changes healthy behaviour — so a strong positive
+result in T is a signal to check contract preservation, not to celebrate.
+
+**P — persistent learner defect.** The defect lives in the learner's persistent
+state, and post-write episodes must read **the same state that was written**:
+
+$$\boxed{\text{future rollout is endogenous to } \Delta W}$$
+
+Pre-computing future $Z^{\text{fire}}/\Gamma^\ast$ and attaching it to the updated
+learner is **forbidden**. Note endogeneity is *not* P-specific: in T a non-identity
+contract-preserving write also changes the future episode's cause structure. What is
+P-specific is that the defect itself lives in the store.
+
+**I — intermittent.** Retained as a **secondary regime**. A75 freezes that it exists
+and freezes nothing numeric about it: the recurrence probability and schedule are
+preregistered after T/P semantics are settled, rather than guessed now.
+
+### 62.7 Persistent manifestation: $J^L$, and why $Z^{\text{fire}}$ is not replaced
+
+The frozen $Z^{\text{fire}}$ answers a **closed** V0.1R/V0.2R question and is left
+untouched:
+
+$$Z_D^{\text{fire}} = 1[\text{the injected DecisionOverride mechanism executed}]$$
+
+Replacing it with a behavioural predicate would reopen V0.1R's target. V0.3R adds a
+separate object instead:
+
+$$J^L = (J_P^L, J_D^L, J_X^L)$$
+
+$$J_D^L = 1\bigl[\exists t : a_t^{cmd} \notin A_D^\ast(s_t, z_t, m_t)\bigr], \qquad
+A_D^\ast = \arg\max_{a \in A_z(m,s)} Q_D^\ast$$
+
+using the whole argmax **set**, never the tie-broken `best_action`.
+
+$$J_P^L = 1[z^{\text{in-force}} \neq z^{\text{proposal}}] \quad\text{attributable to }
+C_P^L$$
+$$J_X^L = 1[\exists t : u_t^L \neq a_t^{cmd}] \quad\text{attributable to }
+C_X^L$$
+
+$$\boxed{Z^{\text{fire}} \text{ describes a transient injected mechanism};\quad
+J^L \text{ describes a persistent learner defect manifestation}}$$
+
+**Provenance is part of the definition, not an implementation detail.** The
+predicate alone is insufficient, and the three causes differ in exactly how:
+
+| object | predicate | provenance required |
+|---|---|---|
+| $Z_D^{\text{fire}}$ | `mask.decision` reached | injected mask (transient) |
+| $J_D^L$ | $a^{cmd} \notin A_D^\ast$ | learner baseline store only |
+| $Z_X^{\text{fire}}$ | $\exists t: u \neq a^{cmd}$ | **any** source; value predicate only |
+| $J_X^L$ | $\exists t: u^L \neq a^{cmd}$ | learner baseline controller only |
+| $Z_P^{\text{fire}}$ | $z^{\text{in-force}} \neq z^{\text{proposal}}$ | injected `option_fault` / $do$ |
+| $J_P^L$ | $z^{\text{in-force}} \neq z^{\text{proposal}}$ | learner baseline $C_P^L$ only |
+
+$$\boxed{J^L \text{ is } (\text{predicate}, \text{provenance});\text{ neither half
+alone is the object}}$$
+
+Note $Z_X^{\text{fire}}$ and $J_X^L$ share a predicate **verbatim** and are separated
+only by provenance. Defining $J_X^L$ by its predicate would make it a synonym for
+$Z_X^{\text{fire}}$, which is precisely the reuse this section forbids.
+
+**Measured** (`scripts/_diag_jd_manifestation.py`,
+`a75_jd_manifestation_precheck.json`, commit `5c0ae15`), all six checks PASS:
+
+* with **no** `mask.decision` but a provider emitting a strictly suboptimal action at
+  a reachable context: `fired_mechanisms()["Z_D"] == 0` while $J_D^L = 1$ — the
+  frozen truth is blind to learner-origin defects, by design;
+* a reachable `DecisionOverride` sets $Z_D^{\text{fire}} = 1$ whether or not it costs
+  value: a **tied-optimal** override gives $Z_D = 1$ with $J_D^L = 0$;
+* **tie audit**: 5,191 of 13,824 $(s,z,m)$ entries have $|A_D^\ast| > 1$; of the
+  24,912 candidates the D domain admits, **8,548 (34.3%)** are tied-optimal; on the
+  canonical support itself **720 of 8,640 D slots (8.3%)** carry **no value loss**.
+
+$$\boxed{\text{"a decision fault happened"} \text{ is strictly weaker than }
+\text{"a bad decision happened"}}$$
+
+That is a recorded property of the frozen support, not a change to it. It is also
+why $J_D^L$ uses $A_D^\ast$: the tie-broken definition would manufacture 720 defects
+that do not exist.
+
+### 62.8 Regime-specific credit truth
+
+A bare $\Gamma^\ast$ must not be used, for the same reason A73 forbade a bare
+$X_{0.2}$:
+
+$$\boxed{\Gamma_T^\ast \neq \Gamma_P^\ast}$$
+
+$\Gamma_T^\ast$ is the **already-frozen** V0.2R working-ontology truth (A67/A71: built
+from $R^{\text{mech}}$ descriptors, D/X carrying addresses).
+
+$$\boxed{\Gamma_P^\ast = \pi_\Gamma\bigl(J^L,\ \text{manifested addresses}\bigr)}$$
+
+$\pi_\Gamma$ is the same public ontology map; what differs is **what it is applied
+to**. $\Gamma_P^\ast$ may not be computed by applying that map to $R^{\text{mech}}$,
+and $\Gamma_T^\ast$ may not be computed from $J^L$. A reader who sees
+$\Gamma_T^\ast$ and $\Gamma_P^\ast$ must be able to tell which benchmark they are in
+from the symbol alone, so transient repair truth cannot be smuggled into the
+persistent benchmark.
+
+### 62.9 Decision defect family: fairness
+
+The defect is defined at the level both architectures must reproduce — the
+**induced policy** — not in Q-space and not in patch-space:
+
+$$\mathcal D_D(k, \text{shape}) = \{(x_j, a_j^-)\}_{j=1}^{k}, \qquad
+x_j = (s_j, z_j, m_j)$$
+
+$$a_j^- \in A_z(m_j, s_j), \qquad a_j^- \notin A_D^\ast(s_j, z_j, m_j)$$
+
+Requirements, frozen:
+
+* Q-backed and patch-backed stores **install the same extensional defect
+  independently**; generating one from the other is forbidden (the discipline A72
+  §8.3 already imposes on the locator reference);
+* **budget aligns on $N_{\text{addressed decision contexts}}$**, not on scalar
+  count — a Q row and a patch entry are not the same number of parameters, so
+  freezing scalar equality would tilt the comparison;
+* the ledger additionally reports $N_{\text{scalar changed}}$,
+  $\sum \lvert\Delta\theta\rvert$, $\max \lvert\Delta\theta\rvert$, so a write with
+  more internal parameters cannot quietly buy more edit power;
+* the family has at least the two axes $k$ and shape;
+* primary reports the whole preregistered family, and
+  $\text{effect} \times k$ and $\text{effect} \times \text{shape}$ are mandatory;
+* on a sign reversal: $\boxed{\text{report the interaction; declare no universal
+  winner}}$. A split result may be a genuine architecture × defect-structure
+  interaction, which is a finding, not a failure.
+
+Claiming global superiority from a single defect stratum is forbidden.
+
+**Prototype**: commit `5c0ae15` §4 installs one $(s,z,m,a^-)$ in a Q-backed store
+(one corrupted value flips the row's argmax) and, independently, in a patch-backed
+store (one override entry). Identical command sequences and identical $J_D^L$.
+
+### 62.10 B2 externality boundary
+
+B2's input type is frozen now; its formulas are not:
+
+$$\boxed{\texttt{FutureConsequenceView}}$$
+
+It may expose only future reward/return, outcome/success, trajectory and actions,
+learner-state change and collateral, and subsequent behaviour. A metric implementation
+**must not** be able to reach
+
+$$\boxed{\Gamma^\ast,\quad R^{\text{mech}},\quad R^{\text{rescue}},\quad
+\pi_{\text{credit}}}$$
+
+$$\boxed{\text{the stratum / regime selector may use evaluator truth; the metric
+itself may not}}$$
+
+Otherwise $S_+/S_0$ and T/P could not be defined at all. Enforcement is a type
+boundary **plus** an AST/import allowlist **plus** a mutation-power test — three
+layers, because A59's lesson is that a documented promise is weaker than a type.
+
+### 62.11 Two authorised kernel semantic extensions (specified, not implemented)
+
+A75 authorises these **in the rebase**, and implements neither:
+
+1. a new ordinary learner baseline **$C_P^L$ read path**, so that a non-evaluator
+   commit mapping can exist at all. Priority becomes
+   $$do(z{=}z') > do(C_P{=}\text{identity}) > Z_P > C_P^L(z^{\text{proposal}})$$
+   with healthy initialisation $C_P^L = \mathrm{id}$. Note `option_fault` ($Z_P$) and
+   both `do` nodes are *evaluator* channels today; none of them is a baseline.
+2. a **contract check on learner-owned $C_X^L$ output** ($u \in A_z$), while transient
+   $Z_X$/$Z_E$ keep the unchecked fault privilege (§62.3).
+
+**Backward-compatibility obligation**, frozen:
+
+$$\boxed{\text{new learner state absent or healthy} \;\Rightarrow\; \text{V0.1R/V0.2R
+observable semantics identical}}$$
+
+A75 may not change the world of a closed version. The mechanism that enforces this is
+a regression: with the new channels absent, the old rollouts and the frozen support
+digest must be reproduced exactly.
+
+### 62.12 Deliberately left open — B1 is not decided here
+
+A75 selects **no** update primitive and **no** architecture. Specifically open:
+
+* **$D$**: $\{D_0 = \text{NoWrite},\ D_{patch}: P_D^L(s,z,m) \mapsto a,\
+  D_Q: Q_D^L(s,z,m,a)\}$;
+* **$P$**: $\{P_0 = \text{NoWrite},\ P_{id}: C_P^L(z^{\text{proposal}}) \leftarrow
+  z^{\text{proposal}}\}$. Mapping $z^{\text{proposal}} \mapsto z'$ is **not** an
+  admissible ProcessCommit learning update: that is strategy selection, and it
+  re-imports rescue into credit;
+* **$X$**: $\{X_0 = \text{NoWrite},\ X_{id}: C_X^L(\text{site}) \leftarrow a^{cmd}\}$.
+  $X_{id}$ is **stricter than** criterion 7 requires, deliberately: because
+  $Z_X^{\text{fire}}$ is a behavioural predicate, a contract-preserving write with
+  $u \neq a^{cmd}$ would make the future episode register a cause the learner itself
+  created. Under criterion 7 that is permitted, so choosing identity is a B1 decision
+  and is recorded as one;
+* the update laws themselves (`NegativeFactual`, `PositiveAlternative`, `Contrastive`,
+  `CFTarget`), and which of them are learner-feasible versus evaluator-assisted
+  ceilings;
+* every B2 formula (`HarmRate`, $\Delta G$, `RecoveryFraction`, and the
+  $NOT\_EVALUABLE$ rule when $G_{\texttt{OracleRestore}} = G_{\text{NoWrite}}$,
+  which must be reported as `NOT_EVALUABLE` rather than hard-set to 0 or 1);
+* the $OracleRestore$ definition, recorded as: restore **the architecture's own
+  persistent referent** to its known healthy reference state — *not* "make
+  $R^{\text{mech}}$ permanent", which would re-merge the two objects.
+
+Note the X-node asymmetry, recorded so it is not mistaken for a failure later: under
+regime P a correct $C_X^L$ write **coincides in content** with the mechanism repair,
+so the first invariant does less work there. **X is not V0.3R's most discriminating
+node**; it is a semantic sanity case, and P's discriminating power concentrates in
+$D$ (and $P$).
+
+### 62.13 Verification tiers
+
+$$\texttt{pytest} = \text{fast semantic regression}, \qquad
+\texttt{gate scripts} = \text{exhaustive scientific verification}$$
+
+The exhaustive scans (576 / 893 / 1,038,960) stay in gate scripts. `pytest` gains, at
+minimum: $C_P^L$ priority and read path; the $C_X^L$ contract check; the $J_D^L$ tie
+case; a Q/patch same-defect fixture; and **absence/healthy learner state reproduces
+the old rollout**.
+
+### 62.14 What this amendment does not do
+
+* it does not change $Z^{\text{fire}}$, $R^{\text{mech}}$, $R^{\text{rescue}}$,
+  $\Gamma_T^\ast$, or any V0.1R/V0.2R observable;
+* it does not implement the two kernel extensions of §62.11;
+* it does not select a B1 primitive, an architecture, or a B2 formula;
+* it does not resynchronize `08-V03R.md`, which remains the next artifact to rebase;
+* it aims to leave no follow-up amendment owed: §62.7's provenance rule and §62.8's
+  $\Gamma_T^\ast/\Gamma_P^\ast$ split are the two places where an implementation
+  would otherwise have invented semantics at the point of coding, and both are fixed
+  here rather than deferred.
+
+## 63. Summary and what remains open
 
 | # | what | severity | status |
 |---|---|---|---|
@@ -3170,6 +3523,7 @@ section above; the most recent is:
 | **A72** | `PublicSCMView` / `CausalSetLocator` grant recorded: factual-consistency inversion (simulate hypothetical worlds) is not an intervention query; $\hat\Gamma_{\text{CSL}} = \Gamma^+$ with $\Gamma^-$ as the certain diagnostic, $B_Q = 0$, equivalence to be gated at 893/893 against an **independently sourced** $\Gamma^+_{\text{eval}}$ | **P0 (spec)** | frozen — implementation and gate pending |
 | **A73** | locator evidence quotient and public feasible support: $X^{\text{loc}}_{0.2}=(\text{rows},Z^{\text{fire}})$ with $q$ dropping the redundant feedback channel, so **893 is the locator main gate** and $X^{\text{obs}}=(rows,feedback,Z^{\text{fire}})$'s **4,513** is only the observational refinement; $\mathcal L_{\text{public}}$ = canonical grammar candidates **passing public forward-feasibility**; route C's semantic source is `gate_stage2._domains` + `canonicalise`; support closure as **exact set** | **P0 (spec)** | frozen — rows-only **licensed by the 4513→893 gate** (9/9 PASS); one violation voids it and reverts the gate to 4513. **Its census Module row and endpoint-degeneracy claim are VOIDED by A74** |
 | **A74** | the A73 census chose Module's H/L from $\Gamma^\ast$ instead of $Z^{\text{fire}}$, so evaluator truth entered the proposal construction; footprint is exactly $Z^{\text{fire}}=00000$ (**17,280 worlds, 43.86% of DGP mass**), where the frozen rule abstains but reading the truth emitted $H$, turning abstention into a coarse substantive verdict (violating $\varnothing \neq \{\texttt{Unknown/NoWrite}\}$). Corrected: Module Cov(count/mass) **0.9834/0.5614**, FCR **0.7958/0.4622**; the co-primary pair is **not** degenerate — Coverage punishes abstention, FCR over-credit | **P0 (census/implementation)** | frozen — semantic canary + information-flow assertion added, both with demonstrated power; **no design change**, only the frozen rule restored |
+| **A75** | V0.3R semantic rebase: the subject becomes the **persistent learning update**, not runtime repair, with $R^{\text{mech}} \neq W^{\text{update}}$; $B_0: \Gamma_r^\ast \to \mathcal W(\Gamma_r^\ast)$ outputs a candidate family; seven ownership criteria including **addressable** and **contract-preserving** (learner baseline has **no fault privilege**); $S_+/S_0$ stratification with **no whole-support primary mean**; regimes **T** (harm / non-internalisation), **P** (benefit / recovery, future endogenous to $\Delta W$), **I** (secondary, no numbers yet); a **new** persistent-manifestation family $J^L = (J_P^L, J_D^L, J_X^L)$ defined by **(predicate, provenance)** while **$Z^{\text{fire}}$ is left untouched**; **$\Gamma_T^\ast \neq \Gamma_P^\ast$**; a fair decision defect family at the induced-policy layer with address-count budgets; a typed `FutureConsequenceView`; and two authorised-but-unimplemented kernel extensions | **P0 (spec)** | frozen — **specification only, no implementation authorised**; `08` still to be rebased |
 
 ---
 
