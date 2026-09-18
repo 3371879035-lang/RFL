@@ -92,15 +92,29 @@ check("the report names the heading scan as the origin",
 
 # --- case 2: remove A72's *level-2* heading. This is the form the first version
 # of the scan silently missed, so it regresses the exact near-miss.
+#
+# The assertion changed when the total literal source (e) was added: `12` now
+# references every amendment it defines, so "A72 is no longer referenced" is
+# false by construction and was measuring nothing. What the case is actually
+# about is the HEADING-ORIGIN provenance -- the `\.?` in the heading regex that
+# matched `### 8.4 A71's claim` but not `## 8. A72 --`. So it asserts that.
 print("\ncase 2: delete the `## 8. A72 -- ...` heading from 17 (the level-2 form)")
 r2 = run_with(lambda name, text: (
     replace_once(text, "## 8. A72 \u2014", "## 8. Z72 \u2014")
     if name == "17-V02R-METHOD-CONTRACT.md" else text))
-check("A72 is no longer referenced once its level-2 heading is renamed",
-      "A72" not in r2["amendments_referenced"],
-      f"referenced={r2['amendments_referenced']}")
-check("A71 remains referenced (the sub-numbered form still matches)",
-      "A71" in r2["amendments_referenced"])
+check("no heading in any doc still names A72 (the level-2 form was scanned)",
+      not any("A72" in h for h in r2["amendments_named_in_other_doc_headings"]),
+      f"{[h for h in r2['amendments_named_in_other_doc_headings'] if 'A72' in h]}")
+check("the heading origin for A72 is gone from the reference sources",
+      not any("heading" in s for s in r2["amendment_reference_sources"].get("A72", [])),
+      f"{[s for s in r2['amendment_reference_sources'].get('A72', []) if 'heading' in s]}")
+check("A72 is still DEFINED by its own heading in 12, so it is not dangling",
+      "A72" in r2["amendments_defined"] and "A72" not in r2["dangling_amendments"],
+      f"defined={'A72' in r2['amendments_defined']} "
+      f"dangling={r2['dangling_amendments']}")
+check("A71's sub-numbered heading origin still matches",
+      any("heading" in s for s in r2["amendment_reference_sources"].get("A71", [])),
+      f"{r2['amendment_reference_sources'].get('A71')}")
 
 # --- case 3: a `logged as Axx` declaration for a number that is not logged.
 print("\ncase 3: add a `logged as **A99**` status line to 17")
@@ -148,6 +162,54 @@ check("the report attributes it to the 'logged as' scan (17's Status line)",
 check("the baseline is otherwise still clean (only A69 reopens)",
       r6["dangling_amendments"] == ["A69"],
       f"dangling={r6['dangling_amendments']}")
+
+# --- cases 7-9: the TOTAL literal source. Sources (a)-(d) each recognised one
+# shape of mention, so a phantom number written in plain prose or inside code was
+# invisible to all of them -- and that is where it hides. A source that scans
+# nothing is not a source, so the baseline coverage is asserted too.
+print("\nbaseline: the literal source must actually be scanning")
+check("baseline literal scan is non-trivial (> 400 tokens)",
+      base["literal_amendment_tokens_scanned"] > 400,
+      f"scanned {base['literal_amendment_tokens_scanned']}")
+
+print("\ncase 7: add a plain-prose `A999` mention (no markup) to document 03")
+r7 = run_with(lambda name, text: (
+    text + "\n\nThis paragraph mentions A999 with no markup at all.\n"
+    if name == "03-IDENTIFIABILITY.md" else text))
+check("a plain-prose un-logged token is reported dangling",
+      "A999" in r7["dangling_amendments"], f"dangling={r7['dangling_amendments']}")
+check("the report attributes it to the literal scan",
+      any("literal" in s for s in r7["amendment_reference_sources"].get("A999", [])),
+      f"{r7['amendment_reference_sources'].get('A999')}")
+check("no shape-based source saw it -- that is the hole this source closes",
+      not any(("bold" in s or "heading" in s or "logged as" in s)
+              for s in r7["amendment_reference_sources"].get("A999", [])),
+      f"{r7['amendment_reference_sources'].get('A999')}")
+
+print("\ncase 8: add a BACKTICKED `A998` mention to document 15")
+r8 = run_with(lambda name, text: (
+    text + "\n\nThe identifier `A998` is unassigned.\n"
+    if name == "15-SCENE-DGP.md" else text))
+check("a backticked un-logged token is reported dangling",
+      "A998" in r8["dangling_amendments"], f"dangling={r8['dangling_amendments']}")
+check("the report attributes it to the literal scan",
+      any("literal" in s for s in r8["amendment_reference_sources"].get("A998", [])),
+      f"{r8['amendment_reference_sources'].get('A998')}")
+
+print("\ncase 9: add a FENCED code block naming A997 to document 10")
+r9 = run_with(lambda name, text: (
+    text + "\n\n```text\nA997 is not an amendment.\n```\n"
+    if name == "10-REPRODUCIBILITY-AND-OPS.md" else text))
+check("a token inside a fenced block is reported dangling",
+      "A997" in r9["dangling_amendments"], f"dangling={r9['dangling_amendments']}")
+check("the report attributes it to the literal scan",
+      any("literal" in s for s in r9["amendment_reference_sources"].get("A997", [])),
+      f"{r9['amendment_reference_sources'].get('A997')}")
+check("the token count moved by exactly the tokens added",
+      r9["literal_amendment_tokens_scanned"] ==
+      base["literal_amendment_tokens_scanned"] + 1,
+      f"{base['literal_amendment_tokens_scanned']} -> "
+      f"{r9['literal_amendment_tokens_scanned']}")
 
 print()
 if failures:

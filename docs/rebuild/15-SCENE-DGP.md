@@ -52,7 +52,7 @@ that question is still open. dev_v1's value is exactly that it exposed this.
 
 ## 2. The frozen scene DGP
 
-A61 recorded that the generator's measure over worlds was unspecified, which is
+Correction pass 61 recorded that the generator's measure over worlds was unspecified, which is
 why `w_l = 1` was used. That gap is now closed.
 
 $$\kappa \sim \mathrm{Uniform}(\mathcal K), \qquad z^{\text{proposal}} \sim \mathrm{Uniform}(\mathcal Z)$$
@@ -151,7 +151,7 @@ $$\boxed{\text{dev\_v1 is a support/population design defect; after the fix, onl
 
 ## 5. Run order
 
-$$\boxed{\text{A62} \rightarrow \text{S1 regression} \rightarrow \text{A60 regression} \rightarrow v01r\_smoke\_v2\ (N{=}5) \rightarrow v01r\_dev\_v2\ (N{=}32)}$$
+$$\boxed{\text{A62} \rightarrow \text{S1 regression} \rightarrow \text{correction pass 60 regression} \rightarrow v01r\_smoke\_v2\ (N{=}5) \rightarrow v01r\_dev\_v2\ (N{=}32)}$$
 
 `dev_v1` stays on disk unchanged. Namespaces are not reused.
 

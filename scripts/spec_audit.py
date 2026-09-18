@@ -215,6 +215,30 @@ def audit() -> dict:
                              raw):
             note(m.group(1), f"{name}: 'superseded by'")
 
+    # (e) LITERAL amendment tokens -- the total source, and the only one that
+    # cannot miss a shape.
+    #
+    # Sources (a)-(d) each recognise *one way* of writing a reference, so a
+    # plain `A999` in prose, or a backticked one, was invisible to all of them --
+    # and that is precisely where a phantom number hides. This one is total: it
+    # scans every document INCLUDING the amendment log itself, with code spans
+    # and fenced blocks deliberately NOT stripped, because a reader reads
+    # `A999` as an amendment identifier whatever markup surrounds it.
+    #
+    # The invariant is therefore unconditional:
+    #
+    #     every literal A<n> in docs/rebuild resolves to a formal amendment heading
+    #
+    # The A-namespace belongs to amendments and to nothing else. A non-amendment
+    # series that used to be written `A32-A38` is RENAMED out of the namespace
+    # (it is a correction pass), never allow-listed here: an allow-list would
+    # make this source partial again, which is the defect it exists to close.
+    literal_tokens = 0
+    for name, raw in docs.items():
+        for m in re.finditer(r"\bA\d+\b", raw):
+            literal_tokens += 1
+            note(m.group(0), f"{name}: literal")
+
     referenced_amendments = set(ref_sources)
     dangling_amendments = sorted(referenced_amendments - defined_amendments)
 
@@ -263,6 +287,7 @@ def audit() -> dict:
             k: sorted(v) for k, v in sorted(ref_sources.items())
         },
         "numbered_headings_scanned_in_other_docs": headings_scanned,
+        "literal_amendment_tokens_scanned": literal_tokens,
         "amendments_named_in_other_doc_headings": sorted(set(headed)),
         "amendments_defined_but_not_in_summary": unsummarised,
         "mojibake": mojibake,
@@ -319,7 +344,10 @@ def main() -> int:
             "  A heading-level or 'logged as' declaration is a definition in the\n"
             "  reader's eyes. If the amendment exists in prose but has no `## NN.\n"
             "  Axx —` heading in 12-AMENDMENTS.md, the reference graph closes while\n"
-            "  the amendment is un-logged and this audit reports clean."
+            "  the amendment is un-logged and this audit reports clean.\n"
+            "  The A-namespace belongs to amendments. A legacy correction pass that\n"
+            "  was written `A32-A38` must be renamed out of the namespace, not\n"
+            "  allow-listed here."
         )
     print(
         f"\namendments defined: {len(r['amendments_defined'])} "
@@ -330,6 +358,10 @@ def main() -> int:
         f"numbered headings scanned in other docs: "
         f"{r['numbered_headings_scanned_in_other_docs']}; amendments named "
         f"therein: {r['amendments_named_in_other_doc_headings']}"
+    )
+    print(
+        f"literal amendment tokens scanned (all docs, code spans included): "
+        f"{r['literal_amendment_tokens_scanned']}"
     )
 
     if r["amendments_defined_but_not_in_summary"]:

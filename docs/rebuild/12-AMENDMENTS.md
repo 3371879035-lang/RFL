@@ -2805,10 +2805,10 @@ It must not be read as a fraction of the full learner-visible observational
 partition, which is $4513$.
 
 **Second half: $\mathcal L_{\text{public}}$ is the feasible canonical grammar set,
-not the grammar product.** A72 defined it as "A43 canonical structural support as a
+not the grammar product.** A72 defined it as "canonical structural support as a
 set, with probabilities erased", which still under-specified feasibility:
 
-$$\boxed{\mathcal L_{\text{public}} = \{\text{A43 canonical grammar candidates
+$$\boxed{\mathcal L_{\text{public}} = \{\text{canonical grammar candidates
 that pass public forward-feasibility}\}}$$
 
 $$\text{canonical grammar} \to \text{public factual rollout} \to

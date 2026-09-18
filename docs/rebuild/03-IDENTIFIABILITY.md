@@ -528,7 +528,7 @@ from the enumeration; the current one is $\lvert\mathcal L_{\text{cand}}\rvert =
 1{,}166{,}400$, of which $1{,}038{,}960$ are feasible and $127{,}440$ are
 excluded as malformed and tabled with their reason. That $5{,}760$ clean
 ($Z \equiv 0$) worlds survive at all is itself a check: an `or [[]]` guard in the
-product once deleted exactly those $5{,}760$ rows silently (A45).
+product once deleted exactly those $5{,}760$ rows silently (correction pass 45).
 
 Every factor is finite and frozen (`11-ENVIRONMENT.md` §8.1 makes $\mathcal T$
 finite). If $|\mathcal L|$ is large enough to make enumeration impractical, the
