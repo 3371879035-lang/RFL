@@ -1,9 +1,11 @@
 {
  "n_worlds": 1038960,
  "mass_total": 1.000000000002518,
- "mass_writable_nonempty": 0.44571119033772455,
- "mass_vacuous_by_writability": 0.5542888096647934,
- "worlds_vacuous_by_writability": 66960,
+ "S_plus_mass": 0.44571119033772455,
+ "S_plus_pure_mass": 0.3998135574029249,
+ "S_plus_mixed_mass": 0.04589763293479962,
+ "S_zero_mass": 0.5542888096647934,
+ "worlds_S_zero": 66960,
  "mass_fire_zero": 0.43859361812019254,
  "mass_per_unit": {
   "Unknown/NoWrite": 0.4406348286533134,
@@ -12,6 +14,37 @@
   "ProcessCommit": 0.19376173139655595,
   "Decision_t": 0.13361299723267098
  },
+ "mass_by_fire_pattern": {
+  "00000": 0.43859361812019254,
+  "00001": 0.13804814754162703,
+  "00010": 0.10282897250808337,
+  "00011": 0.010481937323369704,
+  "00100": 0.12412710010376742,
+  "00101": 0.016689132160092945,
+  "00110": 0.007054584850278131,
+  "00111": 0.0005836829132076347,
+  "01000": 0.11569519154461497,
+  "01001": 0.0237202017275418,
+  "01010": 0.011052182932103883,
+  "01011": 0.0010250143821149452,
+  "01100": 0.006886618544319643,
+  "01101": 0.0011724048155941228,
+  "10001": 0.0007256144417429824,
+  "10011": 0.0005744447663798662,
+  "10101": 0.00024187148058100026,
+  "10111": 4.1991576489756075e-06,
+  "11001": 0.0004837429611620073,
+  "11011": 7.978399533053626e-06,
+  "11101": 3.3593261191804944e-06
+ },
+ "consistency": {
+  "mixed_mass_agrees_across_two_computations": true,
+  "S_plus_plus_S_zero_equals_total": true,
+  "total_mass_accumulates_to_one": true,
+  "pattern_masses_sum_to_one": true
+ },
+ "total_mass_accumulation_residual": 2.517985819849855e-12,
+ "mixed_mass_two_way_residual": 4.184153024056059e-14,
  "writable_units": [
   "ProcessCommit",
   "Decision_t",
@@ -21,6 +54,9 @@
   "ExternalPlant",
   "Unknown/NoWrite"
  ],
- "reading": "mass_vacuous_by_writability is the part of the support where V0.3R's question has no content whatever update primitive is chosen, because agent_writeable = false forces W^update = empty (A69 section 6)",
- "caveat": "this measures the writability boundary only. It says nothing about whether a writable credit location induces a persistent write at all -- that is the hypothesis B0/B2 must test, and the Z_D case is the reason it cannot be assumed"
+ "label_correction": "earlier wording said 'mass with Gamma* inside the writable units', which would mean Gamma* is a SUBSET of the writable units. The correct statement is 'mass with a NON-EMPTY WRITABLE PROJECTION of Gamma*': Gamma*_W != empty is not Gamma* subset-of Writable, and S_+ contains mixed truths such as {ControllerSite, ExternalPlant}",
+ "reading": "S_+ = {l : Gamma*_W(l) != empty} is where a positive update primitive is even defined; S_0 = {l : Gamma*_W(l) = empty} is positive-write-INELIGIBLE, not scientifically vacuous -- 'this feedback should cause no internal update' is itself a learning decision, and S_0 carries the FalseWriteRate / non-interference question",
+ "stratification_rule": "the stratum is fixed by the ontology boundary Gamma*_W, NOT by whether the method actually wrote. Conditioning on W^update != empty would let B0/B1 abstain on hard worlds and score B2 only on easy ones -- a selection bias of the A74 shape",
+ "mixed_cases": "in S_+ mixed worlds a correct persistent update can only address the learner-owned part; it cannot be required to repair the external component, which is why B2+ should compare Delta(Outcome) = post-update minus no-update rather than demanding absolute success",
+ "caveat": "this measures the writability boundary only. It says nothing about whether a writable credit location has a persistent referent at all -- the Decision_t question, where the SCM names no decision parameter (it names C_X as a function, and defines the decision override only relative to the evaluator-side pi_D*)"
 }
