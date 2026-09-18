@@ -3684,13 +3684,20 @@ $$\boxed{\text{given a legal persistent write address, what update operation is 
 $$W^{\text{update}} \longrightarrow \Delta W$$
 
 Attribution, target selection and B2 are **out of scope** and must not reappear here.
-The review closed over two rounds: the first draft's unreachability proof for the $a^+$
-guard was **withdrawn and replaced by measurement** (§63.3), the counterfactual was
-rewritten as a full-episode replay with a prefix invariant (§63.4), A75's global
+The review closed over three rounds: the first draft's unreachability proof for the
+$a^+$ guard was **withdrawn and replaced by measurement** (§63.3), the counterfactual
+was rewritten as a full-episode replay with a prefix invariant (§63.4), A75's global
 `OracleRestore` was moved out of the matrix in favour of a locality-matched
 `LocalOracleRestore` (§63.8), and the credit-unit→store-key map became the explicit
-$\rho_A$ resolver (§63.10); the second round renamed the address-level status so as not
-to collide with A63's `NOT_EVALUABLE` (§63.3). **Any further change to this section
+$\rho_A$ resolver (§63.10); the second renamed the address-level status so as not to
+collide with A63's `NOT_EVALUABLE` (§63.3); and the third made `APPLIED`
+architecture-neutral — a **store** change rather than a scalar write — pinned the four
+status definitions, made `PROTOCOL_ERROR` a fail-stop excluded from B2 scoring, and
+fixed statuses as per-addressed-context.
+
+**The freeze dates from this revision.** It was briefly marked frozen one commit
+earlier, while the `APPLIED` definition was still open; that was premature, and rather
+than paper over it the freeze is dated here. **Any further change to this section
 requires a new amendment; it is not to be rewritten in place.**
 
 ### 63.1 Information tiers, frozen
@@ -3796,12 +3803,40 @@ $$\boxed{\{\texttt{APPLIED},\ \texttt{EVALUABLE\_NOOP},\
 
 | status | meaning |
 |---|---|
-| `APPLIED` | the law wrote at least one scalar |
-| `EVALUABLE_NOOP` | the law ran and correctly changed nothing (e.g. `DeleteFactualPatch` with no patch) |
-| `NO_VALID_ALTERNATIVE` | the law's target does not exist at this address, so the law could not run |
-| `PROTOCOL_ERROR` | an invariant broke — atomicity (§63.10) or the CF prefix equality (§63.4) |
+| `APPLIED` | a well-typed operation committed and persistent learner state **changed** at at least one credited store address |
+| `EVALUABLE_NOOP` | the operation was valid and defined, but the pre/post store is **identical** |
+| `NO_VALID_ALTERNATIVE` | $a^+$ is required but absent, so no write was planned |
+| `PROTOCOL_ERROR` | an invariant failed and the transaction was aborted |
 
-and the address-level rules:
+$$\boxed{\texttt{APPLIED} \text{ is architecture-neutral: store CHANGED, not scalars
+written}}$$
+
+An earlier draft defined `APPLIED` as "wrote at least one scalar". That is wrong for
+three of the four architectures, and §63.6 says so: a patch store is value-free, so
+`SetAlternative` writes a categorical action mapping, $X_{id}$ writes a controller
+action mapping, $P_{id}$ writes an option mapping, and `DeleteFactualPatch` **removes**
+an entry. Under the scalar wording none of them could ever be `APPLIED` while all of
+them genuinely change learner state.
+
+$$N_{\text{scalar}} \text{ is } \texttt{UpdateLedger} \text{ accounting only and may
+not determine a status}$$
+
+$$\boxed{\texttt{PROTOCOL\_ERROR} \text{ is NOT a scientific no-write outcome and must
+not enter B2 scoring}}$$
+
+It is a **fail-stop**: it invalidates that run rather than being recorded as
+$\Delta W = 0$ for an arm. Otherwise a genuine prefix-equality (§63.4) or atomicity
+(§63.10) failure could later be tabulated as "this method chose not to write".
+
+**Statuses are per addressed store context.** If a P scene credits several decision
+contexts and one address is `NO_VALID_ALTERNATIVE`, the other legitimate addresses keep
+their own statuses; an unavailable address does **not** cancel them. "No partial
+application" means a law may not **degenerate at the same address** — above all
+`DualReturnWrite` must not commit only its factual half — not that one unavailable
+address voids the whole scene. Every write that *can* be formed is still computed from
+the same pre-update snapshot and committed atomically.
+
+**Address-level rules.**
 
 * affected: the $a^+$-dependent laws only — `SetAlternative`,
   `CounterfactualReturnWrite`, `DualReturnWrite`. `FactualReturnWrite` and
@@ -3810,7 +3845,7 @@ and the address-level rules:
   prohibited: a half-committed `DualReturnWrite` would violate §63.10's atomicity, and
   writing only the factual entry would silently turn the arm into `FactualReturnWrite`
   at exactly those addresses;
-* it still counts as an **addressed context** with no scalar change, so the budget of
+* it still counts as an **addressed context** whose store is unchanged, so the budget of
   §63.10 is unaffected;
 * the **scene stays in the population**. Excluding it would be selection bias, and a
   systematic one: the empty-alt addresses *are* co-fault addresses, so dropping them
@@ -4148,7 +4183,7 @@ section above; the most recent is:
 | **A73** | locator evidence quotient and public feasible support: $X^{\text{loc}}_{0.2}=(\text{rows},Z^{\text{fire}})$ with $q$ dropping the redundant feedback channel, so **893 is the locator main gate** and $X^{\text{obs}}=(rows,feedback,Z^{\text{fire}})$'s **4,513** is only the observational refinement; $\mathcal L_{\text{public}}$ = canonical grammar candidates **passing public forward-feasibility**; route C's semantic source is `gate_stage2._domains` + `canonicalise`; support closure as **exact set** | **P0 (spec)** | frozen — rows-only **licensed by the 4513→893 gate** (9/9 PASS); one violation voids it and reverts the gate to 4513. **Its census Module row and endpoint-degeneracy claim are VOIDED by A74** |
 | **A74** | the A73 census chose Module's H/L from $\Gamma^\ast$ instead of $Z^{\text{fire}}$, so evaluator truth entered the proposal construction; footprint is exactly $Z^{\text{fire}}=00000$ (**17,280 worlds, 43.86% of DGP mass**), where the frozen rule abstains but reading the truth emitted $H$, turning abstention into a coarse substantive verdict (violating $\varnothing \neq \{\texttt{Unknown/NoWrite}\}$). Corrected: Module Cov(count/mass) **0.9834/0.5614**, FCR **0.7958/0.4622**; the co-primary pair is **not** degenerate — Coverage punishes abstention, FCR over-credit | **P0 (census/implementation)** | frozen — semantic canary + information-flow assertion added, both with demonstrated power; **no design change**, only the frozen rule restored |
 | **A75** | V0.3R semantic rebase: the subject becomes the **persistent learning update**, not runtime repair, with $R^{\text{mech}} \neq W^{\text{update}}$; $B_0: \Gamma_r^\ast \to \mathcal W(\Gamma_r^\ast)$ outputs a candidate family; seven ownership criteria including **addressable** and **contract-preserving** (learner baseline has **no fault privilege**); **regime-specific** stratification $S_{T,\pm}$ / $S_{P,\pm}$ with **no whole-support primary mean**; regimes **T** (harm / non-internalisation), **P** (benefit / recovery, future endogenous to $\Delta W$), **I** (secondary, no numbers yet); a **new** persistent-manifestation family $J^L = (J_P^L, J_D^L, J_X^L)$ defined by **(predicate, source-separated intermediate)** while **$Z^{\text{fire}}$ is left untouched**; **$\Gamma_T^\ast \neq \Gamma_P^\ast$** with formal manifestation address sets; a fair decision defect family at the induced-policy layer with address-count budgets; a split `FutureConsequenceView` / `UpdateLedger` with **dependency closure**, a **constructor-flow gate** and a laundering mutation; and two authorised-but-unimplemented kernel extensions | **P0 (spec)** | **frozen — specification only, no implementation authorised**; further change requires a new amendment; `08` still to be rebased |
-| **A76** | V0.3R B1 update-law contract: B1 owns only $W^{\text{update}} \to \Delta W$; four information tiers $L_0$–$L_3$; Decision targets as **local return-to-go** $G_t^F$ / $G_t^{CF}$; the counterfactual is a **full-episode replay** with only $do(d_t{=}a_t^+)$ added plus a prefix-equality invariant, never a suffix simulator; the $-1$ constant and $+1$ target **retired** (not rescaled); `PositiveAlternative` retired as information-deficient at $L_1$; the $a^+$ guard is **live** (3,600 empty-alt addresses, co-fault only: `D+E` 2.38%, `X+D` 4.76%, `D` alone 0%) so the address carries `NO_VALID_ALTERNATIVE` with a frozen ledger taxonomy `{APPLIED, EVALUABLE_NOOP, NO_VALID_ALTERNATIVE, PROTOCOL_ERROR}` — **not** A63's `NOT_EVALUABLE`; a locality-matched `LocalOracleRestore` inside the matrix with A75's global `OracleRestore` outside it and the lower-tier aliases declared non-treatments; the $\rho_A$ credit-unit→store-key resolver; and three execution invariants (regime-blind, address locality, snapshot + atomic commit) | **P0 (spec)** | **frozen — specification only, no implementation authorised**; further change requires a new amendment |
+| **A76** | V0.3R B1 update-law contract: B1 owns only $W^{\text{update}} \to \Delta W$; four information tiers $L_0$–$L_3$; Decision targets as **local return-to-go** $G_t^F$ / $G_t^{CF}$; the counterfactual is a **full-episode replay** with only $do(d_t{=}a_t^+)$ added plus a prefix-equality invariant, never a suffix simulator; the $-1$ constant and $+1$ target **retired** (not rescaled); `PositiveAlternative` retired as information-deficient at $L_1$; the $a^+$ guard is **live** (3,600 empty-alt addresses, co-fault only: `D+E` 2.38%, `X+D` 4.76%, `D` alone 0%), with a **per-addressed-context** ledger taxonomy `{APPLIED, EVALUABLE_NOOP, NO_VALID_ALTERNATIVE, PROTOCOL_ERROR}` in which `APPLIED` means the **store changed** (architecture-neutral, not "a scalar was written"), `N_scalar` is accounting only, and `PROTOCOL_ERROR` is a **fail-stop excluded from B2 scoring**; a locality-matched `LocalOracleRestore` inside the matrix with A75's global `OracleRestore` outside it and the lower-tier aliases declared non-treatments; the $\rho_A$ credit-unit→store-key resolver; and three execution invariants (regime-blind, address locality, snapshot + atomic commit) | **P0 (spec)** | **frozen — specification only, no implementation authorised** (dated from the taxonomy correction); further change requires a new amendment |
 
 ---
 
