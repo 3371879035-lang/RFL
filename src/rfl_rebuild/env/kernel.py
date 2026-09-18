@@ -25,6 +25,8 @@ __all__ = [
     "FaultMask", "DecisionOverride", "ControllerFault", "PlantFault", "Trap",
     "SemanticTape", "TapeKey", "ControllerSite",
     "Intervention", "InterventionSet", "MalformedIntervention", "OptionViolation",
+    # A75 §62.11 — the learner baseline interface, part of the public surface.
+    "LearnerContractViolation", "ProcessCommitProvider", "CommandProvider",
     "ACTIONS", "Action", "START", "GOAL", "CONTESTED", "WALLS", "OPEN_CELLS",
     "HORIZON", "STEP_COST",
     "step", "rollout", "option_actions", "automaton_transition",
@@ -81,6 +83,28 @@ PHASE_DOMAIN: tuple[int, ...] = (0, 1, 2, 3, 4, 5)
 
 ACTIONS: tuple[str, ...] = ("UP", "DOWN", "LEFT", "RIGHT", "WAIT")
 Action = int
+
+
+def _is_int_id(v: object) -> bool:
+    """Is ``v`` a **true** integer id, not merely something that compares equal to one?
+
+    ``True == 1`` and ``1.0 == 1`` are both true in Python, so a plain
+    ``v in option_ids()`` or ``v in ACTIONS`` membership test would let a bool or a
+    float through. A75 §62.11's contract is about *action and option ids*, so the
+    domain check requires the type as well as the value.
+    """
+    return isinstance(v, int) and not isinstance(v, bool)
+
+
+def _action_name(a: object) -> str:
+    """Render an action for an error message **without** indexing out of range.
+
+    The first version of the contract check wrote ``ACTIONS[u]`` inline, so an
+    out-of-range baseline output raised ``IndexError`` while the intended
+    ``LearnerContractViolation`` was still being constructed -- an illegal learner
+    input produced a crash instead of the contract violation it is supposed to.
+    """
+    return ACTIONS[a] if _is_int_id(a) and 0 <= a < len(ACTIONS) else repr(a)
 
 UP, DOWN, LEFT, RIGHT, WAIT = 0, 1, 2, 3, 4
 _DELTAS: Mapping[int, tuple[int, int]] = {
@@ -671,11 +695,17 @@ def step(
         # Criterion 7 (A75 §62.3): a learner baseline may not expand the behavioural
         # domain of its node. Checked ONLY here -- a uniform check on the final u
         # would delete the fault privilege that Z_X and Z_E exist to exercise.
-        if u not in option_actions(control.z, control, state):
+        #
+        # The domain is `u is a true integer id in range` AND `u in A_z(m,s)`. The
+        # type half is not pedantry: `True` and `1.0` both compare equal to 1, so a
+        # membership test alone would accept them.
+        if not _is_int_id(u) or not (0 <= u < len(ACTIONS)) \
+                or u not in option_actions(control.z, control, state):
             raise LearnerContractViolation(
                 f"at t={state.t}, the learner baseline C_X^L mapped "
-                f"{ACTIONS[a_eff]} to {ACTIONS[u]}, which is outside "
-                f"A_z(m,s) for option {option_name(control.z)} (m={control.m})"
+                f"{_action_name(a_eff)} to {_action_name(u)}, which is not an action "
+                f"id inside A_z(m,s) for option {option_name(control.z)} "
+                f"(m={control.m})"
             )
     else:
         u = a_eff                                    # identity
@@ -800,7 +830,9 @@ def rollout(
         z0 = option_fault
     elif learner_process_commit is not None:
         z0 = learner_process_commit(base_option)     # learner-owned baseline C_P^L
-        if z0 not in option_ids():
+        # Same domain rule as C_X^L: a true integer id in the option domain. A bool
+        # or a float that merely compares equal to an option id is rejected too.
+        if not _is_int_id(z0) or z0 not in option_ids():
             raise LearnerContractViolation(
                 f"the learner baseline C_P^L mapped the proposal {base_option} to "
                 f"{z0!r}, which is not an option id"

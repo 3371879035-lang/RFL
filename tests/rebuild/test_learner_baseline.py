@@ -206,3 +206,61 @@ def test_controller_priority_order():
 def test_learner_contract_violation_is_not_an_option_violation():
     """It must not be swallowed by the old gates' exception handling."""
     assert not issubclass(K.LearnerContractViolation, OptionViolation)
+
+
+# --------------------------------------------------------------------------- #
+# The domain check is about *ids*, not about values that compare equal to them
+# --------------------------------------------------------------------------- #
+
+@pytest.mark.parametrize("bad", [99, -1, "RIGHT", None])
+def test_controller_baseline_bad_id_raises_the_contract_violation(bad):
+    """An out-of-domain id must produce the contract violation, never a crash.
+
+    The first version of this check wrote ``ACTIONS[u]`` while building the error
+    message, so ``u = 99`` raised ``IndexError`` instead of
+    ``LearnerContractViolation``. The message is now rendered safely.
+    """
+    with pytest.raises(K.LearnerContractViolation):
+        run(controller={ControllerSite(state=START_STATE, cmd=RIGHT): bad})
+
+
+@pytest.mark.parametrize("bad", [True, 1.0])
+def test_controller_baseline_rejects_values_that_merely_compare_equal(bad):
+    """``True == 1`` and ``1.0 == 1``, so a membership test alone would accept them."""
+    with pytest.raises(K.LearnerContractViolation):
+        run(controller={ControllerSite(state=START_STATE, cmd=RIGHT): bad})
+
+
+@pytest.mark.parametrize("bad", [99, -1, "rush", None])
+def test_process_baseline_bad_id_raises_the_contract_violation(bad):
+    with pytest.raises(K.LearnerContractViolation):
+        run(learner_process_commit=lambda z, _b=bad: _b)
+
+
+@pytest.mark.parametrize("bad", [True, 1.0])
+def test_process_baseline_rejects_values_that_merely_compare_equal(bad):
+    """``True in option_ids()`` and ``1.0 in option_ids()`` are both True in Python."""
+    with pytest.raises(K.LearnerContractViolation):
+        run(learner_process_commit=lambda z, _b=bad: _b)
+
+
+def test_genuine_integer_ids_still_pass():
+    """The type guard must not reject legitimate int ids."""
+    assert run(learner_process_commit=lambda z: 3).option_in_force == 3
+    trace = run(controller={ControllerSite(state=START_STATE, cmd=RIGHT): RIGHT})
+    assert trace.steps[0].u == RIGHT
+
+
+# --------------------------------------------------------------------------- #
+# Public export surface
+# --------------------------------------------------------------------------- #
+
+def test_learner_interface_is_in_the_public_export_surface():
+    """A75 §62.11's interface is kernel API, so it must be exported, not merely present."""
+    assert "LearnerContractViolation" in K.__all__
+    assert "ProcessCommitProvider" in K.__all__
+    for name in ("LearnerContractViolation", "ProcessCommitProvider",
+                 "CommandProvider"):
+        assert hasattr(K, name), f"{name} is in __all__ but not defined"
+    for name in K.__all__:
+        assert hasattr(K, name), f"__all__ lists {name}, which does not exist"
