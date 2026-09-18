@@ -1,0 +1,116 @@
+{
+ "worlds_scanned": 1038960,
+ "decision_credited_addresses": 431280,
+ "addresses_read": 431280,
+ "a_F_suboptimal_at_realized_context": 388800,
+ "a_F_tied_optimal_at_realized_context": 38880,
+ "empty_alternative_set": 3600,
+ "by_fire_pattern": {
+  "00010": {
+   "credit": 127440,
+   "empty": 0
+  },
+  "00011": {
+   "credit": 102480,
+   "empty": 0
+  },
+  "00110": {
+   "credit": 45360,
+   "empty": 2160
+  },
+  "00111": {
+   "credit": 29520,
+   "empty": 0
+  },
+  "01010": {
+   "credit": 60480,
+   "empty": 1440
+  },
+  "01011": {
+   "credit": 44880,
+   "empty": 0
+  },
+  "10011": {
+   "credit": 19200,
+   "empty": 0
+  },
+  "10111": {
+   "credit": 720,
+   "empty": 0
+  },
+  "11011": {
+   "credit": 1200,
+   "empty": 0
+  }
+ },
+ "witnesses": [
+  {
+   "world": 692972,
+   "fire": "01010",
+   "state": "State(x=1, y=2, t=4, kappa=1, phi=2)",
+   "z": 2,
+   "m": 0,
+   "a_F": 4,
+   "A_D_star": [
+    4
+   ],
+   "descriptor_t": 4
+  },
+  {
+   "world": 692978,
+   "fire": "01010",
+   "state": "State(x=1, y=2, t=4, kappa=1, phi=2)",
+   "z": 2,
+   "m": 0,
+   "a_F": 4,
+   "A_D_star": [
+    4
+   ],
+   "descriptor_t": 4
+  },
+  {
+   "world": 692979,
+   "fire": "01010",
+   "state": "State(x=1, y=2, t=4, kappa=1, phi=2)",
+   "z": 2,
+   "m": 0,
+   "a_F": 4,
+   "A_D_star": [
+    4
+   ],
+   "descriptor_t": 4
+  },
+  {
+   "world": 692984,
+   "fire": "00110",
+   "state": "State(x=1, y=2, t=4, kappa=1, phi=2)",
+   "z": 2,
+   "m": 0,
+   "a_F": 4,
+   "A_D_star": [
+    4
+   ],
+   "descriptor_t": 4
+  },
+  {
+   "world": 692990,
+   "fire": "00110",
+   "state": "State(x=1, y=2, t=4, kappa=1, phi=2)",
+   "z": 2,
+   "m": 0,
+   "a_F": 4,
+   "A_D_star": [
+    4
+   ],
+   "descriptor_t": 4
+  }
+ ],
+ "checks": {
+  "every_decision_credited_address_was_readable": true,
+  "a_plus_guard_is_unreachable_on_the_frozen_support": false
+ },
+ "status": "FAIL",
+ "verdict": "THE GUARD IS LIVE: NOT_EVALUABLE must enter the denominator and reporting rules",
+ "why_the_draft_argument_failed": "legal_fault_domains is generated on the HEALTHY trace, so a_D != pi_D*(x_generation) does not imply a_D != unique optimum at the REALIZED context x_factual; a P fault can change z^in-force and earlier X/E faults change the path, and m follows the path",
+ "naming": "if empty_alt is 0 this is an EXHAUSTIVE SUPPORT INVARIANT, not a schema theorem: it is established by enumeration over the frozen support, not by a structural proof"
+}
