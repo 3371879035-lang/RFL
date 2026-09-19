@@ -220,7 +220,7 @@ governs any future change to `kernel.py`.
 
 ### 7.2 The current next step
 
-$$\boxed{\text{the V0.3R rebase has landed (A75); B1 implementation runs in A77 §65.12's order}}$$
+$$\boxed{\text{the V0.3R rebase has landed (A75); B1 runs in A77 §65.12's order as A78 §66.1 extended it — all five steps closed}}$$
 
 The semantic rebase this section used to ask for **is A75** (§62): the subject is the
 persistent learning update, not runtime repair, with the regime-specific populations and the
@@ -260,6 +260,32 @@ learn an update law, makes lowering an explicit pre-commit phase whose **lowered
 the ledger reads, and keeps the $D_Q$ law an independent implementation beside the untouched
 $D_{patch}$ alias. The pre-decision request survives as `19-V03R-B1-L3-DRAFT.md`, marked
 superseded and non-normative.
+
+**A78's step is now closed too.** $L_3$ `LocalOracleRestore` is implemented and audited closed
+at `74213a7`, with its evidence binding at `9f29ce1`. The chain the review required is complete
+end to end:
+
+$$\text{strict credited context} \rightarrow \text{nominal } \texttt{RestoreRow} \rightarrow
+\text{strict row context} \rightarrow \text{load-bearing owner} \rightarrow
+\text{one-pre-state lowering} \rightarrow \text{one transaction} \rightarrow
+\text{lowered-plan ledger}$$
+
+with the cell's two arms sharing **one** admissibility boundary, checked before any arm plans.
+All five steps of the extended order are therefore closed, and **no further step is
+authorised**: B2's endpoints, denominators, strata and regime I numbers remain open and are not
+implied by any of this.
+
+**Recorded observation, deliberately not actioned.** The $D_{patch}$ entry points are *not*
+guarded the same way, and the same reference/treatment asymmetry is reproducible there: a
+type-malformed credited address (for example `State(x{=}1.0)`, `z{=}\texttt{True}`,
+`m{=}0.0`, which Python folds onto the legal address, hashes included) is refused by
+`SetAlternative`'s write through the store's typed `DecisionAddress` boundary and **accepted**
+by `NoWrite`, because the cell-level credited-address check lives on the $D_Q$ entry point. The
+reviewer's ruling is to **leave $D_{patch}$ frozen as audited**: the 396-entry ledger baseline
+is built on that architecture, and tightening its accepted inputs would be a change to a frozen
+artifact rather than a side effect of another step. It is recorded here so that it is a known
+property of the frozen architecture rather than a rediscovery, and reopening it would need its
+own authorisation.
 
 ---
 
