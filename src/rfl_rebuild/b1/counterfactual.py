@@ -52,7 +52,7 @@ target, and train learner $B$.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from types import MappingProxyType
 from typing import Mapping, Sequence
 
@@ -70,6 +70,7 @@ from rfl_rebuild.learner.store import LearnerSnapshot, require_q_reference
 
 __all__ = [
     "CfEpisode",
+    "CounterfactualUndefined",
     "CounterfactualTarget",
     "build_counterfactual_envelope",
     "replay_with_decision_replaced",
@@ -88,7 +89,6 @@ class CfEpisode:
     """
 
     kappa: int
-    phi: int
     tape: object
     snapshot_pre: object
     reference: object
@@ -106,6 +106,20 @@ class CfEpisode:
     controller_mapping: object = field(default=None, init=False, repr=False,
                                         compare=False)
     factual_trace: object = field(default=None, init=False, repr=False, compare=False)
+
+    @property
+    def phi(self) -> int:
+        r"""$\\varphi$, **derived** from the tape rather than accepted beside it.
+
+        $$\\boxed{\\texttt{episode.phi} := \\texttt{tape.phase}}$$
+
+        The kernel schedules from ``tape.phase`` while ``learner_rows`` labels rows from the
+        episode's ``phi``. Two fields would let a caller run in one phase and label the
+        evidence with another, and ``_factual_rows`` could not notice, because it would
+        reconstruct with the same wrong field. A checked pair is weaker than one source, so
+        there is one source.
+        """
+        return self.tape.phase
 
     def __post_init__(self) -> None:
         if self.reward_mode != "A":
@@ -135,22 +149,32 @@ class CfEpisode:
 
         With ``t``/``action`` given, the decision intervention at $t$ is **replaced** by
         $do(d_t = \text{action})$; with neither, this is the factual episode. Everything
-        else — tape, mask, faults, interventions, and all three learner channels — is the
-        same object in both calls, which is what "differing in exactly one thing" means
-        operationally rather than as a promise.
+        else — tape, option fault, the other interventions, and all three learner channels
+        — is the same object in both calls, which is what "differing in exactly one thing"
+        means operationally rather than as a promise.
+
+        A decision at $t$ can be injected through **two** channels — an
+        ``InterventionSet`` member and ``FaultMask.decision`` — and both are removed here.
+        The kernel lets an intervention shadow a mask entry at the same $t$ (measured), so
+        removing only the intervention would leave the *effect* correct while making the
+        structural claim false, and would leave the counterfactual at the mercy of a
+        precedence rule that nothing in this module states.
         """
         interventions = self.interventions
+        mask = self.mask
         if t is not None:
             members = tuple(iv for iv in interventions.members
                             if not (iv.kind == "decision" and iv.t == t))
             interventions = K.InterventionSet(
                 members + (K.Intervention.decision(t, action),))
+            if getattr(mask, "decision", None) is not None and mask.decision.t == t:
+                mask = replace(mask, decision=None)
         return K.rollout(
             kappa=self.kappa,
             tape=self.tape,
             command_provider=self.decision_read_view_pre,
             base_option=self.base_option,
-            mask=self.mask,
+            mask=mask,
             option_fault=self.option_fault,
             interventions=interventions,
             controller=self.controller_mapping,
@@ -225,25 +249,77 @@ def _factual_rows(episode: CfEpisode, rows: Sequence) -> tuple:
     return own
 
 
-def _realizable(episode: CfEpisode, rows: Sequence, t: int, alt: int):
-    r"""$a_t^+$ if it can be applied as the intervention, else ``None``.
+class CounterfactualUndefined(ProtocolError):
+    r"""This configuration has no counterfactual at this address.
 
-    An $a^+$ drawn from $A_D^\ast(x_t)$ is architecture-blind (A76 §63.3) and need not be
-    admissible under the option in force: $A_D^\ast(x_t) \cap A_z(m_t, s_t)$ can be empty
-    even when $A_D^\ast$ is not. The kernel refuses $do(d_t \notin A_z(m,s))$, so for such
-    an address the counterfactual *of this form* does not exist.
+    Raised when the counterfactual replay is refused because a **later decision
+    intervention** is inadmissible on the diverged path: the factual episode's own mask was
+    verified at the factual context, but the counterfactual reaches that later step in a
+    different state, where the masked action escapes the option in force.
 
-    That is not "no alternative in $A_D^\ast$" — it is "no alternative this architecture can
-    intervene with" — and A76's four-status ledger has no separate name for it, so it is
-    reported as ``NO_VALID_ALTERNATIVE``: **no valid alternative exists**, which is the
-    status's own wording. The alternative reading, silently skipping the address, would
-    change the population without saying so; failing the whole scene would let one
-    address's option geometry discard every other address's update.
+    That is not a $D_Q$ write status, and it is deliberately not reported as one. A76's
+    four statuses describe what an arm *did*; this describes a scene in which the
+    counterfactual **has no definition**, so the whole envelope is a protocol failure
+    rather than a verified absence at one address — the same rule as a missing record.
+
+    A ``ProtocolError`` subclass, so callers that treat every protocol failure alike keep
+    working, while an experiment can exclude such scenes *by name and count*.
+    """
+
+
+def _apply_or_fail(episode: CfEpisode, rows: Sequence, t: int, alt: int) -> float:
+    r"""$G_t^{CF}(a_t^+)$, or a failure that names its cause.
+
+    Two different refusals can come out of the kernel, and conflating them is what an
+    earlier revision of this file got wrong:
+
+    * **the verified $a_t^+$ itself.** The shared adapter established
+      $a_t^+ \in A_z(m_t, s_t)$ at the factual context (A76 §63.3 selects from the
+      option-admissible row, and ``validate_envelope`` re-checks membership), and the
+      counterfactual reaches step $t$ with the same context because the prefix is
+      identical. A refusal here means an invariant has been violated, so it is a bare
+      ``ProtocolError``.
+    * **a later decision intervention.** The factual episode's own mask is verified only at
+      the *factual* context, and the diverged path reaches that later step in a different
+      state → :class:`CounterfactualUndefined`.
+
+    They are separated by re-running the replay with the other decision interventions
+    removed: if it still fails, the fault is $a_t^+$'s.
+
+    This is also why the earlier "swallow it and report ``NO_VALID_ALTERNATIVE``" reading
+    was rejected. It invented a fifth meaning for a frozen status, and it would have turned
+    the shared adapter's $a_t^+ \neq \bot$ into an $L_2$ envelope's $a_t^+ = \bot$, so the
+    patch architecture would see an alternative the $Q$ architecture did not — breaking
+    "$a^+$ identical across architectures".
     """
     try:
         return _counterfactual_facts(episode, rows, t, alt)
-    except K.MalformedIntervention:
-        return None
+    except K.MalformedIntervention as exc:
+        # Strip BOTH decision channels before re-testing: a decision can be injected
+        # through an InterventionSet member and through FaultMask.decision, and stripping
+        # only the first made this discriminator blame a_t^+ for a later mask entry.
+        stripped = replace(
+            episode,
+            mask=replace(episode.mask, decision=None),
+            interventions=K.InterventionSet(
+                tuple(iv for iv in episode.interventions.members
+                      if iv.kind != "decision")))
+        try:
+            stripped.replay(t, alt)
+        except K.MalformedIntervention:
+            raise ProtocolError(
+                f"the verified alternative a_t^+={alt!r} at t={t} was refused by the "
+                f"kernel as an intervention: {exc}. The shared adapter established that it "
+                "is admissible at the factual context and the counterfactual shares that "
+                "prefix, so this is an invariant violation rather than a no-write state "
+                "(A76 §63.3)") from exc
+        raise CounterfactualUndefined(
+            f"the counterfactual of this configuration has no definition at t={t}: a "
+            f"later decision intervention is inadmissible on the diverged path ({exc}). "
+            "The factual mask is verified at the factual context, and the counterfactual "
+            "reaches that step in a different state. A scene-level protocol failure, not "
+            "a write status (A76 §63.3): the envelope is invalid as a whole, because a "
+            "missing counterfactual is not a verified absence") from exc
 
 
 def build_counterfactual_envelope(rows: Sequence, addresses: Sequence, *,
@@ -271,13 +347,8 @@ def build_counterfactual_envelope(rows: Sequence, addresses: Sequence, *,
             # factual half -- "a law may not degenerate at the same address".
             out[a] = CounterfactualTarget(a, facts.a_factual, facts.g_factual, None, None)
             continue
-        g_cf = _realizable(episode, rows, a.state.t, alt)
-        if g_cf is None:
-            # The alternative exists in A_D^* but cannot be intervened with under this
-            # option, so this address has no counterfactual. Counted, not dropped.
-            out[a] = CounterfactualTarget(a, facts.a_factual, facts.g_factual, None, None)
-            continue
-        out[a] = CounterfactualTarget(a, facts.a_factual, facts.g_factual, alt, g_cf)
+        out[a] = CounterfactualTarget(a, facts.a_factual, facts.g_factual, alt,
+                                      _apply_or_fail(episode, rows, a.state.t, alt))
     validate_counterfactual_envelope(addresses, out, rows, sol=sol, episode=episode)
     return MappingProxyType(out)
 
@@ -331,8 +402,6 @@ def validate_counterfactual_envelope(addresses: Sequence, envelope, rows: Sequen
             raise ProtocolError(
                 f"the factual return for {a!r} is not the frozen reverse fold of the rows")
         alt = patch[a].alternative
-        if alt is not None and _realizable(episode, rows, a.state.t, alt) is None:
-            alt = None          # not applicable under this option: no valid alternative
         if rec.a_plus != alt:
             raise ProtocolError(
                 f"the alternative for {a!r} is {rec.a_plus!r} but the shared a^+ adapter "

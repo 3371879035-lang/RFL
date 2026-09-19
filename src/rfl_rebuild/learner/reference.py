@@ -35,6 +35,7 @@ fingerprint would carry a type the value domain does not have.
 
 from __future__ import annotations
 
+import hashlib
 import math
 from dataclasses import dataclass
 from types import MappingProxyType
@@ -222,6 +223,26 @@ class QReferenceView:
             raise ReferenceContractError(
                 f"{address.a!r} is not admissible at {address!r}; the reference is total "
                 "on A_z(m,s), so this address is outside the domain") from None
+
+    def digest(self) -> str:
+        r"""The canonical content digest, computed once.
+
+        $$\boxed{\text{one referent} \iff \text{one digest}}$$
+
+        Three places in an $L_2$ run name a reference — the episode's configuration, the
+        shared $a^+$ adapter, and the transaction's canonicalisation — and they are three
+        *entry points*, not three referents. Comparing content lets independently built
+        views of the same $Q_D^\ast$ pass while a different referent fails stop, the same
+        discipline the learner binding uses for snapshots.
+
+        Cached because the view is immutable: ``rows`` is rebound as read-only mappings at
+        construction, so the digest cannot go stale.
+        """
+        cached = self.__dict__.get("_digest")
+        if cached is None:
+            cached = hashlib.sha256(self.canonical().encode("utf-8")).hexdigest()
+            object.__setattr__(self, "_digest", cached)
+        return cached
 
     def canonical(self) -> str:
         """Deterministic digest source, so a view's identity is checkable."""

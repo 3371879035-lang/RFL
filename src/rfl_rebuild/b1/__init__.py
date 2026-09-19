@@ -49,6 +49,7 @@ from rfl_rebuild.b1.laws import (
 )
 from rfl_rebuild.b1.counterfactual import (
     CfEpisode,
+    CounterfactualUndefined,
     CounterfactualTarget,
     build_counterfactual_envelope,
     replay_with_decision_replaced,
@@ -111,6 +112,7 @@ __all__ = [
     "UpdateLedger",
     "build_target_envelope",
     "CfEpisode",
+    "CounterfactualUndefined",
     "CounterfactualTarget",
     "FactualTarget",
     "build_counterfactual_envelope",

@@ -14,6 +14,8 @@ did not look}}$$
 | 8 | the target may come from learner A and be written into learner B | the snapshot fingerprint binding deleted | `test_3` |
 | 9 | the rows need not be this configuration's | the factual-rows check deleted | `test_2` |
 | 10 | a target may be built under another reward mode | the mode check deleted | `test_2b` |
+| 11 | a mask decision at $t$ is left in place | the mask removal dropped | `test_5b` |
+| 12 | three entry points may name three referents | the digest comparison deleted | `test_2e` |
 
 Mutation 7 is the one that makes "replace, not add" an executable statement: without the
 removal, `InterventionSet` refuses two members on one structural node and the replay
@@ -99,7 +101,12 @@ MUTATIONS: tuple = (
         CF,
         "        if (rec.a_plus is None) != (rec.g_cf is None):\n",
         "        if False:                   # MUTATED: pair unchecked\n",
+        # The witness sits at an address whose shared alternative IS None, so with the
+        # pair guard gone the `if alt is None: continue` branch accepts the record and the
+        # gate fails by NOT RAISING. The earlier witness perturbed an address that HAS an
+        # alternative, which the shared-a^+ comparison rejected anyway.
         f"{TESTS}::test_20_a_half_counterfactual_record_is_refused",
+        "DID NOT RAISE",
     ),
     (
         "implemented_tiers_untyped",
@@ -133,7 +140,35 @@ MUTATIONS: tuple = (
         "    if own != tuple(rows):\n",
         "    own = learner_rows(episode.factual_trace, episode.kappa, episode.phi)\n"
         "    if False:                   # MUTATED: rows unbound\n",
-        f"{TESTS}::test_2_the_configuration_generates_the_factual_episode",
+        # test_2d is the semantic witness: its tampered rows differ only in a field the
+        # builder never reads, outside every exercised prefix, so nothing else can notice
+        # and the gate fails by NOT RAISING. The earlier gate handed over another
+        # episode's rows, which a different guard rejected first -- it proved an error
+        # path had moved, not that a half-substitution was accepted.
+        f"{TESTS}::test_2d_rows_that_are_not_this_configurations_are_refused",
+        "DID NOT RAISE",
+    ),
+    (
+        "mask_decision_not_replaced",
+        "the counterfactual removes only the InterventionSet decision at t, leaving the "
+        "FaultMask decision in place: the effect is still right because the kernel lets an "
+        "intervention shadow a mask entry, but 'exactly one thing differs' becomes false "
+        "and the counterfactual depends on an unstated precedence rule",
+        CF,
+        "            if getattr(mask, \"decision\", None) is not None and mask.decision.t == t:\n"
+        "                mask = replace(mask, decision=None)\n",
+        "            pass                    # MUTATED: mask entry left in place\n",
+        f"{TESTS}::test_5b_a_mask_decision_at_t_is_replaced_too",
+    ),
+    (
+        "reference_provenance_unbound",
+        "the episode, the shared a^+ adapter and the transaction may name three different "
+        "Q_D*, so the target is measured against one, the alternative chosen under a "
+        "second, and the write canonicalised against a third",
+        RUNNER,
+        "        if len(set(digests.values())) != 1:\n",
+        "        if False:                   # MUTATED: referents unbound\n",
+        f"{TESTS}::test_2e_the_episode_the_adapter_and_the_transaction_are_one_referent",
     ),
     (
         "reward_mode_unchecked",

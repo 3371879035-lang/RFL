@@ -31,7 +31,8 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from rfl_rebuild.b1 import (  # noqa: E402
     APPLIED, DQ_LAWS, DQ_SLICE, EVALUABLE_NOOP, ILL_TYPED, NO_VALID_ALTERNATIVE,
-    CfEpisode, CounterfactualReturnWrite, CounterfactualTarget, DualReturnWrite,
+    CfEpisode, CounterfactualReturnWrite, CounterfactualTarget,
+    CounterfactualUndefined, DualReturnWrite,
     FactualReturnWrite, NoWriteRef, ProtocolError, SliceDescriptor, Tier,
     build_counterfactual_envelope, build_target_envelope, fingerprint,
     independent_treatment_count, law_metadata, replay_with_decision_replaced,
@@ -40,7 +41,8 @@ from rfl_rebuild.b1 import (  # noqa: E402
 )
 from rfl_rebuild.env import kernel as K  # noqa: E402
 from rfl_rebuild.env.kernel import ControlState, DecisionOverride, FaultMask  # noqa: E402
-from rfl_rebuild.env.observation import learner_rows, walk_transition  # noqa: E402
+from rfl_rebuild.env.observation import (learner_rows, ROW_SCHEMA,
+                                          walk_transition)  # noqa: E402
 from rfl_rebuild.learner.reference import reference_view_from  # noqa: E402
 from rfl_rebuild.learner.store import (  # noqa: E402
     DecisionAddress, Edit, LearnerPersistentState, Q, QAddress, State, owner_Q,
@@ -58,7 +60,7 @@ TAPE = lambda phi: K.SemanticTape(phase=phi, error_flag=0, cause_rank=0)  # noqa
 
 def make_episode(kappa, phi, z0, *, pre=None, mask=None, interventions=None, mode="A"):
     """A `CfEpisode` rooted in one frozen snapshot; the factual trace is its own."""
-    return CfEpisode(kappa=kappa, phi=phi, tape=TAPE(phi),
+    return CfEpisode(kappa=kappa, tape=TAPE(phi),
                      snapshot_pre=(pre or LearnerPersistentState()).snapshot(),
                      reference=VIEW, base_option=z0, mask=mask or K.FaultMask(),
                      interventions=interventions or K.InterventionSet(),
@@ -105,6 +107,41 @@ def faulted(kappa=0, phi=0, z0=1, t=1):
         return None
     rows, addrs = rows_and_addresses(ep)
     return ep, rows, addrs, LearnerPersistentState()
+
+
+def grid_scenes():
+    """The fixed probe grid with **every** infeasible point counted by category.
+
+    A grid point can fail for two different reasons and they are not interchangeable:
+
+    * ``mask_inadmissible`` -- the injection chosen from the probe trajectory is not
+      admissible at the injected step's real context, so the *factual* episode cannot be
+      built;
+    * ``cf_undefined`` -- the factual episode exists, but the counterfactual has no
+      definition: the diverged path reaches a later masked step in a different state,
+      where the masked action escapes the option.
+
+    Neither is a write status. Both are counted, and the caller asserts the counts, so a
+    change in the grid shows up as a changed tuple rather than as a quietly smaller probe.
+    """
+    feasible, mask_inadmissible, cf_undefined = [], 0, 0
+    for kappa in (0, 1):
+        for phi in (0, 1, 2):
+            for z0 in (0, 1, 2):
+                for ft in (1, 2):
+                    built = faulted(kappa, phi, z0, t=ft)
+                    if built is None:
+                        mask_inadmissible += 1
+                        continue
+                    ep, rows, addrs, pre = built
+                    try:
+                        env = build_counterfactual_envelope(rows, addrs, sol=SOL,
+                                                            episode=ep)
+                    except CounterfactualUndefined:
+                        cf_undefined += 1
+                        continue
+                    feasible.append((ep, rows, addrs, pre, env))
+    return feasible, mask_inadmissible, cf_undefined
 
 
 def with_alternative():
@@ -215,7 +252,7 @@ def test_2_the_configuration_generates_the_factual_episode():
     init_fields = {f.name for f in dataclasses.fields(CfEpisode) if f.init}
     assert "factual_trace" not in init_fields
     with pytest.raises(TypeError):
-        CfEpisode(kappa=0, phi=0, tape=TAPE(0), snapshot_pre=ep0.snapshot_pre,
+        CfEpisode(kappa=0, tape=TAPE(0), snapshot_pre=ep0.snapshot_pre,
                   reference=VIEW, factual_trace=object())
     # a different configuration is a different episode, not a rename of this one
     other = make_episode(0, 1, 1)
@@ -228,6 +265,80 @@ def test_2_the_configuration_generates_the_factual_episode():
     assert "THIS configuration's factual rollout" in str(ei.value)
 
 
+def test_2d_rows_that_are_not_this_configurations_are_refused():
+    r"""The *only* difference from the configuration's own rows is a field nothing reads.
+
+    The construction matters. An earlier revision of this gate handed the builder another
+    episode's rows, which a different guard rejected first (the credited address was not in
+    those rows), so deleting the rows check changed only the failure's location — evidence
+    that an error path moved, not that a half-substitution was accepted.
+
+    Here the rows ARE this episode's, with one field altered that the builder never reads
+    and that lies outside every exercised prefix: ``a_realized`` of a later row. Context
+    keys, factual targets, counterfactual targets and the prefix are all untouched, so
+    `_factual_rows` is the only thing that can notice.
+    """
+    ep, rows, addrs, _pre = healthy()
+    late = addrs[-1]
+    if late.state.t >= len(rows) - 1:
+        for candidate in reversed(addrs):
+            if candidate.state.t < len(rows) - 1:
+                late = candidate
+                break
+        else:
+            pytest.fail("the probe needs an address before the last step")
+    tampered = [list(r) for r in rows]
+    idx = ROW_SCHEMA.index("a_realized")
+    row_i = late.state.t + 1
+    tampered[row_i][idx] = (tampered[row_i][idx] + 1) % len(K.ACTIONS)
+    tampered = tuple(tuple(r) for r in tampered)
+    assert tampered != tuple(rows)
+    assert tampered[:late.state.t] == tuple(rows)[:late.state.t], "prefix untouched"
+    with pytest.raises(ProtocolError) as ei:
+        build_counterfactual_envelope(tampered, [late], sol=SOL, episode=ep)
+    assert "THIS configuration's factual rollout" in str(ei.value)
+
+
+def test_2e_the_episode_the_adapter_and_the_transaction_are_one_referent():
+    r"""$$\boxed{Q^\ast_{\text{episode}} = Q^\ast_{a^+} = Q^\ast_{\text{write}}}$$
+
+    Three entry points, one referent. The learner fingerprint cannot catch a mismatch,
+    because a reference is not part of the learner state, so the binding is on content:
+    independently built views of the same $Q_D^\ast$ pass, a different one fails stop.
+    """
+    def perturbed_view(factor):
+        rows = {k: dict(v) for k, v in SOL.q.items()}
+        first = next(iter(rows))          # insertion order: deterministic, and State is
+        a = next(iter(rows[first]))       # not orderable
+        rows[first][a] = rows[first][a] * factor
+        return reference_view_from(type("S", (), {"q": rows})())
+
+    ep, rows, addrs, pre, _env = first_bent()
+    # (a) a second, legal, DIFFERENT referent for the transaction
+    other = perturbed_view(1.5)
+    assert other.digest() != VIEW.digest()
+    with pytest.raises(ProtocolError) as ei:
+        run_dq_law(CounterfactualReturnWrite, pre, addrs, rows, other, sol=SOL,
+                   episode=ep)
+    assert "names more than one reference" in str(ei.value)
+    # (b) the same, against the a^+ adapter. `reference_view_from` is duck-typed on `.q`,
+    # so a stand-in solver is enough to make the adapter a different referent.
+    q = {k: dict(v) for k, v in SOL.q.items()}
+    first = next(iter(q))
+    a = next(iter(q[first]))
+    q[first][a] = q[first][a] * 1.5
+    perturbed_sol = type("S", (), {"q": q})()
+    with pytest.raises(ProtocolError) as ei2:
+        run_dq_law(CounterfactualReturnWrite, pre, addrs, rows, VIEW,
+                   sol=perturbed_sol, episode=ep)
+    assert "names more than one reference" in str(ei2.value)
+    # (c) an independent VIEW of the same Q_D* is the same referent
+    same = reference_view_from(SOL)
+    assert same is not VIEW and same.digest() == VIEW.digest()
+    run_dq_law(CounterfactualReturnWrite, pre.clone(), addrs, rows, same, sol=SOL,
+               episode=ep).ledger.check_fingerprint_invariants()
+
+
 def test_2b_the_primary_reward_mode_is_the_only_mode():
     with pytest.raises(ProtocolError) as ei:
         make_episode(0, 0, 1, mode="B")
@@ -236,7 +347,7 @@ def test_2b_the_primary_reward_mode_is_the_only_mode():
 
 def test_2c_the_pre_update_learner_must_be_a_frozen_snapshot():
     with pytest.raises(ProtocolError) as ei:
-        CfEpisode(kappa=0, phi=0, tape=TAPE(0),
+        CfEpisode(kappa=0, tape=TAPE(0),
                   snapshot_pre=LearnerPersistentState(), reference=VIEW)
     assert "must be a frozen snapshot" in str(ei.value)
 
@@ -335,6 +446,41 @@ def test_5_the_decision_intervention_is_replaced_not_added():
     pytest.fail("no faulted scene with an alternative was found")
 
 
+def test_5b_a_mask_decision_at_t_is_replaced_too(monkeypatch):
+    r"""A decision can be injected through two channels, and both are removed.
+
+    The kernel lets an intervention shadow a ``FaultMask.decision`` at the same $t$
+    (measured), so removing only the intervention would leave the *effect* right while the
+    structural claim — "the counterfactual differs in exactly one thing" — was false. This
+    watches the mask actually handed to the rollout.
+    """
+    seen = {}
+    original = K.rollout
+
+    def spy(**kwargs):
+        seen.update(kwargs)
+        return original(**kwargs)
+
+    ep0 = make_episode(0, 0, 1)
+    _rows, addrs = rows_and_addresses(ep0)
+    probe = addrs[0]
+    legal = sorted(K.option_actions(probe.z, ControlState(z=probe.z, m=probe.m),
+                                    probe.state))
+    mask = FaultMask(decision=DecisionOverride(t=probe.state.t, action=legal[0]))
+    ep = make_episode(0, 0, 1, mask=mask)
+    assert ep.mask.decision is not None, "the factual episode carries the mask entry"
+    monkeypatch.setattr(K, "rollout", spy)
+    ep.replay(probe.state.t, legal[-1])
+    assert seen["mask"].decision is None, \
+        "the mask entry at t must be removed, not merely shadowed"
+    # and a replay at a DIFFERENT t keeps it
+    other_t = probe.state.t + 1
+    if any(iv.t == other_t for iv in []) or True:
+        ep.replay(other_t, legal[-1])
+        assert seen["mask"].decision is not None, \
+            "an unrelated replay must not strip the mask"
+
+
 def test_6_the_counterfactual_prefix_is_the_factual_prefix_across_the_support():
     r"""The premise the structural provenance rests on, verified empirically.
 
@@ -345,41 +491,31 @@ def test_6_the_counterfactual_prefix_is_the_factual_prefix_across_the_support():
     holds *by construction* — the intervention at $t$ cannot affect a step before $t$ — so
     the assertion inside the builder cannot fire and **no mutation can kill it** (an
     earlier revision carried one; it reported ``NOT_A_GATE``). What can be checked is the
-    premise: that the kernel really does consume its tape and its state per step, so that
-    the equality is not merely assumed.
+    premise: that the kernel really does consume its tape and its state per step.
 
-    This walks the whole healthy support and every realizable counterfactual in the faulted
-    grid and asserts the prefix identity directly, at the row level.
+    This walks the healthy support and every feasible faulted grid point and asserts the
+    identity at the row level.
     """
     checked = 0
     for kappa, phi, z0 in HEALTHY_WORLDS:
         ep, rows, addrs, _pre = healthy(kappa, phi, z0)
+        patch = build_target_envelope(SOL, addrs, ep.factual_trace, kappa, phi)
         for a in addrs:
-            alt = build_target_envelope(SOL, addrs, ep.factual_trace, kappa,
-                                        phi)[a].alternative
+            alt = patch[a].alternative
             if alt is None:
                 continue
-            try:
-                cf_rows = learner_rows(ep.replay(a.state.t, alt), kappa, phi)
-            except K.MalformedIntervention:
-                continue
+            cf_rows = learner_rows(ep.replay(a.state.t, alt), kappa, phi)
             assert cf_rows[:a.state.t] == tuple(rows)[:a.state.t], (kappa, phi, z0, a)
             checked += 1
-    for kappa in (0, 1):
-        for phi in (0, 1, 2):
-            for z0 in (0, 1, 2):
-                built = faulted(kappa, phi, z0)
-                if built is None:
-                    continue
-                ep, rows, addrs, _pre = built
-                env = build_counterfactual_envelope(rows, addrs, sol=SOL, episode=ep)
-                for a in addrs:
-                    rec = env[a]
-                    if rec.a_plus is None:
-                        continue
-                    cf_rows = learner_rows(ep.replay(a.state.t, rec.a_plus), kappa, phi)
-                    assert cf_rows[:a.state.t] == tuple(rows)[:a.state.t]
-                    checked += 1
+    feasible, _mask, _undef = grid_scenes()
+    for ep, rows, addrs, _pre, env in feasible:
+        for a in addrs:
+            rec = env[a]
+            if rec.a_plus is None:
+                continue
+            cf_rows = learner_rows(ep.replay(a.state.t, rec.a_plus), ep.kappa, ep.phi)
+            assert cf_rows[:a.state.t] == tuple(rows)[:a.state.t]
+            checked += 1
     assert checked >= 32, f"too few counterfactuals exercised: {checked}"
 
 
@@ -514,18 +650,38 @@ def test_19_the_envelope_must_be_the_exact_credited_set():
 
 
 def test_20_a_half_counterfactual_record_is_refused():
-    r"""$a_t^+$ and $G_t^{CF}$ are one fact: both present or both absent."""
-    ep, rows, addrs, _pre, good = with_alternative()
-    victim = next(a for a in addrs if good[a].a_plus is not None)
-    for bad in (CounterfactualTarget(victim, good[victim].a_factual,
-                                     good[victim].g_factual, None, good[victim].g_cf),
-                CounterfactualTarget(victim, good[victim].a_factual,
-                                     good[victim].g_factual, good[victim].a_plus, None)):
-        lie = dict(good)
-        lie[victim] = bad
-        with pytest.raises(ProtocolError) as ei:
-            validate_counterfactual_envelope(addrs, lie, rows, sol=SOL, episode=ep)
-        assert "one fact" in str(ei.value)
+    r"""$a_t^+$ and $G_t^{CF}$ are one fact: both present or both absent.
+
+    The witness is an address whose **shared alternative is already** ``None`` and a record
+    that claims $G_t^{CF}$ anyway. With the paired-presence guard in place that record is
+    refused; with the guard gone, ``alt is None`` makes the validator skip to the next
+    address and the record is **accepted** — so the gate fails by ``DID NOT RAISE`` and the
+    evidence says what it claims.
+
+    An earlier witness perturbed an address that *has* an alternative, and the shared-$a^+$
+    comparison rejected it whatever the pair guard did: that proved an error path existed,
+    not that the guard was what stopped a half record.
+    """
+    ep, rows, addrs, _pre = healthy()
+    env = build_counterfactual_envelope(rows, addrs, sol=SOL, episode=ep)
+    without = next((a for a in addrs if env[a].a_plus is None), None)
+    assert without is not None, "the healthy support is mostly addresses without one"
+    lie = dict(env)
+    lie[without] = CounterfactualTarget(without, env[without].a_factual,
+                                        env[without].g_factual, None, 123.0)
+    with pytest.raises(ProtocolError) as ei:
+        validate_counterfactual_envelope(addrs, lie, rows, sol=SOL, episode=ep)
+    assert "one fact" in str(ei.value)
+
+    # and the mirror case, at an address that does have one
+    ep2, rows2, addrs2, _pre2, good = with_alternative()
+    victim = next(a for a in addrs2 if good[a].a_plus is not None)
+    lie2 = dict(good)
+    lie2[victim] = CounterfactualTarget(victim, good[victim].a_factual,
+                                        good[victim].g_factual, good[victim].a_plus, None)
+    with pytest.raises(ProtocolError) as ei2:
+        validate_counterfactual_envelope(addrs2, lie2, rows2, sol=SOL, episode=ep2)
+    assert "one fact" in str(ei2.value)
 
 
 # --------------------------------------------------------------------------- #
@@ -666,45 +822,56 @@ def test_16_on_a_fresh_store_the_target_USUALLY_equals_the_reference():
     r"""A probe-grid measurement, stated at the strength it actually has.
 
     Grid: $\kappa \in \{0,1\} \times \varphi \in \{0,1,2\} \times z_0 \in \{0,1,2\}
-    \times$ fault-step $\in \{1,2\}$ — **not** the full $\kappa \times \varphi \times z_0
-    \times$ fault-step support. Within it $54$ counterfactuals exist and $53$ are
-    bit-equal to the reference, so the arm can act in $1$ of $54$ cases.
-
-    An earlier revision of this file reported $34/35$. That number was measured while a
-    rejected intervention still aborted the whole grid point, so every point whose
-    injection the kernel refused was **silently dropped**; handling the non-realizable
-    alternative explicitly (see `_realizable`) brought them back and the count moved to
-    $54/53$. The qualitative conclusion is unchanged and the figure is now the one the
-    code supports.
+    \times$ fault-step $\in \{1,2\}$ — $36$ points, **not** the full
+    $\kappa \times \varphi \times z_0 \times$ fault-step support — of which $15$ are
+    feasible, $12$ have an inadmissible injection and $9$ have no counterfactual at all.
+    Within the feasible ones, $35$ counterfactuals exist and $34$ are bit-equal to the
+    reference, so the arm can act in $1$ of $35$ cases.
 
     $$\boxed{\text{fresh store} \Rightarrow G_t^{CF} = Q_D^\ast(x_t,a_t^+)
     \text{ is the usual case, not a theorem}}$$
 
     The exception is a counterexample, not a footnote: a realized suffix return equals the
-    DP value only when the continuation *realizes* an optimal path, and the replay
-    inherits the episode's remaining faults and tape. So "the CF target IS the reference
-    on a fresh store" is false as a structural claim, and this gate keeps it from being
-    written down as one.
+    DP value only when the continuation *realizes* an optimal path, and the replay inherits
+    the episode's remaining faults and tape.
+
+    Provenance of these numbers, because they moved twice:
+      $54/53$ was measured while a rejected replay was silently swallowed into
+      ``NO_VALID_ALTERNATIVE``, which kept grid points alive that should have been excluded;
+      $35/34$ is measured after that was removed and after ``replay`` was found to remove
+      only ONE of the two channels that can inject a decision, so a counterfactual at
+      $t = $ fault-step was not the replacement it claimed to be. Both defects are now
+      fixed and the infeasible points are counted above.
     """
+    feasible, mask_inadmissible, cf_undefined = grid_scenes()
     total = equal = 0
-    for kappa in (0, 1):
-        for phi in (0, 1, 2):
-            for z0 in (0, 1, 2):
-                for ft in (1, 2):
-                    built = faulted(kappa, phi, z0, t=ft)
-                    if built is None:
-                        continue
-                    ep, rows, addrs, _pre = built
-                    env = build_counterfactual_envelope(rows, addrs, sol=SOL, episode=ep)
-                    for a in addrs:
-                        rec = env[a]
-                        if rec.a_plus is None:
-                            continue
-                        total += 1
-                        equal += rec.g_cf.hex() == float(VIEW.value(
-                            QAddress(state=a.state, z=a.z, m=a.m,
-                                     a=rec.a_plus))).hex()
-    assert (total, equal) == (54, 53), (total, equal)
+    for ep, rows, addrs, _pre, env in feasible:
+        for a in addrs:
+            rec = env[a]
+            if rec.a_plus is None:
+                continue
+            total += 1
+            equal += rec.g_cf.hex() == float(VIEW.value(
+                QAddress(state=a.state, z=a.z, m=a.m, a=rec.a_plus))).hex()
+    assert (len(feasible), mask_inadmissible, cf_undefined) == (15, 12, 9)
+    assert (total, equal) == (35, 34), (total, equal)
+
+
+def test_16b_no_counterfactual_is_undefined_on_the_healthy_support():
+    r"""$$\boxed{N_{\text{undefined}} = 0}$$ on the healthy support.
+
+    Healthy scenes carry no mask, so nothing can be inadmissible on a diverged path. This
+    is the census that would have caught the swallowing: a nonzero value here means a
+    counterfactual was silently reclassified rather than reported.
+    """
+    undefined = 0
+    for kappa, phi, z0 in HEALTHY_WORLDS:
+        ep, rows, addrs, _pre = healthy(kappa, phi, z0)
+        try:
+            build_counterfactual_envelope(rows, addrs, sol=SOL, episode=ep)
+        except CounterfactualUndefined:
+            undefined += 1
+    assert undefined == 0, f"{undefined} healthy scenes had no counterfactual"
 
 
 def test_17_prior_learning_is_ONE_mechanism_that_gives_the_arms_content():

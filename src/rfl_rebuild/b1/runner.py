@@ -73,6 +73,7 @@ from rfl_rebuild.b1.factual import (
     validate_factual_envelope,
 )
 from rfl_rebuild.b1.tier import DQ_SLICE, PATCH_SLICE, SliceDescriptor, Tier
+from rfl_rebuild.learner.reference import reference_view_from
 from rfl_rebuild.learner.store import (
     LearnerPersistentState,
     ReferenceContractError,
@@ -441,6 +442,32 @@ def run_dq_law(law, pre_state: LearnerPersistentState,
                 "the L2 cell needs the shared a^+ adapter (sol) and the factual episode "
                 "configuration; without them the counterfactual has no definition and an "
                 "envelope could only be faked")
+        # ---- the referent binding: one Q_D*, three entry points ----------------- #
+        #
+        # An L2 run names a reference three times -- the episode's configuration (which
+        # builds the learner's decision channel and therefore both trajectories), the
+        # shared a^+ adapter (``sol``), and the transaction's canonicalisation plus the
+        # scalar ledger (``q_reference``). They are three ENTRY POINTS, not three
+        # referents. Mixing them would compute the target against one Q_D*, choose the
+        # alternative under a second, and canonicalise the write against a third -- the
+        # same provenance defect as training learner B on learner A's target, moved from
+        # the learner axis to the referent axis. The learner fingerprint cannot catch it,
+        # because a reference is not part of the learner state.
+        #
+        # Content, not object identity: independently built views of the same Q_D* pass.
+        require_q_reference(q_reference)
+        digests = {
+            "the episode's configuration": episode.reference.digest(),
+            "the transaction's": q_reference.digest(),
+            "the a^+ adapter's": reference_view_from(sol).digest(),
+        }
+        if len(set(digests.values())) != 1:
+            raise ProtocolError(
+                "the L2 run names more than one reference: "
+                + "; ".join(f"{k} Q_D*={v[:16]}" for k, v in sorted(digests.items()))
+                + ". The episode, the shared a^+ adapter and the transaction must be the "
+                "same referent (A76 §63.4), or the target, the alternative and the "
+                "canonicalisation are measured against three different Q_D*")
         # ---- the learner continuity binding, BEFORE any target is built ---------- #
         #
         # A76: both targets come from the same pre-update state -- and the "same" that
