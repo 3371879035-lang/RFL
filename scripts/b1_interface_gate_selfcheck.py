@@ -268,12 +268,21 @@ def main() -> int:
             code, tail = _run_node(node)
         finally:
             _write(path, original)
-        if code in _NODE_NOT_FOUND_CODES:
-            verdict = "NODE_NOT_FOUND"
-        elif code != 0:
+        # GATE_IS_REAL iff pytest exited 1, and nothing else.
+        #
+        # `code != 0` was too generous: pytest also exits 2 (interrupted / collection
+        # error) and 3 (internal error), and these mutations edit SOURCE FILES, so a
+        # mutation that accidentally introduces a syntax or import error would be
+        # reported as a dead gate. That is the same mistake as counting "node not found"
+        # as a pass, one failure mode further out.
+        if code == 1:
             verdict = "GATE_IS_REAL"
-        else:
+        elif code == 0:
             verdict = "NOT_A_GATE"
+        elif code in _NODE_NOT_FOUND_CODES:
+            verdict = "NODE_NOT_FOUND"
+        else:
+            verdict = "HARNESS_ERROR"
         entry.update(exit_code=code, tail=tail, verdict=verdict)
         results.append(entry)
         print(f"[{entry['verdict']:18}] {key:22} -> {entry['gate']}")
@@ -287,6 +296,7 @@ def main() -> int:
         "n_gate_is_real": real,
         "n_not_a_gate": sum(1 for r in results if r["verdict"] == "NOT_A_GATE"),
         "n_node_not_found": sum(1 for r in results if r["verdict"] == "NODE_NOT_FOUND"),
+        "n_harness_error": sum(1 for r in results if r["verdict"] == "HARNESS_ERROR"),
         "stale_node_ids": [list(s) for s in stale],
         "tree_restored_byte_identical": restored,
         "file_digests": {str(p.relative_to(ROOT)): d for p, d in after.items()},

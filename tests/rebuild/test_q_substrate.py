@@ -80,6 +80,33 @@ def test_1_a_q_key_must_be_a_typed_q_address():
     assert s.healthy, "no rejected edit may have landed"
 
 
+def test_1b_a_state_with_non_integer_fields_cannot_key_the_q_store():
+    """The shortest path from a type error to a stored value.
+
+    ``_require_q_address`` used to stop at ``isinstance(addr.state, State)``, so
+    ``State(x=1.0, ...)`` was a legal key; ``e.address in q_reference`` then compared by
+    value, folded ``1.0 == 1``, hit a **legal reference row** and the entry persisted.
+    """
+    s = LearnerPersistentState()
+    bad_states = [
+        State(x=1.0, y=2, t=3, kappa=0, phi=1),
+        State(x=1, y=2, t=3.0, kappa=0, phi=1),
+        State(x=1, y=2, t=3, kappa=False, phi=1),
+        State(x=1, y=2, t=3, kappa=0, phi=1.0),
+    ]
+    for st in bad_states:
+        with pytest.raises(StoreTransactionError) as ei:
+            write(s, [Edit(Q, QAddress(state=st, z=1, m=0, a=0), 1.0)])
+        assert "non-integer field" in str(ei.value)
+    with pytest.raises(StoreTransactionError):
+        write(s, [Edit(Q, QAddress(state=ctx(), z=True, m=0, a=0), 1.0)])
+    with pytest.raises(StoreTransactionError):
+        write(s, [Edit(Q, QAddress(state=ctx(), z=1, m=0.0, a=0), 1.0)])
+    with pytest.raises(StoreTransactionError):
+        write(s, [Edit(Q, QAddress(state=ctx(), z=1, m=0, a=3.0), 1.0)])
+    assert s.healthy
+
+
 @pytest.mark.parametrize("bad", [True, False, "1.0", None.__class__, float("nan"),
                                  float("inf"), float("-inf"), [1.0]])
 def test_2_a_q_value_must_be_a_finite_real(bad):
@@ -258,12 +285,27 @@ def test_10_an_illegal_q_edit_rolls_back_d_p_and_x_too():
 
 def test_11_an_entry_outside_the_reference_domain_is_rejected_at_the_boundary():
     """The $Q$ version of ``P_override[99] = 1``: a stored entry the read path can never
-    reach would change the fingerprint and clear ``healthy`` while being invisible."""
+    reach would change the fingerprint and clear ``healthy`` while being invisible.
+
+    The third case is the one that carries this gate since strict typing arrived. A bad
+    action id and a bad context are now both refused by ``_require_q_address`` before the
+    domain lookup runs, so the first two cases no longer reach the check this gate is
+    named for. An action that is a **valid id but inadmissible at that context** is what
+    only the reference domain can decide — and without it the membership check had no
+    witness, which the mutation self-check reported as ``NOT_A_GATE`` until it existed.
+    """
     s = LearnerPersistentState()
     for addr in (QAddress(state=ctx(), z=1, m=0, a=99),          # not an action id
                  QAddress(state=ctx(t=99), z=1, m=0, a=0)):      # no such context
         with pytest.raises(StoreTransactionError):
             write(s, [Edit(Q, addr, 1.0)])
+    key = next(k for k in VIEW.domains if len(VIEW.rows[k]) < len(K.ACTIONS))
+    allowed = set(VIEW.rows[key])
+    inadmissible = next(a for a in range(len(K.ACTIONS)) if a not in allowed)
+    with pytest.raises(StoreTransactionError) as ei:
+        write(s, [Edit(Q, QAddress(state=key[0], z=key[1], m=key[2], a=inadmissible),
+                       1.0)])
+    assert "outside the reference domain" in str(ei.value)
     assert s.healthy
 
 
@@ -307,23 +349,29 @@ def test_12e_a_reference_missing_a_whole_legal_context_is_rejected():
     msg = str(ei.value)
     assert "not exactly the frozen decision domain" in msg
     assert "1 of 13824 legal contexts missing" in msg, msg
-    assert "0 context(s) outside the domain" in msg, msg
 
 
 def test_12f_a_reference_carrying_an_illegal_context_is_rejected():
-    """An invented context, even when every row it does carry is internally total."""
+    """An invented context, even when every row it does carry is internally total.
+
+    Which check fires is now the **typing** one, not the domain equality: strict context
+    membership runs first, so by the time the equality is evaluated no surplus key can
+    exist. That is the intended order (typing before value comparison), and the equality's
+    remaining content is "no legal context is missing", which 12e pins.
+    """
     from rfl_rebuild.env.kernel import State as _State
     goal = _State(x=K.GOAL[0], y=K.GOAL[1], t=0, kappa=0, phi=0)   # never a decision point
     rows = {k: dict(VIEW.rows[k]) for k in VIEW.domains}
     rows[(goal, 1, 0)] = dict(VIEW.rows[VIEW.domains[0]])
     with pytest.raises(ReferenceContractError) as ei:
         QReferenceView(rows)
-    assert "not exactly the frozen decision domain" in str(ei.value)
+    assert "not a legal decision context" in str(ei.value)
     # m = 2 is outside the automaton-state domain
     rows2 = {k: dict(VIEW.rows[k]) for k in VIEW.domains}
     rows2[(VIEW.domains[0][0], VIEW.domains[0][1], 2)] = dict(VIEW.rows[VIEW.domains[0]])
-    with pytest.raises(ReferenceContractError):
+    with pytest.raises(ReferenceContractError) as ei2:
         QReferenceView(rows2)
+    assert "not a legal decision context" in str(ei2.value)
 
 
 def test_12g_one_complete_row_is_not_a_reference():
@@ -339,6 +387,83 @@ def test_12h_the_reference_domain_is_the_shared_enumerator():
     from rfl_rebuild.env.domain import decision_contexts
     assert set(VIEW.rows) == decision_contexts()
     assert len(VIEW.rows) == 13824
+
+
+def test_12i0_the_folding_premise_these_gates_rest_on():
+    """Why strict typing is needed at all: **a set comparison is not a typed comparison**.
+
+    Python folds ``True == 1``, ``1.0 == 1`` and ``False == 0`` with equal hashes, and
+    ``State`` is a frozen dataclass, so it inherits that folding. A domain *equality*
+    therefore cannot by itself reject a value-preserving type substitution. This test
+    pins the premise: if a future Python changed the folding, the gates below would stop
+    being about anything and this would say so.
+    """
+    from rfl_rebuild.env.kernel import State as _S
+    assert {3.0} == {3}
+    assert (True == 1) and (1.0 == 1) and (False == 0)
+    assert _S(x=1, y=2, t=3, kappa=0, phi=1) == _S(x=1.0, y=2, t=3, kappa=0, phi=1)
+    assert hash(_S(x=1, y=2, t=3, kappa=0, phi=1)) == \
+        hash(_S(x=1.0, y=2, t=3, kappa=0, phi=1))
+
+
+@pytest.mark.parametrize("field,sub", [
+    ("z", lambda k: True if k[1] == 1 else False),      # bool for int
+    ("z", lambda k: float(k[1])),                        # float for int
+    ("m", lambda k: float(k[2])),
+    ("x", lambda k: float(k[0].x)),
+    ("t", lambda k: float(k[0].t)),
+    ("kappa", lambda k: False if k[0].kappa == 0 else k[0].kappa),
+    ("phi", lambda k: float(k[0].phi)),
+])
+def test_12i_value_preserving_type_substitutions_are_rejected(field, sub):
+    """Every one of these passed construction before the strict typing step existed.
+
+    The substituted key is *equal* to a legal context under Python's numeric folding, so
+    the domain equality accepted it and the view stored a key whose type the contract does
+    not have — and whose action ids the read path would then hand to a kernel that
+    requires true integer ids.
+    """
+    from rfl_rebuild.env.kernel import State as _S
+    k = next(kk for kk in VIEW.domains if kk[1] == 1 and kk[2] == 0)
+    rows = {kk: dict(VIEW.rows[kk]) for kk in VIEW.domains}
+    row = rows.pop(k)
+    if field in ("z", "m"):
+        new_key = (k[0], sub(k) if field == "z" else k[1],
+                   sub(k) if field == "m" else k[2])
+    else:
+        s = k[0]
+        new_key = (_S(x=sub(k) if field == "x" else s.x,
+                      y=s.y,
+                      t=sub(k) if field == "t" else s.t,
+                      kappa=sub(k) if field == "kappa" else s.kappa,
+                      phi=sub(k) if field == "phi" else s.phi), k[1], k[2])
+    assert new_key == k, "the substitution must be value-preserving to be adversarial"
+    rows[new_key] = row
+    with pytest.raises(ReferenceContractError):
+        QReferenceView(rows)
+
+
+def test_12j_a_float_action_key_is_rejected():
+    """``{3.0} == {3}``, so row totality alone accepts a float action id."""
+    k = VIEW.domains[0]
+    rows = {kk: dict(VIEW.rows[kk]) for kk in VIEW.domains}
+    a = sorted(rows[k])[0]
+    rows[k][float(a)] = rows[k].pop(a)
+    with pytest.raises(ReferenceContractError) as ei:
+        QReferenceView(rows)
+    assert "true int" in str(ei.value)
+
+
+def test_12k_the_domain_predicate_is_type_strict():
+    """``is_decision_context`` types before it ranges, because ``in`` is a value test."""
+    from rfl_rebuild.env.domain import is_decision_context
+    legal = VIEW.domains[0]
+    assert is_decision_context(*legal)
+    assert not is_decision_context(legal[0], True if legal[1] == 1 else False, legal[2])
+    assert not is_decision_context(legal[0], float(legal[1]), legal[2])
+    assert not is_decision_context(
+        State(x=float(legal[0].x), y=legal[0].y, t=legal[0].t,
+              kappa=legal[0].kappa, phi=legal[0].phi), legal[1], legal[2])
 
 
 def test_12b_out_of_domain_lookups_are_contract_errors_not_keyerrors():

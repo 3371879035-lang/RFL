@@ -78,6 +78,10 @@ from dataclasses import dataclass
 from types import MappingProxyType
 from typing import Any, Callable, Mapping
 
+from rfl_rebuild.env.domain import (
+    is_decision_context,
+    non_integer_state_fields,
+)
 from rfl_rebuild.env.kernel import (
     ACTIONS as _ACTIONS,
     Action,
@@ -631,22 +635,35 @@ def _require_controller_site(site: object) -> None:
 
 
 def _require_q_address(addr: object) -> None:
-    """Type the Q key, field by field — the dataclass itself validates nothing."""
+    r"""Type the Q key, **including the fields of its** ``State``.
+
+    The first version checked ``isinstance(addr.state, State)`` and stopped there, so
+    ``QAddress(state=State(x=1.0, ...), ...)`` was a legal key. It then reached
+    ``e.address in q_reference``, whose lookup is a dict comparison — and because Python
+    folds ``1.0 == 1`` with equal hashes, the malformed key *hit a legal reference row*
+    and the entry persisted. That is the shortest path from a type error to a stored
+    value, and it runs through value equality, which is why the domain predicate is
+    type-strict (A77 §65.5).
+    """
     if not isinstance(addr, QAddress):
         raise StoreTransactionError(
             f"the Q store is keyed by QAddress, got {type(addr).__name__}")
-    if not isinstance(addr.state, State):
+    if type(addr.state) is not State:
         raise StoreTransactionError(
             f"QAddress.state must be a State, got {addr.state!r}")
-    if not is_option_id(addr.z):
+    bad = non_integer_state_fields(addr.state)
+    if bad:
         raise StoreTransactionError(
-            f"QAddress.z must be an option id, got {addr.z!r}")
-    if not _is_int(addr.m):
+            f"QAddress.state has non-integer field(s) {bad}: {addr.state!r}. Python "
+            "folds 1.0, True and 1 into one dict key, so this address would match a "
+            "legal reference row while not being one")
+    if not is_decision_context(addr.state, addr.z, addr.m):
         raise StoreTransactionError(
-            f"QAddress.m must be an integer, got {addr.m!r}")
-    if not _is_action(addr.a):
+            f"QAddress {addr!r} is not a legal decision context: z and m must be true "
+            "integers inside their domains and (x, y, t, kappa, phi) a legal state")
+    if type(addr.a) is not int or not 0 <= addr.a < len(_ACTIONS):
         raise StoreTransactionError(
-            f"QAddress.a must be an action id, got {addr.a!r}")
+            f"QAddress.a must be a true action id, got {addr.a!r}")
 
 
 def _is_finite_real(v: object) -> bool:

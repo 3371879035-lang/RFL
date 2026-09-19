@@ -40,7 +40,13 @@ from dataclasses import dataclass
 from types import MappingProxyType
 from typing import Any, Mapping
 
-from rfl_rebuild.env.domain import decision_contexts
+from rfl_rebuild.env.domain import (
+    decision_contexts,
+    is_decision_context,
+    is_strict_decision_state,
+    is_true_int,
+    non_integer_state_fields,
+)
 from rfl_rebuild.env.kernel import ControlState, State, option_actions
 from rfl_rebuild.learner.store import (
     QAddress,
@@ -82,31 +88,56 @@ class QReferenceView:
         if not rows:
             raise ReferenceContractError("the reference has no rows")
 
-        # ---- domain totality, as an EQUALITY (A77 §65.5) ------------------ #
+        # ---- strict key typing, THEN the domain equality (A77 §65.5) ------ #
         #
         #     dom(QReferenceView) = {(x,a) : x a legal decision context, a in A_z(m,s)}
         #
-        # The first version checked only that each row the caller handed over had its
-        # actions exactly equal to A_z(m,s). A single complete row therefore made a legal
-        # view: row totality says nothing about *which* contexts exist, so a reference
-        # missing 13,823 of them -- or one carrying a context outside the frozen domain --
-        # was accepted. The enumerator is `env.domain`, shared with the solver, so this is
-        # a comparison against the environment's own list rather than a second opinion;
-        # a cardinality check would have let a missing context and an invented one cancel.
+        # The order below is the contract, and the parts are not interchangeable:
         #
-        # The per-key shape checks the first version carried are subsumed by this
-        # equality and were removed rather than left in place: a malformed key is by
-        # definition not a member of the domain, so a separate check could never fire.
+        #     strict key typing -> strict context membership -> exact domain equality
+        #       -> strict action-key typing -> row totality
+        #
+        # A set comparison is not a typed comparison. Python folds `True == 1`,
+        # `1.0 == 1` and `False == 0` with equal hashes, and `State` is a dataclass, so
+        # `State(x=1.0, ...) == State(x=1, ...)` holds. An earlier revision claimed the
+        # per-key checks were "subsumed by the equality" and removed them; that reasoning
+        # was wrong in exactly this way, and a probe confirmed six value-preserving
+        # substitutions -- `z -> True`, `z -> 1.0`, `x -> float(x)`, `t -> float(t)`,
+        # `kappa -> False`, and an action key `3 -> 3.0` -- all passed construction.
+        #
+        # With both sides strictly typed, the equality below *is* typed, and it is then
+        # the right instrument for totality (which a cardinality check is not: it would
+        # let a missing legal context and an invented one cancel).
+        for key in rows:
+            if not (type(key) is tuple and len(key) == 3):
+                raise ReferenceContractError(
+                    f"reference row key {key!r} is not a (State, z, m) triple")
+            state, z, m = key
+            if not is_strict_decision_state(state):
+                raise ReferenceContractError(
+                    f"reference row key {key!r} carries a State whose field(s) "
+                    f"{non_integer_state_fields(state)} are not true ints. Python folds "
+                    "1.0, True and 1 into one dict key, so this row would compare equal "
+                    "to a legal context while not being one")
+            if not is_decision_context(state, z, m):
+                raise ReferenceContractError(
+                    f"reference row key {key!r} is not a legal decision context "
+                    "(type-strict membership in the frozen domain)")
+
         expected = decision_contexts()
         if set(rows) != expected:
+            # After the typing loop every key is a legal context, so `rows` is a subset of
+            # the domain and this equality is equivalent to "no legal context is
+            # missing". The surplus side is therefore empty *by construction*, which is
+            # why the message reports only what is missing: a branch that cannot fire is
+            # not evidence, it is noise.
             missing = expected - set(rows)
-            extra = set(rows) - expected
             raise ReferenceContractError(
                 "the reference's contexts are not exactly the frozen decision domain: "
-                f"{len(missing)} of {len(expected)} legal contexts missing, "
-                f"{len(extra)} context(s) outside the domain. Examples: missing "
-                f"{sorted(missing, key=repr)[:2]!r}, unexpected "
-                f"{sorted(extra, key=repr)[:2]!r}")
+                f"{len(missing)} of {len(expected)} legal contexts missing, e.g. "
+                f"{sorted(missing, key=repr)[:2]!r}. A view that is merely row-total can "
+                "be missing legal contexts, and a cardinality check would let a missing "
+                "one and an invented one cancel")
 
         frozen: dict = {}
         for key, row in rows.items():
@@ -114,6 +145,13 @@ class QReferenceView:
             if not isinstance(row, Mapping):
                 raise ReferenceContractError(
                     f"reference row {key!r} is {type(row).__name__}, not a mapping")
+            for a in row:
+                if not is_true_int(a):
+                    raise ReferenceContractError(
+                        f"reference row {key!r} is keyed by action {a!r} "
+                        f"({type(a).__name__}), not a true int. The kernel's action ids "
+                        "are integers, and `{3.0} == {3}` would let a float key satisfy "
+                        "a value comparison while the read path returns it")
             allowed = set(option_actions(z, ControlState(z=z, m=m), state))
             keys = set(row)
             if keys != allowed:

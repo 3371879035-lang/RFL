@@ -1,15 +1,16 @@
 {
   "check": "Q substrate gate mutation self-check",
-  "n_mutations": 11,
-  "n_gate_is_real": 11,
+  "n_mutations": 14,
+  "n_gate_is_real": 14,
   "n_not_a_gate": 0,
   "n_mutation_not_applied": 0,
   "n_node_not_found": 0,
+  "n_harness_error": 0,
   "stale_node_ids": [],
   "tree_restored_byte_identical": true,
   "file_digests": {
-    "src\\rfl_rebuild\\learner\\store.py": "8b47823b19bd5583fd343d7ffb12b5bbdedae8a0cf3d8d80ff05c31c6a49f9fd",
-    "src\\rfl_rebuild\\learner\\reference.py": "865333b93b544f1c18ebba9f73157061a6775328de3f1b8841613748794ad584"
+    "src\\rfl_rebuild\\learner\\store.py": "c823a2d5854248724a1807cecbff021bd2f976ff2f22a05179ef22d7909deb0c",
+    "src\\rfl_rebuild\\learner\\reference.py": "ed9775ab83d46f17cf022ecdfcea4e71a1b558d886abb12867f413d43f11829a"
   },
   "results": [
     {
@@ -106,6 +107,36 @@
       "mutation": "reference_type_boundary",
       "hole": "a duck-typed mutable stand-in is accepted wherever a QReferenceView is required, so the totality/finiteness/read-only guarantees become properties of a helper class rather than of the substrate",
       "gate": "test_18_a_duck_typed_fake_reference_is_refused_at_both_boundaries",
+      "site": "src\\rfl_rebuild\\learner\\store.py",
+      "matched": 1,
+      "exit_code": 1,
+      "tail": "!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "reference_strict_key_typing",
+      "hole": "the reference accepts a context key whose type only resembles a legal one, so a value-preserving substitution (z -> True, z -> 1.0, x -> float(x)) passes the domain equality because Python folds those types",
+      "gate": "test_12i_value_preserving_type_substitutions_are_rejected",
+      "site": "src\\rfl_rebuild\\learner\\reference.py",
+      "matched": 1,
+      "exit_code": 1,
+      "tail": "!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "reference_strict_action_typing",
+      "hole": "a reference row keyed by a float action id is accepted, and the read path then hands the kernel an action id that is not an int",
+      "gate": "test_12j_a_float_action_key_is_rejected",
+      "site": "src\\rfl_rebuild\\learner\\reference.py",
+      "matched": 1,
+      "exit_code": 1,
+      "tail": "!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "qaddress_state_field_typing",
+      "hole": "a QAddress whose State carries a float or bool field is accepted, then matches a legal reference row through dict equality and persists",
+      "gate": "test_1b_a_state_with_non_integer_fields_cannot_key_the_q_store",
       "site": "src\\rfl_rebuild\\learner\\store.py",
       "matched": 1,
       "exit_code": 1,

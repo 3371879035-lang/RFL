@@ -34,9 +34,12 @@ from rfl_rebuild.env.kernel import State
 
 __all__ = [
     "M_DOMAIN",
+    "STATE_FIELDS",
     "decision_contexts",
     "decision_states",
     "is_decision_context",
+    "is_strict_decision_state",
+    "is_true_int",
     "n_decision_contexts",
 ]
 
@@ -48,6 +51,44 @@ Z_DOMAIN: tuple[int, ...] = tuple(K.option_ids())
 
 #: $\kappa$'s domain: the keys of the kernel's frozen hazard schedule.
 KAPPA_DOMAIN: tuple[int, ...] = tuple(sorted(K.CONTEXT_PERIODS))
+
+#: The fields of ``State``, in order, all of which are integer-valued.
+STATE_FIELDS: tuple[str, ...] = ("x", "y", "t", "kappa", "phi")
+
+
+def is_true_int(v: object) -> bool:
+    r"""$\texttt{type}(v) = \texttt{int}$ — an identity test, not a subclass test.
+
+    ``bool`` is an ``int`` subclass and ``IntEnum`` members are ints, so ``isinstance``
+    admits values whose *type* the domain does not have. Worse, Python's numeric equality
+    folds them: ``True == 1``, ``1.0 == 1`` and ``False == 0``, with equal hashes, so a
+    ``set`` or ``dict`` keyed by the wrong type silently *is* the key it resembles.
+
+    $$\boxed{\text{a set comparison is not a typed comparison}}$$
+
+    This distinction is not pedantry: the whole point of the domain equality in
+    :func:`~rfl_rebuild.learner.reference.QReferenceView` is that the reference carries
+    exactly the legal contexts, and a folding comparison cannot say that.
+    """
+    return type(v) is int
+
+
+def is_strict_decision_state(state: object) -> bool:
+    """A ``State`` whose five fields are all true ints.
+
+    ``State`` is a frozen dataclass, so its ``__eq__``/``__hash__`` inherit the numeric
+    folding above: ``State(x=1, ...) == State(x=1.0, ...)`` is ``True`` and the hashes
+    agree. A float-typed state therefore satisfies a membership test against a legal
+    context while not *being* one.
+    """
+    if type(state) is not State:
+        return False
+    return all(type(getattr(state, f)) is int for f in STATE_FIELDS)
+
+
+def non_integer_state_fields(state: object) -> tuple:
+    """Which of the five fields are not true ints. For messages, not for control flow."""
+    return tuple(f for f in STATE_FIELDS if type(getattr(state, f, None)) is not int)
 
 
 def decision_states() -> Iterator[State]:
@@ -67,7 +108,12 @@ def decision_states() -> Iterator[State]:
 
 
 def decision_contexts() -> frozenset:
-    r"""$\mathcal X_D$ as a set of ``(State, z, m)`` keys, in the reference's own key shape."""
+    r"""$\mathcal X_D$ as a set of ``(State, z, m)`` keys, in the reference's own key shape.
+
+    Every member is **strictly typed** — true ``int`` fields and a true ``int`` ``z``/``m``
+    — so an equality test against this set is a typed comparison once the other side has
+    been typed too.
+    """
     return frozenset(
         (state, z, m)
         for state in decision_states()
@@ -80,9 +126,16 @@ def n_decision_contexts() -> int:
     return len(decision_contexts())
 
 
-def is_decision_context(state: State, z: object, m: object) -> bool:
-    """Membership without materialising the set, for a single hostile lookup."""
-    if not isinstance(state, State):
+def is_decision_context(state: object, z: object, m: object) -> bool:
+    r"""Strict membership in $\mathcal X_D$: **types first**, then values.
+
+    The order matters and is deliberate. Checking ``z in Z_DOMAIN`` first would accept
+    ``True`` and ``1.0``, because the containment test is a value test; requiring
+    ``type(z) is int`` first makes the value test mean what it appears to mean.
+    """
+    if not is_strict_decision_state(state):
+        return False
+    if not is_true_int(z) or not is_true_int(m):
         return False
     if z not in Z_DOMAIN or m not in M_DOMAIN:
         return False
