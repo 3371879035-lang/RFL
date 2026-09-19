@@ -151,6 +151,24 @@ def _validate_plan(plan: LawPlan, addresses: Sequence, spec: SliceDescriptor) ->
                     f"law {plan.name} planned a write owned by {spec.owner(e.address)!r} "
                     f"under the credited context {p.address!r}; owner_locality requires "
                     f"owner_{spec.name}(edit.address) == plan.address")
+        if p.row_op is not None:
+            # §66.5 is only a contract if the runner CONSULTS the resolver. Without this,
+            # `dq_owner` was a function beside the execution path plus a test of its own
+            # return value -- and a row operation emitted under another architecture
+            # reached the lowering, where it degenerated into that slice's edit kind.
+            try:
+                owner = spec.owner(p.row_op)
+            except (AttributeError, TypeError, KeyError) as exc:
+                raise ProtocolError(
+                    f"law {plan.name} emitted {p.row_op!r} under the {spec.name} slice, "
+                    f"whose owner resolver does not know that operation: "
+                    f"{type(exc).__name__}: {exc}") from exc
+            if owner != p.address:
+                raise ProtocolError(
+                    f"law {plan.name} planned a row operation owned by {owner!r} under "
+                    f"the credited context {p.address!r}; owner_locality requires "
+                    f"owner_{spec.name}(row_op) == plan.address, and a slice whose "
+                    "resolver does not recognise the operation cannot satisfy it")
         if p.edits:
             if p.status is not None:
                 raise ProtocolError(

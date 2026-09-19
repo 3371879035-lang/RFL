@@ -301,11 +301,15 @@ def _q_view(state: LearnerPersistentState) -> dict:
 #: * $L_2 = \{a_t^F, G_t^F, a_t^+, G_t^{CF}\}$ and $L_3 = \varnothing$, exactly as §65.2
 #:   writes them.
 #:
-#: ``implemented_tiers`` is the build state: only $L_0$ runs today, because $L_2$'s
-#: content ($G_t^{CF}$) and $L_3$'s (the row restore) are not authorised yet. Written this
-#: way, enabling them later is an implementation change — flip one set — rather than a
-#: redefinition of what ``fields()`` means. That distinction is the whole reason the
-#: ``DEFERRED`` sentinel was removed from ``cells``.
+#: ``implemented_tiers`` is the build state: $L_0$, $L_2$ and $L_3$ all run. Enabling a cell
+#: is an implementation change — flip one set and supply its extractors — rather than a
+#: redefinition of what ``fields()`` means. That distinction is why the ``DEFERRED`` sentinel
+#: was removed from ``cells``, and it has now paid twice: $L_2$ needed the table already
+#: correct, and $L_3$ needed it correct *and* empty.
+#:
+#: ``owner=dq_owner`` rather than the substrate's ``owner_Q``: $L_3$'s row operation is a B1
+#: object, and A78 §66.5 requires the resolver to be total over entry addresses and row
+#: operations while `learner/store.py::owner_Q` keeps taking a `QAddress`.
 DQ_SLICE = SliceDescriptor(
     name="D_Q",
     store=Q,

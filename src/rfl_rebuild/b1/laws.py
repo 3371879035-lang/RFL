@@ -97,6 +97,17 @@ class AddressPlan:
 
     def __post_init__(self) -> None:
         if self.row_op is not None:
+            # NOMINAL closure, the same way `Tier`, `QReferenceView` and the typed domain
+            # are closed: "an object with a `.context`" must not be able to grant
+            # row-restore capability. Duck typing here would let any stand-in reach
+            # `_lower_row_ops` -- which only ever asks for `.context` -- and become a real
+            # row restore.
+            if type(self.row_op) is not RestoreRow:
+                raise ProtocolError(
+                    f"the address-plan for {self.address!r} carries row_op="
+                    f"{self.row_op!r} of type {type(self.row_op).__name__}; the row "
+                    "operation is exactly RestoreRow, and a stand-in exposing a matching "
+                    "attribute is not one")
             if self.edits:
                 raise ProtocolError(
                     f"the address-plan for {self.address!r} carries both entry edits and "
@@ -417,8 +428,9 @@ class DualReturnWrite(_Law):
 #: Registration order is fixed so arm enumeration is deterministic.
 LAWS = (NoWrite, DeleteFactualPatch, SetAlternative, LocalOracleRestore)
 
-#: The $D_Q$ registry, as far as A77 §65.12's order has reached: one reference per cell
-#: with a substantive treatment (§65.3), plus the treatments themselves — three so far.
+#: The $D_Q$ registry, complete for A77 §65.12's order as extended by A78 §66.1: one
+#: reference per cell with a substantive treatment (§65.3), plus the treatments themselves.
+#: Four independent treatments, the number A76 §63.8 froze.
 DQ_LAWS = (
     NoWriteRef(Tier.L0_FACTUAL),
     FactualReturnWrite,

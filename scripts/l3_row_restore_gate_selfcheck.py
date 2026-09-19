@@ -10,7 +10,10 @@ did not look}}$$
 | 3 | the plan-shape rule is not enforced | edits and a row op accepted together | `test_8` |
 | 4 | the empty cell acquires a builder | the L3 branch builds one anyway | `test_6` |
 | 5 | the substrate learns the row operation | `owner_Q` branches on `RestoreRow` | `test_3` |
-| 6 | $D_Q$'s $L_3$ law is the $D_{patch}$ alias | `DQLocalOracleRestore` inherits it | `test_2` |
+| 6 | $D_Q$'s $L_3$ law reuses the patch plan | the D_Q `plan` returns the patch plan | `test_18` |
+| 7 | the runner never consults the row owner | the row-op owner check deleted | `test_9c` |
+| 8 | the owner resolver forgets the row operation | `dq_owner`'s row branch removed | `test_9d` |
+| 9 | the row operation's type is not closed | the nominal check deleted | `test_9b` |
 
 **Two properties are deliberately NOT mutated here**, and saying so is part of the evidence:
 
@@ -118,13 +121,49 @@ MUTATIONS: tuple = (
         f"{TESTS}::test_3_the_substrate_does_not_learn_the_row_operation",
     ),
     (
-        "dq_l3_is_the_patch_alias",
-        "the D_Q L3 law is the D_patch alias, whose plan emits DECISION edits against a "
-        "value-free store's law",
+        "dq_l3_reuses_the_patch_plan",
+        "the D_Q L3 law REUSES the patch implementation's plan, so the arm emits DECISION "
+        "edits rather than a row operation. Inheriting the class was not this defect: the "
+        "subclass's own `plan` still won the method resolution, so the hole never reopened "
+        "and the gate went red only on `issubclass`",
         LAWS,
-        "class DQLocalOracleRestore(_Law):",
-        "class DQLocalOracleRestore(DeleteFactualPatch):   # MUTATED: alias reused",
-        f"{TESTS}::test_2_the_dq_law_is_an_independent_implementation",
+        "    def plan(self, addresses, targets) -> LawPlan:\n"
+        "        return LawPlan(self.name, tuple(AddressPlan(a, row_op=RestoreRow(a))\n"
+        "                                        for a in addresses))",
+        "    def plan(self, addresses, targets) -> LawPlan:\n"
+        "        # MUTATED: the patch implementation, which emits DECISION edits\n"
+        "        return DeleteFactualPatch().plan(addresses, targets)",
+        f"{TESTS}::test_18_the_reused_patch_plan_is_caught_by_the_operation_kind",
+    ),
+    (
+        "row_op_owner_unchecked",
+        "the runner never consults the owner resolver for a row operation, so a row "
+        "operation emitted under another architecture reaches the lowering",
+        RUNNER,
+        "        if p.row_op is not None:\n"
+        "            # §66.5 is only a contract if the runner CONSULTS the resolver. Without this,\n",
+        "        if False:                   # MUTATED: row owner unchecked\n"
+        "            # §66.5 is only a contract if the runner CONSULTS the resolver. Without this,\n",
+        f"{TESTS}::test_9c_a_row_operation_cannot_leak_into_another_architecture",
+    ),
+    (
+        "row_owner_resolver_row_branch_removed",
+        "the D_Q owner resolver no longer knows the row operation, so a legitimate L3 run "
+        "cannot establish locality",
+        PLAN,
+        "    if isinstance(op, RestoreRow):\n        return op.context\n",
+        "    pass                            # MUTATED: row branch removed\n",
+        f"{TESTS}::test_9d_a_real_run_depends_on_the_row_owner_resolver",
+    ),
+    (
+        "row_op_type_not_closed",
+        "any object exposing `.context` grants row-restore capability, because the plan "
+        "boundary does not close the operation's type",
+        LAWS,
+        "            if type(self.row_op) is not RestoreRow:\n",
+        "            if False:               # MUTATED: duck-typed row op\n",
+        f"{TESTS}::test_9b_a_stand_in_row_operation_cannot_grant_row_restore",
+        "DID NOT RAISE",
     ),
 )
 

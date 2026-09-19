@@ -29,7 +29,8 @@ from rfl_rebuild.b1 import (  # noqa: E402
     APPLIED, DQ_LAWS, DQ_SLICE, EVALUABLE_NOOP, NO_VALID_ALTERNATIVE, AddressPlan,
     CounterfactualReturnWrite, DQLocalOracleRestore, DeleteFactualPatch, DualReturnWrite,
     FactualReturnWrite, LawPlan, LocalOracleRestore, NoWriteRef, ProtocolError,
-    RestoreRow, Tier, dq_owner, independent_treatment_count, law_metadata,
+    PATCH_SLICE, RestoreRow, Tier, dq_owner, independent_treatment_count,
+    law_metadata, run_patch_law_with_envelope,
     resolve_credited_units, run_dq_law, run_row_restore_law,
 )
 from rfl_rebuild.env import kernel as K  # noqa: E402
@@ -120,6 +121,34 @@ def test_3_the_substrate_does_not_learn_the_row_operation():
 # --------------------------------------------------------------------------- #
 # 2. domain: every credited address
 # --------------------------------------------------------------------------- #
+
+def test_18_the_reused_patch_plan_is_caught_by_the_operation_kind():
+    r"""The semantic witness for "the $D_Q$ law must be its own implementation".
+
+    §66.7's hole is that the $D_Q$ arm might run the $D_{patch}$ implementation, whose plan
+    emits `DECISION` edits. Inheriting the class is not that hole -- the subclass's own
+    `plan` still wins method resolution -- so it is asserted here directly: this arm emits a
+    row operation and **no** entry edits, and a plan built from the patch implementation
+    cannot run on this slice.
+    """
+    rows, addrs, target, state, written = scene(overrides=1)
+    plan = DQLocalOracleRestore().plan(addrs, None)
+    assert all(p.row_op is not None and type(p.row_op) is RestoreRow
+               for p in plan.plans), "the D_Q law emits row operations"
+    assert plan.edits == (), "and no entry edits"
+
+    class _ReusedPatchPlan:
+        name, alias_of, tier = "ReusedPatchPlan", None, Tier.L3_ORACLE
+
+        def plan(self, addresses, targets):
+            return DeleteFactualPatch().plan(addresses, targets)
+
+    with pytest.raises(ProtocolError) as ei:
+        run_row_restore_law(_ReusedPatchPlan(), state, addrs, VIEW)
+    assert "outside the" in str(ei.value), ei.value
+    # and the real arm still works, so the rejection is the operation kind's
+    assert run_row_restore_law(DQLocalOracleRestore, state, addrs, VIEW).ledger.n_scalar == 1
+
 
 def test_4_the_domain_is_every_credited_address():
     r"""A78 §66.3. The healthy support has 246 of 278 addresses with no $a^+$; $L_3$'s
@@ -226,6 +255,87 @@ def test_9_the_row_op_owner_is_the_credited_context():
     rows, addrs, target, _state, _written = scene()
     plan = DQLocalOracleRestore().plan(addrs, None)
     assert all(dq_owner(p.row_op) == p.address for p in plan.plans)
+
+
+def test_9b_a_stand_in_row_operation_cannot_grant_row_restore():
+    r"""Nominal closure at the plan boundary.
+
+    `_lower_row_ops` only ever asks for `.context`, so an object that has one would become
+    a real row restore if the constructor let it through. The type is closed exactly as
+    `Tier`, `QReferenceView` and the typed domain are.
+    """
+    rows, addrs, target, _state, _written = scene(overrides=1)
+
+    class FakeRowOp:
+        context = target
+
+    with pytest.raises(ProtocolError) as ei:
+        AddressPlan(target, row_op=FakeRowOp())
+    assert "is not one" in str(ei.value)
+
+    class Subclassed(RestoreRow):
+        pass
+
+    with pytest.raises(ProtocolError) as ei2:
+        AddressPlan(target, row_op=Subclassed(target))
+    assert "is not one" in str(ei2.value)
+
+
+def test_9c_a_row_operation_cannot_leak_into_another_architecture():
+    r"""The other half of §66.5: the runner must CONSULT the resolver.
+
+    A law registered against $D_{patch}$ can emit a `RestoreRow` -- the plan object is
+    shared type-wise -- and before the owner check it reached the lowering, where it
+    degenerated into that slice's edit kind. "The result happens to be equivalent" is not a
+    contract; the resolver is.
+    """
+    class PatchL3:
+        name, alias_of, tier = "PatchRowRestore", None, Tier.L3_ORACLE
+
+        def plan(self, addresses, targets):
+            return LawPlan(self.name, tuple(AddressPlan(a, row_op=RestoreRow(a))
+                                            for a in addresses))
+
+    rows, addrs, target, state, _written = scene(overrides=1)
+    with pytest.raises(ProtocolError) as ei:
+        run_patch_law_with_envelope(PatchL3(), state, addrs, None,
+                                    spec=PATCH_SLICE)
+    assert "owner_locality" in str(ei.value), ei.value
+    # and the D_Q resolver accepts the same plan, so the rejection is the slice's
+    assert dq_owner(RestoreRow(target)) == target
+
+
+def test_9d_a_real_run_depends_on_the_row_owner_resolver():
+    r"""`dq_owner(RestoreRow(x)) == x` must be on the execution path, not beside it.
+
+    The isolated assertion in `test_9` shows the function returns the right value. This runs
+    the arm, so removing the resolver's row branch fails a *real* L3 run rather than only a
+    unit check of the helper.
+    """
+    rows, addrs, target, state, written = scene(overrides=2)
+    res = run_row_restore_law(DQLocalOracleRestore, state, addrs, VIEW)
+    assert res.ledger.n_scalar == 2
+    assert not any(e in state.q_overrides for e in written)
+
+
+def test_9e_the_same_tier_reference_actually_writes_nothing():
+    r"""A78 §66.2 added `NoWriteRef(L3)`; this runs it.
+
+    The registry test shows the name is there. This shows the arm is the reference and not
+    the treatment wearing a different label: overrides present, nothing moves, no scalars,
+    every receipt `EVALUABLE_NOOP`, fingerprint unchanged.
+    """
+    rows, addrs, target, state, written = scene(overrides=2)
+    before = dict(state.q_overrides)
+    assert before, "the probe needs a non-empty pre-state"
+    res = run_row_restore_law(NoWriteRef(Tier.L3_ORACLE), state, addrs, VIEW)
+    led = res.ledger
+    assert dict(state.q_overrides) == before, "the reference must not restore anything"
+    assert led.n_scalar == 0 and led.n_changed_addresses == 0
+    assert led.fingerprint_pre == led.fingerprint_post
+    assert set(r.status for r in led.receipts) == {EVALUABLE_NOOP}
+    assert led.n_addressed == len(addrs)
+    led.check_fingerprint_invariants()
 
 
 # --------------------------------------------------------------------------- #

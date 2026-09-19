@@ -1,7 +1,7 @@
 {
   "check": "L3 row-restore gate mutation self-check",
-  "n_mutations": 6,
-  "n_gate_is_real": 6,
+  "n_mutations": 9,
+  "n_gate_is_real": 9,
   "n_not_a_gate": 0,
   "n_node_not_found": 0,
   "n_harness_error": 0,
@@ -18,7 +18,7 @@
       "matched": 1,
       "expected_failure_text": null,
       "exit_code": 1,
-      "tail": "        computed from that, a real deletion would be reported ``EVALUABLE_NOOP``.\"\"\"\n        rows, addrs, target, state, written = scene(overrides=2)\n        res = run_row_restore_law(DQLocalOracleRestore, state, addrs, VIEW)\n        led = res.ledger\n>       assert led.n_scalar == 2, \"the two present overrides\"\nE       AssertionError: the two present overrides\nE       assert 0 == 2\nE        +  where 0 = UpdateLedger(receipts=(DecisionWriteReceipt(address=DecisionAddress(state=State(x=0, y=2, t=0, kappa=0, phi=0), z=1, m...508fccf3429fcef66441276df0f21117a46', scalar_metrics_applicable=True, n_scalar=0, sum_abs_delta=0.0, max_abs_delta=0.0).n_scalar\ntests\\rebuild\\test_l3_row_restore.py:241: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_l3_row_restore.py::test_10_lowering_uses_the_pre_state_and_the_ledger_reads_its_output\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "        computed from that, a real deletion would be reported ``EVALUABLE_NOOP``.\"\"\"\n        rows, addrs, target, state, written = scene(overrides=2)\n        res = run_row_restore_law(DQLocalOracleRestore, state, addrs, VIEW)\n        led = res.ledger\n>       assert led.n_scalar == 2, \"the two present overrides\"\nE       AssertionError: the two present overrides\nE       assert 0 == 2\nE        +  where 0 = UpdateLedger(receipts=(DecisionWriteReceipt(address=DecisionAddress(state=State(x=0, y=2, t=0, kappa=0, phi=0), z=1, m...508fccf3429fcef66441276df0f21117a46', scalar_metrics_applicable=True, n_scalar=0, sum_abs_delta=0.0, max_abs_delta=0.0).n_scalar\ntests\\rebuild\\test_l3_row_restore.py:351: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_l3_row_restore.py::test_10_lowering_uses_the_pre_state_and_the_ledger_reads_its_output\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -29,7 +29,7 @@
       "matched": 1,
       "expected_failure_text": null,
       "exit_code": 1,
-      "tail": "        res = run_row_restore_law(DQLocalOracleRestore, state, addrs, VIEW)\n        assert foreign in state.q_overrides, \\\n            \"an entry outside every credited row must survive a row restore\"\n>       assert res.ledger.n_scalar == 2, \"only the two overrides in the credited row\"\nE       AssertionError: only the two overrides in the credited row\nE       assert 1 == 2\nE        +  where 1 = UpdateLedger(receipts=(DecisionWriteReceipt(address=DecisionAddress(state=State(x=0, y=2, t=0, kappa=0, phi=0), z=1, m...ee2b5c7c19f686b677bf893f1a0312ac051', scalar_metrics_applicable=True, n_scalar=1, sum_abs_delta=4.0, max_abs_delta=4.0).n_scalar\nE        +    where UpdateLedger(receipts=(DecisionWriteReceipt(address=DecisionAddress(state=State(x=0, y=2, t=0, kappa=0, phi=0), z=1, m...ee2b5c7c19f686b677bf893f1a0312ac051', scalar_metrics_applicable=True, n_scalar=1, sum_abs_delta=4.0, max_abs_delta=4.0) = B1Result(ledger=UpdateLedger(receipts=(DecisionWriteReceipt(address=DecisionAddress(state=State(x=0, y=2, t=0, kappa=0...ta=4.0, max_abs_delta=4.0), post_state=<rfl_rebuild.learner.store.LearnerPersistentState object at 0x0000027ACE498380>).ledger\ntests\\rebuild\\test_l3_row_restore.py:335: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_l3_row_restore.py::test_13_a_row_restore_does_not_reach_outside_its_credited_rows\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "        res = run_row_restore_law(DQLocalOracleRestore, state, addrs, VIEW)\n        assert foreign in state.q_overrides, \\\n            \"an entry outside every credited row must survive a row restore\"\n>       assert res.ledger.n_scalar == 2, \"only the two overrides in the credited row\"\nE       AssertionError: only the two overrides in the credited row\nE       assert 1 == 2\nE        +  where 1 = UpdateLedger(receipts=(DecisionWriteReceipt(address=DecisionAddress(state=State(x=0, y=2, t=0, kappa=0, phi=0), z=1, m...ee2b5c7c19f686b677bf893f1a0312ac051', scalar_metrics_applicable=True, n_scalar=1, sum_abs_delta=4.0, max_abs_delta=4.0).n_scalar\nE        +    where UpdateLedger(receipts=(DecisionWriteReceipt(address=DecisionAddress(state=State(x=0, y=2, t=0, kappa=0, phi=0), z=1, m...ee2b5c7c19f686b677bf893f1a0312ac051', scalar_metrics_applicable=True, n_scalar=1, sum_abs_delta=4.0, max_abs_delta=4.0) = B1Result(ledger=UpdateLedger(receipts=(DecisionWriteReceipt(address=DecisionAddress(state=State(x=0, y=2, t=0, kappa=0...ta=4.0, max_abs_delta=4.0), post_state=<rfl_rebuild.learner.store.LearnerPersistentState object at 0x0000023083C27BC0>).ledger\ntests\\rebuild\\test_l3_row_restore.py:445: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_l3_row_restore.py::test_13_a_row_restore_does_not_reach_outside_its_credited_rows\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -40,7 +40,7 @@
       "matched": 1,
       "expected_failure_text": "DID NOT RAISE",
       "exit_code": 1,
-      "tail": "================================== FAILURES ===================================\n_______ test_8_an_address_plan_is_entry_edits_or_one_row_op_never_both ________\n    def test_8_an_address_plan_is_entry_edits_or_one_row_op_never_both():\n        rows, addrs, target, _state, written = scene(overrides=1)\n        entry = written[0]\n>       with pytest.raises(ProtocolError) as ei:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.b1.contract.ProtocolError'>\ntests\\rebuild\\test_l3_row_restore.py:212: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_l3_row_restore.py::test_8_an_address_plan_is_entry_edits_or_one_row_op_never_both\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "================================== FAILURES ===================================\n_______ test_8_an_address_plan_is_entry_edits_or_one_row_op_never_both ________\n    def test_8_an_address_plan_is_entry_edits_or_one_row_op_never_both():\n        rows, addrs, target, _state, written = scene(overrides=1)\n        entry = written[0]\n>       with pytest.raises(ProtocolError) as ei:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.b1.contract.ProtocolError'>\ntests\\rebuild\\test_l3_row_restore.py:241: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_l3_row_restore.py::test_8_an_address_plan_is_entry_edits_or_one_row_op_never_both\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -51,7 +51,7 @@
       "matched": 1,
       "expected_failure_text": "evaluator evidence",
       "exit_code": 1,
-      "tail": "src\\rfl_rebuild\\b1\\factual.py:87: in context_index\n    for i, row in enumerate(rows):\n                  ^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\nself = <test_l3_row_restore.test_6_poison_evidence_does_not_reach_the_l3_path.<locals>.Poison object at 0x0000018D65D3EE40>\n    def __iter__(self):\n>       raise AssertionError(\"the L3 path iterated evaluator evidence\")\nE       AssertionError: the L3 path iterated evaluator evidence\ntests\\rebuild\\test_l3_row_restore.py:167: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_l3_row_restore.py::test_6_poison_evidence_does_not_reach_the_l3_path\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "src\\rfl_rebuild\\b1\\factual.py:87: in context_index\n    for i, row in enumerate(rows):\n                  ^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\nself = <test_l3_row_restore.test_6_poison_evidence_does_not_reach_the_l3_path.<locals>.Poison object at 0x000001CD2A75EE40>\n    def __iter__(self):\n>       raise AssertionError(\"the L3 path iterated evaluator evidence\")\nE       AssertionError: the L3 path iterated evaluator evidence\ntests\\rebuild\\test_l3_row_restore.py:196: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_l3_row_restore.py::test_6_poison_evidence_does_not_reach_the_l3_path\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -62,18 +62,51 @@
       "matched": 1,
       "expected_failure_text": null,
       "exit_code": 1,
-      "tail": ">       assert \"RestoreRow\" not in src\nE       assert 'RestoreRow' not in 'def owner_Q...address.m)\\n'\nE         \nE         'RestoreRow' is contained here:\nE           ame__ == \"RestoreRow\":   # MUTATED: the store learns a law\nE         ?           ++++++++++\nE                   return address.context\nE               return DecisionAddress(state=address.state, z=address.z, m=address.m)\ntests\\rebuild\\test_l3_row_restore.py:109: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_l3_row_restore.py::test_3_the_substrate_does_not_learn_the_row_operation\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": ">       assert \"RestoreRow\" not in src\nE       assert 'RestoreRow' not in 'def owner_Q...address.m)\\n'\nE         \nE         'RestoreRow' is contained here:\nE           ame__ == \"RestoreRow\":   # MUTATED: the store learns a law\nE         ?           ++++++++++\nE                   return address.context\nE               return DecisionAddress(state=address.state, z=address.z, m=address.m)\ntests\\rebuild\\test_l3_row_restore.py:110: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_l3_row_restore.py::test_3_the_substrate_does_not_learn_the_row_operation\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
-      "mutation": "dq_l3_is_the_patch_alias",
-      "hole": "the D_Q L3 law is the D_patch alias, whose plan emits DECISION edits against a value-free store's law",
-      "gate": "test_2_the_dq_law_is_an_independent_implementation",
+      "mutation": "dq_l3_reuses_the_patch_plan",
+      "hole": "the D_Q L3 law REUSES the patch implementation's plan, so the arm emits DECISION edits rather than a row operation. Inheriting the class was not this defect: the subclass's own `plan` still won the method resolution, so the hole never reopened and the gate went red only on `issubclass`",
+      "gate": "test_18_the_reused_patch_plan_is_caught_by_the_operation_kind",
       "site": "src\\rfl_rebuild\\b1\\laws.py",
       "matched": 1,
       "expected_failure_text": null,
       "exit_code": 1,
-      "tail": "        assert LocalOracleRestore.alias_of == \"DeleteFactualPatch\"\n        assert DQLocalOracleRestore.plan is not DeleteFactualPatch.plan\n        assert getattr(DQLocalOracleRestore, \"alias_of\", None) is None\n        assert DQLocalOracleRestore.tier is Tier.L3_ORACLE\n>       assert DQLocalOracleRestore not in (LocalOracleRestore,) and \\\n            not issubclass(DQLocalOracleRestore, DeleteFactualPatch)\nE       AssertionError: assert (DQLocalOracleRestore not in (<class 'rfl_rebuild.b1.laws.LocalOracleRestore'>,) and not True)\nE        +  where True = issubclass(DQLocalOracleRestore, DeleteFactualPatch)\ntests\\rebuild\\test_l3_row_restore.py:100: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_l3_row_restore.py::test_2_the_dq_law_is_an_independent_implementation\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "        \"\"\"\n        rows, addrs, target, state, written = scene(overrides=1)\n        plan = DQLocalOracleRestore().plan(addrs, None)\n>       assert all(p.row_op is not None and type(p.row_op) is RestoreRow\n                   for p in plan.plans), \"the D_Q law emits row operations\"\nE       AssertionError: the D_Q law emits row operations\nE       assert False\nE        +  where False = all(<generator object test_18_the_reused_patch_plan_is_caught_by_the_operation_kind.<locals>.<genexpr> at 0x000002171B9E6340>)\ntests\\rebuild\\test_l3_row_restore.py:136: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_l3_row_restore.py::test_18_the_reused_patch_plan_is_caught_by_the_operation_kind\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "row_op_owner_unchecked",
+      "hole": "the runner never consults the owner resolver for a row operation, so a row operation emitted under another architecture reaches the lowering",
+      "gate": "test_9c_a_row_operation_cannot_leak_into_another_architecture",
+      "site": "src\\rfl_rebuild\\b1\\runner.py",
+      "matched": 1,
+      "expected_failure_text": null,
+      "exit_code": 1,
+      "tail": "            name, alias_of, tier = \"PatchRowRestore\", None, Tier.L3_ORACLE\n            def plan(self, addresses, targets):\n                return LawPlan(self.name, tuple(AddressPlan(a, row_op=RestoreRow(a))\n                                                for a in addresses))\n        rows, addrs, target, state, _written = scene(overrides=1)\n>       with pytest.raises(ProtocolError) as ei:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.b1.contract.ProtocolError'>\ntests\\rebuild\\test_l3_row_restore.py:300: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_l3_row_restore.py::test_9c_a_row_operation_cannot_leak_into_another_architecture\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "row_owner_resolver_row_branch_removed",
+      "hole": "the D_Q owner resolver no longer knows the row operation, so a legitimate L3 run cannot establish locality",
+      "gate": "test_9d_a_real_run_depends_on_the_row_owner_resolver",
+      "site": "src\\rfl_rebuild\\b1\\plan.py",
+      "matched": 1,
+      "expected_failure_text": null,
+      "exit_code": 1,
+      "tail": "                try:\n                    owner = spec.owner(p.row_op)\n                except (AttributeError, TypeError, KeyError) as exc:\n>                   raise ProtocolError(\n                        f\"law {plan.name} emitted {p.row_op!r} under the {spec.name} slice, \"\n                        f\"whose owner resolver does not know that operation: \"\n                        f\"{type(exc).__name__}: {exc}\") from exc\nE                   rfl_rebuild.b1.contract.ProtocolError: law LocalOracleRestore emitted RestoreRow(context=DecisionAddress(state=State(x=0, y=2, t=0, kappa=0, phi=0), z=1, m=0)) under the D_Q slice, whose owner resolver does not know that operation: AttributeError: 'RestoreRow' object has no attribute 'state'\nsrc\\rfl_rebuild\\b1\\runner.py:162: ProtocolError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_l3_row_restore.py::test_9d_a_real_run_depends_on_the_row_owner_resolver\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "row_op_type_not_closed",
+      "hole": "any object exposing `.context` grants row-restore capability, because the plan boundary does not close the operation's type",
+      "gate": "test_9b_a_stand_in_row_operation_cannot_grant_row_restore",
+      "site": "src\\rfl_rebuild\\b1\\laws.py",
+      "matched": 1,
+      "expected_failure_text": "DID NOT RAISE",
+      "exit_code": 1,
+      "tail": "        `Tier`, `QReferenceView` and the typed domain are.\n        \"\"\"\n        rows, addrs, target, _state, _written = scene(overrides=1)\n        class FakeRowOp:\n            context = target\n>       with pytest.raises(ProtocolError) as ei:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.b1.contract.ProtocolError'>\ntests\\rebuild\\test_l3_row_restore.py:272: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_l3_row_restore.py::test_9b_a_stand_in_row_operation_cannot_grant_row_restore\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     }
   ]
