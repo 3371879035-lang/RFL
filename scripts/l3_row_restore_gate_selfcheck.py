@@ -15,6 +15,7 @@ did not look}}$$
 | 8 | the owner resolver forgets the row operation | `dq_owner`'s row branch removed | `test_9d` |
 | 9 | the row operation's type is not closed | the nominal check deleted | `test_9b` |
 | 10 | a value-equal context alias is accepted | the strict-context check deleted | `test_9bx` |
+| 11 | the boundary is arm-specific | the cell-level credited-address check deleted | `test_9f` |
 
 **Two properties are deliberately NOT mutated here**, and saying so is part of the evidence:
 
@@ -155,6 +156,18 @@ MUTATIONS: tuple = (
         "    if type(op) is RestoreRow:\n        return op.context\n",
         "    pass                            # MUTATED: row branch removed\n",
         f"{TESTS}::test_9d_a_real_run_depends_on_the_row_owner_resolver",
+    ),
+    (
+        "credited_address_boundary_removed",
+        "the credited-address boundary is not checked at the cell level, so it is carried "
+        "by whichever arm constructs a typed object: the treatment still refuses a "
+        "value-equal context alias through RestoreRow, while NoWriteRef(L3) accepts it and "
+        "completes",
+        RUNNER,
+        "    _require_strict_decision_addresses(addresses)\n",
+        "    pass                            # MUTATED: cell boundary removed\n",
+        f"{TESTS}::test_9f_the_credited_address_boundary_is_arm_uniform",
+        "DID NOT RAISE",
     ),
     (
         "row_context_not_strictly_typed",

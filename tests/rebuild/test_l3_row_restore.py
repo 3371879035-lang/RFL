@@ -316,6 +316,43 @@ def test_9bx_a_value_equal_context_alias_is_not_a_legal_context():
     assert "not a DecisionAddress" in str(ei2.value)
 
 
+def test_9f_the_credited_address_boundary_is_arm_uniform():
+    r"""Both arms of the cell refuse the same malformed population, at the same boundary.
+
+    `RestoreRow` closes its context, so the treatment was protected -- and that is precisely
+    how the hole hid: the boundary was carried by the arm that happens to construct a typed
+    object, while `NoWriteRef(L3)` constructs none and accepted the same alias. The check is
+    therefore cell-level and runs BEFORE any arm plans; by the time a law's `plan` is called,
+    `RestoreRow` would already have raised for one arm and not the other.
+
+    The three folding aliases are reused rather than invented: the point is the asymmetry,
+    not the alias.
+    """
+    legal = DecisionAddress(state=State(x=1, y=2, t=3, kappa=0, phi=1), z=1, m=0)
+    aliases = [
+        DecisionAddress(state=State(x=1.0, y=2, t=3, kappa=0, phi=1), z=1, m=0),
+        DecisionAddress(state=State(x=1, y=2, t=3, kappa=0, phi=1), z=True, m=0),
+        DecisionAddress(state=State(x=1, y=2, t=3, kappa=0, phi=1), z=1, m=0.0),
+    ]
+    for alias in aliases:
+        assert alias == legal and hash(alias) == hash(legal), "the premise"
+        messages = []
+        for law in (NoWriteRef(Tier.L3_ORACLE), DQLocalOracleRestore):
+            state = LearnerPersistentState()
+            with pytest.raises(ProtocolError) as ei:
+                run_row_restore_law(law, state, [alias], VIEW)
+            messages.append(str(ei.value))
+        assert messages[0] == messages[1], (
+            "the reference and the treatment must fail at the same boundary with the same "
+            f"reason; got:\n  {messages[0]}\n  {messages[1]}")
+        assert "strictly typed decision context" in messages[0]
+    # and a non-DecisionAddress is refused by type, also for both arms
+    for law in (NoWriteRef(Tier.L3_ORACLE), DQLocalOracleRestore):
+        with pytest.raises(ProtocolError) as ei2:
+            run_row_restore_law(law, LearnerPersistentState(), [legal.state], VIEW)
+        assert "not DecisionAddress" in str(ei2.value)
+
+
 def test_9c_a_row_operation_cannot_leak_into_another_architecture():
     r"""The other half of §66.5: the runner must CONSULT the resolver.
 

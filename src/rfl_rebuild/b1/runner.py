@@ -49,6 +49,7 @@ import math
 from dataclasses import dataclass
 from typing import Sequence
 
+from rfl_rebuild.env.domain import is_decision_context
 from rfl_rebuild.b1.contract import (
     APPLIED,
     EVALUABLE_NOOP,
@@ -75,6 +76,7 @@ from rfl_rebuild.b1.factual import (
 from rfl_rebuild.b1.tier import DQ_SLICE, PATCH_SLICE, SliceDescriptor, Tier
 from rfl_rebuild.learner.reference import reference_view_from
 from rfl_rebuild.learner.store import (
+    DecisionAddress,
     Edit,
     LearnerPersistentState,
     ReferenceContractError,
@@ -471,6 +473,39 @@ def run_patch_law_with_envelope(law, pre_state: LearnerPersistentState,
     return _run(law, tier, pre_state, addresses, targets, spec, q_reference)
 
 
+def _require_strict_decision_addresses(addresses: Sequence) -> None:
+    r"""The credited-address boundary: typed, and inside the decision domain.
+
+    $$\boxed{\text{same cell} \Rightarrow \text{same admissibility boundary, before any
+    arm-specific behaviour}}$$
+
+    The principle already frozen for the $L_0$/$Q$ reference boundary, applied to the
+    *population* rather than to the reference. Without it the boundary was carried by
+    whichever arm happened to construct something typed: a value-equal but type-malformed
+    credited address (`State(x{=}1.0)`, `z{=}\texttt{True}`, `m{=}0.0` — Python folds it onto
+    the legal address, hashes included) was refused by `DQLocalOracleRestore`, because
+    `RestoreRow` closes its context, and **accepted** by `NoWriteRef(L3)`, which constructs
+    no row operation at all. Two arms of one cell with two admissibility boundaries is
+    exactly the asymmetry the earlier rounds closed elsewhere.
+
+    Checked **before** the tier dispatch, so it cannot be reordered behind a law's `plan`:
+    by then `RestoreRow` would already have raised for one arm and not for the other, which
+    is the failure mode itself.
+    """
+    for a in addresses:
+        if type(a) is not DecisionAddress:
+            raise ProtocolError(
+                f"credited address {a!r} has type {type(a).__name__}, not "
+                "DecisionAddress; the credited population is typed before any arm plans")
+        if not is_decision_context(a.state, a.z, a.m):
+            raise ProtocolError(
+                f"credited address {a!r} is not a strictly typed decision context: its "
+                "State fields must be true integers in their domains and z, m true integers "
+                "inside theirs. Python folds 1.0, True and 1 into one key, so a value-equal "
+                "alias would otherwise be admitted by whichever arm does not happen to "
+                "construct a typed object (A78 §66.5)")
+
+
 def run_dq_law(law, pre_state: LearnerPersistentState,
                addresses: Sequence, rows, q_reference, *,
                sol=None, episode=None,
@@ -493,6 +528,7 @@ def run_dq_law(law, pre_state: LearnerPersistentState,
     silently building a weaker envelope.
     """
     law, tier = _law_contract(law, spec)
+    _require_strict_decision_addresses(addresses)
     if tier is Tier.L3_ORACLE:
         # The empty cell is ASSERTED here rather than inherited from the branch below,
         # which would call it "nothing to build" and refuse it. An empty cell must not
