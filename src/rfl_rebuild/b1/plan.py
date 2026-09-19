@@ -16,6 +16,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from rfl_rebuild.b1.contract import ProtocolError
+from rfl_rebuild.env.domain import is_decision_context
 from rfl_rebuild.learner.store import DecisionAddress, owner_Q
 
 __all__ = ["RestoreRow", "dq_owner"]
@@ -33,9 +35,39 @@ class RestoreRow:
     A_z(m,s),\ (x_t,a) \in Q_D^L}$$
 
     The law never sees the pre-state, so it cannot depend on when it is called.
+
+    **The context is closed at construction:**
+
+    $$\boxed{type(\texttt{context}) = \texttt{DecisionAddress}
+    \;\land\; \texttt{context} \in \mathcal X_D^{\text{strict}}}$$
+
+    without which the operation would reopen the Step 3 defect one layer up.
+    `DecisionAddress` is a plain dataclass and inherits Python's folding, so
+
+    $$\texttt{State}(x{=}1.0), z{=}\texttt{True}, m{=}0.0 \;\equiv\;
+    \texttt{State}(x{=}1), z{=}1, m{=}0$$
+
+    with equal hashes — and a value-equal alias inside an *exact* `RestoreRow` would pass
+    the plan's context check, the owner resolver's locality check **and** the lowering's row
+    match, deleting a legal credited row on behalf of a context that is not a legal context
+    at all. Value equality is not typed equality, and this is the layer that has to say so:
+    the predicate is Step 3's audited one, reused rather than restated.
     """
 
     context: DecisionAddress
+
+    def __post_init__(self) -> None:
+        if type(self.context) is not DecisionAddress:
+            raise ProtocolError(
+                f"RestoreRow context is {self.context!r} of type "
+                f"{type(self.context).__name__}, not a DecisionAddress")
+        if not is_decision_context(self.context.state, self.context.z, self.context.m):
+            raise ProtocolError(
+                f"RestoreRow context {self.context!r} is not a strictly typed decision "
+                "context: its State fields must be true integers in their domains and z, m "
+                "true integers inside theirs. Python folds 1.0, True and 1 into one key, so "
+                "a value-equal alias would otherwise match a legal credited row in the plan "
+                "check, the owner check AND the lowering (A78 §66.5)")
 
 
 def dq_owner(op) -> DecisionAddress:
@@ -45,7 +77,11 @@ def dq_owner(op) -> DecisionAddress:
 
     One resolver for both kinds, so A77 §65.9's locality rule is checked the same way
     whichever operation a law emitted, and the substrate keeps knowing only the store.
+
+    ``type(op) is RestoreRow`` rather than ``isinstance``: `AddressPlan` already refuses a
+    subclass at the plan boundary, and the resolver matches that closure so the two cannot
+    disagree about what a row operation is.
     """
-    if isinstance(op, RestoreRow):
+    if type(op) is RestoreRow:
         return op.context
     return owner_Q(op)

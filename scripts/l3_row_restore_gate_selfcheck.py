@@ -14,6 +14,7 @@ did not look}}$$
 | 7 | the runner never consults the row owner | the row-op owner check deleted | `test_9c` |
 | 8 | the owner resolver forgets the row operation | `dq_owner`'s row branch removed | `test_9d` |
 | 9 | the row operation's type is not closed | the nominal check deleted | `test_9b` |
+| 10 | a value-equal context alias is accepted | the strict-context check deleted | `test_9bx` |
 
 **Two properties are deliberately NOT mutated here**, and saying so is part of the evidence:
 
@@ -151,9 +152,20 @@ MUTATIONS: tuple = (
         "the D_Q owner resolver no longer knows the row operation, so a legitimate L3 run "
         "cannot establish locality",
         PLAN,
-        "    if isinstance(op, RestoreRow):\n        return op.context\n",
+        "    if type(op) is RestoreRow:\n        return op.context\n",
         "    pass                            # MUTATED: row branch removed\n",
         f"{TESTS}::test_9d_a_real_run_depends_on_the_row_owner_resolver",
+    ),
+    (
+        "row_context_not_strictly_typed",
+        "RestoreRow accepts a value-equal but type-malformed context alias, which then "
+        "satisfies the plan's context check, the owner resolver's locality check and the "
+        "lowering's row match by value equality, deleting a legal credited row",
+        PLAN,
+        "        if not is_decision_context(self.context.state, self.context.z, self.context.m):\n",
+        "        if False:               # MUTATED: alias accepted\n",
+        f"{TESTS}::test_9bx_a_value_equal_context_alias_is_not_a_legal_context",
+        "DID NOT RAISE",
     ),
     (
         "row_op_type_not_closed",

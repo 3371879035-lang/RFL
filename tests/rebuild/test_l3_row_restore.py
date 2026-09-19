@@ -244,11 +244,12 @@ def test_8_an_address_plan_is_entry_edits_or_one_row_op_never_both():
     with pytest.raises(ProtocolError) as ei2:
         AddressPlan(target, (), NO_VALID_ALTERNATIVE, RestoreRow(target))
     assert "conflicting" in str(ei2.value)
+    if len(addrs) < 2:
+        pytest.fail("the probe needs two credited contexts")           # pragma: no cover
+    other = addrs[1]
     with pytest.raises(ProtocolError) as ei3:
-        AddressPlan(target, (), None,
-                    RestoreRow(DecisionAddress(
-                        state=State(x=0, y=0, t=0, kappa=0, phi=0), z=1, m=0)))
-    assert "must name the context" in str(ei3.value)
+        AddressPlan(target, (), None, RestoreRow(other))
+    assert "must name the context" in str(ei3.value), ei3.value
 
 
 def test_9_the_row_op_owner_is_the_credited_context():
@@ -279,6 +280,40 @@ def test_9b_a_stand_in_row_operation_cannot_grant_row_restore():
     with pytest.raises(ProtocolError) as ei2:
         AddressPlan(target, row_op=Subclassed(target))
     assert "is not one" in str(ei2.value)
+
+
+def test_9bx_a_value_equal_context_alias_is_not_a_legal_context():
+    r"""The Step 3 defect, one layer up — and the premise is asserted, not assumed.
+
+    $$\boxed{\texttt{alias} = \texttt{legal} \;\land\; h(\texttt{alias}) =
+    h(\texttt{legal}) \;\not\Longrightarrow\; \texttt{alias} \text{ is legal}}$$
+
+    `DecisionAddress` is a plain dataclass and inherits Python's folding. Inside an *exact*
+    `RestoreRow`, such an alias would satisfy the plan's context check, the owner resolver's
+    locality check and the lowering's row match — all three by value equality — and a legal
+    credited row would be deleted on behalf of a context that is not a legal context.
+    """
+    legal = DecisionAddress(state=State(x=1, y=2, t=3, kappa=0, phi=1), z=1, m=0)
+    aliases = [
+        DecisionAddress(state=State(x=1.0, y=2, t=3, kappa=0, phi=1), z=1, m=0),
+        DecisionAddress(state=State(x=1, y=2, t=3, kappa=0, phi=1), z=True, m=0),
+        DecisionAddress(state=State(x=1, y=2, t=3, kappa=0, phi=1), z=1, m=0.0),
+    ]
+    # (0) the premise: Python really does fold these
+    for alias in aliases:
+        assert alias == legal, "the gate's premise: the alias folds onto the legal address"
+        assert hash(alias) == hash(legal)
+    # (1) and the typed domain refuses each of them anyway
+    for alias in aliases:
+        with pytest.raises(ProtocolError) as ei:
+            RestoreRow(alias)
+        assert "strictly typed decision context" in str(ei.value), ei.value
+    # (2) while the legal one is accepted, so the rejection is not blanket
+    assert RestoreRow(legal).context == legal
+    # (3) and a non-DecisionAddress context is refused by type
+    with pytest.raises(ProtocolError) as ei2:
+        RestoreRow(legal.state)
+    assert "not a DecisionAddress" in str(ei2.value)
 
 
 def test_9c_a_row_operation_cannot_leak_into_another_architecture():
