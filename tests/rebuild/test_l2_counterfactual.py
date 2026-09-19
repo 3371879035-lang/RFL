@@ -1010,8 +1010,10 @@ def test_23_an_implemented_tier_must_be_a_tier():
 def test_24_the_registries_are_separate_and_the_counts_do_not_move():
     assert [law.name for law in DQ_LAWS] == ["NoWrite", "FactualReturnWrite", "NoWrite",
                                              "CounterfactualReturnWrite",
-                                             "DualReturnWrite"]
+                                             "DualReturnWrite", "NoWrite",
+                                             "LocalOracleRestore"]
     kinds = [k for _n, k, _a in law_metadata(DQ_LAWS)]
-    assert kinds == ["reference", "operation", "reference", "operation", "operation"]
-    assert independent_treatment_count(DQ_LAWS) == 3
+    assert kinds == ["reference", "operation", "reference", "operation", "operation",
+                     "reference", "operation"]
+    assert independent_treatment_count(DQ_LAWS) == 4
     assert independent_treatment_count() == 3

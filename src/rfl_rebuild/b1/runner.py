@@ -58,7 +58,7 @@ from rfl_rebuild.b1.contract import (
     UpdateLedger,
     fingerprint,
 )
-from rfl_rebuild.b1.laws import LawPlan, _Law
+from rfl_rebuild.b1.laws import AddressPlan, LawPlan, _Law
 from rfl_rebuild.b1.targets import (
     build_target_envelope,
     resolve_credited_units,
@@ -75,6 +75,7 @@ from rfl_rebuild.b1.factual import (
 from rfl_rebuild.b1.tier import DQ_SLICE, PATCH_SLICE, SliceDescriptor, Tier
 from rfl_rebuild.learner.reference import reference_view_from
 from rfl_rebuild.learner.store import (
+    Edit,
     LearnerPersistentState,
     ReferenceContractError,
     StoreTransactionError,
@@ -85,6 +86,7 @@ __all__ = [
     "B1Result",
     "run_dq_law",
     "run_factual_return_law",
+    "run_row_restore_law",
     "run_patch_law",
     "run_patch_law_with_envelope",
 ]
@@ -283,6 +285,33 @@ def _scalar_accounting(plan: LawPlan, pre_view: dict, post_view: dict,
     return len(deltas), math.fsum(deltas), max(deltas, default=0.0)
 
 
+def _lower_row_ops(plan: LawPlan, pre_view: dict,
+                   spec: SliceDescriptor) -> LawPlan:
+    r"""Lower every row operation against **one** frozen pre-state (A78 §66.6).
+
+    $$\boxed{\text{symbolic plans} \rightarrow \text{all row ops lowered against ONE frozen
+    pre-state} \rightarrow \text{concrete entry edits} \rightarrow \text{ONE transaction}}$$
+
+    "The overrides present in that row" is read off the slice's own view, so the lowering
+    needs no reference: the row returns to $Q_D^\ast$ by deletion, never by writing its
+    values (A77 §65.9). The deletions are ordered by the canonical entry key, because A76
+    forbids a result that depends on iteration order.
+    """
+    lowered = []
+    for p in plan.plans:
+        if p.row_op is None:
+            lowered.append(p)
+            continue
+        context = p.row_op.context
+        present = sorted(
+            (e for e in pre_view
+             if (e.state, e.z, e.m) == (context.state, context.z, context.m)),
+            key=_entry_key)
+        lowered.append(AddressPlan(
+            p.address, tuple(Edit(spec.store, entry, None) for entry in present)))
+    return LawPlan(plan.name, tuple(lowered))
+
+
 def _run(law: "_Law", tier: Tier, pre_state: LearnerPersistentState,
          addresses: Sequence, targets, spec: SliceDescriptor,
          q_reference=None) -> B1Result:
@@ -329,6 +358,21 @@ def _run(law: "_Law", tier: Tier, pre_state: LearnerPersistentState,
             f"{tier.name}: {type(exc).__name__}: {exc}. The usual cause is a law run on a "
             "slice whose cell does not deliver the fields the law reads"
         ) from exc
+    _validate_plan(plan, addresses, spec)
+
+    # ---- the lowering phase: ALL row ops against ONE frozen pre-state ----- #
+    #
+    # A78 §66.6 froze the order -- symbolic plans, then every row operation lowered against
+    # the same pre-state, then concrete entry edits, then ONE transaction -- and it froze
+    # *why* it is a phase rather than a step: a scene's rows must not be lowered one at a
+    # time against a store that earlier rows already changed.
+    #
+    # Everything downstream reads the LOWERED plan. That is the second half of §66.6 and
+    # the reason it matters: an AddressPlan carrying a row operation and `edits=()` would,
+    # under an entry-only reading, be "no edits and no declared status" -- reported
+    # EVALUABLE_NOOP while the lowering deleted entries, a ledger contradicting its own
+    # store.
+    plan = _lower_row_ops(plan, pre_view, spec)
     _validate_plan(plan, addresses, spec)
 
     # ---- ONE transaction for the whole scene ----------------------------- #
@@ -422,12 +466,27 @@ def run_dq_law(law, pre_state: LearnerPersistentState,
       re-derived from those rows bit for bit;
     * $L_2$ additionally needs the shared $a_t^+$ adapter (``sol``, the *same* adapter
       every other arm uses, A76 §63.3) and the factual configuration (``episode``) for the
-      full-episode counterfactual replay, and is re-derived from both.
+      full-episode counterfactual replay, and is re-derived from both;
+    * $L_3$ builds **nothing**: its cell is empty, and the row restore needs no $a^+$, no
+      rows and no episode — which is exactly why its domain is every credited address and
+      not the ones that happen to have an alternative (A78 §66.3).
 
     Handing one tier's evidence where the other's is required fails stop rather than
     silently building a weaker envelope.
     """
     law, tier = _law_contract(law, spec)
+    if tier is Tier.L3_ORACLE:
+        # The empty cell is ASSERTED here rather than inherited from the branch below,
+        # which would call it "nothing to build" and refuse it. An empty cell must not
+        # acquire a builder by accident: if a future revision gives L3 a field set, this
+        # fails stop instead of building an envelope the law's contract does not have.
+        if spec.fields(tier):
+            raise ProtocolError(
+                f"{spec.name} at tier {tier.name} declares fields "
+                f"{sorted(spec.fields(tier))}, but the L3 row restore is defined as an "
+                "empty delivery (A77 §65.2); an envelope here would be a fourth way of "
+                "naming evaluator-side information")
+        return _run(law, tier, pre_state, addresses, None, spec, q_reference)
     fields = spec.fields(tier)
     if not fields:
         raise ProtocolError(
@@ -532,6 +591,34 @@ def run_factual_return_law(law, pre_state: LearnerPersistentState,
             f"{law.name} declares tier {tier.name}; run_factual_return_law builds the L0 "
             "cell only — use run_dq_law for a law whose cell needs the counterfactual")
     return run_dq_law(law, pre_state, addresses, rows, q_reference, spec=spec)
+
+
+def run_row_restore_law(law, pre_state: LearnerPersistentState,
+                        addresses: Sequence, q_reference,
+                        spec: SliceDescriptor = DQ_SLICE) -> B1Result:
+    r"""The $L_3$ entry point, which **cannot** be handed evaluator-side evidence.
+
+    $$\boxed{\text{no } rows,\ \text{no } sol,\ \text{no } episode}$$
+
+    A78 §66.4 requires "no *new* $L_3$-specific reference entry point" and §66.8 requires the
+    empty cell to be demonstrated rather than assumed. Both are discharged here by the
+    signature itself: where :func:`run_dq_law` accepts rows, a solution and an episode
+    because its other cells need them, this function has no parameter to pass them through.
+    $L_3$'s exclusion from evaluator-side information is therefore a property of the API
+    rather than a claim about the code inside it.
+
+    ``q_reference`` is still required, and that is not a contradiction: it is the **generic
+    scalar runner's** existing input — the transaction's canonicalisation boundary and
+    §65.10's deleted-leg accounting both need the injected view — and it is not an
+    $L_3$-specific channel.
+    """
+    law, tier = _law_contract(law, spec)
+    if tier is not Tier.L3_ORACLE:
+        raise ProtocolError(
+            f"{law.name} declares tier {tier.name}; run_row_restore_law runs the L3 cell "
+            "only — a law whose cell declares fields needs its envelope built, and this "
+            "entry point has nowhere to take one from")
+    return run_dq_law(law, pre_state, addresses, None, q_reference, spec=spec)
 
 
 def run_patch_law(law, pre_state: LearnerPersistentState, credited_units,

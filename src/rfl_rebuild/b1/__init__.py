@@ -33,6 +33,7 @@ from rfl_rebuild.b1.contract import (
 )
 from rfl_rebuild.b1.laws import (
     DQ_LAWS,
+    DQLocalOracleRestore,
     CounterfactualReturnWrite,
     DualReturnWrite,
     LAWS,
@@ -66,6 +67,7 @@ from rfl_rebuild.b1.runner import (
     run_dq_law,
     run_factual_return_law,
     run_patch_law,
+    run_row_restore_law,
     run_patch_law_with_envelope,
 )
 from rfl_rebuild.b1.targets import (
@@ -74,6 +76,7 @@ from rfl_rebuild.b1.targets import (
     resolve_credited_units,
     resolve_decision_address,
 )
+from rfl_rebuild.b1.plan import RestoreRow, dq_owner
 from rfl_rebuild.b1.tier import (
     DQ_SLICE,
     ILL_TYPED,
@@ -97,6 +100,7 @@ __all__ = [
     "B1Result",
     "DecisionWriteReceipt",
     "CounterfactualReturnWrite",
+    "DQLocalOracleRestore",
     "DeleteFactualPatch",
     "DualReturnWrite",
     "FactualReturnWrite",
@@ -112,6 +116,8 @@ __all__ = [
     "UpdateLedger",
     "build_target_envelope",
     "CfEpisode",
+    "RestoreRow",
+    "dq_owner",
     "CounterfactualUndefined",
     "CounterfactualTarget",
     "FactualTarget",
@@ -126,6 +132,7 @@ __all__ = [
     "resolve_decision_address",
     "run_dq_law",
     "run_factual_return_law",
+    "run_row_restore_law",
     "run_patch_law",
     "run_patch_law_with_envelope",
     "validate_counterfactual_envelope",

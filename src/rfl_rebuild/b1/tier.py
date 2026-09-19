@@ -45,6 +45,7 @@ from types import MappingProxyType
 from typing import Any, Callable, Mapping
 
 from rfl_rebuild.b1.contract import ProtocolError
+from rfl_rebuild.b1.plan import dq_owner
 from rfl_rebuild.learner.store import (
     DECISION,
     Q,
@@ -309,7 +310,7 @@ DQ_SLICE = SliceDescriptor(
     name="D_Q",
     store=Q,
     scalar=True,
-    owner=owner_Q,
+    owner=dq_owner,
     view=_q_view,
     cells={
         Tier.L0_FACTUAL: frozenset({"a_factual", "g_factual"}),
@@ -324,7 +325,8 @@ DQ_SLICE = SliceDescriptor(
         "a_plus": lambda record: record.a_plus,
         "g_cf": lambda record: record.g_cf,
     },
-    implemented_tiers=frozenset({Tier.L0_FACTUAL, Tier.L2_COUNTERFACTUAL}),
+    implemented_tiers=frozenset({Tier.L0_FACTUAL, Tier.L2_COUNTERFACTUAL,
+                                 Tier.L3_ORACLE}),
 )
 
 

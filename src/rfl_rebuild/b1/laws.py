@@ -42,6 +42,7 @@ from dataclasses import dataclass
 from typing import Mapping, Sequence
 
 from rfl_rebuild.b1.contract import NO_VALID_ALTERNATIVE, ProtocolError
+from rfl_rebuild.b1.plan import RestoreRow, dq_owner
 from rfl_rebuild.b1.tier import Tier
 from rfl_rebuild.learner.store import DECISION, Q, DecisionAddress, Edit, QAddress
 
@@ -50,6 +51,7 @@ __all__ = [
     "LAWS",
     "AddressPlan",
     "CounterfactualReturnWrite",
+    "DQLocalOracleRestore",
     "DeleteFactualPatch",
     "DualReturnWrite",
     "FactualReturnWrite",
@@ -57,6 +59,8 @@ __all__ = [
     "LocalOracleRestore",
     "NoWrite",
     "NoWriteRef",
+    "RestoreRow",
+    "dq_owner",
     "SetAlternative",
     "independent_treatment_count",
     "law_metadata",
@@ -67,24 +71,49 @@ __all__ = [
 class AddressPlan:
     r"""One credited context's planned outcome (§65.9).
 
-    Exactly one of three shapes is legal:
+    Exactly one of four shapes is legal:
 
-    | ``edits`` | ``status`` | meaning |
-    |---|---|---|
-    | non-empty | ``None`` | entry edits at this context |
-    | empty | ``None`` | an ordinary ``EVALUABLE_NOOP`` |
-    | empty | ``NO_VALID_ALTERNATIVE`` | a legitimate absence of a target |
+    | ``edits`` | ``row_op`` | ``status`` | meaning |
+    |---|---|---|---|
+    | non-empty | ``None`` | ``None`` | entry edits at this context |
+    | empty | ``None`` | ``None`` | an ordinary ``EVALUABLE_NOOP`` |
+    | empty | ``None`` | ``NO_VALID_ALTERNATIVE`` | a legitimate absence of a target |
+    | empty | a ``RestoreRow`` | ``None`` | a row-scoped structural operation |
 
-    Anything else is a :class:`ProtocolError`. The field is a *tuple* rather than a single
-    edit because A77 §65.9 froze the address-plan as the unit, and on $D_Q$ one context
-    carries two entries (`DualReturnWrite`) or a whole row (`LocalOracleRestore`) while
-    still producing one receipt. There is deliberately no row-operation variant here: that
-    arrives with the architecture that needs it, per §65.12's order.
+    Anything else is a :class:`ProtocolError`. The edits field is a *tuple* rather than a
+    single edit because A77 §65.9 froze the address-plan as the unit, and on $D_Q$ one
+    context carries two entries (`DualReturnWrite`) while still producing one receipt.
+
+    **Either entry edits or one row operation, never both** — §65.9's rule, enforced here
+    at construction because it is a property of the plan object and not of who reads it.
+    Two row operations are the same rule's other half: the field is not a tuple, so a
+    second one cannot be expressed.
     """
 
     address: DecisionAddress
     edits: tuple[Edit, ...] = ()
     status: str | None = None
+    row_op: RestoreRow | None = None
+
+    def __post_init__(self) -> None:
+        if self.row_op is not None:
+            if self.edits:
+                raise ProtocolError(
+                    f"the address-plan for {self.address!r} carries both entry edits and "
+                    f"{self.row_op!r}; an address-plan contains either entry edits or one "
+                    "row operation, never both (A77 §65.9)")
+            if self.status is not None:
+                raise ProtocolError(
+                    f"the address-plan for {self.address!r} carries a row operation and "
+                    f"the declared status {self.status!r}; a row operation is always "
+                    "evaluable, so a status beside it would be a second, conflicting "
+                    "description of the same outcome")
+            if self.row_op.context != self.address:
+                raise ProtocolError(
+                    f"the address-plan for {self.address!r} carries a row operation on "
+                    f"{self.row_op.context!r}; the operation must name the context whose "
+                    "plan it is, or owner locality would be asserted about a different "
+                    "row than the one being restored")
 
 
 @dataclass(frozen=True, slots=True)
@@ -251,6 +280,34 @@ class LocalOracleRestore(DeleteFactualPatch):
     tier = Tier.L3_ORACLE
 
 
+class DQLocalOracleRestore(_Law):
+    r"""$D_Q\times L_3$ — restore the credited context's whole row to $Q_D^\ast$.
+
+    $$\boxed{L_3:\ \text{delete every override in the credited context's row}}$$
+
+    An **independent implementation**, not the $D_{patch}$ alias (A78 §66.7). The alias
+    shares `DeleteFactualPatch`'s `plan` function object and emits `DECISION` edits, which
+    is correct on a value-free store and impossible here. It may keep the display name, and
+    it registers only in the $D_Q$ registry.
+
+    The delivery is empty — $\text{fields}(D_Q,L_3)=\varnothing$ (§65.2) — so the law reads
+    nothing: it needs no $a^+$ (which is why its domain is **every** credited address, not
+    the ones that happen to have an alternative, A78 §66.3) and no reference, because the
+    row returns to $Q_D^\ast$ by deletion rather than by writing its values.
+
+    It emits one symbolic row operation per address and lets the slice lower it. Lowering
+    is the runner's pre-commit phase, so the law never sees the pre-state and cannot depend
+    on when it is called.
+    """
+
+    name = "LocalOracleRestore"
+    tier = Tier.L3_ORACLE
+
+    def plan(self, addresses, targets) -> LawPlan:
+        return LawPlan(self.name, tuple(AddressPlan(a, row_op=RestoreRow(a))
+                                        for a in addresses))
+
+
 class FactualReturnWrite(_Law):
     r"""$D_Q\times L_0$ — write the factual suffix return at the factual action.
 
@@ -368,6 +425,8 @@ DQ_LAWS = (
     NoWriteRef(Tier.L2_COUNTERFACTUAL),
     CounterfactualReturnWrite,
     DualReturnWrite,
+    NoWriteRef(Tier.L3_ORACLE),
+    DQLocalOracleRestore,
 )
 
 

@@ -164,12 +164,10 @@ def test_2b_semantics_and_build_state_are_two_questions():
 
     # --- build state: L3 is the cell still to come ------------------------ #
     assert DQ_SLICE.implemented_tiers == frozenset({Tier.L0_FACTUAL,
-                                                    Tier.L2_COUNTERFACTUAL})
-    for tier in (Tier.L0_FACTUAL, Tier.L2_COUNTERFACTUAL):
-        DQ_SLICE.require_implemented(tier)                 # the built cells pass
-    with pytest.raises(ProtocolError) as ei2:
-        DQ_SLICE.require_implemented(Tier.L3_ORACLE)
-    assert "not built in this revision" in str(ei2.value)
+                                                    Tier.L2_COUNTERFACTUAL,
+                                                    Tier.L3_ORACLE})
+    for tier in (Tier.L0_FACTUAL, Tier.L2_COUNTERFACTUAL, Tier.L3_ORACLE):
+        DQ_SLICE.require_implemented(tier)                 # every built cell passes
 
     # --- consulted in that order, through the real entry point ----------- #
     def _stub(name, tier):
@@ -188,10 +186,6 @@ def test_2b_semantics_and_build_state_are_two_questions():
 
     trace, rows, kappa, phi = healthy_scene()
     addrs = credited(trace, rows, kappa, phi)
-    with pytest.raises(ProtocolError) as ei3:
-        run_factual_return_law(_stub("L3Stub", Tier.L3_ORACLE),
-                               LearnerPersistentState(), addrs, rows, VIEW)
-    assert "not built in this revision" in str(ei3.value)
     with pytest.raises(ProtocolError) as ei4:
         run_factual_return_law(_stub("L1Stub", Tier.L1_CORRECTIVE),
                                LearnerPersistentState(), addrs, rows, VIEW)
@@ -525,15 +519,18 @@ def test_7_the_reference_arm_is_constructed_through_the_same_cell():
 def test_7b_the_registries_are_separate_and_the_counts_do_not_move():
     names = [law.name for law in DQ_LAWS]
     assert names == ["NoWrite", "FactualReturnWrite", "NoWrite",
-                     "CounterfactualReturnWrite", "DualReturnWrite"], names
+                     "CounterfactualReturnWrite", "DualReturnWrite", "NoWrite",
+                     "LocalOracleRestore"], names
     # the two references share the display name `NoWrite`; A77 §65.3 puts the
     # distinction in the CELL, not in the name, and law_metadata's shape is frozen.
     kinds = [k for _n, k, _a in law_metadata(DQ_LAWS)]
-    assert kinds == ["reference", "operation", "reference", "operation", "operation"]
+    assert kinds == ["reference", "operation", "reference", "operation", "operation",
+                     "reference", "operation"]
     tiers = [getattr(law, "tier") for law in DQ_LAWS]
     assert tiers == [Tier.L0_FACTUAL, Tier.L0_FACTUAL, Tier.L2_COUNTERFACTUAL,
-                     Tier.L2_COUNTERFACTUAL, Tier.L2_COUNTERFACTUAL]
-    assert independent_treatment_count(DQ_LAWS) == 3      # L0 + the two L2 arms
+                     Tier.L2_COUNTERFACTUAL, Tier.L2_COUNTERFACTUAL, Tier.L3_ORACLE,
+                     Tier.L3_ORACLE]
+    assert independent_treatment_count(DQ_LAWS) == 4      # 4, as A76 63.8 froze
     # the D_patch registry is untouched by the D_Q work
     assert independent_treatment_count() == 3
 
