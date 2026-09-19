@@ -43,12 +43,14 @@ from typing import Mapping, Sequence
 
 from rfl_rebuild.b1.contract import NO_VALID_ALTERNATIVE
 from rfl_rebuild.b1.tier import Tier
-from rfl_rebuild.learner.store import DECISION, DecisionAddress, Edit
+from rfl_rebuild.learner.store import DECISION, Q, DecisionAddress, Edit, QAddress
 
 __all__ = [
+    "DQ_LAWS",
     "LAWS",
     "AddressPlan",
     "DeleteFactualPatch",
+    "FactualReturnWrite",
     "LawPlan",
     "LocalOracleRestore",
     "NoWrite",
@@ -247,38 +249,83 @@ class LocalOracleRestore(DeleteFactualPatch):
     tier = Tier.L3_ORACLE
 
 
+class FactualReturnWrite(_Law):
+    r"""$D_Q\times L_0$ — write the factual suffix return at the factual action.
+
+    $$\boxed{Q_D^L(x_t, a_t^F) \leftarrow G_t^F}$$
+
+    $\alpha = 1$ (full backup): B1 studies *target and write semantics*, and an arbitrary
+    $\alpha$ would introduce a second, unstudied question. $\alpha < 1$ is a secondary
+    sensitivity study and may never pick a winner or rescue a primary result.
+
+    Three things this law is not:
+
+    * **not an oracle.** The target is the *observed* suffix return $G_t^F$, never
+      $Q_D^\ast(x_t,a_t^F)$. On a faulted trajectory they differ, and that difference is
+      the entire content of the update; substituting the reference would make an $L_0$ law
+      silently evaluator-assisted;
+    * **not information-wide.** It reads exactly the two fields its cell declares,
+      $a_t^F$ and $G_t^F$ (A77 §65.2). Neither $a_t^+$ nor $G_t^{CF}$ is delivered to it,
+      and the runner would refuse to deliver them;
+    * **not multi-entry.** One credited `DecisionAddress`, one entry
+      $Q_D^L(x_t,a_t^F)$, one receipt — under `owner_Q` locality.
+    """
+
+    name = "FactualReturnWrite"
+    tier = Tier.L0_FACTUAL
+
+    def plan(self, addresses, targets) -> LawPlan:
+        plans = []
+        for a in addresses:
+            rec = targets[a]
+            entry = QAddress(state=a.state, z=a.z, m=a.m, a=rec["a_factual"])
+            plans.append(AddressPlan(a, (Edit(Q, entry, rec["g_factual"]),)))
+        return LawPlan(self.name, tuple(plans))
+
+
 #: Registration order is fixed so arm enumeration is deterministic.
 LAWS = (NoWrite, DeleteFactualPatch, SetAlternative, LocalOracleRestore)
 
+#: The $D_Q$ registry, as far as A77 §65.12's order has reached: one treatment, plus the
+#: reference for the cell that treatment runs in. Adding to this tuple is adding a law.
+DQ_LAWS = (NoWriteRef(Tier.L0_FACTUAL), FactualReturnWrite)
 
-def law_metadata() -> tuple:
+
+def _kind(law) -> str:
+    """``reference`` / ``operation`` / ``alias`` for a law **class or instance**.
+
+    Instances are needed because A77 §65.3 makes the same-tier reference an *instance* per
+    cell — ``NoWriteRef(L0)`` — rather than a single class fixed at the lowest tier.
+    """
+    if getattr(law, "alias_of", None):
+        return "alias"
+    if isinstance(law, NoWriteRef) or (isinstance(law, type)
+                                       and issubclass(law, NoWriteRef)):
+        return "reference"
+    return "operation"
+
+
+def law_metadata(registry=None) -> tuple:
     """``(name, kind, alias_of)`` per registered arm.
 
     ``kind`` is one of ``reference`` / ``operation`` / ``alias``.
     """
-    out = []
-    for law in LAWS:
-        if law.alias_of:
-            out.append((law.name, "alias", law.alias_of))
-        elif issubclass(law, NoWriteRef):
-            out.append((law.name, "reference", None))
-        else:
-            out.append((law.name, "operation", None))
-    return tuple(out)
+    return tuple((law.name, _kind(law), getattr(law, "alias_of", None))
+                 for law in (LAWS if registry is None else registry))
 
 
-def independent_treatment_count() -> int:
-    """**Three**, not four: ``NoWrite`` + ``DeleteFactualPatch`` + ``SetAlternative``.
+def independent_treatment_count(registry=None) -> int:
+    """The number of registered arms that are neither aliases nor references.
 
-    ``LocalOracleRestore`` is an alias on this architecture and must not be counted, nor
-    executed as a fourth arm and reported twice.
+    On $D_{patch}$ the default registry answers **three**, and per A76 §63.9 those three
+    are ``NoWrite`` + ``DeleteFactualPatch`` + ``SetAlternative`` — i.e. that frozen count
+    *includes* the reference. A77 §65.3 says a reference is never a treatment, and that is
+    what governs the $D_Q$ registry.
 
-    Scope, stated because A77 §65.3 says something narrower about *references*: this
-    counts the registered arms that are not aliases, and A76 §63.9 wrote the reference
-    among these three. §65.3's rule — that a reference is never a treatment — is what
-    governs the $D_Q$ row, where A77 §65.8 counts **four** and the three `NoWriteRef`
-    instances are additional to them. The two are not in conflict, but they are not the
-    same formula either, so the $D_Q$ count is implemented with that registry rather than
-    inferred here.
+    The two are different questions, so the count is explicit per registry rather than
+    inferred from the kind labels, and the frozen number is not re-derived from the newer
+    rule.
     """
-    return sum(1 for _n, kind, _a in law_metadata() if kind != "alias")
+    if registry is None:
+        return 3                                   # frozen by A76 §63.9
+    return sum(1 for law in registry if _kind(law) == "operation")

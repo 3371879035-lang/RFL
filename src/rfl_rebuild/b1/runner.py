@@ -63,10 +63,19 @@ from rfl_rebuild.b1.targets import (
     resolve_credited_units,
     validate_envelope,
 )
-from rfl_rebuild.b1.tier import PATCH_SLICE, SliceDescriptor, Tier
+from rfl_rebuild.b1.factual import (
+    build_factual_envelope,
+    validate_factual_envelope,
+)
+from rfl_rebuild.b1.tier import DQ_SLICE, PATCH_SLICE, SliceDescriptor, Tier
 from rfl_rebuild.learner.store import LearnerPersistentState, StoreTransactionError
 
-__all__ = ["B1Result", "run_patch_law", "run_patch_law_with_envelope"]
+__all__ = [
+    "B1Result",
+    "run_factual_return_law",
+    "run_patch_law",
+    "run_patch_law_with_envelope",
+]
 
 #: Distinguishes "this entry is absent from the store view" from every storable value,
 #: including ``None`` (which is not a storable value here, but is a legal *deletion*
@@ -201,8 +210,54 @@ def _law_contract(law, spec: SliceDescriptor):
     return law, tier
 
 
+def _scalar_accounting(plan: LawPlan, pre_view: dict, post_view: dict,
+                       q_reference) -> tuple:
+    r"""A77 §65.10: $N_{\\text{scalar}}$, $\\Sigma$, $\\text{Max}$ over the changed entries.
+
+    $$\\boxed{\\Delta(e)=\\begin{cases}
+    \\lvert q_{\\text{post}} - q_{\\text{pre}}\\rvert, & \\text{override} \\to \\text{override}\\\\
+    \\lvert q_{\\text{post}} - Q_D^\\ast(e)\\rvert, & \\bot \\to \\text{override}\\\\
+    \\lvert Q_D^\\ast(e) - q_{\\text{pre}}\\rvert, & \\text{override} \\to \\bot
+    \\end{cases}}$$
+
+    The delta is measured against the **effective** $Q$, not against an arbitrary zero: in
+    a sparse store "absent" is $Q_D^\\ast(e)$, not $0$. Measuring a created entry as
+    $\\lvert q_{\\text{post}}\\rvert$ would make a nearly-reference-valued write look like a
+    huge edit, and would make the numbers depend on where the reward scale happens to
+    place zero.
+
+    The reference is required here for the same reason it is required at the transaction
+    boundary: without it the created and deleted cases are not defined at all.
+    """
+    if q_reference is None:
+        raise ProtocolError(
+            "the scalar ledger needs the injected reference view: the created and deleted "
+            "deltas are defined against Q_D^*, and an absent entry is not a zero value "
+            "(A77 §65.10)")
+    n_scalar = 0
+    total = 0.0
+    largest = 0.0
+    for p in plan.plans:
+        for e in p.edits:
+            was = pre_view.get(e.address, _MISSING)
+            now = post_view.get(e.address, _MISSING)
+            if was == now:
+                continue
+            n_scalar += 1
+            if was is _MISSING:
+                delta = abs(float(now) - float(q_reference.value(e.address)))
+            elif now is _MISSING:
+                delta = abs(float(q_reference.value(e.address)) - float(was))
+            else:
+                delta = abs(float(now) - float(was))
+            total += delta
+            largest = max(largest, delta)
+    return n_scalar, total, largest
+
+
 def _run(law: "_Law", tier: Tier, pre_state: LearnerPersistentState,
-         addresses: Sequence, targets, spec: SliceDescriptor) -> B1Result:
+         addresses: Sequence, targets, spec: SliceDescriptor,
+         q_reference=None) -> B1Result:
     # ---- the cell decides delivery, not the law and not the outcome ------- #
     targets = spec.deliver(tier, addresses, targets)
 
@@ -210,14 +265,27 @@ def _run(law: "_Law", tier: Tier, pre_state: LearnerPersistentState,
     fp_pre = fingerprint(pre_state)
 
     # ---- the law plans BEFORE the transaction, touching nothing ---------- #
-    plan = law.plan(addresses, targets)
+    #
+    # A law reads the fields *its cell declares*, so running it on a slice whose cell
+    # declares different ones is a protocol failure — and it used to surface as a bare
+    # `TypeError: 'NoneType' object is not subscriptable` from inside the law, which reads
+    # like a bug in the law rather than a mismatched (law, slice) pair. The `from exc`
+    # keeps the original traceback.
+    try:
+        plan = law.plan(addresses, targets)
+    except (TypeError, KeyError, AttributeError, IndexError) as exc:
+        raise ProtocolError(
+            f"law {law.name} failed while planning against the {spec.name} slice at tier "
+            f"{tier.name}: {type(exc).__name__}: {exc}. The usual cause is a law run on a "
+            "slice whose cell does not deliver the fields the law reads"
+        ) from exc
     _validate_plan(plan, addresses, spec)
 
     # ---- ONE transaction for the whole scene ----------------------------- #
     edits = plan.edits
     if edits:
         try:
-            pre_state.apply_transaction(list(edits))
+            pre_state.apply_transaction(list(edits), q_reference=q_reference)
         except StoreTransactionError as exc:
             raise ProtocolError(
                 f"the scenario transaction failed; the whole run is invalid: {exc}"
@@ -249,36 +317,74 @@ def _run(law: "_Law", tier: Tier, pre_state: LearnerPersistentState,
         receipts.append(DecisionWriteReceipt(address=p.address, status=status,
                                              store_changed=changed))
 
+    n_scalar, total_delta, largest_delta = (0, 0.0, 0.0)
+    if spec.scalar:
+        n_scalar, total_delta, largest_delta = _scalar_accounting(
+            plan, pre_view, post_view, q_reference)
+
     ledger = UpdateLedger(receipts=tuple(receipts), fingerprint_pre=fp_pre,
                           fingerprint_post=fp_post,
                           scalar_metrics_applicable=spec.scalar,
-                          n_scalar=0, sum_abs_delta=0.0, max_abs_delta=0.0)
+                          n_scalar=n_scalar, sum_abs_delta=total_delta,
+                          max_abs_delta=largest_delta)
     ledger.check_fingerprint_invariants()
     return B1Result(ledger=ledger, post_state=pre_state)
 
 
 def run_patch_law_with_envelope(law, pre_state: LearnerPersistentState,
                                 addresses: Sequence, targets,
-                                spec: SliceDescriptor = PATCH_SLICE) -> B1Result:
+                                spec: SliceDescriptor = PATCH_SLICE,
+                                q_reference=None) -> B1Result:
     """Run a law against an already-built address list and target envelope.
 
-    A law whose cell declares no field is unaffected by the envelope: a missing record
-    cannot fail an $L_0$ arm. For a law whose cell does declare fields, the envelope is
-    structurally validated first — **exact** key set, key/record address agreement,
-    action-id validity of both fields, and $a^+$ admissibility — and then projected onto
-    the cell's field set, because it is called *verified*.
+    This is the **$D_{patch}$** structural path: its envelope is validated by
+    :func:`~rfl_rebuild.b1.targets.validate_envelope` against the patch record schema. A
+    slice whose cell declares fields and is *not* the patch slice therefore gets a
+    ``PROTOCOL_ERROR`` here rather than silently skipping validation — each architecture
+    has its own entry point, because each envelope is verified against its own evidence
+    (the scalar slice's against the learner-visible rows).
 
-    Scope of that verification, stated precisely: a structural check cannot detect a
-    *legal but false* ``factual_command``, because the check has no trace to compare it
-    with. Envelopes for real scenes come from :func:`build_target_envelope`, which sets
-    ``factual_command`` from the factual trace and checks each address against that
-    trace's context, so $a^+ \\neq a^F$ is grounded there. This entry point exists for a
-    law × scene matrix built once per scene, not for hand-authored truth.
+    A law whose cell declares no field is unaffected by the envelope: a missing record
+    cannot fail an $L_0$ patch arm.
     """
     law, tier = _law_contract(law, spec)
     if spec.fields(tier):
+        if spec.name != PATCH_SLICE.name:
+            raise ProtocolError(
+                f"{spec.name} declares fields {sorted(spec.fields(tier))}; a slice with a "
+                "non-empty cell has its own entry point, because its envelope is "
+                "validated against its own evidence and this one would check it against "
+                "the D_patch record schema")
         validate_envelope(addresses, targets)
-    return _run(law, tier, pre_state, addresses, targets, spec)
+    return _run(law, tier, pre_state, addresses, targets, spec, q_reference)
+
+
+def run_factual_return_law(law, pre_state: LearnerPersistentState,
+                           addresses: Sequence, rows,
+                           q_reference, spec: SliceDescriptor = DQ_SLICE) -> B1Result:
+    r"""The $D_Q\times L_0$ entry point: build $F_t$ **from the rows**, then run.
+
+    $$\boxed{F_t = f\bigl(I^{\text{factual}}_{0:T}\bigr)}$$
+
+    The envelope is built by :func:`~rfl_rebuild.b1.factual.build_factual_envelope`, whose
+    only input is the learner-visible rows, and then re-derived and compared bit for bit
+    by :func:`~rfl_rebuild.b1.factual.validate_factual_envelope`. A trace cannot reach the
+    builder through this signature, and a builder that used ``sum`` or substituted
+    $Q_D^\ast$ is caught by the comparison rather than by a tolerance.
+
+    The reference view is **required**, not optional: the scalar ledger's created and
+    deleted deltas are defined against $Q_D^\ast$, and a run that could not compute them
+    would have to report zeros — which is a claim, not a gap.
+    """
+    law, tier = _law_contract(law, spec)
+    fields = spec.fields(tier)
+    if not fields:
+        raise ProtocolError(
+            f"{spec.name} at tier {tier!r} declares no field, so it has nothing to build "
+            "here; an empty cell does not belong on the factual path")
+    envelope = build_factual_envelope(rows, addresses)
+    validate_factual_envelope(addresses, envelope, rows)
+    return _run(law, tier, pre_state, addresses, envelope, spec, q_reference)
 
 
 def run_patch_law(law, pre_state: LearnerPersistentState, credited_units,

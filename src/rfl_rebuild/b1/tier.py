@@ -45,9 +45,17 @@ from types import MappingProxyType
 from typing import Any, Callable, Mapping
 
 from rfl_rebuild.b1.contract import ProtocolError
-from rfl_rebuild.learner.store import DECISION, DecisionAddress, LearnerPersistentState
+from rfl_rebuild.learner.store import (
+    DECISION,
+    Q,
+    DecisionAddress,
+    LearnerPersistentState,
+    owner_Q,
+)
 
 __all__ = [
+    "DEFERRED",
+    "DQ_SLICE",
     "ILL_TYPED",
     "PATCH_SLICE",
     "SliceDescriptor",
@@ -91,8 +99,31 @@ class _IllTyped:
         return "<ill-typed cell>"
 
 
+class _Deferred:
+    """A cell A77 §65.2 declares, which **this build does not implement yet**.
+
+    Deliberately not :data:`ILL_TYPED`. $D_Q\times L_2$ and $D_Q\times L_3$ *have*
+    substantive treatments — their field sets are frozen in §65.2 — so calling them
+    ill-typed would assert something false and would mislead the first person to build
+    them. Declaring them as ordinary field sets is impossible until their content exists
+    ($G_t^{CF}$ is not authorised yet), so the honest third state is "declared, not
+    built".
+
+    This is build staging, not a semantic claim, and it disappears as the cells arrive.
+    """
+
+    __slots__ = ()
+
+    def __repr__(self) -> str:                       # pragma: no cover - diagnostics
+        return "<deferred cell>"
+
+
 #: Declaring a law in an ill-typed cell is a protocol error (§65.2, §65.3).
 ILL_TYPED = _IllTyped()
+
+#: Declaring a law in a cell whose implementation has not been built is also a protocol
+#: error, with a different reason.
+DEFERRED = _Deferred()
 
 
 @dataclass(frozen=True)
@@ -154,13 +185,13 @@ class SliceDescriptor:
                 "law first ran in it")
         declared: set = set()
         for tier, cell in self.cells.items():
-            if cell is ILL_TYPED:
+            if cell is ILL_TYPED or cell is DEFERRED:
                 continue
             if not isinstance(cell, frozenset) or not all(
                     isinstance(f, str) for f in cell):
                 raise ProtocolError(
                     f"{self.name}: cell {tier.name} is {cell!r}; a well-typed cell must "
-                    "be a frozenset of field names (or ILL_TYPED)")
+                    "be a frozenset of field names (or ILL_TYPED / DEFERRED)")
             declared |= set(cell)
         missing_extractors = sorted(declared - set(self.extract))
         if missing_extractors:
@@ -177,7 +208,7 @@ class SliceDescriptor:
         object.__setattr__(self, "extract", MappingProxyType(dict(self.extract)))
 
     def fields(self, tier: Tier) -> frozenset:
-        r"""``fields(α, ℓ)``, or a ``PROTOCOL_ERROR`` for an ill-typed cell."""
+        r"""``fields(α, ℓ)``, or a ``PROTOCOL_ERROR`` for a cell a law may not use."""
         cell = self.cells.get(tier)
         if cell is None:
             raise ProtocolError(
@@ -187,6 +218,11 @@ class SliceDescriptor:
             raise ProtocolError(
                 f"{self.name} has no substantive treatment at tier {tier!r}: the cell is "
                 "ill-typed, so a law may not be declared in it (A77 §65.2)")
+        if cell is DEFERRED:
+            raise ProtocolError(
+                f"{self.name} at tier {tier!r} is declared by A77 §65.2 but not built in "
+                "this revision; the cell is not ill-typed, it is unimplemented, and a law "
+                "may not be declared in it until its fields exist")
         return cell
 
     def deliver(self, tier: Tier, addresses, envelope):
@@ -209,6 +245,40 @@ class SliceDescriptor:
             rows[a] = MappingProxyType({f: self.extract[f](envelope[a])
                                         for f in sorted(declared)})
         return MappingProxyType(rows)
+
+
+def _q_view(state: LearnerPersistentState) -> dict:
+    return dict(state.q_overrides)
+
+
+#: The $D_Q$ row of A77 §65.2's table, as far as this revision builds it.
+#:
+#: $L_0$ declares exactly $\{a_t^F, G_t^F\}$ — the factual action and its suffix return,
+#: and nothing else. No $a_t^+$, no $G_t^{CF}$: the cell is the information boundary, and
+#: widening it "because the builder could compute more" is the leak the boundary exists to
+#: prevent.
+#:
+#: $L_1$ is **ill-typed**, permanently and by A77's own finding: $L_1$ supplies $a^+$
+#: without its value, and on a scalar store every write is a value (A76 §63.5). $L_2$ and
+#: $L_3$ are :data:`DEFERRED` — declared by §65.2, not built here, because their content
+#: ($G_t^{CF}$; the row restore) is not authorised yet.
+DQ_SLICE = SliceDescriptor(
+    name="D_Q",
+    store=Q,
+    scalar=True,
+    owner=owner_Q,
+    view=_q_view,
+    cells={
+        Tier.L0_FACTUAL: frozenset({"a_factual", "g_factual"}),
+        Tier.L1_CORRECTIVE: ILL_TYPED,
+        Tier.L2_COUNTERFACTUAL: DEFERRED,
+        Tier.L3_ORACLE: DEFERRED,
+    },
+    extract={
+        "a_factual": lambda record: record.a_factual,
+        "g_factual": lambda record: record.g_factual,
+    },
+)
 
 
 def _patch_view(state: LearnerPersistentState) -> dict:

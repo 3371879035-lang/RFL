@@ -232,3 +232,57 @@ class UpdateLedger:
                 "the learner-state fingerprint change and the per-address changes "
                 f"disagree: fingerprint_changed={self.store_changed}, "
                 f"any_address_changed={any_changed}")
+
+        if self.scalar_metrics_applicable:
+            self._check_scalar_invariants()
+
+    def _check_scalar_invariants(self) -> None:
+        r"""A77 §65.10, on a scalar slice.
+
+        $$\boxed{N_{\text{scalar}} = 0 \iff \Sigma = 0 \iff fp_{\text{pre}} =
+        fp_{\text{post}}}$$
+
+        The equivalence holds because canonicalisation leaves every genuinely changed entry
+        with $q_{\text{post}} \neq Q_D^\ast(e)$ (created), $q_{\text{pre}} \neq Q_D^\ast(e)$
+        (deleted) or $q_{\text{pre}} \neq q_{\text{post}}$ (updated), so $\Delta(e) > 0$ in
+        all three cases. **That is why the ledger is a canary for the canonicalisation
+        rule**: if canonicalisation is ever bypassed, a changed entry with $\Delta = 0$
+        appears, this fires, and the store's non-canonical state is caught here rather than
+        silently entering a later delta comparison.
+
+        These are checked only when the slice is scalar-valued — they are claims about a
+        store with numbers in it, and on a value-free store the three fields are defined to
+        be zero rather than measured.
+        """
+        n = self.n_scalar
+        total = self.sum_abs_delta
+        largest = self.max_abs_delta
+        if min(total, largest) < 0.0:
+            raise ProtocolError(
+                f"a scalar magnitude is negative: sum={total!r}, max={largest!r}")
+        if (n == 0) != (total == 0.0):
+            raise ProtocolError(
+                f"the scalar count and the summed delta disagree: n_scalar={n}, "
+                f"sum_abs_delta={total!r}; with canonicalisation in force every changed "
+                "entry has a positive delta, so these are equivalent (A77 §65.10)")
+        if (total == 0.0) != (self.fingerprint_pre == self.fingerprint_post):
+            raise ProtocolError(
+                "the scalar accounting and the fingerprint disagree: "
+                f"sum_abs_delta={total!r}, fingerprint_changed={self.store_changed}")
+        if (n == 0) != (not self.store_changed):
+            raise ProtocolError(
+                f"n_scalar={n} but fingerprint_changed={self.store_changed}; the scalar "
+                "count is the fingerprint canary made quantitative")
+        if n < self.n_changed_addresses:
+            raise ProtocolError(
+                f"n_scalar={n} is smaller than n_changed_addresses="
+                f"{self.n_changed_addresses}; every changed address changed at least one "
+                "entry")
+        if largest > total:
+            raise ProtocolError(
+                f"max_abs_delta={largest!r} exceeds sum_abs_delta={total!r}; the maximum "
+                "over a set cannot exceed the sum of its magnitudes")
+        if (largest > 0.0) != (total > 0.0):
+            raise ProtocolError(
+                f"max_abs_delta={largest!r} and sum_abs_delta={total!r} disagree about "
+                "whether anything changed")

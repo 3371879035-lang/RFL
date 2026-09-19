@@ -32,14 +32,13 @@ Usage::
 from __future__ import annotations
 
 import argparse
-import hashlib
-import json
-import os
 import pathlib
-import subprocess
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
+
+import _mutation_harness as harness  # noqa: E402
 SRC = ROOT / "src" / "rfl_rebuild" / "learner"
 TESTS = "tests/rebuild/test_q_substrate.py"
 
@@ -199,165 +198,18 @@ MUTATIONS: tuple[tuple[str, str, pathlib.Path, str, str, str], ...] = (
 )
 
 
-def _digest(path: pathlib.Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
-
-
-def _read(path: pathlib.Path) -> str:
-    """Read with no newline translation, so a round trip is byte-faithful."""
-    with open(path, "r", encoding="utf-8", newline="") as fh:
-        return fh.read()
-
-
-def _write(path: pathlib.Path, text: str) -> None:
-    with open(path, "w", encoding="utf-8", newline="") as fh:
-        fh.write(text)
-
-
-def _run_node(node: str) -> tuple[int, str]:
-    """Run one gate with bytecode writing disabled.
-
-    Two harness defects are guarded here, both found by *running* this script rather
-    than by reading it:
-
-    * **bytecode writing** is disabled (``-B`` + ``PYTHONDONTWRITEBYTECODE``) because the
-      mutated and the original file can land in the same mtime second, and CPython
-      validates a cached ``.pyc`` on ``(mtime, size)`` -- which once replayed the previous
-      mutation and produced a false ``NOT_A_GATE``;
-    * **pytest exits 4 and 5 when the node did not run at all**, which is not the same
-      thing as failing. A stale node id was therefore indistinguishable from a dead gate,
-      and an earlier revision of this script reported ``GATE_IS_REAL`` for a test that had
-      been renamed away. Same disease as a check that cannot look, so it gets its own
-      verdict.
-    """
-    env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
-    proc = subprocess.run(
-        [sys.executable, "-B", "-m", "pytest", node, "-q", "-p", "no:cacheprovider",
-         "--no-header", "-x"],
-        cwd=ROOT, capture_output=True, text=True, env=env,
-    )
-    lines = [ln for ln in (proc.stdout + proc.stderr).strip().splitlines() if ln.strip()]
-    # A *tail*, not the last line: with -x the final line is the "stopping after 1
-    # failures" banner, so a last-line-only excerpt can never contain the failure reason
-    # a mutation may declare. That made the reason check unmatchable rather than wrong.
-    return proc.returncode, "\n".join(lines[-12:])
-
-
-#: pytest exits these when it never collected the requested node (4 = usage error,
-#: 5 = no tests collected). Treating them as "the gate went red" is how a typo earns a
-#: pass.
-_NODE_NOT_FOUND_CODES = (4, 5)
-
-
-def check_nodes(mutations) -> list:
-    """Every mutation's gate must name a test that still exists in its file.
-
-    Found the hard way: renaming a gate left this table pointing at the old name, and
-    because pytest exits non-zero for "not found" the stale entry was reported
-    ``GATE_IS_REAL`` -- a dead gate wearing a pass. The exit-code table catches it at
-    runtime; this catches it before anything runs.
-    """
-    stale = []
-    for entry_spec in mutations:
-        key, node = entry_spec[0], entry_spec[5]
-        path, _, test = node.partition("::")
-        try:
-            src = (ROOT / path).read_text(encoding="utf-8")
-        except OSError:
-            stale.append((key, node, "test file missing"))
-            continue
-        if f"def {test}(" not in src:
-            stale.append((key, node, "no such test function"))
-    return stale
-
-
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--json", default=str(ROOT / "experiments" / "v03r"
-                                         / "q_substrate_gate_selfcheck.json"))
+    ap.add_argument("--json", default=str(ROOT / "experiments" / "v03r" / "q_substrate_gate_selfcheck.json"))
     args = ap.parse_args()
 
-    stale = check_nodes(MUTATIONS)
+    stale = harness.check_nodes(MUTATIONS, ROOT)
     for key, node, why in stale:
-        print(f"[STALE_NODE_ID     ] {key:32} -> {node} ({why})")
+        print(f"[STALE_NODE_ID       ] {key:34} -> {node} ({why})")
 
-    before = {p: _digest(p) for p in (STORE, REFERENCE)}
-    results = []
-    for entry_spec in MUTATIONS:
-        key, hole, path, old, new, node = entry_spec[:6]
-        expect_tail = entry_spec[6] if len(entry_spec) > 6 else None
-        original = _read(path)
-        count = original.count(old)
-        entry = {"mutation": key, "hole": hole, "gate": node.split("::")[-1],
-                 "site": str(path.relative_to(ROOT)), "matched": count,
-                 "expected_failure_text": expect_tail}
-        if count != 1:
-            entry.update(verdict="MUTATION_NOT_APPLIED",
-                         detail=f"the anchor matched {count} times, expected exactly 1")
-            results.append(entry)
-            print(f"[{entry['verdict']:18}] {key}")
-            continue
-        try:
-            _write(path, original.replace(old, new))
-            code, tail = _run_node(node)
-        finally:
-            _write(path, original)
-        # GATE_IS_REAL iff pytest exited 1 **for the stated reason**.
-        #
-        # `code != 0` was too generous: pytest also exits 2 (interrupted / collection
-        # error) and 3 (internal error), and these mutations edit SOURCE FILES, so a
-        # mutation that accidentally introduces a syntax or import error would be
-        # reported as a dead gate. That is the same mistake as counting "node not found"
-        # as a pass, one failure mode further out.
-        #
-        # And a non-zero exit is still not enough on its own when the mutation claims to
-        # reopen a hole: a gate that fails because a message changed has not shown the
-        # hole was reachable, so such a mutation may declare the text its failure must
-        # contain.
-        if code == 1 and expect_tail and expect_tail not in tail:
-            verdict = "WRONG_FAILURE_REASON"
-        elif code == 1:
-            verdict = "GATE_IS_REAL"
-        elif code == 0:
-            verdict = "NOT_A_GATE"
-        elif code in _NODE_NOT_FOUND_CODES:
-            verdict = "NODE_NOT_FOUND"
-        else:
-            verdict = "HARNESS_ERROR"
-        entry.update(exit_code=code, tail=tail, verdict=verdict)
-        results.append(entry)
-        print(f"[{entry['verdict']:18}] {key:32} -> {entry['gate']}")
-
-    after = {p: _digest(p) for p in (STORE, REFERENCE)}
-    restored = before == after
-    real = sum(1 for r in results if r["verdict"] == "GATE_IS_REAL")
-    payload = {
-        "check": "Q substrate gate mutation self-check",
-        "n_mutations": len(MUTATIONS),
-        "n_gate_is_real": real,
-        "n_not_a_gate": sum(1 for r in results if r["verdict"] == "NOT_A_GATE"),
-        "n_mutation_not_applied": sum(1 for r in results
-                                      if r["verdict"] == "MUTATION_NOT_APPLIED"),
-        "n_node_not_found": sum(1 for r in results if r["verdict"] == "NODE_NOT_FOUND"),
-        "n_harness_error": sum(1 for r in results if r["verdict"] == "HARNESS_ERROR"),
-        "stale_node_ids": [list(s) for s in stale],
-        "tree_restored_byte_identical": restored,
-        "file_digests": {str(p.relative_to(ROOT)): d for p, d in after.items()},
-        "results": results,
-    }
-    out = pathlib.Path(args.json)
-    if not out.is_absolute():
-        out = ROOT / out
-    out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
-
-    print(f"\n  mutations            : {len(MUTATIONS)}")
-    print(f"  gates that went red  : {real}/{len(MUTATIONS)}")
-    print(f"  tree restored        : {restored}")
-    print(f"  written              : {out.relative_to(ROOT)}")
-    ok = restored and real == len(MUTATIONS) and not stale
-    print("  SELF-CHECK " + ("PASS" if ok else "FAIL"))
-    return 0 if ok else 1
+    results, restored = harness.run_mutations(MUTATIONS, ROOT, (STORE, REFERENCE))
+    return harness.summarise('Q substrate gate mutation self-check', MUTATIONS, results, restored, stale, ROOT,
+                             pathlib.Path(args.json))
 
 
 if __name__ == "__main__":

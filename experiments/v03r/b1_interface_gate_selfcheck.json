@@ -5,14 +5,10 @@
   "n_not_a_gate": 0,
   "n_node_not_found": 0,
   "n_harness_error": 0,
-  "stale_node_ids": [],
+  "n_mutation_not_applied": 0,
+  "n_wrong_failure_reason": 0,
   "tree_restored_byte_identical": true,
-  "file_digests": {
-    "src\\rfl_rebuild\\b1\\laws.py": "096888fc4a7e0bace5a373eaef7ed30350d7cf6ba374bedb15578431f2d75417",
-    "src\\rfl_rebuild\\b1\\runner.py": "96a52ffd4d5f1ff4aa5e20248445487f47833fcbc56018ae3e6a85d4d01f35ca",
-    "src\\rfl_rebuild\\b1\\targets.py": "d3720c61ff793975f9f4b947e8f9d418322be88fe11025f07b0c39b94c1d3076",
-    "src\\rfl_rebuild\\b1\\tier.py": "2e3477f51e824ea1785df987bf9f68cb6ec3986cc60ccfe3575d2f4f2da2a9bc"
-  },
+  "stale_node_ids": [],
   "results": [
     {
       "mutation": "undeclared_tier",
@@ -20,6 +16,7 @@
       "gate": "test_8h_a_real_subclass_that_forgets_its_tier_fails_stop",
       "site": "src\\rfl_rebuild\\b1\\laws.py",
       "matched": 1,
+      "expected_failure_text": null,
       "exit_code": 1,
       "tail": "                from rfl_rebuild.b1.laws import AddressPlan, LawPlan\n                return LawPlan(self.name,\n                               tuple(AddressPlan(a) for a in addresses))\n>       assert _Law.tier is None, \\\n            \"the base tier must be the NOT-DECLARED sentinel, not False\"\nE       AssertionError: the base tier must be the NOT-DECLARED sentinel, not False\nE       assert <Tier.L0_FACTUAL: 'L0_factual'> is None\nE        +  where <Tier.L0_FACTUAL: 'L0_factual'> = <class 'rfl_rebuild.b1.laws._Law'>.tier\ntests\\rebuild\\test_b1_patch_slice.py:342: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b1_patch_slice.py::test_8h_a_real_subclass_that_forgets_its_tier_fails_stop\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
@@ -30,6 +27,7 @@
       "gate": "test_8i_a_tier_that_is_not_a_real_bool_fails_stop",
       "site": "src\\rfl_rebuild\\b1\\runner.py",
       "matched": 1,
+      "expected_failure_text": null,
       "exit_code": 1,
       "tail": "            run_patch_law_with_envelope(_BadTier(), LearnerPersistentState(),\n                                        ADDRESSES, envelope())\n>       assert \"not a Tier member\" in str(ei.value), \\\n            f\"the wrong rejection fired for tier={bad_tier!r}: {ei.value}\"\nE       AssertionError: the wrong rejection fired for tier=0: D_patch declares no cell for tier 0; every tier the architecture supports must be declared, ill-typed included\nE       assert 'not a Tier member' in 'D_patch declares no cell for tier 0; every tier the architecture supports must be declared, ill-typed included'\nE        +  where 'D_patch declares no cell for tier 0; every tier the architecture supports must be declared, ill-typed included' = str(ProtocolError('D_patch declares no cell for tier 0; every tier the architecture supports must be declared, ill-typed included'))\nE        +    where ProtocolError('D_patch declares no cell for tier 0; every tier the architecture supports must be declared, ill-typed included') = <ExceptionInfo ProtocolError('D_patch declares no cell for tier 0; every tier the architecture supports must be declared, ill-typed included') tblen=4>.value\ntests\\rebuild\\test_b1_patch_slice.py:377: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b1_patch_slice.py::test_8i_a_tier_that_is_not_a_real_bool_fails_stop[0]\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
@@ -40,8 +38,9 @@
       "gate": "test_8m_a_law_declared_in_an_ill_typed_cell_is_rejected",
       "site": "src\\rfl_rebuild\\b1\\tier.py",
       "matched": 1,
+      "expected_failure_text": null,
       "exit_code": 1,
-      "tail": "            name, alias_of, tier = \"WrongCell\", None, Tier.L2_COUNTERFACTUAL\n            def plan(self, addresses, targets):\n                from rfl_rebuild.b1.laws import LawPlan\n                return LawPlan(self.name, tuple(AddressPlan(a) for a in addresses))\n>       assert PATCH_SLICE.cells[Tier.L2_COUNTERFACTUAL] is ILL_TYPED, \\\n            \"this gate is about the ill-typed cell; the table must still say so\"\nE       AssertionError: this gate is about the ill-typed cell; the table must still say so\nE       assert frozenset() is <ill-typed cell>\ntests\\rebuild\\test_b1_patch_slice.py:468: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b1_patch_slice.py::test_8m_a_law_declared_in_an_ill_typed_cell_is_rejected\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "            name, alias_of, tier = \"WrongCell\", None, Tier.L2_COUNTERFACTUAL\n            def plan(self, addresses, targets):\n                from rfl_rebuild.b1.laws import LawPlan\n                return LawPlan(self.name, tuple(AddressPlan(a) for a in addresses))\n>       assert PATCH_SLICE.cells[Tier.L2_COUNTERFACTUAL] is ILL_TYPED, \\\n            \"this gate is about the ill-typed cell; the table must still say so\"\nE       AssertionError: this gate is about the ill-typed cell; the table must still say so\nE       assert frozenset() is <ill-typed cell>\ntests\\rebuild\\test_b1_patch_slice.py:477: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b1_patch_slice.py::test_8m_a_law_declared_in_an_ill_typed_cell_is_rejected\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -50,8 +49,9 @@
       "gate": "test_8j_a_law_cannot_re_acquire_a_store_handle",
       "site": "src\\rfl_rebuild\\b1\\runner.py",
       "matched": 1,
+      "expected_failure_text": null,
       "exit_code": 1,
-      "tail": "        # ---- the cell decides delivery, not the law and not the outcome ------- #\n        targets = spec.deliver(tier, addresses, targets)\n        pre_view = spec.view(pre_state)\n        fp_pre = fingerprint(pre_state)\n        # ---- the law plans BEFORE the transaction, touching nothing ---------- #\n>       plan = law.plan(addresses, targets)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       TypeError: test_8j_a_law_cannot_re_acquire_a_store_handle.<locals>._ReacquiresSnapshot.plan() missing 1 required positional argument: 'snapshot'\nsrc\\rfl_rebuild\\b1\\runner.py:213: TypeError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b1_patch_slice.py::test_8j_a_law_cannot_re_acquire_a_store_handle\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "            run_patch_law_with_envelope(_ReacquiresSnapshot(), LearnerPersistentState(),\n                                        ADDRESSES, envelope())\n>       assert \"the law API is exactly\" in str(ei.value), \\\n            f\"the wrong rejection fired: {ei.value}\"\nE       AssertionError: the wrong rejection fired: law Sneaky failed while planning against the D_patch slice at tier L1_CORRECTIVE: TypeError: test_8j_a_law_cannot_re_acquire_a_store_handle.<locals>._ReacquiresSnapshot.plan() missing 1 required positional argument: 'snapshot'. The usual cause is a law run on a slice whose cell does not deliver the fields the law reads\nE       assert 'the law API is exactly' in \"law Sneaky failed while planning against the D_patch slice at tier L1_CORRECTIVE: TypeError: test_8j_a_law_cannot_re_...nal argument: 'snapshot'. The usual cause is a law run on a slice whose cell does not deliver the fields the law reads\"\nE        +  where \"law Sneaky failed while planning against the D_patch slice at tier L1_CORRECTIVE: TypeError: test_8j_a_law_cannot_re_...nal argument: 'snapshot'. The usual cause is a law run on a slice whose cell does not deliver the fields the law reads\" = str(ProtocolError(\"law Sneaky failed while planning against the D_patch slice at tier L1_CORRECTIVE: TypeError: test_8j_a_...al argument: 'snapshot'. The usual cause is a law run on a slice whose cell does not deliver the fields the law reads\"))\nE        +    where ProtocolError(\"law Sneaky failed while planning against the D_patch slice at tier L1_CORRECTIVE: TypeError: test_8j_a_...al argument: 'snapshot'. The usual cause is a law run on a slice whose cell does not deliver the fields the law reads\") = <ExceptionInfo ProtocolError(\"law Sneaky failed while planning against the D_patch slice at tier L1_CORRECTIVE: TypeEr...nt: 'snapshot'. The usual cause is a law run on a slice whose cell does not deliver the fields the law reads\") tblen=3>.value\ntests\\rebuild\\test_b1_patch_slice.py:407: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b1_patch_slice.py::test_8j_a_law_cannot_re_acquire_a_store_handle\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -60,6 +60,7 @@
       "gate": "test_8s_a_multi_entry_address_plan_reports_applied_from_any_entry",
       "site": "src\\rfl_rebuild\\b1\\runner.py",
       "matched": 1,
+      "expected_failure_text": null,
       "exit_code": 1,
       "tail": "                    \"the store at that address changed\")\n        any_changed = any(r.store_changed for r in self.receipts)\n        if any_changed != self.store_changed:\n>           raise ProtocolError(\n                \"the learner-state fingerprint change and the per-address changes \"\n                f\"disagree: fingerprint_changed={self.store_changed}, \"\n                f\"any_address_changed={any_changed}\")\nE           rfl_rebuild.b1.contract.ProtocolError: the learner-state fingerprint change and the per-address changes disagree: fingerprint_changed=True, any_address_changed=False\nsrc\\rfl_rebuild\\b1\\contract.py:231: ProtocolError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b1_patch_slice.py::test_8s_a_multi_entry_address_plan_reports_applied_from_any_entry\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
@@ -70,8 +71,9 @@
       "gate": "test_8t_a_descriptor_missing_an_extractor_fails_at_construction",
       "site": "src\\rfl_rebuild\\b1\\tier.py",
       "matched": 1,
+      "expected_failure_text": null,
       "exit_code": 1,
-      "tail": "        \"\"\"The contract boundary, not the read path.\n        With ``cells[L1] = {\"alternative\"}`` and no extractor, ``deliver`` used to raise a\n        bare ``KeyError: alternative`` from inside the projection. A descriptor is built once\n        and used for every scene, so the failure belongs where it is constructed.\n        \"\"\"\n>       with pytest.raises(ProtocolError) as ei:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.b1.contract.ProtocolError'>\ntests\\rebuild\\test_b1_patch_slice.py:652: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b1_patch_slice.py::test_8t_a_descriptor_missing_an_extractor_fails_at_construction\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "        \"\"\"The contract boundary, not the read path.\n        With ``cells[L1] = {\"alternative\"}`` and no extractor, ``deliver`` used to raise a\n        bare ``KeyError: alternative`` from inside the projection. A descriptor is built once\n        and used for every scene, so the failure belongs where it is constructed.\n        \"\"\"\n>       with pytest.raises(ProtocolError) as ei:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.b1.contract.ProtocolError'>\ntests\\rebuild\\test_b1_patch_slice.py:661: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b1_patch_slice.py::test_8t_a_descriptor_missing_an_extractor_fails_at_construction\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -80,8 +82,9 @@
       "gate": "test_8u_the_cell_table_and_extractors_are_read_only",
       "site": "src\\rfl_rebuild\\b1\\tier.py",
       "matched": 1,
+      "expected_failure_text": null,
       "exit_code": 1,
-      "tail": "    def test_8u_the_cell_table_and_extractors_are_read_only():\n        \"\"\"``frozen=True`` freezes the binding, not the dicts behind it.\n        Editing the cells in place would edit the frozen information contract at runtime,\n        which is exactly what making the table executable was meant to prevent.\n        \"\"\"\n>       with pytest.raises(TypeError):\n             ^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'TypeError'>\ntests\\rebuild\\test_b1_patch_slice.py:694: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b1_patch_slice.py::test_8u_the_cell_table_and_extractors_are_read_only\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "    def test_8u_the_cell_table_and_extractors_are_read_only():\n        \"\"\"``frozen=True`` freezes the binding, not the dicts behind it.\n        Editing the cells in place would edit the frozen information contract at runtime,\n        which is exactly what making the table executable was meant to prevent.\n        \"\"\"\n>       with pytest.raises(TypeError):\n             ^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'TypeError'>\ntests\\rebuild\\test_b1_patch_slice.py:703: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b1_patch_slice.py::test_8u_the_cell_table_and_extractors_are_read_only\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -90,8 +93,9 @@
       "gate": "test_8v_tier_has_no_truth_value",
       "site": "src\\rfl_rebuild\\b1\\tier.py",
       "matched": 1,
+      "expected_failure_text": null,
       "exit_code": 1,
-      "tail": "        ``type(tier) is Tier`` stops another value posing as a tier, but every enum member is\n        truthy by default, so ``if tier:`` would silently collapse all four. Raising turns a\n        silent wrong branch into a fail-stop.\n        \"\"\"\n        for tier in Tier:\n>           with pytest.raises(ProtocolError):\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE           Failed: DID NOT RAISE <class 'rfl_rebuild.b1.contract.ProtocolError'>\ntests\\rebuild\\test_b1_patch_slice.py:710: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b1_patch_slice.py::test_8v_tier_has_no_truth_value\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "        ``type(tier) is Tier`` stops another value posing as a tier, but every enum member is\n        truthy by default, so ``if tier:`` would silently collapse all four. Raising turns a\n        silent wrong branch into a fail-stop.\n        \"\"\"\n        for tier in Tier:\n>           with pytest.raises(ProtocolError):\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE           Failed: DID NOT RAISE <class 'rfl_rebuild.b1.contract.ProtocolError'>\ntests\\rebuild\\test_b1_patch_slice.py:719: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b1_patch_slice.py::test_8v_tier_has_no_truth_value\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -100,8 +104,9 @@
       "gate": "test_17e_an_extra_non_credited_key_fails_stop",
       "site": "src\\rfl_rebuild\\b1\\targets.py",
       "matched": 1,
+      "expected_failure_text": null,
       "exit_code": 1,
-      "tail": "        not the point \u2014 the information was delivered.\n        \"\"\"\n        env = dict(envelope())\n        env[ROGUE] = TargetRecord(ROGUE, DOWN, RIGHT)\n        assert set(env) > set(ADDRESSES), \"the test envelope must be a strict superset\"\n>       with pytest.raises(ProtocolError) as ei:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.b1.contract.ProtocolError'>\ntests\\rebuild\\test_b1_patch_slice.py:1144: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b1_patch_slice.py::test_17e_an_extra_non_credited_key_fails_stop\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "        not the point \u2014 the information was delivered.\n        \"\"\"\n        env = dict(envelope())\n        env[ROGUE] = TargetRecord(ROGUE, DOWN, RIGHT)\n        assert set(env) > set(ADDRESSES), \"the test envelope must be a strict superset\"\n>       with pytest.raises(ProtocolError) as ei:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.b1.contract.ProtocolError'>\ntests\\rebuild\\test_b1_patch_slice.py:1153: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b1_patch_slice.py::test_17e_an_extra_non_credited_key_fails_stop\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -110,6 +115,7 @@
       "gate": "test_17f_a_none_envelope_is_a_protocol_error_not_a_typeerror",
       "site": "src\\rfl_rebuild\\b1\\targets.py",
       "matched": 1,
+      "expected_failure_text": null,
       "exit_code": 1,
       "tail": "        if False:                   # MUTATED: mapping guard disabled\n            raise ProtocolError(\n                f\"the target envelope is {targets!r}, not a mapping; a law that requires an \"\n                \"alternative cannot be run without one\")\n        credited = set(addresses)\n>       keys = set(targets)\n               ^^^^^^^^^^^^\nE       TypeError: 'NoneType' object is not iterable\nsrc\\rfl_rebuild\\b1\\targets.py:182: TypeError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b1_patch_slice.py::test_17f_a_none_envelope_is_a_protocol_error_not_a_typeerror\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
@@ -120,8 +126,9 @@
       "gate": "test_17g_a_bogus_factual_command_fails_stop",
       "site": "src\\rfl_rebuild\\b1\\targets.py",
       "matched": 1,
+      "expected_failure_text": null,
       "exit_code": 1,
-      "tail": "    @pytest.mark.parametrize(\"bad_factual\", [None, -1, 99, True, \"RIGHT\", 1.0])\n    def test_17g_a_bogus_factual_command_fails_stop(bad_factual):\n        \"\"\"``a^+ != a^F`` is meaningless against a factual command that is not an action.\"\"\"\n        bad = dict(envelope())\n        bad[A] = TargetRecord(A, UP, bad_factual)\n>       with pytest.raises(ProtocolError):\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.b1.contract.ProtocolError'>\ntests\\rebuild\\test_b1_patch_slice.py:1167: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b1_patch_slice.py::test_17g_a_bogus_factual_command_fails_stop[None]\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "    @pytest.mark.parametrize(\"bad_factual\", [None, -1, 99, True, \"RIGHT\", 1.0])\n    def test_17g_a_bogus_factual_command_fails_stop(bad_factual):\n        \"\"\"``a^+ != a^F`` is meaningless against a factual command that is not an action.\"\"\"\n        bad = dict(envelope())\n        bad[A] = TargetRecord(A, UP, bad_factual)\n>       with pytest.raises(ProtocolError):\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.b1.contract.ProtocolError'>\ntests\\rebuild\\test_b1_patch_slice.py:1176: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b1_patch_slice.py::test_17g_a_bogus_factual_command_fails_stop[None]\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -130,6 +137,7 @@
       "gate": "test_16c_a_non_string_credit_unit_is_a_protocol_error_not_a_crash",
       "site": "src\\rfl_rebuild\\b1\\targets.py",
       "matched": 1,
+      "expected_failure_text": null,
       "exit_code": 1,
       "tail": "        \"\"\"\n        seen_units: set = set()\n        by_address: dict = {}\n        out = []\n        for u in units:\n>           if u in seen_units:     # MUTATED: type check moved after the guard\n               ^^^^^^^^^^^^^^^\nE           TypeError: cannot use 'list' as a set element (unhashable type: 'list')\nsrc\\rfl_rebuild\\b1\\targets.py:113: TypeError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b1_patch_slice.py::test_16c_a_non_string_credit_unit_is_a_protocol_error_not_a_crash[bad_unit0]\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
@@ -140,8 +148,9 @@
       "gate": "test_8l_the_snapshot_is_not_even_constructed_for_a_law_run",
       "site": "src\\rfl_rebuild\\b1\\runner.py",
       "matched": 1,
+      "expected_failure_text": null,
       "exit_code": 1,
-      "tail": "        run_patch_law_with_envelope(SetAlternative, LearnerPersistentState(),\n                                    ADDRESSES, envelope())\n>       assert calls == [], \"the runner built a learner snapshot during a law run\"\nE       AssertionError: the runner built a learner snapshot during a law run\nE       assert [1] == []\nE         \nE         Left contains one more item: 1\nE         Use -v to get more diff\ntests\\rebuild\\test_b1_patch_slice.py:432: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b1_patch_slice.py::test_8l_the_snapshot_is_not_even_constructed_for_a_law_run\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "        run_patch_law_with_envelope(SetAlternative, LearnerPersistentState(),\n                                    ADDRESSES, envelope())\n>       assert calls == [], \"the runner built a learner snapshot during a law run\"\nE       AssertionError: the runner built a learner snapshot during a law run\nE       assert [1] == []\nE         \nE         Left contains one more item: 1\nE         Use -v to get more diff\ntests\\rebuild\\test_b1_patch_slice.py:441: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b1_patch_slice.py::test_8l_the_snapshot_is_not_even_constructed_for_a_law_run\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     }
   ]

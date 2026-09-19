@@ -32,9 +32,11 @@ from rfl_rebuild.b1.contract import (
     fingerprint,
 )
 from rfl_rebuild.b1.laws import (
+    DQ_LAWS,
     LAWS,
     AddressPlan,
     DeleteFactualPatch,
+    FactualReturnWrite,
     LawPlan,
     LocalOracleRestore,
     NoWrite,
@@ -43,8 +45,15 @@ from rfl_rebuild.b1.laws import (
     independent_treatment_count,
     law_metadata,
 )
+from rfl_rebuild.b1.factual import (
+    FactualTarget,
+    build_factual_envelope,
+    factual_return_to_go,
+    validate_factual_envelope,
+)
 from rfl_rebuild.b1.runner import (
     B1Result,
+    run_factual_return_law,
     run_patch_law,
     run_patch_law_with_envelope,
 )
@@ -55,6 +64,8 @@ from rfl_rebuild.b1.targets import (
     resolve_decision_address,
 )
 from rfl_rebuild.b1.tier import (
+    DEFERRED,
+    DQ_SLICE,
     ILL_TYPED,
     PATCH_SLICE,
     SliceDescriptor,
@@ -64,6 +75,9 @@ from rfl_rebuild.b1.tier import (
 __all__ = [
     "APPLIED",
     "EVALUABLE_NOOP",
+    "DEFERRED",
+    "DQ_LAWS",
+    "DQ_SLICE",
     "ILL_TYPED",
     "LAWS",
     "NO_VALID_ALTERNATIVE",
@@ -74,6 +88,7 @@ __all__ = [
     "B1Result",
     "DecisionWriteReceipt",
     "DeleteFactualPatch",
+    "FactualReturnWrite",
     "LawPlan",
     "LocalOracleRestore",
     "NoWrite",
@@ -85,11 +100,16 @@ __all__ = [
     "Tier",
     "UpdateLedger",
     "build_target_envelope",
+    "FactualTarget",
+    "build_factual_envelope",
+    "factual_return_to_go",
     "fingerprint",
     "independent_treatment_count",
     "law_metadata",
     "resolve_credited_units",
     "resolve_decision_address",
+    "run_factual_return_law",
     "run_patch_law",
     "run_patch_law_with_envelope",
+    "validate_factual_envelope",
 ]

@@ -172,9 +172,9 @@ def test_7_one_scene_commits_in_exactly_one_transaction(monkeypatch):
     calls = []
     original = LearnerPersistentState.apply_transaction
 
-    def spy(self, edits):
+    def spy(self, edits, **kwargs):
         calls.append(tuple(edits))
-        return original(self, edits)
+        return original(self, edits, **kwargs)
 
     monkeypatch.setattr(LearnerPersistentState, "apply_transaction", spy)
     run_patch_law_with_envelope(SetAlternative, LearnerPersistentState(),
@@ -187,9 +187,9 @@ def test_7b_no_edits_means_no_transaction_at_all(monkeypatch):
     calls = []
     original = LearnerPersistentState.apply_transaction
 
-    def spy(self, edits):
+    def spy(self, edits, **kwargs):
         calls.append(tuple(edits))
-        return original(self, edits)
+        return original(self, edits, **kwargs)
 
     monkeypatch.setattr(LearnerPersistentState, "apply_transaction", spy)
     run_patch_law_with_envelope(NoWrite, LearnerPersistentState(), ADDRESSES,
@@ -385,6 +385,14 @@ def test_8j_a_law_cannot_re_acquire_a_store_handle():
     snapshot)`` would otherwise be called with two arguments and raise a bare
     ``TypeError`` — a crash on the error path, and a silent invitation to re-add the
     full learner snapshot (all three stores) to the law API.
+
+    The assertion is on **which** rejection fires, and that became load-bearing when the
+    runner started wrapping the ``plan`` call: an unexpected ``TypeError`` from inside a
+    law is now converted into a ``PROTOCOL_ERROR`` too, so the two failures are
+    distinguishable only by their messages — "the law API is exactly …" (the declared
+    signature contract) versus "failed while planning …" (a law/slice mismatch). With
+    both collapsing into "it raised ProtocolError", deleting the signature check would
+    leave this gate green and the mutation would report ``NOT_A_GATE``.
     """
     class _ReacquiresSnapshot:
         name, alias_of, tier = "Sneaky", None, Tier.L1_CORRECTIVE
@@ -396,7 +404,8 @@ def test_8j_a_law_cannot_re_acquire_a_store_handle():
     with pytest.raises(ProtocolError) as ei:
         run_patch_law_with_envelope(_ReacquiresSnapshot(), LearnerPersistentState(),
                                     ADDRESSES, envelope())
-    assert "snapshot" in str(ei.value).lower() or "parameters" in str(ei.value)
+    assert "the law API is exactly" in str(ei.value), \
+        f"the wrong rejection fired: {ei.value}"
 
 
 def test_8k_the_registered_law_api_is_exactly_addresses_and_targets():
