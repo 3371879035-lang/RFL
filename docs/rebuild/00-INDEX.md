@@ -243,6 +243,20 @@ so `08` carries an error that must not be inherited, and rebasing it remains a s
 that has not been made. What changed with A75–A77 is that the B1 path no longer waits on `08`:
 it is specified in the amendment log, and `08` is superseded on that path until it is rebased.
 
+**Status of that sequence.** All four steps are closed: the generic slice refactor, the $Q$
+store and read substrate, $L_0$ `FactualReturnWrite`, and $L_2$ (the CF builder with
+`CounterfactualReturnWrite` and `DualReturnWrite`). The sequence **ends there**: §65.12 does not
+include $L_3$ in it, so $L_3$'s frozen semantics in §65.9 are not an implementation
+authorisation, and reading $L_2$'s closure as one would be proceeding by tacit consent on a
+frozen order.
+
+`19-V03R-B1-L3-DRAFT.md` is therefore a **request, not a decision**: it proposes extending the
+order by exactly one step, names the machinery §65.9's text implies but does not fix (a row
+operation, the either/or plan-shape rule that is unenforceable before it exists, `owner_Q`
+totality over both kinds, and an $L_3$ branch that builds nothing), and records the gate and
+mutation obligations that would come with it. It carries **no amendment number** and authorises
+nothing; the tree stays at $L_2$ until a reviewer accepts, corrects or rejects it.
+
 ---
 
 ## 8. What the specification fixes, and what it leaves open
