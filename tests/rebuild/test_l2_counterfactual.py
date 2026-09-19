@@ -86,7 +86,12 @@ def healthy(kappa=0, phi=0, z0=1):
 #: action", and "the candidate is not admissible at the injected step's real context" say
 #: different things about the world, and lumping them together hid that.
 NO_STEP = "no_step"
-NO_SUBOPTIMAL = "no_suboptimal_admissible_action"
+#: Named for what the code actually tests. `a != best_action(...)` means "not the
+#: tie-broken best", which is NOT "strictly suboptimal": tied-optimal actions are abundant
+#: here -- A75/A76 measured 8,548 of 24,912 D-domain candidates as tied-optimal -- so an
+#: action that differs from the argmax may still be optimal. The old name
+#: `NO_SUBOPTIMAL` asserted something the check never established.
+NO_NONBEST = "no_nonbest_admissible_action"
 MASK_MALFORMED = "factual_mask_malformed"
 OK = "ok"
 
@@ -105,7 +110,7 @@ def faulted(kappa=0, phi=0, z0=1, t=1):
     allowed = [a for a in sorted(K.option_actions(z, ControlState(z=z, m=m), s))
                if a != best]
     if not allowed:
-        return NO_SUBOPTIMAL, None
+        return NO_NONBEST, None
     try:
         ep = make_episode(kappa, phi, z0,
                           mask=FaultMask(decision=DecisionOverride(
@@ -134,7 +139,7 @@ def grid_scenes():
     change in the grid shows up as a changed tuple rather than as a quietly smaller probe.
     """
     feasible, cf_undefined = [], 0
-    reasons = {NO_STEP: 0, NO_SUBOPTIMAL: 0, MASK_MALFORMED: 0}
+    reasons = {NO_STEP: 0, NO_NONBEST: 0, MASK_MALFORMED: 0}
     for kappa in (0, 1):
         for phi in (0, 1, 2):
             for z0 in (0, 1, 2):
@@ -900,7 +905,7 @@ def test_16_on_a_fresh_store_the_target_USUALLY_equals_the_reference():
     # suboptimal admissible action to inject; a genuinely malformed mask injection occurs
     # ZERO times. Lumping them together made the grid look accounted for when only its
     # total was.
-    assert reasons == {NO_STEP: 2, NO_SUBOPTIMAL: 10, MASK_MALFORMED: 0}, reasons
+    assert reasons == {NO_STEP: 2, NO_NONBEST: 10, MASK_MALFORMED: 0}, reasons
     assert (total, equal) == (35, 34), (total, equal)
 
 
