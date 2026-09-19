@@ -245,17 +245,21 @@ it is specified in the amendment log, and `08` is superseded on that path until 
 
 **Status of that sequence.** All four steps are closed: the generic slice refactor, the $Q$
 store and read substrate, $L_0$ `FactualReturnWrite`, and $L_2$ (the CF builder with
-`CounterfactualReturnWrite` and `DualReturnWrite`). The sequence **ends there**: §65.12 does not
-include $L_3$ in it, so $L_3$'s frozen semantics in §65.9 are not an implementation
-authorisation, and reading $L_2$'s closure as one would be proceeding by tacit consent on a
-frozen order.
+`CounterfactualReturnWrite` and `DualReturnWrite`). The sequence as A77 §65.12 wrote it **ends
+there**, so §65.9's frozen $L_3$ semantics were not an implementation authorisation, and reading
+$L_2$'s closure as one would have been proceeding by tacit consent on a frozen order.
 
-`19-V03R-B1-L3-DRAFT.md` is therefore a **request, not a decision**: it proposes extending the
-order by exactly one step, names the machinery §65.9's text implies but does not fix (a row
-operation, the either/or plan-shape rule that is unenforceable before it exists, `owner_Q`
-totality over both kinds, and an $L_3$ branch that builds nothing), and records the gate and
-mutation obligations that would come with it. It carries **no amendment number** and authorises
-nothing; the tree stays at $L_2$ until a reviewer accepts, corrects or rejects it.
+That gap was raised as a request and **closed by A78 (§66)**, which is now the normative text: it
+extends the order by exactly one step — $L_3$ `LocalOracleRestore` on $D_Q$, one commit, no
+mixing, no new scope for the four closed steps — names `NoWriteRef(L3)` so that
+$\lvert\text{treatments}\rvert(D_Q)=4$ as A76 §63.8 froze, fixes the B1 law domain as **every
+credited address for $L_2$ and $L_3$ alike** (`NO_VALID_ALTERNATIVE` addresses stay in the
+population, and $L_3$ may not key its domain on $a^+$ availability), scopes "no reference" to the
+lowering and to *no new* entry point, keeps the row operation inside B1 so the substrate does not
+learn an update law, makes lowering an explicit pre-commit phase whose **lowered concrete edits**
+the ledger reads, and keeps the $D_Q$ law an independent implementation beside the untouched
+$D_{patch}$ alias. The pre-decision request survives as `19-V03R-B1-L3-DRAFT.md`, marked
+superseded and non-normative.
 
 ---
 

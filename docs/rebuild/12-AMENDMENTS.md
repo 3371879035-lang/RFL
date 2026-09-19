@@ -4518,6 +4518,159 @@ $$\boxed{\text{generic slice refactor only} \rightarrow \text{Q store / read sub
 
 ---
 
+## 66. A78 — $L_3$ `LocalOracleRestore` on $D_Q$: the fifth implementation step
+
+A77 §65.12 wrote its implementation sequence as
+
+$$\text{generic slice refactor only} \rightarrow \text{Q store / read substrate} \rightarrow
+L_0\ \texttt{FactualReturnWrite} \rightarrow L_2\ \text{CF builder} + \text{laws}$$
+
+and A77 states that further change requires a new amendment. All four steps are closed, so the
+sequence ends **before** $L_3$: §65.9 fixes $L_3$'s semantics but is not an implementation
+authorisation, and reading $L_2$'s closure as one would be proceeding by tacit consent on a
+frozen order. This amendment adds that one step, and fixes the boundaries it has to respect.
+
+It is **append-only**: it changes no text of A77, and the earlier steps acquire no new scope
+from it.
+
+### 66.1 Authorisation, and its size
+
+$$\boxed{\text{A77's sequence} \rightarrow L_3\ \texttt{LocalOracleRestore}}$$
+
+One step, one commit, no mixing with a refactor or with $L_0$/$L_2$ semantics — the same rule
+A77 §65.12 applies to the other four. $L_3$'s semantics are **not** restated here: §65.9's row
+operation, its lowering $\texttt{RestoreRow}(x_t) \to \{Q_D^L(x_t,a) \leftarrow \bot\}_{a \in
+A_z(m,s),\, (x_t,a) \in Q_D^L}$, $k$ = the overrides actually present, and the empty delivery
+$\text{fields}(D_Q,L_3)=\varnothing$ are frozen and unchanged.
+
+### 66.2 The cell has a reference too
+
+$$\boxed{\text{one } \texttt{NoWriteRef}(\ell) \text{ per cell with a substantive treatment (A77 §65.3)}}$$
+
+$L_3$ has one, so the $D_Q$ registry gains **both** its reference and its treatment:
+
+$$D_Q:\quad \texttt{NoWriteRef}(L_0),\ \texttt{FactualReturnWrite},\
+\texttt{NoWriteRef}(L_2),\ \texttt{CounterfactualReturnWrite},\ \texttt{DualReturnWrite},\
+\boxed{\texttt{NoWriteRef}(L_3)},\ \boxed{\texttt{LocalOracleRestore}}$$
+
+References are not treatments (§65.3), so this gives
+
+$$\boxed{\lvert\text{independent treatments}\rvert(D_Q) = 4}$$
+
+which is the number A76 §63.8 already froze. $D_{patch}$ keeps its 3, and its registry is
+untouched.
+
+### 66.3 The B1 law domain is every credited address — for $L_2$ *and* $L_3$
+
+$$\boxed{\text{Population}_{L_2} = \text{Population}_{L_3} = \text{all credited addresses at B1}}$$
+
+An address with no verified $a^+$ is **not** removed from the population: A76 §63.3 records it
+as `NO_VALID_ALTERNATIVE` under A76 §63.10's per-addressed-context taxonomy, and it stays an
+addressed context. The difference between the tiers is therefore a **status distribution**, not
+a domain: on the healthy support $L_2$ has a usable target at 32 of 278 addresses and
+`NO_VALID_ALTERNATIVE` at 246, while $L_3$'s row restore is defined at every credited row.
+
+Consequently $L_3$ must **not** be restricted to the addresses that have an $a^+$. Doing that
+would make the arm's domain depend on $a^+$ availability, which is exactly the evaluator-side
+information its empty cell forbids it to read (§65.2), and it would break the
+"empty cell $\Rightarrow$ nothing to read" property that makes $L_3$'s delivery the whole
+content of the $L_3$ choice.
+
+B2 may still decide whether the primary comparison is over all addresses, whether an
+"$L_2$ target available" stratum is reported alongside it, and whether `RecoveryFraction`'s
+denominator is the local or the global oracle (A76 §63.8). None of those may change $L_3$'s B1
+law domain, or silently cancel the frozen rule that a `NO_VALID_ALTERNATIVE` address remains in
+the population.
+
+### 66.4 What "$L_3$ needs no reference" means, exactly
+
+$$\boxed{\text{no NEW } L_3\text{-specific reference entry point}}$$
+
+§65.9's statement is about the **lowering**: the row returns to $Q_D^\ast$ by deleting overrides,
+never by writing $Q_D^\ast$ values, so lowering needs no reference. It does not mean the run has
+no reference. §65.10's deleted leg
+
+$$\Delta(e) = \lvert Q_D^\ast(e) - q_{\text{pre}}(e)\rvert$$
+
+still needs the injected view, exactly as it does for $L_0$ and $L_2$. So the $L_3$ path:
+
+* needs no `sol` and no `episode`;
+* needs no evaluator-side envelope, and its law and lowering do not read the reference;
+* continues to receive the **existing** generic `q_reference` for the transaction boundary and
+  the scalar accounting, and must not grow a fourth, $L_3$-specific way of naming one.
+
+### 66.5 The row operation is a B1 object, and the substrate does not learn it
+
+$$\boxed{\text{the B1 } D_Q \text{ owner resolver is total over entry-ops and row-ops}}$$
+
+`learner/store.py::owner_Q` keeps taking a `QAddress` and must **not** import or recognise a
+`RestoreRow`; §65.9's equation $owner_Q(\texttt{RestoreRow}(x_t)) = x_t$ is satisfied in the B1
+layer that resolves owners for a plan, not by teaching the substrate about an update law. Step
+3's separation — the substrate knows the store, not the laws — is not traded away to make an
+equation look literal.
+
+### 66.6 Lowering is an explicit pre-commit phase, and the ledger reads its output
+
+$$\boxed{\text{symbolic plans} \rightarrow \text{all row ops lowered against ONE frozen
+pre-state} \rightarrow \text{concrete entry edits} \rightarrow \text{ONE transaction}}$$
+
+No alternating lower-one-row/commit/lower-the-next: a scene's row operations all lower against
+the same pre-state, and the scene still commits once.
+
+$$\boxed{\text{receipt status, } n_{\text{changed\_addresses}} \text{ and the scalar accounting
+are computed from the LOWERED concrete edits}}$$
+
+This is not bookkeeping taste. An `AddressPlan` carrying a row operation and `edits=()` would,
+under the entry-only rule, be read as "no edits and no declared status" and reported
+`EVALUABLE_NOOP` even though the lowering deleted entries — a ledger that contradicts its own
+store, which is the defect class A77 §65.10's equivalences exist to catch.
+
+### 66.7 The $D_Q$ law is an independent implementation
+
+The existing `LocalOracleRestore` on $D_{patch}$ is an **alias** of `DeleteFactualPatch` and
+deliberately shares its `plan` function object (A76 §63.6, A77 §65.2); it emits `DECISION`
+edits and cannot serve $D_Q$. The $D_Q$ law is therefore a separate implementation that may keep
+the display name `LocalOracleRestore`, registered **only** in the $D_Q$ registry:
+
+* the $D_{patch}$ alias class and its `plan` binding are untouched, and its ledger `canonical()`
+  bytes and treatment count do not move;
+* no law branches on architecture. A law is not handed a slice (A76 §63.1), so "which store am
+  I writing" is not a question a law may ask.
+
+### 66.8 Gate obligations
+
+* **row scope**: the arm deletes exactly the overrides in the credited row — no other row, no
+  other store, and the fingerprint change is confined to that row;
+* **the lowering reads this run's pre-state**: $k$ = the overrides present at pre-state, and a
+  row with none lowers to no edits, so the address-plan has no edits and no declared status →
+  `EVALUABLE_NOOP` with an empty edit set, still one receipt;
+* **idempotence**: $\texttt{RestoreRow}(S) \to \texttt{RestoreRow}(\texttt{RestoreRow}(S))$ has
+  $k=0$ and `EVALUABLE_NOOP` on the second run. Its content is precise: the lowering uses the
+  **pre-state of its own run** rather than reusing a stale or previously computed lowering;
+* **ledger**: $N_{\text{scalar}} = k$, $\Sigma = \sum \lvert Q_D^\ast(e) - q_{\text{pre}}(e)\rvert$,
+  $N_{\text{scalar}} \le \lvert A_z(m,s)\rvert$, and §65.10's equivalences hold;
+* **the empty cell is asserted, not assumed**: the $L_3$ path runs successfully when handed
+  **poison evidence** — placeholders for `rows`, `sol` and `episode` that raise on any access —
+  which demonstrates $\boxed{\text{$L_3$ execution does not read evaluator-side envelope
+  inputs}}$ while it still reads the generic `q_reference` for the ledger. The two are thereby
+  separated by evidence rather than by reading the code;
+* **plan shape**: an address-plan carrying both entry edits and a row operation, or two row
+  operations, is a `PROTOCOL_ERROR` — the rule §65.9 states and which is unenforceable until the
+  row operation exists;
+* **$D_{patch}$ untouched**: its registry, its alias identity and its ledger bytes;
+* a mutation self-check over all of the above, with the failure reason declared where a gate can
+  only fail by not raising.
+
+### 66.9 What this amendment does not do
+
+* it writes no code: the authorisation is this text, and the commit is its record;
+* it changes no cell, no $L_0$ and no $L_2$ semantics, and does not touch A77's table;
+* it does not restate or widen §65.9;
+* it specifies no B2 endpoint, denominator, stratification or regime I number;
+* it does not claim $L_3$ closes D6, and authorises nothing after it.
+
+---
+
 ## 64. Summary and what remains open
 
 | # | what | severity | status |
@@ -4562,6 +4715,8 @@ section above; the most recent is:
 | **A75** | V0.3R semantic rebase: the subject becomes the **persistent learning update**, not runtime repair, with $R^{\text{mech}} \neq W^{\text{update}}$; $B_0: \Gamma_r^\ast \to \mathcal W(\Gamma_r^\ast)$ outputs a candidate family; seven ownership criteria including **addressable** and **contract-preserving** (learner baseline has **no fault privilege**); **regime-specific** stratification $S_{T,\pm}$ / $S_{P,\pm}$ with **no whole-support primary mean**; regimes **T** (harm / non-internalisation), **P** (benefit / recovery, future endogenous to $\Delta W$), **I** (secondary, no numbers yet); a **new** persistent-manifestation family $J^L = (J_P^L, J_D^L, J_X^L)$ defined by **(predicate, source-separated intermediate)** while **$Z^{\text{fire}}$ is left untouched**; **$\Gamma_T^\ast \neq \Gamma_P^\ast$** with formal manifestation address sets; a fair decision defect family at the induced-policy layer with address-count budgets; a split `FutureConsequenceView` / `UpdateLedger` with **dependency closure**, a **constructor-flow gate** and a laundering mutation; and two authorised-but-unimplemented kernel extensions | **P0 (spec)** | **frozen — specification only, no implementation authorised**; further change requires a new amendment; `08` still to be rebased |
 | **A76** | V0.3R B1 update-law contract: B1 owns only $W^{\text{update}} \to \Delta W$; four information tiers $L_0$–$L_3$; Decision targets as **local return-to-go** $G_t^F$ / $G_t^{CF}$; the counterfactual is a **full-episode replay** with only $do(d_t{=}a_t^+)$ added plus a prefix-equality invariant, never a suffix simulator; the $-1$ constant and $+1$ target **retired** (not rescaled); `PositiveAlternative` retired as information-deficient at $L_1$; the $a^+$ guard is **live** (3,600 empty-alt addresses, co-fault only: `D+E` 2.38%, `X+D` 4.76%, `D` alone 0%), with a **per-addressed-context** ledger taxonomy `{APPLIED, EVALUABLE_NOOP, NO_VALID_ALTERNATIVE, PROTOCOL_ERROR}` in which `APPLIED` means the **store changed** (architecture-neutral, not "a scalar was written"), `N_scalar` is accounting only, and `PROTOCOL_ERROR` is a **fail-stop excluded from B2 scoring**; a locality-matched `LocalOracleRestore` inside the matrix with A75's global `OracleRestore` outside it and the lower-tier aliases declared non-treatments; the $\rho_A$ credit-unit→store-key resolver; and three execution invariants (regime-blind, address locality, snapshot + atomic commit) | **P0 (spec)** | **frozen — specification only, no implementation authorised** (dated from the taxonomy correction); further change requires a new amendment |
 | **A77** | the $D_Q$ row, and the information contract that replaces the boolean `requires_alternative`: a closed opaque `Tier` enum declared exactly once with a `None` sentinel; delivery as an **exact per-(architecture, tier) field set** — $D_Q$'s $L_0=\{a_t^F,G_t^F\}$, $L_2=\{a_t^F,G_t^F,a_t^+,G_t^{CF}\}$, $L_3=\varnothing$ — with **same cell ⇒ same envelope**, the reference constructed through the same field construction, and `scalar write law ∧ L_1 ⇒ PROTOCOL_ERROR`; `NoWriteRef(ℓ)` as one object per cell with a substantive treatment, sharing one no-op plan and excluded from the treatment count; the $Q$ store as a sparse override table on an **injected frozen** `QReferenceView` (`QAddress` entries inside a `DecisionAddress` budget, identity canonicalisation to deletion, co-residence of $P_D^L$ and $Q_D^L$ a **construction-time** `PROTOCOL_ERROR`); **domain closure** $\operatorname{dom}(Q_D^L)\subseteq\operatorname{dom}(\texttt{QReferenceView})$ with the 13,824-row census as its evidence; $F_t=(a_t^F,G_t^F)$ built from the **learner-visible rows only**; the **frozen reverse Bellman fold** for $G^F$ and $G^{CF}$ (`sum`/`fsum`/reordering prohibited — measured 278/278 exact vs 92/278 mismatch); $G_t^{CF}$ as a full replay carrying `DecisionReadView_pre` with the intervention at $t$ **replaced**; the $D_Q$ matrix (4 independent treatments, no $L_1$ cell, `LocalOracleRestore` a genuinely new row-scoped operation); **owner-based locality** with one address-plan and one receipt per credited context and the row operation lowered by the slice; and the scalar ledger with an **effective-$Q$** $\Delta$ and $N_{\text{scalar}}=0 \iff \Sigma=0 \iff fp_{\text{pre}}=fp_{\text{post}}$ | **P0 (spec)** | **frozen — specification only, no implementation authorised**; implementation in the frozen order: slice refactor → $Q$ store/read → $L_0$ → $L_2$ |
+
+| **A78** | $L_3$ `LocalOracleRestore` on $D_Q$ as A77 §65.12's **fifth** implementation step — one step, one commit, no mixing, and no new scope for the four already-closed steps; the cell's `NoWriteRef(L3)` alongside its treatment, giving $\lvert\text{treatments}\rvert(D_Q)=4$ exactly as A76 §63.8 froze ($D_{patch}$ stays 3); the B1 law domain fixed as **every credited address for $L_2$ and $L_3$ alike**, with `NO_VALID_ALTERNATIVE` addresses remaining in the population and $L_3$ forbidden to key its domain on $a^+$ availability; "no reference" scoped to the **lowering** and to *no new* $L_3-specific reference entry point, since §65.10's deleted leg still needs the existing `q_reference`; the row operation kept a **B1** object so `owner_Q` stays a `QAddress` function and the substrate does not learn an update law; lowering as an explicit **pre-commit phase** against **one** frozen pre-state, with status, $n_{\text{changed\_addresses}}$ and the scalar accounting computed from the **lowered concrete edits**; a $D_Q$-only law implementation beside the untouched $D_{patch}$ alias, with no architecture branching inside a law; and the gate obligations, including **idempotence** ($k=0$, `EVALUABLE_NOOP` on a second run, i.e. the lowering reads its own run's pre-state) and a **poison-evidence** empty-cell gate proving $L_3$ reads no evaluator-side inputs | **P0 (spec)** | **frozen — implementation authorised in this step only**; further change requires a new amendment |
 
 ---
 

@@ -1,11 +1,31 @@
 # 19 — V0.3R B1: $L_3$ `LocalOracleRestore` on $D_Q$ — implementation-order request (draft)
 
-$$\boxed{\text{DRAFT — for review. Not frozen, not authorised, no code written.}}$$
+$$\boxed{\text{ACCEPTED WITH CORRECTIONS — SUPERSEDED BY A78 (\S66). Not normative.}}$$
 
-**This draft carries no amendment number.** A77 §65.12 closes its implementation sequence at
-$L_2$, and its own terms say no commit may mix a refactor with new semantics. Adding a step is
-therefore a decision for the reviewer, not a step this draft may assume: the code stays at
-$L_2$ until this is accepted, corrected, or rejected.
+This draft did its job as the pre-decision request: it carried no amendment number and
+authorised nothing. The reviewer accepted it with seven corrections, and the authorisation now
+lives in **A78 (§66)**, which is the normative text. The corrections it must be read with:
+
+1. the acceptance is recorded as a **new amendment** (A78), because A77 requires further change
+   to go through one; A77 itself is not rewritten;
+2. **`NoWriteRef(L3)` is named**, so the $D_Q$ registry gains a reference as well as a treatment
+   and $\lvert\text{treatments}\rvert(D_Q)=4$ matches A76 §63.8;
+3. the **population question is answered and the draft's framing corrected**: §2.3's "32 versus
+   278" confused *population* with *addresses that have a substantive target*. A76 §63.3 keeps a
+   `NO_VALID_ALTERNATIVE` address in the population, so $\text{Population}_{L_2} =
+   \text{Population}_{L_3} = $ every credited address, and restricting $L_3$ to the addresses
+   with an $a^+$ would let its empty cell read $a^+$ availability;
+4. "no reference" is scoped to the **lowering** and to *no new* $L_3$-specific entry point — the
+   deleted-leg ledger still needs the existing `q_reference`;
+5. the row operation stays in **B1**: `owner_Q` keeps taking a `QAddress` and the substrate does
+   not learn an update law;
+6. lowering is an explicit **pre-commit phase** and the ledger reads the **lowered concrete
+   edits**, or a row-op-only plan would be misreported `EVALUABLE_NOOP`;
+7. the $D_Q$ law is an **independent implementation**; the $D_{patch}$ alias is untouched and no
+   law branches on architecture.
+
+The two gate obligations the reviewer tightened are in A78 §66.8: **idempotence** read as "the
+lowering uses this run's pre-state", and the empty-cell gate made hard with **poison evidence**.
 
 ---
 
