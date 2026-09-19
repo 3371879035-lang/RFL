@@ -455,11 +455,23 @@ def run_dq_law(law, pre_state: LearnerPersistentState,
         # because a reference is not part of the learner state.
         #
         # Content, not object identity: independently built views of the same Q_D* pass.
-        require_q_reference(q_reference)
+        #
+        # The substrate raises ReferenceContractError, deliberately a *different* type from
+        # B1's ProtocolError. This boundary sits outside `_run`, so without the conversion
+        # below an illegal q_reference or a non-total sol.q would escape as a substrate
+        # exception where the runner's contract promises a ProtocolError -- the same "the
+        # error path crashes first" defect this project keeps finding.
+        try:
+            require_q_reference(q_reference)
+            adapter_view = reference_view_from(sol)
+        except ReferenceContractError as exc:
+            raise ProtocolError(
+                f"the L2 referent boundary rejected one of its three entry points: {exc}"
+            ) from exc
         digests = {
             "the episode's configuration": episode.reference.digest(),
             "the transaction's": q_reference.digest(),
-            "the a^+ adapter's": reference_view_from(sol).digest(),
+            "the a^+ adapter's": adapter_view.digest(),
         }
         if len(set(digests.values())) != 1:
             raise ProtocolError(

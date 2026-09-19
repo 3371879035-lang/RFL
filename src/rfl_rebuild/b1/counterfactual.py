@@ -147,34 +147,46 @@ class CfEpisode:
     def replay(self, t: int | None = None, action: int | None = None):
         r"""A full rollout under this configuration.
 
-        With ``t``/``action`` given, the decision intervention at $t$ is **replaced** by
-        $do(d_t = \text{action})$; with neither, this is the factual episode. Everything
-        else — tape, option fault, the other interventions, and all three learner channels
-        — is the same object in both calls, which is what "differing in exactly one thing"
-        means operationally rather than as a promise.
+        With ``t``/``action`` given, the decision at $t$ is **replaced** by
+        $do(d_t = \text{action})$; with neither, this is the factual episode.
 
-        A decision at $t$ can be injected through **two** channels — an
-        ``InterventionSet`` member and ``FaultMask.decision`` — and both are removed here.
-        The kernel lets an intervention shadow a mask entry at the same $t$ (measured), so
-        removing only the intervention would leave the *effect* correct while making the
-        structural claim false, and would leave the counterfactual at the mercy of a
-        precedence rule that nothing in this module states.
+        **The mask is held fixed.** A77 §65.7 lists ``mask`` inside the configuration that
+        is identical between the factual and counterfactual episodes, and only
+        ``interventions`` gets the replacement. So a factual world with
+        $\text{mask.decision} = Z_D(t)$ keeps that fault assignment, and the counterfactual
+        is
+
+        $$\boxed{\text{same fault assignment} + do(d_t = a_t^+)}$$
+
+        with the kernel's frozen precedence
+
+        $$\boxed{do(d_t) \;>\; Z_D \;>\; \texttt{command\_provider}}$$
+
+        shadowing the fault's effect **at that structural node** — a Pearl-style
+        intervention on the node, not a deletion of the fault from the world. Removing the
+        mask entry instead would make $\text{mask}^{CF} \neq \text{mask}^{F}$: the same
+        numbers today, because the shadowing already produces them, but a different SCM and
+        therefore a different experiment.
+
+        An earlier revision of this module did exactly that removal, reasoning that
+        "exactly one thing differs" should be structural rather than dependent on a
+        precedence rule. The reasoning was wrong in its premise: the precedence is frozen
+        kernel semantics, and holding the fault assignment fixed is what the clause
+        requires. The counterfactual trace is what verifies both halves — the mask is the
+        factual one *and* the command at $t$ is $a_t^+$.
         """
         interventions = self.interventions
-        mask = self.mask
         if t is not None:
             members = tuple(iv for iv in interventions.members
                             if not (iv.kind == "decision" and iv.t == t))
             interventions = K.InterventionSet(
                 members + (K.Intervention.decision(t, action),))
-            if getattr(mask, "decision", None) is not None and mask.decision.t == t:
-                mask = replace(mask, decision=None)
         return K.rollout(
             kappa=self.kappa,
             tape=self.tape,
             command_provider=self.decision_read_view_pre,
             base_option=self.base_option,
-            mask=mask,
+            mask=self.mask,
             option_fault=self.option_fault,
             interventions=interventions,
             controller=self.controller_mapping,
@@ -295,9 +307,12 @@ def _apply_or_fail(episode: CfEpisode, rows: Sequence, t: int, alt: int) -> floa
     try:
         return _counterfactual_facts(episode, rows, t, alt)
     except K.MalformedIntervention as exc:
-        # Strip BOTH decision channels before re-testing: a decision can be injected
-        # through an InterventionSet member and through FaultMask.decision, and stripping
-        # only the first made this discriminator blame a_t^+ for a later mask entry.
+        # DIAGNOSTIC ONLY. This stripped re-run exists to answer one question -- was the
+        # refusal about a_t^+ itself, or about a later decision entry on the diverged path?
+        # -- and it is never the counterfactual: the counterfactual is defined by the
+        # factual configuration, mask included, with one do intervention. Removing the
+        # fault assignments here does not change what is measured; it only separates two
+        # error causes.
         stripped = replace(
             episode,
             mask=replace(episode.mask, decision=None),

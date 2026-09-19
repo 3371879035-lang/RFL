@@ -14,7 +14,7 @@ did not look}}$$
 | 8 | the target may come from learner A and be written into learner B | the snapshot fingerprint binding deleted | `test_3` |
 | 9 | the rows need not be this configuration's | the factual-rows check deleted | `test_2` |
 | 10 | a target may be built under another reward mode | the mode check deleted | `test_2b` |
-| 11 | a mask decision at $t$ is left in place | the mask removal dropped | `test_5b` |
+| 11 | the factual fault at $t$ is deleted rather than shadowed | the mask is stripped | `test_5b` |
 | 12 | three entry points may name three referents | the digest comparison deleted | `test_2e` |
 
 Mutation 7 is the one that makes "replace, not add" an executable statement: without the
@@ -149,16 +149,20 @@ MUTATIONS: tuple = (
         "DID NOT RAISE",
     ),
     (
-        "mask_decision_not_replaced",
-        "the counterfactual removes only the InterventionSet decision at t, leaving the "
-        "FaultMask decision in place: the effect is still right because the kernel lets an "
-        "intervention shadow a mask entry, but 'exactly one thing differs' becomes false "
-        "and the counterfactual depends on an unstated precedence rule",
+        "factual_mask_stripped",
+        "the counterfactual DELETES the factual fault assignment at t instead of holding "
+        "it fixed and letting do(d_t) shadow it. The numbers are identical, because the "
+        "kernel's frozen precedence do > Z_D > command_provider already produces them, so "
+        "this is a pure SCM change: mask^CF != mask^F, and the counterfactual stops being "
+        "the configuration of A77 65.7 with one intervention",
         CF,
-        "            if getattr(mask, \"decision\", None) is not None and mask.decision.t == t:\n"
-        "                mask = replace(mask, decision=None)\n",
-        "            pass                    # MUTATED: mask entry left in place\n",
-        f"{TESTS}::test_5b_a_mask_decision_at_t_is_replaced_too",
+        "            mask=self.mask,\n",
+        "            mask=(replace(self.mask, decision=None)   # MUTATED: fault deleted\n"
+        "                  if t is not None\n"
+        "                  and getattr(self.mask, \"decision\", None) is not None\n"
+        "                  and self.mask.decision.t == t else self.mask),\n",
+        f"{TESTS}::test_5b_the_factual_mask_is_held_fixed_and_do_shadows_it",
+        "not a stripped one",
     ),
     (
         "reference_provenance_unbound",

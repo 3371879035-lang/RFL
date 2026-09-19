@@ -81,32 +81,41 @@ def healthy(kappa=0, phi=0, z0=1):
     return ep, rows, addrs, LearnerPersistentState()
 
 
+#: Why a grid point has no factual faulted episode. Kept apart because they are different
+#: geometries: "there is no step t", "the step exists but has no suboptimal admissible
+#: action", and "the candidate is not admissible at the injected step's real context" say
+#: different things about the world, and lumping them together hid that.
+NO_STEP = "no_step"
+NO_SUBOPTIMAL = "no_suboptimal_admissible_action"
+MASK_MALFORMED = "factual_mask_malformed"
+OK = "ok"
+
+
 def faulted(kappa=0, phi=0, z0=1, t=1):
-    """A $Z_D$ injection, so the factual trajectory is not the reference one."""
+    """A $Z_D$ injection, or a named reason why this grid point has none."""
     probe = make_episode(kappa, phi, z0).factual_trace
     ctxs = list(walk_transition(probe, kappa, phi, probe.option_in_force))
     if len(ctxs) <= t:
-        return None
+        return NO_STEP, None
     ctx = ctxs[t]
     s, z, m = ctx[0], ctx[1], ctx[2]
     if s.t != t:
-        return None
+        return NO_STEP, None
     best = SOL.best_action(s, z, m)
     allowed = [a for a in sorted(K.option_actions(z, ControlState(z=z, m=m), s))
                if a != best]
     if not allowed:
-        return None
+        return NO_SUBOPTIMAL, None
     try:
         ep = make_episode(kappa, phi, z0,
                           mask=FaultMask(decision=DecisionOverride(
                               t=t, action=allowed[0])))
     except K.MalformedIntervention:
         # The probe's context is not the injected step's context, so the candidate action
-        # may be inadmissible *there*. That is an expected infeasibility of this grid
-        # point, and it is counted rather than skipped.
-        return None
+        # may be inadmissible *there*.
+        return MASK_MALFORMED, None
     rows, addrs = rows_and_addresses(ep)
-    return ep, rows, addrs, LearnerPersistentState()
+    return OK, (ep, rows, addrs, LearnerPersistentState())
 
 
 def grid_scenes():
@@ -124,14 +133,15 @@ def grid_scenes():
     Neither is a write status. Both are counted, and the caller asserts the counts, so a
     change in the grid shows up as a changed tuple rather than as a quietly smaller probe.
     """
-    feasible, mask_inadmissible, cf_undefined = [], 0, 0
+    feasible, cf_undefined = [], 0
+    reasons = {NO_STEP: 0, NO_SUBOPTIMAL: 0, MASK_MALFORMED: 0}
     for kappa in (0, 1):
         for phi in (0, 1, 2):
             for z0 in (0, 1, 2):
                 for ft in (1, 2):
-                    built = faulted(kappa, phi, z0, t=ft)
-                    if built is None:
-                        mask_inadmissible += 1
+                    reason, built = faulted(kappa, phi, z0, t=ft)
+                    if reason is not OK:
+                        reasons[reason] += 1
                         continue
                     ep, rows, addrs, pre = built
                     try:
@@ -141,7 +151,7 @@ def grid_scenes():
                         cf_undefined += 1
                         continue
                     feasible.append((ep, rows, addrs, pre, env))
-    return feasible, mask_inadmissible, cf_undefined
+    return feasible, reasons, cf_undefined
 
 
 def with_alternative():
@@ -153,8 +163,8 @@ def with_alternative():
     for kappa in (0, 1):
         for phi in range(6):
             for z0 in range(4):
-                built = faulted(kappa, phi, z0)
-                if built is None:
+                reason, built = faulted(kappa, phi, z0)
+                if reason is not OK:
                     continue
                 ep, rows, addrs, pre = built
                 env = build_counterfactual_envelope(rows, addrs, sol=SOL, episode=ep)
@@ -421,8 +431,8 @@ def test_5_the_decision_intervention_is_replaced_not_added():
     for kappa in (0, 1):
         for phi in range(6):
             for z0 in range(4):
-                built = faulted(kappa, phi, z0)
-                if built is None:
+                reason, built = faulted(kappa, phi, z0)
+                if reason is not OK:
                     continue
                 ep, rows, addrs, _pre = built
                 t = addrs[0].state.t
@@ -446,13 +456,20 @@ def test_5_the_decision_intervention_is_replaced_not_added():
     pytest.fail("no faulted scene with an alternative was found")
 
 
-def test_5b_a_mask_decision_at_t_is_replaced_too(monkeypatch):
-    r"""A decision can be injected through two channels, and both are removed.
+def test_5b_the_factual_mask_is_held_fixed_and_do_shadows_it(monkeypatch):
+    r"""$$\boxed{\text{same fault assignment} + do(d_t = a_t^+) \;>\; Z_D}$$
 
-    The kernel lets an intervention shadow a ``FaultMask.decision`` at the same $t$
-    (measured), so removing only the intervention would leave the *effect* right while the
-    structural claim — "the counterfactual differs in exactly one thing" — was false. This
-    watches the mask actually handed to the rollout.
+    A77 §65.7 puts ``mask`` inside the configuration that is identical between the factual
+    and counterfactual episodes, and gives the replacement only to ``interventions``. So a
+    factual world carrying $Z_D(t)$ keeps that fault and the intervention **shadows** it at
+    that structural node, by the kernel's frozen precedence
+    $do(d_t) > Z_D > \texttt{command\_provider}$ — a Pearl-style intervention on the node,
+    not a deletion of the fault from the world.
+
+    Both halves are asserted, because either alone is satisfied by the wrong construction:
+    the mask handed to the rollout is the factual one, *and* the command at $t$ is $a_t^+$.
+    An earlier revision of this gate asserted the mask entry was *removed*, which is the
+    semantics this project rejects: same numbers today, different SCM.
     """
     seen = {}
     original = K.rollout
@@ -469,16 +486,16 @@ def test_5b_a_mask_decision_at_t_is_replaced_too(monkeypatch):
     mask = FaultMask(decision=DecisionOverride(t=probe.state.t, action=legal[0]))
     ep = make_episode(0, 0, 1, mask=mask)
     assert ep.mask.decision is not None, "the factual episode carries the mask entry"
+
     monkeypatch.setattr(K, "rollout", spy)
     ep.replay(probe.state.t, legal[-1])
-    assert seen["mask"].decision is None, \
-        "the mask entry at t must be removed, not merely shadowed"
-    # and a replay at a DIFFERENT t keeps it
-    other_t = probe.state.t + 1
-    if any(iv.t == other_t for iv in []) or True:
-        ep.replay(other_t, legal[-1])
-        assert seen["mask"].decision is not None, \
-            "an unrelated replay must not strip the mask"
+    assert seen["mask"] is ep.mask, \
+        "the counterfactual must run the SAME fault assignment, not a stripped one"
+    assert seen["mask"].decision == ep.mask.decision
+
+    cf_rows = learner_rows(ep.replay(probe.state.t, legal[-1]), 0, 0)
+    assert cf_rows[probe.state.t][ROW_SCHEMA.index("a_cmd")] == legal[-1], \
+        "do(d_t) must shadow Z_D at that node"
 
 
 def test_6_the_counterfactual_prefix_is_the_factual_prefix_across_the_support():
@@ -507,7 +524,7 @@ def test_6_the_counterfactual_prefix_is_the_factual_prefix_across_the_support():
             cf_rows = learner_rows(ep.replay(a.state.t, alt), kappa, phi)
             assert cf_rows[:a.state.t] == tuple(rows)[:a.state.t], (kappa, phi, z0, a)
             checked += 1
-    feasible, _mask, _undef = grid_scenes()
+    feasible, _reasons, _undef = grid_scenes()
     for ep, rows, addrs, _pre, env in feasible:
         for a in addrs:
             rec = env[a]
@@ -647,6 +664,30 @@ def test_19_the_envelope_must_be_the_exact_credited_set():
         good[addrs[0]]
     with pytest.raises(ProtocolError):
         validate_counterfactual_envelope(addrs, extra, rows, sol=SOL, episode=ep)
+
+
+def test_2f_the_referent_boundary_raises_a_protocol_error_not_a_substrate_one():
+    r"""The runner's contract promises ``ProtocolError``; the substrate's type is separate.
+
+    ``ReferenceContractError`` is deliberately a different class, and this boundary sits
+    outside ``_run``, which already converts it. Without the conversion an illegal
+    ``q_reference`` or a non-total ``sol.q`` would escape as a substrate exception — the
+    same "the error path crashes first" defect this project keeps finding.
+    """
+    ep, rows, addrs, pre, _env = first_bent()
+    class _Fake:
+        pass
+
+    with pytest.raises(ProtocolError) as ei:
+        run_dq_law(CounterfactualReturnWrite, pre, addrs, rows, _Fake(), sol=SOL,
+                   episode=ep)
+    assert "referent boundary" in str(ei.value)
+    # a sol whose q is not total on the domain
+    partial = type("S", (), {"q": {next(iter(SOL.q)): next(iter(SOL.q.values()))}})()
+    with pytest.raises(ProtocolError) as ei2:
+        run_dq_law(CounterfactualReturnWrite, pre, addrs, rows, VIEW, sol=partial,
+                   episode=ep)
+    assert "referent boundary" in str(ei2.value)
 
 
 def test_20_a_half_counterfactual_record_is_refused():
@@ -843,7 +884,7 @@ def test_16_on_a_fresh_store_the_target_USUALLY_equals_the_reference():
       $t = $ fault-step was not the replacement it claimed to be. Both defects are now
       fixed and the infeasible points are counted above.
     """
-    feasible, mask_inadmissible, cf_undefined = grid_scenes()
+    feasible, reasons, cf_undefined = grid_scenes()
     total = equal = 0
     for ep, rows, addrs, _pre, env in feasible:
         for a in addrs:
@@ -853,7 +894,13 @@ def test_16_on_a_fresh_store_the_target_USUALLY_equals_the_reference():
             total += 1
             equal += rec.g_cf.hex() == float(VIEW.value(
                 QAddress(state=a.state, z=a.z, m=a.m, a=rec.a_plus))).hex()
-    assert (len(feasible), mask_inadmissible, cf_undefined) == (15, 12, 9)
+    assert (len(feasible), cf_undefined) == (15, 9)
+    # Measured, and it corrects an earlier label: the 12 points without a factual faulted
+    # episode are NOT "mask inadmissible". Two have no step t at all and ten have no
+    # suboptimal admissible action to inject; a genuinely malformed mask injection occurs
+    # ZERO times. Lumping them together made the grid look accounted for when only its
+    # total was.
+    assert reasons == {NO_STEP: 2, NO_SUBOPTIMAL: 10, MASK_MALFORMED: 0}, reasons
     assert (total, equal) == (35, 34), (total, equal)
 
 
