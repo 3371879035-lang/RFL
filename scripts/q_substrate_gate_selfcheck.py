@@ -162,12 +162,30 @@ MUTATIONS: tuple[tuple[str, str, pathlib.Path, str, str, str], ...] = (
     ),
     (
         "qaddress_state_field_typing",
-        "a QAddress whose State carries a float or bool field is accepted, then matches a "
-        "legal reference row through dict equality and persists",
+        "a QAddress whose State carries a float or bool field is accepted, folds onto a "
+        "legal reference row through dict equality, and PERSISTS",
         STORE,
-        "    bad = non_integer_state_fields(addr.state)",
-        "    bad = ()                            # MUTATED: State fields untyped",
+        # The whole strict block goes back to the old shape. Mutating only the
+        # `non_integer_state_fields` line was NOT semantic: `is_decision_context` is
+        # itself type-strict now, so it kept refusing the malformed State and the gate
+        # could only fail on a changed error message -- evidence that the error path
+        # moved, not that the hole reopened. A mutation has to restore the vulnerability
+        # it names.
+        "    bad = non_integer_state_fields(addr.state)\n"
+        "    if bad:\n"
+        "        raise StoreTransactionError(\n"
+        "            f\"QAddress.state has non-integer field(s) {bad}: {addr.state!r}. Python \"\n"
+        "            \"folds 1.0, True and 1 into one dict key, so this address would match a \"\n"
+        "            \"legal reference row while not being one\")\n"
+        "    if not is_decision_context(addr.state, addr.z, addr.m):\n"
+        "        raise StoreTransactionError(\n"
+        "            f\"QAddress {addr!r} is not a legal decision context: z and m must be true \"\n"
+        "            \"integers inside their domains and (x, y, t, kappa, phi) a legal state\")",
+        "    if not isinstance(addr.state, State):   # MUTATED: the old lax check\n"
+        "        raise StoreTransactionError(\n"
+        "            f\"QAddress.state must be a State, got {addr.state!r}\")",
         f"{TESTS}::test_1b_a_state_with_non_integer_fields_cannot_key_the_q_store",
+        "DID NOT RAISE",
     ),
     (
         "q_requires_reference",
@@ -219,7 +237,10 @@ def _run_node(node: str) -> tuple[int, str]:
         cwd=ROOT, capture_output=True, text=True, env=env,
     )
     lines = [ln for ln in (proc.stdout + proc.stderr).strip().splitlines() if ln.strip()]
-    return proc.returncode, (lines[-1] if lines else "")
+    # A *tail*, not the last line: with -x the final line is the "stopping after 1
+    # failures" banner, so a last-line-only excerpt can never contain the failure reason
+    # a mutation may declare. That made the reason check unmatchable rather than wrong.
+    return proc.returncode, "\n".join(lines[-12:])
 
 
 #: pytest exits these when it never collected the requested node (4 = usage error,
@@ -237,7 +258,8 @@ def check_nodes(mutations) -> list:
     runtime; this catches it before anything runs.
     """
     stale = []
-    for key, _hole, _path, _old, _new, node in mutations:
+    for entry_spec in mutations:
+        key, node = entry_spec[0], entry_spec[5]
         path, _, test = node.partition("::")
         try:
             src = (ROOT / path).read_text(encoding="utf-8")
@@ -261,11 +283,14 @@ def main() -> int:
 
     before = {p: _digest(p) for p in (STORE, REFERENCE)}
     results = []
-    for key, hole, path, old, new, node in MUTATIONS:
+    for entry_spec in MUTATIONS:
+        key, hole, path, old, new, node = entry_spec[:6]
+        expect_tail = entry_spec[6] if len(entry_spec) > 6 else None
         original = _read(path)
         count = original.count(old)
         entry = {"mutation": key, "hole": hole, "gate": node.split("::")[-1],
-                 "site": str(path.relative_to(ROOT)), "matched": count}
+                 "site": str(path.relative_to(ROOT)), "matched": count,
+                 "expected_failure_text": expect_tail}
         if count != 1:
             entry.update(verdict="MUTATION_NOT_APPLIED",
                          detail=f"the anchor matched {count} times, expected exactly 1")
@@ -277,14 +302,21 @@ def main() -> int:
             code, tail = _run_node(node)
         finally:
             _write(path, original)
-        # GATE_IS_REAL iff pytest exited 1, and nothing else.
+        # GATE_IS_REAL iff pytest exited 1 **for the stated reason**.
         #
         # `code != 0` was too generous: pytest also exits 2 (interrupted / collection
         # error) and 3 (internal error), and these mutations edit SOURCE FILES, so a
         # mutation that accidentally introduces a syntax or import error would be
         # reported as a dead gate. That is the same mistake as counting "node not found"
         # as a pass, one failure mode further out.
-        if code == 1:
+        #
+        # And a non-zero exit is still not enough on its own when the mutation claims to
+        # reopen a hole: a gate that fails because a message changed has not shown the
+        # hole was reachable, so such a mutation may declare the text its failure must
+        # contain.
+        if code == 1 and expect_tail and expect_tail not in tail:
+            verdict = "WRONG_FAILURE_REASON"
+        elif code == 1:
             verdict = "GATE_IS_REAL"
         elif code == 0:
             verdict = "NOT_A_GATE"

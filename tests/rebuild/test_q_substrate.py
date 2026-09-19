@@ -86,18 +86,39 @@ def test_1b_a_state_with_non_integer_fields_cannot_key_the_q_store():
     ``_require_q_address`` used to stop at ``isinstance(addr.state, State)``, so
     ``State(x=1.0, ...)`` was a legal key; ``e.address in q_reference`` then compared by
     value, folded ``1.0 == 1``, hit a **legal reference row** and the entry persisted.
+
+    The first case is built from a **real** reference row with an action that is
+    genuinely admissible there, and it asserts only that the write raises. That shape is
+    deliberate: it is what makes the corresponding mutation *semantic*. A version built
+    from a context that is not in the domain at all would still be rejected by the domain
+    lookup even with the typing guard removed, so the "mutation" would reopen nothing and
+    the gate could only fail on a changed message — evidence that the error path moved,
+    not that the vulnerability was reachable.
     """
+    # (1) value-preserving float substitution on a row that really exists, with a real
+    #     admissible action: only strict typing can refuse this.
+    key = VIEW.domains[0]
+    legal_state, z, m = key
+    a = sorted(VIEW.rows[key])[0]
+    folded = State(x=float(legal_state.x), y=legal_state.y, t=legal_state.t,
+                   kappa=legal_state.kappa, phi=legal_state.phi)
+    assert folded == legal_state, "the substitution must be value-preserving"
+    assert QAddress(state=folded, z=z, m=m, a=a) == QAddress(state=legal_state, z=z,
+                                                             m=m, a=a), \
+        "and it must fold onto the legal key, which is what makes it dangerous"
     s = LearnerPersistentState()
-    bad_states = [
-        State(x=1.0, y=2, t=3, kappa=0, phi=1),
-        State(x=1, y=2, t=3.0, kappa=0, phi=1),
-        State(x=1, y=2, t=3, kappa=False, phi=1),
-        State(x=1, y=2, t=3, kappa=0, phi=1.0),
-    ]
-    for st in bad_states:
-        with pytest.raises(StoreTransactionError) as ei:
+    with pytest.raises(StoreTransactionError):
+        write(s, [Edit(Q, QAddress(state=folded, z=z, m=m, a=a),
+                       VIEW.value(QAddress(state=legal_state, z=z, m=m, a=a)) + 1.0)])
+    assert s.healthy, "the folded key must not have persisted"
+
+    # (2) the same for a bool field, and for the other four fields.
+    for st in (State(x=1, y=2, t=3.0, kappa=0, phi=1),
+               State(x=1, y=2, t=3, kappa=False, phi=1),
+               State(x=1, y=2, t=3, kappa=0, phi=1.0)):
+        with pytest.raises(StoreTransactionError):
             write(s, [Edit(Q, QAddress(state=st, z=1, m=0, a=0), 1.0)])
-        assert "non-integer field" in str(ei.value)
+    # (3) and the non-State fields.
     with pytest.raises(StoreTransactionError):
         write(s, [Edit(Q, QAddress(state=ctx(), z=True, m=0, a=0), 1.0)])
     with pytest.raises(StoreTransactionError):

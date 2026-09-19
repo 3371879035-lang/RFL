@@ -19,8 +19,9 @@
       "gate": "test_3_writing_the_reference_value_canonicalises_to_deletion",
       "site": "src\\rfl_rebuild\\learner\\store.py",
       "matched": 1,
+      "expected_failure_text": null,
       "exit_code": 1,
-      "tail": "!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "        write(s, [Edit(Q, Q0, ref)])\n>       assert dict(s.q_overrides) == {}, \"a reference-valued write is a deletion\"\nE       AssertionError: a reference-valued write is a deletion\nE       assert {QAddress(sta...9999999999999} == {}\nE         \nE         Left contains 1 more item:\nE         {QAddress(state=State(x=1, y=2, t=1, kappa=0, phi=0), z=1, m=0, a=0): 0.8999999999999999}\nE         Use -v to get more diff\ntests\\rebuild\\test_q_substrate.py:166: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_q_substrate.py::test_3_writing_the_reference_value_canonicalises_to_deletion\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -29,8 +30,9 @@
       "gate": "test_11_an_entry_outside_the_reference_domain_is_rejected_at_the_boundary",
       "site": "src\\rfl_rebuild\\learner\\store.py",
       "matched": 1,
+      "expected_failure_text": null,
       "exit_code": 1,
-      "tail": "!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "                f\"the reference has no row for {address!r}\")\n        try:\n            return row[address.a]\n        except KeyError:\n>           raise ReferenceContractError(\n                f\"{address.a!r} is not admissible at {address!r}; the reference is total \"\n                \"on A_z(m,s), so this address is outside the domain\") from None\nE           rfl_rebuild.learner.store.ReferenceContractError: 0 is not admissible at QAddress(state=State(x=0, y=2, t=0, kappa=0, phi=0), z=0, m=0, a=0); the reference is total on A_z(m,s), so this address is outside the domain\nsrc\\rfl_rebuild\\learner\\reference.py:222: ReferenceContractError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_q_substrate.py::test_11_an_entry_outside_the_reference_domain_is_rejected_at_the_boundary\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -39,8 +41,9 @@
       "gate": "test_2_a_q_value_must_be_a_finite_real",
       "site": "src\\rfl_rebuild\\learner\\store.py",
       "matched": 1,
+      "expected_failure_text": null,
       "exit_code": 1,
-      "tail": "!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "    def test_2_a_q_value_must_be_a_finite_real(bad):\n        \"\"\"``bool`` is an ``int`` subclass, so without the exclusion ``True`` passes for\n        ``1.0`` and the fingerprint carries a type the value domain does not have. NaN and\n        infinities would make ``fp_pre == fp_post`` depend on comparison semantics.\"\"\"\n        s = LearnerPersistentState()\n>       with pytest.raises(StoreTransactionError):\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.learner.store.StoreTransactionError'>\ntests\\rebuild\\test_q_substrate.py:138: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_q_substrate.py::test_2_a_q_value_must_be_a_finite_real[True]\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -49,8 +52,9 @@
       "gate": "test_13_p_patch_and_q_coresidence_fails_before_adapter_creation",
       "site": "src\\rfl_rebuild\\learner\\store.py",
       "matched": 1,
+      "expected_failure_text": null,
       "exit_code": 1,
-      "tail": "!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "        s = LearnerPersistentState()\n        write(s, [Edit(DECISION, A, K.UP)])\n        write(s, [Edit(Q, Q0, VIEW.value(Q0) + 1.0)])\n        snap = s.snapshot()\n        assert snap.decision_overrides and snap.q_overrides\n>       with pytest.raises(LearnerStateError) as ei:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.learner.store.LearnerStateError'>\ntests\\rebuild\\test_q_substrate.py:573: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_q_substrate.py::test_13_p_patch_and_q_coresidence_fails_before_adapter_creation\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -59,8 +63,9 @@
       "gate": "test_12_a_row_that_is_not_total_on_a_z_is_rejected",
       "site": "src\\rfl_rebuild\\learner\\reference.py",
       "matched": 1,
+      "expected_failure_text": null,
       "exit_code": 1,
-      "tail": "!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "        a complete set of contexts to test what it is named for.\n        \"\"\"\n        key = VIEW.domains[0]\n        rows = {k: dict(VIEW.rows[k]) for k in VIEW.domains}\n        rows[key].pop(sorted(rows[key])[0])\n>       with pytest.raises(ReferenceContractError) as ei:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.learner.store.ReferenceContractError'>\ntests\\rebuild\\test_q_substrate.py:354: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_q_substrate.py::test_12_a_row_that_is_not_total_on_a_z_is_rejected\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -69,8 +74,9 @@
       "gate": "test_12d_the_reference_views_are_read_only",
       "site": "src\\rfl_rebuild\\learner\\reference.py",
       "matched": 1,
+      "expected_failure_text": null,
       "exit_code": 1,
-      "tail": "!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "F\n================================== FAILURES ===================================\n_________________ test_12d_the_reference_views_are_read_only __________________\n    def test_12d_the_reference_views_are_read_only():\n>       with pytest.raises(TypeError):\n             ^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'TypeError'>\ntests\\rebuild\\test_q_substrate.py:512: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_q_substrate.py::test_12d_the_reference_views_are_read_only\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -79,8 +85,9 @@
       "gate": "test_6_ties_still_break_to_the_lowest_action_id",
       "site": "src\\rfl_rebuild\\learner\\store.py",
       "matched": 1,
+      "expected_failure_text": null,
       "exit_code": 1,
-      "tail": "!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "        s = LearnerPersistentState()\n        write(s, [Edit(Q, QAddress(state=state, z=z, m=m, a=a_hi),\n                       VIEW.value(QAddress(state=state, z=z, m=m, a=a_lo)))])\n        provider = s.snapshot().q_decision_provider(VIEW)\n        got = provider(state, K.ControlState(z=z, m=m))\n>       assert got == a_lo, f\"a tie must resolve to the lowest id, got {got}\"\nE       AssertionError: a tie must resolve to the lowest id, got 4\nE       assert 4 == 3\ntests\\rebuild\\test_q_substrate.py:246: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_q_substrate.py::test_6_ties_still_break_to_the_lowest_action_id\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -89,8 +96,9 @@
       "gate": "test_4_the_empty_store_reproduces_the_reference_policy_on_every_context",
       "site": "src\\rfl_rebuild\\learner\\store.py",
       "matched": 1,
+      "expected_failure_text": null,
       "exit_code": 1,
-      "tail": "!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "                f\"empty Q store disagreed with pi_D* at ({state!r}, z={z}, m={m})\"\nE           AssertionError: empty Q store disagreed with pi_D* at (State(x=1, y=1, t=0, kappa=0, phi=0), z=1, m=0)\nE           assert 1 == 3\nE            +  where 1 = <function LearnerSnapshot.q_decision_provider.<locals>.provider at 0x00000170EDE6DA60>(State(x=1, y=1, t=0, kappa=0, phi=0), ControlState(z=1, m=0))\nE            +    where ControlState(z=1, m=0) = <class 'rfl_rebuild.env.kernel.ControlState'>(z=1, m=0)\nE            +      where <class 'rfl_rebuild.env.kernel.ControlState'> = K.ControlState\nE            +  and   3 = best_action(State(x=1, y=1, t=0, kappa=0, phi=0), 1, 0)\nE            +    where best_action = ReferenceSolution(q={(State(x=0, y=2, t=11, kappa=0, phi=0), 0, 0): {3: -1.02}, (State(x=0, y=2, t=11, kappa=0, phi=0)..., 1): 0, (State(x=3, y=4, t=0, kappa=1, phi=5), 3, 0): 2, (State(x=3, y=4, t=0, kappa=1, phi=5), 3, 1): 0}, horizon=12).best_action\ntests\\rebuild\\test_q_substrate.py:194: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_q_substrate.py::test_4_the_empty_store_reproduces_the_reference_policy_on_every_context\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -99,8 +107,9 @@
       "gate": "test_12e_a_reference_missing_a_whole_legal_context_is_rejected",
       "site": "src\\rfl_rebuild\\learner\\reference.py",
       "matched": 1,
+      "expected_failure_text": null,
       "exit_code": 1,
-      "tail": "!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "        missing context and an invented one cancel, so the comparison is against the shared\n        enumerator itself.\n        \"\"\"\n        rows = {k: dict(VIEW.rows[k]) for k in VIEW.domains}\n        dropped = rows.pop(VIEW.domains[0])\n>       with pytest.raises(ReferenceContractError) as ei:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.learner.store.ReferenceContractError'>\ntests\\rebuild\\test_q_substrate.py:368: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_q_substrate.py::test_12e_a_reference_missing_a_whole_legal_context_is_rejected\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -109,8 +118,9 @@
       "gate": "test_18_a_duck_typed_fake_reference_is_refused_at_both_boundaries",
       "site": "src\\rfl_rebuild\\learner\\store.py",
       "matched": 1,
+      "expected_failure_text": null,
       "exit_code": 1,
-      "tail": "!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "================================== FAILURES ===================================\n______ test_18_a_duck_typed_fake_reference_is_refused_at_both_boundaries ______\n    def test_18_a_duck_typed_fake_reference_is_refused_at_both_boundaries():\n        fake = _FakeReference(VIEW)\n        s = LearnerPersistentState()\n>       with pytest.raises(ReferenceContractError) as ei:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.learner.store.ReferenceContractError'>\ntests\\rebuild\\test_q_substrate.py:546: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_q_substrate.py::test_18_a_duck_typed_fake_reference_is_refused_at_both_boundaries\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -119,8 +129,9 @@
       "gate": "test_12i_value_preserving_type_substitutions_are_rejected",
       "site": "src\\rfl_rebuild\\learner\\reference.py",
       "matched": 1,
+      "expected_failure_text": null,
       "exit_code": 1,
-      "tail": "!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "                          t=sub(k) if field == \"t\" else s.t,\n                          kappa=sub(k) if field == \"kappa\" else s.kappa,\n                          phi=sub(k) if field == \"phi\" else s.phi), k[1], k[2])\n        assert new_key == k, \"the substitution must be value-preserving to be adversarial\"\n        rows[new_key] = row\n>       with pytest.raises(ReferenceContractError):\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.learner.store.ReferenceContractError'>\ntests\\rebuild\\test_q_substrate.py:463: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_q_substrate.py::test_12i_value_preserving_type_substitutions_are_rejected[z-<lambda>0]\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -129,18 +140,20 @@
       "gate": "test_12j_a_float_action_key_is_rejected",
       "site": "src\\rfl_rebuild\\learner\\reference.py",
       "matched": 1,
+      "expected_failure_text": null,
       "exit_code": 1,
-      "tail": "!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "        \"\"\"``{3.0} == {3}``, so row totality alone accepts a float action id.\"\"\"\n        k = VIEW.domains[0]\n        rows = {kk: dict(VIEW.rows[kk]) for kk in VIEW.domains}\n        a = sorted(rows[k])[0]\n        rows[k][float(a)] = rows[k].pop(a)\n>       with pytest.raises(ReferenceContractError) as ei:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.learner.store.ReferenceContractError'>\ntests\\rebuild\\test_q_substrate.py:473: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_q_substrate.py::test_12j_a_float_action_key_is_rejected\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
       "mutation": "qaddress_state_field_typing",
-      "hole": "a QAddress whose State carries a float or bool field is accepted, then matches a legal reference row through dict equality and persists",
+      "hole": "a QAddress whose State carries a float or bool field is accepted, folds onto a legal reference row through dict equality, and PERSISTS",
       "gate": "test_1b_a_state_with_non_integer_fields_cannot_key_the_q_store",
       "site": "src\\rfl_rebuild\\learner\\store.py",
       "matched": 1,
+      "expected_failure_text": "DID NOT RAISE",
       "exit_code": 1,
-      "tail": "!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "        assert folded == legal_state, \"the substitution must be value-preserving\"\n        assert QAddress(state=folded, z=z, m=m, a=a) == QAddress(state=legal_state, z=z,\n                                                                 m=m, a=a), \\\n            \"and it must fold onto the legal key, which is what makes it dangerous\"\n        s = LearnerPersistentState()\n>       with pytest.raises(StoreTransactionError):\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.learner.store.StoreTransactionError'>\ntests\\rebuild\\test_q_substrate.py:110: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_q_substrate.py::test_1b_a_state_with_non_integer_fields_cannot_key_the_q_store\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -149,8 +162,9 @@
       "gate": "test_11b_a_q_edit_requires_the_injected_reference",
       "site": "src\\rfl_rebuild\\learner\\store.py",
       "matched": 1,
+      "expected_failure_text": null,
       "exit_code": 1,
-      "tail": "!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "        \"\"\"\n        from rfl_rebuild.learner.reference import QReferenceView\n        if type(reference) is not QReferenceView:\n>           raise ReferenceContractError(\n                f\"the Q boundary requires a QReferenceView, got {type(reference).__name__}; \"\n                \"a duck-typed stand-in would carry none of the totality, finiteness or \"\n                \"read-only guarantees the injected reference is validated for (A77 \u00a765.4)\")\nE           rfl_rebuild.learner.store.ReferenceContractError: the Q boundary requires a QReferenceView, got NoneType; a duck-typed stand-in would carry none of the totality, finiteness or read-only guarantees the injected reference is validated for (A77 \u00a765.4)\nsrc\\rfl_rebuild\\learner\\store.py:528: ReferenceContractError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_q_substrate.py::test_11b_a_q_edit_requires_the_injected_reference\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     }
   ]

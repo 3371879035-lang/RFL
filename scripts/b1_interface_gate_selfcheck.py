@@ -194,7 +194,10 @@ def _run_node(node: str) -> tuple[int, str]:
         cwd=ROOT, capture_output=True, text=True, env=env,
     )
     lines = [ln for ln in (proc.stdout + proc.stderr).strip().splitlines() if ln.strip()]
-    return proc.returncode, (lines[-1] if lines else "")
+    # A *tail*, not the last line: with -x the final line is the "stopping after 1
+    # failures" banner, so a last-line-only excerpt can never contain the failure reason
+    # a mutation may declare. That made the reason check unmatchable rather than wrong.
+    return proc.returncode, "\n".join(lines[-12:])
 
 
 #: pytest exits these when it never collected the requested node (4 = usage error,
