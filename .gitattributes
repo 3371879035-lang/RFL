@@ -1,0 +1,17 @@
+# Line endings are part of the contract, not a local convention.
+#
+# The mutation anchors in `scripts/*_gate_selfcheck.py` compare WORKING-TREE BYTES, so a
+# checkout that rewrites LF to CRLF makes every multi-line anchor unmatchable and the
+# self-checks report MUTATION_NOT_APPLIED -- a broken-looking harness rather than a newline.
+# With `core.autocrlf=true` and no attribute file that is exactly what a fresh checkout on
+# Windows produced, and it was hit four times during the rebuild, each time diagnosed as a
+# mystery before being recognised.
+#
+# It was measured, not assumed: a fresh worktree at 1961a92 gave "2 failed, 545 passed"
+# (`test_mutation_anchors` LF and anchor-match checks), while the same revision normalised to
+# LF gives "547 passed". A repository whose evidence instruments only work in the byte state
+# of whoever edited the file last is not reproducible, so the state is declared here.
+#
+# The index is already LF throughout, so this changes no stored blob and only pins what a
+# checkout materialises.
+* text=auto eol=lf
