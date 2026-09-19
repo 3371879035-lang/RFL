@@ -64,6 +64,10 @@ from rfl_rebuild.b1.targets import (
     resolve_credited_units,
     validate_envelope,
 )
+from rfl_rebuild.b1.counterfactual import (
+    build_counterfactual_envelope,
+    validate_counterfactual_envelope,
+)
 from rfl_rebuild.b1.factual import (
     build_factual_envelope,
     validate_factual_envelope,
@@ -78,6 +82,7 @@ from rfl_rebuild.learner.store import (
 
 __all__ = [
     "B1Result",
+    "run_dq_law",
     "run_factual_return_law",
     "run_patch_law",
     "run_patch_law_with_envelope",
@@ -403,32 +408,71 @@ def run_patch_law_with_envelope(law, pre_state: LearnerPersistentState,
     return _run(law, tier, pre_state, addresses, targets, spec, q_reference)
 
 
+def run_dq_law(law, pre_state: LearnerPersistentState,
+               addresses: Sequence, rows, q_reference, *,
+               sol=None, episode=None,
+               spec: SliceDescriptor = DQ_SLICE) -> B1Result:
+    r"""The $D_Q$ entry point: build the cell's fields, validate them, run.
+
+    The builder and the validator are **tier-specific**, because each cell's evidence is
+    different and neither may be checked against the other's:
+
+    * $L_0$ builds $F_t = f(I^{\text{factual}}_{0:T})$ from the rows alone, and is
+      re-derived from those rows bit for bit;
+    * $L_2$ additionally needs the shared $a_t^+$ adapter (``sol``, the *same* adapter
+      every other arm uses, A76 §63.3) and the factual configuration (``episode``) for the
+      full-episode counterfactual replay, and is re-derived from both.
+
+    Handing one tier's evidence where the other's is required fails stop rather than
+    silently building a weaker envelope.
+    """
+    law, tier = _law_contract(law, spec)
+    fields = spec.fields(tier)
+    if not fields:
+        raise ProtocolError(
+            f"{spec.name} at tier {tier.name} declares no field, so it has nothing to "
+            "build here; an empty cell does not belong on the D_Q path")
+    if tier is Tier.L0_FACTUAL:
+        envelope = build_factual_envelope(rows, addresses)
+        validate_factual_envelope(addresses, envelope, rows)
+    elif tier is Tier.L2_COUNTERFACTUAL:
+        if sol is None or episode is None:
+            raise ProtocolError(
+                "the L2 cell needs the shared a^+ adapter (sol) and the factual episode "
+                "configuration; without them the counterfactual has no definition and an "
+                "envelope could only be faked")
+        envelope = build_counterfactual_envelope(rows, addresses, sol=sol,
+                                                 episode=episode)
+        validate_counterfactual_envelope(addresses, envelope, rows, sol=sol,
+                                         episode=episode)
+    else:
+        raise ProtocolError(
+            f"{spec.name} at tier {tier.name} has no D_Q builder; this revision "
+            "implements L0 and L2 only")
+    return _run(law, tier, pre_state, addresses, envelope, spec, q_reference)
+
+
 def run_factual_return_law(law, pre_state: LearnerPersistentState,
                            addresses: Sequence, rows,
                            q_reference, spec: SliceDescriptor = DQ_SLICE) -> B1Result:
-    r"""The $D_Q\times L_0$ entry point: build $F_t$ **from the rows**, then run.
+    r"""The $L_0$ entry point, kept under its own name.
 
     $$\boxed{F_t = f\bigl(I^{\text{factual}}_{0:T}\bigr)}$$
 
-    The envelope is built by :func:`~rfl_rebuild.b1.factual.build_factual_envelope`, whose
-    only input is the learner-visible rows, and then re-derived and compared bit for bit
-    by :func:`~rfl_rebuild.b1.factual.validate_factual_envelope`. A trace cannot reach the
-    builder through this signature, and a builder that used ``sum`` or substituted
-    $Q_D^\ast$ is caught by the comparison rather than by a tolerance.
+    It is :func:`run_dq_law` restricted to the factual cell, and it *asserts* that
+    restriction rather than relying on the dispatch: a caller reaching for this function
+    is asking for $F_t$, so handing it an $L_2$ law should be told so.
 
     The reference view is **required**, not optional: the scalar ledger's created and
     deleted deltas are defined against $Q_D^\ast$, and a run that could not compute them
     would have to report zeros — which is a claim, not a gap.
     """
     law, tier = _law_contract(law, spec)
-    fields = spec.fields(tier)
-    if not fields:
+    if tier is not Tier.L0_FACTUAL:
         raise ProtocolError(
-            f"{spec.name} at tier {tier!r} declares no field, so it has nothing to build "
-            "here; an empty cell does not belong on the factual path")
-    envelope = build_factual_envelope(rows, addresses)
-    validate_factual_envelope(addresses, envelope, rows)
-    return _run(law, tier, pre_state, addresses, envelope, spec, q_reference)
+            f"{law.name} declares tier {tier.name}; run_factual_return_law builds the L0 "
+            "cell only — use run_dq_law for a law whose cell needs the counterfactual")
+    return run_dq_law(law, pre_state, addresses, rows, q_reference, spec=spec)
 
 
 def run_patch_law(law, pre_state: LearnerPersistentState, credited_units,

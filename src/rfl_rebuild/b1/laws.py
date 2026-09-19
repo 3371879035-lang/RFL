@@ -41,7 +41,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Mapping, Sequence
 
-from rfl_rebuild.b1.contract import NO_VALID_ALTERNATIVE
+from rfl_rebuild.b1.contract import NO_VALID_ALTERNATIVE, ProtocolError
 from rfl_rebuild.b1.tier import Tier
 from rfl_rebuild.learner.store import DECISION, Q, DecisionAddress, Edit, QAddress
 
@@ -49,7 +49,9 @@ __all__ = [
     "DQ_LAWS",
     "LAWS",
     "AddressPlan",
+    "CounterfactualReturnWrite",
     "DeleteFactualPatch",
+    "DualReturnWrite",
     "FactualReturnWrite",
     "LawPlan",
     "LocalOracleRestore",
@@ -283,12 +285,90 @@ class FactualReturnWrite(_Law):
         return LawPlan(self.name, tuple(plans))
 
 
+class CounterfactualReturnWrite(_Law):
+    r"""$D_Q\times L_2$ — write the counterfactual return at the verified alternative.
+
+    $$\boxed{Q_D^L(x_t, a_t^+) \leftarrow G_t^{CF}(a_t^+)}$$
+
+    One entry, one address, one receipt. Where no verified alternative exists the address
+    carries ``NO_VALID_ALTERNATIVE`` and nothing is written — A76 §63.3's live guard, whose
+    three-way distinction exists so that "there was no alternative" is not read as "the
+    method chose not to write".
+    """
+
+    name = "CounterfactualReturnWrite"
+    tier = Tier.L2_COUNTERFACTUAL
+
+    def plan(self, addresses, targets) -> LawPlan:
+        plans = []
+        for a in addresses:
+            rec = targets[a]
+            if rec["a_plus"] is None:
+                plans.append(AddressPlan(a, (), NO_VALID_ALTERNATIVE))
+            else:
+                entry = QAddress(state=a.state, z=a.z, m=a.m, a=rec["a_plus"])
+                plans.append(AddressPlan(a, (Edit(Q, entry, rec["g_cf"]),)))
+        return LawPlan(self.name, tuple(plans))
+
+
+class DualReturnWrite(_Law):
+    r"""$D_Q\times L_2$ — both targets, one addressed context, one transaction.
+
+    $$\boxed{Q_D^L(x_t,a_t^F) \leftarrow G_t^F, \qquad
+    Q_D^L(x_t,a_t^+) \leftarrow G_t^{CF}(a_t^+)}$$
+
+    Both targets are computed from the **same pre-update state** and committed together.
+    Writing the factual entry first and letting the second target observe the modified
+    store is prohibited — that would make this sequential learning rather than a
+    comparison of two target semantics, which is the arm's entire content. The
+    enforcement is structural: the runner plans before it commits, and a scene commits
+    once.
+
+    **It does not degenerate at an address.** Where $a_t^+$ is absent the factual half is
+    *not* written either: A76 §63.3 freezes "$a^+$ is required but absent ⇒ no write was
+    planned" and adds that a law may not degenerate at the same address — "above all
+    `DualReturnWrite` must not commit only its factual half". A half-applied Dual is a
+    different treatment wearing its name.
+
+    Two entries, **one** `DecisionAddress` receipt, and
+    $N_{\text{scalar}} \le 2$ at that context — the first arm for which that bound says
+    anything.
+    """
+
+    name = "DualReturnWrite"
+    tier = Tier.L2_COUNTERFACTUAL
+
+    def plan(self, addresses, targets) -> LawPlan:
+        plans = []
+        for a in addresses:
+            rec = targets[a]
+            if rec["a_plus"] is None:
+                plans.append(AddressPlan(a, (), NO_VALID_ALTERNATIVE))
+                continue
+            factual = QAddress(state=a.state, z=a.z, m=a.m, a=rec["a_factual"])
+            alternative = QAddress(state=a.state, z=a.z, m=a.m, a=rec["a_plus"])
+            if factual == alternative:
+                raise ProtocolError(
+                    f"the factual action and the verified alternative coincide at {a!r}; "
+                    "an alternative equal to the factual command is not an alternative, "
+                    "and writing one entry twice would be order-dependent")
+            plans.append(AddressPlan(a, (Edit(Q, factual, rec["g_factual"]),
+                                         Edit(Q, alternative, rec["g_cf"]))))
+        return LawPlan(self.name, tuple(plans))
+
+
 #: Registration order is fixed so arm enumeration is deterministic.
 LAWS = (NoWrite, DeleteFactualPatch, SetAlternative, LocalOracleRestore)
 
-#: The $D_Q$ registry, as far as A77 §65.12's order has reached: one treatment, plus the
-#: reference for the cell that treatment runs in. Adding to this tuple is adding a law.
-DQ_LAWS = (NoWriteRef(Tier.L0_FACTUAL), FactualReturnWrite)
+#: The $D_Q$ registry, as far as A77 §65.12's order has reached: one reference per cell
+#: with a substantive treatment (§65.3), plus the treatments themselves — three so far.
+DQ_LAWS = (
+    NoWriteRef(Tier.L0_FACTUAL),
+    FactualReturnWrite,
+    NoWriteRef(Tier.L2_COUNTERFACTUAL),
+    CounterfactualReturnWrite,
+    DualReturnWrite,
+)
 
 
 def _kind(law) -> str:

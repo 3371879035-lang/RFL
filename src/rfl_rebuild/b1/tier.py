@@ -191,11 +191,19 @@ class SliceDescriptor:
                 f"{self.name}: the cell table must declare every tier; missing {missing}, "
                 f"unknown {extra}. An undeclared cell would be discovered only when a "
                 "law first ran in it")
-        unknown = sorted(t.name for t in self.implemented_tiers
-                         if t not in self.cells)
+        unknown = sorted(repr(t) for t in self.implemented_tiers
+                         if type(t) is not Tier)
         if unknown:
+            # Checked BEFORE any `.name` access: Tier is a closed opaque enum, so a
+            # non-member in the build set is a malformed descriptor and must not surface
+            # as an AttributeError from inside the validation that exists to catch it.
             raise ProtocolError(
-                f"{self.name}: implemented tier(s) {unknown} have no declared cell; "
+                f"{self.name}: implemented_tiers contains {unknown}, which are not Tier "
+                "members; the tier namespace is closed (A77 §65.1)")
+        unbuilt = sorted(t.name for t in self.implemented_tiers if t not in self.cells)
+        if unbuilt:
+            raise ProtocolError(
+                f"{self.name}: implemented tier(s) {unbuilt} have no declared cell; "
                 "implementation state cannot outrun the semantics it implements")
         for tier in sorted(self.implemented_tiers, key=lambda t: t.name):
             if self.cells[tier] is ILL_TYPED:
@@ -313,8 +321,10 @@ DQ_SLICE = SliceDescriptor(
     extract={
         "a_factual": lambda record: record.a_factual,
         "g_factual": lambda record: record.g_factual,
+        "a_plus": lambda record: record.a_plus,
+        "g_cf": lambda record: record.g_cf,
     },
-    implemented_tiers=frozenset({Tier.L0_FACTUAL}),
+    implemented_tiers=frozenset({Tier.L0_FACTUAL, Tier.L2_COUNTERFACTUAL}),
 )
 
 

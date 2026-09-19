@@ -46,6 +46,9 @@ from rfl_rebuild.learner.store import DecisionAddress
 
 __all__ = [
     "FactualTarget",
+    "context_index",
+    "facts_for",
+    "is_finite_real",
     "build_factual_envelope",
     "factual_return_to_go",
     "validate_factual_envelope",
@@ -65,20 +68,20 @@ _REWARD = ROW_SCHEMA.index("reward")
 _CONTEXT = (_X, _Y, _T, _KAPPA, _PHI, _Z, _M)
 
 
-def _is_true_int(v: object) -> bool:
+def is_true_int(v: object) -> bool:
     return type(v) is int
 
 
-def _is_action(v: object) -> bool:
-    return _is_true_int(v) and 0 <= v < len(ACTIONS)
+def is_action(v: object) -> bool:
+    return is_true_int(v) and 0 <= v < len(ACTIONS)
 
 
-def _is_finite_real(v: object) -> bool:
+def is_finite_real(v: object) -> bool:
     return (isinstance(v, (int, float)) and not isinstance(v, bool)
             and math.isfinite(v))
 
 
-def _context_index(rows: Sequence) -> dict:
+def context_index(rows: Sequence) -> dict:
     """``(x, y, t, kappa, phi, z, m) -> row index``, failing on a duplicate."""
     index: dict = {}
     for i, row in enumerate(rows):
@@ -115,7 +118,7 @@ class FactualTarget:
     g_factual: float
 
 
-def _facts_for(rows: Sequence, index: Mapping, address: DecisionAddress) -> FactualTarget:
+def facts_for(rows: Sequence, index: Mapping, address: DecisionAddress) -> FactualTarget:
     """$F_t$ for one address, from the rows. Shared by builder and validator."""
     key = (address.state.x, address.state.y, address.state.t, address.state.kappa,
            address.state.phi, address.z, address.m)
@@ -126,7 +129,7 @@ def _facts_for(rows: Sequence, index: Mapping, address: DecisionAddress) -> Fact
             "must come from the trace that produced these rows")
     row = rows[i]
     a_f = row[_A_CMD]
-    if not _is_action(a_f):
+    if not is_action(a_f):
         raise ProtocolError(
             f"the factual command at {address!r} is {a_f!r}, which is not an action id")
     allowed = option_actions(address.z, ControlState(z=address.z, m=address.m),
@@ -146,8 +149,8 @@ def build_factual_envelope(rows: Sequence,
 
     Takes **rows**, not a trace. That is the whole point of the signature.
     """
-    index = _context_index(rows)
-    out = {a: _facts_for(rows, index, a) for a in addresses}
+    index = context_index(rows)
+    out = {a: facts_for(rows, index, a) for a in addresses}
     validate_factual_envelope(addresses, out, rows)
     return MappingProxyType(out)
 
@@ -182,7 +185,7 @@ def validate_factual_envelope(addresses: Sequence[DecisionAddress],
             f"record(s) {missing} — a missing record is a protocol failure, not a "
             "verified absence — and non-credited key(s) "
             f"{sorted(map(repr, keys - credited))}")
-    index = _context_index(rows)
+    index = context_index(rows)
     for a in addresses:
         rec = envelope[a]
         if not isinstance(rec, FactualTarget):
@@ -192,11 +195,11 @@ def validate_factual_envelope(addresses: Sequence[DecisionAddress],
             raise ProtocolError(
                 f"the factual record for {a!r} carries address {rec.address!r}; a record "
                 "must describe the address it is keyed by")
-        if not _is_finite_real(rec.g_factual):
+        if not is_finite_real(rec.g_factual):
             raise ProtocolError(
                 f"the factual return for {a!r} is {rec.g_factual!r}; the value domain is "
                 "the finite reals and bool is not a real")
-        expected = _facts_for(rows, index, a)
+        expected = facts_for(rows, index, a)
         if rec.a_factual != expected.a_factual:
             raise ProtocolError(
                 f"the factual action for {a!r} is {rec.a_factual!r} but the rows say "

@@ -33,6 +33,8 @@ from rfl_rebuild.b1.contract import (
 )
 from rfl_rebuild.b1.laws import (
     DQ_LAWS,
+    CounterfactualReturnWrite,
+    DualReturnWrite,
     LAWS,
     AddressPlan,
     DeleteFactualPatch,
@@ -45,6 +47,13 @@ from rfl_rebuild.b1.laws import (
     independent_treatment_count,
     law_metadata,
 )
+from rfl_rebuild.b1.counterfactual import (
+    CfEpisode,
+    CounterfactualTarget,
+    build_counterfactual_envelope,
+    replay_with_decision_replaced,
+    validate_counterfactual_envelope,
+)
 from rfl_rebuild.b1.factual import (
     FactualTarget,
     build_factual_envelope,
@@ -53,6 +62,7 @@ from rfl_rebuild.b1.factual import (
 )
 from rfl_rebuild.b1.runner import (
     B1Result,
+    run_dq_law,
     run_factual_return_law,
     run_patch_law,
     run_patch_law_with_envelope,
@@ -85,7 +95,9 @@ __all__ = [
     "AddressPlan",
     "B1Result",
     "DecisionWriteReceipt",
+    "CounterfactualReturnWrite",
     "DeleteFactualPatch",
+    "DualReturnWrite",
     "FactualReturnWrite",
     "LawPlan",
     "LocalOracleRestore",
@@ -98,7 +110,11 @@ __all__ = [
     "Tier",
     "UpdateLedger",
     "build_target_envelope",
+    "CfEpisode",
+    "CounterfactualTarget",
     "FactualTarget",
+    "build_counterfactual_envelope",
+    "replay_with_decision_replaced",
     "build_factual_envelope",
     "factual_return_to_go",
     "fingerprint",
@@ -106,8 +122,10 @@ __all__ = [
     "law_metadata",
     "resolve_credited_units",
     "resolve_decision_address",
+    "run_dq_law",
     "run_factual_return_law",
     "run_patch_law",
     "run_patch_law_with_envelope",
+    "validate_counterfactual_envelope",
     "validate_factual_envelope",
 ]
