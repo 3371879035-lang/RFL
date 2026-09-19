@@ -45,6 +45,7 @@ receipt logic below exists once.
 from __future__ import annotations
 
 import inspect
+import math
 from dataclasses import dataclass
 from typing import Sequence
 
@@ -68,7 +69,12 @@ from rfl_rebuild.b1.factual import (
     validate_factual_envelope,
 )
 from rfl_rebuild.b1.tier import DQ_SLICE, PATCH_SLICE, SliceDescriptor, Tier
-from rfl_rebuild.learner.store import LearnerPersistentState, StoreTransactionError
+from rfl_rebuild.learner.store import (
+    LearnerPersistentState,
+    ReferenceContractError,
+    StoreTransactionError,
+    require_q_reference,
+)
 
 __all__ = [
     "B1Result",
@@ -196,6 +202,7 @@ def _law_contract(law, spec: SliceDescriptor):
         law = law()
     tier = _tier(law)
     spec.fields(tier)                      # ill-typed cells fail stop here
+    spec.require_implemented(tier)         # semantically real but unbuilt cells too
     try:
         params = tuple(inspect.signature(law.plan).parameters)
     except (TypeError, ValueError) as exc:
@@ -208,6 +215,12 @@ def _law_contract(law, spec: SliceDescriptor):
             f"law API is exactly {_LAW_PLAN_PARAMS}; a law is not handed the store, a "
             "snapshot or any other learner-state view (A76 §63.1, §63.10)")
     return law, tier
+
+
+def _entry_key(address) -> tuple:
+    r"""The canonical ordering key for an entry: $(x, y, t, \\kappa, \\phi, z, m, a)$."""
+    s = address.state
+    return (s.x, s.y, s.t, s.kappa, s.phi, address.z, address.m, address.a)
 
 
 def _scalar_accounting(plan: LawPlan, pre_view: dict, post_view: dict,
@@ -228,36 +241,67 @@ def _scalar_accounting(plan: LawPlan, pre_view: dict, post_view: dict,
 
     The reference is required here for the same reason it is required at the transaction
     boundary: without it the created and deleted cases are not defined at all.
+
+    **Order independence.** A76 froze that no result may depend on iteration or hash
+    order, and a sequential float accumulation would violate it: $10^{16} + 1 + 1$ and
+    $1 + 1 + 10^{16}$ are different bit patterns. Two things give independence here, and
+    they are not the same thing:
+
+    * ``math.fsum`` is exactly rounded, so the sum is order-independent by construction.
+      (The §65.6 fold prohibition is about *target construction*, which must reproduce the
+      DP's path; ledger accounting is a different job.);
+    * the entries are **sorted** by a canonical key anyway, so the determinism is visible
+      in the code rather than inferred from ``fsum``'s contract.
     """
     if q_reference is None:
         raise ProtocolError(
             "the scalar ledger needs the injected reference view: the created and deleted "
             "deltas are defined against Q_D^*, and an absent entry is not a zero value "
             "(A77 §65.10)")
-    n_scalar = 0
-    total = 0.0
-    largest = 0.0
+    changed: list = []
     for p in plan.plans:
         for e in p.edits:
             was = pre_view.get(e.address, _MISSING)
             now = post_view.get(e.address, _MISSING)
             if was == now:
                 continue
-            n_scalar += 1
             if was is _MISSING:
                 delta = abs(float(now) - float(q_reference.value(e.address)))
             elif now is _MISSING:
                 delta = abs(float(q_reference.value(e.address)) - float(was))
             else:
                 delta = abs(float(now) - float(was))
-            total += delta
-            largest = max(largest, delta)
-    return n_scalar, total, largest
+            changed.append((_entry_key(e.address), delta))
+    changed.sort(key=lambda pair: pair[0])
+    deltas = [d for _key, d in changed]
+    return len(deltas), math.fsum(deltas), max(deltas, default=0.0)
 
 
 def _run(law: "_Law", tier: Tier, pre_state: LearnerPersistentState,
          addresses: Sequence, targets, spec: SliceDescriptor,
          q_reference=None) -> B1Result:
+    # ---- the reference boundary, uniform across arms --------------------- #
+    #
+    # A77 §65.2 requires every law in a cell to be built through the same cell, and the
+    # same discipline applies to what the *runner* accepts: a fake reference must be
+    # refused before any arm-specific behaviour, so that a reference arm and a treatment
+    # arm cannot differ in admissibility.
+    #
+    # That asymmetry was real. `FactualReturnWrite` writes, so a fake reference was caught
+    # by the store's own boundary; `NoWriteRef(L0)` writes nothing, skipped the
+    # transaction entirely, and reached only the accounting -- which checked ``is None``.
+    # A mutable duck-typed fake therefore *completed* on the reference arm and
+    # fail-stopped on the treatment arm of the same cell. The check belongs here, once,
+    # ahead of both, and it covers every entry point rather than one of them.
+    if spec.scalar:
+        try:
+            require_q_reference(q_reference)
+        except ReferenceContractError as exc:
+            # The substrate's own exception type is deliberately separate from B1's
+            # ProtocolError, and the runner's contract is that a benchmark-invalidating
+            # failure is a ProtocolError -- the same conversion the transaction gets.
+            raise ProtocolError(f"the Q reference is not acceptable: {exc}") from exc
+
     # ---- the cell decides delivery, not the law and not the outcome ------- #
     targets = spec.deliver(tier, addresses, targets)
 

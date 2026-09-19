@@ -54,7 +54,6 @@ from rfl_rebuild.learner.store import (
 )
 
 __all__ = [
-    "DEFERRED",
     "DQ_SLICE",
     "ILL_TYPED",
     "PATCH_SLICE",
@@ -99,41 +98,36 @@ class _IllTyped:
         return "<ill-typed cell>"
 
 
-class _Deferred:
-    """A cell A77 §65.2 declares, which **this build does not implement yet**.
-
-    Deliberately not :data:`ILL_TYPED`. $D_Q\times L_2$ and $D_Q\times L_3$ *have*
-    substantive treatments — their field sets are frozen in §65.2 — so calling them
-    ill-typed would assert something false and would mislead the first person to build
-    them. Declaring them as ordinary field sets is impossible until their content exists
-    ($G_t^{CF}$ is not authorised yet), so the honest third state is "declared, not
-    built".
-
-    This is build staging, not a semantic claim, and it disappears as the cells arrive.
-    """
-
-    __slots__ = ()
-
-    def __repr__(self) -> str:                       # pragma: no cover - diagnostics
-        return "<deferred cell>"
-
-
 #: Declaring a law in an ill-typed cell is a protocol error (§65.2, §65.3).
 ILL_TYPED = _IllTyped()
-
-#: Declaring a law in a cell whose implementation has not been built is also a protocol
-#: error, with a different reason.
-DEFERRED = _Deferred()
 
 
 @dataclass(frozen=True)
 class SliceDescriptor:
     r"""One architecture's store slice: what it writes, and what each cell delivers.
 
-    ``cells`` maps a tier to either a field set or :data:`ILL_TYPED`. ``extract`` maps a
-    declared field name to the function that reads it from the evaluator-side record, so
-    the delivery is a projection over *declared* names and a record that grows a field
-    cannot silently widen what a law sees.
+    **Two questions, deliberately kept apart.**
+
+    ``cells`` answers the *semantic* one and is A77 §65.2 verbatim: what field set does
+    this cell carry, or is it ill-typed? It never records build progress, so enabling a
+    cell later is an implementation change rather than a rewrite of what ``fields()``
+    means.
+
+    ``implemented_tiers`` answers the *build* one: which of those cells this revision can
+    actually run? A tier may be semantically real and not yet implemented — $D_Q\times L_2$
+    and $D_Q\times L_3$ are exactly that today, because their content ($G_t^{CF}$; the row
+    restore) is not authorised yet — and a tier may never be implemented because it is
+    ill-typed ($D_Q\times L_1$).
+
+    An earlier revision conflated the two by putting a ``DEFERRED`` sentinel *inside*
+    ``cells``, which made ``fields(D_Q, L2)`` raise "not built in this revision". That
+    answered a build question with a semantic table and would have forced the next step to
+    redefine ``fields()`` while implementing the counterfactual — the two questions
+    colliding exactly when clarity matters most.
+
+    ``extract`` maps a declared field name to the function that reads it from the
+    evaluator-side record, so delivery is a projection over *declared* names and a record
+    that grows a field cannot silently widen what a law sees.
 
     **The descriptor validates and freezes itself.** ``@dataclass(frozen=True)`` freezes
     the *attribute binding*, not the dicts behind it, and it validates nothing, so an
@@ -147,16 +141,19 @@ class SliceDescriptor:
       information contract could be edited in place at runtime, which is precisely what
       making the cell table executable was supposed to prevent.
 
-    So construction is now the contract boundary:
+    So construction is the contract boundary:
 
     $$\boxed{\operatorname{keys}(\texttt{cells}) = \texttt{Tier}}$$
 
-    every value is either :data:`ILL_TYPED` or a ``frozenset[str]``, and
+    every value is either :data:`ILL_TYPED` or a ``frozenset[str]``;
+    ``implemented_tiers \subseteq keys(cells)``; an implemented tier must be a real field
+    set (an ill-typed cell can never be implemented); and
 
-    $$\boxed{\bigcup_{\ell\ \text{well-typed}} \text{fields}(\alpha,\ell) \subseteq
+    $$\boxed{\bigcup_{\ell\ \text{implemented}} \text{fields}(\alpha,\ell) \subseteq
     \operatorname{keys}(\texttt{extract})}$$
 
-    with ``cells`` and ``extract`` rebound as read-only mappings.
+    — conditioned on implementation, because a field that cannot be delivered yet does not
+    need an extractor yet, while a *typo* in a delivered cell's field name still does.
     """
 
     name: str
@@ -166,8 +163,19 @@ class SliceDescriptor:
     view: Callable[[LearnerPersistentState], dict]
     cells: Mapping[Tier, Any]
     extract: Mapping[str, Callable[[Any], Any]]
+    implemented_tiers: frozenset | None = None
 
     def __post_init__(self) -> None:
+        if self.implemented_tiers is None:
+            # The default is the complete-build case: every cell that declares a field set
+            # is implemented. It is a *safe* default rather than a convenient one, because
+            # the extractor rule below is conditioned on implementation -- claiming a cell
+            # implemented without extractors for its fields fails at construction. A
+            # mid-build architecture narrows this explicitly, which is what D_Q does.
+            object.__setattr__(
+                self, "implemented_tiers",
+                frozenset(t for t, c in self.cells.items() if c is not ILL_TYPED))
+        object.__setattr__(self, "implemented_tiers", frozenset(self.implemented_tiers))
         if type(self.scalar) is not bool:
             raise ProtocolError(
                 f"{self.name}: scalar={self.scalar!r} is not a bool; whether a store is "
@@ -183,16 +191,29 @@ class SliceDescriptor:
                 f"{self.name}: the cell table must declare every tier; missing {missing}, "
                 f"unknown {extra}. An undeclared cell would be discovered only when a "
                 "law first ran in it")
+        unknown = sorted(t.name for t in self.implemented_tiers
+                         if t not in self.cells)
+        if unknown:
+            raise ProtocolError(
+                f"{self.name}: implemented tier(s) {unknown} have no declared cell; "
+                "implementation state cannot outrun the semantics it implements")
+        for tier in sorted(self.implemented_tiers, key=lambda t: t.name):
+            if self.cells[tier] is ILL_TYPED:
+                raise ProtocolError(
+                    f"{self.name}: tier {tier.name} is marked implemented but its cell is "
+                    "ill-typed; an architecture cannot implement a cell A77 says has no "
+                    "substantive treatment")
         declared: set = set()
         for tier, cell in self.cells.items():
-            if cell is ILL_TYPED or cell is DEFERRED:
+            if cell is ILL_TYPED:
                 continue
             if not isinstance(cell, frozenset) or not all(
                     isinstance(f, str) for f in cell):
                 raise ProtocolError(
                     f"{self.name}: cell {tier.name} is {cell!r}; a well-typed cell must "
-                    "be a frozenset of field names (or ILL_TYPED / DEFERRED)")
-            declared |= set(cell)
+                    "be a frozenset of field names (or ILL_TYPED)")
+            if tier in self.implemented_tiers:
+                declared |= set(cell)
         missing_extractors = sorted(declared - set(self.extract))
         if missing_extractors:
             raise ProtocolError(
@@ -218,12 +239,20 @@ class SliceDescriptor:
             raise ProtocolError(
                 f"{self.name} has no substantive treatment at tier {tier!r}: the cell is "
                 "ill-typed, so a law may not be declared in it (A77 §65.2)")
-        if cell is DEFERRED:
-            raise ProtocolError(
-                f"{self.name} at tier {tier!r} is declared by A77 §65.2 but not built in "
-                "this revision; the cell is not ill-typed, it is unimplemented, and a law "
-                "may not be declared in it until its fields exist")
         return cell
+
+    def require_implemented(self, tier: Tier) -> None:
+        """Fail stop when a **semantically real** cell is not built in this revision.
+
+        Kept separate from :meth:`fields` on purpose: ``fields`` answers what the cell
+        *is*, this answers whether the run may use it. $D_Q\\times L_2$ is the live case —
+        its field set is frozen and it has no implementation yet.
+        """
+        if tier not in self.implemented_tiers:
+            raise ProtocolError(
+                f"{self.name} at tier {tier.name} is declared by A77 §65.2 but not built "
+                "in this revision; the cell is not ill-typed, it is unimplemented, and a "
+                "law may not be declared in it until its fields can be delivered")
 
     def deliver(self, tier: Tier, addresses, envelope):
         r"""Project the envelope onto exactly ``fields(α, ℓ)``.
@@ -251,17 +280,23 @@ def _q_view(state: LearnerPersistentState) -> dict:
     return dict(state.q_overrides)
 
 
-#: The $D_Q$ row of A77 §65.2's table, as far as this revision builds it.
+#: The $D_Q$ row of A77 §65.2's table **verbatim**, plus this revision's build state.
 #:
-#: $L_0$ declares exactly $\{a_t^F, G_t^F\}$ — the factual action and its suffix return,
-#: and nothing else. No $a_t^+$, no $G_t^{CF}$: the cell is the information boundary, and
-#: widening it "because the builder could compute more" is the leak the boundary exists to
-#: prevent.
+#: ``cells`` is the frozen semantics and nothing else:
 #:
-#: $L_1$ is **ill-typed**, permanently and by A77's own finding: $L_1$ supplies $a^+$
-#: without its value, and on a scalar store every write is a value (A76 §63.5). $L_2$ and
-#: $L_3$ are :data:`DEFERRED` — declared by §65.2, not built here, because their content
-#: ($G_t^{CF}$; the row restore) is not authorised yet.
+#: * $L_0 = \{a_t^F, G_t^F\}$ — the factual action and its suffix return. No $a_t^+$, no
+#:   $G_t^{CF}$: the cell *is* the information boundary, and widening it "because the
+#:   builder could compute more" is the leak the boundary exists to prevent;
+#: * $L_1$ is **ill-typed**, permanently: it supplies $a^+$ without its value, and on a
+#:   scalar store every write is a value (A76 §63.5, §65.2);
+#: * $L_2 = \{a_t^F, G_t^F, a_t^+, G_t^{CF}\}$ and $L_3 = \varnothing$, exactly as §65.2
+#:   writes them.
+#:
+#: ``implemented_tiers`` is the build state: only $L_0$ runs today, because $L_2$'s
+#: content ($G_t^{CF}$) and $L_3$'s (the row restore) are not authorised yet. Written this
+#: way, enabling them later is an implementation change — flip one set — rather than a
+#: redefinition of what ``fields()`` means. That distinction is the whole reason the
+#: ``DEFERRED`` sentinel was removed from ``cells``.
 DQ_SLICE = SliceDescriptor(
     name="D_Q",
     store=Q,
@@ -271,13 +306,15 @@ DQ_SLICE = SliceDescriptor(
     cells={
         Tier.L0_FACTUAL: frozenset({"a_factual", "g_factual"}),
         Tier.L1_CORRECTIVE: ILL_TYPED,
-        Tier.L2_COUNTERFACTUAL: DEFERRED,
-        Tier.L3_ORACLE: DEFERRED,
+        Tier.L2_COUNTERFACTUAL: frozenset({"a_factual", "g_factual", "a_plus",
+                                           "g_cf"}),
+        Tier.L3_ORACLE: frozenset(),
     },
     extract={
         "a_factual": lambda record: record.a_factual,
         "g_factual": lambda record: record.g_factual,
     },
+    implemented_tiers=frozenset({Tier.L0_FACTUAL}),
 )
 
 
@@ -290,6 +327,10 @@ def _patch_view(state: LearnerPersistentState) -> dict:
 #: $L_2$ is **ill-typed** here: every value target is ill-typed on a value-free store
 #: (A76 §63.6). $L_3$ delivers $\varnothing$ because on this architecture the healthy
 #: referent *is* "no override", so the restore is a deletion and needs no content.
+#:
+#: Every well-typed cell of this architecture is implemented, so this slice's build state
+#: is complete and the two questions coincide here — which is why the separation was
+#: invisible until $D_Q$ arrived.
 PATCH_SLICE = SliceDescriptor(
     name="D_patch",
     store=DECISION,
@@ -303,4 +344,5 @@ PATCH_SLICE = SliceDescriptor(
         Tier.L3_ORACLE: frozenset(),
     },
     extract={"alternative": lambda record: record.alternative},
+    implemented_tiers=frozenset({Tier.L0_FACTUAL, Tier.L1_CORRECTIVE, Tier.L3_ORACLE}),
 )

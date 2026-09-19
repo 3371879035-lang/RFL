@@ -30,8 +30,10 @@ ROOT = pathlib.Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
 from rfl_rebuild.b1 import (  # noqa: E402
-    APPLIED, DQ_LAWS, DQ_SLICE, EVALUABLE_NOOP, FactualReturnWrite, FactualTarget,
-    NoWriteRef, PATCH_SLICE, ProtocolError, Tier, build_factual_envelope,
+    APPLIED, DQ_LAWS, DQ_SLICE, EVALUABLE_NOOP, ILL_TYPED, FactualReturnWrite,
+    FactualTarget,
+    NoWriteRef, PATCH_SLICE, ProtocolError, SliceDescriptor, Tier,
+    build_factual_envelope,
     factual_return_to_go, fingerprint, independent_treatment_count, law_metadata,
     resolve_credited_units, run_factual_return_law, run_patch_law_with_envelope,
     validate_factual_envelope,
@@ -41,7 +43,7 @@ from rfl_rebuild.env.kernel import ControlState, DecisionOverride, FaultMask, St
 from rfl_rebuild.env.observation import learner_rows, walk_transition  # noqa: E402
 from rfl_rebuild.learner.reference import reference_view_from  # noqa: E402
 from rfl_rebuild.learner.store import (  # noqa: E402
-    LearnerPersistentState, QAddress,
+    LearnerPersistentState, Q, QAddress, owner_Q,
 )
 from rfl_rebuild.solve.dp import solve_reference  # noqa: E402
 
@@ -142,15 +144,81 @@ def test_2_the_delivered_cell_is_exactly_the_two_factual_fields():
         assert set(fields) == {"a_factual", "g_factual"}
 
 
-def test_2b_the_two_information_cells_a_law_may_not_enter():
-    """$L_1$ is ill-typed (no substantive treatment); $L_2$/$L_3$ are not built here."""
+def test_2b_semantics_and_build_state_are_two_questions():
+    r"""``cells`` answers what a cell *is*; ``implemented_tiers`` answers whether this
+    revision may run it.
+
+    Conflating them is how an implementation-stage fact becomes a semantic claim:
+    ``fields(D_Q, L2)`` raising "not built" would mean the executable table had stopped
+    answering A77's frozen field set, and enabling L2 later would have had to redefine
+    ``fields()`` while implementing the counterfactual.
+    """
+    # --- semantics, A77 §65.2 verbatim ---------------------------------- #
+    assert DQ_SLICE.fields(Tier.L0_FACTUAL) == frozenset({"a_factual", "g_factual"})
+    assert DQ_SLICE.fields(Tier.L2_COUNTERFACTUAL) == frozenset(
+        {"a_factual", "g_factual", "a_plus", "g_cf"})
+    assert DQ_SLICE.fields(Tier.L3_ORACLE) == frozenset()
     with pytest.raises(ProtocolError) as ei:
         DQ_SLICE.fields(Tier.L1_CORRECTIVE)
-    assert "no substantive treatment" in str(ei.value)
+    assert "no substantive treatment" in str(ei.value), "L1 is ill-typed, not unbuilt"
+
+    # --- build state ----------------------------------------------------- #
+    assert DQ_SLICE.implemented_tiers == frozenset({Tier.L0_FACTUAL})
+    DQ_SLICE.require_implemented(Tier.L0_FACTUAL)          # the built cell passes
     for tier in (Tier.L2_COUNTERFACTUAL, Tier.L3_ORACLE):
         with pytest.raises(ProtocolError) as ei2:
-            DQ_SLICE.fields(tier)
+            DQ_SLICE.require_implemented(tier)
         assert "not built in this revision" in str(ei2.value)
+
+    # --- consulted in that order, through the real entry point ----------- #
+    def _stub(name, tier):
+        class _Stub:
+            pass
+        _Stub.name = name
+        _Stub.alias_of = None
+        _Stub.tier = tier
+
+        def plan(self, addresses, targets):
+            from rfl_rebuild.b1.laws import AddressPlan, LawPlan
+            return LawPlan(self.name, tuple(AddressPlan(a) for a in addresses))
+
+        _Stub.plan = plan
+        return _Stub()
+
+    trace, rows, kappa, phi = healthy_scene()
+    addrs = credited(trace, rows, kappa, phi)
+    with pytest.raises(ProtocolError) as ei3:
+        run_factual_return_law(_stub("L2Stub", Tier.L2_COUNTERFACTUAL),
+                               LearnerPersistentState(), addrs, rows, VIEW)
+    assert "not built in this revision" in str(ei3.value)
+    with pytest.raises(ProtocolError) as ei4:
+        run_factual_return_law(_stub("L1Stub", Tier.L1_CORRECTIVE),
+                               LearnerPersistentState(), addrs, rows, VIEW)
+    assert "no substantive treatment" in str(ei4.value)
+
+
+def test_2b2_an_implemented_cell_must_be_real_and_have_extractors():
+    """The default ``implemented_tiers`` is the complete-build case, and it is safe
+    rather than convenient: claiming a cell implemented without extractors fails here."""
+    with pytest.raises(ProtocolError) as ei:
+        SliceDescriptor(name="NoExtractors", store=Q, scalar=False,
+                        owner=owner_Q, view=lambda st: {},
+                        cells={Tier.L0_FACTUAL: frozenset({"missing"}),
+                               Tier.L1_CORRECTIVE: ILL_TYPED,
+                               Tier.L2_COUNTERFACTUAL: ILL_TYPED,
+                               Tier.L3_ORACLE: frozenset()},
+                        extract={})
+    assert "no extractor" in str(ei.value)
+    with pytest.raises(ProtocolError) as ei2:
+        SliceDescriptor(name="ImplementsIllTyped", store=Q, scalar=False,
+                        owner=owner_Q, view=lambda st: {},
+                        cells={Tier.L0_FACTUAL: frozenset(),
+                               Tier.L1_CORRECTIVE: ILL_TYPED,
+                               Tier.L2_COUNTERFACTUAL: ILL_TYPED,
+                               Tier.L3_ORACLE: frozenset()},
+                        extract={},
+                        implemented_tiers=frozenset({Tier.L1_CORRECTIVE}))
+    assert "ill-typed" in str(ei2.value)
 
 
 def test_2c_a_scalar_slice_cannot_be_run_through_the_patch_entry_point():
@@ -460,3 +528,78 @@ def test_7b_the_registries_are_separate_and_the_counts_do_not_move():
     assert independent_treatment_count(DQ_LAWS) == 1      # L0 only, so far
     # the D_patch registry is untouched by the D_Q work
     assert independent_treatment_count() == 3
+
+
+# --------------------------------------------------------------------------- #
+# 6. the ledger is order-independent, and the reference boundary is arm-uniform
+# --------------------------------------------------------------------------- #
+
+def test_8_the_ledger_canonical_is_independent_of_address_order():
+    r"""A76: no result may depend on iteration or hash order.
+
+    The deltas are chosen to **expose non-associativity** rather than hoping a real scene
+    does: $10^{16} + 1 + 1$ and $1 + 1 + 10^{16}$ are different bit patterns under
+    sequential accumulation, and identical under an exactly-rounded one. This is the gate
+    that failed before the accounting was made deterministic.
+    """
+    trace, rows, kappa, phi = healthy_scene()
+    addrs = credited(trace, rows, kappa, phi)
+    if len(addrs) < 3:
+        pytest.skip("this scene has fewer than three credited contexts")  # pragma: no cover
+    picks = addrs[:3]
+    envelope = dict(build_factual_envelope(rows, addrs))
+    for addr, delta in zip(picks, (1e16, 1.0, 1.0)):
+        entry_a = envelope[addr].a_factual
+        ref = VIEW.value(QAddress(state=addr.state, z=addr.z, m=addr.m, a=entry_a))
+        envelope[addr] = FactualTarget(addr, entry_a, ref + delta)
+
+    fwd = run_factual_return_law_offline(LearnerPersistentState(), picks, envelope, rows)
+    rev = run_factual_return_law_offline(LearnerPersistentState(),
+                                         tuple(reversed(picks)), envelope, rows)
+    assert fwd.canonical() == rev.canonical(), \
+        "the ledger bytes must not depend on the order the addresses were credited in"
+    deltas = sorted(
+        abs(float(envelope[a].g_factual)
+            - VIEW.value(QAddress(state=a.state, z=a.z, m=a.m, a=envelope[a].a_factual)))
+        for a in picks)
+    assert fwd.sum_abs_delta == math.fsum(deltas), \
+        "the sum must be the exactly-rounded one, not a sequential accumulation"
+    assert fwd.n_scalar == 3 and fwd.n_changed_addresses == 3
+
+
+class _FakeReference:
+    """A mutable stand-in exposing the methods a duck-typed consumer would call."""
+
+    def __init__(self, view):
+        self._view = view
+
+    def __contains__(self, address):
+        return address in self._view
+
+    def value(self, address):
+        return self._view.value(address)
+
+    def row(self, state, z, m):
+        return self._view.row(state, z, m)
+
+
+def test_9_the_reference_boundary_is_the_same_for_every_arm():
+    """A fake reference must fail stop on the **reference** arm too.
+
+    `FactualReturnWrite` writes, so the store's own boundary caught a fake; `NoWriteRef(L0)`
+    writes nothing, skipped the transaction, and reached only the accounting — which
+    checked ``is None``. The same fake therefore completed on the reference arm and
+    fail-stopped on the treatment arm of the same cell, which contradicts "same cell, same
+    construction". The check now runs once, ahead of both.
+    """
+    trace, rows, kappa, phi = healthy_scene()
+    addrs = credited(trace, rows, kappa, phi)
+    fake = _FakeReference(VIEW)
+    messages = []
+    for arm in (NoWriteRef(Tier.L0_FACTUAL), FactualReturnWrite):
+        with pytest.raises(ProtocolError) as ei:
+            run_factual_return_law(arm, LearnerPersistentState(), addrs, rows, fake)
+        messages.append(str(ei.value))
+    assert all("QReferenceView" in m for m in messages), messages
+    assert messages[0] == messages[1], \
+        "the reference and the treatment must be refused identically"

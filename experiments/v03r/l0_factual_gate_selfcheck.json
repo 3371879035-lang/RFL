@@ -1,7 +1,7 @@
 {
   "check": "L0 factual-return gate mutation self-check",
-  "n_mutations": 6,
-  "n_gate_is_real": 6,
+  "n_mutations": 8,
+  "n_gate_is_real": 8,
   "n_not_a_gate": 0,
   "n_node_not_found": 0,
   "n_harness_error": 0,
@@ -18,7 +18,7 @@
       "matched": 1,
       "expected_failure_text": null,
       "exit_code": 1,
-      "tail": "                            f\"{rec.g_factual.hex()} vs {float(ref).hex()}\")\nE                       AssertionError: G_t^F is not bit-identical to Q_D* at DecisionAddress(state=State(x=0, y=2, t=0, kappa=0, phi=0), z=1, m=0): 0x1.c28f5c28f5c29p-1 vs 0x1.c28f5c28f5c28p-1\nE                       assert '0x1.c28f5c28f5c29p-1' == '0x1.c28f5c28f5c28p-1'\nE                         \nE                         - 0x1.c28f5c28f5c28p-1\nE                         ?                 ^\nE                         + 0x1.c28f5c28f5c29p-1\nE                         ?                 ^\ntests\\rebuild\\test_l0_factual_return.py:198: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_l0_factual_return.py::test_3_the_healthy_support_is_bit_exact_278_of_278\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "                            f\"{rec.g_factual.hex()} vs {float(ref).hex()}\")\nE                       AssertionError: G_t^F is not bit-identical to Q_D* at DecisionAddress(state=State(x=0, y=2, t=0, kappa=0, phi=0), z=1, m=0): 0x1.c28f5c28f5c29p-1 vs 0x1.c28f5c28f5c28p-1\nE                       assert '0x1.c28f5c28f5c29p-1' == '0x1.c28f5c28f5c28p-1'\nE                         \nE                         - 0x1.c28f5c28f5c28p-1\nE                         ?                 ^\nE                         + 0x1.c28f5c28f5c29p-1\nE                         ?                 ^\ntests\\rebuild\\test_l0_factual_return.py:266: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_l0_factual_return.py::test_3_the_healthy_support_is_bit_exact_278_of_278\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -29,7 +29,7 @@
       "matched": 1,
       "expected_failure_text": null,
       "exit_code": 1,
-      "tail": "                      if math.fsum(row[9] for row in rows[a.state.t:])\n                      != factual_return_to_go(rows, a.state.t))\n        lie = dict(good)\n        lie[victim] = FactualTarget(victim, good[victim].a_factual,\n                                    math.fsum(row[9] for row in rows[victim.state.t:]))\n>       with pytest.raises(ProtocolError) as ei:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.b1.contract.ProtocolError'>\ntests\\rebuild\\test_l0_factual_return.py:223: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_l0_factual_return.py::test_3b_a_reordered_fold_is_rejected_even_though_the_numbers_are_close\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "                      if math.fsum(row[9] for row in rows[a.state.t:])\n                      != factual_return_to_go(rows, a.state.t))\n        lie = dict(good)\n        lie[victim] = FactualTarget(victim, good[victim].a_factual,\n                                    math.fsum(row[9] for row in rows[victim.state.t:]))\n>       with pytest.raises(ProtocolError) as ei:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.b1.contract.ProtocolError'>\ntests\\rebuild\\test_l0_factual_return.py:291: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_l0_factual_return.py::test_3b_a_reordered_fold_is_rejected_even_though_the_numbers_are_close\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -40,7 +40,7 @@
       "matched": 1,
       "expected_failure_text": null,
       "exit_code": 1,
-      "tail": "        led = run_factual_return_law_offline(state, addrs, near, rows)\n        assert led.n_scalar == 1\n        honest = abs((ref + 1e-9) - ref)          # the float subtraction, not the decimal\n>       assert led.sum_abs_delta == honest, \\\n            f\"a near-reference write must read as a small edit, got {led.sum_abs_delta!r}\"\nE       AssertionError: a near-reference write must read as a small edit, got 0.8800000009999999\nE       assert 0.8800000009999999 == 9.999999717180685e-10\nE        +  where 0.8800000009999999 = UpdateLedger(receipts=(DecisionWriteReceipt(address=DecisionAddress(state=State(x=0, y=2, t=0, kappa=0, phi=0), z=1, m...96564', scalar_metrics_applicable=True, n_scalar=1, sum_abs_delta=0.8800000009999999, max_abs_delta=0.8800000009999999).sum_abs_delta\ntests\\rebuild\\test_l0_factual_return.py:390: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_l0_factual_return.py::test_6_a_created_entry_is_measured_against_the_reference_not_against_zero\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "        led = run_factual_return_law_offline(state, addrs, near, rows)\n        assert led.n_scalar == 1\n        honest = abs((ref + 1e-9) - ref)          # the float subtraction, not the decimal\n>       assert led.sum_abs_delta == honest, \\\n            f\"a near-reference write must read as a small edit, got {led.sum_abs_delta!r}\"\nE       AssertionError: a near-reference write must read as a small edit, got 0.8800000009999999\nE       assert 0.8800000009999999 == 9.999999717180685e-10\nE        +  where 0.8800000009999999 = UpdateLedger(receipts=(DecisionWriteReceipt(address=DecisionAddress(state=State(x=0, y=2, t=0, kappa=0, phi=0), z=1, m...96564', scalar_metrics_applicable=True, n_scalar=1, sum_abs_delta=0.8800000009999999, max_abs_delta=0.8800000009999999).sum_abs_delta\ntests\\rebuild\\test_l0_factual_return.py:458: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_l0_factual_return.py::test_6_a_created_entry_is_measured_against_the_reference_not_against_zero\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -63,6 +63,28 @@
       "expected_failure_text": null,
       "exit_code": 1,
       "tail": "            raise ProtocolError(\n                f\"a scalar magnitude is negative: sum={total!r}, max={largest!r}\")\n        if (n == 0) != (total == 0.0):\n>           raise ProtocolError(\n                f\"the scalar count and the summed delta disagree: n_scalar={n}, \"\n                f\"sum_abs_delta={total!r}; with canonicalisation in force every changed \"\n                \"entry has a positive delta, so these are equivalent (A77 \u00a765.10)\")\nE           rfl_rebuild.b1.contract.ProtocolError: the scalar count and the summed delta disagree: n_scalar=6, sum_abs_delta=0.0; with canonicalisation in force every changed entry has a positive delta, so these are equivalent (A77 \u00a765.10)\nsrc\\rfl_rebuild\\b1\\contract.py:264: ProtocolError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_l0_factual_return.py::test_4_a_healthy_write_leaves_the_store_empty\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "accounting_order_dependent",
+      "hole": "the changed entries are accumulated in plan order with a sequential float sum, so the ledger bytes depend on the order the addresses were credited in",
+      "gate": "test_8_the_ledger_canonical_is_independent_of_address_order",
+      "site": "src\\rfl_rebuild\\b1\\runner.py",
+      "matched": 1,
+      "expected_failure_text": null,
+      "exit_code": 1,
+      "tail": ">       assert fwd.canonical() == rev.canonical(), \\\n            \"the ledger bytes must not depend on the order the addresses were credited in\"\nE       AssertionError: the ledger bytes must not depend on the order the addresses were credited in\nE       assert '{\"fingerprin...delta\":1e+16}' == '{\"fingerprin...00000002e+16}'\nE         \nE         Skipping 338 identical leading characters in diff, use -v to show\nE         - s_delta\":1.0000000000000002e+16}\nE         + s_delta\":1e+16}\ntests\\rebuild\\test_l0_factual_return.py:559: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_l0_factual_return.py::test_8_the_ledger_canonical_is_independent_of_address_order\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "reference_boundary_arm_specific",
+      "hole": "the reference-typing check is skipped, so a mutable fake completes on the NoWrite reference arm while the treatment arm still fail-stops",
+      "gate": "test_9_the_reference_boundary_is_the_same_for_every_arm",
+      "site": "src\\rfl_rebuild\\b1\\runner.py",
+      "matched": 1,
+      "expected_failure_text": null,
+      "exit_code": 1,
+      "tail": "        trace, rows, kappa, phi = healthy_scene()\n        addrs = credited(trace, rows, kappa, phi)\n        fake = _FakeReference(VIEW)\n        messages = []\n        for arm in (NoWriteRef(Tier.L0_FACTUAL), FactualReturnWrite):\n>           with pytest.raises(ProtocolError) as ei:\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE           Failed: DID NOT RAISE <class 'rfl_rebuild.b1.contract.ProtocolError'>\ntests\\rebuild\\test_l0_factual_return.py:600: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_l0_factual_return.py::test_9_the_reference_boundary_is_the_same_for_every_arm\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {

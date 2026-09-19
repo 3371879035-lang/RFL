@@ -15,6 +15,8 @@ and must go **red**, with the failure reason the mutation declares where one is 
 | 4 | the scalar accounting is skipped entirely | the scalar branch disabled | `test_5` |
 | 5 | the healthy write stops canonicalising | Q identity canonicalisation disabled | `test_4` |
 | 6 | a law/slice mismatch crashes instead of failing stop | the plan-call guard disabled | `test_2c` |
+| 7 | the ledger sum depends on address order | sorted `fsum` replaced by sequential accumulation | `test_8` |
+| 8 | the reference boundary differs by arm | the uniform reference check disabled | `test_9` |
 
 Mutation 5 targets the same fix as the Q self-check's `q_identity_canonicalisation`, but
 gates a different property: there it is the store's canonical form, here it is L0's
@@ -79,9 +81,11 @@ MUTATIONS: tuple = (
         "reports no scalars at all",
         RUNNER,
         "    if spec.scalar:\n"
-        "        n_scalar, total_delta, largest_delta = _scalar_accounting(",
+        "        n_scalar, total_delta, largest_delta = _scalar_accounting(\n"
+        "            plan, pre_view, post_view, q_reference)",
         "    if False:                       # MUTATED: accounting skipped\n"
-        "        n_scalar, total_delta, largest_delta = _scalar_accounting(",
+        "        n_scalar, total_delta, largest_delta = _scalar_accounting(\n"
+        "            plan, pre_view, post_view, q_reference)",
         f"{TESTS}::test_5_a_faulted_target_produces_exactly_one_non_oracle_override",
     ),
     (
@@ -92,6 +96,37 @@ MUTATIONS: tuple = (
         "                if e.value is None or float(e.value) == q_reference.value(e.address):",
         "                if e.value is None:            # MUTATED: canonicalisation off",
         f"{TESTS}::test_4_a_healthy_write_leaves_the_store_empty",
+    ),
+    (
+        "accounting_order_dependent",
+        "the changed entries are accumulated in plan order with a sequential float sum, "
+        "so the ledger bytes depend on the order the addresses were credited in",
+        RUNNER,
+        "    changed.sort(key=lambda pair: pair[0])\n"
+        "    deltas = [d for _key, d in changed]\n"
+        "    return len(deltas), math.fsum(deltas), max(deltas, default=0.0)",
+        "    total = 0.0\n"
+        "    largest = 0.0\n"
+        "    for _key, d in changed:      # MUTATED: plan order, sequential sum\n"
+        "        total += d\n"
+        "        largest = max(largest, d)\n"
+        "    return len(changed), total, largest",
+        f"{TESTS}::test_8_the_ledger_canonical_is_independent_of_address_order",
+    ),
+    (
+        "reference_boundary_arm_specific",
+        "the reference-typing check is skipped, so a mutable fake completes on the "
+        "NoWrite reference arm while the treatment arm still fail-stops",
+        RUNNER,
+        "    if spec.scalar:\n"
+        "        try:\n"
+        "            require_q_reference(q_reference)\n"
+        "        except ReferenceContractError as exc:",
+        "    if False:                       # MUTATED: boundary unchecked\n"
+        "        try:\n"
+        "            require_q_reference(q_reference)\n"
+        "        except ReferenceContractError as exc:",
+        f"{TESTS}::test_9_the_reference_boundary_is_the_same_for_every_arm",
     ),
     (
         "plan_call_unwrapped",

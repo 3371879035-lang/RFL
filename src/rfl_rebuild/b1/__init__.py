@@ -64,7 +64,6 @@ from rfl_rebuild.b1.targets import (
     resolve_decision_address,
 )
 from rfl_rebuild.b1.tier import (
-    DEFERRED,
     DQ_SLICE,
     ILL_TYPED,
     PATCH_SLICE,
@@ -75,7 +74,6 @@ from rfl_rebuild.b1.tier import (
 __all__ = [
     "APPLIED",
     "EVALUABLE_NOOP",
-    "DEFERRED",
     "DQ_LAWS",
     "DQ_SLICE",
     "ILL_TYPED",

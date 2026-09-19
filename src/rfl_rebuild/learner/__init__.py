@@ -42,6 +42,7 @@ from rfl_rebuild.learner.store import (
     StoreTransactionError,
     is_option_id,
     owner_Q,
+    require_q_reference,
 )
 
 __all__ = [
@@ -60,5 +61,6 @@ __all__ = [
     "StoreTransactionError",
     "is_option_id",
     "owner_Q",
+    "require_q_reference",
     "reference_view_from",
 ]

@@ -111,6 +111,7 @@ __all__ = [
     "StoreTransactionError",
     "is_option_id",
     "owner_Q",
+    "require_q_reference",
 ]
 
 DECISION = "decision"
@@ -339,7 +340,7 @@ class LearnerSnapshot:
           on, which would leave the guarantees as properties of a helper class rather
           than of the substrate.
         """
-        _require_q_reference(reference)
+        require_q_reference(reference)
         self._require_decision_store_exclusive()
         overrides = self._q
 
@@ -511,7 +512,7 @@ class LearnerPersistentState:
             cand_d, cand_p, cand_c, cand_q)
 
 
-def _require_q_reference(reference) -> None:
+def require_q_reference(reference) -> None:
     r"""The $Q$ boundary accepts the frozen view and nothing that resembles it.
 
     A77 §65.4 requires the reference to be **injected**; it does not say "injected or
@@ -551,7 +552,7 @@ def _require_q_domain(edits: tuple, q_reference) -> None:
             "a Q edit requires the injected reference view: it supplies both the domain "
             "the entry must lie in and the value that canonicalises to a deletion "
             "(A77 §65.4). Nothing in the substrate fetches a reference for itself")
-    _require_q_reference(q_reference)
+    require_q_reference(q_reference)
     for e in q_edits:
         if e.address not in q_reference:
             raise StoreTransactionError(
