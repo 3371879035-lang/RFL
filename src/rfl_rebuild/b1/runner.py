@@ -441,6 +441,26 @@ def run_dq_law(law, pre_state: LearnerPersistentState,
                 "the L2 cell needs the shared a^+ adapter (sol) and the factual episode "
                 "configuration; without them the counterfactual has no definition and an "
                 "envelope could only be faked")
+        # ---- the learner continuity binding, BEFORE any target is built ---------- #
+        #
+        # A76: both targets come from the same pre-update state -- and the "same" that
+        # matters is not only "the two targets agree with each other" but "they are the
+        # pre-update state of the learner this transaction is about to update". Otherwise
+        # the arm observes learner A's experience, computes learner A's target, and trains
+        # learner B, which is a different experiment wearing this one's name.
+        #
+        # Equality of the fingerprint, not object identity: a clone is a legitimate
+        # pre-state, and a clone that matches IS the same learner for every purpose this
+        # contract can state.
+        fp_target = fingerprint(pre_state)
+        fp_episode = fingerprint(episode.snapshot_pre)
+        if fp_target != fp_episode:
+            raise ProtocolError(
+                "the counterfactual target would be computed from a different pre-update "
+                "learner than the one this transaction updates: the episode's snapshot "
+                f"fingerprints {fp_episode} and the target store fingerprints "
+                f"{fp_target}. An L2 arm computes both of its targets from the snapshot of "
+                "the learner it is training (A76 §63.4)")
         envelope = build_counterfactual_envelope(rows, addresses, sol=sol,
                                                  episode=episode)
         validate_counterfactual_envelope(addresses, envelope, rows, sol=sol,

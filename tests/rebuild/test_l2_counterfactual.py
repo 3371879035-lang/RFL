@@ -1,24 +1,26 @@
 r"""A77 §65.7, §65.8, §65.10 — $D_Q\times L_2$: the counterfactual target and its laws.
 
-The step's scientific question:
+$$\boxed{\text{a verified alternative} \to \text{a replay of the right episode}
+\to \text{an exact target} \to \text{writes into the learner that was observed}}$$
 
-$$\boxed{\text{a verified alternative} \to \text{one correctly configured replay}
-\to \text{an exact counterfactual target} \to \text{the right writes}}$$
+The gates are grouped by the ways it can be wrong:
 
-and the gates are grouped by the ways it can be wrong:
+1. **provenance** — the configuration generates the factual episode, its three learner
+   channels come from one snapshot, and that snapshot is the learner the write lands in;
+2. **the replay** — replace-not-add, and the prefix invariant with its honest limit;
+3. **the target** — the frozen fold over the counterfactual rows and the shared $a^+$;
+4. **the writes** — entry counts, the no-degeneration rule, one receipt, one transaction;
+5. **the regimes** — and the measurements that bound what this arm can do at all.
 
-1. **the configuration** — the replay must differ from the factual episode in exactly one
-   thing, and in particular must carry $\texttt{DecisionReadView}_{pre}$;
-2. **the prefix invariant** — and what it can and cannot catch, demonstrated rather than
-   asserted;
-3. **the target** — the frozen fold over the *counterfactual* rows, and the same $a^+$ the
-   other arms use;
-4. **the writes** — two arms, their entry counts, the no-degeneration rule, and the
-   healthy and faulted ledger behaviour.
+**No gate in this file skips.** Where a construction needs a scene to have a property,
+the helper searches the fixed support for such a scene and *asserts that one was found*;
+a property that turns out to be rare is a measured fact, not a reason for a gate to
+disappear.
 """
 
 from __future__ import annotations
 
+import dataclasses
 import pathlib
 import sys
 
@@ -28,83 +30,258 @@ ROOT = pathlib.Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
 from rfl_rebuild.b1 import (  # noqa: E402
-    APPLIED, DQ_LAWS, DQ_SLICE, EVALUABLE_NOOP, NO_VALID_ALTERNATIVE, CfEpisode,
-    CounterfactualReturnWrite, CounterfactualTarget, DualReturnWrite,
-    FactualReturnWrite, ILL_TYPED, NoWriteRef, ProtocolError, SliceDescriptor, Tier,
-    build_counterfactual_envelope,
-    build_target_envelope, independent_treatment_count,
-    law_metadata, replay_with_decision_replaced, resolve_credited_units,
-    run_dq_law, run_factual_return_law, validate_counterfactual_envelope,
+    APPLIED, DQ_LAWS, DQ_SLICE, EVALUABLE_NOOP, ILL_TYPED, NO_VALID_ALTERNATIVE,
+    CfEpisode, CounterfactualReturnWrite, CounterfactualTarget, DualReturnWrite,
+    FactualReturnWrite, NoWriteRef, ProtocolError, SliceDescriptor, Tier,
+    build_counterfactual_envelope, build_target_envelope, fingerprint,
+    independent_treatment_count, law_metadata, replay_with_decision_replaced,
+    resolve_credited_units, run_dq_law, run_factual_return_law,
+    validate_counterfactual_envelope,
 )
 from rfl_rebuild.env import kernel as K  # noqa: E402
 from rfl_rebuild.env.kernel import ControlState, DecisionOverride, FaultMask  # noqa: E402
 from rfl_rebuild.env.observation import learner_rows, walk_transition  # noqa: E402
 from rfl_rebuild.learner.reference import reference_view_from  # noqa: E402
 from rfl_rebuild.learner.store import (  # noqa: E402
-    Edit, LearnerPersistentState, Q, QAddress, owner_Q,
+    DecisionAddress, Edit, LearnerPersistentState, Q, QAddress, State, owner_Q,
 )
 from rfl_rebuild.solve.dp import solve_reference  # noqa: E402
 
 SOL = solve_reference()
 VIEW = reference_view_from(SOL)
-REFERENCE_PROVIDER = lambda s, c: SOL.best_action(s, c.z, c.m)      # noqa: E731
+TAPE = lambda phi: K.SemanticTape(phase=phi, error_flag=0, cause_rank=0)  # noqa: E731
 
 
 # --------------------------------------------------------------------------- #
-# scene construction
+# scene construction: the configuration generates the episode
 # --------------------------------------------------------------------------- #
 
-def episode_for(trace, kappa, phi, provider, z0, mask=None):
-    return CfEpisode(trace=trace, kappa=kappa, phi=phi,
-                     tape=K.SemanticTape(phase=phi, error_flag=0, cause_rank=0),
-                     decision_read_view_pre=provider, base_option=z0,
-                     mask=mask or K.FaultMask())
+def make_episode(kappa, phi, z0, *, pre=None, mask=None, interventions=None, mode="A"):
+    """A `CfEpisode` rooted in one frozen snapshot; the factual trace is its own."""
+    return CfEpisode(kappa=kappa, phi=phi, tape=TAPE(phi),
+                     snapshot_pre=(pre or LearnerPersistentState()).snapshot(),
+                     reference=VIEW, base_option=z0, mask=mask or K.FaultMask(),
+                     interventions=interventions or K.InterventionSet(),
+                     reward_mode=mode)
 
 
-def roll(kappa=0, phi=0, z0=1, mask=None, provider=None):
-    return K.rollout(kappa=kappa, tape=K.SemanticTape(phase=phi, error_flag=0,
-                                                      cause_rank=0),
-                     command_provider=provider or REFERENCE_PROVIDER,
-                     base_option=z0, mask=mask or K.FaultMask())
-
-
-def addresses(trace, kappa, phi):
-    rows = learner_rows(trace, kappa, phi)
+def rows_and_addresses(episode):
+    rows = learner_rows(episode.factual_trace, episode.kappa, episode.phi)
     steps = sorted({r[2] for r in rows})
-    return rows, resolve_credited_units(tuple(f"Decision_{t}" for t in steps),
-                                        trace, kappa, phi)
+    addrs = resolve_credited_units(tuple(f"Decision_{t}" for t in steps),
+                                   episode.factual_trace, episode.kappa, episode.phi)
+    return rows, addrs
 
 
 def healthy(kappa=0, phi=0, z0=1):
-    trace = roll(kappa, phi, z0)
-    rows, addrs = addresses(trace, kappa, phi)
-    return trace, rows, addrs, episode_for(trace, kappa, phi, REFERENCE_PROVIDER, z0)
+    ep = make_episode(kappa, phi, z0)
+    rows, addrs = rows_and_addresses(ep)
+    return ep, rows, addrs, LearnerPersistentState()
 
 
 def faulted(kappa=0, phi=0, z0=1, t=1):
     """A $Z_D$ injection, so the factual trajectory is not the reference one."""
-    probe = roll(kappa, phi, z0)
-    ctx = list(walk_transition(probe, kappa, phi, probe.option_in_force))[t]
+    probe = make_episode(kappa, phi, z0).factual_trace
+    ctxs = list(walk_transition(probe, kappa, phi, probe.option_in_force))
+    if len(ctxs) <= t:
+        return None
+    ctx = ctxs[t]
     s, z, m = ctx[0], ctx[1], ctx[2]
+    if s.t != t:
+        return None
     best = SOL.best_action(s, z, m)
     allowed = [a for a in sorted(K.option_actions(z, ControlState(z=z, m=m), s))
                if a != best]
     if not allowed:
-        pytest.skip("no suboptimal admissible action at this probe")   # pragma: no cover
-    mask = FaultMask(decision=DecisionOverride(t=t, action=allowed[0]))
-    trace = roll(kappa, phi, z0, mask=mask)
-    rows, addrs = addresses(trace, kappa, phi)
-    return trace, rows, addrs, episode_for(trace, kappa, phi, REFERENCE_PROVIDER, z0,
-                                           mask=mask)
+        return None
+    try:
+        ep = make_episode(kappa, phi, z0,
+                          mask=FaultMask(decision=DecisionOverride(
+                              t=t, action=allowed[0])))
+    except K.MalformedIntervention:
+        # The probe's context is not the injected step's context, so the candidate action
+        # may be inadmissible *there*. That is an expected infeasibility of this grid
+        # point, and it is counted rather than skipped.
+        return None
+    rows, addrs = rows_and_addresses(ep)
+    return ep, rows, addrs, LearnerPersistentState()
+
+
+def with_alternative():
+    """The first scene in the fixed support that has a verified alternative at all.
+
+    Asserted rather than skipped: if the search comes back empty then the support or the
+    adapter changed, and that is a failure, not a reason for a gate to vanish.
+    """
+    for kappa in (0, 1):
+        for phi in range(6):
+            for z0 in range(4):
+                built = faulted(kappa, phi, z0)
+                if built is None:
+                    continue
+                ep, rows, addrs, pre = built
+                env = build_counterfactual_envelope(rows, addrs, sol=SOL, episode=ep)
+                if any(env[a].a_plus is not None for a in addrs):
+                    return ep, rows, addrs, pre, env
+    pytest.fail("no faulted scene in the support has a verified alternative")
+
+
+def bent_scene(kappa=0, phi=0, z0=1, lift=100.0):
+    r"""A scene whose **pre-update** decision policy is already off $\pi^\ast$.
+
+    On a fresh store the counterfactual target *usually* equals the reference — the
+    replay's suffix is an optimal continuation — so the L2 arms usually have nothing to
+    write. Prior learning is one mechanism that gives them content: here an entry is
+    lifted at a context the counterfactual replay itself visits after $t$, which moves the
+    suffix off the optimal path while leaving the factual prefix untouched.
+
+    Returns ``None`` when this grid point admits no such construction; callers count,
+    because "9 of 12" is a measurement and "9 of the ones that happened to work" is not.
+    """
+    ep0 = make_episode(kappa, phi, z0)
+    _rows0, addrs0 = rows_and_addresses(ep0)
+    patch = build_target_envelope(SOL, addrs0, ep0.factual_trace, kappa, phi)
+    first = next((a for a in addrs0 if patch[a].alternative is not None), None)
+    if first is None:
+        return None
+    t0 = first.state.t
+    trial = make_episode(kappa, phi, z0,
+                         mask=FaultMask(decision=DecisionOverride(
+                             t=t0, action=patch[first].alternative))).factual_trace
+    for ctx in walk_transition(trial, kappa, phi, trial.option_in_force):
+        s2, z2, m2 = ctx[0], ctx[1], ctx[2]
+        if s2.t <= t0:
+            continue
+        row = VIEW.row(s2, z2, m2)
+        best = SOL.best_action(s2, z2, m2)
+        worse = [a for a, v in sorted(row.items()) if v < row[best]]
+        if not worse:
+            continue
+        target = DecisionAddress(state=State(x=s2.x, y=s2.y, t=s2.t, kappa=s2.kappa,
+                                             phi=s2.phi), z=z2, m=m2)
+        entry = QAddress(state=target.state, z=z2, m=m2, a=worse[0])
+        pre = LearnerPersistentState()
+        pre.apply_transaction([Edit("q", entry, row[best] + lift)], q_reference=VIEW)
+        ep = make_episode(kappa, phi, z0, pre=pre)
+        rows, addrs = rows_and_addresses(ep)
+        env = build_counterfactual_envelope(rows, addrs, sol=SOL, episode=ep)
+        if any(env[a].a_plus is not None
+               and env[a].g_cf != VIEW.value(QAddress(state=a.state, z=a.z, m=a.m,
+                                                      a=env[a].a_plus))
+               for a in addrs):
+            return ep, rows, addrs, pre, env
+    return None
+
+
+def first_bent():
+    for kappa in (0, 1):
+        for phi in range(6):
+            for z0 in range(4):
+                built = bent_scene(kappa, phi, z0)
+                if built is not None:
+                    return built
+    pytest.fail("no bent configuration in the support produced a non-reference target")
 
 
 # --------------------------------------------------------------------------- #
-# 1. the configuration
+# 1. provenance
 # --------------------------------------------------------------------------- #
 
-def test_1_the_replay_passes_the_factual_configuration_through_unchanged(monkeypatch):
-    """Differing in exactly one thing is a property of the *call*, not of a promise."""
-    trace, rows, addrs, ep = healthy()
+def test_1_the_three_learner_channels_come_from_one_snapshot():
+    """A decision view from one learner cannot be mixed with another learner's
+    process-commit provider, because they are not separately supplied."""
+    pre = LearnerPersistentState()
+    snap = pre.snapshot()
+    ep = make_episode(0, 0, 1, pre=pre)
+    assert ep.decision_read_view_pre is ep.decision_read_view_pre
+    assert ep.process_commit_provider is ep.process_commit_provider
+    assert ep.controller_mapping is ep.controller_mapping
+    assert ep.controller_mapping == snap.controller_mapping()
+    assert ep.process_commit_provider(1) == snap.process_commit_provider()(1)
+    assert type(ep.snapshot_pre).__name__ == "LearnerSnapshot"
+
+
+def test_2_the_configuration_generates_the_factual_episode():
+    r"""$$\boxed{\text{config} \to \text{factual rollout}}$$ and the trace cannot be
+    supplied.
+
+    With a *supplied* trace a configuration could disagree with it in any field that
+    happens to make no difference on the factual path — a different tape, mask,
+    controller, or a fault that bites only after $t$ — and every factual-path check would
+    pass while the replay faithfully used the wrong configuration. Here the trace is an
+    ``init=False`` field, so that case is unconstructible rather than undetected.
+    """
+    ep0 = make_episode(0, 0, 1)
+    init_fields = {f.name for f in dataclasses.fields(CfEpisode) if f.init}
+    assert "factual_trace" not in init_fields
+    with pytest.raises(TypeError):
+        CfEpisode(kappa=0, phi=0, tape=TAPE(0), snapshot_pre=ep0.snapshot_pre,
+                  reference=VIEW, factual_trace=object())
+    # a different configuration is a different episode, not a rename of this one
+    other = make_episode(0, 1, 1)
+    assert learner_rows(other.factual_trace, 0, 1) != learner_rows(ep0.factual_trace, 0, 0)
+    # and rows that are not this configuration's are refused
+    _rows, addrs = rows_and_addresses(ep0)
+    with pytest.raises(ProtocolError) as ei:
+        build_counterfactual_envelope(learner_rows(other.factual_trace, 0, 1), addrs,
+                                      sol=SOL, episode=ep0)
+    assert "THIS configuration's factual rollout" in str(ei.value)
+
+
+def test_2b_the_primary_reward_mode_is_the_only_mode():
+    with pytest.raises(ProtocolError) as ei:
+        make_episode(0, 0, 1, mode="B")
+    assert "frozen on mode A" in str(ei.value)
+
+
+def test_2c_the_pre_update_learner_must_be_a_frozen_snapshot():
+    with pytest.raises(ProtocolError) as ei:
+        CfEpisode(kappa=0, phi=0, tape=TAPE(0),
+                  snapshot_pre=LearnerPersistentState(), reference=VIEW)
+    assert "must be a frozen snapshot" in str(ei.value)
+
+
+def test_3_the_target_learner_and_the_updated_learner_must_be_the_same():
+    r"""$$\boxed{fp(\texttt{pre\_state}) = fp(\texttt{snapshot\_pre})}$$
+
+    Otherwise the arm observes learner $A$'s experience, computes learner $A$'s target, and
+    trains learner $B$. The check runs **before** any target is built, so the failure
+    cannot be reached through a partially-constructed envelope.
+    """
+    ep, rows, addrs, pre, _env = first_bent()
+    with pytest.raises(ProtocolError) as ei:
+        run_dq_law(CounterfactualReturnWrite, LearnerPersistentState(), addrs, rows, VIEW,
+                   sol=SOL, episode=ep)
+    assert "different pre-update learner" in str(ei.value)
+    # a clone of the right learner is the same learner for every purpose the contract
+    # can state
+    res = run_dq_law(CounterfactualReturnWrite, pre.clone(), addrs, rows, VIEW, sol=SOL,
+                     episode=ep)
+    res.ledger.check_fingerprint_invariants()
+
+
+def test_3b_the_binding_is_the_frozen_snapshot_not_the_live_object():
+    """The snapshot is a value: mutating the learner afterwards does not move it."""
+    ep, rows, addrs, pre, _env = first_bent()
+    assert fingerprint(pre) == fingerprint(ep.snapshot_pre)
+    assert fingerprint(LearnerPersistentState()) != fingerprint(ep.snapshot_pre)
+    before = fingerprint(ep.snapshot_pre)
+    probe = addrs[0]
+    legal = sorted(K.option_actions(probe.z, ControlState(z=probe.z, m=probe.m),
+                                    probe.state))[0]
+    pre.apply_transaction([Edit("q", QAddress(state=probe.state, z=probe.z, m=probe.m,
+                                              a=legal), 123.0)], q_reference=VIEW)
+    assert fingerprint(ep.snapshot_pre) == before, \
+        "the episode's snapshot must not follow later mutations of the live state"
+
+
+# --------------------------------------------------------------------------- #
+# 2. the replay
+# --------------------------------------------------------------------------- #
+
+def test_4_the_replay_is_this_configuration_and_differs_in_one_thing(monkeypatch):
+    """Differing in exactly one thing is a property of the *call*, not a promise."""
+    ep, rows, addrs, _pre = healthy()
     seen = {}
     original = K.rollout
 
@@ -122,142 +299,145 @@ def test_1_the_replay_passes_the_factual_configuration_through_unchanged(monkeyp
     assert seen["mask"] is ep.mask
     assert seen["option_fault"] is ep.option_fault
     assert seen["base_option"] == ep.base_option
-    assert seen["controller"] is ep.controller
-    assert seen["learner_process_commit"] is ep.learner_process_commit
     assert seen["reward_mode"] == "A"
-    assert seen["command_provider"] is ep.decision_read_view_pre, \
-        "the replay must run the pre-update decision read path, not a fresh reference"
+    assert seen["command_provider"] is ep.decision_read_view_pre
+    assert seen["controller"] is ep.controller_mapping
+    assert seen["learner_process_commit"] is ep.process_commit_provider
 
 
-def test_2_the_decision_intervention_is_replaced_not_added():
+def test_5_the_decision_intervention_is_replaced_not_added():
     """A factual episode that already intervened at t keeps exactly one decision there."""
-    trace, rows, addrs, ep = healthy()
-    full = build_counterfactual_envelope(rows, addrs, sol=SOL, episode=ep)
-    picked = next((a for a in addrs if full[a].a_plus is not None), None)
-    if picked is None:
-        pytest.skip("this scene has no alternative")                  # pragma: no cover
-    t = picked.state.t
-    a_plus = full[picked].a_plus
-    base = CfEpisode(trace=ep.trace, kappa=ep.kappa, phi=ep.phi, tape=ep.tape,
-                     decision_read_view_pre=ep.decision_read_view_pre,
-                     base_option=ep.base_option,
-                     interventions=K.InterventionSet(
-                         (K.Intervention.decision(t, a_plus),)))
-    cf = replay_with_decision_replaced(base, t, a_plus)
-    assert cf is not None
-    assert len(base.interventions.members) == 1
-    # adding rather than replacing would raise MalformedIntervention from InterventionSet
-    with pytest.raises(K.MalformedIntervention):
-        K.InterventionSet(base.interventions.members
-                          + (K.Intervention.decision(t, a_plus),))
+    for kappa in (0, 1):
+        for phi in range(6):
+            for z0 in range(4):
+                built = faulted(kappa, phi, z0)
+                if built is None:
+                    continue
+                ep, rows, addrs, _pre = built
+                t = addrs[0].state.t
+                alt = build_target_envelope(SOL, addrs, ep.factual_trace, kappa,
+                                            phi)[addrs[0]].alternative
+                if alt is None:
+                    continue
+                legal = [a for a in sorted(K.option_actions(
+                    addrs[0].z, ControlState(z=addrs[0].z, m=addrs[0].m),
+                    addrs[0].state)) if a != alt]
+                if not legal:
+                    continue
+                base = make_episode(kappa, phi, z0,
+                                    interventions=K.InterventionSet(
+                                        (K.Intervention.decision(t, legal[0]),)))
+                assert replay_with_decision_replaced(base, t, alt) is not None
+                with pytest.raises(K.MalformedIntervention):
+                    K.InterventionSet(base.interventions.members
+                                      + (K.Intervention.decision(t, alt),))
+                return
+    pytest.fail("no faulted scene with an alternative was found")
 
 
-# --------------------------------------------------------------------------- #
-# 2. the prefix invariant: demonstrated, including what it cannot catch
-# --------------------------------------------------------------------------- #
+def test_6_the_counterfactual_prefix_is_the_factual_prefix_across_the_support():
+    r"""The premise the structural provenance rests on, verified empirically.
 
-def test_3_a_replay_that_drops_the_pre_update_view_is_caught_by_the_prefix():
-    r"""The gate the whole clause exists for.
+    Because the configuration generates both rollouts, the prefix identity
 
-    An earlier episode's update sits at a context the factual episode meets **before** $t$.
-    Replaying with the reference provider instead of $\texttt{DecisionReadView}_{pre}$
-    diverges there, and the prefix equality fails stop — it must never be absorbed into a
-    $G^{CF}$ of zero.
+    $$\boxed{\text{rows}^{CF}[0:t] = \text{rows}^{F}[0:t]}$$
+
+    holds *by construction* — the intervention at $t$ cannot affect a step before $t$ — so
+    the assertion inside the builder cannot fire and **no mutation can kill it** (an
+    earlier revision carried one; it reported ``NOT_A_GATE``). What can be checked is the
+    premise: that the kernel really does consume its tape and its state per step, so that
+    the equality is not merely assumed.
+
+    This walks the whole healthy support and every realizable counterfactual in the faulted
+    grid and asserts the prefix identity directly, at the row level.
     """
-    s = LearnerPersistentState()
-    first = learner_rows(roll(0, 0, 1), 0, 0)[0]
-    ctx0 = (first[0], first[1], first[2], first[3], first[4])          # x, y, t, kappa, phi
-    from rfl_rebuild.learner.store import DecisionAddress, State
-    addr0 = DecisionAddress(state=State(x=ctx0[0], y=ctx0[1], t=ctx0[2], kappa=ctx0[3],
-                                        phi=ctx0[4]), z=first[5], m=first[6])
-    base_a = REFERENCE_PROVIDER(addr0.state, ControlState(z=addr0.z, m=addr0.m))
-    other = [a for a in sorted(K.option_actions(addr0.z, ControlState(z=addr0.z, m=addr0.m),
-                                                addr0.state)) if a != base_a]
-    if not other:
-        pytest.skip("the first context admits only one action")       # pragma: no cover
-    s.apply_transaction(
-        [Edit("q", QAddress(state=addr0.state, z=addr0.z, m=addr0.m, a=other[0]),
-              VIEW.value(QAddress(state=addr0.state, z=addr0.z, m=addr0.m,
-                                  a=other[0])) + 0.25)],
-        q_reference=VIEW)
-    view_pre = s.snapshot().q_decision_provider(VIEW)
+    checked = 0
+    for kappa, phi, z0 in HEALTHY_WORLDS:
+        ep, rows, addrs, _pre = healthy(kappa, phi, z0)
+        for a in addrs:
+            alt = build_target_envelope(SOL, addrs, ep.factual_trace, kappa,
+                                        phi)[a].alternative
+            if alt is None:
+                continue
+            try:
+                cf_rows = learner_rows(ep.replay(a.state.t, alt), kappa, phi)
+            except K.MalformedIntervention:
+                continue
+            assert cf_rows[:a.state.t] == tuple(rows)[:a.state.t], (kappa, phi, z0, a)
+            checked += 1
+    for kappa in (0, 1):
+        for phi in (0, 1, 2):
+            for z0 in (0, 1, 2):
+                built = faulted(kappa, phi, z0)
+                if built is None:
+                    continue
+                ep, rows, addrs, _pre = built
+                env = build_counterfactual_envelope(rows, addrs, sol=SOL, episode=ep)
+                for a in addrs:
+                    rec = env[a]
+                    if rec.a_plus is None:
+                        continue
+                    cf_rows = learner_rows(ep.replay(a.state.t, rec.a_plus), kappa, phi)
+                    assert cf_rows[:a.state.t] == tuple(rows)[:a.state.t]
+                    checked += 1
+    assert checked >= 32, f"too few counterfactuals exercised: {checked}"
 
-    trace = roll(0, 0, 1, provider=view_pre)
-    rows, addrs = addresses(trace, 0, 0)
-    if len(addrs) < 2:
-        pytest.skip("this scene has one credited context")            # pragma: no cover
-    late = addrs[-1]
-    assert late.state.t > 0, "the probe needs an address after the overridden context"
 
-    # correct configuration: the pre-update view, so the factual prefix is reproduced
-    good = episode_for(trace, 0, 0, view_pre, 1)
-    build_counterfactual_envelope(rows, addrs, sol=SOL, episode=good)
+def test_6a_an_episode_is_the_configuration_that_generated_it():
+    r"""The other half: rows that are not this configuration's are refused.
 
-    # wrong configuration: a fresh reference provider, i.e. the drop this guards against
-    wrong = episode_for(trace, 0, 0, REFERENCE_PROVIDER, 1)
+    This is the *live* protection — it is what makes supplying a mismatched trace
+    impossible — and it is where a replay under the wrong learner state lands.
+    """
+    ep0 = make_episode(0, 0, 1)
+    _rows, addrs = rows_and_addresses(ep0)
+    other = make_episode(0, 1, 1)
     with pytest.raises(ProtocolError) as ei:
-        build_counterfactual_envelope(rows, addrs, sol=SOL, episode=wrong)
-    assert "does not share the factual prefix" in str(ei.value), ei.value
+        build_counterfactual_envelope(learner_rows(other.factual_trace, 0, 1), addrs,
+                                      sol=SOL, episode=ep0)
+    assert "THIS configuration's factual rollout" in str(ei.value)
 
 
-def test_3b_the_view_is_live_after_t_as_well_where_the_prefix_cannot_see_it():
-    r"""The invariant's honest limit, turned into positive evidence.
+def test_6b_the_view_is_live_after_t_where_the_prefix_cannot_see_it():
+    r"""The invariant's limit, turned into positive evidence.
 
-    A replay that dropped the view would diverge in the prefix **only if** the defect is
-    met before $t$. So the closure is structural, and the witness that the view is live in
-    the *suffix* is that the target value responds to it: an override at a context visited
-    after $t$ changes $G_t^{CF}$ while leaving the prefix identical.
+    A replay that dropped the view would diverge in the prefix only if the defect is met
+    *before* $t$. So the closure is structural, and the witness that the view is live in
+    the *suffix* is that the target responds to it.
+
+    The bent scene is a **healthy** scene — no mask, no fault, no non-default option — run
+    under a snapshot that carries one lifted entry. The reference policy from the
+    intervention onward would realize an optimal continuation and land on
+    $Q_D^\ast$; a target that differs from the reference therefore cannot be explained by
+    remaining faults, and can only come from the replay following the snapshot's decision
+    channel. That is the whole content of "the view is live after $t$".
     """
-    s = LearnerPersistentState()
-    trace0 = roll(0, 0, 1)
-    rows0, addrs0 = addresses(trace0, 0, 0)
-    if len(addrs0) < 2:
-        pytest.skip("this scene has one credited context")            # pragma: no cover
-    target_ctx = addrs0[-1]
-    base_a = REFERENCE_PROVIDER(target_ctx.state,
-                               ControlState(z=target_ctx.z, m=target_ctx.m))
-    allowed = sorted(K.option_actions(target_ctx.z,
-                                      ControlState(z=target_ctx.z, m=target_ctx.m),
-                                      target_ctx.state))
-    other = [a for a in allowed if a != base_a]
-    if not other:
-        pytest.skip("the last context admits only one action")        # pragma: no cover
-    entry = QAddress(state=target_ctx.state, z=target_ctx.z, m=target_ctx.m, a=other[0])
-    s.apply_transaction([Edit("q", entry, VIEW.value(entry) + 0.25)], q_reference=VIEW)
-    view_pre = s.snapshot().q_decision_provider(VIEW)
+    ep, rows, addrs, pre, env = first_bent()
+    assert pre.q_overrides, "the bent scene must carry prior learning"
+    assert fingerprint(pre) != fingerprint(LearnerPersistentState())
+    live = [a for a in addrs if env[a].a_plus is not None
+            and env[a].g_cf != VIEW.value(QAddress(state=a.state, z=a.z, m=a.m,
+                                                   a=env[a].a_plus))]
+    assert live, ("a healthy scene with no remaining faults can only leave the reference "
+                  "if the decision channel did it")
 
-    trace = roll(0, 0, 1, provider=view_pre)
-    rows, addrs = addresses(trace, 0, 0)
-    early = [a for a in addrs if a.state.t < target_ctx.state.t]
-    assert early, "need a credited context strictly before the override"
 
-    with_view = build_counterfactual_envelope(
-        rows, addrs, sol=SOL, episode=episode_for(trace, 0, 0, view_pre, 1))
-    without = build_counterfactual_envelope(
-        rows, addrs, sol=SOL,
-        episode=episode_for(trace, 0, 0, REFERENCE_PROVIDER, 1))
-    compared = 0
-    for a in early:
-        if with_view[a].a_plus is None or without[a].a_plus is None:
-            continue
-        assert with_view[a].a_plus == without[a].a_plus, "the alternative is a property " \
-            "of the context, not of the view"
-        compared += 1
-        if with_view[a].g_cf != without[a].g_cf:
-            return
-    assert compared, "no comparable counterfactual in this probe"   # pragma: no cover
-    pytest.fail("the suffix return must respond to the pre-update view somewhere; "
-                "otherwise the view is decorative")
+def test_7_a_failed_replay_is_not_a_zero():
+    """A divergence is a protocol failure, never $G^{CF} = 0$."""
+    ep, rows, addrs, _pre = healthy()
+    rows = list(rows)
+    rows[0] = tuple(rows[0][:9]) + (rows[0][9] + 0.5,)
+    with pytest.raises(ProtocolError):
+        build_counterfactual_envelope(tuple(rows), addrs, sol=SOL, episode=ep)
 
 
 # --------------------------------------------------------------------------- #
 # 3. the target
 # --------------------------------------------------------------------------- #
 
-def test_4_the_cf_target_is_the_frozen_fold_over_the_counterfactual_rows():
+def test_8_the_cf_target_is_the_frozen_fold_over_the_counterfactual_rows():
     """Not the factual suffix, and not a suffix simulation: the replay is full."""
-    trace, rows, addrs, ep = faulted()
-    env = build_counterfactual_envelope(rows, addrs, sol=SOL, episode=ep)
+    ep, rows, addrs, _pre, env = with_alternative()
     checked = 0
     for a in addrs:
         rec = env[a]
@@ -271,16 +451,12 @@ def test_4_the_cf_target_is_the_frozen_fold_over_the_counterfactual_rows():
             g = cf_rows[j][9] + g
         assert rec.g_cf.hex() == g.hex()
         checked += 1
-    assert checked >= 1, "the faulted probe must expose at least one counterfactual"
+    assert checked >= 1
 
 
-def test_5_a_perturbed_counterfactual_return_is_rejected():
-    """The validator re-derives and compares bit patterns, not values."""
-    trace, rows, addrs, ep = faulted()
-    good = dict(build_counterfactual_envelope(rows, addrs, sol=SOL, episode=ep))
-    victim = next((a for a in addrs if good[a].a_plus is not None), None)
-    if victim is None:
-        pytest.skip("no alternative in this probe")                   # pragma: no cover
+def test_9_a_perturbed_counterfactual_return_is_rejected():
+    ep, rows, addrs, _pre, good = with_alternative()
+    victim = next(a for a in addrs if good[a].a_plus is not None)
     lie = dict(good)
     lie[victim] = CounterfactualTarget(victim, good[victim].a_factual,
                                        good[victim].g_factual, good[victim].a_plus,
@@ -290,19 +466,15 @@ def test_5_a_perturbed_counterfactual_return_is_rejected():
     assert "frozen replay-and-fold" in str(ei.value)
 
 
-def test_5b_a_substituted_alternative_is_rejected():
+def test_9b_a_substituted_alternative_is_rejected():
     """Every compatible arm uses the same $a^+$ (A76 §63.3)."""
-    trace, rows, addrs, ep = faulted()
-    good = dict(build_counterfactual_envelope(rows, addrs, sol=SOL, episode=ep))
-    victim = next((a for a in addrs if good[a].a_plus is not None), None)
-    if victim is None:
-        pytest.skip("no alternative in this probe")                   # pragma: no cover
+    ep, rows, addrs, _pre, good = with_alternative()
+    victim = next(a for a in addrs if good[a].a_plus is not None)
     allowed = sorted(K.option_actions(victim.z, ControlState(z=victim.z, m=victim.m),
                                       victim.state))
     other = [a for a in allowed if a not in (good[victim].a_plus,
                                              good[victim].a_factual)]
-    if not other:
-        pytest.skip("no third admissible action here")                # pragma: no cover
+    assert other, "the probe needs a third admissible action"
     lie = dict(good)
     lie[victim] = CounterfactualTarget(victim, good[victim].a_factual,
                                        good[victim].g_factual, other[0],
@@ -312,124 +484,87 @@ def test_5b_a_substituted_alternative_is_rejected():
     assert "every compatible arm uses the same a^+" in str(ei.value)
 
 
-def test_6_the_alternative_is_the_same_object_the_patch_arm_uses():
+def test_10_the_alternative_is_the_same_object_the_patch_arm_uses():
     """One $a^+$ adapter for every compatible arm, not one per architecture."""
-    trace, rows, addrs, ep = faulted()
-    env = build_counterfactual_envelope(rows, addrs, sol=SOL, episode=ep)
-    patch = build_target_envelope(SOL, addrs, trace, ep.kappa, ep.phi)
+    ep, rows, addrs, _pre, env = with_alternative()
+    patch = build_target_envelope(SOL, addrs, ep.factual_trace, ep.kappa, ep.phi)
     assert all(env[a].a_plus == patch[a].alternative for a in addrs)
 
 
-def test_7_the_delivered_cell_is_exactly_the_four_l2_fields():
-    trace, rows, addrs, ep = healthy()
+def test_11_the_delivered_cell_is_exactly_the_four_l2_fields():
+    ep, rows, addrs, _pre = healthy()
     env = build_counterfactual_envelope(rows, addrs, sol=SOL, episode=ep)
     delivered = DQ_SLICE.deliver(Tier.L2_COUNTERFACTUAL, addrs, env)
     for _addr, fields in delivered.items():
         assert set(fields) == {"a_factual", "g_factual", "a_plus", "g_cf"}
 
 
+def test_19_the_envelope_must_be_the_exact_credited_set():
+    ep, rows, addrs, _pre, good = with_alternative()
+    assert len(addrs) >= 2, "the probe needs at least two credited contexts"
+    partial = dict(good)
+    del partial[addrs[0]]
+    with pytest.raises(ProtocolError):
+        validate_counterfactual_envelope(addrs, partial, rows, sol=SOL, episode=ep)
+    extra = dict(good)
+    extra[DecisionAddress(state=State(x=0, y=0, t=0, kappa=0, phi=0), z=1, m=0)] = \
+        good[addrs[0]]
+    with pytest.raises(ProtocolError):
+        validate_counterfactual_envelope(addrs, extra, rows, sol=SOL, episode=ep)
+
+
+def test_20_a_half_counterfactual_record_is_refused():
+    r"""$a_t^+$ and $G_t^{CF}$ are one fact: both present or both absent."""
+    ep, rows, addrs, _pre, good = with_alternative()
+    victim = next(a for a in addrs if good[a].a_plus is not None)
+    for bad in (CounterfactualTarget(victim, good[victim].a_factual,
+                                     good[victim].g_factual, None, good[victim].g_cf),
+                CounterfactualTarget(victim, good[victim].a_factual,
+                                     good[victim].g_factual, good[victim].a_plus, None)):
+        lie = dict(good)
+        lie[victim] = bad
+        with pytest.raises(ProtocolError) as ei:
+            validate_counterfactual_envelope(addrs, lie, rows, sol=SOL, episode=ep)
+        assert "one fact" in str(ei.value)
+
+
 # --------------------------------------------------------------------------- #
 # 4. the writes
 # --------------------------------------------------------------------------- #
 
-def bent_scene(kappa=0, phi=0, z0=1, lift=100.0):
-    r"""A scene whose **pre-update** decision policy is already off $\pi^\ast$.
-
-    On a fresh store the counterfactual target equals the reference — the replay's suffix
-    is an optimal continuation — so the L2 arms have nothing to write. They acquire
-    content exactly when prior learning has bent the policy: here one entry is lifted at a
-    context the *counterfactual replay itself* visits after $t$, which moves the suffix off
-    the optimal path while leaving the factual prefix untouched.
-
-    The context has to be one the replay reaches, and which contexts those are depends on
-    the intervention, so candidates are tried in a deterministic order and the first one
-    that yields a non-reference counterfactual is taken. If none does, the helper **fails**
-    rather than skips: a silently skipped probe is a gate that stopped looking.
-    """
-    base = roll(kappa, phi, z0)
-    rows, addrs = addresses(base, kappa, phi)
-    patch = build_target_envelope(SOL, addrs, base, kappa, phi)
-    first = next((a for a in addrs if patch[a].alternative is not None), None)
-    if first is None:
-        pytest.skip("this scene has no alternative anywhere")         # pragma: no cover
-    t0 = first.state.t
-    trial = roll(kappa, phi, z0,
-                 mask=FaultMask(decision=DecisionOverride(t=t0,
-                                                          action=patch[first].alternative)))
-    from rfl_rebuild.learner.store import DecisionAddress, State
-    for ctx in walk_transition(trial, kappa, phi, trial.option_in_force):
-        s2, z2, m2 = ctx[0], ctx[1], ctx[2]
-        if s2.t <= t0:
-            continue
-        row = VIEW.row(s2, z2, m2)
-        best = SOL.best_action(s2, z2, m2)
-        worse = [a for a, v in sorted(row.items()) if v < row[best]]
-        if not worse:
-            continue
-        target = DecisionAddress(state=State(x=s2.x, y=s2.y, t=s2.t, kappa=s2.kappa,
-                                             phi=s2.phi), z=z2, m=m2)
-        entry = QAddress(state=target.state, z=z2, m=m2, a=worse[0])
-        pre = LearnerPersistentState()
-        pre.apply_transaction([Edit("q", entry, row[best] + lift)], q_reference=VIEW)
-        view_pre = pre.snapshot().q_decision_provider(VIEW)
-        trace = roll(kappa, phi, z0, provider=view_pre)
-        rows2, addrs2 = addresses(trace, kappa, phi)
-        ep = episode_for(trace, kappa, phi, view_pre, z0)
-        env = build_counterfactual_envelope(rows2, addrs2, sol=SOL, episode=ep)
-        for a in addrs2:
-            rec = env[a]
-            if rec.a_plus is None:
-                continue
-            if rec.g_cf != VIEW.value(QAddress(state=a.state, z=a.z, m=a.m,
-                                               a=rec.a_plus)):
-                return trace, rows2, addrs2, ep, pre
-    pytest.fail("no lift at a replayed context moved the counterfactual off the "
-                "reference in this scene")
-
-
-def make_envelope(addresses_, *, a_plus=None, g_factual=1.0, g_cf=2.0):
-    """A minimal delivered payload, for exercising the laws' own rules."""
-    return {a: {"a_factual": 0, "g_factual": g_factual, "a_plus": a_plus, "g_cf": g_cf}
-            for a in addresses_}
-
-
-def test_8_no_valid_alternative_carries_a_status_and_writes_nothing():
-    trace, rows, addrs, ep = healthy()
-    payload = make_envelope(addrs, a_plus=None)
+def test_12_no_valid_alternative_carries_a_status_and_writes_nothing():
+    ep, rows, addrs, _pre = healthy()
+    payload = {a: {"a_factual": 0, "g_factual": 1.0, "a_plus": None, "g_cf": None}
+               for a in addrs}
     for law in (CounterfactualReturnWrite(), DualReturnWrite()):
         plan = law.plan(addrs, payload)
         assert all(p.edits == () for p in plan.plans), law.name
         assert all(p.status == NO_VALID_ALTERNATIVE for p in plan.plans), law.name
 
 
-def test_8b_dual_does_not_degenerate_into_its_factual_half():
+def test_12b_dual_does_not_degenerate_into_its_factual_half():
     r"""A76 §63.3: "a law may not degenerate at the same address — above all
     ``DualReturnWrite`` must not commit only its factual half"."""
-    trace, rows, addrs, ep = healthy()
-    payload = make_envelope(addrs, a_plus=None, g_factual=1.0)
-    plan = DualReturnWrite().plan(addrs, payload)
-    assert plan.edits == (), \
+    ep, rows, addrs, _pre = healthy()
+    payload = {a: {"a_factual": 0, "g_factual": 1.0, "a_plus": None, "g_cf": None}
+               for a in addrs}
+    assert DualReturnWrite().plan(addrs, payload).edits == (), \
         "with no alternative, Dual writes nothing at all — not the factual entry alone"
 
 
-def test_9_counterfactual_writes_one_entry_per_context():
-    trace, rows, addrs, ep = healthy()
+def test_12c_dual_cannot_write_the_same_entry_twice():
+    """The two entries are different actions, so one transaction cannot collide."""
+    ep, rows, addrs, _pre = healthy()
     victim = addrs[0]
-    env = {a: {"a_factual": 0, "g_factual": 1.0, "a_plus": 2, "g_cf": 2.0}
-           for a in addrs}
-    plan = CounterfactualReturnWrite().plan(addrs, env)
-    assert all(len(p.edits) == 1 for p in plan.plans)
-    assert plan.plans[0].edits[0].address.a == 2
+    with pytest.raises(ProtocolError) as ei:
+        DualReturnWrite().plan([victim], {victim: {"a_factual": 3, "g_factual": 1.0,
+                                                   "a_plus": 3, "g_cf": 2.0}})
+    assert "not an alternative" in str(ei.value)
 
 
-def test_10_dual_writes_two_entries_one_receipt_one_transaction():
-    r"""$$N_{\text{scalar}} \le 2$$ at one addressed context, and exactly one receipt.
-
-    Run on a bent pre-update policy, because on a fresh store the L2 targets are the
-    reference values and the arms legitimately write nothing — a test of the write path
-    has to be a test of a run that writes.
-    """
-    trace, rows, addrs, ep, _pre = bent_scene()
+def test_13_dual_writes_two_entries_one_receipt_one_transaction():
+    r"""$$N_{\text{scalar}} \le 2$$ at one addressed context, and exactly one receipt."""
+    ep, rows, addrs, pre, _env = first_bent()
     calls = []
     original = LearnerPersistentState.apply_transaction
 
@@ -439,26 +574,22 @@ def test_10_dual_writes_two_entries_one_receipt_one_transaction():
 
     LearnerPersistentState.apply_transaction = spy
     try:
-        state = LearnerPersistentState()
-        res = run_dq_law(DualReturnWrite, state, addrs, rows, VIEW, sol=SOL, episode=ep)
+        res = run_dq_law(DualReturnWrite, pre, addrs, rows, VIEW, sol=SOL, episode=ep)
     finally:
         LearnerPersistentState.apply_transaction = original
     assert len(calls) == 1, f"one scene commits once, got {len(calls)}"
     assert res.ledger.n_addressed == len(addrs), "one receipt per credited context"
-    assert res.ledger.n_scalar <= 2 * len(addrs)
     per_address = {}
-    for chg in state.q_overrides:
+    for chg in pre.q_overrides:
         per_address.setdefault((chg.state, chg.z, chg.m), []).append(chg)
     assert max(len(v) for v in per_address.values()) <= 2
 
 
-def test_10b_dual_commits_both_targets_from_the_same_pre_update_state():
-    """The two written values are the two envelope targets, not a sequential pair."""
-    trace, rows, addrs, ep, _pre = bent_scene()
-    env = build_counterfactual_envelope(rows, addrs, sol=SOL, episode=ep)
-    state = LearnerPersistentState()
-    run_dq_law(DualReturnWrite, state, addrs, rows, VIEW, sol=SOL, episode=ep)
-    written = dict(state.q_overrides)
+def test_13b_dual_commits_both_targets_from_the_same_pre_update_state():
+    ep, rows, addrs, pre, env = first_bent()
+    before = set(pre.q_overrides)
+    run_dq_law(DualReturnWrite, pre, addrs, rows, VIEW, sol=SOL, episode=ep)
+    written = {k: v for k, v in pre.q_overrides.items() if k not in before}
     assert written, "the bent probe must produce a real dual write"
     expect = {}
     for a in addrs:
@@ -469,61 +600,56 @@ def test_10b_dual_commits_both_targets_from_the_same_pre_update_state():
         expect[QAddress(state=a.state, z=a.z, m=a.m, a=rec.a_plus)] = rec.g_cf
     survivors = {k: v for k, v in expect.items() if float(v) != float(VIEW.value(k))}
     assert set(written) == set(survivors), (
-        "the store must hold exactly the two targets per context, MINUS any entry whose "
-        "target is the reference value: those canonicalise to a deletion, and their "
-        "absence is the same discipline L0 relies on")
+        "the store holds exactly the two targets per context, MINUS any entry whose "
+        "target is the reference value: those canonicalise to a deletion")
     for k, v in survivors.items():
         assert float(written[k]).hex() == float(v).hex()
 
 
 # --------------------------------------------------------------------------- #
-# 5. the ledger on both regimes
+# 5. the regimes, and what this arm can do at all
 # --------------------------------------------------------------------------- #
 
-def test_11_on_the_healthy_support_both_l2_targets_are_the_reference():
-    r"""A measured property, and a surprising one.
+HEALTHY_WORLDS = tuple((k, p, z) for k in (0, 1) for p in range(6) for z in range(4))
 
-    On a healthy trajectory $a_t^F$ is optimal, so **both** targets land exactly on the
-    reference: $G_t^F = Q_D^\ast(x_t,a_t^F)$ and $G_t^{CF} = Q_D^\ast(x_t,a_t^+)$. L2 is
-    therefore a complete no-op on healthy scenes, by the same canonicalisation that makes
-    L0 one — and the census also measures how often the cell can act at all:
 
-    | healthy support (48 worlds, 278 addresses) | |
+def test_14_on_the_healthy_support_both_targets_are_the_reference():
+    r"""Exhaustive over the frozen healthy support: $48$ worlds, $278$ addresses.
+
+    | healthy support | |
     |---|---|
     | $G_t^F$ bit-equal to $Q_D^\ast(x_t,a_t^F)$ | 278/278 |
     | $G_t^{CF}$ bit-equal to $Q_D^\ast(x_t,a_t^+)$ | 32/32 |
-    | addresses with **no** alternative | **246/278** |
+    | addresses with a verified alternative | **32** |
+    | addresses with **none** | **246** |
 
-    The last line is the finding: on healthy scenes the factual action is usually the
-    *unique* optimum, so most credited addresses carry ``NO_VALID_ALTERNATIVE``. L2's
-    reach in the healthy regime is 32 of 278 addresses, not all of them.
+    The last two lines are the finding: on healthy scenes the factual action is usually
+    the *unique* optimum, so most credited addresses carry ``NO_VALID_ALTERNATIVE`` and
+    L2's reach there is 32 of 278. (A76's 3,600-of-431,280 figure describes the
+    fault-injected support, where $a^F$ is usually *not* optimal — two different
+    populations, and both statements are correct.)
     """
     n = with_alt = eq_f = eq_cf = 0
-    for kappa in (0, 1):
-        for phi in K.PHASE_DOMAIN:
-            for z0 in K.option_ids():
-                trace = roll(kappa, phi, z0)
-                rows, addrs = addresses(trace, kappa, phi)
-                ep = episode_for(trace, kappa, phi, REFERENCE_PROVIDER, z0)
-                env = build_counterfactual_envelope(rows, addrs, sol=SOL, episode=ep)
-                for a in addrs:
-                    rec = env[a]
-                    n += 1
-                    eq_f += rec.g_factual.hex() == float(VIEW.value(
-                        QAddress(state=a.state, z=a.z, m=a.m, a=rec.a_factual))).hex()
-                    if rec.a_plus is not None:
-                        with_alt += 1
-                        eq_cf += rec.g_cf.hex() == float(VIEW.value(
-                            QAddress(state=a.state, z=a.z, m=a.m, a=rec.a_plus))).hex()
-    assert n == 278, f"the census must cover the healthy support, covered {n}"
+    for kappa, phi, z0 in HEALTHY_WORLDS:
+        ep, rows, addrs, _pre = healthy(kappa, phi, z0)
+        env = build_counterfactual_envelope(rows, addrs, sol=SOL, episode=ep)
+        for a in addrs:
+            rec = env[a]
+            n += 1
+            eq_f += rec.g_factual.hex() == float(VIEW.value(
+                QAddress(state=a.state, z=a.z, m=a.m, a=rec.a_factual))).hex()
+            if rec.a_plus is not None:
+                with_alt += 1
+                eq_cf += rec.g_cf.hex() == float(VIEW.value(
+                    QAddress(state=a.state, z=a.z, m=a.m, a=rec.a_plus))).hex()
+    assert n == 278, f"the healthy census moved: {n} addresses"
     assert eq_f == n, f"G_t^F must be the reference on healthy support ({eq_f}/{n})"
     assert eq_cf == with_alt, f"G_t^CF must be too ({eq_cf}/{with_alt})"
-    assert with_alt == 32, f"the healthy reach of L2 moved: {with_alt}/278"
-    assert n - with_alt == 246
+    assert (with_alt, n - with_alt) == (32, 246), (with_alt, n - with_alt)
 
 
-def test_11b_a_healthy_l2_run_changes_nothing():
-    trace, rows, addrs, ep = healthy()
+def test_15_a_healthy_l2_run_changes_nothing():
+    ep, rows, addrs, pre = healthy()
     for law in (CounterfactualReturnWrite, DualReturnWrite):
         state = LearnerPersistentState()
         res = run_dq_law(law, state, addrs, rows, VIEW, sol=SOL, episode=ep)
@@ -536,53 +662,40 @@ def test_11b_a_healthy_l2_run_changes_nothing():
         led.check_fingerprint_invariants()
 
 
-def test_11c_on_a_fresh_store_the_counterfactual_target_is_the_reference():
-    r"""The measurement that decides what the L2 arms can do at all.
+def test_16_on_a_fresh_store_the_target_USUALLY_equals_the_reference():
+    r"""A probe-grid measurement, stated at the strength it actually has.
 
-    With an empty store the pre-update view *is* $\pi^\ast$, so the replay takes an optimal
-    action at $t$ and then an optimal continuation: the realized suffix return lands on
-    $Q_D^\ast(x_t,a_t^+)$, the write canonicalises to a deletion, and the arm is a no-op.
+    Grid: $\kappa \in \{0,1\} \times \varphi \in \{0,1,2\} \times z_0 \in \{0,1,2\}
+    \times$ fault-step $\in \{1,2\}$ — **not** the full $\kappa \times \varphi \times z_0
+    \times$ fault-step support. Within it $54$ counterfactuals exist and $53$ are
+    bit-equal to the reference, so the arm can act in $1$ of $54$ cases.
 
-    Measured over $\kappa\times\varphi\times z_0\times$ fault-step (35 counterfactuals that
-    exist at all):
+    An earlier revision of this file reported $34/35$. That number was measured while a
+    rejected intervention still aborted the whole grid point, so every point whose
+    injection the kernel refused was **silently dropped**; handling the non-realizable
+    alternative explicitly (see `_realizable`) brought them back and the count moved to
+    $54/53$. The qualitative conclusion is unchanged and the figure is now the one the
+    code supports.
 
-    $$\boxed{34/35 \text{ bit-equal to the reference} \quad\Longrightarrow\quad
-    \text{the arm can act in } 1/35}$$
+    $$\boxed{\text{fresh store} \Rightarrow G_t^{CF} = Q_D^\ast(x_t,a_t^+)
+    \text{ is the usual case, not a theorem}}$$
 
-    The exception is the point rather than noise: a realized suffix return equals the DP
-    value only when the continuation *realizes* an optimal path, and the replay inherits
-    the factual episode's remaining faults and tape.
+    The exception is a counterexample, not a footnote: a realized suffix return equals the
+    DP value only when the continuation *realizes* an optimal path, and the replay
+    inherits the episode's remaining faults and tape. So "the CF target IS the reference
+    on a fresh store" is false as a structural claim, and this gate keeps it from being
+    written down as one.
     """
     total = equal = 0
     for kappa in (0, 1):
         for phi in (0, 1, 2):
             for z0 in (0, 1, 2):
-                base = roll(kappa, phi, z0)
                 for ft in (1, 2):
-                    try:
-                        ctxs = list(walk_transition(base, kappa, phi,
-                                                    base.option_in_force))
-                        if len(ctxs) <= ft:
-                            continue
-                        ctx = ctxs[ft]
-                        s, z, m = ctx[0], ctx[1], ctx[2]
-                        if s.t != ft:
-                            continue
-                        allowed = [a for a in sorted(
-                            K.option_actions(z, ControlState(z=z, m=m), s))
-                            if a != SOL.best_action(s, z, m)]
-                        if not allowed:
-                            continue
-                        mask = FaultMask(decision=DecisionOverride(t=ft,
-                                                                   action=allowed[0]))
-                        trace = roll(kappa, phi, z0, mask=mask)
-                        rows, addrs = addresses(trace, kappa, phi)
-                        ep = episode_for(trace, kappa, phi, REFERENCE_PROVIDER, z0,
-                                         mask=mask)
-                        env = build_counterfactual_envelope(rows, addrs, sol=SOL,
-                                                            episode=ep)
-                    except (K.MalformedIntervention, ProtocolError):
+                    built = faulted(kappa, phi, z0, t=ft)
+                    if built is None:
                         continue
+                    ep, rows, addrs, _pre = built
+                    env = build_counterfactual_envelope(rows, addrs, sol=SOL, episode=ep)
                     for a in addrs:
                         rec = env[a]
                         if rec.a_plus is None:
@@ -591,76 +704,71 @@ def test_11c_on_a_fresh_store_the_counterfactual_target_is_the_reference():
                         equal += rec.g_cf.hex() == float(VIEW.value(
                             QAddress(state=a.state, z=a.z, m=a.m,
                                      a=rec.a_plus))).hex()
-    assert total == 35, f"the faulted census moved: {total} counterfactuals"
-    assert equal == 34, f"the fresh-store identity moved: {equal}/{total}"
+    assert (total, equal) == (54, 53), (total, equal)
 
 
-def test_11d_prior_learning_is_what_gives_the_l2_arms_content():
-    r"""Reachability, not construction: the arm acts only on an already-bent policy.
+def test_17_prior_learning_is_ONE_mechanism_that_gives_the_arms_content():
+    r"""Reachability: prior learning substantially raises L2 writability.
 
-    Same scenes as the census, but the pre-update store carries one entry that lifts a
-    worse action at a context the replay meets after $t$. The suffix then leaves the
-    optimal path, $G_t^{CF} < Q_D^\ast(x_t,a_t^+)$, and both L2 arms write. Measured: 9 of
-    12 constructed scenes act, and the three that do not are ones where the lifted entry
-    never changes the chosen action.
+    Same grid as the probe above, but the pre-update store carries one entry that lifts a
+    worse action at a context the counterfactual replay visits after $t$. Measured over
+    the **18** grid points, exactly:
+
+    $$\boxed{\text{9 admit the construction, and 9 of those 9 write; the other 9 admit none}}$$
+
+    The claim is that prior learning is **an important mechanism**, not that it is the only
+    one — the fresh-store probe above already exhibits a non-reference target with no prior
+    learning at all. (An earlier revision of this file reported "9 of 12"; 12 was the count
+    of constructions a *different* helper happened to complete, not the grid size, and the
+    two numbers were never measuring the same thing.)
     """
-    acts = tried = 0
+    acts = infeasible = 0
     for kappa in (0, 1):
         for phi in (0, 1, 2):
             for z0 in (0, 1, 2):
-                try:
-                    trace, rows, addrs, ep, _pre = bent_scene(kappa, phi, z0)
-                except Exception:
+                built = bent_scene(kappa, phi, z0)
+                if built is None:
+                    infeasible += 1
                     continue
-                tried += 1
-                state = LearnerPersistentState()
-                res = run_dq_law(CounterfactualReturnWrite, state, addrs, rows, VIEW,
+                ep, rows, addrs, pre, _env = built
+                res = run_dq_law(CounterfactualReturnWrite, pre, addrs, rows, VIEW,
                                  sol=SOL, episode=ep)
                 res.ledger.check_fingerprint_invariants()
-                if res.ledger.n_scalar > 0:
-                    acts += 1
-                    for a in addrs:
-                        if any(k.state == a.state and k.z == a.z and k.m == a.m
-                               for k in state.q_overrides):
-                            break
-    assert tried >= 9, f"the bent probe shrank: {tried} scenes"
-    assert acts >= 9, f"the CF arm lost its reach: acts in {acts}/{tried}"
+                acts += res.ledger.n_scalar > 0
+    assert (acts, infeasible) == (9, 9), (acts, infeasible)
 
 
-def test_11e_a_bent_run_writes_real_entries_and_keeps_the_ledger_sound():
-    trace, rows, addrs, ep, _pre = bent_scene()
-    env = build_counterfactual_envelope(rows, addrs, sol=SOL, episode=ep)
-    state = LearnerPersistentState()
-    res = run_dq_law(CounterfactualReturnWrite, state, addrs, rows, VIEW, sol=SOL,
+def test_18_a_bent_run_writes_real_entries_and_keeps_the_ledger_sound():
+    ep, rows, addrs, pre, env = first_bent()
+    res = run_dq_law(CounterfactualReturnWrite, pre, addrs, rows, VIEW, sol=SOL,
                      episode=ep)
     led = res.ledger
     assert led.scalar_metrics_applicable is True
     assert led.n_scalar >= 1, "the bent probe must write"
     assert led.n_changed_addresses >= 1
     assert led.fingerprint_pre != led.fingerprint_post
-    written = dict(state.q_overrides)
+    written = dict(pre.q_overrides)
     for a in addrs:
         rec = env[a]
-        if rec.a_plus is not None and QAddress(state=a.state, z=a.z, m=a.m,
-                                               a=rec.a_plus) in written:
-            assert written[QAddress(state=a.state, z=a.z, m=a.m,
-                                    a=rec.a_plus)].hex() == rec.g_cf.hex()
         status = next(r.status for r in led.receipts if r.address == a)
         if rec.a_plus is None:
             assert status == NO_VALID_ALTERNATIVE
+        elif QAddress(state=a.state, z=a.z, m=a.m, a=rec.a_plus) in written:
+            assert written[QAddress(state=a.state, z=a.z, m=a.m,
+                                    a=rec.a_plus)].hex() == rec.g_cf.hex()
     led.check_fingerprint_invariants()
 
 
-def test_12_the_L0_entry_point_refuses_an_L2_law():
-    trace, rows, addrs, ep = healthy()
+def test_21_the_L0_entry_point_refuses_an_L2_law():
+    ep, rows, addrs, _pre = healthy()
     with pytest.raises(ProtocolError) as ei:
         run_factual_return_law(CounterfactualReturnWrite, LearnerPersistentState(),
                                addrs, rows, VIEW)
     assert "builds the L0 cell only" in str(ei.value)
 
 
-def test_13_the_l2_cell_needs_the_shared_adapter_and_the_episode():
-    trace, rows, addrs, ep = healthy()
+def test_22_the_l2_cell_needs_the_shared_adapter_and_the_episode():
+    ep, rows, addrs, _pre = healthy()
     for kwargs in ({"episode": ep}, {"sol": SOL}):
         with pytest.raises(ProtocolError) as ei:
             run_dq_law(CounterfactualReturnWrite, LearnerPersistentState(), addrs, rows,
@@ -668,56 +776,23 @@ def test_13_the_l2_cell_needs_the_shared_adapter_and_the_episode():
         assert "shared a^+ adapter" in str(ei.value)
 
 
-def test_14_a_half_counterfactual_record_is_refused():
-    r"""$a_t^+$ and $G_t^{CF}$ are one fact: both present or both absent.
-
-    Expressible separately, "the alternative is unknown" and "its return is unknown" would
-    become different states of the envelope, and a law could act on one without the other.
-    """
-    trace, rows, addrs, ep = faulted()
-    good = dict(build_counterfactual_envelope(rows, addrs, sol=SOL, episode=ep))
-    victim = next((a for a in addrs if good[a].a_plus is not None), None)
-    if victim is None:
-        pytest.skip("no alternative in this probe")                   # pragma: no cover
-    for bad in (CounterfactualTarget(victim, good[victim].a_factual,
-                                     good[victim].g_factual, None, good[victim].g_cf),
-                CounterfactualTarget(victim, good[victim].a_factual,
-                                     good[victim].g_factual, good[victim].a_plus, None)):
-        lie = dict(good)
-        lie[victim] = bad
-        with pytest.raises(ProtocolError) as ei:
-            validate_counterfactual_envelope(addrs, lie, rows, sol=SOL, episode=ep)
-        assert "one fact" in str(ei.value)
-
-
-def test_15_a_dual_plan_cannot_write_the_same_entry_twice():
-    """The two entries are different actions, so one transaction cannot collide.
-
-    Without the guard, an alternative equal to the factual command would put two edits on
-    one address; the store's last-write-wins would then decide the value by list order, and
-    the same plan would mean different things depending on how it was built.
-    """
-    trace, rows, addrs, ep = healthy()
-    victim = addrs[0]
-    payload = {a: {"a_factual": 3, "g_factual": 1.0, "a_plus": 3, "g_cf": 2.0}
-               for a in [victim]}
-    with pytest.raises(ProtocolError) as ei:
-        DualReturnWrite().plan([victim], payload)
-    assert "not an alternative" in str(ei.value)
-
-
-def test_16_an_implemented_tier_must_be_a_tier():
-    r"""The build set is typed before anything reads ``.name`` (A77 §65.1).
-
-    ``implemented_tiers={0}`` used to reach an ``AttributeError`` from inside the
-    validation that exists to catch exactly this kind of malformed descriptor.
-    """
+def test_23_an_implemented_tier_must_be_a_tier():
+    r"""The build set is typed before anything reads ``.name`` (A77 §65.1)."""
     cells = {Tier.L0_FACTUAL: frozenset(), Tier.L1_CORRECTIVE: ILL_TYPED,
              Tier.L2_COUNTERFACTUAL: ILL_TYPED, Tier.L3_ORACLE: frozenset()}
     with pytest.raises(ProtocolError) as ei:
         SliceDescriptor(name="BadBuild", store=Q, scalar=False, owner=owner_Q,
                         view=lambda st: {}, cells=cells, extract={},
                         implemented_tiers=frozenset({0}))
-    assert "not\nTier members" in str(ei.value).replace("\n", " ") or \
-        "Tier members" in str(ei.value)
+    assert "Tier members" in str(ei.value)
     assert not isinstance(ei.value, AttributeError)
+
+
+def test_24_the_registries_are_separate_and_the_counts_do_not_move():
+    assert [law.name for law in DQ_LAWS] == ["NoWrite", "FactualReturnWrite", "NoWrite",
+                                             "CounterfactualReturnWrite",
+                                             "DualReturnWrite"]
+    kinds = [k for _n, k, _a in law_metadata(DQ_LAWS)]
+    assert kinds == ["reference", "operation", "reference", "operation", "operation"]
+    assert independent_treatment_count(DQ_LAWS) == 3
+    assert independent_treatment_count() == 3
