@@ -79,9 +79,27 @@ def _canon_controller(overrides: Mapping) -> str:
     return "\n".join(sorted(rows))
 
 
+def _canon_q(overrides: Mapping) -> str:
+    r"""$Q_D^L$'s canonical form: explicit rows, ``float.hex()`` values, sorted.
+
+    ``float.hex()`` rather than ``repr``/``str``: it is exact and round-trippable, and it
+    is the encoding A77 §65.4 froze. ``str`` and ``repr`` happen to agree for floats in
+    CPython 3, so the choice is made on exactness rather than on a difference that does
+    not exist — and it distinguishes the two zeros, which matters because an entry that
+    is "changed" with a zero delta is what the ledger canary exists to exclude.
+    """
+    rows = []
+    for addr, v in overrides.items():
+        s = addr.state
+        rows.append(f"Q:{s.x},{s.y},{s.t},{s.kappa},{s.phi},{addr.z},{addr.m},{addr.a}"
+                    f"|{float(v).hex()}")
+    return "\n".join(sorted(rows))
+
+
 def fingerprint(state) -> str:
     r"""$\text{SHA256}(\text{canon}(P_D^L) \Vert \text{canon}(C_P^L) \Vert
-    \text{canon}(C_X^L))$ over lexicographically sorted, explicitly expanded rows.
+    \text{canon}(C_X^L) \Vert \text{canon}(Q_D^L))$ over lexicographically sorted,
+    explicitly expanded rows.
 
     Sorted and explicit so the value cannot depend on dict iteration order, and
     SHA256 so it cannot depend on process salting. This is the ledger canary:
@@ -89,6 +107,12 @@ def fingerprint(state) -> str:
     $$\texttt{EVALUABLE\_NOOP} \Rightarrow fp_{\text{pre}} = fp_{\text{post}},
     \qquad
     \texttt{APPLIED} \Rightarrow fp_{\text{pre}} \neq fp_{\text{post}}$$
+
+    The fourth component arrived with the $Q$ store (A77 §65.4). It changes the digest
+    string for every state, an *empty* component included, and no invariant: the ledger
+    only ever compares $fp_{\text{pre}}$ with $fp_{\text{post}}$ inside one run, and no
+    committed artifact records an absolute learner fingerprint. A77 §65.12 makes that
+    encoding change the business of the step that needed the store, which is this one.
     """
     h = hashlib.sha256()
     h.update(_canon_decision(state.decision_overrides).encode("utf-8"))
@@ -96,6 +120,8 @@ def fingerprint(state) -> str:
     h.update(_canon_process(state.process_overrides).encode("utf-8"))
     h.update(b"\x00")
     h.update(_canon_controller(state.controller_overrides).encode("utf-8"))
+    h.update(b"\x00")
+    h.update(_canon_q(state.q_overrides).encode("utf-8"))
     return h.hexdigest()
 
 

@@ -45,6 +45,7 @@ import json
 import pathlib
 import subprocess
 import sys
+from collections import Counter
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
@@ -65,6 +66,12 @@ from rfl_rebuild.solve.dp import solve_reference                  # noqa: E402
 
 UP, DOWN, LEFT, RIGHT = K.UP, K.DOWN, K.LEFT, K.RIGHT
 DEFAULT_JSON = ROOT / "experiments" / "v03r" / "dpatch_ledger_baseline.json"
+
+#: The canonical payload's digest-of-learner-state fields. A later step may legitimately
+#: change these — A77 §65.12 makes the Q fingerprint component step 3's business — so a
+#: difference confined to them is an encoding change, while a difference anywhere else is
+#: a moved number wearing an encoding change's clothes.
+_FINGERPRINT_FIELDS = ("fingerprint_pre", "fingerprint_post")
 
 
 def _sha(text: str) -> str:
@@ -194,10 +201,16 @@ def main() -> int:
     ap.add_argument("--verification-json",
                     default=str(ROOT / "experiments" / "v03r"
                                 / "dpatch_ledger_verification.json"))
+    ap.add_argument(
+        "--allow-fingerprint-encoding-change", action="store_true",
+        help="A77 §65.12: the byte lock governs step 2 alone. A later step may add the Q "
+             "fingerprint component, which changes every canonical string. With this "
+             "flag a difference confined to the fingerprint fields is reported as "
+             "ENCODING_ONLY instead of DRIFTED, and a difference outside them is still "
+             "a failure.")
     args = ap.parse_args()
     if not (args.capture or args.verify):
         ap.error("choose --capture or --verify")
-
     path = pathlib.Path(args.json)
     if not path.is_absolute():
         path = ROOT / path
@@ -223,12 +236,25 @@ def main() -> int:
     bad = 0
     missing = sorted(set(old) - set(new))
     added = sorted(set(new) - set(old))
+    field_diffs: Counter = Counter()
+    outside_fingerprint = 0
     for key in sorted(set(old) & set(new)):
-        if old[key]["sha256"] != new[key]["sha256"]:
-            bad += 1
-            print(f"  CHANGED {key}")
-            print(f"    was {old[key]['canonical'][:160]}")
-            print(f"    now {new[key]['canonical'][:160]}")
+        if old[key]["sha256"] == new[key]["sha256"]:
+            continue
+        bad += 1
+        was = json.loads(old[key]["canonical"])
+        is_ = json.loads(new[key]["canonical"])
+        fields = sorted(set(was) | set(is_))
+        differing = [f for f in fields if was.get(f) != is_.get(f)]
+        for f in differing:
+            field_diffs[f] += 1
+        beyond = [f for f in differing if f not in _FINGERPRINT_FIELDS]
+        if beyond:
+            outside_fingerprint += 1
+            if outside_fingerprint <= 5:
+                print(f"  CHANGED OUTSIDE THE FINGERPRINT {key}: {beyond}")
+                for f in beyond:
+                    print(f"    {f}: {was.get(f)!r} -> {is_.get(f)!r}")
     for key in missing:
         bad += 1
         print(f"  MISSING {key}")
@@ -242,7 +268,15 @@ def main() -> int:
             sbad.append(k)
             print(f"  STRUCTURAL CHANGED {k}: {v!r} -> {now['structural'].get(k)!r}")
 
-    ok = bad == 0 and not sbad and len(old) == len(new)
+    shapes_ok = not sbad and not missing and not added and len(old) == len(new)
+    if bad == 0:
+        status = "EXACT"
+    elif args.allow_fingerprint_encoding_change and outside_fingerprint == 0 \
+            and shapes_ok:
+        status = "ENCODING_ONLY"
+    else:
+        status = "DRIFTED"
+    ok = status != "DRIFTED"
     payload = {
         "check": "D_patch ledger canonical bytes, refactor verification",
         "baseline_rev": base["git_rev_at_capture"],
@@ -252,14 +286,18 @@ def main() -> int:
         "n_baseline": len(old),
         "n_recomputed": len(new),
         "canonical_mismatches": bad,
+        "differing_fields": dict(sorted(field_diffs.items())),
+        "mismatches_outside_fingerprint_fields": outside_fingerprint,
         "structural_mismatches": len(sbad),
         "structural_mismatch_keys": sbad,
         "missing_keys": missing,
         "added_keys": added,
-        "status": "EXACT" if ok else "DRIFTED",
+        "status": status,
         "obligation": (
-            "A77 §65.12 condition 1: the generic slice refactor must move no D_patch "
-            "ledger byte. A DRIFTED status voids the refactor commit"
+            "A77 §65.12: the byte lock governs step 2, where status must be EXACT. A "
+            "later step that adds the Q fingerprint component must show ENCODING_ONLY "
+            "-- every difference confined to the fingerprint fields -- because a change "
+            "outside them is a moved number wearing an encoding change's clothes"
         ),
     }
     vpath = pathlib.Path(args.verification_json)
@@ -273,7 +311,9 @@ def main() -> int:
     print(f"  canonical byte mismatches : {bad}")
     print(f"  structural mismatches     : {len(sbad)}")
     print(f"  written                   : {_rel(vpath)}")
-    print("  LEDGER BASELINE " + ("REPRODUCED EXACTLY" if ok else "DRIFTED"))
+    print(f"  differing fields          : {dict(sorted(field_diffs.items()))}")
+    print(f"  outside fingerprint fields: {outside_fingerprint}")
+    print("  LEDGER BASELINE " + status)
     return 0 if ok else 1
 
 

@@ -1,7 +1,23 @@
 r"""The persistent learner state, its snapshot, and its transaction.
 
-Three stores make up :math:`W^L = (P_D^L, C_P^L, C_X^L)`. There is **no** ``Q_D^L``
-here: an empty stub would later be mistaken for frozen Q semantics.
+Four stores make up $W^L = (P_D^L, C_P^L, C_X^L, Q_D^L)$. The fourth arrived with A77
+§65.4, and only after its semantics were frozen: an empty ``Q_D^L`` stub placed earlier
+would have been mistaken for frozen Q semantics, which is exactly what the previous
+revision of this paragraph refused to do.
+
+$Q_D^L$ is a **sparse override table on the injected reference** (A77 §65.4):
+
+$$Q^{\text{eff}}(x,a) = \begin{cases} Q_D^L(x,a), & (x,a) \in Q_D^L\\
+Q_D^\ast(x,a), & \text{otherwise}\end{cases}$$
+
+so an absent entry means "no deviation", **not** "the value is zero", and assigning the
+reference value canonicalises to a deletion like the other stores' identity assignments.
+
+**The reference is injected, never fetched.** Nothing in this module calls
+``solve_reference()``; the caller passes a :class:`~rfl_rebuild.learner.reference.
+QReferenceView`, which also supplies the domain oracle a $Q$ edit is checked against. A
+store that reached for its own reference would make the persistent state depend on a
+global the experiment is supposed to control.
 
 Canonical sparse overrides
 --------------------------
@@ -57,6 +73,7 @@ B1 runner/ledger layer, which does not exist yet.
 from __future__ import annotations
 
 import copy
+import math
 from dataclasses import dataclass
 from types import MappingProxyType
 from typing import Any, Callable, Mapping
@@ -79,18 +96,24 @@ __all__ = [
     "CONTROLLER",
     "DECISION",
     "PROCESS",
+    "Q",
     "DecisionAddress",
     "Edit",
     "LearnerPersistentState",
     "LearnerSnapshot",
+    "LearnerStateError",
+    "QAddress",
+    "ReferenceContractError",
     "StoreTransactionError",
     "is_option_id",
+    "owner_Q",
 ]
 
 DECISION = "decision"
 PROCESS = "process"
 CONTROLLER = "controller"
-_STORES = (DECISION, PROCESS, CONTROLLER)
+Q = "q"
+_STORES = (DECISION, PROCESS, CONTROLLER, Q)
 
 
 class StoreTransactionError(Exception):
@@ -98,6 +121,31 @@ class StoreTransactionError(Exception):
 
     Substrate-level only. It says nothing about update-law semantics, and it is
     deliberately **not** A76's ``PROTOCOL_ERROR``.
+    """
+
+
+class LearnerStateError(Exception):
+    """The persistent state is not a legal state for the architecture being built.
+
+    Raised at **construction** time, before an adapter or an episode exists, and kept
+    separate from :class:`StoreTransactionError` for the same reason the kernel keeps
+    ``LearnerContractViolation`` separate from ``OptionViolation``: a handler for "this
+    transaction was malformed" must not silently swallow "this architecture has no
+    composition semantics".
+
+    A77 §65.4: $D_{patch}$ and $D_Q$ are different architecture treatments, no legal
+    experiment populates both decision stores, and **no priority between them is
+    defined**. Their co-residence is refused rather than resolved.
+    """
+
+
+class ReferenceContractError(Exception):
+    r"""The injected reference view is not a legal $D_Q$ reference.
+
+    A substrate **contract** error, not a lookup miss: a missing row or action raises
+    this rather than a bare ``KeyError``. The reference is validated once at
+    construction, so an incomplete one fails stop at the boundary instead of surfacing
+    from inside a rollout as an indexing accident.
     """
 
 
@@ -113,6 +161,36 @@ class DecisionAddress:
     state: State
     z: int
     m: int
+
+
+@dataclass(frozen=True, slots=True)
+class QAddress:
+    r"""The typed store key for one scalar entry of $Q_D^L$ (A77 §65.4).
+
+    Strictly finer than the credited address, and deliberately a **distinct type**:
+
+    | key | role |
+    |---|---|
+    | :class:`DecisionAddress` | the credited context, the ledger receipt, the budget unit |
+    | :class:`QAddress` | one entry inside that context's row |
+
+    so ``DualReturnWrite`` touching two entries is still **one** addressed context.
+    """
+
+    state: State
+    z: int
+    m: int
+    a: int
+
+
+def owner_Q(address: QAddress) -> DecisionAddress:
+    r"""$owner_Q\bigl(\texttt{QAddress}(s,z,m,a)\bigr) = \texttt{DecisionAddress}(s,z,m)$.
+
+    The address projection A77 §65.9's locality rule is stated through. It lives with
+    the addresses rather than in the slice layer because it is a fact about the two key
+    types, not about any update law.
+    """
+    return DecisionAddress(state=address.state, z=address.z, m=address.m)
 
 
 @dataclass(frozen=True, slots=True)
@@ -136,13 +214,14 @@ class Edit:
 class LearnerSnapshot:
     """An immutable read view of the persistent state, taken at one instant."""
 
-    __slots__ = ("_decision", "_process", "_controller")
+    __slots__ = ("_decision", "_process", "_controller", "_q")
 
     def __init__(self, decision: Mapping, process: Mapping,
-                 controller: Mapping) -> None:
+                 controller: Mapping, q: Mapping | None = None) -> None:
         self._decision = MappingProxyType(dict(decision))
         self._process = MappingProxyType(dict(process))
         self._controller = MappingProxyType(dict(controller))
+        self._q = MappingProxyType(dict(q or {}))
 
     # -- read views ------------------------------------------------------- #
     @property
@@ -158,9 +237,14 @@ class LearnerSnapshot:
         return self._controller
 
     @property
+    def q_overrides(self) -> Mapping:
+        """The sparse $Q_D^L$ overrides. An absent entry is **not** a zero value."""
+        return self._q
+
+    @property
     def healthy(self) -> bool:
         """True iff every store is at its healthy reference."""
-        return not (self._decision or self._process or self._controller)
+        return not (self._decision or self._process or self._controller or self._q)
 
     # -- the three adapters the kernel consumes --------------------------- #
     def decision_provider(self, base_provider: CommandProvider) -> CommandProvider:
@@ -204,6 +288,46 @@ class LearnerSnapshot:
 
         return provider
 
+    def q_decision_provider(self, reference) -> CommandProvider:
+        r"""The $D_Q$ architecture's decision read path (A77 §65.4).
+
+        $$a^L(x) = \arg\max_{a \in A_z(m,s)} Q^{\text{eff}}(x,a)
+        \quad\text{(lowest action index on ties)}$$
+
+        Three things are deliberate:
+
+        * **no baseline-provider argument.** The healthy referent of this architecture
+          *is* $Q_D^\ast$, which the injected view supplies, so the empty store
+          reproduces $\pi_D^\ast$ by construction rather than by a fallback branch. A
+          second provider would be a second source of the same policy, which is how two
+          notions of "the factual action" start;
+        * **the tie-break is the frozen one**: ascending action order with a strict
+          comparison, matching ``dp.py``'s ``max(row, key=lambda a: (row[a], -a))``;
+        * **co-residence is refused here**, before the adapter exists. $D_{patch}$ and
+          $D_Q$ are different architecture treatments and no priority between them is
+          defined (A77 §65.4), so a state holding both is not a state this can serve.
+        """
+        if self._decision and self._q:
+            raise LearnerStateError(
+                "the persistent state holds both P_D^L and Q_D^L decision overrides; "
+                "D_patch and D_Q are different architectures and A77 §65.4 defines no "
+                "priority between them, so this state cannot drive either read path. "
+                "Refused before the adapter is built, not when an address is visited")
+        overrides = self._q
+
+        def provider(state: State, control: ControlState) -> Action:
+            row = reference.row(state, control.z, control.m)
+            best_a = None
+            best_v = None
+            for a in sorted(row):                 # ascending: first wins a tie
+                v = overrides.get(QAddress(state=state, z=control.z, m=control.m, a=a),
+                                  row[a])
+                if best_v is None or v > best_v:
+                    best_a, best_v = a, v
+            return best_a
+
+        return provider
+
     def process_commit_provider(self) -> ProcessCommitProvider:
         r"""$C_P^L$: an override when present, otherwise the identity."""
 
@@ -225,12 +349,13 @@ class LearnerSnapshot:
 class LearnerPersistentState:
     """The mutable, cross-episode backing state."""
 
-    __slots__ = ("_decision", "_process", "_controller")
+    __slots__ = ("_decision", "_process", "_controller", "_q")
 
     def __init__(self) -> None:
         self._decision: dict[DecisionAddress, Action] = {}
         self._process: dict[int, int] = {}
         self._controller: dict[ControllerSite, Action] = {}
+        self._q: dict[QAddress, float] = {}
 
     # -- reads ------------------------------------------------------------ #
     @property
@@ -246,17 +371,22 @@ class LearnerPersistentState:
         return MappingProxyType(self._controller)
 
     @property
+    def q_overrides(self) -> Mapping:
+        r"""$Q_D^L$, sparse. Healthy is $\varnothing$, and $\varnothing$ is not zero."""
+        return MappingProxyType(self._q)
+
+    @property
     def healthy(self) -> bool:
-        return not (self._decision or self._process or self._controller)
+        return not (self._decision or self._process or self._controller or self._q)
 
     def snapshot(self) -> LearnerSnapshot:
         """An immutable view. Later writes to this state do not affect it."""
-        return LearnerSnapshot(self._decision, self._process, self._controller)
+        return LearnerSnapshot(self._decision, self._process, self._controller, self._q)
 
     def clone(self) -> "LearnerPersistentState":
         """An independent mutable state.
 
-        A **deep** copy, not ``dict(...)``: the values are immutable ints today, so a
+        A **deep** copy, not ``dict(...)``: the values are immutable scalars today, so a
         shallow copy would happen to be safe, and would stop being safe the moment a
         store value becomes a container.
         """
@@ -264,18 +394,32 @@ class LearnerPersistentState:
         other._decision = copy.deepcopy(self._decision)
         other._process = copy.deepcopy(self._process)
         other._controller = copy.deepcopy(self._controller)
+        other._q = copy.deepcopy(self._q)
         return other
 
     # -- writing ---------------------------------------------------------- #
-    def apply_transaction(self, edits: tuple[Edit, ...] | list[Edit]) -> None:
+    def apply_transaction(self, edits: tuple[Edit, ...] | list[Edit], *,
+                          q_reference=None) -> None:
         r"""Validate every edit, then commit once.
 
         $$\text{one illegal edit} \;\Longrightarrow\; S_{\text{post}} =
         S_{\text{pre}}$$
 
+        Atomic across **all four** stores: one illegal $Q$ edit means an already-planned
+        $D/P/X$ edit does not land either.
+
         Raises :class:`StoreTransactionError` before touching anything if an edit is
-        malformed, if an address type does not match its store, or if one transaction
-        names the same store address twice.
+        malformed, if an address type does not match its store, if a $Q$ entry is
+        outside the injected reference's domain, or if one transaction names the same
+        store address twice.
+
+        ``q_reference`` is the injected
+        :class:`~rfl_rebuild.learner.reference.QReferenceView`, keyword-only and
+        required as soon as a $Q$ edit is present. It supplies both halves of A77
+        §65.4/§65.5's write contract:
+
+        $$\operatorname{dom}(Q_D^L) \subseteq \operatorname{dom}(\texttt{QReferenceView}),
+        \qquad Q_D^L(e) \leftarrow Q_D^\ast(e) \Longrightarrow \text{delete } e$$
         """
         edits = tuple(edits)
 
@@ -288,6 +432,7 @@ class LearnerPersistentState:
         # `ACTIONS[u]`. After _validate_edit every surviving address is hashable.
         for e in edits:
             _validate_edit(e)
+        _require_q_domain(edits, q_reference)
 
         seen: set[tuple[str, Any]] = set()
         for e in edits:
@@ -304,6 +449,7 @@ class LearnerPersistentState:
         cand_d = dict(self._decision)
         cand_p = dict(self._process)
         cand_c = dict(self._controller)
+        cand_q = dict(self._q)
         for e in edits:
             if e.store == DECISION:
                 if e.value is None:
@@ -316,13 +462,53 @@ class LearnerPersistentState:
                     cand_p.pop(e.address, None)
                 else:
                     cand_p[e.address] = e.value
-            else:
+            elif e.store == CONTROLLER:
                 if e.value is None or e.value == e.address.cmd:
                     cand_c.pop(e.address, None)
                 else:
                     cand_c[e.address] = e.value
+            else:
+                # Q: writing the reference value IS the identity assignment, so it
+                # canonicalises to deletion for the same reason. A stored entry equal
+                # to the reference would make the store non-canonical and, with
+                # `float.hex()` accounting, would show up as a changed entry whose
+                # delta is zero -- which is exactly what the ledger canary exists to
+                # make impossible.
+                if e.value is None or float(e.value) == q_reference.value(e.address):
+                    cand_q.pop(e.address, None)
+                else:
+                    cand_q[e.address] = float(e.value)
 
-        self._decision, self._process, self._controller = cand_d, cand_p, cand_c
+        self._decision, self._process, self._controller, self._q = (
+            cand_d, cand_p, cand_c, cand_q)
+
+
+def _require_q_domain(edits: tuple, q_reference) -> None:
+    r"""Domain closure for $Q$ edits (A77 §65.5).
+
+    $$\boxed{\operatorname{dom}(Q_D^L) \subseteq
+    \operatorname{dom}(\texttt{QReferenceView})}$$
+
+    An entry that is well-typed but outside the reference domain would change the
+    fingerprint and clear ``healthy`` while the read path never consulted it — the $Q$
+    version of the ``P_override[99] = 1`` defect the process store already had to be
+    closed against. It is rejected here, at the transaction boundary, along with the
+    typed-address and duplicate-key checks; the read path is not asked to defend itself.
+    """
+    q_edits = [e for e in edits if e.store == Q]
+    if not q_edits:
+        return
+    if q_reference is None:
+        raise StoreTransactionError(
+            "a Q edit requires the injected reference view: it supplies both the domain "
+            "the entry must lie in and the value that canonicalises to a deletion "
+            "(A77 §65.4). Nothing in the substrate fetches a reference for itself")
+    for e in q_edits:
+        if e.address not in q_reference:
+            raise StoreTransactionError(
+                f"the Q entry {e.address!r} is outside the reference domain; a stored "
+                "entry the read path can never reach would change the fingerprint and "
+                "clear `healthy` while being invisible in behaviour")
 
 
 def _validate_edit(e: Edit) -> None:
@@ -351,6 +537,15 @@ def _validate_edit(e: Edit) -> None:
             # a persistent defect invisible in behaviour.
             raise StoreTransactionError(
                 f"a process override must be an option id, got {e.value!r}")
+    elif e.store == Q:
+        _require_q_address(e.address)
+        if e.value is not None and not _is_finite_real(e.value):
+            # `bool` is an `int` subclass, so without the exclusion `True` would pass
+            # for 1.0 and the fingerprint would carry a type the value domain does not
+            # have; NaN and infinities would make `fp_pre == fp_post` depend on
+            # comparison semantics rather than on content.
+            raise StoreTransactionError(
+                f"a Q override must be a finite real, got {e.value!r}")
     else:
         _require_controller_site(e.address)
         if e.value is not None and not _is_action(e.value):
@@ -388,6 +583,31 @@ def _require_controller_site(site: object) -> None:
     if not _is_action(site.cmd):
         raise StoreTransactionError(
             f"ControllerSite.cmd must be an action id, got {site.cmd!r}")
+
+
+def _require_q_address(addr: object) -> None:
+    """Type the Q key, field by field — the dataclass itself validates nothing."""
+    if not isinstance(addr, QAddress):
+        raise StoreTransactionError(
+            f"the Q store is keyed by QAddress, got {type(addr).__name__}")
+    if not isinstance(addr.state, State):
+        raise StoreTransactionError(
+            f"QAddress.state must be a State, got {addr.state!r}")
+    if not is_option_id(addr.z):
+        raise StoreTransactionError(
+            f"QAddress.z must be an option id, got {addr.z!r}")
+    if not _is_int(addr.m):
+        raise StoreTransactionError(
+            f"QAddress.m must be an integer, got {addr.m!r}")
+    if not _is_action(addr.a):
+        raise StoreTransactionError(
+            f"QAddress.a must be an action id, got {addr.a!r}")
+
+
+def _is_finite_real(v: object) -> bool:
+    """A finite real number. ``bool`` is excluded; so are NaN and both infinities."""
+    return (isinstance(v, (int, float)) and not isinstance(v, bool)
+            and math.isfinite(v))
 
 
 def _is_int(v: object) -> bool:

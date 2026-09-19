@@ -13,28 +13,52 @@ update law** — no `DeleteFactualPatch`, no `SetAlternative`, no `LocalOracleRe
 no `FactualReturnWrite`, no ledger status. Those are law-execution receipts and belong
 to the layer above; a store that named them would make the next bug
 indistinguishable between substrate and law.
+
+A77 §65.4 added the fourth store, $Q_D^L$, and with it the one thing the substrate
+needs in order to read or write a sparse override on a reference: the **injected**
+:class:`~rfl_rebuild.learner.reference.QReferenceView`. Injected is the operative word
+— nothing in this package calls ``solve_reference()``, so the persistent state can
+never depend on a global the experiment is supposed to control. The store answers "can
+this be persisted and read"; what should be *written* into it is step 4's question and
+is not answered here.
 """
 
+from rfl_rebuild.learner.reference import (
+    QReferenceView,
+    reference_view_from,
+)
 from rfl_rebuild.learner.store import (
     CONTROLLER,
     DECISION,
     PROCESS,
+    Q,
     DecisionAddress,
     Edit,
     LearnerPersistentState,
     LearnerSnapshot,
+    LearnerStateError,
+    QAddress,
+    ReferenceContractError,
     StoreTransactionError,
     is_option_id,
+    owner_Q,
 )
 
 __all__ = [
     "CONTROLLER",
     "DECISION",
     "PROCESS",
+    "Q",
     "DecisionAddress",
     "Edit",
     "LearnerPersistentState",
     "LearnerSnapshot",
+    "LearnerStateError",
+    "QAddress",
+    "QReferenceView",
+    "ReferenceContractError",
     "StoreTransactionError",
     "is_option_id",
+    "owner_Q",
+    "reference_view_from",
 ]
