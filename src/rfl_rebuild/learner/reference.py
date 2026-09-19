@@ -40,11 +40,11 @@ from dataclasses import dataclass
 from types import MappingProxyType
 from typing import Any, Mapping
 
+from rfl_rebuild.env.domain import decision_contexts
 from rfl_rebuild.env.kernel import ControlState, State, option_actions
 from rfl_rebuild.learner.store import (
     QAddress,
     ReferenceContractError,
-    is_option_id,
 )
 
 __all__ = ["QReferenceView", "reference_view_from"]
@@ -81,28 +81,40 @@ class QReferenceView:
                 f"{type(rows).__name__}")
         if not rows:
             raise ReferenceContractError("the reference has no rows")
+
+        # ---- domain totality, as an EQUALITY (A77 §65.5) ------------------ #
+        #
+        #     dom(QReferenceView) = {(x,a) : x a legal decision context, a in A_z(m,s)}
+        #
+        # The first version checked only that each row the caller handed over had its
+        # actions exactly equal to A_z(m,s). A single complete row therefore made a legal
+        # view: row totality says nothing about *which* contexts exist, so a reference
+        # missing 13,823 of them -- or one carrying a context outside the frozen domain --
+        # was accepted. The enumerator is `env.domain`, shared with the solver, so this is
+        # a comparison against the environment's own list rather than a second opinion;
+        # a cardinality check would have let a missing context and an invented one cancel.
+        #
+        # The per-key shape checks the first version carried are subsumed by this
+        # equality and were removed rather than left in place: a malformed key is by
+        # definition not a member of the domain, so a separate check could never fire.
+        expected = decision_contexts()
+        if set(rows) != expected:
+            missing = expected - set(rows)
+            extra = set(rows) - expected
+            raise ReferenceContractError(
+                "the reference's contexts are not exactly the frozen decision domain: "
+                f"{len(missing)} of {len(expected)} legal contexts missing, "
+                f"{len(extra)} context(s) outside the domain. Examples: missing "
+                f"{sorted(missing, key=repr)[:2]!r}, unexpected "
+                f"{sorted(extra, key=repr)[:2]!r}")
+
         frozen: dict = {}
         for key, row in rows.items():
-            if not (isinstance(key, tuple) and len(key) == 3):
-                raise ReferenceContractError(
-                    f"reference row key {key!r} is not a (State, z, m) triple")
             state, z, m = key
-            if not isinstance(state, State):
-                raise ReferenceContractError(
-                    f"reference row key {key!r} does not start with a State")
-            if not is_option_id(z):
-                raise ReferenceContractError(
-                    f"reference row key {key!r} carries z={z!r}, not an option id")
-            if not isinstance(m, int) or isinstance(m, bool):
-                raise ReferenceContractError(
-                    f"reference row key {key!r} carries m={m!r}, not an integer")
             if not isinstance(row, Mapping):
                 raise ReferenceContractError(
                     f"reference row {key!r} is {type(row).__name__}, not a mapping")
             allowed = set(option_actions(z, ControlState(z=z, m=m), state))
-            if not allowed:
-                raise ReferenceContractError(
-                    f"reference row {key!r} has an empty admissible set")
             keys = set(row)
             if keys != allowed:
                 missing = sorted(allowed - keys)

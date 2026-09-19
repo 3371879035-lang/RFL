@@ -246,6 +246,26 @@ class LearnerSnapshot:
         """True iff every store is at its healthy reference."""
         return not (self._decision or self._process or self._controller or self._q)
 
+    def _require_decision_store_exclusive(self) -> None:
+        r"""A77 §65.4's construction-time precondition, on **every** entry point.
+
+        $$\boxed{P_D^L \neq \varnothing \;\wedge\; Q_D^L \neq \varnothing
+        \;\Longrightarrow\; \texttt{PROTOCOL\_ERROR}}$$
+
+        $D_{patch}$ and $D_Q$ are different architecture treatments and A77 defines **no
+        priority** between them. This guard first lived only in the $Q$ adapter, which
+        made the rule one-sided in a way that mattered: a co-resident snapshot could
+        still be served by ``decision_provider``, which silently ignored $Q_D^L$ — and so
+        *implemented* the undefined $P_D^L > Q_D^L$ rule it was supposed to refuse. Both
+        adapters call this before returning anything.
+        """
+        if self._decision and self._q:
+            raise LearnerStateError(
+                "the persistent state holds both P_D^L and Q_D^L decision overrides; "
+                "D_patch and D_Q are different architectures and A77 §65.4 defines no "
+                "priority between them, so this state cannot drive either read path. "
+                "Refused before the adapter is built, not when an address is visited")
+
     # -- the three adapters the kernel consumes --------------------------- #
     def decision_provider(self, base_provider: CommandProvider) -> CommandProvider:
         r"""$P_D^L >$ ``base_provider``.
@@ -268,7 +288,11 @@ class LearnerSnapshot:
         Shadowing is automatically correct: ``rollout`` resolves
         $do(d_t) > Z_D > \text{command\_provider}$, so a shadowed patch adapter is
         never called and cannot raise early.
+
+        The co-residence guard runs first: a state holding both decision stores is not a
+        state this architecture can serve, and serving it would silently pick a winner.
         """
+        self._require_decision_store_exclusive()
 
         def provider(state: State, control: ControlState) -> Action:
             addr = DecisionAddress(state=state, z=control.z, m=control.m)
@@ -294,7 +318,7 @@ class LearnerSnapshot:
         $$a^L(x) = \arg\max_{a \in A_z(m,s)} Q^{\text{eff}}(x,a)
         \quad\text{(lowest action index on ties)}$$
 
-        Three things are deliberate:
+        Four things are deliberate:
 
         * **no baseline-provider argument.** The healthy referent of this architecture
           *is* $Q_D^\ast$, which the injected view supplies, so the empty store
@@ -303,16 +327,16 @@ class LearnerSnapshot:
           notions of "the factual action" start;
         * **the tie-break is the frozen one**: ascending action order with a strict
           comparison, matching ``dp.py``'s ``max(row, key=lambda a: (row[a], -a))``;
-        * **co-residence is refused here**, before the adapter exists. $D_{patch}$ and
-          $D_Q$ are different architecture treatments and no priority between them is
-          defined (A77 §65.4), so a state holding both is not a state this can serve.
+        * **co-residence is refused through the shared guard**, so this adapter and the
+          patch adapter cannot disagree about which states are servable;
+        * **the reference must be a real** :class:`~rfl_rebuild.learner.reference.
+          QReferenceView`. Duck typing would let a mutable object with the right two
+          methods stand in for the frozen, total, read-only view this contract is built
+          on, which would leave the guarantees as properties of a helper class rather
+          than of the substrate.
         """
-        if self._decision and self._q:
-            raise LearnerStateError(
-                "the persistent state holds both P_D^L and Q_D^L decision overrides; "
-                "D_patch and D_Q are different architectures and A77 §65.4 defines no "
-                "priority between them, so this state cannot drive either read path. "
-                "Refused before the adapter is built, not when an address is visited")
+        _require_q_reference(reference)
+        self._require_decision_store_exclusive()
         overrides = self._q
 
         def provider(state: State, control: ControlState) -> Action:
@@ -483,6 +507,26 @@ class LearnerPersistentState:
             cand_d, cand_p, cand_c, cand_q)
 
 
+def _require_q_reference(reference) -> None:
+    r"""The $Q$ boundary accepts the frozen view and nothing that resembles it.
+
+    A77 §65.4 requires the reference to be **injected**; it does not say "injected or
+    faked". Duck typing would let a mutable object exposing ``row``/``value``/``__contains__``
+    stand in for a view whose guarantees are totality, finiteness and immutability, which
+    would leave those guarantees as properties of a helper class rather than of the
+    substrate. The same reasoning upgraded the law API from a convention to a fail-stop.
+
+    The import is deferred because :mod:`~rfl_rebuild.learner.reference` imports this
+    module for :class:`QAddress` and :class:`ReferenceContractError`.
+    """
+    from rfl_rebuild.learner.reference import QReferenceView
+    if type(reference) is not QReferenceView:
+        raise ReferenceContractError(
+            f"the Q boundary requires a QReferenceView, got {type(reference).__name__}; "
+            "a duck-typed stand-in would carry none of the totality, finiteness or "
+            "read-only guarantees the injected reference is validated for (A77 §65.4)")
+
+
 def _require_q_domain(edits: tuple, q_reference) -> None:
     r"""Domain closure for $Q$ edits (A77 §65.5).
 
@@ -503,6 +547,7 @@ def _require_q_domain(edits: tuple, q_reference) -> None:
             "a Q edit requires the injected reference view: it supplies both the domain "
             "the entry must lie in and the value that canonicalises to a deletion "
             "(A77 §65.4). Nothing in the substrate fetches a reference for itself")
+    _require_q_reference(q_reference)
     for e in q_edits:
         if e.address not in q_reference:
             raise StoreTransactionError(

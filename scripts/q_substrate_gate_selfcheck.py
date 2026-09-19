@@ -90,7 +90,7 @@ MUTATIONS: tuple[tuple[str, str, pathlib.Path, str, str, str], ...] = (
         REFERENCE,
         "            if keys != allowed:",
         "            if False:               # MUTATED: totality unchecked",
-        f"{TESTS}::test_12_an_incomplete_reference_fails_at_construction_not_at_lookup",
+        f"{TESTS}::test_12_a_row_that_is_not_total_on_a_z_is_rejected",
     ),
     (
         "reference_read_only",
@@ -122,6 +122,26 @@ MUTATIONS: tuple[tuple[str, str, pathlib.Path, str, str, str], ...] = (
         f"{TESTS}::test_4_the_empty_store_reproduces_the_reference_policy_on_every_context",
     ),
     (
+        "reference_domain_totality",
+        "a reference is accepted when it covers only the contexts the caller happened to "
+        "supply, so a view missing 13,823 of them -- or carrying an invented one -- is "
+        "legal as long as each row it does carry is internally total",
+        REFERENCE,
+        "        if set(rows) != expected:",
+        "        if False:               # MUTATED: domain totality off",
+        f"{TESTS}::test_12e_a_reference_missing_a_whole_legal_context_is_rejected",
+    ),
+    (
+        "reference_type_boundary",
+        "a duck-typed mutable stand-in is accepted wherever a QReferenceView is required, "
+        "so the totality/finiteness/read-only guarantees become properties of a helper "
+        "class rather than of the substrate",
+        STORE,
+        "    if type(reference) is not QReferenceView:",
+        "    if False:                       # MUTATED: duck typing accepted",
+        f"{TESTS}::test_18_a_duck_typed_fake_reference_is_refused_at_both_boundaries",
+    ),
+    (
         "q_requires_reference",
         "a Q edit is accepted with no injected reference, so the substrate would have "
         "to reach for one itself",
@@ -151,9 +171,18 @@ def _write(path: pathlib.Path, text: str) -> None:
 def _run_node(node: str) -> tuple[int, str]:
     """Run one gate with bytecode writing disabled.
 
-    Not style: the mutated and the original file can land in the same mtime second, and
-    CPython validates a cached ``.pyc`` on ``(mtime, size)``, which once replayed the
-    previous mutation and produced a false ``NOT_A_GATE``.
+    Two harness defects are guarded here, both found by *running* this script rather
+    than by reading it:
+
+    * **bytecode writing** is disabled (``-B`` + ``PYTHONDONTWRITEBYTECODE``) because the
+      mutated and the original file can land in the same mtime second, and CPython
+      validates a cached ``.pyc`` on ``(mtime, size)`` -- which once replayed the previous
+      mutation and produced a false ``NOT_A_GATE``;
+    * **pytest exits 4 and 5 when the node did not run at all**, which is not the same
+      thing as failing. A stale node id was therefore indistinguishable from a dead gate,
+      and an earlier revision of this script reported ``GATE_IS_REAL`` for a test that had
+      been renamed away. Same disease as a check that cannot look, so it gets its own
+      verdict.
     """
     env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
     proc = subprocess.run(
@@ -165,11 +194,42 @@ def _run_node(node: str) -> tuple[int, str]:
     return proc.returncode, (lines[-1] if lines else "")
 
 
+#: pytest exits these when it never collected the requested node (4 = usage error,
+#: 5 = no tests collected). Treating them as "the gate went red" is how a typo earns a
+#: pass.
+_NODE_NOT_FOUND_CODES = (4, 5)
+
+
+def check_nodes(mutations) -> list:
+    """Every mutation's gate must name a test that still exists in its file.
+
+    Found the hard way: renaming a gate left this table pointing at the old name, and
+    because pytest exits non-zero for "not found" the stale entry was reported
+    ``GATE_IS_REAL`` -- a dead gate wearing a pass. The exit-code table catches it at
+    runtime; this catches it before anything runs.
+    """
+    stale = []
+    for key, _hole, _path, _old, _new, node in mutations:
+        path, _, test = node.partition("::")
+        try:
+            src = (ROOT / path).read_text(encoding="utf-8")
+        except OSError:
+            stale.append((key, node, "test file missing"))
+            continue
+        if f"def {test}(" not in src:
+            stale.append((key, node, "no such test function"))
+    return stale
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--json", default=str(ROOT / "experiments" / "v03r"
                                          / "q_substrate_gate_selfcheck.json"))
     args = ap.parse_args()
+
+    stale = check_nodes(MUTATIONS)
+    for key, node, why in stale:
+        print(f"[STALE_NODE_ID     ] {key:32} -> {node} ({why})")
 
     before = {p: _digest(p) for p in (STORE, REFERENCE)}
     results = []
@@ -189,8 +249,13 @@ def main() -> int:
             code, tail = _run_node(node)
         finally:
             _write(path, original)
-        entry.update(exit_code=code, tail=tail,
-                     verdict="GATE_IS_REAL" if code != 0 else "NOT_A_GATE")
+        if code in _NODE_NOT_FOUND_CODES:
+            verdict = "NODE_NOT_FOUND"
+        elif code != 0:
+            verdict = "GATE_IS_REAL"
+        else:
+            verdict = "NOT_A_GATE"
+        entry.update(exit_code=code, tail=tail, verdict=verdict)
         results.append(entry)
         print(f"[{entry['verdict']:18}] {key:32} -> {entry['gate']}")
 
@@ -204,6 +269,8 @@ def main() -> int:
         "n_not_a_gate": sum(1 for r in results if r["verdict"] == "NOT_A_GATE"),
         "n_mutation_not_applied": sum(1 for r in results
                                       if r["verdict"] == "MUTATION_NOT_APPLIED"),
+        "n_node_not_found": sum(1 for r in results if r["verdict"] == "NODE_NOT_FOUND"),
+        "stale_node_ids": [list(s) for s in stale],
         "tree_restored_byte_identical": restored,
         "file_digests": {str(p.relative_to(ROOT)): d for p, d in after.items()},
         "results": results,
@@ -218,7 +285,7 @@ def main() -> int:
     print(f"  gates that went red  : {real}/{len(MUTATIONS)}")
     print(f"  tree restored        : {restored}")
     print(f"  written              : {out.relative_to(ROOT)}")
-    ok = restored and real == len(MUTATIONS)
+    ok = restored and real == len(MUTATIONS) and not stale
     print("  SELF-CHECK " + ("PASS" if ok else "FAIL"))
     return 0 if ok else 1
 

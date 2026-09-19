@@ -279,13 +279,66 @@ def test_11b_a_q_edit_requires_the_injected_reference():
 # 12. an incomplete reference fails stop
 # --------------------------------------------------------------------------- #
 
-def test_12_an_incomplete_reference_fails_at_construction_not_at_lookup():
+def test_12_a_row_that_is_not_total_on_a_z_is_rejected():
+    """Row totality, isolated: the **full** domain is supplied, one row loses one action.
+
+    The domain check runs first and would otherwise fire, so this case has to be built on
+    a complete set of contexts to test what it is named for.
+    """
     key = VIEW.domains[0]
-    row = dict(VIEW.rows[key])
-    row.pop(sorted(row)[0])
+    rows = {k: dict(VIEW.rows[k]) for k in VIEW.domains}
+    rows[key].pop(sorted(rows[key])[0])
     with pytest.raises(ReferenceContractError) as ei:
-        QReferenceView({key: row})
+        QReferenceView(rows)
     assert "not total" in str(ei.value)
+
+
+def test_12e_a_reference_missing_a_whole_legal_context_is_rejected():
+    """Domain totality, the direction row-totality cannot see.
+
+    A77 §65.5 states the domain as an **equality**. A cardinality check would let a
+    missing context and an invented one cancel, so the comparison is against the shared
+    enumerator itself.
+    """
+    rows = {k: dict(VIEW.rows[k]) for k in VIEW.domains}
+    dropped = rows.pop(VIEW.domains[0])
+    with pytest.raises(ReferenceContractError) as ei:
+        QReferenceView(rows)
+    msg = str(ei.value)
+    assert "not exactly the frozen decision domain" in msg
+    assert "1 of 13824 legal contexts missing" in msg, msg
+    assert "0 context(s) outside the domain" in msg, msg
+
+
+def test_12f_a_reference_carrying_an_illegal_context_is_rejected():
+    """An invented context, even when every row it does carry is internally total."""
+    from rfl_rebuild.env.kernel import State as _State
+    goal = _State(x=K.GOAL[0], y=K.GOAL[1], t=0, kappa=0, phi=0)   # never a decision point
+    rows = {k: dict(VIEW.rows[k]) for k in VIEW.domains}
+    rows[(goal, 1, 0)] = dict(VIEW.rows[VIEW.domains[0]])
+    with pytest.raises(ReferenceContractError) as ei:
+        QReferenceView(rows)
+    assert "not exactly the frozen decision domain" in str(ei.value)
+    # m = 2 is outside the automaton-state domain
+    rows2 = {k: dict(VIEW.rows[k]) for k in VIEW.domains}
+    rows2[(VIEW.domains[0][0], VIEW.domains[0][1], 2)] = dict(VIEW.rows[VIEW.domains[0]])
+    with pytest.raises(ReferenceContractError):
+        QReferenceView(rows2)
+
+
+def test_12g_one_complete_row_is_not_a_reference():
+    """The case that motivated domain totality: row-total, and still 1/13824 of a view."""
+    key = VIEW.domains[0]
+    with pytest.raises(ReferenceContractError) as ei:
+        QReferenceView({key: dict(VIEW.rows[key])})
+    assert "legal contexts missing" in str(ei.value)
+
+
+def test_12h_the_reference_domain_is_the_shared_enumerator():
+    """The view's keys and ``env.domain``'s contexts are the same set, exhaustively."""
+    from rfl_rebuild.env.domain import decision_contexts
+    assert set(VIEW.rows) == decision_contexts()
+    assert len(VIEW.rows) == 13824
 
 
 def test_12b_out_of_domain_lookups_are_contract_errors_not_keyerrors():
@@ -301,12 +354,12 @@ def test_12b_out_of_domain_lookups_are_contract_errors_not_keyerrors():
 
 
 def test_12c_a_non_finite_or_boolean_reference_value_is_rejected():
-    key = VIEW.domains[0]
     for bad in (True, float("nan"), float("inf")):
-        row = dict(VIEW.rows[key])
-        row[sorted(row)[0]] = bad
+        rows = {k: dict(VIEW.rows[k]) for k in VIEW.domains}
+        key = VIEW.domains[0]
+        rows[key][sorted(rows[key])[0]] = bad
         with pytest.raises(ReferenceContractError):
-            QReferenceView({key: row})
+            QReferenceView(rows)
 
 
 def test_12d_the_reference_views_are_read_only():
@@ -316,11 +369,56 @@ def test_12d_the_reference_views_are_read_only():
         VIEW.rows[VIEW.domains[0]][0] = 1.0
 
 
+class _FakeReference:
+    """A mutable stand-in exposing exactly the two methods the substrate calls.
+
+    Duck typing would accept it. It carries none of the totality, finiteness or
+    read-only guarantees, and it can be edited between a store write and a read — which
+    is the whole reason the reference is a frozen object rather than a protocol.
+    """
+
+    def __init__(self, view):
+        self._view = view
+        self.edits = 0
+
+    def __contains__(self, address):
+        return address in self._view
+
+    def value(self, address):
+        return self._view.value(address)
+
+    def row(self, state, z, m):
+        return self._view.row(state, z, m)
+
+    def tamper(self):
+        self.edits += 1
+
+
+def test_18_a_duck_typed_fake_reference_is_refused_at_both_boundaries():
+    fake = _FakeReference(VIEW)
+    s = LearnerPersistentState()
+    with pytest.raises(ReferenceContractError) as ei:
+        s.snapshot().q_decision_provider(fake)
+    assert "QReferenceView" in str(ei.value)
+    with pytest.raises(ReferenceContractError) as ei2:
+        s.apply_transaction([Edit(Q, Q0, VIEW.value(Q0) + 1.0)], q_reference=fake)
+    assert "QReferenceView" in str(ei2.value)
+    assert s.healthy, "a refused reference must not have allowed a write"
+    fake.tamper()
+    assert fake.edits == 1, "the fake was mutable the whole time"
+
+
 # --------------------------------------------------------------------------- #
 # 13. co-residence is refused before an adapter exists
 # --------------------------------------------------------------------------- #
 
 def test_13_p_patch_and_q_coresidence_fails_before_adapter_creation():
+    """Both entry points, because the rule is symmetric.
+
+    The first version guarded only the $Q$ adapter, so a co-resident snapshot could still
+    be served by ``decision_provider`` — which ignored $Q_D^L$ and thereby *implemented*
+    the undefined $P_D^L > Q_D^L$ priority the rule exists to refuse.
+    """
     s = LearnerPersistentState()
     write(s, [Edit(DECISION, A, K.UP)])
     write(s, [Edit(Q, Q0, VIEW.value(Q0) + 1.0)])
@@ -329,8 +427,22 @@ def test_13_p_patch_and_q_coresidence_fails_before_adapter_creation():
     with pytest.raises(LearnerStateError) as ei:
         snap.q_decision_provider(VIEW)
     assert "no priority" in str(ei.value)
-    # the patch channel is likewise not a legal way to serve this state
+    with pytest.raises(LearnerStateError) as ei2:
+        snap.decision_provider(lambda st, c: K.WAIT)
+    assert "no priority" in str(ei2.value)
     assert snap.healthy is False
+
+
+def test_13b_the_guard_is_shared_not_duplicated():
+    """One implementation, so the two entry points cannot drift apart again."""
+    import inspect
+    src = inspect.getsource(type(LearnerPersistentState().snapshot()))
+    assert src.count("def _require_decision_store_exclusive(self)") == 1, \
+        "expected exactly one definition"
+    assert src.count("self._require_decision_store_exclusive()") == 2, \
+        "expected one call in each adapter constructor"
+    assert src.count("self._decision and self._q") == 1, \
+        "the condition must exist once, in the shared guard"
 
 
 # --------------------------------------------------------------------------- #

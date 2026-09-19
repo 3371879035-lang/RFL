@@ -262,11 +262,16 @@ def main() -> int:
         bad += 1
         print(f"  ADDED   {key}")
 
+    # Symmetric over the union of the two key sets. Iterating the baseline's keys only
+    # would catch a changed or removed quantity, and would miss a NEW one appearing on
+    # one side -- which is the same one-sidedness as a check that only looks for missing
+    # entries.
     sbad = []
-    for k, v in base["structural"].items():
-        if now["structural"].get(k) != v:
+    for k in sorted(set(base["structural"]) | set(now["structural"])):
+        was, is_ = base["structural"].get(k), now["structural"].get(k)
+        if was != is_:
             sbad.append(k)
-            print(f"  STRUCTURAL CHANGED {k}: {v!r} -> {now['structural'].get(k)!r}")
+            print(f"  STRUCTURAL CHANGED {k}: {was!r} -> {is_!r}")
 
     shapes_ok = not sbad and not missing and not added and len(old) == len(new)
     if bad == 0:

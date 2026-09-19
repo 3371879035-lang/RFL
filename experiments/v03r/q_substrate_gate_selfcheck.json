@@ -1,13 +1,15 @@
 {
   "check": "Q substrate gate mutation self-check",
-  "n_mutations": 9,
-  "n_gate_is_real": 9,
+  "n_mutations": 11,
+  "n_gate_is_real": 11,
   "n_not_a_gate": 0,
   "n_mutation_not_applied": 0,
+  "n_node_not_found": 0,
+  "stale_node_ids": [],
   "tree_restored_byte_identical": true,
   "file_digests": {
-    "src\\rfl_rebuild\\learner\\store.py": "caa1e8fb4ba22a88eed7af2df67500a89d480b0dd214a8420c69122d46424f17",
-    "src\\rfl_rebuild\\learner\\reference.py": "b1f3e206f83fbd5be523f354871b43add51673feab38af010a79ba0fb178d618"
+    "src\\rfl_rebuild\\learner\\store.py": "8b47823b19bd5583fd343d7ffb12b5bbdedae8a0cf3d8d80ff05c31c6a49f9fd",
+    "src\\rfl_rebuild\\learner\\reference.py": "865333b93b544f1c18ebba9f73157061a6775328de3f1b8841613748794ad584"
   },
   "results": [
     {
@@ -53,7 +55,7 @@
     {
       "mutation": "reference_row_totality",
       "hole": "a partial reference row is accepted, so a legal entry has no reference value and the read path meets a KeyError instead of a contract error",
-      "gate": "test_12_an_incomplete_reference_fails_at_construction_not_at_lookup",
+      "gate": "test_12_a_row_that_is_not_total_on_a_z_is_rejected",
       "site": "src\\rfl_rebuild\\learner\\reference.py",
       "matched": 1,
       "exit_code": 1,
@@ -84,6 +86,26 @@
       "mutation": "q_absent_is_zero",
       "hole": "an absent entry reads as 0.0 instead of the reference value, so a sparse store is treated as a table of zeros",
       "gate": "test_4_the_empty_store_reproduces_the_reference_policy_on_every_context",
+      "site": "src\\rfl_rebuild\\learner\\store.py",
+      "matched": 1,
+      "exit_code": 1,
+      "tail": "!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "reference_domain_totality",
+      "hole": "a reference is accepted when it covers only the contexts the caller happened to supply, so a view missing 13,823 of them -- or carrying an invented one -- is legal as long as each row it does carry is internally total",
+      "gate": "test_12e_a_reference_missing_a_whole_legal_context_is_rejected",
+      "site": "src\\rfl_rebuild\\learner\\reference.py",
+      "matched": 1,
+      "exit_code": 1,
+      "tail": "!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "reference_type_boundary",
+      "hole": "a duck-typed mutable stand-in is accepted wherever a QReferenceView is required, so the totality/finiteness/read-only guarantees become properties of a helper class rather than of the substrate",
+      "gate": "test_18_a_duck_typed_fake_reference_is_refused_at_both_boundaries",
       "site": "src\\rfl_rebuild\\learner\\store.py",
       "matched": 1,
       "exit_code": 1,

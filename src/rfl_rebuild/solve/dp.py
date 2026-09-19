@@ -30,6 +30,7 @@ from typing import Iterator, Mapping
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[2]))
 
 from rfl_rebuild.env import kernel as K  # noqa: E402
+from rfl_rebuild.env.domain import decision_states  # noqa: E402
 from rfl_rebuild.env.kernel import (  # noqa: E402
     Action, ControlState, FaultMask, SemanticTape, State,
 )
@@ -41,20 +42,13 @@ _DUMMY_TAPE = SemanticTape(phase=0, error_flag=0, cause_rank=0)
 
 
 def iter_states() -> Iterator[State]:
-    """Every reachable **decision** state: open cell, ``t in [0, H)``, both lanes, every phase.
+    """Every reachable **decision** state.
 
-    ``GOAL`` is excluded: arriving there is terminal, so it is never a decision
-    point, and ``A_{z_1}`` would be empty there (no action strictly decreases a
-    distance of zero).
+    The enumeration itself lives in :mod:`rfl_rebuild.env.domain`, so that the solver and
+    the reference view's domain check use **one** list rather than two that agree today.
+    Re-exported here because the solver has always published it under this name.
     """
-    for x in range(K.N_COLS):
-        for y in range(K.N_ROWS):
-            if (x, y) not in K.OPEN_CELLS or (x, y) == K.GOAL:
-                continue
-            for t in range(K.HORIZON):
-                for kappa in (0, 1):
-                    for phi in K.PHASE_DOMAIN:
-                        yield State(x=x, y=y, t=t, kappa=kappa, phi=phi)
+    return decision_states()
 
 
 @dataclass(frozen=True)

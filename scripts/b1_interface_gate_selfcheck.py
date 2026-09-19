@@ -197,6 +197,33 @@ def _run_node(node: str) -> tuple[int, str]:
     return proc.returncode, (lines[-1] if lines else "")
 
 
+#: pytest exits these when it never collected the requested node (4 = usage error,
+#: 5 = no tests collected). Counting them as "the gate went red" is how a typo earns a
+#: pass, so they get their own verdict AND a pre-flight check.
+_NODE_NOT_FOUND_CODES = (4, 5)
+
+
+def check_nodes(mutations) -> list:
+    """Every mutation's gate must name a test that still exists in its file.
+
+    Found the hard way: renaming a gate left this table pointing at the old name, and
+    because pytest exits non-zero for "not found" the stale entry was reported
+    ``GATE_IS_REAL`` -- a dead gate wearing a pass. The exit-code table catches it at
+    runtime; this catches it before anything runs.
+    """
+    stale = []
+    for key, _hole, _path, _old, _new, node in mutations:
+        path, _, test = node.partition("::")
+        try:
+            src = (ROOT / path).read_text(encoding="utf-8")
+        except OSError:
+            stale.append((key, node, "test file missing"))
+            continue
+        if f"def {test}(" not in src:
+            stale.append((key, node, "no such test function"))
+    return stale
+
+
 def _read(path: pathlib.Path) -> str:
     """Read with **no newline translation**, so a round trip is byte-faithful.
 
@@ -220,6 +247,10 @@ def main() -> int:
                                          / "b1_interface_gate_selfcheck.json"))
     args = ap.parse_args()
 
+    stale = check_nodes(MUTATIONS)
+    for key, node, why in stale:
+        print(f"[STALE_NODE_ID     ] {key:22} -> {node} ({why})")
+
     before = {p: _digest(p) for p in (LAWS, RUNNER, TARGETS, TIER)}
     results = []
     for key, hole, path, old, new, node in MUTATIONS:
@@ -237,8 +268,13 @@ def main() -> int:
             code, tail = _run_node(node)
         finally:
             _write(path, original)
-        entry.update(exit_code=code, tail=tail,
-                     verdict="GATE_IS_REAL" if code != 0 else "NOT_A_GATE")
+        if code in _NODE_NOT_FOUND_CODES:
+            verdict = "NODE_NOT_FOUND"
+        elif code != 0:
+            verdict = "GATE_IS_REAL"
+        else:
+            verdict = "NOT_A_GATE"
+        entry.update(exit_code=code, tail=tail, verdict=verdict)
         results.append(entry)
         print(f"[{entry['verdict']:18}] {key:22} -> {entry['gate']}")
 
@@ -250,6 +286,8 @@ def main() -> int:
         "n_mutations": len(MUTATIONS),
         "n_gate_is_real": real,
         "n_not_a_gate": sum(1 for r in results if r["verdict"] == "NOT_A_GATE"),
+        "n_node_not_found": sum(1 for r in results if r["verdict"] == "NODE_NOT_FOUND"),
+        "stale_node_ids": [list(s) for s in stale],
         "tree_restored_byte_identical": restored,
         "file_digests": {str(p.relative_to(ROOT)): d for p, d in after.items()},
         "results": results,
@@ -264,7 +302,7 @@ def main() -> int:
     print(f"  gates that went red  : {real}/{len(MUTATIONS)}")
     print(f"  tree restored        : {restored}")
     print(f"  written              : {out.relative_to(ROOT)}")
-    ok = restored and real == len(MUTATIONS)
+    ok = restored and real == len(MUTATIONS) and not stale
     print("  SELF-CHECK " + ("PASS" if ok else "FAIL"))
     return 0 if ok else 1
 
