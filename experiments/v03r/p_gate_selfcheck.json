@@ -1,0 +1,113 @@
+{
+  "check": "P / ProcessCommit gate mutation self-check",
+  "n_mutations": 9,
+  "n_gate_is_real": 9,
+  "n_not_a_gate": 0,
+  "n_node_not_found": 0,
+  "n_harness_error": 0,
+  "n_mutation_not_applied": 0,
+  "n_wrong_failure_reason": 0,
+  "tree_restored_byte_identical": true,
+  "stale_node_ids": [],
+  "results": [
+    {
+      "mutation": "p_id_moved_to_l0",
+      "hole": "P_id is declared in the L0 cell -- the placement A76 63.1 rules out, because the factual rows carry z^in-force and never z^proposal, so the key cannot be known there. The run is still refused, so what kills this is the table assertion rather than a raise",
+      "gate": "test_4_p_id_at_l0_is_a_protocol_error_even_with_a_legal_integer_in_hand",
+      "site": "src\\rfl_rebuild\\b1\\laws.py",
+      "matched": 1,
+      "expected_failure_text": "PId.tier is Tier.L1_CORRECTIVE",
+      "exit_code": 1,
+      "tail": "        assert P_SLICE.cells[Tier.L0_FACTUAL] is ILL_TYPED\n        with pytest.raises(ProtocolError):\n            P_SLICE.fields(Tier.L0_FACTUAL)\n        # P_id's declared cell is L1, and the L0 cell has neither a law nor a reference\n>       assert PId.tier is Tier.L1_CORRECTIVE\nE       AssertionError: assert <Tier.L0_FACTUAL: 'L0_factual'> is <Tier.L1_CORRECTIVE: 'L1_corrective'>\nE        +  where <Tier.L0_FACTUAL: 'L0_factual'> = PId.tier\nE        +  and   <Tier.L1_CORRECTIVE: 'L1_corrective'> = Tier.L1_CORRECTIVE\ntests\\rebuild\\test_p_process.py:162: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_p_process.py::test_4_p_id_at_l0_is_a_protocol_error_even_with_a_legal_integer_in_hand\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "proposal_from_the_state_side_channel",
+      "hole": "the runner takes the proposal from the kernel's own C_P^L (snapshot().process_commit_provider()) instead of the delivered assisted input -- the laundering A80 68.5 forbids. On a store already holding a different legal option at the same key the run stops being the restore it exists for",
+      "gate": "test_8_the_proposal_comes_from_the_assisted_input_not_from_the_store",
+      "site": "src\\rfl_rebuild\\b1\\runner.py",
+      "matched": 1,
+      "expected_failure_text": "disagrees with the credited process address",
+      "exit_code": 1,
+      "tail": "                    \"ProcessTarget\")\n            z = require_process_option(rec.z_proposal)\n            if z != a:\n>               raise ProtocolError(\n                    f\"the delivered proposal {z!r} disagrees with the credited process address \"\n                    f\"{a!r}; the address is the resolved z^proposal, so a delivery that differs \"\n                    \"from it would write one option while being credited at another (A80 \u00a768.5)\")\nE               rfl_rebuild.b1.errors.ProtocolError: the delivered proposal 1 disagrees with the credited process address 0; the address is the resolved z^proposal, so a delivery that differs from it would write one option while being credited at another (A80 \u00a768.5)\nsrc\\rfl_rebuild\\b1\\process.py:223: ProtocolError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_p_process.py::test_8_the_proposal_comes_from_the_assisted_input_not_from_the_store\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "exact_int_check_relaxed",
+      "hole": "the exact-integer rule becomes a subclass rule, so True/False (and any int subclass) are credited as the option they are value-equal to -- A78 66.5's folding lesson, reopened",
+      "gate": "test_3_the_option_key_is_exact_integer_first_then_domain_membership",
+      "site": "src\\rfl_rebuild\\b1\\process.py",
+      "matched": 1,
+      "expected_failure_text": "DID NOT RAISE",
+      "exit_code": 1,
+      "tail": "        \u00a766.5's finding, at this store). The two failures must also stay distinguishable: a wrong type\n        is a different defect from an out-of-domain integer.\n        \"\"\"\n        assert require_process_option(Z0) == Z0\n        for alias in (True, False, 1.0, 0.0, float(Z0), bool(Z0)):\n>           with pytest.raises(ProtocolError) as ei:\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE           Failed: DID NOT RAISE <class 'rfl_rebuild.b1.errors.ProtocolError'>\ntests\\rebuild\\test_p_process.py:115: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_p_process.py::test_3_the_option_key_is_exact_integer_first_then_domain_membership\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "option_domain_check_removed",
+      "hole": "an integer outside option_ids() becomes a legal process address -- the `P_override[99]` defect class the store already had to be closed against",
+      "gate": "test_3_the_option_key_is_exact_integer_first_then_domain_membership",
+      "site": "src\\rfl_rebuild\\b1\\process.py",
+      "matched": 1,
+      "expected_failure_text": "DID NOT RAISE",
+      "exit_code": 1,
+      "tail": "                require_process_option(alias)\n            assert \"not int\" in str(ei.value), alias\n            with pytest.raises(ProtocolError):\n                resolve_process_addresses((\"ProcessCommit\",), AssistedInput(alias))\n        for outside in (-1, max(OPTIONS) + 1, 99):\n>           with pytest.raises(ProtocolError) as ei:\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE           Failed: DID NOT RAISE <class 'rfl_rebuild.b1.errors.ProtocolError'>\ntests\\rebuild\\test_p_process.py:121: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_p_process.py::test_3_the_option_key_is_exact_integer_first_then_domain_membership\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "assisted_input_duck_typed",
+      "hole": "any object carrying z_proposal is accepted as the assisted input, so the cell takes its input from whatever looks like one, including code under test",
+      "gate": "test_2_the_assisted_input_is_nominal",
+      "site": "src\\rfl_rebuild\\b1\\process.py",
+      "matched": 1,
+      "expected_failure_text": "DID NOT RAISE",
+      "exit_code": 1,
+      "tail": "        forbids, arriving through the type system rather than through a side channel.\n        \"\"\"\n        class StandIn:\n            z_proposal = Z0\n        for bad in (StandIn(), None, Z0, \"ProcessCommit\", (Z0,)):\n>           with pytest.raises(ProtocolError) as ei:\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE           Failed: DID NOT RAISE <class 'rfl_rebuild.b1.errors.ProtocolError'>\ntests\\rebuild\\test_p_process.py:99: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_p_process.py::test_2_the_assisted_input_is_nominal\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "p_alias_reimplemented",
+      "hole": "the L3 class defines its own plan, so the alias is two implementations that agree rather than one shared operation",
+      "gate": "test_10_the_alias_is_one_implementation_and_the_same_transformation",
+      "site": "src\\rfl_rebuild\\b1\\laws.py",
+      "matched": 1,
+      "expected_failure_text": "PLocalOracleRestore.plan is PId.plan",
+      "exit_code": 1,
+      "tail": "        would be a different object wearing the same name (A77 \u00a765.2's alias precedent). And on a\n        **dirty** pre-state the two are equal as *state transformations*, not merely both legal:\n        identical post-stores from identical pre-states.\n        \"\"\"\n>       assert PLocalOracleRestore.plan is PId.plan\nE       assert <function PLocalOracleRestore.plan at 0x<ADDR>> is <function PId.plan at 0x<ADDR>>\nE        +  where <function PLocalOracleRestore.plan at 0x<ADDR>> = PLocalOracleRestore.plan\nE        +  and   <function PId.plan at 0x<ADDR>> = PId.plan\ntests\\rebuild\\test_p_process.py:324: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_p_process.py::test_10_the_alias_is_one_implementation_and_the_same_transformation\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "envelope_superset_accepted",
+      "hole": "the L1 envelope need only contain the credited addresses, so it may carry an entry for an address that was never credited",
+      "gate": "test_6_the_envelope_must_be_exactly_the_credited_population_and_must_agree",
+      "site": "src\\rfl_rebuild\\b1\\process.py",
+      "matched": 1,
+      "expected_failure_text": "DID NOT RAISE",
+      "exit_code": 1,
+      "tail": "        addresses = (Z0,)\n        legal = build_process_envelope(addresses, AssistedInput(Z0))\n        with pytest.raises(ProtocolError) as ei:\n            validate_process_envelope(addresses, {})\n        assert \"delivery must be exactly\" in str(ei.value)\n>       with pytest.raises(ProtocolError) as ei:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.b1.errors.ProtocolError'>\ntests\\rebuild\\test_p_process.py:235: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_p_process.py::test_6_the_envelope_must_be_exactly_the_credited_population_and_must_agree\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "delivery_agreement_removed",
+      "hole": "the delivered proposal need not equal the credited address, so the cell may write one option while being credited at another",
+      "gate": "test_6_the_envelope_must_be_exactly_the_credited_population_and_must_agree",
+      "site": "src\\rfl_rebuild\\b1\\process.py",
+      "matched": 1,
+      "expected_failure_text": "DID NOT RAISE",
+      "exit_code": 1,
+      "tail": "            validate_process_envelope(addresses, {})\n        assert \"delivery must be exactly\" in str(ei.value)\n        with pytest.raises(ProtocolError) as ei:\n            validate_process_envelope(addresses, {Z0: ProcessTarget(Z0), Z1: ProcessTarget(Z1)})\n        assert \"delivery must be exactly\" in str(ei.value)\n>       with pytest.raises(ProtocolError) as ei:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.b1.errors.ProtocolError'>\ntests\\rebuild\\test_p_process.py:238: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_p_process.py::test_6_the_envelope_must_be_exactly_the_credited_population_and_must_agree\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "credited_unit_check_removed",
+      "hole": "another architecture's credit unit is accepted by rho_P, so a foreign credit reaches the process store",
+      "gate": "test_1_the_credit_unit_is_the_static_process_family",
+      "site": "src\\rfl_rebuild\\b1\\process.py",
+      "matched": 1,
+      "expected_failure_text": "DID NOT RAISE",
+      "exit_code": 1,
+      "tail": "        process store through $\\rho_P$.\n        \"\"\"\n        assert resolve_process_addresses((\"ProcessCommit\",), AssistedInput(Z0)) == (Z0,)\n        for foreign in (\"Decision_0\", \"ControllerSite_0_2_3_1\", \"Strategy\", \"ExternalPlant\",\n                        \"Unknown/NoWrite\", \"processcommit\", \"ProcessCommit_0\", \"\"):\n>           with pytest.raises(ProtocolError) as ei:\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE           Failed: DID NOT RAISE <class 'rfl_rebuild.b1.errors.ProtocolError'>\ntests\\rebuild\\test_p_process.py:67: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_p_process.py::test_1_the_credit_unit_is_the_static_process_family\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    }
+  ]
+}

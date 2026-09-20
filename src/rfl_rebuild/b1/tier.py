@@ -55,6 +55,7 @@ from rfl_rebuild.b1.addressing import AddressDomain
 from rfl_rebuild.b1.plan import dq_owner
 from rfl_rebuild.learner.store import (
     CONTROLLER,
+    PROCESS,
     QAddress,
     DECISION,
     Q,
@@ -508,6 +509,91 @@ X_SLICE = SliceDescriptor(
     },
     extract={"a_cmd": lambda record: record.a_cmd},
     implemented_tiers=frozenset({Tier.L0_FACTUAL, Tier.L3_ORACLE}),
+)
+
+
+def _process_view(state: LearnerPersistentState) -> dict:
+    return dict(state.process_overrides)
+
+
+def _process_credited(value) -> None:
+    r"""$P$'s credited-address rule: a **true integer** option id, in that order.
+
+    $$\boxed{\text{exact } int \rightarrow \text{domain membership}}$$
+
+    The order is the whole rule. `True == 1` and `1.0 == 1` with equal hashes, so a membership
+    test alone would credit a boolean or a float as the option it resembles — and the process
+    store persists option ids, so the alias would reach the store as a legal-looking key (A78
+    §66.5's finding, at this architecture's key).
+    """
+    if not is_true_int(value):
+        raise ProtocolError(
+            f"credited process address {value!r} has type {type(value).__name__}, not int; a "
+            "process address is an option id, and Python folds True, 1.0 and 1 into one key")
+    if value not in K.option_ids():
+        raise ProtocolError(
+            f"credited process address {value!r} is not an option id; the process store is keyed "
+            f"by z in {K.option_ids()!r}")
+
+
+def _process_store(value) -> None:
+    if not is_true_int(value) or value not in K.option_ids():
+        raise ProtocolError(
+            f"the {PROCESS} store is keyed by an option id, got {value!r} of type "
+            f"{type(value).__name__}")
+
+
+def _process_canonical(value) -> str:
+    r"""$P$'s canonical receipt: the option key, and injective on the legal domain.
+
+    The type is guaranteed before this is reached (`require_credited` on the credited side, the
+    store's own boundary on the store side), so `z=1` cannot be produced by `True`: a canonical
+    form that folded the two would give a bool and an int one receipt identity.
+    """
+    return f"z={value}"
+
+
+#: The $P$ address domain: the resolved proposal **is** the store key, `owner_P` is the identity,
+#: and the credited rule is exact-integer-first because the process key is an option id.
+P_DOMAIN = AddressDomain(
+    tag="P",
+    require_credited=_process_credited,
+    require_store=_process_store,
+    owner=lambda z: z,
+    canonical=_process_canonical,
+)
+
+
+#: The $P$ row of A76 §63.9: $L_1$ delivers $\{z^{\text{proposal}}\}$, $L_3$ delivers
+#: $\varnothing$, and $L_0$/$L_2$ are **ill-typed** — A76 writes "—" in both, and the reason is
+#: structural rather than a choice of placement: the factual rows carry $z^{\text{in-force}}$ and
+#: never $z^{\text{proposal}}$, so the key cannot be computed from $L_0$ information at all
+#: (A76 §63.1). That is what makes
+#:
+#: $$\boxed{P_{id} \in L_1, \qquad P_{id} \notin L_0}$$
+#:
+#: a fact about the information contract rather than a preference — and why the runner's refusal
+#: of $P_{id}$ at $L_0$ is mechanical (`_law_contract` asks this table) instead of a convention
+#: someone has to remember.
+#:
+#: `scalar=False`: the process store holds option **ids**, i.e. choices, not values, so the
+#: ledger's scalar accounting (A76 §63.4's value store) does not apply here — the same reading the
+#: controller store takes, and the reason the identity write's canonicalisation to a deletion is
+#: what makes $L_3$ the same operation as $L_1$.
+P_SLICE = SliceDescriptor(
+    name="P",
+    store=PROCESS,
+    scalar=False,
+    domain=P_DOMAIN,
+    view=_process_view,
+    cells={
+        Tier.L0_FACTUAL: ILL_TYPED,
+        Tier.L1_CORRECTIVE: frozenset({"z_proposal"}),
+        Tier.L2_COUNTERFACTUAL: ILL_TYPED,
+        Tier.L3_ORACLE: frozenset(),
+    },
+    extract={"z_proposal": lambda record: record.z_proposal},
+    implemented_tiers=frozenset({Tier.L1_CORRECTIVE, Tier.L3_ORACLE}),
 )
 
 

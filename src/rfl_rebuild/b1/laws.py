@@ -47,6 +47,7 @@ from rfl_rebuild.b1.tier import Tier
 from rfl_rebuild.learner.store import (
     CONTROLLER,
     DECISION,
+    PROCESS,
     Q,
     DecisionAddress,
     Edit,
@@ -61,6 +62,9 @@ __all__ = [
     "XId",
     "XLocalOracleRestore",
     "X_LAWS",
+    "PId",
+    "PLocalOracleRestore",
+    "P_LAWS",
     "DQLocalOracleRestore",
     "DeleteFactualPatch",
     "DualReturnWrite",
@@ -510,6 +514,73 @@ X_LAWS = (
     XId,
     NoWriteRef(Tier.L3_ORACLE),
     XLocalOracleRestore,
+)
+
+
+class PId(_Law):
+    r"""$P\times L_1$ — write the assisted proposal into the process store.
+
+    $$\boxed{P_{id}:\ \texttt{Edit}(\texttt{PROCESS}, z^{\text{proposal}}, z^{\text{proposal}})}$$
+
+    $P_{id}$ is at $L_1$ and **not** at $L_0$, and that is a fact about the information contract
+    rather than a placement choice: the factual rows carry $z^{\text{in-force}}$ and never
+    $z^{\text{proposal}}$, so the key cannot be computed from $L_0$ information (A76 §63.1, §63.9).
+    The runner refuses $P_{id}$ at $L_0$ mechanically — the cell is ill-typed there, so the refusal
+    comes from the frozen table instead of from a convention someone has to remember.
+
+    The operation depends only on the **resolved address**: the cell *delivers*
+    $\{z^{\text{proposal}}\}$ (A80 §68.5) and the runner checks that delivery against the address,
+    but the plan reads the address, which is why one function serves both $L_1$ and the $L_3$
+    alias whose delivery is empty. A healthy store has no override at this option, so the identity
+    assignment canonicalises to a deletion — the write *is* the restore.
+    """
+
+    name = "P_id"
+    tier = Tier.L1_CORRECTIVE
+
+    def plan(self, addresses, targets) -> LawPlan:
+        r"""The identity assignment, read from the **resolved address**.
+
+        $$\boxed{\texttt{Edit}(\texttt{PROCESS}, z, z)}, \qquad z = \rho_P(\texttt{ProcessCommit},
+        z^{\text{proposal}})$$
+
+        Reading the address rather than the envelope is what makes the $L_3$ alias a real alias:
+        with $\text{fields}(P, L_3) = \varnothing$ there is no envelope at all, and a plan that
+        read `targets[address]` could not run there.
+        """
+        return LawPlan(self.name, tuple(
+            AddressPlan(z, (Edit(PROCESS, z, z),))
+            for z in addresses))
+
+
+class PLocalOracleRestore(PId):
+    r"""$P\times L_3$ — the locality-matched restore, an **alias** of `P_id`.
+
+    Implemented by inheritance, not by a second `plan`: $L_3$'s referent on this architecture is
+    "no override", and the identity assignment canonicalises to a deletion, so the $L_1$ operation
+    *is* the restore. The gate asserts `PLocalOracleRestore.plan is PId.plan`, because a second
+    implementation that behaved identically would be a different object wearing the same name —
+    the same rule A77 §65.2's alias precedent put on the other two architectures.
+
+    It uses the **same upstream** $\rho_P$ resolution while its own delivery is $\varnothing$: the
+    address is cell-construction output, and $L_3$ needs no content to delete an override.
+
+    It is an **alias, not a treatment**: $\lvert\text{independent treatments}\rvert(P) = 1$.
+    """
+
+    name = "LocalOracleRestore"
+    alias_of = "P_id"
+    tier = Tier.L3_ORACLE
+
+
+#: The $P$ registry: one treatment and its $L_3$ alias, with a same-tier reference per cell that
+#: has a substantive treatment (A77 §65.3). $L_0$/$L_2$ are ill-typed on this row (A76 §63.9), so
+#: they get neither a law nor a reference — and that is precisely what refuses $P_{id}$ at $L_0$.
+P_LAWS = (
+    NoWriteRef(Tier.L1_CORRECTIVE),
+    PId,
+    NoWriteRef(Tier.L3_ORACLE),
+    PLocalOracleRestore,
 )
 
 

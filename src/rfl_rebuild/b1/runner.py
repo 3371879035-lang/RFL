@@ -78,9 +78,14 @@ from rfl_rebuild.b1.controller import (
     require_admissible_sites,
     validate_controller_envelope,
 )
+from rfl_rebuild.b1.process import (
+    build_process_envelope,
+    validate_process_envelope,
+)
 from rfl_rebuild.b1.tier import (
     DQ_SLICE,
     PATCH_SLICE,
+    P_SLICE,
     X_SLICE,
     SliceDescriptor,
     Tier,
@@ -99,6 +104,7 @@ __all__ = [
     "B1Result",
     "run_dq_law",
     "run_controller_law",
+    "run_process_law",
     "run_factual_return_law",
     "run_row_restore_law",
     "run_patch_law",
@@ -673,6 +679,43 @@ def run_row_restore_law(law, pre_state: LearnerPersistentState,
             "only — a law whose cell declares fields needs its envelope built, and this "
             "entry point has nowhere to take one from")
     return run_dq_law(law, pre_state, addresses, None, q_reference, spec=spec)
+
+
+def run_process_law(law, pre_state: LearnerPersistentState, addresses: Sequence,
+                    assisted, spec: SliceDescriptor = P_SLICE) -> B1Result:
+    r"""The $P$ entry point: the cell's own envelope, built from the **assisted input**.
+
+    $$\boxed{\text{credit unit} + \text{allowed assisted input} \xrightarrow{\rho_P}
+    \text{resolved address } z \rightarrow \text{envelope } \{z^{\text{proposal}}\} \rightarrow
+    \text{arm planning}}$$
+
+    The resolution itself happens upstream, in cell construction (``resolve_process_addresses``),
+    so that the address-plan and the receipt take the same resolved true-integer option key as
+    their locality unit. What this function does is the part the runner owns: at $L_1$ it builds
+    the cell's delivery from the assisted input **and from nothing else**, and checks that delivery
+    against the credited address before any arm plans.
+
+    $$\boxed{\text{address resolution} \neq \text{information delivered to the law}}$$
+
+    The two are separate on purpose. The caller having a legal integer is not evidence that the
+    cell was handed a proposal, so the fact that some state or kernel object can *reach* one does
+    not license the path: a run that read the proposal from the store would be laundering the
+    assisted input (A80 §68.5), and the cell not seeing the delivery is not evidence that the cell
+    was not handed it. $L_3$ delivers $\varnothing$ while reusing the same upstream resolution,
+    which is why the alias is one plan function rather than a second delete-law.
+    """
+    law, tier = _law_contract(law, spec)
+    described = spec.fields(tier)
+    if described:
+        envelope = build_process_envelope(addresses, assisted)
+        validate_process_envelope(addresses, envelope)
+    elif tier is Tier.L3_ORACLE:
+        envelope = None
+    else:                                                  # pragma: no cover - ill-typed cells
+        raise ProtocolError(
+            f"{spec.name} at tier {tier.name} declares no field and is not $L_3$; a law may not "
+            "be declared in it (A76 §63.9)")
+    return _run(law, tier, pre_state, addresses, envelope, spec)
 
 
 def run_controller_law(law, pre_state: LearnerPersistentState,
