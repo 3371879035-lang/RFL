@@ -1,7 +1,7 @@
 {
   "check": "B2-1 view/builder gate mutation self-check",
-  "n_mutations": 32,
-  "n_gate_is_real": 32,
+  "n_mutations": 38,
+  "n_gate_is_real": 38,
   "n_not_a_gate": 0,
   "n_node_not_found": 0,
   "n_harness_error": 0,
@@ -150,7 +150,7 @@
       "matched": 1,
       "expected_failure_text": "not on the allowlist",
       "exit_code": 1,
-      "tail": "                            f\"{path}: imports {alias.name!r}, which is not on the allowlist \"\n                            f\"{IMPORT_ALLOWLIST!r}\")\n            elif isinstance(node, ast.ImportFrom):\n                module = node.module or \"\"\n                if module not in IMPORT_ALLOWLIST:\n>                   raise ProtocolError(\n                        f\"{path}: imports from {module!r}, which is not on the allowlist \"\nE                       rfl_rebuild.b1.errors.ProtocolError: D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\src\\rfl_rebuild\\b2\\view.py: imports from 'rfl_rebuild.method', which is not on the allowlist ('__future__', 'abc', 'ast', 'pathlib', 'dataclasses', 'enum', 'types', 'typing', 'rfl_rebuild.b1.errors', 'rfl_rebuild.learner.store', 'rfl_rebuild.env.kernel', 'rfl_rebuild.b2.producer', 'rfl_rebuild.b2.view', 'rfl_rebuild.b2.utility', 'rfl_rebuild.b2.environment', 'rfl_rebuild.b2.collateral', 'rfl_rebuild.b2.retention')\nsrc\\rfl_rebuild\\b2\\view.py:446: ProtocolError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_view.py::test_7_the_ast_allowlist_layer_covers_the_chain_and_is_not_vacuous\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "                            f\"{path}: imports {alias.name!r}, which is not on the allowlist \"\n                            f\"{IMPORT_ALLOWLIST!r}\")\n            elif isinstance(node, ast.ImportFrom):\n                module = node.module or \"\"\n                if module not in IMPORT_ALLOWLIST:\n>                   raise ProtocolError(\n                        f\"{path}: imports from {module!r}, which is not on the allowlist \"\nE                       rfl_rebuild.b1.errors.ProtocolError: D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\src\\rfl_rebuild\\b2\\view.py: imports from 'rfl_rebuild.method', which is not on the allowlist ('__future__', 'abc', 'ast', 'pathlib', 'dataclasses', 'enum', 'types', 'typing', 'rfl_rebuild.b1.errors', 'rfl_rebuild.learner.store', 'rfl_rebuild.env.kernel', 'rfl_rebuild.b2.producer', 'rfl_rebuild.b2.view', 'rfl_rebuild.b2.utility', 'rfl_rebuild.b2.environment', 'rfl_rebuild.b2.collateral', 'rfl_rebuild.b2.retention', 'rfl_rebuild.b2.runner', 'rfl_rebuild.b1.contract', 'rfl_rebuild.b1.laws', 'rfl_rebuild.b1.runner', 'rfl_rebuild.b1.tier', 'rfl_rebuild.env.domain')\nsrc\\rfl_rebuild\\b2\\view.py:448: ProtocolError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_view.py::test_7_the_ast_allowlist_layer_covers_the_chain_and_is_not_vacuous\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -161,7 +161,7 @@
       "matched": 1,
       "expected_failure_text": "forbidden dependency set",
       "exit_code": 1,
-      "tail": "                    raise ProtocolError(\n                        f\"{path}: imports from {module!r}, which is not on the allowlist \"\n                        f\"{IMPORT_ALLOWLIST!r}\")\n            elif isinstance(node, ast.Name) and isinstance(node.ctx, ast.Load):\n                if node.id in forbidden:\n>                   raise ProtocolError(\n                        f\"{path}: reads {node.id!r}, which is in the forbidden dependency set; the \"\nE                       rfl_rebuild.b1.errors.ProtocolError: D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\src\\rfl_rebuild\\b2\\producer.py: reads 'Gamma_P_star', which is in the forbidden dependency set; the view's constructor must not reach it even through a local alias\nsrc\\rfl_rebuild\\b2\\view.py:450: ProtocolError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_view.py::test_7_the_ast_allowlist_layer_covers_the_chain_and_is_not_vacuous\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "                    raise ProtocolError(\n                        f\"{path}: imports from {module!r}, which is not on the allowlist \"\n                        f\"{IMPORT_ALLOWLIST!r}\")\n            elif isinstance(node, ast.Name) and isinstance(node.ctx, ast.Load):\n                if node.id in forbidden:\n>                   raise ProtocolError(\n                        f\"{path}: reads {node.id!r}, which is in the forbidden dependency set; the \"\nE                       rfl_rebuild.b1.errors.ProtocolError: D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\src\\rfl_rebuild\\b2\\producer.py: reads 'Gamma_P_star', which is in the forbidden dependency set; the view's constructor must not reach it even through a local alias\nsrc\\rfl_rebuild\\b2\\view.py:452: ProtocolError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_view.py::test_7_the_ast_allowlist_layer_covers_the_chain_and_is_not_vacuous\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -172,7 +172,7 @@
       "matched": 1,
       "expected_failure_text": "test-only fixture module",
       "exit_code": 1,
-      "tail": "        leak_fixture = tmp_path / \"leak_fixture.py\"\n        leak_fixture.write_text(\"from rfl_rebuild.b2 import testing\\n\", encoding=\"utf-8\")\n        with pytest.raises(ProtocolError) as ei:\n            assert_modules_are_closed([leak_fixture])\n>       assert \"test-only fixture module\" in str(ei.value)\nE       assert 'test-only fixture module' in \"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-274\\\\test_7_the_ast_allowlist_layer0\\\\leak_fixture.py...iew', 'rfl_rebuild.b2.utility', 'rfl_rebuild.b2.environment', 'rfl_rebuild.b2.collateral', 'rfl_rebuild.b2.retention')\"\nE        +  where \"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-274\\\\test_7_the_ast_allowlist_layer0\\\\leak_fixture.py...iew', 'rfl_rebuild.b2.utility', 'rfl_rebuild.b2.environment', 'rfl_rebuild.b2.collateral', 'rfl_rebuild.b2.retention')\" = str(ProtocolError(\"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-274\\\\test_7_the_ast_allowlist_layer0\\\\l...ew', 'rfl_rebuild.b2.utility', 'rfl_rebuild.b2.environment', 'rfl_rebuild.b2.collateral', 'rfl_rebuild.b2.retention')\"))\nE        +    where ProtocolError(\"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-274\\\\test_7_the_ast_allowlist_layer0\\\\l...ew', 'rfl_rebuild.b2.utility', 'rfl_rebuild.b2.environment', 'rfl_rebuild.b2.collateral', 'rfl_rebuild.b2.retention')\") = <ExceptionInfo ProtocolError(\"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-274\\\\test_7_the_ast_allo..._rebuild.b2.utility', 'rfl_rebuild.b2.environment', 'rfl_rebuild.b2.collateral', 'rfl_rebuild.b2.retention')\") tblen=3>.value\ntests\\rebuild\\test_b2_view.py:291: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_view.py::test_7_the_ast_allowlist_layer_covers_the_chain_and_is_not_vacuous\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "        leak_fixture = tmp_path / \"leak_fixture.py\"\n        leak_fixture.write_text(\"from rfl_rebuild.b2 import testing\\n\", encoding=\"utf-8\")\n        with pytest.raises(ProtocolError) as ei:\n            assert_modules_are_closed([leak_fixture])\n>       assert \"test-only fixture module\" in str(ei.value)\nE       assert 'test-only fixture module' in \"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-300\\\\test_7_the_ast_allowlist_layer0\\\\leak_fixture.py...rebuild.b1.contract', 'rfl_rebuild.b1.laws', 'rfl_rebuild.b1.runner', 'rfl_rebuild.b1.tier', 'rfl_rebuild.env.domain')\"\nE        +  where \"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-300\\\\test_7_the_ast_allowlist_layer0\\\\leak_fixture.py...rebuild.b1.contract', 'rfl_rebuild.b1.laws', 'rfl_rebuild.b1.runner', 'rfl_rebuild.b1.tier', 'rfl_rebuild.env.domain')\" = str(ProtocolError(\"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-300\\\\test_7_the_ast_allowlist_layer0\\\\l...ebuild.b1.contract', 'rfl_rebuild.b1.laws', 'rfl_rebuild.b1.runner', 'rfl_rebuild.b1.tier', 'rfl_rebuild.env.domain')\"))\nE        +    where ProtocolError(\"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-300\\\\test_7_the_ast_allowlist_layer0\\\\l...ebuild.b1.contract', 'rfl_rebuild.b1.laws', 'rfl_rebuild.b1.runner', 'rfl_rebuild.b1.tier', 'rfl_rebuild.env.domain')\") = <ExceptionInfo ProtocolError(\"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-300\\\\test_7_the_ast_allo....contract', 'rfl_rebuild.b1.laws', 'rfl_rebuild.b1.runner', 'rfl_rebuild.b1.tier', 'rfl_rebuild.env.domain')\") tblen=3>.value\ntests\\rebuild\\test_b2_view.py:291: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_view.py::test_7_the_ast_allowlist_layer_covers_the_chain_and_is_not_vacuous\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -183,7 +183,7 @@
       "matched": 1,
       "expected_failure_text": "mint capability",
       "exit_code": 1,
-      "tail": "                            if alias.name in CAPABILITY_OWNERS:\n>                               raise ProtocolError(\n                                    f\"{path}: imports the mint capability {alias.name!r} from \"\n                                    f\"{node.module!r}; {CAPABILITY_OWNERS[alias.name]!r} is its only \"\n                                    \"holder inside the audited production graph, and an allowlisted \"\n                                    \"import is still an escalation when the name it brings is the \"\n                                    \"ability to mint evidence\")\nE                               rfl_rebuild.b1.errors.ProtocolError: D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\src\\rfl_rebuild\\b2\\view.py: imports the mint capability '_mint_rollout' from 'rfl_rebuild.b2.producer'; 'producer.py' is its only holder inside the audited production graph, and an allowlisted import is still an escalation when the name it brings is the ability to mint evidence\nsrc\\rfl_rebuild\\b2\\view.py:395: ProtocolError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_view.py::test_10_the_mint_capability_has_exactly_one_holder_in_the_production_graph\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "                            if alias.name in CAPABILITY_OWNERS:\n>                               raise ProtocolError(\n                                    f\"{path}: imports the mint capability {alias.name!r} from \"\n                                    f\"{node.module!r}; {CAPABILITY_OWNERS[alias.name]!r} is its only \"\n                                    \"holder inside the audited production graph, and an allowlisted \"\n                                    \"import is still an escalation when the name it brings is the \"\n                                    \"ability to mint evidence\")\nE                               rfl_rebuild.b1.errors.ProtocolError: D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\src\\rfl_rebuild\\b2\\view.py: imports the mint capability '_mint_rollout' from 'rfl_rebuild.b2.producer'; 'producer.py' is its only holder inside the audited production graph, and an allowlisted import is still an escalation when the name it brings is the ability to mint evidence\nsrc\\rfl_rebuild\\b2\\view.py:397: ProtocolError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_view.py::test_10_the_mint_capability_has_exactly_one_holder_in_the_production_graph\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -337,7 +337,7 @@
       "matched": 1,
       "expected_failure_text": "forbidden dependency set",
       "exit_code": 1,
-      "tail": "                    raise ProtocolError(\n                        f\"{path}: imports from {module!r}, which is not on the allowlist \"\n                        f\"{IMPORT_ALLOWLIST!r}\")\n            elif isinstance(node, ast.Name) and isinstance(node.ctx, ast.Load):\n                if node.id in forbidden:\n>                   raise ProtocolError(\n                        f\"{path}: reads {node.id!r}, which is in the forbidden dependency set; the \"\nE                       rfl_rebuild.b1.errors.ProtocolError: D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\src\\rfl_rebuild\\b2\\utility.py: reads 'Gamma_P_star', which is in the forbidden dependency set; the view's constructor must not reach it even through a local alias\nsrc\\rfl_rebuild\\b2\\view.py:450: ProtocolError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_candidates.py::test_10_the_machinery_is_in_the_audited_production_chain\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "                    raise ProtocolError(\n                        f\"{path}: imports from {module!r}, which is not on the allowlist \"\n                        f\"{IMPORT_ALLOWLIST!r}\")\n            elif isinstance(node, ast.Name) and isinstance(node.ctx, ast.Load):\n                if node.id in forbidden:\n>                   raise ProtocolError(\n                        f\"{path}: reads {node.id!r}, which is in the forbidden dependency set; the \"\nE                       rfl_rebuild.b1.errors.ProtocolError: D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\src\\rfl_rebuild\\b2\\utility.py: reads 'Gamma_P_star', which is in the forbidden dependency set; the view's constructor must not reach it even through a local alias\nsrc\\rfl_rebuild\\b2\\view.py:452: ProtocolError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_candidates.py::test_10_the_machinery_is_in_the_audited_production_chain\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -360,6 +360,72 @@
       "expected_failure_text": "inspect.signature(select_construction).parameters",
       "exit_code": 1,
       "tail": "        told to name one, rather than handed a default that would become the decision by inaction.\"\"\"\n        # the caller must NAME a candidate: there is no sentinel, so \"no choice\" is a signature fact\n>       assert inspect.signature(select_construction).parameters[\"name\"].default \\\n            is inspect.Parameter.empty\nE       assert 'visited_complement' is <class 'inspect._empty'>\nE        +  where 'visited_complement' = <Parameter \"name: 'str' = 'visited_complement'\">.default\nE        +  and   <class 'inspect._empty'> = <class 'inspect.Parameter'>.empty\nE        +    where <class 'inspect.Parameter'> = inspect.Parameter\ntests\\rebuild\\test_b2_candidates.py:78: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_candidates.py::test_2_no_construction_is_selected_by_default\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "runner_defaults_the_form",
+      "hole": "the runner substitutes a default Retention form, so the confirmatory primary is chosen by the instrument rather than by the development protocol",
+      "gate": "test_7_the_candidate_names_and_horizons_are_required_and_never_defaulted",
+      "site": "src\\rfl_rebuild\\b2\\runner.py",
+      "matched": 1,
+      "expected_failure_text": "DID NOT RAISE",
+      "exit_code": 1,
+      "tail": "                        \"retention_params\": {\"H\": 5}},\n                       {\"collateral_construction\": \"visited_complement\",\n                        \"retention_form\": \"RetentionAtH\", \"retention_params\": {}},\n                       {\"collateral_construction\": \"visited_complement\",\n                        \"retention_form\": \"RetentionFraction\", \"retention_params\": {\"H\": 5}}):\n>           with pytest.raises(ProtocolError):\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE           Failed: DID NOT RAISE <class 'rfl_rebuild.b1.errors.ProtocolError'>\ntests\\rebuild\\test_b2_runner.py:191: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_runner.py::test_7_the_candidate_names_and_horizons_are_required_and_never_defaulted\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "runner_defaults_the_construction",
+      "hole": "the runner substitutes a default unaffected-set construction, so a candidate A79 67.4 leaves to measurement properties is chosen by inaction",
+      "gate": "test_7_the_candidate_names_and_horizons_are_required_and_never_defaulted",
+      "site": "src\\rfl_rebuild\\b2\\runner.py",
+      "matched": 1,
+      "expected_failure_text": "DID NOT RAISE",
+      "exit_code": 1,
+      "tail": "                        \"retention_params\": {\"H\": 5}},\n                       {\"collateral_construction\": \"visited_complement\",\n                        \"retention_form\": \"RetentionAtH\", \"retention_params\": {}},\n                       {\"collateral_construction\": \"visited_complement\",\n                        \"retention_form\": \"RetentionFraction\", \"retention_params\": {\"H\": 5}}):\n>           with pytest.raises(ProtocolError):\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE           Failed: DID NOT RAISE <class 'rfl_rebuild.b1.errors.ProtocolError'>\ntests\\rebuild\\test_b2_runner.py:191: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_runner.py::test_7_the_candidate_names_and_horizons_are_required_and_never_defaulted\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "arm_accepts_arbitrary_callable",
+      "hole": "the arm's law check is disabled, so an arbitrary callable -- which can close over forbidden truth, a future or the other arm -- arrives as an update. This is B2-1's hole on the update side",
+      "gate": "test_8_the_arms_are_nominal_and_dispatch_to_the_frozen_entry_points",
+      "site": "src\\rfl_rebuild\\b2\\runner.py",
+      "matched": 1,
+      "expected_failure_text": "DID NOT RAISE",
+      "exit_code": 1,
+      "tail": "================================== FAILURES ===================================\n_____ test_8_the_arms_are_nominal_and_dispatch_to_the_frozen_entry_points _____\n    def test_8_the_arms_are_nominal_and_dispatch_to_the_frozen_entry_points():\n        r\"\"\"An arbitrary callable on the update side would re-open B2-1's hole where it matters most.\"\"\"\n        for bad in (lambda state: None, object(), \"P_id\", None):\n>           with pytest.raises(ProtocolError) as ei:\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE           Failed: DID NOT RAISE <class 'rfl_rebuild.b1.errors.ProtocolError'>\ntests\\rebuild\\test_b2_runner.py:206: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_runner.py::test_8_the_arms_are_nominal_and_dispatch_to_the_frozen_entry_points\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "arm_uses_wrong_architecture_registry",
+      "hole": "the registries are merged, so a P law runs in an X arm and the reverse. Independent of the callable hole: a foreign law IS a frozen law, just not this architecture's",
+      "gate": "test_9_a_law_from_another_architecture_is_refused",
+      "site": "src\\rfl_rebuild\\b2\\runner.py",
+      "matched": 1,
+      "expected_failure_text": "DID NOT RAISE",
+      "exit_code": 1,
+      "tail": "        # The tier must MATCH the foreign law's own tier, or the tier check refuses the spec first and\n        # the gate would be reporting a mechanism other than the one it names. Measured, not assumed:\n        # with a mismatched tier the refusal message is about the tier, not about the registry.\n        assert getattr(p_law, \"tier\", None) is Tier.L1_CORRECTIVE\n        assert getattr(x_law, \"tier\", None) is Tier.L0_FACTUAL\n>       with pytest.raises(ProtocolError) as ei:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.b1.errors.ProtocolError'>\ntests\\rebuild\\test_b2_runner.py:236: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_runner.py::test_9_a_law_from_another_architecture_is_refused\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "runner_accepts_forbidden_exogenous_field",
+      "hole": "the exogenous setup's field surface widens, so routing truth rides along in the object the arms share -- the information boundary B2-4 exists to hold",
+      "gate": "test_5_the_paired_futures_share_one_exogenous_setup",
+      "site": "src\\rfl_rebuild\\b2\\runner.py",
+      "matched": 1,
+      "expected_failure_text": "but its surface is frozen as",
+      "exit_code": 1,
+      "tail": "self = ExogenousSetup(kappa=0, phi=0, tape=SemanticTape(phase=0, error_flag=0, cause_rank=0), base_option=1, q_reference=QRef...appingproxy({0: 0.94, 2: 0.8999999999999999, 4: 0.9199999999999999})})), checkpoints=(0, 1, 2, 3, 4, 5), world_id=None)\n    def __post_init__(self) -> None:\n        names = {f.name for f in dataclass_fields(self)}\n        if names != set(EXOGENOUS_FIELDS):\n>           raise ProtocolError(\n                f\"the exogenous setup's fields are {sorted(names)!r} but its surface is frozen as \"\n                f\"{sorted(EXOGENOUS_FIELDS)!r}\")\nE           rfl_rebuild.b1.errors.ProtocolError: the exogenous setup's fields are ['base_option', 'checkpoints', 'kappa', 'phi', 'q_reference', 'tape', 'world_id'] but its surface is frozen as ['base_option', 'checkpoints', 'kappa', 'phi', 'q_reference', 'tape']\nsrc\\rfl_rebuild\\b2\\runner.py:98: ProtocolError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_runner.py::test_5_the_paired_futures_share_one_exogenous_setup\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "runner_adds_composite_score",
+      "hole": "the scene record gains a composite field, so the three dimensions can be collapsed into one primary -- the composite A79 67.1 refuses, re-introduced at the instrument",
+      "gate": "test_10_the_record_keeps_three_dimensions_and_no_composite",
+      "site": "src\\rfl_rebuild\\b2\\runner.py",
+      "matched": 1,
+      "expected_failure_text": "record.__dataclass_fields__",
+      "exit_code": 1,
+      "tail": ">       assert set(record.__dataclass_fields__) == {\n            \"arm_names\", \"architecture\", \"unaffected_construction\", \"retention_form\",\n            \"future_utility\", \"collateral\", \"retention\", \"ledgers\", \"fingerprints_pre\", \"observations\"}\nE       AssertionError: assert {'architectur...ledgers', ...} == {'architectur...ledgers', ...}\nE         \nE         Extra items in the left set:\nE         'score'\nE         Use -v to get more diff\ntests\\rebuild\\test_b2_runner.py:268: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_runner.py::test_10_the_record_keeps_three_dimensions_and_no_composite\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     }
   ]

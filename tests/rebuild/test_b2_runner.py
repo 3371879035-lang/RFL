@@ -228,17 +228,23 @@ def test_9_a_law_from_another_architecture_is_refused():
     """
     p_law = next(x for x in P_LAWS if getattr(x, "name", "") == "P_id")
     x_law = next(x for x in X_LAWS if getattr(x, "name", "") == "X_id")
+    # The tier must MATCH the foreign law's own tier, or the tier check refuses the spec first and
+    # the gate would be reporting a mechanism other than the one it names. Measured, not assumed:
+    # with a mismatched tier the refusal message is about the tier, not about the registry.
+    assert getattr(p_law, "tier", None) is Tier.L1_CORRECTIVE
+    assert getattr(x_law, "tier", None) is Tier.L0_FACTUAL
     with pytest.raises(ProtocolError) as ei:
-        ArmSpec("arm", "X", Tier.L0_FACTUAL, p_law)
+        ArmSpec("arm", "X", Tier.L1_CORRECTIVE, p_law)
     assert "not in the X registry" in str(ei.value)
     with pytest.raises(ProtocolError) as ei:
-        ArmSpec("arm", "P", Tier.L1_CORRECTIVE, x_law)
+        ArmSpec("arm", "P", Tier.L0_FACTUAL, x_law)
     assert "not in the P registry" in str(ei.value)
     # the two registries are genuinely disjoint, so the refusals are not one rule twice
     p_names = {getattr(x, "name", type(x).__name__) for x in P_LAWS}
     x_names = {getattr(x, "name", type(x).__name__) for x in X_LAWS}
     assert p_names & x_names == {"NoWrite", "LocalOracleRestore"}, (p_names, x_names)
     assert ArmSpec("arm", "X", Tier.L0_FACTUAL, x_law).architecture == "X"
+    assert ArmSpec("arm", "P", Tier.L1_CORRECTIVE, p_law).architecture == "P"
     # and a mixed-architecture pair is refused at the runner, not only at the spec
     mixed = (ArmSpec("reference", "P", Tier.L1_CORRECTIVE,
                      next(x for x in P_LAWS if type(x).__name__ == "NoWriteRef"
