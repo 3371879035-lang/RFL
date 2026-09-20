@@ -22,6 +22,7 @@ import pytest
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
+from rfl_rebuild.b1.contract import fingerprint  # noqa: E402
 from rfl_rebuild.b1.errors import ProtocolError  # noqa: E402
 from rfl_rebuild.b1.laws import P_LAWS, X_LAWS  # noqa: E402
 from rfl_rebuild.b1.process import AssistedInput  # noqa: E402
@@ -33,7 +34,9 @@ from rfl_rebuild.b2.runner import (  # noqa: E402
 from rfl_rebuild.b2.view import assert_modules_are_closed  # noqa: E402
 from rfl_rebuild.env.kernel import SemanticTape  # noqa: E402
 from rfl_rebuild.learner.reference import reference_view_from  # noqa: E402
-from rfl_rebuild.learner.store import LearnerPersistentState  # noqa: E402
+from rfl_rebuild.learner.store import (  # noqa: E402
+    PROCESS, Edit, LearnerPersistentState,
+)
 from rfl_rebuild.solve.dp import solve_reference  # noqa: E402
 
 RUNNER_MODULE = ROOT / "src" / "rfl_rebuild" / "b2" / "runner.py"
@@ -127,23 +130,60 @@ def test_3_the_arms_are_handed_one_object_not_two_equal_ones():
     assert seen[0] == built[0], "the metric was handed a different object than the one built"
 
 
+def observable_state() -> LearnerPersistentState:
+    r"""A pre-state on which a writing arm's update changes the store."""
+    state = LearnerPersistentState()
+    state.apply_transaction([Edit(PROCESS, 1, 2)])
+    return state
+
+
+def writing_pair():
+    r"""A pair in which **both** arms write, for the chain gate only.
+
+    Why this fixture is necessary, measured rather than assumed: in the standard pair `arms[0]` is
+    the reference `NoWriteRef`, which writes nothing, so a chain that routes the second clone through
+    the first arm's post-state leaves every fingerprint identical -- `serial_arm_chain` came back
+    NOT_A_GATE against a fresh state. A chain is an ordering defect, and it only becomes observable
+    when the first arm's update is. The runner must not care whether a pair writes, so this is a
+    legitimate instrument fixture rather than a special case in production.
+    """
+    treatment = next(x for x in P_LAWS if getattr(x, "name", "") == "P_id")
+    return (ArmSpec("first", "P", Tier.L1_CORRECTIVE, treatment),
+            ArmSpec("second", "P", Tier.L1_CORRECTIVE, treatment))
+
+
 def test_4_the_arms_fork_from_one_pre_update_state():
-    r"""Two independent clones of **one** state: a serial chain is not a pair."""
-    calls = []
+    r"""Two independent clones of **one** state: a serial chain is not a pair.
+
+    Checked on the **parent of each clone**, not on the resulting fingerprints, because a chain is a
+    property of derivation rather than of content. Measured, after two failed attempts: with the
+    standard pair `arms[0]` is a no-op, and with a writing pair `PId`'s identity write makes both
+    arms converge again, so in both fixtures the chained clones end up content-equal and
+    `serial_arm_chain` came back NOT_A_GATE. Recording what each clone was taken *from* is
+    independent of what the arms later write.
+    """
+    parents, calls = [], []
     original = LearnerPersistentState.clone
 
     def spy(self):
+        parents.append(fingerprint(self))
         calls.append(id(self))
         return original(self)
 
+    state = observable_state()
     LearnerPersistentState.clone = spy
     try:
-        record = run()
+        record = runner().run(state, arms=writing_pair(),
+                              evidence={"units": UNITS, "assisted": AssistedInput(1)},
+                              exogenous=exogenous())
     finally:
         LearnerPersistentState.clone = original
     assert len(calls) == 2, f"expected one clone per arm, got {len(calls)}"
+    assert set(parents) == {fingerprint(state)}, (
+        "a clone was taken from a state that had already been updated: the arms are a serial chain, "
+        f"not a pair (parents {parents!r}, input {fingerprint(state)!r})")
     assert len(set(record.fingerprints_pre.values())) == 1
-    assert record.fingerprints_pre["reference"] == record.fingerprints_pre["treatment"]
+    assert record.fingerprints_pre["first"] == record.fingerprints_pre["second"]
 
 
 def test_5_the_paired_futures_share_one_exogenous_setup():

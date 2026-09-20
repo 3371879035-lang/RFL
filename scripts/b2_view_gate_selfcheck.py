@@ -472,7 +472,10 @@ MUTATIONS: tuple = (
         "        clones = [state.clone() for _ in arms]\n        pre_fingerprints = {arm.name: fingerprint(clone) for arm, clone in zip(arms, clones)}\n        if len(set(pre_fingerprints.values())) != 1:\n            raise ProtocolError(\n                \"the two arms did not start from one pre-update state: fingerprints \"\n                f\"{pre_fingerprints!r}; a serial chain from one arm into the other is not a pair\")\n\n        # (3) the updates, each on its own clone, before any future exists\n        for arm, clone in zip(arms, clones):\n            self._apply(arm, clone, evidence)\n            self._recorder(\"update_applied\", arm.name, id(clone))\n",
         "        clones = [state.clone()]\n        self._apply(arms[0], clones[0], evidence)             # MUTATED: arm 1 runs first ...\n        self._recorder(\"update_applied\", arms[0].name, id(clones[0]))\n        clones.append(clones[0].clone())                      # ... and arm 2 clones its post-state\n        self._apply(arms[1], clones[1], evidence)\n        self._recorder(\"update_applied\", arms[1].name, id(clones[1]))\n        pre_fingerprints = {arm.name: fingerprint(clone) for arm, clone in zip(arms, clones)}\n        if len(set(pre_fingerprints.values())) != 1:\n            raise ProtocolError(\n                \"the two arms did not start from one pre-update state: fingerprints \"\n                f\"{pre_fingerprints!r}; a serial chain from one arm into the other is not a pair\")\n",
         f"{B2_RUN_TESTS}::test_4_the_arms_fork_from_one_pre_update_state",
-        "did not start from one pre-update state",
+        # Measured: the gate now fails on its OWN parent check rather than on the runner's
+        # fingerprint guard, because the mutation changes the derivation while the resulting
+        # contents can still converge.
+        "a clone was taken from a state that had already been updated",
     ),
     (
         "paired_arms_use_different_future_noise",

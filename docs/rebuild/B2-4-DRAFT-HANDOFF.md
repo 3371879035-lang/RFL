@@ -8,7 +8,7 @@ does not have to re-derive a design that was already verified end to end once: t
 its ten gates passed, and the event order was measured. The mutation suite is the missing piece, and
 one further gate is owed -- see "gate count" below.
 
-## What was measured (on the reverted draft)
+## 1. What was measured (on the reverted draft)
 
 Event order from the recorder, with one P-architecture pair:
 
@@ -21,7 +21,7 @@ applied. Also measured: both pre-fingerprints equal; the unaffected set construc
 the same object handed to the metric (id compared by spy); both `exogenous` events carry one id; the
 record's field surface is exactly its ten public fields.
 
-## Interface constants that must not drift
+## 2. Interface constants that must not drift
 
 * `ARCHITECTURES = ("P", "X")`; `LAW_REGISTRIES = {"P": P_LAWS, "X": X_LAWS}`.
 * `ArmSpec(name, architecture, tier, law)`. A law is frozen iff a registry entry matches: **class
@@ -41,7 +41,7 @@ record's field surface is exactly its ten public fields.
 * `PairedRunner.run(state, *, arms, evidence, exogenous)` — deliberately **no** `domain`/`visited`
   parameters: the runner derives them itself from the pre-update state in `pre_update_source`.
 
-## The eleven mutations, by the property each proves
+## 3. The eleven mutations, by the property each proves
 
 Temporal / pairing integrity:
 
@@ -72,7 +72,7 @@ Information boundary / outcome space:
 All declarations are to be **measured, then written** — a mismatch is corrected to what the run
 prints, never accommodated by weakening the check.
 
-## Gate count: the closure target is eleven, not ten
+## 4. Gate count: the closure target is eleven, not ten
 
 The reverted draft had ten gates, and the ninth mutation above needs a case they do not yet cover:
 a **P** law handed to an **X** arm (or the reverse), which the ten do not distinguish from an
@@ -85,21 +85,21 @@ single gate is shown to kill both independent holes** -- arbitrary callable and 
 registry -- with its own mutation each. Otherwise the count must read eleven, so that "the gates are
 complete" and "every mutation has a gate" cannot disagree.
 
-## Working rule for this branch
+## 5. Working rule for this branch
 
 Do **not** revert this branch when a round runs out of budget or time. Commit the unclosed state as
 `draft: ...`, mark it `NOT evidence` exactly as `515c4e9` does, and continue from there. Only
 `rebuild` has to stay frozen-clean: development progress and the scientific evidence chain must not
 be traded against each other again.
 
-## Gate-writing discipline (three self-inflicted findings, same root cause)
+## 6. Gate-writing discipline (three self-inflicted findings, same root cause)
 
 Structure is checked by AST, signature, nominal type, dataclass field-set or object identity.
 String search is for narrow static hygiene only, never for a semantic gate. Three times a textual
 probe tripped on prose or on the implementation's own identifiers (`"b2 import testing"` inside a
 comment, a comment mentioning the fixture module, `"apply("` matching the runner's own `_apply`).
 
-## Remaining work before `rebuild` may receive this
+## 7. Remaining work before `rebuild` may receive this
 
 1. re-land the runner and the ten previously exercised gates, then add the owed cross-architecture registry gate -- eleven closure gates in total;
 2. land the eleven mutations, each measured and declared;

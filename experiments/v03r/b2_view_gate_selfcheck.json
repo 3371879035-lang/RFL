@@ -1,8 +1,8 @@
 {
   "check": "B2-1 view/builder gate mutation self-check",
   "n_mutations": 43,
-  "n_gate_is_real": 42,
-  "n_not_a_gate": 1,
+  "n_gate_is_real": 43,
+  "n_not_a_gate": 0,
   "n_node_not_found": 0,
   "n_harness_error": 0,
   "n_mutation_not_applied": 0,
@@ -172,7 +172,7 @@
       "matched": 1,
       "expected_failure_text": "test-only fixture module",
       "exit_code": 1,
-      "tail": "        leak_fixture = tmp_path / \"leak_fixture.py\"\n        leak_fixture.write_text(\"from rfl_rebuild.b2 import testing\\n\", encoding=\"utf-8\")\n        with pytest.raises(ProtocolError) as ei:\n            assert_modules_are_closed([leak_fixture])\n>       assert \"test-only fixture module\" in str(ei.value)\nE       assert 'test-only fixture module' in \"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-312\\\\test_7_the_ast_allowlist_layer0\\\\leak_fixture.py...rebuild.b1.contract', 'rfl_rebuild.b1.laws', 'rfl_rebuild.b1.runner', 'rfl_rebuild.b1.tier', 'rfl_rebuild.env.domain')\"\nE        +  where \"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-312\\\\test_7_the_ast_allowlist_layer0\\\\leak_fixture.py...rebuild.b1.contract', 'rfl_rebuild.b1.laws', 'rfl_rebuild.b1.runner', 'rfl_rebuild.b1.tier', 'rfl_rebuild.env.domain')\" = str(ProtocolError(\"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-312\\\\test_7_the_ast_allowlist_layer0\\\\l...ebuild.b1.contract', 'rfl_rebuild.b1.laws', 'rfl_rebuild.b1.runner', 'rfl_rebuild.b1.tier', 'rfl_rebuild.env.domain')\"))\nE        +    where ProtocolError(\"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-312\\\\test_7_the_ast_allowlist_layer0\\\\l...ebuild.b1.contract', 'rfl_rebuild.b1.laws', 'rfl_rebuild.b1.runner', 'rfl_rebuild.b1.tier', 'rfl_rebuild.env.domain')\") = <ExceptionInfo ProtocolError(\"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-312\\\\test_7_the_ast_allo....contract', 'rfl_rebuild.b1.laws', 'rfl_rebuild.b1.runner', 'rfl_rebuild.b1.tier', 'rfl_rebuild.env.domain')\") tblen=3>.value\ntests\\rebuild\\test_b2_view.py:291: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_view.py::test_7_the_ast_allowlist_layer_covers_the_chain_and_is_not_vacuous\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "        leak_fixture = tmp_path / \"leak_fixture.py\"\n        leak_fixture.write_text(\"from rfl_rebuild.b2 import testing\\n\", encoding=\"utf-8\")\n        with pytest.raises(ProtocolError) as ei:\n            assert_modules_are_closed([leak_fixture])\n>       assert \"test-only fixture module\" in str(ei.value)\nE       assert 'test-only fixture module' in \"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-324\\\\test_7_the_ast_allowlist_layer0\\\\leak_fixture.py...rebuild.b1.contract', 'rfl_rebuild.b1.laws', 'rfl_rebuild.b1.runner', 'rfl_rebuild.b1.tier', 'rfl_rebuild.env.domain')\"\nE        +  where \"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-324\\\\test_7_the_ast_allowlist_layer0\\\\leak_fixture.py...rebuild.b1.contract', 'rfl_rebuild.b1.laws', 'rfl_rebuild.b1.runner', 'rfl_rebuild.b1.tier', 'rfl_rebuild.env.domain')\" = str(ProtocolError(\"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-324\\\\test_7_the_ast_allowlist_layer0\\\\l...ebuild.b1.contract', 'rfl_rebuild.b1.laws', 'rfl_rebuild.b1.runner', 'rfl_rebuild.b1.tier', 'rfl_rebuild.env.domain')\"))\nE        +    where ProtocolError(\"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-324\\\\test_7_the_ast_allowlist_layer0\\\\l...ebuild.b1.contract', 'rfl_rebuild.b1.laws', 'rfl_rebuild.b1.runner', 'rfl_rebuild.b1.tier', 'rfl_rebuild.env.domain')\") = <ExceptionInfo ProtocolError(\"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-324\\\\test_7_the_ast_allo....contract', 'rfl_rebuild.b1.laws', 'rfl_rebuild.b1.runner', 'rfl_rebuild.b1.tier', 'rfl_rebuild.env.domain')\") tblen=3>.value\ntests\\rebuild\\test_b2_view.py:291: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_view.py::test_7_the_ast_allowlist_layer_covers_the_chain_and_is_not_vacuous\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -370,7 +370,7 @@
       "matched": 1,
       "expected_failure_text": "DID NOT RAISE",
       "exit_code": 1,
-      "tail": "                        \"retention_params\": {\"H\": 5}},\n                       {\"collateral_construction\": \"visited_complement\",\n                        \"retention_form\": \"RetentionAtH\", \"retention_params\": {}},\n                       {\"collateral_construction\": \"visited_complement\",\n                        \"retention_form\": \"RetentionFraction\", \"retention_params\": {\"H\": 5}}):\n>           with pytest.raises(ProtocolError):\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE           Failed: DID NOT RAISE <class 'rfl_rebuild.b1.errors.ProtocolError'>\ntests\\rebuild\\test_b2_runner.py:191: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_runner.py::test_7_the_candidate_names_and_horizons_are_required_and_never_defaulted\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "                        \"retention_params\": {\"H\": 5}},\n                       {\"collateral_construction\": \"visited_complement\",\n                        \"retention_form\": \"RetentionAtH\", \"retention_params\": {}},\n                       {\"collateral_construction\": \"visited_complement\",\n                        \"retention_form\": \"RetentionFraction\", \"retention_params\": {\"H\": 5}}):\n>           with pytest.raises(ProtocolError):\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE           Failed: DID NOT RAISE <class 'rfl_rebuild.b1.errors.ProtocolError'>\ntests\\rebuild\\test_b2_runner.py:231: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_runner.py::test_7_the_candidate_names_and_horizons_are_required_and_never_defaulted\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -381,7 +381,7 @@
       "matched": 1,
       "expected_failure_text": "DID NOT RAISE",
       "exit_code": 1,
-      "tail": "                        \"retention_params\": {\"H\": 5}},\n                       {\"collateral_construction\": \"visited_complement\",\n                        \"retention_form\": \"RetentionAtH\", \"retention_params\": {}},\n                       {\"collateral_construction\": \"visited_complement\",\n                        \"retention_form\": \"RetentionFraction\", \"retention_params\": {\"H\": 5}}):\n>           with pytest.raises(ProtocolError):\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE           Failed: DID NOT RAISE <class 'rfl_rebuild.b1.errors.ProtocolError'>\ntests\\rebuild\\test_b2_runner.py:191: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_runner.py::test_7_the_candidate_names_and_horizons_are_required_and_never_defaulted\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "                        \"retention_params\": {\"H\": 5}},\n                       {\"collateral_construction\": \"visited_complement\",\n                        \"retention_form\": \"RetentionAtH\", \"retention_params\": {}},\n                       {\"collateral_construction\": \"visited_complement\",\n                        \"retention_form\": \"RetentionFraction\", \"retention_params\": {\"H\": 5}}):\n>           with pytest.raises(ProtocolError):\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE           Failed: DID NOT RAISE <class 'rfl_rebuild.b1.errors.ProtocolError'>\ntests\\rebuild\\test_b2_runner.py:231: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_runner.py::test_7_the_candidate_names_and_horizons_are_required_and_never_defaulted\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -392,7 +392,7 @@
       "matched": 1,
       "expected_failure_text": "DID NOT RAISE",
       "exit_code": 1,
-      "tail": "================================== FAILURES ===================================\n_____ test_8_the_arms_are_nominal_and_dispatch_to_the_frozen_entry_points _____\n    def test_8_the_arms_are_nominal_and_dispatch_to_the_frozen_entry_points():\n        r\"\"\"An arbitrary callable on the update side would re-open B2-1's hole where it matters most.\"\"\"\n        for bad in (lambda state: None, object(), \"P_id\", None):\n>           with pytest.raises(ProtocolError) as ei:\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE           Failed: DID NOT RAISE <class 'rfl_rebuild.b1.errors.ProtocolError'>\ntests\\rebuild\\test_b2_runner.py:206: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_runner.py::test_8_the_arms_are_nominal_and_dispatch_to_the_frozen_entry_points\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "================================== FAILURES ===================================\n_____ test_8_the_arms_are_nominal_and_dispatch_to_the_frozen_entry_points _____\n    def test_8_the_arms_are_nominal_and_dispatch_to_the_frozen_entry_points():\n        r\"\"\"An arbitrary callable on the update side would re-open B2-1's hole where it matters most.\"\"\"\n        for bad in (lambda state: None, object(), \"P_id\", None):\n>           with pytest.raises(ProtocolError) as ei:\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE           Failed: DID NOT RAISE <class 'rfl_rebuild.b1.errors.ProtocolError'>\ntests\\rebuild\\test_b2_runner.py:246: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_runner.py::test_8_the_arms_are_nominal_and_dispatch_to_the_frozen_entry_points\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -403,7 +403,7 @@
       "matched": 1,
       "expected_failure_text": "DID NOT RAISE",
       "exit_code": 1,
-      "tail": "        # The tier must MATCH the foreign law's own tier, or the tier check refuses the spec first and\n        # the gate would be reporting a mechanism other than the one it names. Measured, not assumed:\n        # with a mismatched tier the refusal message is about the tier, not about the registry.\n        assert getattr(p_law, \"tier\", None) is Tier.L1_CORRECTIVE\n        assert getattr(x_law, \"tier\", None) is Tier.L0_FACTUAL\n>       with pytest.raises(ProtocolError) as ei:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.b1.errors.ProtocolError'>\ntests\\rebuild\\test_b2_runner.py:236: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_runner.py::test_9_a_law_from_another_architecture_is_refused\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "        # The tier must MATCH the foreign law's own tier, or the tier check refuses the spec first and\n        # the gate would be reporting a mechanism other than the one it names. Measured, not assumed:\n        # with a mismatched tier the refusal message is about the tier, not about the registry.\n        assert getattr(p_law, \"tier\", None) is Tier.L1_CORRECTIVE\n        assert getattr(x_law, \"tier\", None) is Tier.L0_FACTUAL\n>       with pytest.raises(ProtocolError) as ei:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.b1.errors.ProtocolError'>\ntests\\rebuild\\test_b2_runner.py:276: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_runner.py::test_9_a_law_from_another_architecture_is_refused\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -425,7 +425,7 @@
       "matched": 1,
       "expected_failure_text": "record.__dataclass_fields__",
       "exit_code": 1,
-      "tail": ">       assert set(record.__dataclass_fields__) == {\n            \"arm_names\", \"architecture\", \"unaffected_construction\", \"retention_form\",\n            \"future_utility\", \"collateral\", \"retention\", \"ledgers\", \"fingerprints_pre\", \"observations\"}\nE       AssertionError: assert {'architectur...ledgers', ...} == {'architectur...ledgers', ...}\nE         \nE         Extra items in the left set:\nE         'score'\nE         Use -v to get more diff\ntests\\rebuild\\test_b2_runner.py:268: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_runner.py::test_10_the_record_keeps_three_dimensions_and_no_composite\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": ">       assert set(record.__dataclass_fields__) == {\n            \"arm_names\", \"architecture\", \"unaffected_construction\", \"retention_form\",\n            \"future_utility\", \"collateral\", \"retention\", \"ledgers\", \"fingerprints_pre\", \"observations\"}\nE       AssertionError: assert {'architectur...ledgers', ...} == {'architectur...ledgers', ...}\nE         \nE         Extra items in the left set:\nE         'score'\nE         Use -v to get more diff\ntests\\rebuild\\test_b2_runner.py:308: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_runner.py::test_10_the_record_keeps_three_dimensions_and_no_composite\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -436,7 +436,7 @@
       "matched": 1,
       "expected_failure_text": "assert names[0] == \"unaffected\"",
       "exit_code": 1,
-      "tail": "        run(events)\n        names = names_of(events)\n>       assert names[0] == \"unaffected\", names\nE       AssertionError: ['update_applied', 'update_applied', 'unaffected', 'exogenous', 'future', 'exogenous', ...]\nE       assert 'update_applied' == 'unaffected'\nE         \nE         - unaffected\nE         + update_applied\ntests\\rebuild\\test_b2_runner.py:91: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_runner.py::test_1_the_unaffected_set_is_built_before_the_first_arm_runs\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "        run(events)\n        names = names_of(events)\n>       assert names[0] == \"unaffected\", names\nE       AssertionError: ['update_applied', 'update_applied', 'unaffected', 'exogenous', 'future', 'exogenous', ...]\nE       assert 'update_applied' == 'unaffected'\nE         \nE         - unaffected\nE         + update_applied\ntests\\rebuild\\test_b2_runner.py:94: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_runner.py::test_1_the_unaffected_set_is_built_before_the_first_arm_runs\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -447,7 +447,7 @@
       "matched": 1,
       "expected_failure_text": "the metric was handed a different object than the one built",
       "exit_code": 1,
-      "tail": "        finally:\n            R.behavioral_collateral = original\n        assert len(seen) == 1, \"the metric saw more than one object\"\n        built = [e[2] for e in events if e[0] == \"unaffected\"]\n        assert len(built) == 1, \"the set was constructed more than once\"\n>       assert seen[0] == built[0], \"the metric was handed a different object than the one built\"\nE       AssertionError: the metric was handed a different object than the one built\nE       assert 1894280535952 == 1894294036080\ntests\\rebuild\\test_b2_runner.py:127: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_runner.py::test_3_the_arms_are_handed_one_object_not_two_equal_ones\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "        finally:\n            R.behavioral_collateral = original\n        assert len(seen) == 1, \"the metric saw more than one object\"\n        built = [e[2] for e in events if e[0] == \"unaffected\"]\n        assert len(built) == 1, \"the set was constructed more than once\"\n>       assert seen[0] == built[0], \"the metric was handed a different object than the one built\"\nE       AssertionError: the metric was handed a different object than the one built\nE       assert 2099884653104 == 2099943317824\ntests\\rebuild\\test_b2_runner.py:130: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_runner.py::test_3_the_arms_are_handed_one_object_not_two_equal_ones\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -456,10 +456,10 @@
       "gate": "test_4_the_arms_fork_from_one_pre_update_state",
       "site": "src\\rfl_rebuild\\b2\\runner.py",
       "matched": 1,
-      "expected_failure_text": "did not start from one pre-update state",
-      "exit_code": 0,
-      "tail": ".                                                                        [100%]",
-      "verdict": "NOT_A_GATE"
+      "expected_failure_text": "a clone was taken from a state that had already been updated",
+      "exit_code": 1,
+      "tail": "            \"a clone was taken from a state that had already been updated: the arms are a serial chain, \"\n            f\"not a pair (parents {parents!r}, input {fingerprint(state)!r})\")\nE       AssertionError: a clone was taken from a state that had already been updated: the arms are a serial chain, not a pair (parents ['ede1159ea9d88eb79fcfb8ddeaa28a65229129e279e889cd64590d22a8c2fa2d', '709e80c88487a2411e1ee4dfb9f22a861492d20c4765150c0c794abd70f8147c'], input 'ede1159ea9d88eb79fcfb8ddeaa28a65229129e279e889cd64590d22a8c2fa2d')\nE       assert {'709e80c8848...0d22a8c2fa2d'} == {'ede1159ea9d...0d22a8c2fa2d'}\nE         \nE         Extra items in the left set:\nE         '709e80c88487a2411e1ee4dfb9f22a861492d20c4765150c0c794abd70f8147c'\nE         Use -v to get more diff\ntests\\rebuild\\test_b2_runner.py:182: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_runner.py::test_4_the_arms_fork_from_one_pre_update_state\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
     },
     {
       "mutation": "paired_arms_use_different_future_noise",
@@ -469,7 +469,7 @@
       "matched": 1,
       "expected_failure_text": "len(set(setup_ids)) == 1",
       "exit_code": 1,
-      "tail": "        record = run(events)\n        setup_ids = [e[2] for e in events if e[0] == \"exogenous\"]\n>       assert len(setup_ids) == 2 and len(set(setup_ids)) == 1, setup_ids\nE       AssertionError: [1672247614080, 1672243818672]\nE       assert (2 == 2 and 2 == 1)\nE        +  where 2 = len([1672247614080, 1672243818672])\nE        +  and   2 = len({1672243818672, 1672247614080})\nE        +    where {1672243818672, 1672247614080} = set([1672247614080, 1672243818672])\ntests\\rebuild\\test_b2_runner.py:154: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_runner.py::test_5_the_paired_futures_share_one_exogenous_setup\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "        record = run(events)\n        setup_ids = [e[2] for e in events if e[0] == \"exogenous\"]\n>       assert len(setup_ids) == 2 and len(set(setup_ids)) == 1, setup_ids\nE       AssertionError: [2414652771600, 2414704243344]\nE       assert (2 == 2 and 2 == 1)\nE        +  where 2 = len([2414652771600, 2414704243344])\nE        +  and   2 = len({2414652771600, 2414704243344})\nE        +    where {2414652771600, 2414704243344} = set([2414652771600, 2414704243344])\ntests\\rebuild\\test_b2_runner.py:194: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_runner.py::test_5_the_paired_futures_share_one_exogenous_setup\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -480,7 +480,7 @@
       "matched": 1,
       "expected_failure_text": "assert first_future > last_update",
       "exit_code": 1,
-      "tail": "        events = []\n        run(events)\n        names = names_of(events)\n        last_update = max(i for i, n in enumerate(names) if n == \"update_applied\")\n        first_future = min(i for i, n in enumerate(names) if n == \"future\")\n>       assert first_future > last_update, names\nE       AssertionError: ['unaffected', 'future', 'update_applied', 'update_applied', 'exogenous', 'future', ...]\nE       assert 1 > 3\ntests\\rebuild\\test_b2_runner.py:173: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_runner.py::test_6_no_future_exists_before_the_updates_are_applied\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "        events = []\n        run(events)\n        names = names_of(events)\n        last_update = max(i for i, n in enumerate(names) if n == \"update_applied\")\n        first_future = min(i for i, n in enumerate(names) if n == \"future\")\n>       assert first_future > last_update, names\nE       AssertionError: ['unaffected', 'future', 'update_applied', 'update_applied', 'exogenous', 'future', ...]\nE       assert 1 > 3\ntests\\rebuild\\test_b2_runner.py:213: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_runner.py::test_6_no_future_exists_before_the_updates_are_applied\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     }
   ]
