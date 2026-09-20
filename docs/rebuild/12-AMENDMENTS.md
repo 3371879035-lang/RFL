@@ -5070,7 +5070,56 @@ $X/P$-specific code, and it may not touch the frozen $D_Q$ or $D_{patch}$ semant
 | no new capability | no $X/P$ cell, law, address type or slice in the commit |
 | the typed closure survives | a stand-in address is still refused by the architecture that did not admit it |
 
-### 68.3 Step 2 — $X$: the controller path
+**A second exact domain, proved synthetically.** Requiring only that a stand-in is still refused
+would show that the old Decision closure did not break — not that the generic layer can *carry* a
+second strict domain, and Step 1 may not add $X/P$ code in order to show it. So Step 1 is accepted
+only together with a **test-only** synthetic domain: two nominal address types, plus a test-only
+slice and address codec, proving that `AddressPlan`, the receipt, owner locality and the
+canonicalisation really run a second exact domain; that an $A$-slice **rejects** a $B$-address; and
+that a duck-typed stand-in is refused. With the honest mutation — relax the exact-domain validator —
+the hostile gate must go red. Test-only dummies are not $X/P$ capability, so this does not breach
+the "no new capability" condition above.
+
+**The canonical form is injective, not merely deterministic.**
+
+$$\boxed{canon_\alpha(x) = canon_\alpha(y) \iff x = y \quad \text{on the legal credited-address domain}}$$
+
+Deterministic and complete are not enough. An $X$ canonical form that omitted $a^{cmd}$ would map
+$\texttt{ControllerSite}(s, a_1)$ and $\texttt{ControllerSite}(s, a_2)$ to one value, and two
+distinct credited sites would share a receipt identity. This project has already paid for that
+omission once — the legacy controller site left out a key address component — so it is written down
+rather than rediscovered. The requirements: **deterministic**; **complete**; **injective on the
+legal domain**; and **architecture/store-tagged**, so that two slices' legal addresses cannot
+collide in one representation by accident. $X$'s gates carry the canary: two sites differing only in
+$a^{cmd}$ must produce **different** canonical receipts.
+
+### 68.3 The exact cell delivery rows, frozen here
+
+A77 §65.2 says $X$ and $P$ "get their own rows when implemented". This is that point, so the rows
+are written now rather than discovered by whoever implements them:
+
+| cell | delivery | what it is |
+|---|---|---|
+| $X \times L_0$ | $\{a^{cmd}\}$ | the factual command at the visited site |
+| $X \times L_3$ | $\varnothing$ | the locality-matched restore, which needs no content |
+| $P \times L_1$ | $\{z^{\text{proposal}}\}$ | the assisted input, and the only assisted row here |
+| $P \times L_3$ | $\varnothing$ | likewise empty |
+
+$$\boxed{fields(X, L_0) = \{a^{cmd}\}, \quad fields(X, L_3) = \varnothing, \quad
+fields(P, L_1) = \{z^{\text{proposal}}\}, \quad fields(P, L_3) = \varnothing}$$
+
+A76 §63.9 already decides the content; what is added is that the two rows are *written*, so that
+"same cell $\Rightarrow$ same envelope" (A77 §65.2) has something to check against from the first
+commit rather than a blank.
+
+**Empty cells are not arms.** $X$'s $L_1$ and $L_2$, and $P$'s $L_0$ and $L_2$, have no substantive
+treatment and therefore **no same-tier reference entry either** — A77 §65.3 gives a
+$\texttt{NoWriteRef}(\ell)$ per cell that *has* a substantive treatment, so an empty cell has
+nothing to reference. Neither may acquire an arm merely because the shared infrastructure can now
+express one: expressibility is not authorisation, and a manufactured arm's score would be an
+artefact of the pairing rather than of the law (A76 §63.9).
+
+### 68.4 Step 2 — $X$: the controller path
 
 A76's cells are implemented **as frozen**, not redesigned:
 
@@ -5087,6 +5136,25 @@ The $L_3$ entry is an **alias on this architecture — an information tier, not 
 demonstrate that it **reuses the same operation implementation** (the same `plan` function object,
 as `LocalOracleRestore` does for `DeleteFactualPatch`) rather than being a second implementation
 that happens to behave identically.
+
+**Where $z$ and $m$ come from.** $a^{cmd} \in A_z(m,s)$ is a statement about an *option in force*, and
+`ControllerSite` carries only $(s, a^{cmd})$. Left open, the implementer decides the source — which
+row to read, whether the kernel's control state may be consulted, whether some other object may
+supply it — and a different answer per site is exactly what A76 §63.10's $\rho_A$ exists to prevent.
+So:
+
+$$\boxed{\text{$X$'s credited-address validation uses the unique learner-visible factual row for that visited site}}$$
+
+together with that row's $z$ and $m$ at that step, used **only** for pre-plan address and contract
+validation:
+
+$$\text{resolve the factual row} \rightarrow \text{strict } \texttt{ControllerSite} \text{ validation}
+\rightarrow a^{cmd} \in A_z(m,s) \rightarrow \text{arm planning}$$
+
+The treatment and its same-tier reference pass through **the same validator**, so the two cannot
+differ in admissibility (A78 §66.5's rule). This is not solved by widening the law's fields: $X$'s
+$L_0$ delivery stays exactly $\{a^{cmd}\}$ (§68.3), and $z, m$ are **cell-construction** inputs
+rather than law information.
 
 **$X$'s gates:**
 
@@ -5107,7 +5175,7 @@ that happens to behave identically.
   and its same-tier reference cannot differ in admissibility (A78 §66.5, and the reason that rule
   exists).
 
-### 68.4 Step 3 — $P$: the process path, and the assisted input
+### 68.5 Step 3 — $P$: the process path, and the assisted input
 
 $$\rho_P(\texttt{ProcessCommit}, z^{\text{proposal}}) = z^{\text{proposal}}, \qquad
 \boxed{C_P^L(z^{\text{proposal}}) \leftarrow z^{\text{proposal}}}$$
@@ -5122,6 +5190,36 @@ $$\boxed{P_{id} \in L_1, \qquad P_{id} \notin L_0}$$
 This is not a placement choice: the factual rows carry $z^{\text{in-force}}$ only, **never**
 $z^{\text{proposal}}$, so the key cannot be computed from $L_0$ information. That is exactly why
 A76 §63.1 put $P_{id}$ at $L_1$, and why $\rho_P$ is the one $\rho_A$ that needs an assisted input.
+
+**The order that makes $P$ coherent.** $\rho_P$ is the one $\rho_A$ whose *store address depends on
+the assisted input*, and A80 asks three things at once, one of them from §68.3: the proposal is
+delivered by the $L_1$ envelope, the plan and receipt need an address, and the $L_3$ alias must reuse
+implementation while its own delivery is empty. Left unordered, those force the implementer to
+choose an architecture. Frozen:
+
+$$\boxed{\text{credit unit} + \text{allowed assisted input} \xrightarrow{\rho_P}
+\text{resolved B1 address } z^{\text{proposal}}}$$
+
+* the resolver belongs to **cell construction** and runs **before any arm planning**;
+* the address-plan and receipt locality unit is that resolved **true-int option key**;
+* the $L_1$ cell still delivers $\{z^{\text{proposal}}\}$ explicitly — the same envelope to the
+  reference and to the treatment;
+* $P_{id}$'s operation therefore depends only on the resolved address,
+  $\texttt{Edit}(\texttt{PROCESS}, z, z)$, which is what lets the $L_3$ alias reuse **the same plan
+  function**;
+* the $L_3$ law's delivery is still $\varnothing$ while it uses the same upstream $\rho_P$
+  resolution.
+
+$$\boxed{\text{address resolution} \neq \text{information delivered to the law}}$$
+
+The resolver may use $z^{\text{proposal}}$ to construct a legal store address and for nothing else:
+extending it into additional law information would be assisted-input laundering by another route.
+This is also why
+
+$$P_{id} \text{ at } L_0 \Longrightarrow \texttt{PROTOCOL\_ERROR}$$
+
+holds even for a caller that already "knows the integer address" — the $L_0$ cell is not authorised
+to run this resolver or this treatment at all.
 
 **$P$'s gates, beyond $X$'s analogous set:**
 
@@ -5141,7 +5239,7 @@ $$\boxed{P_{id} \text{ declared or run at } L_0 \;\Longrightarrow\; \texttt{PROT
 * the $L_1$ envelope is delivered through the same field-set mechanism as every other cell
   (A77 §65.2), so "same cell $\Rightarrow$ same envelope" holds for $P$ too.
 
-### 68.5 What A80 does not authorise
+### 68.6 What A80 does not authorise
 
 $$\boxed{\text{NO B2 runner}}\quad
 \boxed{\text{NO } \texttt{FutureConsequenceView} \text{ implementation}}\quad
@@ -5158,7 +5256,7 @@ and it may not be used as the occasion to:
 * add Regime $T$/$P$ behaviour, a stratification, or the global-oracle denominator;
 * begin V0.4R, or collect any seed of any stage.
 
-### 68.6 Sequence and review boundary
+### 68.7 Sequence and review boundary
 
 $$\boxed{\text{Step 1} \rightarrow \text{Step 2} \rightarrow \text{Step 3}, \qquad
 \text{one commit each, own gates each, no mixing}}$$
@@ -5218,7 +5316,7 @@ section above; the most recent is:
 
 | **A78** | $L_3$ `LocalOracleRestore` on $D_Q$ as A77 §65.12's **fifth** implementation step — one step, one commit, no mixing, and no new scope for the four already-closed steps; the cell's `NoWriteRef(L3)` alongside its treatment, giving $\lvert\text{treatments}\rvert(D_Q)=4$ exactly as A76 §63.8 froze ($D_{patch}$ stays 3); the B1 law domain fixed as **every credited address for $L_2$ and $L_3$ alike**, with `NO_VALID_ALTERNATIVE` addresses remaining in the population and $L_3$ forbidden to key its domain on $a^+$ availability; "no reference" scoped to the **lowering** and to *no new* $L_3-specific reference entry point, since §65.10's deleted leg still needs the existing `q_reference`; the row operation kept a **B1** object so `owner_Q` stays a `QAddress` function and the substrate does not learn an update law; lowering as an explicit **pre-commit phase** against **one** frozen pre-state, with status, $n_{\text{changed\_addresses}}$ and the scalar accounting computed from the **lowered concrete edits**; a $D_Q$-only law implementation beside the untouched $D_{patch}$ alias, with no architecture branching inside a law; and the gate obligations, including **idempotence** ($k=0$, `EVALUABLE_NOOP` on a second run, i.e. the lowering reads its own run's pre-state) and a **poison-evidence** empty-cell gate proving $L_3$ reads no evaluator-side inputs | **P0 (spec)** | **frozen — implementation authorised in this step only**; further change requires a new amendment |
 | **A79** | V0.3R **B2 pre-registration**: the stage that answers *what did this write do to this learner's future*, and a pre-registration in the strict sense -- no code, no seed. It **supersedes `08-V03R.md` on B2** (whose Block 2 arms A76 retired and whose process reading $do(z=z')$ the frozen reading rejects) while leaving `08` §2 unaddressed. It fixes $Y^{\text{future}}=\{\text{FutureUtility},\text{Collateral},\text{Retention}\}$ as **three independent dimensions with no composite primary** (a weighted score would let utility buy collateral); keeps $T$ and $P$ as **separate populations that may not be pooled**, with $T$'s primary being harm/erroneous internalisation against a weakly dominating `NoWrite` and $P$'s requiring future rollout **endogenous to $\Delta W$**; freezes $\mathrm{RMST}(T_{\max})$ primary with $\mathrm{DeficitAUC}$ mandatory by reference to `05` §8 ($K=3$, right-censored); defines primary collateral as future behavioural spillover on a set that is **truth-blind, arm-blind, pre-update, and identical across a scene's paired arms** with the unaffected set constructed truth-blind under A75 §62.10's four gate layers, and keeps $N_{\text{scalar}}$/$\sum|\Delta\theta|$ in $\texttt{UpdateLedger}$ as intervention cost because *writing less is not causing less collateral*; retains **Retention** as a dimension **whose confirmatory form must be defined for every seed** ($\tau$-conditioned forms demoted to conditional descriptive diagnostics), the choice among all-seed forms being a declared development-stage decision on measurement properties only; makes `LocalOracleRestore` the **matrix-matched normalisation ceiling** and the global oracle a **diagnostic ceiling only** that may not be a treatment's denominator; fixes **tier-matched contrasts** so $L_3$ beating $L_0$ measures headroom, not merit; and states that **the Process/Controller B1 alias-write paths are B2 prerequisites under their own authorisation**, because ``D6/B1 CLOSED'' is the Decision path and not all three stores. `05` governs unchanged, with $T$ frozen from the baseline only and no treatment curve inspectable beforehand; **V0.3R PASS is a conjunction** of FutureUtility benefit, no unacceptable Collateral, the Retention criterion and the $T$-regime harm constraint -- a gate rather than a weighted sum, so the outcome space is never collapsed -- and **V0.4R begins only on V0.3R's FINAL confirmatory PASS**, a diagnostic look at 100/200/300 being neither a PASS nor able to open it. | **P0 (spec)** | **frozen — pre-registration only; no seed collected, no code authorised**; further change requires a new amendment |
-| **A80** | the $X$ and $P$ B1 paths and the substrate refactor they need, as A79 §67.8's prerequisites -- **authorisation text only, no code**. The replacing plan's two steps are **three**: a generic address/receipt substrate refactor first, because the shared B1 objects are Decision-shaped (`AddressPlan.address`, `DecisionWriteReceipt.address` and its canonicalisation, `SliceDescriptor.owner`) while $\rho_X$ yields a site handle and $\rho_P$ an integer, and an implementer given only "$X$ then $P$" would have to invent the address contract at code time. Step 1 generalises **by type, not by duck typing** -- `address: Any` would discard the nominal closure -- keeps per-architecture strict domains, typed store addresses, $owner_\alpha$ and deterministic canonical receipts, keeps same-cell same-admissibility, and must move no number (five self-checks still pass, $D_{patch}$ still `ENCODING_ONLY`). Step 2 implements $X$ as frozen ($C_X^L(\rho_X(\texttt{ControllerSite})) \leftarrow a^{cmd}$, $L_0$ with $\lvert$treatments$\rvert=1$, $L_3$ an alias that **reuses the same operation implementation**), with $a^{cmd} \in A_z(m,s)$ because a learner write does not inherit fault privilege (A75 §62.3). Step 3 implements $P$ as frozen with $P_{id}\colon L_1$ and **not** $L_0$ -- the factual rows never carry $z^{\text{proposal}}$ -- and forbids **assisted-input laundering** ($P_{id}$ at $L_0 \Rightarrow$ `PROTOCOL_ERROR`), requiring the $L_1$ envelope to deliver the proposal explicitly and the integer-semantics process key to pass an exact type check before domain membership. Authorises **no B2 runner, no $\texttt{FutureConsequenceView}$, no $\texttt{BehavioralCollateral}$, no seed of any stage**, and may not be used to touch $D_Q$, to repair the frozen $D_{patch}$ asymmetry, to change an A79 endpoint or threshold, or to begin V0.4R. | **P0 (spec)** | **frozen -- three implementation steps authorised, one commit each, own gates each; further change requires a new amendment** |
+| **A80** | the $X$ and $P$ B1 paths and the substrate refactor they need, as A79 §67.8's prerequisites -- **authorisation text only, no code**. The replacing plan's two steps are **three**: a generic address/receipt substrate refactor first, because the shared B1 objects are Decision-shaped (`AddressPlan.address`, `DecisionWriteReceipt.address` and its canonicalisation, `SliceDescriptor.owner`) while $\rho_X$ yields a site handle and $\rho_P$ an integer, and an implementer given only "$X$ then $P$" would have to invent the address contract at code time. Step 1 generalises **by type, not by duck typing** -- `address: Any` would discard the nominal closure -- keeps per-architecture strict domains, typed store addresses, $owner_\alpha$ and deterministic canonical receipts, keeps same-cell same-admissibility, and must move no number (five self-checks still pass, $D_{patch}$ still `ENCODING_ONLY`). Step 2 implements $X$ as frozen ($C_X^L(\rho_X(\texttt{ControllerSite})) \leftarrow a^{cmd}$, $L_0$ with $\lvert$treatments$\rvert=1$, $L_3$ an alias that **reuses the same operation implementation**), with $a^{cmd} \in A_z(m,s)$ because a learner write does not inherit fault privilege (A75 §62.3). Step 3 implements $P$ as frozen with $P_{id}\colon L_1$ and **not** $L_0$ -- the factual rows never carry $z^{\text{proposal}}$ -- and forbids **assisted-input laundering** ($P_{id}$ at $L_0 \Rightarrow$ `PROTOCOL_ERROR`), requiring the $L_1$ envelope to deliver the proposal explicitly and the integer-semantics process key to pass an exact type check before domain membership. Authorises **no B2 runner, no $\texttt{FutureConsequenceView}$, no $\texttt{BehavioralCollateral}$, no seed of any stage**, and may not be used to touch $D_Q$, to repair the frozen $D_{patch}$ asymmetry, to change an A79 endpoint or threshold, or to begin V0.4R. The exact delivery rows are **written here rather than deferred** (A77 §65.2's "when implemented"): $fields(X,L_0)=\{a^{cmd}\}$, $fields(X,L_3)=\varnothing$, $fields(P,L_1)=\{z^{\text{proposal}}\}$, $fields(P,L_3)=\varnothing$, and an empty cell acquires **no arm and no same-tier reference** merely because the infrastructure could express one. $X$'s $z,m$ come from the **unique learner-visible factual row** for the visited site, used only by a pre-plan validator that **both arms share**, without widening the law's $\{a^{cmd}\}$ delivery. $P$'s order is frozen -- **cell-level $\rho_P$ resolution before any arm planning**, the resolved true-int key as the locality unit, the $L_1$ envelope delivering $\{z^{\text{proposal}}\}$ to reference and treatment alike, and $\texttt{Edit}(\texttt{PROCESS},z,z)$ so the $L_3$ alias reuses the same plan function -- under the distinction $\boxed{\text{address resolution} \neq \text{information delivered to the law}}$. Step 1 must also prove the generalisation with a **test-only synthetic second domain** (an $A$-slice rejects a $B$-address, a stand-in is refused, and relaxing the validator reddens the gate) and its canonical form must be **injective on the legal domain**, not merely deterministic, since an $X$ canonical omitting $a^{cmd}$ would give two credited sites one receipt identity. | **P0 (spec)** | **frozen -- three implementation steps authorised, one commit each, own gates each; further change requires a new amendment** |
 
 ---
 
