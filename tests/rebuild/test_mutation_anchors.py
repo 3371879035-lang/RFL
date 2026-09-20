@@ -30,7 +30,8 @@ sys.path.insert(0, str(SCRIPTS))
 SELF_CHECKS = ("b1_interface_gate_selfcheck", "q_substrate_gate_selfcheck",
                "l0_factual_gate_selfcheck", "l2_counterfactual_gate_selfcheck",
                "l3_row_restore_gate_selfcheck",
-               "address_domain_gate_selfcheck")
+               "address_domain_gate_selfcheck",
+               "x_controller_gate_selfcheck")
 
 
 def _load(name: str):

@@ -33,6 +33,9 @@ from rfl_rebuild.b1.contract import (
 )
 from rfl_rebuild.b1.laws import (
     DQ_LAWS,
+    XId,
+    XLocalOracleRestore,
+    X_LAWS,
     DQLocalOracleRestore,
     CounterfactualReturnWrite,
     DualReturnWrite,
@@ -49,6 +52,13 @@ from rfl_rebuild.b1.laws import (
     law_metadata,
 )
 from rfl_rebuild.b1.addressing import AddressDomain
+from rfl_rebuild.b1.controller import (
+    ControllerTarget,
+    build_controller_envelope,
+    require_admissible_sites,
+    resolve_controller_sites,
+    validate_controller_envelope,
+)
 from rfl_rebuild.b1.counterfactual import (
     CfEpisode,
     CounterfactualUndefined,
@@ -65,6 +75,7 @@ from rfl_rebuild.b1.factual import (
 )
 from rfl_rebuild.b1.runner import (
     B1Result,
+    run_controller_law,
     run_dq_law,
     run_factual_return_law,
     run_patch_law,
@@ -80,6 +91,8 @@ from rfl_rebuild.b1.targets import (
 from rfl_rebuild.b1.plan import RestoreRow, dq_owner
 from rfl_rebuild.b1.tier import (
     DQ_DOMAIN,
+    X_DOMAIN,
+    X_SLICE,
     PATCH_DOMAIN,
     DQ_SLICE,
     ILL_TYPED,
@@ -91,6 +104,7 @@ from rfl_rebuild.b1.tier import (
 __all__ = [
     "APPLIED",
     "EVALUABLE_NOOP",
+    "ControllerTarget",
     "DQ_DOMAIN",
     "DQ_LAWS",
     "DQ_SLICE",

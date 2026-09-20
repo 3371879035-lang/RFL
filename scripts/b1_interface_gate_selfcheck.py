@@ -71,7 +71,15 @@ MUTATIONS: tuple[tuple[str, str, pathlib.Path, str, str, str], ...] = (
         "an ill-typed cell is declared as an empty field set, so a law in it is "
         "accepted as though the cell had a treatment",
         TIER,
+        # D_patch's own L2 marker, disambiguated from the X slice's by the line above it:
+        # the repair is a locator update, and the guard it points at is unchanged.
+        "        Tier.L1_CORRECTIVE: frozenset({\"alternative\"}),\n"
         "        Tier.L2_COUNTERFACTUAL: ILL_TYPED,",
+        # The replacement must keep L1 declared. Dropping the anchor's first line made
+        # PATCH_SLICE raise "missing ['L1_CORRECTIVE']" at *import* time, so the gate file
+        # never collected and pytest exited 4 -- a mutation that tested nothing (reported
+        # NODE_NOT_FOUND, not GATE_IS_REAL: the exit-code table caught it).
+        "        Tier.L1_CORRECTIVE: frozenset({\"alternative\"}),\n"
         "        Tier.L2_COUNTERFACTUAL: frozenset(),        # MUTATED to a legal cell",
         f"{TESTS}::test_8m_a_law_declared_in_an_ill_typed_cell_is_rejected",
     ),

@@ -73,7 +73,18 @@ from rfl_rebuild.b1.factual import (
     build_factual_envelope,
     validate_factual_envelope,
 )
-from rfl_rebuild.b1.tier import DQ_SLICE, PATCH_SLICE, SliceDescriptor, Tier
+from rfl_rebuild.b1.controller import (
+    build_controller_envelope,
+    require_admissible_sites,
+    validate_controller_envelope,
+)
+from rfl_rebuild.b1.tier import (
+    DQ_SLICE,
+    PATCH_SLICE,
+    X_SLICE,
+    SliceDescriptor,
+    Tier,
+)
 from rfl_rebuild.learner.reference import reference_view_from
 from rfl_rebuild.learner.store import (
     DecisionAddress,
@@ -87,6 +98,7 @@ from rfl_rebuild.learner.store import (
 __all__ = [
     "B1Result",
     "run_dq_law",
+    "run_controller_law",
     "run_factual_return_law",
     "run_row_restore_law",
     "run_patch_law",
@@ -661,6 +673,36 @@ def run_row_restore_law(law, pre_state: LearnerPersistentState,
             "only — a law whose cell declares fields needs its envelope built, and this "
             "entry point has nowhere to take one from")
     return run_dq_law(law, pre_state, addresses, None, q_reference, spec=spec)
+
+
+def run_controller_law(law, pre_state: LearnerPersistentState,
+                       sites: Sequence, rows, spec: SliceDescriptor = X_SLICE) -> B1Result:
+    r"""The $X$ entry point: the shared contract check, then the cell's own envelope.
+
+    $$\boxed{\text{resolve factual row} \rightarrow \text{strict } \texttt{ControllerSite}
+    \rightarrow a^{cmd} \in A_z(m,s) \rightarrow \text{arm planning}}$$
+
+    The contract check runs **once, before any arm plans**, for the treatment and its same-tier
+    reference alike — so the two cannot differ in admissibility (A80 §68.3), which is the same
+    rule A78 §66.5 put on the credited population and the reason that rule exists.
+
+    $z$ and $m$ are used here and **nowhere else**: the law's delivery is exactly $\{a^{cmd}\}$
+    (A80 §68.4).
+    """
+    law, tier = _law_contract(law, spec)
+    described = spec.fields(tier)
+    if described:
+        require_admissible_sites(sites, rows)
+        envelope = build_controller_envelope(rows, sites)
+        validate_controller_envelope(sites, envelope, rows)
+    elif tier is Tier.L3_ORACLE:
+        require_admissible_sites(sites, rows)
+        envelope = None
+    else:                                                  # pragma: no cover - ill-typed cells
+        raise ProtocolError(
+            f"{spec.name} at tier {tier.name} declares no field and is not $L_3$; a law may not "
+            "be declared in it (A76 §63.9)")
+    return _run(law, tier, pre_state, sites, envelope, spec)
 
 
 def run_patch_law(law, pre_state: LearnerPersistentState, credited_units,

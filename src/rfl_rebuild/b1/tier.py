@@ -45,10 +45,16 @@ from types import MappingProxyType
 from typing import Any, Callable, Mapping
 
 from rfl_rebuild.b1.contract import ProtocolError
-from rfl_rebuild.env.domain import is_decision_context
+from rfl_rebuild.env import kernel as K
+from rfl_rebuild.env.domain import (
+    is_decision_context,
+    is_true_int,
+    non_integer_state_fields,
+)
 from rfl_rebuild.b1.addressing import AddressDomain
 from rfl_rebuild.b1.plan import dq_owner
 from rfl_rebuild.learner.store import (
+    CONTROLLER,
     QAddress,
     DECISION,
     Q,
@@ -63,6 +69,8 @@ __all__ = [
     "ILL_TYPED",
     "PATCH_DOMAIN",
     "PATCH_SLICE",
+    "X_DOMAIN",
+    "X_SLICE",
     "SliceDescriptor",
     "Tier",
 ]
@@ -374,8 +382,63 @@ DQ_DOMAIN = AddressDomain(
     canonical=_decision_canonical,
 )
 
+def _controller_view(state: LearnerPersistentState) -> dict:
+    return dict(state.controller_overrides)
+
+
 def _q_view(state: LearnerPersistentState) -> dict:
     return dict(state.q_overrides)
+
+
+def _site_credited(value) -> None:
+    r"""$X$'s credited-address rule: a nominal `ControllerSite` with a strictly typed state.
+
+    The folding lesson applies at this key too: `ControllerSite` is a dataclass, so a site whose
+    `State` carries `1.0` would compare equal, with equal hashes, to the legal site — and $C_X$ is
+    a function **of the command**, so `cmd` is type-checked as well.
+    """
+    if type(value) is not K.ControllerSite:
+        raise ProtocolError(
+            f"credited controller site {value!r} has type {type(value).__name__}, not "
+            "ControllerSite")
+    bad = non_integer_state_fields(value.state)
+    if bad:
+        raise ProtocolError(
+            f"credited controller site {value!r} has non-integer State field(s) {bad}; Python "
+            "folds 1.0, True and 1 into one key")
+    if not is_true_int(value.cmd):
+        raise ProtocolError(
+            f"credited controller site {value!r} carries cmd={value.cmd!r}, not a true integer")
+
+
+def _site_store(value) -> None:
+    if type(value) is not K.ControllerSite:
+        raise ProtocolError(
+            f"the {CONTROLLER} store is keyed by ControllerSite, got {type(value).__name__}")
+
+
+def _site_canonical(value) -> str:
+    r"""$X$'s canonical receipt: injective on the legal domain, `cmd` included.
+
+    $$\boxed{canon_X(s, a_1) \neq canon_X(s, a_2) \text{ whenever } a_1 \neq a_2}$$
+
+    The legacy controller site keyed on `(x, y, t, t)` and omitted $a^{cmd}$, so two different
+    commands from one state were one site. An encoding that dropped it here would give two distinct
+    credited sites one receipt identity, which is why the command is in the string.
+    """
+    s = value.state
+    return f"{s.x},{s.y},{s.t},{s.kappa},{s.phi}|{value.cmd}"
+
+
+#: The $X$ address domain: a credited site is its own store key, `owner_X` is the identity, and the
+#: credited rule is strict because the controller key is a folding target like every other.
+X_DOMAIN = AddressDomain(
+    tag="X",
+    require_credited=_site_credited,
+    require_store=_site_store,
+    owner=lambda site: site,
+    canonical=_site_canonical,
+)
 
 
 #: The $D_Q$ row of A77 §65.2's table **verbatim**, plus this revision's build state.
@@ -420,6 +483,31 @@ DQ_SLICE = SliceDescriptor(
     },
     implemented_tiers=frozenset({Tier.L0_FACTUAL, Tier.L2_COUNTERFACTUAL,
                                  Tier.L3_ORACLE}),
+)
+
+
+#: The $X$ row of A76 §63.9: $L_0$ delivers $\{a^{cmd}\}$, $L_3$ delivers $\varnothing$, and
+#: $L_1$/$L_2$ are **ill-typed** — A76 writes "—" in both, and A80 §68.3 adds that an empty cell
+#: acquires no arm and no same-tier reference merely because the infrastructure could express one.
+#:
+#: `scalar=False`: the controller store holds actions, and A76 §63.4's "on a value-free store every
+#: write is a value" is about $D_{patch}$'s shape — here the write is an action, so the ledger's
+#: scalar accounting is not applicable and the identity write's canonicalisation to deletion is
+#: what makes $L_3$ the same operation as $L_0$.
+X_SLICE = SliceDescriptor(
+    name="X",
+    store=CONTROLLER,
+    scalar=False,
+    domain=X_DOMAIN,
+    view=_controller_view,
+    cells={
+        Tier.L0_FACTUAL: frozenset({"a_cmd"}),
+        Tier.L1_CORRECTIVE: ILL_TYPED,
+        Tier.L2_COUNTERFACTUAL: ILL_TYPED,
+        Tier.L3_ORACLE: frozenset(),
+    },
+    extract={"a_cmd": lambda record: record.a_cmd},
+    implemented_tiers=frozenset({Tier.L0_FACTUAL, Tier.L3_ORACLE}),
 )
 
 

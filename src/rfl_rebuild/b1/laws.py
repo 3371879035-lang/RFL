@@ -44,13 +44,23 @@ from typing import Mapping, Sequence
 from rfl_rebuild.b1.contract import NO_VALID_ALTERNATIVE, ProtocolError
 from rfl_rebuild.b1.plan import RestoreRow, dq_owner
 from rfl_rebuild.b1.tier import Tier
-from rfl_rebuild.learner.store import DECISION, Q, DecisionAddress, Edit, QAddress
+from rfl_rebuild.learner.store import (
+    CONTROLLER,
+    DECISION,
+    Q,
+    DecisionAddress,
+    Edit,
+    QAddress,
+)
 
 __all__ = [
     "DQ_LAWS",
     "LAWS",
     "AddressPlan",
     "CounterfactualReturnWrite",
+    "XId",
+    "XLocalOracleRestore",
+    "X_LAWS",
     "DQLocalOracleRestore",
     "DeleteFactualPatch",
     "DualReturnWrite",
@@ -423,6 +433,81 @@ class DualReturnWrite(_Law):
             plans.append(AddressPlan(a, (Edit(Q, factual, rec["g_factual"]),
                                          Edit(Q, alternative, rec["g_cf"]))))
         return LawPlan(self.name, tuple(plans))
+
+
+class XId(_Law):
+    r"""$X\times L_0$ — write the factual command into the controller at each credited site.
+
+    $$\boxed{C_X^L\bigl(\rho_X(\texttt{ControllerSite})\bigr) \leftarrow a^{cmd}}$$
+
+    The law reads exactly the field its cell declares, $\{a^{cmd}\}$ (A77 §65.2, A80 §68.3). The
+    option in force, the site's $z$ and $m$, and the check $a^{cmd} \in A_z(m,s)$ all happen
+    **before** this is called: they are cell-construction work (A80 §68.4), and a law that could
+    read them would hold option geometry it was never granted.
+
+    A healthy scene writes the identity — $C_X$ already maps this site to this command — so the
+    store's canonicalisation turns the write into a deletion. That is what makes $L_3$'s restore
+    the *same operation* rather than a second implementation that happens to agree.
+    """
+
+    name = "X_id"
+    tier = Tier.L0_FACTUAL
+
+    def plan(self, addresses, targets) -> LawPlan:
+        r"""The identity write, read from the **credited address** rather than the envelope.
+
+        $$oxed{site.cmd = a^{cmd}}$$
+
+        A `ControllerSite` *is* $(s_t, a^{cmd}_t)$ (A76 §63.10's $ho_X$), so the operation's
+        identity is carried by the address it is credited at. The $L_0$ envelope still delivers
+        $\{a^{cmd}\}$ — the cell's field set is unchanged — and the runner still checks that
+        delivery against the address; what this plan does **not** do is depend on it.
+
+        That separation is the whole reason the $L_3$ alias is a real one: with
+        $	ext{fields}(X,L_3)=arnothing$ there is no envelope at all, and a plan that read
+        `targets[site]` could not run there. Reading the *address* means one function serves both
+        cells with no tier branch:
+
+        $$oxed{	ext{credited-address identity} 
+eq 	ext{cell information delivery}}$$
+
+        And the write is the restore, on any pre-state, not only a healthy one: the store
+        canonicalises $u = site.cmd$ to a deletion, so
+        $\texttt{Apply}(S, \texttt{Edit}(X, site, site.cmd)) = \texttt{Apply}(S,
+        \texttt{Edit}(X, site, \bot))$ — which is A76 §63.8's frozen
+        $\texttt{LocalOracleRestore} = X_{id}$ as an equality of state transformations.
+        """
+        return LawPlan(self.name, tuple(
+            AddressPlan(site, (Edit(CONTROLLER, site, site.cmd),))
+            for site in addresses))
+
+
+class XLocalOracleRestore(XId):
+    r"""$X\times L_3$ — the locality-matched restore, an **alias** of `X_id`.
+
+    Implemented by inheritance, not by a second `plan`: $L_3$'s referent on this architecture is
+    "no override", and the identity write canonicalises to a deletion, so the $L_0$ operation *is*
+    the restore. A77 §65.2's alias precedent, applied: the gate asserts
+    `XLocalOracleRestore.plan is XId.plan`, because a second implementation that behaved
+    identically would be a different object with the same name.
+
+    It is an **alias, not a treatment**: $\lvert\text{independent treatments}\rvert(X) = 1$.
+    """
+
+    name = "LocalOracleRestore"
+    alias_of = "X_id"
+    tier = Tier.L3_ORACLE
+
+
+#: The $X$ registry: one treatment and its $L_3$ alias, with a same-tier reference per cell that
+#: has a substantive treatment (A77 §65.3). $L_1$/$L_2$ are ill-typed on this row (A76 §63.9), so
+#: they get neither a law nor a reference.
+X_LAWS = (
+    NoWriteRef(Tier.L0_FACTUAL),
+    XId,
+    NoWriteRef(Tier.L3_ORACLE),
+    XLocalOracleRestore,
+)
 
 
 #: Registration order is fixed so arm enumeration is deterministic.
