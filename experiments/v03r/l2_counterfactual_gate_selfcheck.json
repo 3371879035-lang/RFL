@@ -18,7 +18,7 @@
       "matched": 1,
       "expected_failure_text": null,
       "exit_code": 1,
-      "tail": "            g = 0.0\n            for j in range(len(cf_rows) - 1, a.state.t - 1, -1):\n                g = cf_rows[j][9] + g\n>           assert rec.g_cf.hex() == g.hex()\nE           AssertionError: assert '0x1.b851eb851eb84p-1' == '0x1.cccccccccccccp-1'\nE             \nE             - 0x1.cccccccccccccp-1\nE             + 0x1.b851eb851eb84p-1\ntests\\rebuild\\test_l2_counterfactual.py:610: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_l2_counterfactual.py::test_8_the_cf_target_is_the_frozen_fold_over_the_counterfactual_rows\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "            g = 0.0\n            for j in range(len(cf_rows) - 1, a.state.t - 1, -1):\n                g = cf_rows[j][9] + g\n>           assert rec.g_cf.hex() == g.hex()\nE           AssertionError: assert '0x<ADDR>.b851eb851eb84p-1' == '0x<ADDR>.cccccccccccccp-1'\nE             \nE             - 0x<ADDR>.cccccccccccccp-1\nE             + 0x<ADDR>.b851eb851eb84p-1\ntests\\rebuild\\test_l2_counterfactual.py:610: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_l2_counterfactual.py::test_8_the_cf_target_is_the_frozen_fold_over_the_counterfactual_rows\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -62,7 +62,7 @@
       "matched": 1,
       "expected_failure_text": null,
       "exit_code": 1,
-      "tail": "src\\rfl_rebuild\\b1\\tier.py:219: in __post_init__\n    unbuilt = sorted(t.name for t in self.implemented_tiers if t not in self.cells)\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n.0 = <set_iterator object at 0x000002182EB0B000>\n>   unbuilt = sorted(t.name for t in self.implemented_tiers if t not in self.cells)\n                     ^^^^^^\nE   AttributeError: 'int' object has no attribute 'name'\nsrc\\rfl_rebuild\\b1\\tier.py:219: AttributeError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_l2_counterfactual.py::test_23_an_implemented_tier_must_be_a_tier\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "src\\rfl_rebuild\\b1\\tier.py:219: in __post_init__\n    unbuilt = sorted(t.name for t in self.implemented_tiers if t not in self.cells)\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n.0 = <set_iterator object at 0x<ADDR>>\n>   unbuilt = sorted(t.name for t in self.implemented_tiers if t not in self.cells)\n                     ^^^^^^\nE   AttributeError: 'int' object has no attribute 'name'\nsrc\\rfl_rebuild\\b1\\tier.py:219: AttributeError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_l2_counterfactual.py::test_23_an_implemented_tier_must_be_a_tier\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {

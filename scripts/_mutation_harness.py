@@ -23,6 +23,27 @@ What "red" means, in full:
 
 The tree is always restored in a ``finally`` block, every touched file is re-hashed
 afterwards, and the run reports whether it is byte-identical to how it started.
+
+One thing in the artifact is **not** reproducible and must not be: pytest prints CPython
+heap addresses (``<function ... at 0x00000171...>``) in some assertion failures, so a stored
+diagnostic tail differs byte-for-byte between two runs of the same code. The verdicts were
+measured stable across runs, but the artifact is the evidence, and evidence that changes
+between identical runs cannot be compared. So the **raw** tail decides the verdict -- it is
+the thing ``expect_tail`` matches -- while only a **normalised** copy is stored:
+
+$$\boxed{\text{raw tail decides the verdict}}\qquad
+\boxed{\text{normalised tail only enters the JSON artifact}}$$
+
+Normalising before the verdict would have been the wrong repair: it would let a declared
+``expected_failure_text`` match text the gate never actually printed, which is the
+``WRONG_FAILURE_REASON`` hole reopening as a convenience.
+
+Redaction turned out to be **half** the repair. A second source of drift was measured after
+it: a gate that fails comparing a string-keyed set or dict prints that container, whose order
+is hash-randomised per process, so ``address_domain`` still produced four distinct artifact
+hashes in eight runs. The child's seed is therefore pinned as well (see ``run_node``); the two
+mechanisms together are what make "identical inputs give identical artifacts" true rather than
+nearly true.
 """
 
 from __future__ import annotations
@@ -31,10 +52,25 @@ import hashlib
 import json
 import os
 import pathlib
+import re
 import subprocess
 import sys
 
-__all__ = ["check_nodes", "run_mutations", "run_node", "summarise"]
+__all__ = ["check_nodes", "normalize_diagnostic_tail", "run_mutations", "run_node",
+           "summarise"]
+
+#: A CPython heap address, as it appears in a pytest assertion tail.
+_HEX_ADDR = re.compile(r"0x[0-9A-Fa-f]+")
+
+
+def normalize_diagnostic_tail(text: str) -> str:
+    """Replace heap addresses with a fixed token, for the stored artifact only.
+
+    ``0x<ADDR>`` rather than ``0xADDR``: keeping the ``0x`` makes it obvious in the
+    artifact that a number was there and was redacted on purpose, instead of looking like
+    a value the gate printed.
+    """
+    return _HEX_ADDR.sub("0x<ADDR>", text)
 
 #: pytest exits these when it never collected the requested node.
 NODE_NOT_FOUND_CODES = (4, 5)
@@ -94,8 +130,18 @@ def run_node(node: str, root: pathlib.Path) -> tuple[int, str]:
     A *tail* rather than the last line: with ``-x`` the final line is the "stopping after 1
     failures" banner, so a last-line-only excerpt can never contain the failure reason a
     mutation may declare.
+
+    ``PYTHONHASHSEED`` is pinned for the same reason ``PYTHONDONTWRITEBYTECODE`` is: the
+    stored tail must be reproducible. A mutation whose gate fails inside a comparison of a
+    **set or dict keyed by strings** prints that container, and its iteration order is
+    hash-randomised per process, so the artifact differed between runs that ran identical
+    code -- measured on ``address_domain``, which produced four distinct artifact hashes in
+    eight runs. Redaction of heap addresses cannot repair that: the text differs in *order*,
+    not in a token. Pinning the seed makes the diagnostic deterministic; the verdicts were
+    already stable in every measured run, and the ordinary suite still runs unpinned, so
+    order-dependence in a gate is still exercised where it would be a real defect.
     """
-    env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
+    env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1", PYTHONHASHSEED="0")
     proc = subprocess.run(
         [sys.executable, "-B", "-m", "pytest", node, "-q", "-p", "no:cacheprovider",
          "--no-header", "-x"],
@@ -148,7 +194,7 @@ def run_mutations(mutations, root: pathlib.Path, files) -> tuple[list, bool]:
             code, tail = run_node(node, root)
         finally:
             write(path, original)
-        record.update(exit_code=code, tail=tail,
+        record.update(exit_code=code, tail=normalize_diagnostic_tail(tail),
                       verdict=verdict_for(code, tail, expect_tail))
         results.append(record)
         print(f"[{record['verdict']:20}] {key:34} -> {record['gate']}")
