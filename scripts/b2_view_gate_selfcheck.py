@@ -45,7 +45,9 @@ ENVIRONMENT = SRC / "b2" / "environment.py"
 UTILITY = SRC / "b2" / "utility.py"
 COLLATERAL = SRC / "b2" / "collateral.py"
 RETENTION = SRC / "b2" / "retention.py"
+RUNNER = SRC / "b2" / "runner.py"
 B2_CAND_TESTS = "tests/rebuild/test_b2_candidates.py"
+B2_RUN_TESTS = "tests/rebuild/test_b2_runner.py"
 B2_ENV_TESTS = "tests/rebuild/test_b2_environment.py"
 
 #: (id, hole, path, old, new, pytest node id[, expected failure text])
@@ -388,6 +390,111 @@ MUTATIONS: tuple = (
         f"{B2_CAND_TESTS}::test_2_no_construction_is_selected_by_default",
         "inspect.signature(select_construction).parameters",
     ),
+    (
+        "runner_defaults_the_form",
+        "the runner substitutes a default Retention form, so the confirmatory primary is chosen by the instrument rather than by the development protocol",
+        RUNNER,
+        "        form = select_form(retention_form)\n",
+        "        form = select_form(retention_form or \"RetentionAtH\")      # MUTATED\n",
+        f"{B2_RUN_TESTS}::test_7_the_candidate_names_and_horizons_are_required_and_never_defaulted",
+        "DID NOT RAISE",
+    ),
+    (
+        "runner_defaults_the_construction",
+        "the runner substitutes a default unaffected-set construction, so a candidate A79 67.4 leaves to measurement properties is chosen by inaction",
+        RUNNER,
+        "        construction = select_construction(collateral_construction)\n",
+        "        construction = select_construction(collateral_construction or \"visited_complement\")  # MUTATED\n",
+        f"{B2_RUN_TESTS}::test_7_the_candidate_names_and_horizons_are_required_and_never_defaulted",
+        "DID NOT RAISE",
+    ),
+    (
+        "arm_accepts_arbitrary_callable",
+        "the arm's law check is disabled, so an arbitrary callable -- which can close over forbidden truth, a future or the other arm -- arrives as an update. This is B2-1's hole on the update side",
+        RUNNER,
+        "        if not _is_frozen_law(self.law, LAW_REGISTRIES[self.architecture]):\n",
+        "        if False:                            # MUTATED: any law accepted\n",
+        f"{B2_RUN_TESTS}::test_8_the_arms_are_nominal_and_dispatch_to_the_frozen_entry_points",
+        "DID NOT RAISE",
+    ),
+    (
+        "arm_uses_wrong_architecture_registry",
+        "the registries are merged, so a P law runs in an X arm and the reverse. Independent of the callable hole: a foreign law IS a frozen law, just not this architecture's",
+        RUNNER,
+        "LAW_REGISTRIES = {\"P\": P_LAWS, \"X\": X_LAWS}\n",
+        "LAW_REGISTRIES = {\"P\": P_LAWS + X_LAWS, \"X\": P_LAWS + X_LAWS}   # MUTATED\n",
+        f"{B2_RUN_TESTS}::test_9_a_law_from_another_architecture_is_refused",
+        "DID NOT RAISE",
+    ),
+    (
+        "runner_accepts_forbidden_exogenous_field",
+        "the exogenous setup's field surface widens, so routing truth rides along in the object the arms share -- the information boundary B2-4 exists to hold",
+        RUNNER,
+        "    checkpoints: tuple\n",
+        "    checkpoints: tuple\n    world_id: object = None                        # MUTATED\n",
+        f"{B2_RUN_TESTS}::test_5_the_paired_futures_share_one_exogenous_setup",
+        # Measured: the widened surface is refused by ExogenousSetup.__post_init__ itself,
+        # so the closed-surface check is load-bearing production code and the gate never
+        # reaches its own assertion. The declaration records the mechanism that fires.
+        "but its surface is frozen as",
+    ),
+    (
+        "runner_adds_composite_score",
+        "the scene record gains a composite field, so the three dimensions can be collapsed into one primary -- the composite A79 67.1 refuses, re-introduced at the instrument",
+        RUNNER,
+        "    observations: tuple\n",
+        "    observations: tuple\n    score: float = 0.0                            # MUTATED\n",
+        f"{B2_RUN_TESTS}::test_10_the_record_keeps_three_dimensions_and_no_composite",
+        "record.__dataclass_fields__",
+    ),
+    (
+        "unaffected_constructed_after_treatment",
+        "U_unaffected is built AFTER the arms have run, so the set the metric uses has already seen an update -- the order the whole pairing argument rests on",
+        RUNNER,
+        "        # (1) the shared design material, built BEFORE any arm exists\n        domain, visited = self.pre_update_source(state)\n        unaffected = self._construction(domain, visited)\n        self._recorder(\"unaffected\", unaffected, id(unaffected))\n\n        # (2) independent clones from ONE pre-update state\n        clones = [state.clone() for _ in arms]\n        pre_fingerprints = {arm.name: fingerprint(clone) for arm, clone in zip(arms, clones)}\n        if len(set(pre_fingerprints.values())) != 1:\n            raise ProtocolError(\n                \"the two arms did not start from one pre-update state: fingerprints \"\n                f\"{pre_fingerprints!r}; a serial chain from one arm into the other is not a pair\")\n\n        # (3) the updates, each on its own clone, before any future exists\n        for arm, clone in zip(arms, clones):\n            self._apply(arm, clone, evidence)\n            self._recorder(\"update_applied\", arm.name, id(clone))\n",
+        "        # MUTATED: the arms run first ...\n        domain, visited = self.pre_update_source(state)\n        clones = [state.clone() for _ in arms]\n        pre_fingerprints = {arm.name: fingerprint(clone) for arm, clone in zip(arms, clones)}\n        if len(set(pre_fingerprints.values())) != 1:\n            raise ProtocolError(\n                \"the two arms did not start from one pre-update state: fingerprints \"\n                f\"{pre_fingerprints!r}; a serial chain from one arm into the other is not a pair\")\n        for arm, clone in zip(arms, clones):\n            self._apply(arm, clone, evidence)\n            self._recorder(\"update_applied\", arm.name, id(clone))\n        # ... and only then is the unaffected set built\n        unaffected = self._construction(domain, visited)\n        self._recorder(\"unaffected\", unaffected, id(unaffected))\n",
+        f"{B2_RUN_TESTS}::test_1_the_unaffected_set_is_built_before_the_first_arm_runs",
+        "assert names[0] == \"unaffected\"",
+    ),
+    (
+        "per_arm_construction",
+        "the metric is handed a SECOND, value-equal construction while the recorder saw the first, so the arms do not share one object -- equality where identity is required",
+        RUNNER,
+        "        collateral = behavioral_collateral(unaffected, values_pre=levels_for(views[arms[0].name]),\n                                           values_post=levels_for(views[arms[1].name]))",
+        "        _u_treat = self._construction(domain, visited)      # MUTATED: a second construction\n        collateral = behavioral_collateral(_u_treat, values_pre=levels_for(views[arms[0].name]),\n                                           values_post=levels_for(views[arms[1].name]))",
+        f"{B2_RUN_TESTS}::test_3_the_arms_are_handed_one_object_not_two_equal_ones",
+        "the metric was handed a different object than the one built",
+    ),
+    (
+        "serial_arm_chain",
+        "the second arm is cloned from the first arm's POST-update state instead of from the shared pre-update state, so the pair is a serial chain and the contrast is contaminated",
+        RUNNER,
+        "        clones = [state.clone() for _ in arms]\n        pre_fingerprints = {arm.name: fingerprint(clone) for arm, clone in zip(arms, clones)}\n        if len(set(pre_fingerprints.values())) != 1:\n            raise ProtocolError(\n                \"the two arms did not start from one pre-update state: fingerprints \"\n                f\"{pre_fingerprints!r}; a serial chain from one arm into the other is not a pair\")\n\n        # (3) the updates, each on its own clone, before any future exists\n        for arm, clone in zip(arms, clones):\n            self._apply(arm, clone, evidence)\n            self._recorder(\"update_applied\", arm.name, id(clone))\n",
+        "        clones = [state.clone()]\n        self._apply(arms[0], clones[0], evidence)             # MUTATED: arm 1 runs first ...\n        self._recorder(\"update_applied\", arms[0].name, id(clones[0]))\n        clones.append(clones[0].clone())                      # ... and arm 2 clones its post-state\n        self._apply(arms[1], clones[1], evidence)\n        self._recorder(\"update_applied\", arms[1].name, id(clones[1]))\n        pre_fingerprints = {arm.name: fingerprint(clone) for arm, clone in zip(arms, clones)}\n        if len(set(pre_fingerprints.values())) != 1:\n            raise ProtocolError(\n                \"the two arms did not start from one pre-update state: fingerprints \"\n                f\"{pre_fingerprints!r}; a serial chain from one arm into the other is not a pair\")\n",
+        f"{B2_RUN_TESTS}::test_4_the_arms_fork_from_one_pre_update_state",
+        # Measured: the gate now fails on its OWN parent check rather than on the runner's
+        # fingerprint guard, because the mutation changes the derivation while the resulting
+        # contents can still converge.
+        "a clone was taken from a state that had already been updated",
+    ),
+    (
+        "paired_arms_use_different_future_noise",
+        "one arm is given a fresh, value-equal exogenous setup, so the arms no longer share noise and the difference between them is no longer attributable to Delta W",
+        RUNNER,
+        "            environment = self._environment_factory(exogenous)\n            self._recorder(\"exogenous\", arm.name, id(exogenous))",
+        "            _setup = exogenous if arm is arms[0] else ExogenousSetup(       # MUTATED\n                kappa=exogenous.kappa, phi=exogenous.phi, tape=exogenous.tape,\n                base_option=exogenous.base_option, q_reference=exogenous.q_reference,\n                checkpoints=exogenous.checkpoints)\n            environment = self._environment_factory(_setup)\n            self._recorder(\"exogenous\", arm.name, id(_setup))",
+        f"{B2_RUN_TESTS}::test_5_the_paired_futures_share_one_exogenous_setup",
+        "len(set(setup_ids)) == 1",
+    ),
+    (
+        "future_before_update",
+        "a future event is emitted before any update, i.e. the outcome exists before the write whose consequence it is supposed to be",
+        RUNNER,
+        "        # (3) the updates, each on its own clone, before any future exists\n        for arm, clone in zip(arms, clones):",
+        "        # (3) MUTATED: a future is produced before the updates\n        self._recorder(\"future\", arms[0].name, None)\n        for arm, clone in zip(arms, clones):",
+        f"{B2_RUN_TESTS}::test_6_no_future_exists_before_the_updates_are_applied",
+        "assert first_future > last_update",
+    ),
 )
 
 
@@ -402,7 +509,8 @@ def main() -> int:
         print(f"[STALE_NODE_ID       ] {key:34} -> {node} ({why})")
 
     results, restored = harness.run_mutations(
-        MUTATIONS, ROOT, (VIEW, PRODUCER, ENVIRONMENT, UTILITY, COLLATERAL, RETENTION))
+        MUTATIONS, ROOT, (VIEW, PRODUCER, ENVIRONMENT, UTILITY, COLLATERAL, RETENTION,
+                          RUNNER))
     return harness.summarise("B2-1 view/builder gate mutation self-check", MUTATIONS, results,
                              restored, stale, ROOT, pathlib.Path(args.json))
 
