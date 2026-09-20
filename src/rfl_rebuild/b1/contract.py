@@ -25,6 +25,7 @@ from dataclasses import dataclass, field
 from types import MappingProxyType
 from typing import Mapping
 
+from rfl_rebuild.b1.errors import ProtocolError
 from rfl_rebuild.learner.store import DecisionAddress
 
 __all__ = [
@@ -44,19 +45,6 @@ NO_VALID_ALTERNATIVE = "NO_VALID_ALTERNATIVE"
 PROTOCOL_ERROR = "PROTOCOL_ERROR"
 
 STATUSES = (APPLIED, EVALUABLE_NOOP, NO_VALID_ALTERNATIVE, PROTOCOL_ERROR)
-
-
-class ProtocolError(Exception):
-    """A76 §63.3 ``PROTOCOL_ERROR``: an invariant failed; the run is invalidated.
-
-    **Deliberately a separate hierarchy** from ``method.credit.ProtocolError`` (a
-    typing violation) and from ``learner.store.StoreTransactionError`` (a substrate
-    atomicity error). The same reasoning the kernel applies to
-    ``LearnerContractViolation``: an old handler that catches a typing error must not
-    silently swallow a benchmark-invalidating failure.
-
-    It must never be turned into a normal result and scored by B2.
-    """
 
 
 def _canon_decision(overrides: Mapping) -> str:
@@ -134,14 +122,21 @@ class DecisionWriteReceipt:
     joins those back on afterwards, so a metric cannot read them through a receipt.
     """
 
-    address: DecisionAddress
+    address: object
     status: str
     store_changed: bool
+    canonical_form: str = ""
 
     def canon(self) -> str:
-        s = self.address.state
-        return (f"{s.x},{s.y},{s.t},{s.kappa},{s.phi},{self.address.z},"
-                f"{self.address.m}|{self.status}|{int(self.store_changed)}")
+        """Canonical receipt, byte-identical to the pre-refactor encoding.
+
+        The address is an addressed value, so the *domain* supplies the encoding. A80 68.2
+        requires it to be injective on the legal domain -- two distinct credited addresses may
+        not share a receipt identity -- and the domain tag stays out of these bytes because
+        A77 65.12 freezes that the architecture belongs to the arm descriptor and not to the
+        canonical ledger.
+        """
+        return f"{self.canonical_form}|{self.status}|{int(self.store_changed)}"
 
 
 @dataclass(frozen=True, slots=True)

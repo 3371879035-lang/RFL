@@ -17,7 +17,6 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from rfl_rebuild.b1.contract import ProtocolError
-from rfl_rebuild.env.domain import is_decision_context
 from rfl_rebuild.learner.store import DecisionAddress, owner_Q
 
 __all__ = ["RestoreRow", "dq_owner"]
@@ -54,22 +53,7 @@ class RestoreRow:
     the predicate is Step 3's audited one, reused rather than restated.
     """
 
-    context: DecisionAddress
-
-    def __post_init__(self) -> None:
-        if type(self.context) is not DecisionAddress:
-            raise ProtocolError(
-                f"RestoreRow context is {self.context!r} of type "
-                f"{type(self.context).__name__}, not a DecisionAddress")
-        if not is_decision_context(self.context.state, self.context.z, self.context.m):
-            raise ProtocolError(
-                f"RestoreRow context {self.context!r} is not a strictly typed decision "
-                "context: its State fields must be true integers in their domains and z, m "
-                "true integers inside theirs. Python folds 1.0, True and 1 into one key, so "
-                "a value-equal alias would otherwise match a legal credited row in the plan "
-                "check, the owner check AND the lowering (A78 §66.5)")
-
-
+    context: object
 def dq_owner(op) -> DecisionAddress:
     r"""$D_Q$'s owner resolver, total over entry addresses and row operations.
 

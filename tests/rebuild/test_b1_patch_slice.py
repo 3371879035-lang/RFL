@@ -17,6 +17,7 @@ import pytest
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
+from rfl_rebuild.b1.addressing import AddressDomain  # noqa: E402
 from rfl_rebuild.b1 import (  # noqa: E402
     APPLIED, EVALUABLE_NOOP, ILL_TYPED, LAWS, NO_VALID_ALTERNATIVE, PATCH_SLICE,
     PROTOCOL_ERROR, AddressPlan, DeleteFactualPatch, LocalOracleRestore, NoWrite,
@@ -571,6 +572,32 @@ def test_8q_the_frozen_cell_table_is_what_is_declared():
 _Z0, _Z1 = K.option_ids()[0], K.option_ids()[1]
 
 
+def _test_domain(tag, owner, store_type=DecisionAddress):
+    """A test-local address domain: strict about its own type, like a real architecture.
+
+    These slices are deliberately not $D_Q$ or $D_{patch}$ -- they exist to reach plan shapes
+    the real architectures cannot -- so they bring their own domain rather than borrowing one
+    (A80 68.2: the shared layer carries an architecture's domain, it does not supply one).
+    """
+    def require_credited(value):
+        if type(value) is not DecisionAddress:
+            raise ProtocolError(
+                f"the {tag} domain credits DecisionAddress, got {type(value).__name__}")
+
+    def require_store(value):
+        if type(value) is not store_type:
+            raise ProtocolError(
+                f"the {tag} store is keyed by {store_type.__name__}, got "
+                f"{type(value).__name__}")
+
+    def canonical(value):
+        s = value.state
+        return f"{s.x},{s.y},{s.t},{s.kappa},{s.phi},{value.z},{value.m}"
+
+    return AddressDomain(tag=tag, require_credited=require_credited,
+                         require_store=require_store, owner=owner, canonical=canonical)
+
+
 def _two_entry_slice():
     """A slice whose owner map collapses two PROCESS entries onto one context.
 
@@ -582,7 +609,7 @@ def _two_entry_slice():
         name="TestTwoEntry",
         store=PROCESS,
         scalar=False,
-        owner=lambda address: A,
+        domain=_test_domain("TestTwoEntry", lambda address: A, store_type=int),
         view=lambda state: dict(state.process_overrides),
         cells={t: (ILL_TYPED if t is Tier.L2_COUNTERFACTUAL else frozenset())
                for t in Tier},
@@ -661,7 +688,7 @@ def test_8t_a_descriptor_missing_an_extractor_fails_at_construction():
     with pytest.raises(ProtocolError) as ei:
         SliceDescriptor(
             name="Broken", store=DECISION, scalar=False,
-            owner=lambda address: address,
+            domain=_test_domain("TestIdentity", lambda address: address),
             view=lambda state: dict(state.decision_overrides),
             cells={t: (frozenset({"alternative"}) if t is Tier.L1_CORRECTIVE
                        else (ILL_TYPED if t is Tier.L2_COUNTERFACTUAL
@@ -676,7 +703,7 @@ def test_8t2_a_descriptor_must_declare_every_tier():
     with pytest.raises(ProtocolError) as ei:
         SliceDescriptor(
             name="Partial", store=DECISION, scalar=False,
-            owner=lambda address: address,
+            domain=_test_domain("TestIdentity", lambda address: address),
             view=lambda state: dict(state.decision_overrides),
             cells={Tier.L0_FACTUAL: frozenset()},
             extract={})
@@ -686,7 +713,7 @@ def test_8t2_a_descriptor_must_declare_every_tier():
 def test_8t3_a_non_bool_scalar_flag_is_rejected():
     with pytest.raises(ProtocolError) as ei:
         SliceDescriptor(
-            name="Coerced", store=DECISION, scalar=0, owner=lambda a: a,
+            name="Coerced", store=DECISION, scalar=0, domain=_test_domain("Coerced", lambda a: a),
             view=lambda state: dict(state.decision_overrides),
             cells={t: (ILL_TYPED if t is Tier.L2_COUNTERFACTUAL else frozenset())
                    for t in Tier},
@@ -1283,7 +1310,12 @@ def test_receipts_carry_no_truth_or_scenario_identity():
         for name in _FORBIDDEN:
             assert not hasattr(r, name)
         assert not hasattr(r, "gamma_star")
-        assert set(r.__slots__) == {"address", "status", "store_changed"}
+        # `canonical_form` is the domain's encoding of the receipt's own address, so it is a
+        # function of the address and of nothing else -- not truth, not a regime, not a fire
+        # pattern, not a scenario identity. It is a field rather than a method because the
+        # receipt no longer knows what kind of address it holds (A80 68.2).
+        assert set(r.__slots__) == {"address", "status", "store_changed",
+                                    "canonical_form"}
 
 
 def test_no_write_run_still_produces_a_full_ledger():

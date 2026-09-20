@@ -26,7 +26,8 @@ ROOT = pathlib.Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
 from rfl_rebuild.b1 import (  # noqa: E402
-    APPLIED, DQ_LAWS, DQ_SLICE, EVALUABLE_NOOP, NO_VALID_ALTERNATIVE, AddressPlan,
+    APPLIED, DQ_DOMAIN, DQ_LAWS, DQ_SLICE, EVALUABLE_NOOP, NO_VALID_ALTERNATIVE,
+    AddressPlan,
     CounterfactualReturnWrite, DQLocalOracleRestore, DeleteFactualPatch, DualReturnWrite,
     FactualReturnWrite, LawPlan, LocalOracleRestore, NoWriteRef, ProtocolError,
     PATCH_SLICE, RestoreRow, Tier, dq_owner, independent_treatment_count,
@@ -288,69 +289,78 @@ def test_9bx_a_value_equal_context_alias_is_not_a_legal_context():
     $$\boxed{\texttt{alias} = \texttt{legal} \;\land\; h(\texttt{alias}) =
     h(\texttt{legal}) \;\not\Longrightarrow\; \texttt{alias} \text{ is legal}}$$
 
-    `DecisionAddress` is a plain dataclass and inherits Python's folding. Inside an *exact*
-    `RestoreRow`, such an alias would satisfy the plan's context check, the owner resolver's
-    locality check and the lowering's row match — all three by value equality — and a legal
-    credited row would be deleted on behalf of a context that is not a legal context.
+    `DecisionAddress` is a plain dataclass and inherits Python's folding, so a value-equal alias
+    would satisfy the plan's context check, the owner resolver's locality check and the
+    lowering's row match — all three by value equality — and a legal credited row would be
+    deleted on behalf of a context that is not a legal context. The architecture's **domain**
+    refuses it, at the cell boundary, for both arms alike.
     """
-    legal = DecisionAddress(state=State(x=1, y=2, t=3, kappa=0, phi=1), z=1, m=0)
+    rows, addrs, target, state, written = scene(overrides=1)
+    legal = target
     aliases = [
-        DecisionAddress(state=State(x=1.0, y=2, t=3, kappa=0, phi=1), z=1, m=0),
-        DecisionAddress(state=State(x=1, y=2, t=3, kappa=0, phi=1), z=True, m=0),
-        DecisionAddress(state=State(x=1, y=2, t=3, kappa=0, phi=1), z=1, m=0.0),
+        DecisionAddress(state=State(x=float(legal.state.x), y=legal.state.y, t=legal.state.t,
+                                    kappa=legal.state.kappa, phi=legal.state.phi),
+                        z=legal.z, m=legal.m),
+        DecisionAddress(state=legal.state, z=bool(legal.z), m=legal.m),
+        DecisionAddress(state=legal.state, z=legal.z, m=float(legal.m)),
     ]
-    # (0) the premise: Python really does fold these
     for alias in aliases:
         assert alias == legal, "the gate's premise: the alias folds onto the legal address"
         assert hash(alias) == hash(legal)
-    # (1) and the typed domain refuses each of them anyway
-    for alias in aliases:
-        with pytest.raises(ProtocolError) as ei:
-            RestoreRow(alias)
-        assert "strictly typed decision context" in str(ei.value), ei.value
-    # (2) while the legal one is accepted, so the rejection is not blanket
-    assert RestoreRow(legal).context == legal
-    # (3) and a non-DecisionAddress context is refused by type
+    # (1) both arms of the cell refuse it, at the same boundary
+    for law in (NoWriteRef(Tier.L3_ORACLE), DQLocalOracleRestore):
+        for alias in aliases:
+            with pytest.raises(ProtocolError) as ei:
+                run_row_restore_law(law, LearnerPersistentState(), [alias], VIEW)
+            assert "strictly typed decision context" in str(ei.value), ei.value
+    # (2) the legal one still runs, so the rejection is not blanket
+    res = run_row_restore_law(DQLocalOracleRestore, state, addrs, VIEW)
+    assert res.ledger.n_scalar == 1
+    # (3) a non-DecisionAddress is refused by type
     with pytest.raises(ProtocolError) as ei2:
-        RestoreRow(legal.state)
-    assert "not a DecisionAddress" in str(ei2.value)
+        run_row_restore_law(DQLocalOracleRestore, LearnerPersistentState(),
+                            [legal.state], VIEW)
+    assert "not DecisionAddress" in str(ei2.value)
+    assert written
 
 
 def test_9f_the_credited_address_boundary_is_arm_uniform():
-    r"""Both arms of the cell refuse the same malformed population, at the same boundary.
+    r"""Both arms of the cell refuse the same malformed population, with the same reason.
 
-    `RestoreRow` closes its context, so the treatment was protected -- and that is precisely
-    how the hole hid: the boundary was carried by the arm that happens to construct a typed
-    object, while `NoWriteRef(L3)` constructs none and accepted the same alias. The check is
-    therefore cell-level and runs BEFORE any arm plans; by the time a law's `plan` is called,
-    `RestoreRow` would already have raised for one arm and not the other.
-
-    The three folding aliases are reused rather than invented: the point is the asymmetry,
-    not the alias.
+    The boundary used to be carried by whichever arm happened to construct a typed object:
+    `RestoreRow` refused a folded alias while `NoWriteRef(L3)` accepted it. It is now the
+    slice's **domain** that decides, once, before any arm plans — so the two arms cannot
+    disagree, and the assertion is an *equality of reasons* rather than two independent
+    `raises`, because "same boundary" is the claim.
     """
-    legal = DecisionAddress(state=State(x=1, y=2, t=3, kappa=0, phi=1), z=1, m=0)
+    rows, addrs, target, state, written = scene(overrides=1)
+    legal = target
     aliases = [
-        DecisionAddress(state=State(x=1.0, y=2, t=3, kappa=0, phi=1), z=1, m=0),
-        DecisionAddress(state=State(x=1, y=2, t=3, kappa=0, phi=1), z=True, m=0),
-        DecisionAddress(state=State(x=1, y=2, t=3, kappa=0, phi=1), z=1, m=0.0),
+        DecisionAddress(state=State(x=float(legal.state.x), y=legal.state.y, t=legal.state.t,
+                                    kappa=legal.state.kappa, phi=legal.state.phi),
+                        z=legal.z, m=legal.m),
+        DecisionAddress(state=legal.state, z=bool(legal.z), m=legal.m),
+        DecisionAddress(state=legal.state, z=legal.z, m=float(legal.m)),
     ]
     for alias in aliases:
         assert alias == legal and hash(alias) == hash(legal), "the premise"
         messages = []
         for law in (NoWriteRef(Tier.L3_ORACLE), DQLocalOracleRestore):
-            state = LearnerPersistentState()
             with pytest.raises(ProtocolError) as ei:
-                run_row_restore_law(law, state, [alias], VIEW)
+                run_row_restore_law(law, LearnerPersistentState(), [alias], VIEW)
             messages.append(str(ei.value))
         assert messages[0] == messages[1], (
             "the reference and the treatment must fail at the same boundary with the same "
             f"reason; got:\n  {messages[0]}\n  {messages[1]}")
         assert "strictly typed decision context" in messages[0]
-    # and a non-DecisionAddress is refused by type, also for both arms
+    # and a non-DecisionAddress is refused by type, also for both arms with one reason
+    messages = []
     for law in (NoWriteRef(Tier.L3_ORACLE), DQLocalOracleRestore):
         with pytest.raises(ProtocolError) as ei2:
             run_row_restore_law(law, LearnerPersistentState(), [legal.state], VIEW)
-        assert "not DecisionAddress" in str(ei2.value)
+        messages.append(str(ei2.value))
+    assert messages[0] == messages[1] and "not DecisionAddress" in messages[0]
+    assert written
 
 
 def test_9c_a_row_operation_cannot_leak_into_another_architecture():

@@ -148,9 +148,10 @@ def _validate_plan(plan: LawPlan, addresses: Sequence, spec: SliceDescriptor) ->
                 raise ProtocolError(
                     f"law {plan.name} planned an edit to the {e.store} store, which is "
                     f"outside the {spec.name} slice")
-            if spec.owner(e.address) != p.address:
+            spec.domain.require_store(e.address)
+            if spec.domain.owner(e.address) != p.address:
                 raise ProtocolError(
-                    f"law {plan.name} planned a write owned by {spec.owner(e.address)!r} "
+                    f"law {plan.name} planned a write owned by {spec.domain.owner(e.address)!r} "
                     f"under the credited context {p.address!r}; owner_locality requires "
                     f"owner_{spec.name}(edit.address) == plan.address")
         if p.row_op is not None:
@@ -159,7 +160,7 @@ def _validate_plan(plan: LawPlan, addresses: Sequence, spec: SliceDescriptor) ->
             # return value -- and a row operation emitted under another architecture
             # reached the lowering, where it degenerated into that slice's edit kind.
             try:
-                owner = spec.owner(p.row_op)
+                owner = spec.domain.owner(p.row_op)
             except (AttributeError, TypeError, KeyError) as exc:
                 raise ProtocolError(
                     f"law {plan.name} emitted {p.row_op!r} under the {spec.name} slice, "
@@ -428,8 +429,9 @@ def _run(law: "_Law", tier: Tier, pre_state: LearnerPersistentState,
             status = p.status          # a declared reason, e.g. NO_VALID_ALTERNATIVE
         else:
             status = APPLIED if changed else EVALUABLE_NOOP
-        receipts.append(DecisionWriteReceipt(address=p.address, status=status,
-                                             store_changed=changed))
+        receipts.append(DecisionWriteReceipt(
+            address=p.address, status=status, store_changed=changed,
+            canonical_form=spec.domain.canonical(p.address)))
 
     n_scalar, total_delta, largest_delta = (0, 0.0, 0.0)
     if spec.scalar:
@@ -462,6 +464,7 @@ def run_patch_law_with_envelope(law, pre_state: LearnerPersistentState,
     cannot fail an $L_0$ patch arm.
     """
     law, tier = _law_contract(law, spec)
+    _require_credited(addresses, spec)
     if spec.fields(tier):
         if spec.name != PATCH_SLICE.name:
             raise ProtocolError(
@@ -473,37 +476,23 @@ def run_patch_law_with_envelope(law, pre_state: LearnerPersistentState,
     return _run(law, tier, pre_state, addresses, targets, spec, q_reference)
 
 
-def _require_strict_decision_addresses(addresses: Sequence) -> None:
-    r"""The credited-address boundary: typed, and inside the decision domain.
+def _require_credited(addresses: Sequence, spec: SliceDescriptor) -> None:
+    r"""The credited-address boundary: the architecture's own domain decides.
 
     $$\boxed{\text{same cell} \Rightarrow \text{same admissibility boundary, before any
     arm-specific behaviour}}$$
 
-    The principle already frozen for the $L_0$/$Q$ reference boundary, applied to the
-    *population* rather than to the reference. Without it the boundary was carried by
-    whichever arm happened to construct something typed: a value-equal but type-malformed
-    credited address (`State(x{=}1.0)`, `z{=}\texttt{True}`, `m{=}0.0` — Python folds it onto
-    the legal address, hashes included) was refused by `DQLocalOracleRestore`, because
-    `RestoreRow` closes its context, and **accepted** by `NoWriteRef(L3)`, which constructs
-    no row operation at all. Two arms of one cell with two admissibility boundaries is
-    exactly the asymmetry the earlier rounds closed elsewhere.
+    This replaces the hard-coded `DecisionAddress` check A78 §66.5 put here. The rule is
+    unchanged — the credited population is typed, and inside the architecture's decision
+    domain, *before* any arm plans — but the rule is now the architecture's: the slice's
+    domain is asked, so an architecture whose credited addresses are not decision addresses
+    is expressible without the shared layer knowing what they are (A80 §68.2).
 
-    Checked **before** the tier dispatch, so it cannot be reordered behind a law's `plan`:
-    by then `RestoreRow` would already have raised for one arm and not for the other, which
-    is the failure mode itself.
+    There is deliberately no shared "is this an address" predicate: each domain closes its own
+    type and range, and a value it does not admit fails stop here rather than reaching a plan.
     """
     for a in addresses:
-        if type(a) is not DecisionAddress:
-            raise ProtocolError(
-                f"credited address {a!r} has type {type(a).__name__}, not "
-                "DecisionAddress; the credited population is typed before any arm plans")
-        if not is_decision_context(a.state, a.z, a.m):
-            raise ProtocolError(
-                f"credited address {a!r} is not a strictly typed decision context: its "
-                "State fields must be true integers in their domains and z, m true integers "
-                "inside theirs. Python folds 1.0, True and 1 into one key, so a value-equal "
-                "alias would otherwise be admitted by whichever arm does not happen to "
-                "construct a typed object (A78 §66.5)")
+        spec.domain.require_credited(a)
 
 
 def run_dq_law(law, pre_state: LearnerPersistentState,
@@ -528,7 +517,7 @@ def run_dq_law(law, pre_state: LearnerPersistentState,
     silently building a weaker envelope.
     """
     law, tier = _law_contract(law, spec)
-    _require_strict_decision_addresses(addresses)
+    _require_credited(addresses, spec)
     if tier is Tier.L3_ORACLE:
         # The empty cell is ASSERTED here rather than inherited from the branch below,
         # which would call it "nothing to build" and refuse it. An empty cell must not
@@ -613,8 +602,7 @@ def run_dq_law(law, pre_state: LearnerPersistentState,
                 f"fingerprints {fp_episode} and the target store fingerprints "
                 f"{fp_target}. An L2 arm computes both of its targets from the snapshot of "
                 "the learner it is training (A76 §63.4)")
-        envelope = build_counterfactual_envelope(rows, addresses, sol=sol,
-                                                 episode=episode)
+        envelope = build_counterfactual_envelope(rows, addresses, sol=sol, episode=episode)
         validate_counterfactual_envelope(addresses, envelope, rows, sol=sol,
                                          episode=episode)
     else:
@@ -681,6 +669,7 @@ def run_patch_law(law, pre_state: LearnerPersistentState, credited_units,
     """Resolve, build the cell's fields **only if it declares any**, plan, commit once."""
     law, tier = _law_contract(law, spec)
     addresses = resolve_credited_units(credited_units, trace, kappa, phi)
+    _require_credited(addresses, spec)
     targets = None
     if spec.fields(tier):
         targets = build_target_envelope(sol, addresses, trace, kappa, phi)

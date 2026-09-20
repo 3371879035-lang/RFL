@@ -51,6 +51,7 @@ SRC = ROOT / "src" / "rfl_rebuild"
 RUNNER = SRC / "b1" / "runner.py"
 LAWS = SRC / "b1" / "laws.py"
 PLAN = SRC / "b1" / "plan.py"
+TIER = SRC / "b1" / "tier.py"
 STORE = SRC / "learner" / "store.py"
 TESTS = "tests/rebuild/test_l3_row_restore.py"
 
@@ -164,8 +165,11 @@ MUTATIONS: tuple = (
         "value-equal context alias through RestoreRow, while NoWriteRef(L3) accepts it and "
         "completes",
         RUNNER,
-        "    _require_strict_decision_addresses(addresses)\n",
-        "    pass                            # MUTATED: cell boundary removed\n",
+        # "    _require_credited(addresses, spec)\n" occurs at three entry points, so the
+        # mutation disables the rule inside the function instead: one anchor, and it covers
+        # every caller rather than one of them.
+        "        spec.domain.require_credited(a)\n",
+        "        pass                        # MUTATED: cell boundary removed\n",
         f"{TESTS}::test_9f_the_credited_address_boundary_is_arm_uniform",
         "DID NOT RAISE",
     ),
@@ -174,9 +178,11 @@ MUTATIONS: tuple = (
         "RestoreRow accepts a value-equal but type-malformed context alias, which then "
         "satisfies the plan's context check, the owner resolver's locality check and the "
         "lowering's row match by value equality, deleting a legal credited row",
-        PLAN,
-        "        if not is_decision_context(self.context.state, self.context.z, self.context.m):\n",
-        "        if False:               # MUTATED: alias accepted\n",
+        TIER,
+        # the strict-context rule moved from the shared row operation to the architecture's
+        # domain (A80 68.2), so the mutation follows it there
+        "    if not is_decision_context(value.state, value.z, value.m):\n",
+        "    if False:                   # MUTATED: alias accepted\n",
         f"{TESTS}::test_9bx_a_value_equal_context_alias_is_not_a_legal_context",
         "DID NOT RAISE",
     ),

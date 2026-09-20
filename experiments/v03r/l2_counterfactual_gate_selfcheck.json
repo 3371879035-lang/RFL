@@ -40,7 +40,7 @@
       "matched": 1,
       "expected_failure_text": "DID NOT RAISE",
       "exit_code": 1,
-      "tail": "        assert other, \"the probe needs a third admissible action\"\n        lie = dict(good)\n        lie[victim] = CounterfactualTarget(victim, good[victim].a_factual,\n                                           good[victim].g_factual, other[0],\n                                           good[victim].g_cf)\n>       with pytest.raises(ProtocolError) as ei:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.b1.contract.ProtocolError'>\ntests\\rebuild\\test_l2_counterfactual.py:640: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_l2_counterfactual.py::test_9b_a_substituted_alternative_is_rejected\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "        assert other, \"the probe needs a third admissible action\"\n        lie = dict(good)\n        lie[victim] = CounterfactualTarget(victim, good[victim].a_factual,\n                                           good[victim].g_factual, other[0],\n                                           good[victim].g_cf)\n>       with pytest.raises(ProtocolError) as ei:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.b1.errors.ProtocolError'>\ntests\\rebuild\\test_l2_counterfactual.py:640: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_l2_counterfactual.py::test_9b_a_substituted_alternative_is_rejected\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -51,7 +51,7 @@
       "matched": 1,
       "expected_failure_text": "DID NOT RAISE",
       "exit_code": 1,
-      "tail": "        without = next((a for a in addrs if env[a].a_plus is None), None)\n        assert without is not None, \"the healthy support is mostly addresses without one\"\n        lie = dict(env)\n        lie[without] = CounterfactualTarget(without, env[without].a_factual,\n                                            env[without].g_factual, None, 123.0)\n>       with pytest.raises(ProtocolError) as ei:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.b1.contract.ProtocolError'>\ntests\\rebuild\\test_l2_counterfactual.py:718: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_l2_counterfactual.py::test_20_a_half_counterfactual_record_is_refused\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "        without = next((a for a in addrs if env[a].a_plus is None), None)\n        assert without is not None, \"the healthy support is mostly addresses without one\"\n        lie = dict(env)\n        lie[without] = CounterfactualTarget(without, env[without].a_factual,\n                                            env[without].g_factual, None, 123.0)\n>       with pytest.raises(ProtocolError) as ei:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.b1.errors.ProtocolError'>\ntests\\rebuild\\test_l2_counterfactual.py:718: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_l2_counterfactual.py::test_20_a_half_counterfactual_record_is_refused\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -62,7 +62,7 @@
       "matched": 1,
       "expected_failure_text": null,
       "exit_code": 1,
-      "tail": "src\\rfl_rebuild\\b1\\tier.py:203: in __post_init__\n    unbuilt = sorted(t.name for t in self.implemented_tiers if t not in self.cells)\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n.0 = <set_iterator object at 0x00000203D974B340>\n>   unbuilt = sorted(t.name for t in self.implemented_tiers if t not in self.cells)\n                     ^^^^^^\nE   AttributeError: 'int' object has no attribute 'name'\nsrc\\rfl_rebuild\\b1\\tier.py:203: AttributeError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_l2_counterfactual.py::test_23_an_implemented_tier_must_be_a_tier\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "src\\rfl_rebuild\\b1\\tier.py:211: in __post_init__\n    unbuilt = sorted(t.name for t in self.implemented_tiers if t not in self.cells)\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n.0 = <set_iterator object at 0x00000196B8F1FFC0>\n>   unbuilt = sorted(t.name for t in self.implemented_tiers if t not in self.cells)\n                     ^^^^^^\nE   AttributeError: 'int' object has no attribute 'name'\nsrc\\rfl_rebuild\\b1\\tier.py:211: AttributeError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_l2_counterfactual.py::test_23_an_implemented_tier_must_be_a_tier\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -73,7 +73,7 @@
       "matched": 1,
       "expected_failure_text": null,
       "exit_code": 1,
-      "tail": "        Otherwise the arm observes learner $A$'s experience, computes learner $A$'s target, and\n        trains learner $B$. The check runs **before** any target is built, so the failure\n        cannot be reached through a partially-constructed envelope.\n        \"\"\"\n        ep, rows, addrs, pre, _env = first_bent()\n>       with pytest.raises(ProtocolError) as ei:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.b1.contract.ProtocolError'>\ntests\\rebuild\\test_l2_counterfactual.py:378: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_l2_counterfactual.py::test_3_the_target_learner_and_the_updated_learner_must_be_the_same\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "        Otherwise the arm observes learner $A$'s experience, computes learner $A$'s target, and\n        trains learner $B$. The check runs **before** any target is built, so the failure\n        cannot be reached through a partially-constructed envelope.\n        \"\"\"\n        ep, rows, addrs, pre, _env = first_bent()\n>       with pytest.raises(ProtocolError) as ei:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.b1.errors.ProtocolError'>\ntests\\rebuild\\test_l2_counterfactual.py:378: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_l2_counterfactual.py::test_3_the_target_learner_and_the_updated_learner_must_be_the_same\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -84,7 +84,7 @@
       "matched": 1,
       "expected_failure_text": "DID NOT RAISE",
       "exit_code": 1,
-      "tail": "        row_i = late.state.t + 1\n        tampered[row_i][idx] = (tampered[row_i][idx] + 1) % len(K.ACTIONS)\n        tampered = tuple(tuple(r) for r in tampered)\n        assert tampered != tuple(rows)\n        assert tampered[:late.state.t] == tuple(rows)[:late.state.t], \"prefix untouched\"\n>       with pytest.raises(ProtocolError) as ei:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.b1.contract.ProtocolError'>\ntests\\rebuild\\test_l2_counterfactual.py:312: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_l2_counterfactual.py::test_2d_rows_that_are_not_this_configurations_are_refused\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "        row_i = late.state.t + 1\n        tampered[row_i][idx] = (tampered[row_i][idx] + 1) % len(K.ACTIONS)\n        tampered = tuple(tuple(r) for r in tampered)\n        assert tampered != tuple(rows)\n        assert tampered[:late.state.t] == tuple(rows)[:late.state.t], \"prefix untouched\"\n>       with pytest.raises(ProtocolError) as ei:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.b1.errors.ProtocolError'>\ntests\\rebuild\\test_l2_counterfactual.py:312: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_l2_counterfactual.py::test_2d_rows_that_are_not_this_configurations_are_refused\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -106,7 +106,7 @@
       "matched": 1,
       "expected_failure_text": null,
       "exit_code": 1,
-      "tail": "            return reference_view_from(type(\"S\", (), {\"q\": rows})())\n        ep, rows, addrs, pre, _env = first_bent()\n        # (a) a second, legal, DIFFERENT referent for the transaction\n        other = perturbed_view(1.5)\n        assert other.digest() != VIEW.digest()\n>       with pytest.raises(ProtocolError) as ei:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.b1.contract.ProtocolError'>\ntests\\rebuild\\test_l2_counterfactual.py:335: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_l2_counterfactual.py::test_2e_the_episode_the_adapter_and_the_transaction_are_one_referent\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "            return reference_view_from(type(\"S\", (), {\"q\": rows})())\n        ep, rows, addrs, pre, _env = first_bent()\n        # (a) a second, legal, DIFFERENT referent for the transaction\n        other = perturbed_view(1.5)\n        assert other.digest() != VIEW.digest()\n>       with pytest.raises(ProtocolError) as ei:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.b1.errors.ProtocolError'>\ntests\\rebuild\\test_l2_counterfactual.py:335: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_l2_counterfactual.py::test_2e_the_episode_the_adapter_and_the_transaction_are_one_referent\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -117,7 +117,7 @@
       "matched": 1,
       "expected_failure_text": null,
       "exit_code": 1,
-      "tail": "F\n================================== FAILURES ===================================\n______________ test_2b_the_primary_reward_mode_is_the_only_mode _______________\n    def test_2b_the_primary_reward_mode_is_the_only_mode():\n>       with pytest.raises(ProtocolError) as ei:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.b1.contract.ProtocolError'>\ntests\\rebuild\\test_l2_counterfactual.py:358: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_l2_counterfactual.py::test_2b_the_primary_reward_mode_is_the_only_mode\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "F\n================================== FAILURES ===================================\n______________ test_2b_the_primary_reward_mode_is_the_only_mode _______________\n    def test_2b_the_primary_reward_mode_is_the_only_mode():\n>       with pytest.raises(ProtocolError) as ei:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.b1.errors.ProtocolError'>\ntests\\rebuild\\test_l2_counterfactual.py:358: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_l2_counterfactual.py::test_2b_the_primary_reward_mode_is_the_only_mode\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {

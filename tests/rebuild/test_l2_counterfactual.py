@@ -30,7 +30,7 @@ ROOT = pathlib.Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
 from rfl_rebuild.b1 import (  # noqa: E402
-    APPLIED, DQ_LAWS, DQ_SLICE, EVALUABLE_NOOP, ILL_TYPED, NO_VALID_ALTERNATIVE,
+    APPLIED, DQ_DOMAIN, DQ_LAWS, DQ_SLICE, EVALUABLE_NOOP, ILL_TYPED, NO_VALID_ALTERNATIVE,
     CfEpisode, CounterfactualReturnWrite, CounterfactualTarget,
     CounterfactualUndefined, DualReturnWrite,
     FactualReturnWrite, NoWriteRef, ProtocolError, SliceDescriptor, Tier,
@@ -1000,7 +1000,7 @@ def test_23_an_implemented_tier_must_be_a_tier():
     cells = {Tier.L0_FACTUAL: frozenset(), Tier.L1_CORRECTIVE: ILL_TYPED,
              Tier.L2_COUNTERFACTUAL: ILL_TYPED, Tier.L3_ORACLE: frozenset()}
     with pytest.raises(ProtocolError) as ei:
-        SliceDescriptor(name="BadBuild", store=Q, scalar=False, owner=owner_Q,
+        SliceDescriptor(name="BadBuild", store=Q, scalar=False, domain=DQ_DOMAIN,
                         view=lambda st: {}, cells=cells, extract={},
                         implemented_tiers=frozenset({0}))
     assert "Tier members" in str(ei.value)

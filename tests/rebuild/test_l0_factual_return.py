@@ -30,7 +30,7 @@ ROOT = pathlib.Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
 from rfl_rebuild.b1 import (  # noqa: E402
-    APPLIED, DQ_LAWS, DQ_SLICE, EVALUABLE_NOOP, ILL_TYPED, FactualReturnWrite,
+    APPLIED, DQ_DOMAIN, DQ_LAWS, DQ_SLICE, EVALUABLE_NOOP, ILL_TYPED, FactualReturnWrite,
     FactualTarget,
     NoWriteRef, PATCH_SLICE, ProtocolError, SliceDescriptor, Tier,
     build_factual_envelope,
@@ -197,7 +197,7 @@ def test_2b2_an_implemented_cell_must_be_real_and_have_extractors():
     rather than convenient: claiming a cell implemented without extractors fails here."""
     with pytest.raises(ProtocolError) as ei:
         SliceDescriptor(name="NoExtractors", store=Q, scalar=False,
-                        owner=owner_Q, view=lambda st: {},
+                        domain=DQ_DOMAIN, view=lambda st: {},
                         cells={Tier.L0_FACTUAL: frozenset({"missing"}),
                                Tier.L1_CORRECTIVE: ILL_TYPED,
                                Tier.L2_COUNTERFACTUAL: ILL_TYPED,
@@ -206,7 +206,7 @@ def test_2b2_an_implemented_cell_must_be_real_and_have_extractors():
     assert "no extractor" in str(ei.value)
     with pytest.raises(ProtocolError) as ei2:
         SliceDescriptor(name="ImplementsIllTyped", store=Q, scalar=False,
-                        owner=owner_Q, view=lambda st: {},
+                        domain=DQ_DOMAIN, view=lambda st: {},
                         cells={Tier.L0_FACTUAL: frozenset(),
                                Tier.L1_CORRECTIVE: ILL_TYPED,
                                Tier.L2_COUNTERFACTUAL: ILL_TYPED,

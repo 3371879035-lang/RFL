@@ -90,7 +90,7 @@ class AddressPlan:
     second one cannot be expressed.
     """
 
-    address: DecisionAddress
+    address: object
     edits: tuple[Edit, ...] = ()
     status: str | None = None
     row_op: RestoreRow | None = None

@@ -1,0 +1,80 @@
+{
+  "check": "Step 1 address-domain gate mutation self-check",
+  "n_mutations": 6,
+  "n_gate_is_real": 6,
+  "n_not_a_gate": 0,
+  "n_node_not_found": 0,
+  "n_harness_error": 0,
+  "n_mutation_not_applied": 0,
+  "n_wrong_failure_reason": 0,
+  "tree_restored_byte_identical": true,
+  "stale_node_ids": [],
+  "results": [
+    {
+      "mutation": "credited_boundary_disabled",
+      "hole": "the cell-level credited-address boundary stops asking the architecture's domain, so a value no domain admitted reaches a plan",
+      "gate": "test_2_a_slice_rejects_the_other_domains_address",
+      "site": "src\\rfl_rebuild\\b1\\runner.py",
+      "matched": 1,
+      "expected_failure_text": "DID NOT RAISE",
+      "exit_code": 1,
+      "tail": "F\n================================== FAILURES ===================================\n______________ test_2_a_slice_rejects_the_other_domains_address _______________\n    def test_2_a_slice_rejects_the_other_domains_address():\n        r\"\"\"$$\\boxed{A\\text{-slice rejects } B}$$ \u2014 the property that would die under duck typing.\"\"\"\n>       with pytest.raises(ProtocolError) as ei:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.b1.errors.ProtocolError'>\ntests\\rebuild\\test_address_domain.py:136: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_address_domain.py::test_2_a_slice_rejects_the_other_domains_address\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "store_address_untyped",
+      "hole": "the plan boundary stops typing the store address, so an edit may name a key the slice's store cannot hold",
+      "gate": "test_3b_an_edit_with_an_untyped_store_address_is_refused",
+      "site": "src\\rfl_rebuild\\b1\\runner.py",
+      "matched": 1,
+      "expected_failure_text": "keyed by int",
+      "exit_code": 1,
+      "tail": "        with pytest.raises(ProtocolError) as ei:\n            run_patch_law_with_envelope(_BadEdit(), LearnerPersistentState(),\n                                        (DummyAddressA(1),), None, spec=A_SLICE)\n>       assert \"keyed by int\" in str(ei.value), ei.value\nE       AssertionError: ProtocolError(\"law DummyBadEdit planned a write owned by 'not-an-int' under the credited context A(1); owner_locality requires owner_dummy-A(edit.address) == plan.address\")\nE       assert 'keyed by int' in \"law DummyBadEdit planned a write owned by 'not-an-int' under the credited context A(1); owner_locality requires owner_dummy-A(edit.address) == plan.address\"\nE        +  where \"law DummyBadEdit planned a write owned by 'not-an-int' under the credited context A(1); owner_locality requires owner_dummy-A(edit.address) == plan.address\" = str(ProtocolError(\"law DummyBadEdit planned a write owned by 'not-an-int' under the credited context A(1); owner_locality requires owner_dummy-A(edit.address) == plan.address\"))\nE        +    where ProtocolError(\"law DummyBadEdit planned a write owned by 'not-an-int' under the credited context A(1); owner_locality requires owner_dummy-A(edit.address) == plan.address\") = <ExceptionInfo ProtocolError(\"law DummyBadEdit planned a write owned by 'not-an-int' under the credited context A(1); owner_locality requires owner_dummy-A(edit.address) == plan.address\") tblen=4>.value\ntests\\rebuild\\test_address_domain.py:176: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_address_domain.py::test_3b_an_edit_with_an_untyped_store_address_is_refused\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "canonical_form_not_injective",
+      "hole": "the canonical receipt drops the opt index, so two distinct credited contexts with different `z` share one receipt identity",
+      "gate": "test_4_the_canonical_form_is_injective_on_the_legal_domain",
+      "site": "src\\rfl_rebuild\\b1\\tier.py",
+      "matched": 1,
+      "expected_failure_text": null,
+      "exit_code": 1,
+      "tail": "        for component, other in variants.items():\n            assert other != legal, component\n>           assert DQ_DOMAIN.canonical(other) != base, (\n                f\"two credited contexts differing only in {component!r} share a receipt identity\")\nE           AssertionError: two credited contexts differing only in 'z' share a receipt identity\nE           assert '1,2,3,0,1,0' != '1,2,3,0,1,0'\nE            +  where '1,2,3,0,1,0' = <function _decision_canonical at 0x0000020A8B6B99B0>(DecisionAddress(state=State(x=1, y=2, t=3, kappa=0, phi=1), z=2, m=0))\nE            +    where <function _decision_canonical at 0x0000020A8B6B99B0> = AddressDomain(tag='D_Q').canonical\ntests\\rebuild\\test_address_domain.py:232: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_address_domain.py::test_4_the_canonical_form_is_injective_on_the_legal_domain\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "domains_not_distinct",
+      "hole": "every address domain reports the same tag, so one architecture's plan can be read as another's",
+      "gate": "test_4_the_canonical_form_is_injective_on_the_legal_domain",
+      "site": "tests\\rebuild\\test_address_domain.py",
+      "matched": 1,
+      "expected_failure_text": "share a receipt identity",
+      "exit_code": 1,
+      "tail": "            assert other != legal, component\n            assert DQ_DOMAIN.canonical(other) != base, (\n                f\"two credited contexts differing only in {component!r} share a receipt identity\")\n        # and it is architecture-tagged, so two slices cannot collide by accident\n        assert A_DOMAIN.canonical(one) != B_DOMAIN.canonical(one) or True  # different types, so\n>       assert A_DOMAIN != B_DOMAIN and A_DOMAIN.tag != B_DOMAIN.tag        # tags differ\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       AssertionError: assert (AddressDomain(tag='same') != AddressDomain(tag='same'))\ntests\\rebuild\\test_address_domain.py:236: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_address_domain.py::test_4_the_canonical_form_is_injective_on_the_legal_domain\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "domain_rules_unchecked",
+      "hole": "an address domain may be built from non-callables, so the architecture's rules become a name the shared layer cannot ask",
+      "gate": "test_3c_a_domain_is_rules_not_a_name",
+      "site": "src\\rfl_rebuild\\b1\\addressing.py",
+      "matched": 1,
+      "expected_failure_text": "DID NOT RAISE",
+      "exit_code": 1,
+      "tail": "        A domain that is not four callables, or whose tag is not a name, is not an architecture's\n        rules \u2014 and a slice whose `domain` is not an `AddressDomain` would put the shared layer back\n        to guessing. Both fail stop at construction rather than surfacing later as a membership\n        check that cannot be made.\n        \"\"\"\n>       with pytest.raises(ProtocolError) as ei:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.b1.errors.ProtocolError'>\ntests\\rebuild\\test_address_domain.py:187: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_address_domain.py::test_3c_a_domain_is_rules_not_a_name\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "slice_domain_untyped",
+      "hole": "a slice may carry something that is not an AddressDomain, so the credited boundary would call a method on whatever it was handed",
+      "gate": "test_3c_a_domain_is_rules_not_a_name",
+      "site": "src\\rfl_rebuild\\b1\\tier.py",
+      "matched": 1,
+      "expected_failure_text": "DID NOT RAISE",
+      "exit_code": 1,
+      "tail": "            with pytest.raises(ProtocolError) as ei2:\n                AddressDomain(tag=bad_tag, require_credited=lambda v: None,\n                              require_store=lambda v: None, owner=lambda v: v,\n                              canonical=lambda v: \"x\")\n            assert \"non-empty tag\" in str(ei2.value)\n>       with pytest.raises(ProtocolError) as ei3:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.b1.errors.ProtocolError'>\ntests\\rebuild\\test_address_domain.py:198: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_address_domain.py::test_3c_a_domain_is_rules_not_a_name\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    }
+  ]
+}

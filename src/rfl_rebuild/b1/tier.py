@@ -45,8 +45,11 @@ from types import MappingProxyType
 from typing import Any, Callable, Mapping
 
 from rfl_rebuild.b1.contract import ProtocolError
+from rfl_rebuild.env.domain import is_decision_context
+from rfl_rebuild.b1.addressing import AddressDomain, CreditedAddress
 from rfl_rebuild.b1.plan import dq_owner
 from rfl_rebuild.learner.store import (
+    QAddress,
     DECISION,
     Q,
     DecisionAddress,
@@ -55,8 +58,10 @@ from rfl_rebuild.learner.store import (
 )
 
 __all__ = [
+    "DQ_DOMAIN",
     "DQ_SLICE",
     "ILL_TYPED",
+    "PATCH_DOMAIN",
     "PATCH_SLICE",
     "SliceDescriptor",
     "Tier",
@@ -160,7 +165,7 @@ class SliceDescriptor:
     name: str
     store: str
     scalar: bool
-    owner: Callable[[Any], DecisionAddress]
+    domain: AddressDomain
     view: Callable[[LearnerPersistentState], dict]
     cells: Mapping[Tier, Any]
     extract: Mapping[str, Callable[[Any], Any]]
@@ -182,7 +187,10 @@ class SliceDescriptor:
                 f"{self.name}: scalar={self.scalar!r} is not a bool; whether a store is "
                 "scalar-valued decides the ledger's accounting domain, so it may not be "
                 "coerced or inferred")
-        for attr in ("owner", "view"):
+        if not isinstance(self.domain, AddressDomain):
+            raise ProtocolError(
+                f"{self.name}: domain is {self.domain!r}, not an AddressDomain")
+        for attr in ("view",):
             if not callable(getattr(self, attr)):
                 raise ProtocolError(f"{self.name}: {attr} must be callable")
         if set(self.cells) != set(Tier):
@@ -237,6 +245,11 @@ class SliceDescriptor:
         object.__setattr__(self, "cells", MappingProxyType(dict(self.cells)))
         object.__setattr__(self, "extract", MappingProxyType(dict(self.extract)))
 
+    @property
+    def owner(self):
+        """$owner_\\alpha$ — the domain's resolver, kept reachable from the slice."""
+        return self.domain.owner
+
     def fields(self, tier: Tier) -> frozenset:
         r"""``fields(α, ℓ)``, or a ``PROTOCOL_ERROR`` for a cell a law may not use."""
         cell = self.cells.get(tier)
@@ -285,6 +298,59 @@ class SliceDescriptor:
         return MappingProxyType(rows)
 
 
+def _decision_credited(value) -> None:
+    """The strict credited-address rule both $D_Q$ and $D_{patch}$ admit."""
+    if type(value) is not DecisionAddress:
+        raise ProtocolError(
+            f"credited address {value!r} has type {type(value).__name__}, not "
+            "DecisionAddress; the credited population is typed before any arm plans")
+    if not is_decision_context(value.state, value.z, value.m):
+        raise ProtocolError(
+            f"credited address {value!r} is not a strictly typed decision context: its State "
+            "fields must be true integers in their domains and z, m true integers inside "
+            "theirs. Python folds 1.0, True and 1 into one key, so a value-equal alias would "
+            "otherwise be admitted by whichever arm does not happen to construct a typed "
+            "object (A78 §66.5)")
+
+
+def _decision_store(value) -> None:
+    if type(value) is not DecisionAddress:
+        raise ProtocolError(
+            f"the {DECISION} store is keyed by DecisionAddress, got {type(value).__name__}")
+
+
+def _q_store(value) -> None:
+    if type(value) is not QAddress:
+        raise ProtocolError(
+            f"the {Q} store is keyed by QAddress, got {type(value).__name__}")
+
+
+def _decision_canonical(value) -> str:
+    """The decision receipt's canonical form: the pre-refactor encoding, byte for byte."""
+    s = value.state
+    return f"{s.x},{s.y},{s.t},{s.kappa},{s.phi},{value.z},{value.m}"
+
+
+#: The $D_{patch}$ address domain: credited and store addresses are both decision addresses,
+#: and $owner_{patch}$ is the identity.
+PATCH_DOMAIN = AddressDomain(
+    tag="D_patch",
+    require_credited=_decision_credited,
+    require_store=_decision_store,
+    owner=lambda address: address,                 # owner_patch = identity
+    canonical=_decision_canonical,
+)
+
+#: The $D_Q$ address domain: the credited address is still a decision address, the store address
+#: is a `QAddress`, and $owner_Q$ is total over entry addresses and row operations (A78 §66.5).
+DQ_DOMAIN = AddressDomain(
+    tag="D_Q",
+    require_credited=_decision_credited,
+    require_store=_q_store,
+    owner=dq_owner,
+    canonical=_decision_canonical,
+)
+
 def _q_view(state: LearnerPersistentState) -> dict:
     return dict(state.q_overrides)
 
@@ -314,7 +380,7 @@ DQ_SLICE = SliceDescriptor(
     name="D_Q",
     store=Q,
     scalar=True,
-    owner=dq_owner,
+    domain=DQ_DOMAIN,
     view=_q_view,
     cells={
         Tier.L0_FACTUAL: frozenset({"a_factual", "g_factual"}),
@@ -351,7 +417,7 @@ PATCH_SLICE = SliceDescriptor(
     name="D_patch",
     store=DECISION,
     scalar=False,
-    owner=lambda address: address,                 # owner_patch = identity
+    domain=PATCH_DOMAIN,
     view=_patch_view,
     cells={
         Tier.L0_FACTUAL: frozenset(),

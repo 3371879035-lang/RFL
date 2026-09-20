@@ -48,6 +48,7 @@ from rfl_rebuild.b1.laws import (
     independent_treatment_count,
     law_metadata,
 )
+from rfl_rebuild.b1.addressing import AddressDomain, CreditedAddress
 from rfl_rebuild.b1.counterfactual import (
     CfEpisode,
     CounterfactualUndefined,
@@ -78,6 +79,8 @@ from rfl_rebuild.b1.targets import (
 )
 from rfl_rebuild.b1.plan import RestoreRow, dq_owner
 from rfl_rebuild.b1.tier import (
+    DQ_DOMAIN,
+    PATCH_DOMAIN,
     DQ_SLICE,
     ILL_TYPED,
     PATCH_SLICE,
@@ -88,11 +91,13 @@ from rfl_rebuild.b1.tier import (
 __all__ = [
     "APPLIED",
     "EVALUABLE_NOOP",
+    "DQ_DOMAIN",
     "DQ_LAWS",
     "DQ_SLICE",
     "ILL_TYPED",
     "LAWS",
     "NO_VALID_ALTERNATIVE",
+    "PATCH_DOMAIN",
     "PATCH_SLICE",
     "PROTOCOL_ERROR",
     "STATUSES",
@@ -115,7 +120,9 @@ __all__ = [
     "Tier",
     "UpdateLedger",
     "build_target_envelope",
+    "AddressDomain",
     "CfEpisode",
+    "CreditedAddress",
     "RestoreRow",
     "dq_owner",
     "CounterfactualUndefined",
