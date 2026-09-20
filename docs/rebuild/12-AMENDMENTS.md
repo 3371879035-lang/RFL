@@ -5048,11 +5048,18 @@ absorbing them:
 $$\boxed{\text{typed credited address} + \text{typed store address} + owner_\alpha +
 \text{deterministic canonical receipt}}$$
 
-Each architecture continues to own its strict address domain and its owner resolver, and
+Each architecture continues to own its address domain, its owner resolver **and its admission
+policy**. The mechanism is generic — the runner always asks the architecture's domain, so the
+boundary is never decided by the shared layer — but what the domain *answers* is the
+architecture's:
 
-$$\boxed{\text{same cell} \Rightarrow \text{same admissibility boundary}}$$
+$$\boxed{\text{same cell} \Rightarrow \text{same admissibility boundary, by the architecture's own policy}}$$
 
-continues to hold, checked before any arm plans (A78 §66.5's rule, unchanged). The concrete
+$D_Q$ keeps the strict rule A78 §66.5 closed it with, and $X$/$P$ will choose theirs when they are
+implemented. **$D_{patch}$ keeps the frozen legacy policy**: its recorded state is that its two
+same-tier arms differ in admissibility, and §68.5 forbids repairing that in passing. A universal
+boundary would do exactly that, silently, for both arms — which is the drift Step 1 produced once
+and a regression gate now holds in place. The concrete
 mechanism is the implementer's: a type parameter, a per-slice address protocol with an explicit
 membership check, or a discriminated union are all acceptable **provided** no architecture's
 addresses become acceptable to another's slice, and provided the nominal closure that makes a
@@ -5251,7 +5258,11 @@ and it may not be used as the occasion to:
 
 * modify $D_Q$ — its five steps are closed and its artifacts are bound;
 * repair the frozen $D_{patch}$ malformed-address asymmetry (recorded in `00-INDEX.md` §7.2 as a
-  known property; it needs its own authorisation, not this one's convenience);
+  known property; it needs its own authorisation, not this one's convenience). **This clause
+  outranks §68.2's generic mechanism read as a universal rule**: the substrate carries the
+  architecture's policy, so a strict $D_Q$ and a legacy $D_{patch}$ coexist, and
+  `test_19_the_frozen_d_patch_alias_asymmetry_is_preserved` measures all three folding aliases
+  against both arms at the real $D_{patch}$ entry point;
 * change any A79 endpoint, threshold, or the V0.3R PASS conjunction;
 * add Regime $T$/$P$ behaviour, a stratification, or the global-oracle denominator;
 * begin V0.4R, or collect any seed of any stage.

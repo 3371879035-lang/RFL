@@ -8,16 +8,12 @@ $\rho_P$ an integer), so the contract has to stop assuming one type — **withou
 
 $$\boxed{\text{the shared layer can CARRY per-architecture domains without absorbing them}}$$
 
-The mechanism is an **addressed value**: the shared objects hold the address together with the
-domain that admits it, and never interpret the payload themselves. Every question about an
-address is a question to its domain:
-
-| question | asked of |
-|---|---|
-| is this a legal **credited** address? | `domain.require_credited` |
-| is this a legal **store** address? | `domain.require_store` |
-| which credited address owns this store address? | `domain.owner` ($owner_\alpha$) |
-| what is its canonical receipt form? | `domain.canonical` |
+The mechanism is a **domain object the slice owns**: the shared layer keeps the raw address and
+asks the architecture's domain every question about it, at the boundary, before any arm plans.
+An earlier revision of this step wrapped every credited address in an addressed-value type; it
+satisfied the same contract while churning every receipt comparison and hand-built plan in the
+evidence suite for no extra strength, and it was replaced by boundary validation. Its type is
+gone rather than kept beside this one, so the source describes a single contract.
 
 There is deliberately **no shared ``is_an_address`` predicate**. A generic membership test is
 exactly the duck typing this step forbids: it would let one architecture's addresses satisfy
@@ -45,7 +41,7 @@ from typing import Any, Callable
 
 from rfl_rebuild.b1.errors import ProtocolError
 
-__all__ = ["AddressDomain", "CreditedAddress"]
+__all__ = ["AddressDomain"]
 
 
 @dataclass(frozen=True)
@@ -73,43 +69,3 @@ class AddressDomain:
                 raise ProtocolError(
                     f"address domain {self.tag!r}: {name} must be callable; a domain is the "
                     "architecture's own rules, not a name")
-
-
-@dataclass(frozen=True, slots=True)
-class CreditedAddress:
-    r"""A credited address **together with the domain that admits it**.
-
-    The shared plan, receipt and locality layer holds these and never looks inside. Validation
-    happens once, here, at construction — so a value that reaches a plan has already been
-    admitted by its architecture's own predicate, and a stand-in cannot get in by exposing a
-    matching attribute.
-
-    $\texttt{CreditedAddress}(A, v)$ and $\texttt{CreditedAddress}(B, v)$ are **different
-    addresses** even when $v$ is the same object, because a credited address is only meaningful
-    relative to the architecture that credits it.
-    """
-
-    domain: AddressDomain
-    value: Any
-
-    def __post_init__(self) -> None:
-        if not isinstance(self.domain, AddressDomain):
-            raise ProtocolError(
-                f"credited address domain is {self.domain!r}, not an AddressDomain; the domain "
-                "is the architecture's own rules and cannot be a stand-in")
-        self.domain.require_credited(self.value)
-
-    @property
-    def tag(self) -> str:
-        return self.domain.tag
-
-    def canonical(self) -> str:
-        """The receipt's canonical form, byte-identical to the pre-refactor encoding."""
-        return self.domain.canonical(self.value)
-
-    def owner(self):
-        """$owner_\\alpha$ of the *store* address that this credited address owns."""
-        return self.domain.owner(self.value)
-
-    def __repr__(self) -> str:                       # pragma: no cover - diagnostics
-        return f"<credited {self.domain.tag} {self.value!r}>"

@@ -46,7 +46,7 @@ from typing import Any, Callable, Mapping
 
 from rfl_rebuild.b1.contract import ProtocolError
 from rfl_rebuild.env.domain import is_decision_context
-from rfl_rebuild.b1.addressing import AddressDomain, CreditedAddress
+from rfl_rebuild.b1.addressing import AddressDomain
 from rfl_rebuild.b1.plan import dq_owner
 from rfl_rebuild.learner.store import (
     QAddress,
@@ -298,6 +298,27 @@ class SliceDescriptor:
         return MappingProxyType(rows)
 
 
+def _legacy_accept(value) -> None:
+    r"""$D_{patch}$'s frozen admission policy: admit, and let the store decide.
+
+    This is not an omission and not a gap to be closed in passing. The recorded, frozen state of
+    $D_{patch}$ is that its two same-tier arms differ in admissibility —
+
+    $$\boxed{\texttt{NoWrite} \text{ accepts a malformed credited alias} \neq
+    \texttt{SetAlternative} \text{ fails at its write boundary}}$$
+
+    — and A80 §68.5 forbids repairing it as a side effect of generalising the substrate; it needs
+    its own authorisation. Step 1 briefly made the credited boundary universal, which silently
+    removed the asymmetry for both arms; that is the drift this function exists to prevent, and
+    the regression gate in `tests/rebuild/test_b1_patch_slice.py` holds it in place.
+
+    The *mechanism* stays generic — the runner always asks the architecture's domain — but the
+    **policy** is the architecture's, so $D_Q$ can be strict, $D_{patch}$ can stay as audited, and
+    $X/P$ can choose their own when they are implemented.
+    """
+    return None
+
+
 def _decision_credited(value) -> None:
     """The strict credited-address rule both $D_Q$ and $D_{patch}$ admit."""
     if type(value) is not DecisionAddress:
@@ -331,12 +352,14 @@ def _decision_canonical(value) -> str:
     return f"{s.x},{s.y},{s.t},{s.kappa},{s.phi},{value.z},{value.m}"
 
 
-#: The $D_{patch}$ address domain: credited and store addresses are both decision addresses,
-#: and $owner_{patch}$ is the identity.
+#: The $D_{patch}$ address domain. Its credited and store **policy** is the frozen legacy one —
+#: admit, and let the store's own typed boundary decide — while its codec and owner are as
+#: audited. $D_{patch}$'s addresses are the same type as $D_Q$'s; what differs is who admits
+#: them, which is exactly the distinction A80 §68.2 calls architecture-owned policy.
 PATCH_DOMAIN = AddressDomain(
     tag="D_patch",
-    require_credited=_decision_credited,
-    require_store=_decision_store,
+    require_credited=_legacy_accept,
+    require_store=_legacy_accept,
     owner=lambda address: address,                 # owner_patch = identity
     canonical=_decision_canonical,
 )

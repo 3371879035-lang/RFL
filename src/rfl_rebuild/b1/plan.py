@@ -35,25 +35,16 @@ class RestoreRow:
 
     The law never sees the pre-state, so it cannot depend on when it is called.
 
-    **The context is closed at construction:**
-
-    $$\boxed{type(\texttt{context}) = \texttt{DecisionAddress}
-    \;\land\; \texttt{context} \in \mathcal X_D^{\text{strict}}}$$
-
-    without which the operation would reopen the Step 3 defect one layer up.
-    `DecisionAddress` is a plain dataclass and inherits Python's folding, so
-
-    $$\texttt{State}(x{=}1.0), z{=}\texttt{True}, m{=}0.0 \;\equiv\;
-    \texttt{State}(x{=}1), z{=}1, m{=}0$$
-
-    with equal hashes — and a value-equal alias inside an *exact* `RestoreRow` would pass
-    the plan's context check, the owner resolver's locality check **and** the lowering's row
-    match, deleting a legal credited row on behalf of a context that is not a legal context
-    at all. Value equality is not typed equality, and this is the layer that has to say so:
-    the predicate is Step 3's audited one, reused rather than restated.
+    **The context's strictness lives in the architecture's domain, not here.** The row operation
+    is shared, so it cannot know which architecture's addresses are legal; the domain decides,
+    once, at the cell boundary, before any arm plans (A80 §68.2). What this object guarantees is
+    only that the context is the *same object* the address-plan names, checked in
+    `AddressPlan.__post_init__`.
     """
 
     context: object
+
+
 def dq_owner(op) -> DecisionAddress:
     r"""$D_Q$'s owner resolver, total over entry addresses and row operations.
 

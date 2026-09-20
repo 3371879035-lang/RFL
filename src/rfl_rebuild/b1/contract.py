@@ -125,7 +125,14 @@ class DecisionWriteReceipt:
     address: object
     status: str
     store_changed: bool
-    canonical_form: str = ""
+    canonical_form: str
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.canonical_form, str) or not self.canonical_form:
+            raise ProtocolError(
+                "a receipt's canonical_form must be a non-empty string: it is the address's "
+                "canonical identity, and an empty one would let two receipts compare equal "
+                "without their addresses doing so (A80 68.2)")
 
     def canon(self) -> str:
         """Canonical receipt, byte-identical to the pre-refactor encoding.

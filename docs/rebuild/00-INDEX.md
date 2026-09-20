@@ -276,14 +276,23 @@ authorised**: B2's endpoints, denominators, strata and regime I numbers remain o
 implied by any of this.
 
 **Recorded observation, deliberately not actioned.** The $D_{patch}$ entry points are *not*
-guarded the same way, and the same reference/treatment asymmetry is reproducible there: a
-type-malformed credited address (for example `State(x{=}1.0)`, `z{=}\texttt{True}`,
-`m{=}0.0`, which Python folds onto the legal address, hashes included) is refused by
-`SetAlternative`'s write through the store's typed `DecisionAddress` boundary and **accepted**
-by `NoWrite`, because the cell-level credited-address check lives on the $D_Q$ entry point. The
-reviewer's ruling is to **leave $D_{patch}$ frozen as audited**: the 396-entry ledger baseline
-is built on that architecture, and tightening its accepted inputs would be a change to a frozen
-artifact rather than a side effect of another step. It is recorded here so that it is a known
+guarded the same way. Measured at the real entry point for all three folding aliases, and
+**identical before and after A80 Step 1**:
+
+| alias | `NoWrite` | `SetAlternative` |
+|---|---|---|
+| `State(x{=}1.0)` | accepts | accepts and **writes**, onto the legal entry through folding |
+| `z{=}\texttt{True}` | accepts | refused by the store's typed address boundary |
+| `m{=}0.0` | accepts | refused by the store's typed address boundary |
+
+So the asymmetry holds for the `z`/`m` forms, while the floated `x` is a stronger pre-existing
+fact: the decision store types `z` and `m` and **not** the `State` fields, so that alias folds onto
+the legal key and the write lands there. The reviewer's ruling is to **leave $D_{patch}$ frozen as
+audited** -- the 396-entry ledger baseline is built on that architecture, and tightening its
+accepted inputs is a change to a frozen artifact rather than a side effect of another step. A80
+Step 1 briefly made the credited boundary universal and removed the asymmetry for *both* arms;
+that drift was caught in review, undone, and is now held in place by
+`test_19_the_frozen_d_patch_alias_asymmetry_is_preserved`. It is recorded here so that it is a known
 property of the frozen architecture rather than a rediscovery, and reopening it would need its
 own authorisation.
 

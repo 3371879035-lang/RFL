@@ -1246,8 +1246,8 @@ def test_18_a_locally_wrong_receipt_is_caught_even_when_the_global_digest_moved(
     present it took the ``else`` branch and never looked at B.
     """
     from rfl_rebuild.b1 import DecisionWriteReceipt, UpdateLedger
-    good = DecisionWriteReceipt(address=A, status=APPLIED, store_changed=True)
-    bad = DecisionWriteReceipt(address=B, status=APPLIED, store_changed=False)
+    good = DecisionWriteReceipt(canonical_form="x,y,t,k,p,z,m", address=A, status=APPLIED, store_changed=True)
+    bad = DecisionWriteReceipt(canonical_form="x,y,t,k,p,z,m", address=B, status=APPLIED, store_changed=False)
     led = UpdateLedger(receipts=(good, bad), fingerprint_pre="p", fingerprint_post="q")
     with pytest.raises(ProtocolError):
         led.check_fingerprint_invariants()
@@ -1255,7 +1255,7 @@ def test_18_a_locally_wrong_receipt_is_caught_even_when_the_global_digest_moved(
 
 def test_18b_a_non_applied_receipt_whose_address_changed_is_caught():
     from rfl_rebuild.b1 import DecisionWriteReceipt, UpdateLedger
-    bad = DecisionWriteReceipt(address=A, status=EVALUABLE_NOOP, store_changed=True)
+    bad = DecisionWriteReceipt(canonical_form="x,y,t,k,p,z,m", address=A, status=EVALUABLE_NOOP, store_changed=True)
     led = UpdateLedger(receipts=(bad,), fingerprint_pre="p", fingerprint_post="q")
     with pytest.raises(ProtocolError):
         led.check_fingerprint_invariants()
@@ -1263,7 +1263,7 @@ def test_18b_a_non_applied_receipt_whose_address_changed_is_caught():
 
 def test_18c_protocol_error_is_never_a_receipt_status():
     from rfl_rebuild.b1 import DecisionWriteReceipt, UpdateLedger
-    bad = DecisionWriteReceipt(address=A, status=PROTOCOL_ERROR, store_changed=False)
+    bad = DecisionWriteReceipt(canonical_form="x,y,t,k,p,z,m", address=A, status=PROTOCOL_ERROR, store_changed=False)
     led = UpdateLedger(receipts=(bad,), fingerprint_pre="p", fingerprint_post="p")
     with pytest.raises(ProtocolError):
         led.check_fingerprint_invariants()
@@ -1271,7 +1271,7 @@ def test_18c_protocol_error_is_never_a_receipt_status():
 
 def test_18d_an_unknown_receipt_status_is_rejected():
     from rfl_rebuild.b1 import DecisionWriteReceipt, UpdateLedger
-    bad = DecisionWriteReceipt(address=A, status="MAYBE", store_changed=False)
+    bad = DecisionWriteReceipt(canonical_form="x,y,t,k,p,z,m", address=A, status="MAYBE", store_changed=False)
     led = UpdateLedger(receipts=(bad,), fingerprint_pre="p", fingerprint_post="p")
     with pytest.raises(ProtocolError):
         led.check_fingerprint_invariants()
@@ -1279,7 +1279,7 @@ def test_18d_an_unknown_receipt_status_is_rejected():
 
 def test_18e_the_aggregate_must_agree_with_the_per_address_changes():
     from rfl_rebuild.b1 import DecisionWriteReceipt, UpdateLedger
-    r = DecisionWriteReceipt(address=A, status=EVALUABLE_NOOP, store_changed=False)
+    r = DecisionWriteReceipt(canonical_form="x,y,t,k,p,z,m", address=A, status=EVALUABLE_NOOP, store_changed=False)
     led = UpdateLedger(receipts=(r,), fingerprint_pre="p", fingerprint_post="q")
     with pytest.raises(ProtocolError):
         led.check_fingerprint_invariants()
@@ -1316,6 +1316,95 @@ def test_receipts_carry_no_truth_or_scenario_identity():
         # receipt no longer knows what kind of address it holds (A80 68.2).
         assert set(r.__slots__) == {"address", "status", "store_changed",
                                     "canonical_form"}
+
+
+def _scene_with_an_alternative():
+    """A real $D_{patch}$ scene whose first credited address has a verified alternative.
+
+    The write boundary can only be exercised where a law actually writes: with no alternative
+    available `SetAlternative` declares `NO_VALID_ALTERNATIVE` and never reaches the store, so a
+    scene without one would make the asymmetry below untestable while looking green.
+    """
+    from rfl_rebuild.env import kernel as _K
+    from rfl_rebuild.env.observation import learner_rows as _rows
+    from rfl_rebuild.b1.targets import build_target_envelope as _build
+    from rfl_rebuild.b1.targets import resolve_credited_units as _resolve
+    from rfl_rebuild.solve.dp import solve_reference as _solve
+
+    sol = _solve()
+    for kappa in (0, 1):
+        for phi in range(6):
+            for z0 in range(4):
+                try:
+                    trace = _K.rollout(
+                        kappa=kappa,
+                        tape=_K.SemanticTape(phase=phi, error_flag=0, cause_rank=0),
+                        command_provider=lambda s, c: sol.best_action(s, c.z, c.m),
+                        base_option=z0)
+                except Exception:                                  # pragma: no cover
+                    continue
+                steps = sorted({r[2] for r in _rows(trace, kappa, phi)})
+                addrs = _resolve(tuple(f"Decision_{t}" for t in steps), trace, kappa, phi)
+                built = _build(sol, addrs, trace, kappa, phi)
+                hit = next((a for a in addrs if built[a].alternative is not None), None)
+                if hit is not None:
+                    return sol, trace, kappa, phi, hit
+    pytest.fail("no D_patch scene in the support has an address with an alternative")
+
+
+def test_19_the_frozen_d_patch_alias_asymmetry_is_preserved():
+    r"""A80 §68.5: the recorded $D_{patch}$ asymmetry is **not** repaired in passing.
+
+    $$oxed{\texttt{NoWrite} \text{ accepts a malformed credited alias} \neq
+    \texttt{SetAlternative} \text{ fails at its write boundary}}$$
+
+    Measured at the real $D_{patch}$ entry point, for the three folding aliases, and **identical
+    at `5f2dce8` and after A80 Step 1** — which is the point of the gate: Step 1 first made the
+    credited boundary universal and silently removed the asymmetry for both arms.
+
+    | alias | `NoWrite` | `SetAlternative` |
+    |---|---|---|
+    | `State(x=1.0)` | accepts | accepts and **writes**, onto the legal entry through folding |
+    | `z=True` | accepts | refused by the store's typed address boundary |
+    | `m=0.0` | accepts | refused by the store's typed address boundary |
+
+    The first row is not an asymmetry but a stronger fact, and it is pre-existing: the decision
+    store types `z` and `m` and does **not** type the `State` fields, so a floated `x` folds onto
+    the legal key and the write lands there. Recording it here is what keeps the next reader from
+    "fixing" it while chasing this gate.
+    """
+    from rfl_rebuild.env.kernel import State as _State
+
+    sol, trace, kappa, phi, legal = _scene_with_an_alternative()
+    aliases = {
+        "x float": DecisionAddress(
+            state=_State(x=float(legal.state.x), y=legal.state.y, t=legal.state.t,
+                         kappa=legal.state.kappa, phi=legal.state.phi),
+            z=legal.z, m=legal.m),
+        "z bool": DecisionAddress(state=legal.state, z=bool(legal.z), m=legal.m),
+        "m float": DecisionAddress(state=legal.state, z=legal.z, m=float(legal.m)),
+    }
+    for label, alias in aliases.items():
+        assert alias == legal and hash(alias) == hash(legal), label
+    from rfl_rebuild.b1.targets import build_target_envelope
+    build = build_target_envelope
+    observed = {}
+    for label, alias in aliases.items():
+        env = build(sol, [alias], trace, kappa, phi)
+        row = []
+        for law in (NoWrite, SetAlternative):
+            try:
+                res = run_patch_law_with_envelope(law, LearnerPersistentState(), [alias],
+                                                  env, spec=PATCH_SLICE)
+                row.append(f"RAN:{res.ledger.receipts[0].status}")
+            except ProtocolError:
+                row.append("ProtocolError")
+        observed[label] = tuple(row)
+    assert observed == {
+        "x float": ("RAN:EVALUABLE_NOOP", "RAN:APPLIED"),
+        "z bool": ("RAN:EVALUABLE_NOOP", "ProtocolError"),
+        "m float": ("RAN:EVALUABLE_NOOP", "ProtocolError"),
+    }, observed
 
 
 def test_no_write_run_still_produces_a_full_ledger():

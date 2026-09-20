@@ -635,7 +635,7 @@ def test_14b_the_ledger_canary_still_holds_with_a_q_store():
     write(s, [Edit(Q, Q0, val)])           # same value again: the store is unchanged
     fp_b = fingerprint(s)
     assert fp_a == fp_b, "re-writing the same override must change nothing"
-    UpdateLedger(receipts=(DecisionWriteReceipt(A, EVALUABLE_NOOP, False),),
+    UpdateLedger(receipts=(DecisionWriteReceipt(A, EVALUABLE_NOOP, False, canonical_form="q"),),
                  fingerprint_pre=fp_a, fingerprint_post=fp_b
                  ).check_fingerprint_invariants()      # consistent, must not raise
 
@@ -643,7 +643,7 @@ def test_14b_the_ledger_canary_still_holds_with_a_q_store():
     fp_c = fingerprint(s)
     assert fp_c != fp_b
     with pytest.raises(ProtocolError):
-        UpdateLedger(receipts=(DecisionWriteReceipt(A, EVALUABLE_NOOP, False),),
+        UpdateLedger(receipts=(DecisionWriteReceipt(A, EVALUABLE_NOOP, False, canonical_form="q"),),
                      fingerprint_pre=fp_b, fingerprint_post=fp_c
                      ).check_fingerprint_invariants()
 

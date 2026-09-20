@@ -48,7 +48,7 @@ from rfl_rebuild.b1.laws import (
     independent_treatment_count,
     law_metadata,
 )
-from rfl_rebuild.b1.addressing import AddressDomain, CreditedAddress
+from rfl_rebuild.b1.addressing import AddressDomain
 from rfl_rebuild.b1.counterfactual import (
     CfEpisode,
     CounterfactualUndefined,
@@ -122,7 +122,6 @@ __all__ = [
     "build_target_envelope",
     "AddressDomain",
     "CfEpisode",
-    "CreditedAddress",
     "RestoreRow",
     "dq_owner",
     "CounterfactualUndefined",

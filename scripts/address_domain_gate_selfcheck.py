@@ -11,13 +11,20 @@ condition is that no number moves. Both halves are checked here:
 | 1 | the credited boundary stops asking the domain | `require_credited` disabled | `test_address_domain::test_2` / the L3 gates |
 | 2 | the store address is not typed | `require_store` disabled | `test_address_domain::test_1` |
 | 3 | the canonical form is deterministic but not injective | a component dropped from `_decision_canonical` | `test_address_domain::test_4` |
-| 4 | the domains stop being distinct | every tag forced to one value | `test_address_domain::test_2` |
+| 4 | D_Q's strict policy is imposed on the frozen $D_{patch}$ | the slice's admission policy is replaced | `test_b1_patch_slice::test_19` |
 
-Mutations 1 and 2 target the **generic** rule in `runner.py`, so they are the ones that show the
-boundary is load-bearing for every architecture rather than for the real ones only. Mutation 3 is
-the failure this project already paid for once: a canonical form that omits a component gives two
-distinct addresses one receipt identity. Mutation 4 shows the tag is what keeps two architectures'
-domains apart.
+Mutations 1 and 2 target the **generic** rule in `runner.py`, so they show the boundary is
+load-bearing for every architecture rather than for the real ones only. Mutation 3 is the failure
+this project already paid for once: a canonical form that omits a component gives two distinct
+addresses one receipt identity. Mutation 4 is the drift this step actually produced and then had
+to undo: making the credited boundary universal removed the **frozen** $D_{patch}$ asymmetry.
+
+**One earlier entry was removed rather than reworded.** `domains_not_distinct` forced the two
+*dummy* domains in the test file to share a tag and was killed by the assertion
+`A_DOMAIN != B_DOMAIN` -- it reopened no production hole, since what stops an $A$-slice accepting
+a $B$-address is `require_credited`, not tag equality. A mutation that only rearranges test
+constants is not gate evidence, so it was replaced by mutation 4 -- a real production drift -- rather
+than kept to make a number.
 
 Usage::
 
@@ -73,14 +80,17 @@ MUTATIONS: tuple = (
         f"{ADDR}::test_4_the_canonical_form_is_injective_on_the_legal_domain",
     ),
     (
-        "domains_not_distinct",
-        "every address domain reports the same tag, so one architecture's plan can be read as "
-        "another's",
-        ADDR_PATH,
-        "    return AddressDomain(tag=tag, require_credited=require_credited,",
-        '    return AddressDomain(tag="same", require_credited=require_credited,   # MUTATED',
-        f"{ADDR}::test_4_the_canonical_form_is_injective_on_the_legal_domain",
-        "share a receipt identity",
+        "d_patch_policy_made_strict",
+        "the generic boundary applies D_Q's strict admission to EVERY architecture, which "
+        "silently repairs the frozen D_patch asymmetry: NoWrite stops accepting the alias it "
+        "is recorded as accepting",
+        SRC / "b1" / "tier.py",
+        '    require_credited=_legacy_accept,\n'
+        '    require_store=_legacy_accept,',
+        '    require_credited=_decision_credited,   # MUTATED: D_Q policy imposed\n'
+        '    require_store=_decision_store,',
+        "tests/rebuild/test_b1_patch_slice.py"
+        "::test_19_the_frozen_d_patch_alias_asymmetry_is_preserved",
     ),
     (
         "domain_rules_unchecked",
