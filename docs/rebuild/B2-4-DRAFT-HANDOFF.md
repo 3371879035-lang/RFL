@@ -101,7 +101,7 @@ comment, a comment mentioning the fixture module, `"apply("` matching the runner
 
 ## Remaining work before `rebuild` may receive this
 
-1. re-land the runner and its ten gates on this branch;
+1. re-land the runner and the ten previously exercised gates, then add the owed cross-architecture registry gate -- eleven closure gates in total;
 2. land the eleven mutations, each measured and declared;
 3. full sweep: 637+ tests, nine self-check tables, `spec_audit`;
 4. only then: one source closure commit on `rebuild` plus the D_patch evidence binding commit.
