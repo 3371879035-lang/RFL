@@ -300,6 +300,14 @@ from the baseline only and that no $N_{\text{train}}$ may be named in advance. I
 prerequisite plainly: ``D6/B1 CLOSED'' is the **Decision** path, and the Process and Controller B1
 alias-write paths need their own authorisation before B2 can run.
 
+**A80 (§68) is that authorisation, and it is text only.** It replaces the obvious "do $X$, then $P$"
+with **three** steps — a generic address/receipt substrate refactor first, because the shared B1
+objects are Decision-shaped while $\rho_X$ yields a site handle and $\rho_P$ an integer, so a
+two-step plan would force the address contract to be invented at code time. Step 1 may add no
+capability and must move no number; $X$ and $P$ are then implemented as A76 froze them, each with its
+own commit and gates. None of the three is started, and A80 authorises **no B2 runner,
+no $\texttt{FutureConsequenceView}$, no $\texttt{BehavioralCollateral}$, and no seed of any stage**.
+
 ---
 
 ## 8. What the specification fixes, and what it leaves open

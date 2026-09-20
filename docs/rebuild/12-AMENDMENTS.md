@@ -4995,6 +4995,182 @@ contrast that is still `INCONCLUSIVE`.
 
 ---
 
+## 68. A80 — the $X$ and $P$ B1 paths, and the substrate refactor they need
+
+$$\boxed{\text{the only purpose: turn A76's frozen } X/P \text{ B1 cells into real, executable paths}}$$
+
+A76 §63.9 froze the $X$ and $P$ cells and §63.10's $\rho_A$ froze their store keys. A79 §67.8
+recorded that ``D6/B1 CLOSED'' is the **Decision** path, and that $P_{id}$/$X_{id}$ are B2
+prerequisites. This amendment authorises that work — and it is authorisation text only: it writes
+no code, and the three steps below are each a separate commit with its own gates, in the pattern
+A77 §65.12 and A78 §66.1 established.
+
+### 68.1 Three steps, not two — and why the first one exists
+
+The plan this amendment replaces was "implement $X$, then $P$". That is not executable as written,
+because the shared B1 infrastructure is **Decision-shaped**:
+
+| shared object | today |
+|---|---|
+| `AddressPlan.address` | `DecisionAddress` |
+| `DecisionWriteReceipt.address` | `DecisionAddress` |
+| receipt canonicalisation | reads `.state`, `.z`, `.m` |
+| `SliceDescriptor.owner` | returns `DecisionAddress` |
+
+while the addresses the new paths need are not decision addresses at all:
+
+$$\rho_X(\texttt{ControllerSite}) = \text{the site handle } (s_t, a^{cmd}_t), \qquad
+\rho_P(\texttt{ProcessCommit}, z^{\text{proposal}}) = z^{\text{proposal}}$$
+
+An implementer given only "do $X$ then $P$" would have to decide *at code time* how a
+`ControllerSite` fits a decision-shaped receipt, how a process integer becomes a plan address, and
+what `owner` returns and how the canonical form encodes it. That is implementation-time invention,
+which the rebuild exists to prevent. So:
+
+$$\boxed{\text{generic address/receipt substrate refactor} \rightarrow X \rightarrow P}$$
+
+Three steps, three commits, each with its own gates. Step 1 produces **no new scientific
+capability**: it is the A77 §65.12 first-step pattern applied again, and it must be able to say so
+by moving no number.
+
+### 68.2 Step 1 — the address/receipt substrate, generalised by type rather than by duck typing
+
+The goal is one sentence:
+
+$$\boxed{\text{the B1 plan/receipt/locality contract stops assuming every credited address is a }
+\texttt{DecisionAddress}}$$
+
+What it may **not** become is `address: Any` with a "generalisation complete" note. That would
+discard the nominal and typed closure that A77 §65.5, A78 §66.5 and the Step 3 domain work
+established. The requirement is that the shared layer can *carry* per-architecture domains without
+absorbing them:
+
+$$\boxed{\text{typed credited address} + \text{typed store address} + owner_\alpha +
+\text{deterministic canonical receipt}}$$
+
+Each architecture continues to own its strict address domain and its owner resolver, and
+
+$$\boxed{\text{same cell} \Rightarrow \text{same admissibility boundary}}$$
+
+continues to hold, checked before any arm plans (A78 §66.5's rule, unchanged). The concrete
+mechanism is the implementer's: a type parameter, a per-slice address protocol with an explicit
+membership check, or a discriminated union are all acceptable **provided** no architecture's
+addresses become acceptable to another's slice, and provided the nominal closure that makes a
+stand-in insufficient is preserved rather than relaxed.
+
+**Step 1 adds no law, no cell, and no capability.** It may not contain $X_{id}$, $P_{id}$, or any
+$X/P$-specific code, and it may not touch the frozen $D_Q$ or $D_{patch}$ semantics.
+
+**Step 1's acceptance conditions**, which are what make it a refactor rather than a change:
+
+| condition | evidence |
+|---|---|
+| $D_Q$ behaviour unchanged | all five self-checks still pass: $Q$ 14/14, B1 13/13, $L_0$ 8/8, $L_2$ 11/11, $L_3$ 11/11 |
+| $D_{patch}$ ledger unchanged | the 396-entry baseline still reports `ENCODING_ONLY`, 0 mismatches outside the fingerprint fields, 0 structural |
+| no new capability | no $X/P$ cell, law, address type or slice in the commit |
+| the typed closure survives | a stand-in address is still refused by the architecture that did not admit it |
+
+### 68.3 Step 2 — $X$: the controller path
+
+A76's cells are implemented **as frozen**, not redesigned:
+
+$$\rho_X(\texttt{ControllerSite}) = (s_t, a^{cmd}_t), \qquad
+\boxed{C_X^L(\rho_X(\texttt{ControllerSite})) \leftarrow a^{cmd}}$$
+
+$$X:\quad L_0 = \{\texttt{NoWriteRef}(L_0),\ X_{id}\}, \qquad
+L_3 = \{\texttt{NoWriteRef}(L_3),\ \texttt{LocalOracleRestore} \equiv X_{id}\}$$
+
+$$\boxed{\lvert\text{independent treatments}\rvert(X) = 1}$$
+
+The $L_3$ entry is an **alias on this architecture — an information tier, not a second treatment**
+— and it must not be counted as one. Following the $D_{patch}$ precedent, the alias should
+demonstrate that it **reuses the same operation implementation** (the same `plan` function object,
+as `LocalOracleRestore` does for `DeleteFactualPatch`) rather than being a second implementation
+that happens to behave identically.
+
+**$X$'s gates:**
+
+* `ControllerSite` is an **exact, strictly typed** legal address — nominal closure, not "an object
+  with `.state` and `.a`";
+* $a^{cmd}$ is a legal action **and satisfies the learner baseline contract** $a^{cmd} \in A_z(m,s)$.
+  A learner-owned write does **not** inherit fault privilege: A75 §62.3 keeps $Z_X$/$Z_E$'s right
+  to violate the contract as *fault semantics*, and a persistent write is not a fault;
+* $owner_X(\text{edit.address}) = $ the credited `ControllerSite`, and the runner consults the
+  resolver for the operation kinds alike (A78 §66.5's load-bearing rule);
+* a cross-architecture edit is refused; an uncredited site is not writable; duplicate edits and
+  duplicate address-plans are refused;
+* snapshot + **one atomic commit** per scene, one receipt per credited address;
+* a **healthy identity write canonicalises to a no-op**, so the $\rho_X$ mapping and the store's
+  canonicalisation agree on what "no change" means;
+* a repeated run is **idempotent** — the second run changes nothing;
+* the cell-level credited-address boundary is enforced **before** any arm plans, so the treatment
+  and its same-tier reference cannot differ in admissibility (A78 §66.5, and the reason that rule
+  exists).
+
+### 68.4 Step 3 — $P$: the process path, and the assisted input
+
+$$\rho_P(\texttt{ProcessCommit}, z^{\text{proposal}}) = z^{\text{proposal}}, \qquad
+\boxed{C_P^L(z^{\text{proposal}}) \leftarrow z^{\text{proposal}}}$$
+
+$$P:\quad L_1 = \{\texttt{NoWriteRef}(L_1),\ P_{id}\}, \qquad
+L_3 = \{\texttt{NoWriteRef}(L_3),\ \texttt{LocalOracleRestore} \equiv P_{id}\}$$
+
+$$\boxed{\lvert\text{independent treatments}\rvert(P) = 1}$$
+
+$$\boxed{P_{id} \in L_1, \qquad P_{id} \notin L_0}$$
+
+This is not a placement choice: the factual rows carry $z^{\text{in-force}}$ only, **never**
+$z^{\text{proposal}}$, so the key cannot be computed from $L_0$ information. That is exactly why
+A76 §63.1 put $P_{id}$ at $L_1$, and why $\rho_P$ is the one $\rho_A$ that needs an assisted input.
+
+**$P$'s gates, beyond $X$'s analogous set:**
+
+* **no assisted-input laundering.** The fact that some kernel or state object can *reach* a
+  proposal does not license the cell. $z^{\text{proposal}}$ must be delivered **explicitly by the
+  $L_1$ envelope**, and
+
+$$\boxed{P_{id} \text{ declared or run at } L_0 \;\Longrightarrow\; \texttt{PROTOCOL\_ERROR}}$$
+
+  A path that reads a proposal without the envelope having delivered it is the same defect class as
+  a metric whose *input* was built from forbidden truth (A75 §62.10): the cell not seeing it is not
+  evidence that the cell was not handed it;
+* **the process key is integer-semantics, so the numeric-alias lesson applies.** `True == 1` and
+  `1.0 == 1` with equal hashes (the Step 3 finding, A78 §66.5), so a process address must pass an
+  **exact type** check *before* domain membership. A boolean or a float must never be a legal
+  process address, and a value-equal alias must not reach the store;
+* the $L_1$ envelope is delivered through the same field-set mechanism as every other cell
+  (A77 §65.2), so "same cell $\Rightarrow$ same envelope" holds for $P$ too.
+
+### 68.5 What A80 does not authorise
+
+$$\boxed{\text{NO B2 runner}}\quad
+\boxed{\text{NO } \texttt{FutureConsequenceView} \text{ implementation}}\quad
+\boxed{\text{NO } \texttt{BehavioralCollateral} \text{ implementation}}$$
+
+$$\boxed{\text{NO development seed}}\quad \boxed{\text{NO confirmatory seed}}$$
+
+and it may not be used as the occasion to:
+
+* modify $D_Q$ — its five steps are closed and its artifacts are bound;
+* repair the frozen $D_{patch}$ malformed-address asymmetry (recorded in `00-INDEX.md` §7.2 as a
+  known property; it needs its own authorisation, not this one's convenience);
+* change any A79 endpoint, threshold, or the V0.3R PASS conjunction;
+* add Regime $T$/$P$ behaviour, a stratification, or the global-oracle denominator;
+* begin V0.4R, or collect any seed of any stage.
+
+### 68.6 Sequence and review boundary
+
+$$\boxed{\text{Step 1} \rightarrow \text{Step 2} \rightarrow \text{Step 3}, \qquad
+\text{one commit each, own gates each, no mixing}}$$
+
+Each step's commit is reviewed before the next begins, and Step 1 is reviewed against §68.2's
+acceptance table specifically to confirm that it moved no number. The three steps are authorised by
+this text, and each is still its own commit: no step may be combined with another, and none may
+carry B2 work.
+
+
+---
+
 ## 64. Summary and what remains open
 
 | # | what | severity | status |
@@ -5042,6 +5218,7 @@ section above; the most recent is:
 
 | **A78** | $L_3$ `LocalOracleRestore` on $D_Q$ as A77 §65.12's **fifth** implementation step — one step, one commit, no mixing, and no new scope for the four already-closed steps; the cell's `NoWriteRef(L3)` alongside its treatment, giving $\lvert\text{treatments}\rvert(D_Q)=4$ exactly as A76 §63.8 froze ($D_{patch}$ stays 3); the B1 law domain fixed as **every credited address for $L_2$ and $L_3$ alike**, with `NO_VALID_ALTERNATIVE` addresses remaining in the population and $L_3$ forbidden to key its domain on $a^+$ availability; "no reference" scoped to the **lowering** and to *no new* $L_3-specific reference entry point, since §65.10's deleted leg still needs the existing `q_reference`; the row operation kept a **B1** object so `owner_Q` stays a `QAddress` function and the substrate does not learn an update law; lowering as an explicit **pre-commit phase** against **one** frozen pre-state, with status, $n_{\text{changed\_addresses}}$ and the scalar accounting computed from the **lowered concrete edits**; a $D_Q$-only law implementation beside the untouched $D_{patch}$ alias, with no architecture branching inside a law; and the gate obligations, including **idempotence** ($k=0$, `EVALUABLE_NOOP` on a second run, i.e. the lowering reads its own run's pre-state) and a **poison-evidence** empty-cell gate proving $L_3$ reads no evaluator-side inputs | **P0 (spec)** | **frozen — implementation authorised in this step only**; further change requires a new amendment |
 | **A79** | V0.3R **B2 pre-registration**: the stage that answers *what did this write do to this learner's future*, and a pre-registration in the strict sense -- no code, no seed. It **supersedes `08-V03R.md` on B2** (whose Block 2 arms A76 retired and whose process reading $do(z=z')$ the frozen reading rejects) while leaving `08` §2 unaddressed. It fixes $Y^{\text{future}}=\{\text{FutureUtility},\text{Collateral},\text{Retention}\}$ as **three independent dimensions with no composite primary** (a weighted score would let utility buy collateral); keeps $T$ and $P$ as **separate populations that may not be pooled**, with $T$'s primary being harm/erroneous internalisation against a weakly dominating `NoWrite` and $P$'s requiring future rollout **endogenous to $\Delta W$**; freezes $\mathrm{RMST}(T_{\max})$ primary with $\mathrm{DeficitAUC}$ mandatory by reference to `05` §8 ($K=3$, right-censored); defines primary collateral as future behavioural spillover on a set that is **truth-blind, arm-blind, pre-update, and identical across a scene's paired arms** with the unaffected set constructed truth-blind under A75 §62.10's four gate layers, and keeps $N_{\text{scalar}}$/$\sum|\Delta\theta|$ in $\texttt{UpdateLedger}$ as intervention cost because *writing less is not causing less collateral*; retains **Retention** as a dimension **whose confirmatory form must be defined for every seed** ($\tau$-conditioned forms demoted to conditional descriptive diagnostics), the choice among all-seed forms being a declared development-stage decision on measurement properties only; makes `LocalOracleRestore` the **matrix-matched normalisation ceiling** and the global oracle a **diagnostic ceiling only** that may not be a treatment's denominator; fixes **tier-matched contrasts** so $L_3$ beating $L_0$ measures headroom, not merit; and states that **the Process/Controller B1 alias-write paths are B2 prerequisites under their own authorisation**, because ``D6/B1 CLOSED'' is the Decision path and not all three stores. `05` governs unchanged, with $T$ frozen from the baseline only and no treatment curve inspectable beforehand; **V0.3R PASS is a conjunction** of FutureUtility benefit, no unacceptable Collateral, the Retention criterion and the $T$-regime harm constraint -- a gate rather than a weighted sum, so the outcome space is never collapsed -- and **V0.4R begins only on V0.3R's FINAL confirmatory PASS**, a diagnostic look at 100/200/300 being neither a PASS nor able to open it. | **P0 (spec)** | **frozen — pre-registration only; no seed collected, no code authorised**; further change requires a new amendment |
+| **A80** | the $X$ and $P$ B1 paths and the substrate refactor they need, as A79 §67.8's prerequisites -- **authorisation text only, no code**. The replacing plan's two steps are **three**: a generic address/receipt substrate refactor first, because the shared B1 objects are Decision-shaped (`AddressPlan.address`, `DecisionWriteReceipt.address` and its canonicalisation, `SliceDescriptor.owner`) while $\rho_X$ yields a site handle and $\rho_P$ an integer, and an implementer given only "$X$ then $P$" would have to invent the address contract at code time. Step 1 generalises **by type, not by duck typing** -- `address: Any` would discard the nominal closure -- keeps per-architecture strict domains, typed store addresses, $owner_\alpha$ and deterministic canonical receipts, keeps same-cell same-admissibility, and must move no number (five self-checks still pass, $D_{patch}$ still `ENCODING_ONLY`). Step 2 implements $X$ as frozen ($C_X^L(\rho_X(\texttt{ControllerSite})) \leftarrow a^{cmd}$, $L_0$ with $\lvert$treatments$\rvert=1$, $L_3$ an alias that **reuses the same operation implementation**), with $a^{cmd} \in A_z(m,s)$ because a learner write does not inherit fault privilege (A75 §62.3). Step 3 implements $P$ as frozen with $P_{id}\colon L_1$ and **not** $L_0$ -- the factual rows never carry $z^{\text{proposal}}$ -- and forbids **assisted-input laundering** ($P_{id}$ at $L_0 \Rightarrow$ `PROTOCOL_ERROR`), requiring the $L_1$ envelope to deliver the proposal explicitly and the integer-semantics process key to pass an exact type check before domain membership. Authorises **no B2 runner, no $\texttt{FutureConsequenceView}$, no $\texttt{BehavioralCollateral}$, no seed of any stage**, and may not be used to touch $D_Q$, to repair the frozen $D_{patch}$ asymmetry, to change an A79 endpoint or threshold, or to begin V0.4R. | **P0 (spec)** | **frozen -- three implementation steps authorised, one commit each, own gates each; further change requires a new amendment** |
 
 ---
 
