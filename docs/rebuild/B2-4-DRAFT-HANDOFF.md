@@ -141,8 +141,13 @@ catch.
 
 Per the review, neither may be settled by implementation:
 
-1. **the source of $V_{\text{pre}}$** -- the frozen text says "pre", the gates forbid producing a
-   future before the update, and no frozen document names the observation object it is read from;
+1. ~~**the source of $V_{\text{pre}}$**~~ -- **CORRECTED**: this record was wrong. `11-ENVIRONMENT.md`
+   §12.3 and §13.13 already freeze it: measured on $Q^{*}$, at the same $N_{\text{eval}}$ and over
+   the same evaluation scenes as the post-corruption checkpoints, shipped inside the shared frozen
+   reference artifact, never re-measured per run. Two consequences the attempt got wrong: both arms
+   must read that one frozen value (not `max(abs(v))` of their own curves), and it may be read before
+   the arms run, because the prohibition governs futures that participate in this pairing's outcome.
+   Related distinction, now recorded in A85 §73.1: $V_{\text{pre}} \neq V_{\text{unaffected,pre}}$.
 2. **the measurement interface for per-context future performance** -- Collateral's per-context $V$
    must come from the environment, not from an adapter.
 
