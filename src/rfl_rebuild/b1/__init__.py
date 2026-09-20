@@ -55,6 +55,7 @@ from rfl_rebuild.b1.addressing import AddressDomain
 from rfl_rebuild.b1.controller import (
     ControllerTarget,
     build_controller_envelope,
+    render_controller_unit,
     require_admissible_sites,
     resolve_controller_site,
     resolve_controller_sites,
@@ -159,6 +160,7 @@ __all__ = [
     "law_metadata",
     "resolve_credited_units",
     "resolve_decision_address",
+    "render_controller_unit",
     "resolve_controller_site",
     "resolve_controller_sites",
     "run_controller_law",

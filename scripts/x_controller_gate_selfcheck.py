@@ -108,14 +108,40 @@ MUTATIONS: tuple = (
     ),
     (
         "rho_x_accepts_the_decision_family",
-        "the controller parser is widened back to the decision family, so rho_X consumes "
-        "Decision_t again -- the merge of A69's two families that A76 63.10 keeps apart. This is "
-        "the Step 2 blocker: every store-side gate stays green while the arrow's input is wrong",
+        "the controller parser is widened to the decision family, so a Decision unit would be "
+        "spendable as a controller write -- the merge of A69's two families that A76 63.10 keeps "
+        "apart, and the Step 2 blocker: every store-side gate stays green while the arrow's input "
+        "is wrong. The family guard is the regex; the canonical-rendering guard is the second "
+        "line, and because the render is prefix-bound this mutation is caught by the second one. "
+        "Measured rather than assumed: the declared reason below is what the run prints",
         CTRL,
-        '_CONTROLLER_RE = re.compile(r"^ControllerSite_(\\d+)$")',
-        '_CONTROLLER_RE = re.compile(r"^(?:ControllerSite|Decision)_(\\d+)$")   # MUTATED',
-        f"{TESTS}::test_18_rho_x_consumes_the_controller_family_and_refuses_the_"
-        "decision_family",
+        '_CONTROLLER_RE = re.compile(r"^ControllerSite_(\\d+)_(\\d+)_(\\d+)_(\\d+)$")',
+        '_CONTROLLER_RE = re.compile(r"^(?:ControllerSite|Decision)_(\\d+)_(\\d+)_(\\d+)_(\\d+)$")'
+        "   # MUTATED",
+        f"{TESTS}::test_18_rho_x_consumes_the_concrete_controller_unit",
+        "is not the canonical spelling",
+    ),
+    (
+        "rho_x_ignores_the_descriptor_fields",
+        "the unit's grammar is accepted but only t is used, so x/y/a_cmd are decoration and A71's "
+        "address-bearing truth has degraded back to timestep-only -- the cheap false repair of the "
+        "cross-layer blocker, and the reason the hostile gate tampers with each field",
+        CTRL,
+        "    factual = (row[_X], row[_Y], row[_T], row[_A_CMD])\n"
+        "    if factual != (x, y, t, cmd):\n",
+        "    factual = (row[_X], row[_Y], row[_T], row[_A_CMD])\n"
+        "    if False:                   # MUTATED: the descriptor's fields are decoration again\n",
+        f"{TESTS}::test_21_a_descriptor_field_that_disagrees_with_its_row_is_refused",
+        "DID NOT RAISE",
+    ),
+    (
+        "rho_x_canonical_check_removed",
+        "non-canonical spellings parse, so a zero-padded field names the unit it renders to and "
+        "the legal namespace stops being injective",
+        CTRL,
+        "    if canonical != unit:\n",
+        "    if False:                   # MUTATED: non-canonical spellings accepted\n",
+        f"{TESTS}::test_21_a_descriptor_field_that_disagrees_with_its_row_is_refused",
         "DID NOT RAISE",
     ),
     (

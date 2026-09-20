@@ -314,8 +314,16 @@ with **three** steps — a generic address/receipt substrate refactor first, bec
 objects are Decision-shaped while $\rho_X$ yields a site handle and $\rho_P$ an integer, so a
 two-step plan would force the address contract to be invented at code time. Step 1 may add no
 capability and must move no number; $X$ and $P$ are then implemented as A76 froze them, each with its
-own commit and gates. None of the three is started, and A80 authorises **no B2 runner,
-no $\texttt{FutureConsequenceView}$, no $\texttt{BehavioralCollateral}$, and no seed of any stage**.
+own commit and gates. Step 1 is **CLOSED** (`6f78949`, its evidence rebound at `3eeec3a`); Step 2 is
+implemented and its closure is under review; **Step 3 is not started and not authorised**, and A80
+authorises **no B2 runner, no $\texttt{FutureConsequenceView}$, no $\texttt{BehavioralCollateral}$,
+and no seed of any stage**.
+
+**A82 (§70) fixes the wire contract Step 2's entry depends on.** A69's $\texttt{ControllerSite}_t$ is
+index notation; A71's concrete encoding $\texttt{ControllerSite}_{x,y,t,a^{cmd}}$ — the string
+`PublicSCMView.credit_unit` emits — is the interface, and B1's $\rho_X$ consumes that same unit, with
+neither the index spelling nor $\texttt{Decision}_t$ accepted as an alias. Read §70 before touching
+either side of that boundary: A75's chain starts at $\Gamma^\ast$, whose units are exactly these.
 
 ---
 

@@ -5327,6 +5327,58 @@ requiring a tag in the ledger bytes.
 
 ---
 
+## 70. A82 — the concrete $\Gamma$ encoding is the wire contract; A69's index notation is not a spelling
+
+A80 §68.4 fixes what $X$'s cell delivers and that $\rho_X$ yields the site $(s_t, a^{cmd}_t)$, but it
+speaks of $\rho_X(\texttt{ControllerSite})$ **without freezing the concrete spelling of a credited
+controller unit**. A69 wrote $\{\texttt{ControllerSite}_t : t \in I\}$, and that is an *index*: it
+says which sites lie in $\Gamma(I)$, not which string names one. A71 then corrected the truth to be
+built from $R^{\text{mech}}$ descriptors — "so D/X carry addresses … no generic unit remains in any
+truth" — with `credit.py` expanding predictions into concrete episode-local addresses
+(`Decision_3`, `ControllerSite_x_y_t_cmd`). The two are therefore **notation and encoding**, not two
+spellings of one unit:
+
+$$\boxed{\text{A69's } \texttt{ControllerSite}_t \text{ is mathematical index notation}}$$
+
+$$\boxed{\text{A71's concrete } \Gamma \text{ encoding is the implementation interface}}$$
+
+and the interface is **one string**, emitted by V0.2R and consumed by V0.3R B1:
+
+$$\boxed{\texttt{ControllerSite}_{x,y,t,a^{cmd}} =
+\texttt{PublicSCMView.credit\_unit}(\texttt{ControllerFault})}$$
+
+This is a **cross-layer interface** question and not a downstream detail, because A75's chain begins
+$\Gamma^\ast \to \mathcal W(\Gamma^\ast)$: the units of $\Gamma^\ast$, $\Gamma^+$, $\Gamma^-$ and the
+coverage/FCR counters are the input of B1's $\rho_X$. Emitting
+$\texttt{ControllerSite}_{x,y,t,a^{cmd}}$ from V0.2R while B1 accepted
+$\texttt{ControllerSite}_t$ would leave the two frozen layers unable to meet.
+
+Consequences, all of which the implementation satisfies:
+
+* B1's $\rho_X$ consumes that concrete unit and **only** it. $\texttt{ControllerSite}_t$ is **not** a
+  compatibility alias — the same $\Gamma$ unit with two wire spellings reopens exactly the namespace
+  ambiguity A71 closed — and $\texttt{Decision}_t$ is refused, because A69 kept the two families
+  apart and A76 §63.10 gives them different images, $(s_t, z_t, m_t)$ versus $(s_t, a^{cmd}_t)$.
+* The parsed fields are the unit's **identity**, not decoration: $(x, y, t, a^{cmd})$ must equal the
+  factual row's, or "D/X carry addresses" has quietly degraded back to timestep-only. $\kappa$ and
+  $\phi$ come from the row, because the concrete unit does not encode them; $z$ and $m$ remain
+  cell-construction inputs and never enter a law's delivery (§68.4).
+* The legal namespace is injective by **canonical rendering**: $\mathrm{render}(\mathrm{parse}(u)) = u$
+  is required, so a zero-padded field cannot name the unit it parses to.
+* A **test-only** cross-layer gate (`tests/rebuild/test_x_controller.py::test_20`) resolves a unit
+  produced by `PublicSCMView.credit_unit`, and a hostile gate (`test_21`) tampers with each field in
+  turn. Production code imports no method layer: the compatibility is asserted where it can be, and
+  the gate fails if either side changes its spelling, if the descriptor loses a field, or if B1 falls
+  back to consuming the timestep alone.
+
+**What this amendment does not do.** It re-designs nothing in A80: §68.3's admissibility rule,
+§68.4's delivery rows and the $L_0$/$L_3$ single-operation requirement stand as frozen. It moves no
+number, changes no endpoint, treatment or threshold, and collects no seed. It fixes a **wire contract
+between two frozen layers**, and it exists so that A69's notation cannot be used to overwrite A71's
+encoding a second time.
+
+---
+
 ## 64. Summary and what remains open
 
 | # | what | severity | status |
@@ -5376,6 +5428,7 @@ section above; the most recent is:
 | **A79** | V0.3R **B2 pre-registration**: the stage that answers *what did this write do to this learner's future*, and a pre-registration in the strict sense -- no code, no seed. It **supersedes `08-V03R.md` on B2** (whose Block 2 arms A76 retired and whose process reading $do(z=z')$ the frozen reading rejects) while leaving `08` §2 unaddressed. It fixes $Y^{\text{future}}=\{\text{FutureUtility},\text{Collateral},\text{Retention}\}$ as **three independent dimensions with no composite primary** (a weighted score would let utility buy collateral); keeps $T$ and $P$ as **separate populations that may not be pooled**, with $T$'s primary being harm/erroneous internalisation against a weakly dominating `NoWrite` and $P$'s requiring future rollout **endogenous to $\Delta W$**; freezes $\mathrm{RMST}(T_{\max})$ primary with $\mathrm{DeficitAUC}$ mandatory by reference to `05` §8 ($K=3$, right-censored); defines primary collateral as future behavioural spillover on a set that is **truth-blind, arm-blind, pre-update, and identical across a scene's paired arms** with the unaffected set constructed truth-blind under A75 §62.10's four gate layers, and keeps $N_{\text{scalar}}$/$\sum|\Delta\theta|$ in $\texttt{UpdateLedger}$ as intervention cost because *writing less is not causing less collateral*; retains **Retention** as a dimension **whose confirmatory form must be defined for every seed** ($\tau$-conditioned forms demoted to conditional descriptive diagnostics), the choice among all-seed forms being a declared development-stage decision on measurement properties only; makes `LocalOracleRestore` the **matrix-matched normalisation ceiling** and the global oracle a **diagnostic ceiling only** that may not be a treatment's denominator; fixes **tier-matched contrasts** so $L_3$ beating $L_0$ measures headroom, not merit; and states that **the Process/Controller B1 alias-write paths are B2 prerequisites under their own authorisation**, because ``D6/B1 CLOSED'' is the Decision path and not all three stores. `05` governs unchanged, with $T$ frozen from the baseline only and no treatment curve inspectable beforehand; **V0.3R PASS is a conjunction** of FutureUtility benefit, no unacceptable Collateral, the Retention criterion and the $T$-regime harm constraint -- a gate rather than a weighted sum, so the outcome space is never collapsed -- and **V0.4R begins only on V0.3R's FINAL confirmatory PASS**, a diagnostic look at 100/200/300 being neither a PASS nor able to open it. | **P0 (spec)** | **frozen — pre-registration only; no seed collected, no code authorised**; further change requires a new amendment |
 | **A80** | the $X$ and $P$ B1 paths and the substrate refactor they need, as A79 §67.8's prerequisites -- **authorisation text only, no code**. The replacing plan's two steps are **three**: a generic address/receipt substrate refactor first, because the shared B1 objects are Decision-shaped (`AddressPlan.address`, `DecisionWriteReceipt.address` and its canonicalisation, `SliceDescriptor.owner`) while $\rho_X$ yields a site handle and $\rho_P$ an integer, and an implementer given only "$X$ then $P$" would have to invent the address contract at code time. Step 1 generalises **by type, not by duck typing** -- `address: Any` would discard the nominal closure -- keeps per-architecture strict domains, typed store addresses, $owner_\alpha$ and deterministic canonical receipts, keeps same-cell same-admissibility, and must move no number (five self-checks still pass, $D_{patch}$ still `ENCODING_ONLY`). Step 2 implements $X$ as frozen ($C_X^L(\rho_X(\texttt{ControllerSite})) \leftarrow a^{cmd}$, $L_0$ with $\lvert$treatments$\rvert=1$, $L_3$ an alias that **reuses the same operation implementation**), with $a^{cmd} \in A_z(m,s)$ because a learner write does not inherit fault privilege (A75 §62.3). Step 3 implements $P$ as frozen with $P_{id}\colon L_1$ and **not** $L_0$ -- the factual rows never carry $z^{\text{proposal}}$ -- and forbids **assisted-input laundering** ($P_{id}$ at $L_0 \Rightarrow$ `PROTOCOL_ERROR`), requiring the $L_1$ envelope to deliver the proposal explicitly and the integer-semantics process key to pass an exact type check before domain membership. Authorises **no B2 runner, no $\texttt{FutureConsequenceView}$, no $\texttt{BehavioralCollateral}$, no seed of any stage**, and may not be used to touch $D_Q$, to repair the frozen $D_{patch}$ asymmetry, to change an A79 endpoint or threshold, or to begin V0.4R. The exact delivery rows are **written here rather than deferred** (A77 §65.2's "when implemented"): $fields(X,L_0)=\{a^{cmd}\}$, $fields(X,L_3)=\varnothing$, $fields(P,L_1)=\{z^{\text{proposal}}\}$, $fields(P,L_3)=\varnothing$, and an empty cell acquires **no arm and no same-tier reference** merely because the infrastructure could express one. $X$'s $z,m$ come from the **unique learner-visible factual row** for the visited site, used only by a pre-plan validator that **both arms share**, without widening the law's $\{a^{cmd}\}$ delivery. $P$'s order is frozen -- **cell-level $\rho_P$ resolution before any arm planning**, the resolved true-int key as the locality unit, the $L_1$ envelope delivering $\{z^{\text{proposal}}\}$ to reference and treatment alike, and $\texttt{Edit}(\texttt{PROCESS},z,z)$ so the $L_3$ alias reuses the same plan function -- under the distinction $\boxed{\text{address resolution} \neq \text{information delivered to the law}}$. Step 1 must also prove the generalisation with a **test-only synthetic second domain** (an $A$-slice rejects a $B$-address, a stand-in is refused, and relaxing the validator reddens the gate) and its canonical form must be **injective on the legal domain**, not merely deterministic, since an $X$ canonical omitting $a^{cmd}$ would give two credited sites one receipt identity. | **P0 (spec)** | **frozen -- three implementation steps authorised, one commit each, own gates each; further change requires a new amendment** |
 | **A81** | **domain identity is out of band from the canonical ledger**: the contract's address identity is the pair $(\text{domain tag}, canon_\alpha(\text{address}))$ while the **frozen ledger serialises only** $canon_\alpha(\text{address})$, because A77 \u00a765.12 puts the architecture in the arm descriptor and a tag in the receipt bytes would be a ledger **schema change** -- which is why the $D_{patch}$ baseline stays `ENCODING_ONLY` instead of becoming `DRIFTED`. It rules that **cross-domain admission comes from `require_credited`, not from comparing tags** (two architectures may legitimately admit value-equal addresses, so a tag comparison is neither necessary nor sufficient, and a gate asserting two tags differ proves a property of two constants rather than of admission); restates that the runner asks the domain for every architecture while the *policy* executed is that architecture's own; and fixes the reading of \u00a768.2 without editing A80. Writes no code, moves no number, collects no seed. | **P0 (spec)** | **frozen -- clarification only**; further change requires a new amendment |
+| **A82** | **the concrete $\Gamma$ encoding is the wire contract, and A69's index notation is not a spelling**: $\texttt{ControllerSite}_t$ is mathematical index notation while A71's concrete encoding ($\texttt{ControllerSite}_{x,y,t,a^{cmd}}$, the string `PublicSCMView.credit_unit` emits for a `ControllerFault`) is the implementation interface, so V0.3R B1's $\rho_X$ consumes **that same unit** -- with $\texttt{ControllerSite}_t$ **not** accepted as a compatibility alias (two wire spellings for one $\Gamma$ unit would reopen the ambiguity A71 closed) and $\texttt{Decision}_t$ refused (A69's two families, A76 §63.10's two images). The parsed fields are the unit's identity: $(x,y,t,a^{cmd})$ must equal the factual row's, $\kappa/\phi$ come from the row, and $\mathrm{render}(\mathrm{parse}(u)) = u$ keeps the namespace injective -- so a descriptor cannot decay into decoration. A test-only cross-layer gate resolves a method-produced unit and a hostile gate tampers with each field; production code imports no method layer. A75's chain begins at $\Gamma^\ast$, which is why this is a cross-layer interface rather than a downstream detail. Writes no science, moves no number, collects no seed. | **P0 (interface)** | **frozen -- clarification only**; further change requires a new amendment |
 
 ---
 

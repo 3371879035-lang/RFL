@@ -7,13 +7,16 @@ Three things live here, and the separation between them is the point of A80 §68
 
 1. **resolution** — a credited unit becomes a `ControllerSite`. This is A76 §63.10's $\rho_X$, a
    B1-layer fact about how a credit unit meets a store key, not a law's business. Its unit family
-   is `ControllerSite_<t>` and *only* that family:
+   is the **concrete** $\Gamma$ encoding A71 froze, and *only* that spelling:
 
-$$\boxed{\rho_X \text{ consumes } \texttt{ControllerSite}_t,\quad \text{not } \texttt{Decision}_t}$$
+$$\boxed{\rho_X \text{ consumes } \texttt{ControllerSite}_{x,y,t,a^{cmd}},\quad
+\text{not } \texttt{Decision}_t \text{ and not the index-notation } \texttt{ControllerSite}_t}$$
 
-   because A69 froze those as two families and §63.10 gives them two images. Reading $t$ out of a
-   decision unit and calling the result a controller site is the merge A65 undid, and it is the
-   one defect in this path that every store-side gate would report as green;
+   A69's $\texttt{ControllerSite}_t$ is a mathematical index and A71's encoding is the interface, so
+   the same $\Gamma$ unit does not get two wire spellings; and reading $t$ out of a decision unit
+   and calling the result a controller site is the merge A65 undid. Both are refused rather than
+   translated. The descriptor's fields are the unit's identity: they must equal the factual row's,
+   or "address-bearing truth" has quietly degraded to timestep-only;
 2. **the contract check** — `a_cmd ∈ A_z(m, s)`, which needs $z$ and $m$, and a `ControllerSite`
    carries only $(s, a^{cmd})$:
 
@@ -45,15 +48,28 @@ from rfl_rebuild.env.observation import ROW_SCHEMA
 __all__ = [
     "ControllerTarget",
     "build_controller_envelope",
+    "render_controller_unit",
     "resolve_controller_site",
     "resolve_controller_sites",
     "require_admissible_sites",
     "validate_controller_envelope",
 ]
 
-#: The controller family's credit unit, and **only** it. A69 keeps ``Decision_t`` and
-#: ``ControllerSite_t`` as two indexed families, and A76 §63.10 gives them two resolvers.
-_CONTROLLER_RE = re.compile(r"^ControllerSite_(\d+)$")
+#: The controller family's credit unit: the **concrete** $\Gamma$ encoding A71 froze, and only
+#: that spelling. A69's $\texttt{ControllerSite}_t$ is mathematical index notation; the wire unit
+#: carries the episode-local address, because A71's correction is exactly that D/X carry addresses
+#: and no generic unit remains (A82 §70).
+_CONTROLLER_RE = re.compile(r"^ControllerSite_(\d+)_(\d+)_(\d+)_(\d+)$")
+
+
+def render_controller_unit(state, cmd) -> str:
+    r"""The canonical wire spelling of a controller unit, $\texttt{ControllerSite}_{x,y,t,a^{cmd}}$.
+
+    The same string `PublicSCMView.credit_unit` emits for a `ControllerFault` descriptor, which is
+    what lets the two layers meet: V0.2R's $\Gamma$ units are B1's $\rho_X$ input, not a parallel
+    spelling of it (A82 §70).
+    """
+    return f"ControllerSite_{state.x}_{state.y}_{state.t}_{cmd}"
 
 _X = ROW_SCHEMA.index("x")
 _Y = ROW_SCHEMA.index("y")
@@ -211,34 +227,53 @@ def _require_controller_unit(unit: object) -> str:
     if not isinstance(unit, str):
         raise ProtocolError(
             f"credit unit {unit!r} is not a string; a controller credit unit is written "
-            "'ControllerSite_<t>'")
+            "'ControllerSite_<x>_<y>_<t>_<cmd>'")
     return unit
 
 
 def resolve_controller_site(unit, trace, kappa: int, phi: int) -> object:
-    r"""$\rho_X(\texttt{ControllerSite}_t, \tau)$ — the site's own resolver.
+    r"""$\rho_X$ — the site's own resolver, over the **concrete** $\Gamma$ unit.
 
-    $$\boxed{\rho_X(\texttt{ControllerSite}_t) = \texttt{ControllerSite}(s_t, a^{cmd}_t)}$$
+    $$\boxed{\rho_X(\texttt{ControllerSite}_{x,y,t,a^{cmd}}) =
+    \texttt{ControllerSite}(s_t, a^{cmd}_t)}$$
 
     **This resolver is not $\rho_D$ and does not go through it.** A69 froze $\Gamma(I)$ with
     $\{\texttt{Decision}_t\}$ and $\{\texttt{ControllerSite}_t\}$ as two different credit-unit
     families, and A76 §63.10 gives them different images -- $\rho_D(\texttt{Decision}_t)=(s_t,z_t,m_t)$
-    versus $\rho_X(\texttt{ControllerSite}_t)=(s_t,a^{cmd}_t)$. They happen to be indexed by the
-    same $t$ and nothing else, so treating one as an alias of the other would silently merge the
-    two families that A65 split: a decision credit would then be spendable as a controller write.
+    versus $\rho_X(\texttt{ControllerSite})=(s_t,a^{cmd}_t)$ -- so treating one as an alias of the
+    other would silently merge the two families that A65 split, and a decision credit would become
+    spendable as a controller write. A `Decision_<t>` arriving here is refused, not translated.
 
-    The unit must therefore be spelled ``ControllerSite_<t>`` exactly, and a ``Decision_<t>``
-    arriving here is a **refused** unit rather than a synonym.
+    **And the unit carries the address.** A69's $\texttt{ControllerSite}_t$ is *index notation*;
+    after A71 the concrete encoding is $\texttt{ControllerSite}_{x,y,t,a^{cmd}}$ -- "truth from
+    $R^{\text{mech}}$ descriptors, so D/X carry addresses; no generic unit remains" -- and that is
+    the string V0.2R emits (`PublicSCMView.credit_unit`). So the parse is not a way to recover $t$
+    and discard the rest: the unit's $(x,y,t,a^{cmd})$ must **equal the factual row's**, or the
+    fields would be decoration and the address-bearing truth would have degraded back to
+    timestep-only (A82 §70). $\kappa$ and $\phi$ come from the row, because the method layer's
+    concrete unit does not encode them and the row is where they live.
+
+    The chain is therefore
+
+    $$\boxed{\text{parse concrete } \Gamma \text{ unit} \rightarrow \text{unique factual row at }
+    t \rightarrow \text{verify } (x,y,a^{cmd}) \rightarrow \texttt{ControllerSite}(s_t,a^{cmd}_t)}$$
     """
     unit = _require_controller_unit(unit)
     m = _CONTROLLER_RE.match(unit)
     if m is None:
         raise ProtocolError(
-            f"{unit!r} is not a controller credit unit; expected 'ControllerSite_<t>'. "
-            "A69's Decision and ControllerSite families have separate resolvers (A76 §63.10): "
-            "rho_D yields (s, z, m) and rho_X yields (s, a_cmd), so a decision unit is not an "
-            "alias for the controller site at the same t")
-    t = int(m.group(1))
+            f"{unit!r} is not a controller credit unit; expected "
+            "'ControllerSite_<x>_<y>_<t>_<cmd>'. A69's ControllerSite_t is index notation rather "
+            "than a wire unit (A82 §70), and a decision unit is a different family with a "
+            "different resolver (A76 §63.10) -- rho_D yields (s, z, m) and rho_X yields "
+            "(s, a_cmd) -- so neither spelling is an alias for the concrete controller unit")
+    x, y, t, cmd = (int(g) for g in m.groups())
+    canonical = f"ControllerSite_{x}_{y}_{t}_{cmd}"
+    if canonical != unit:
+        raise ProtocolError(
+            f"{unit!r} is not the canonical spelling of its own parse ({canonical!r}); the legal "
+            "namespace is injective by canonical rendering, so a padded or zero-prefixed field "
+            "may not name the unit it parses to")
     rows = [row for row in _rows_of(trace, kappa, phi) if row[_T] == t]
     if not rows:
         raise ProtocolError(
@@ -248,7 +283,15 @@ def resolve_controller_site(unit, trace, kappa: int, phi: int) -> object:
         raise ProtocolError(
             f"credited unit {unit!r} names t={t}, at which the evidence carries {len(rows)} "
             "factual rows; the site is not determined by the evidence (A80 §68.4)")
-    return _site_of(rows[0])
+    row = rows[0]
+    factual = (row[_X], row[_Y], row[_T], row[_A_CMD])
+    if factual != (x, y, t, cmd):
+        raise ProtocolError(
+            f"credited unit {unit!r} names (x, y, t, a_cmd) = {(x, y, t, cmd)}, but the factual "
+            f"row at t={t} is {factual}; the unit's fields are its identity rather than "
+            "decoration, so a unit that disagrees with its own row is refused, not repaired "
+            "(A71, A82 §70)")
+    return _site_of(row)
 
 
 def resolve_controller_sites(credited_units, trace, kappa: int, phi: int) -> tuple:
