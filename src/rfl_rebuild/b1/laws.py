@@ -440,10 +440,13 @@ class XId(_Law):
 
     $$\boxed{C_X^L\bigl(\rho_X(\texttt{ControllerSite})\bigr) \leftarrow a^{cmd}}$$
 
-    The law reads exactly the field its cell declares, $\{a^{cmd}\}$ (A77 §65.2, A80 §68.3). The
-    option in force, the site's $z$ and $m$, and the check $a^{cmd} \in A_z(m,s)$ all happen
-    **before** this is called: they are cell-construction work (A80 §68.4), and a law that could
-    read them would hold option geometry it was never granted.
+    The cell **delivers** exactly the field set $\{a^{cmd}\}$ and nothing else (A77 §65.2, A80
+    §68.3); the operation's identity comes from the credited address's $site.cmd$, not from that
+    delivery. The two agree because a `ControllerSite` *is* $(s_t, a^{cmd}_t)$, and keeping them
+    separate is what lets one function serve both $L_0$ and the $L_3$ alias, whose delivery is
+    empty. The option in force, the site's $z$ and $m$, and the check $a^{cmd} \in A_z(m,s)$ all
+    happen **before** this is called: they are cell-construction work (A80 §68.4), and a law that
+    could read them would hold option geometry it was never granted.
 
     A healthy scene writes the identity — $C_X$ already maps this site to this command — so the
     store's canonicalisation turns the write into a deletion. That is what makes $L_3$'s restore

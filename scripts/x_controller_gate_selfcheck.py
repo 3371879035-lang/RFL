@@ -106,6 +106,29 @@ MUTATIONS: tuple = (
         f"{TESTS}::test_6_owner_x_is_load_bearing_on_the_real_path",
         "DID NOT RAISE",
     ),
+    (
+        "rho_x_accepts_the_decision_family",
+        "the controller parser is widened back to the decision family, so rho_X consumes "
+        "Decision_t again -- the merge of A69's two families that A76 63.10 keeps apart. This is "
+        "the Step 2 blocker: every store-side gate stays green while the arrow's input is wrong",
+        CTRL,
+        '_CONTROLLER_RE = re.compile(r"^ControllerSite_(\\d+)$")',
+        '_CONTROLLER_RE = re.compile(r"^(?:ControllerSite|Decision)_(\\d+)$")   # MUTATED',
+        f"{TESTS}::test_18_rho_x_consumes_the_controller_family_and_refuses_the_"
+        "decision_family",
+        "DID NOT RAISE",
+    ),
+    (
+        "rho_x_duplicate_guard_dead",
+        "the duplicate check can never fire, so two copies of one controller unit are silently "
+        "de-duplicated -- the historical shape of this defect in targets.py, and the reason the "
+        "gate asserts the rule's own message rather than that something was refused",
+        CTRL,
+        "        if u in seen:\n",
+        "        if False:                   # MUTATED: the check can never fire\n",
+        f"{TESTS}::test_19_rho_x_fails_stop_on_bad_units",
+        "both resolve to",
+    ),
 )
 
 

@@ -6,7 +6,14 @@ X_{id}:\ C_X^L(\rho_X(\texttt{ControllerSite})) \leftarrow a^{cmd}$$
 Three things live here, and the separation between them is the point of A80 §68.4:
 
 1. **resolution** — a credited unit becomes a `ControllerSite`. This is A76 §63.10's $\rho_X$, a
-   B1-layer fact about how a credit unit meets a store key, not a law's business;
+   B1-layer fact about how a credit unit meets a store key, not a law's business. Its unit family
+   is `ControllerSite_<t>` and *only* that family:
+
+$$\boxed{\rho_X \text{ consumes } \texttt{ControllerSite}_t,\quad \text{not } \texttt{Decision}_t}$$
+
+   because A69 froze those as two families and §63.10 gives them two images. Reading $t$ out of a
+   decision unit and calling the result a controller site is the merge A65 undid, and it is the
+   one defect in this path that every store-side gate would report as green;
 2. **the contract check** — `a_cmd ∈ A_z(m, s)`, which needs $z$ and $m$, and a `ControllerSite`
    carries only $(s, a^{cmd})$:
 
@@ -25,6 +32,7 @@ granted, which is the widening A77 §65.2's exact field set exists to prevent.
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass
 from types import MappingProxyType
 from typing import Mapping, Sequence
@@ -37,10 +45,15 @@ from rfl_rebuild.env.observation import ROW_SCHEMA
 __all__ = [
     "ControllerTarget",
     "build_controller_envelope",
+    "resolve_controller_site",
     "resolve_controller_sites",
     "require_admissible_sites",
     "validate_controller_envelope",
 ]
+
+#: The controller family's credit unit, and **only** it. A69 keeps ``Decision_t`` and
+#: ``ControllerSite_t`` as two indexed families, and A76 §63.10 gives them two resolvers.
+_CONTROLLER_RE = re.compile(r"^ControllerSite_(\d+)$")
 
 _X = ROW_SCHEMA.index("x")
 _Y = ROW_SCHEMA.index("y")
@@ -188,27 +201,87 @@ def validate_controller_envelope(sites: Sequence, envelope, rows: Sequence) -> N
                 "(A80 §68.3)")
 
 
+def _require_controller_unit(unit: object) -> str:
+    """A credit unit is a string, checked **before** anything matches or hashes it.
+
+    Same fail-stop order as ``targets._require_unit``: an unhashable unit must not reach a
+    duplicate set, and a non-string must not reach the regex, because both raise ``TypeError``
+    where the contract promises a ``PROTOCOL_ERROR``.
+    """
+    if not isinstance(unit, str):
+        raise ProtocolError(
+            f"credit unit {unit!r} is not a string; a controller credit unit is written "
+            "'ControllerSite_<t>'")
+    return unit
+
+
+def resolve_controller_site(unit, trace, kappa: int, phi: int) -> object:
+    r"""$\rho_X(\texttt{ControllerSite}_t, \tau)$ — the site's own resolver.
+
+    $$\boxed{\rho_X(\texttt{ControllerSite}_t) = \texttt{ControllerSite}(s_t, a^{cmd}_t)}$$
+
+    **This resolver is not $\rho_D$ and does not go through it.** A69 froze $\Gamma(I)$ with
+    $\{\texttt{Decision}_t\}$ and $\{\texttt{ControllerSite}_t\}$ as two different credit-unit
+    families, and A76 §63.10 gives them different images -- $\rho_D(\texttt{Decision}_t)=(s_t,z_t,m_t)$
+    versus $\rho_X(\texttt{ControllerSite}_t)=(s_t,a^{cmd}_t)$. They happen to be indexed by the
+    same $t$ and nothing else, so treating one as an alias of the other would silently merge the
+    two families that A65 split: a decision credit would then be spendable as a controller write.
+
+    The unit must therefore be spelled ``ControllerSite_<t>`` exactly, and a ``Decision_<t>``
+    arriving here is a **refused** unit rather than a synonym.
+    """
+    unit = _require_controller_unit(unit)
+    m = _CONTROLLER_RE.match(unit)
+    if m is None:
+        raise ProtocolError(
+            f"{unit!r} is not a controller credit unit; expected 'ControllerSite_<t>'. "
+            "A69's Decision and ControllerSite families have separate resolvers (A76 §63.10): "
+            "rho_D yields (s, z, m) and rho_X yields (s, a_cmd), so a decision unit is not an "
+            "alias for the controller site at the same t")
+    t = int(m.group(1))
+    rows = [row for row in _rows_of(trace, kappa, phi) if row[_T] == t]
+    if not rows:
+        raise ProtocolError(
+            f"credited unit {unit!r} names t={t}, which is not on the factual trace's "
+            "pre-action timeline")
+    if len(rows) != 1:
+        raise ProtocolError(
+            f"credited unit {unit!r} names t={t}, at which the evidence carries {len(rows)} "
+            "factual rows; the site is not determined by the evidence (A80 §68.4)")
+    return _site_of(rows[0])
+
+
 def resolve_controller_sites(credited_units, trace, kappa: int, phi: int) -> tuple:
-    r"""$\rho_X$ at the credit-unit level: each credited step's site handle.
+    r"""$\rho_X$ over a credited population, **failing stop** on a duplicate or a collision.
 
     A76 §63.10 puts this beside the store keys rather than in a law, so that "how a credit unit
-    becomes a store key" is answered once per architecture instead of once per implementer.
-    """
-    from rfl_rebuild.b1.targets import resolve_credited_units
+    becomes a store key" is answered once per architecture instead of once per implementer. The
+    duplicate and collision rules are the ones $\rho_D$ already had to learn (``targets.py``):
+    de-duplicating silently changes $N_{\text{addressed}}$ and the address budget.
 
-    decision_addresses = resolve_credited_units(credited_units, trace, kappa, phi)
-    index = _row_index((row for row in _rows_of(trace, kappa, phi)))
+    The collision guard is an **invariant**: the site key carries $t$, so two distinct units
+    cannot resolve to one site, exactly as §68.3's admissibility branch cannot be reached from
+    admissible evidence. It is kept because the rule is about the *population* -- the day a unit
+    family stops carrying $t$ in its key, silently crediting one site twice is what it would cost.
+    """
+    seen: set = set()
+    by_site: dict = {}
     out = []
-    for address in decision_addresses:
-        state = address.state
-        candidates = [row for row in index.values()
-                      if (row[_X], row[_Y], row[_T], row[_KAPPA], row[_PHI])
-                      == (state.x, state.y, state.t, state.kappa, state.phi)]
-        if len(candidates) != 1:
+    for u in credited_units:
+        u = _require_controller_unit(u)
+        if u in seen:
             raise ProtocolError(
-                f"the credited step t={state.t} has {len(candidates)} factual rows, so its "
-                "controller site is not determined by the evidence (A80 §68.4)")
-        out.append(_site_of(candidates[0]))
+                f"credited unit {u!r} appears more than once; de-duplicating it would silently "
+                "change N_addressed and the address budget")
+        seen.add(u)
+        site = resolve_controller_site(u, trace, kappa, phi)
+        key = _site_key(site)
+        if key in by_site:
+            raise ProtocolError(
+                f"credited units {by_site[key]!r} and {u!r} both resolve to {site!r}; one site "
+                "cannot be credited twice")
+        by_site[key] = u
+        out.append(site)
     return tuple(out)
 
 

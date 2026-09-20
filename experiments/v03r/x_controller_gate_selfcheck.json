@@ -1,7 +1,7 @@
 {
   "check": "X controller gate mutation self-check",
-  "n_mutations": 6,
-  "n_gate_is_real": 6,
+  "n_mutations": 8,
+  "n_gate_is_real": 8,
   "n_not_a_gate": 0,
   "n_node_not_found": 0,
   "n_harness_error": 0,
@@ -29,7 +29,7 @@
       "matched": 1,
       "expected_failure_text": null,
       "exit_code": 1,
-      "tail": "        if not outside:\n            pytest.skip(\"every action is admissible here\")             # pragma: no cover\n        row[7] = outside[0]                       # the row now claims an inadmissible command\n        forbidden = K.ControllerSite(state=site.state, cmd=outside[0])\n        for law in (XId, NoWriteRef(Tier.L0_FACTUAL), NoWriteRef(Tier.L3_ORACLE)):\n>           with pytest.raises(ProtocolError) as ei:\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE           Failed: DID NOT RAISE <class 'rfl_rebuild.b1.errors.ProtocolError'>\ntests\\rebuild\\test_x_controller.py:109: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_x_controller.py::test_1_an_inadmissible_command_is_refused_at_the_pre_plan_boundary\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "        if not outside:\n            pytest.skip(\"every action is admissible here\")             # pragma: no cover\n        row[7] = outside[0]                       # the row now claims an inadmissible command\n        forbidden = K.ControllerSite(state=site.state, cmd=outside[0])\n        for law in (XId, NoWriteRef(Tier.L0_FACTUAL), NoWriteRef(Tier.L3_ORACLE)):\n>           with pytest.raises(ProtocolError) as ei:\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE           Failed: DID NOT RAISE <class 'rfl_rebuild.b1.errors.ProtocolError'>\ntests\\rebuild\\test_x_controller.py:115: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_x_controller.py::test_1_an_inadmissible_command_is_refused_at_the_pre_plan_boundary\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -40,7 +40,7 @@
       "matched": 1,
       "expected_failure_text": null,
       "exit_code": 1,
-      "tail": "E       AssertionError: assert '0,2,0,0,0' != '0,2,0,0,0'\nE        +  where '0,2,0,0,0' = <function _site_canonical at 0x<ADDR>>(ControllerSite(state=State(x=0, y=2, t=0, kappa=0, phi=0), cmd=3))\nE        +    where <function _site_canonical at 0x<ADDR>> = AddressDomain(tag='X').canonical\nE        +  and   '0,2,0,0,0' = <function _site_canonical at 0x<ADDR>>(ControllerSite(state=State(x=0, y=2, t=0, kappa=0, phi=0), cmd=4))\nE        +    where <function _site_canonical at 0x<ADDR>> = AddressDomain(tag='X').canonical\nE        +    and   ControllerSite(state=State(x=0, y=2, t=0, kappa=0, phi=0), cmd=4) = <class 'rfl_rebuild.env.kernel.ControllerSite'>(state=State(x=0, y=2, t=0, kappa=0, phi=0), cmd=4)\nE        +      where <class 'rfl_rebuild.env.kernel.ControllerSite'> = K.ControllerSite\nE        +      and   State(x=0, y=2, t=0, kappa=0, phi=0) = ControllerSite(state=State(x=0, y=2, t=0, kappa=0, phi=0), cmd=3).state\ntests\\rebuild\\test_x_controller.py:308: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_x_controller.py::test_12_the_canonical_receipt_changes_with_the_command\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "E       AssertionError: assert '0,2,0,0,0' != '0,2,0,0,0'\nE        +  where '0,2,0,0,0' = <function _site_canonical at 0x<ADDR>>(ControllerSite(state=State(x=0, y=2, t=0, kappa=0, phi=0), cmd=3))\nE        +    where <function _site_canonical at 0x<ADDR>> = AddressDomain(tag='X').canonical\nE        +  and   '0,2,0,0,0' = <function _site_canonical at 0x<ADDR>>(ControllerSite(state=State(x=0, y=2, t=0, kappa=0, phi=0), cmd=4))\nE        +    where <function _site_canonical at 0x<ADDR>> = AddressDomain(tag='X').canonical\nE        +    and   ControllerSite(state=State(x=0, y=2, t=0, kappa=0, phi=0), cmd=4) = <class 'rfl_rebuild.env.kernel.ControllerSite'>(state=State(x=0, y=2, t=0, kappa=0, phi=0), cmd=4)\nE        +      where <class 'rfl_rebuild.env.kernel.ControllerSite'> = K.ControllerSite\nE        +      and   State(x=0, y=2, t=0, kappa=0, phi=0) = ControllerSite(state=State(x=0, y=2, t=0, kappa=0, phi=0), cmd=3).state\ntests\\rebuild\\test_x_controller.py:314: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_x_controller.py::test_12_the_canonical_receipt_changes_with_the_command\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -51,7 +51,7 @@
       "matched": 1,
       "expected_failure_text": null,
       "exit_code": 1,
-      "tail": "_______________ test_9_the_alias_is_a_real_implementation_alias _______________\n    def test_9_the_alias_is_a_real_implementation_alias():\n        r\"\"\"$$\\boxed{XLocalOracleRestore.plan\\ \\text{is}\\ XId.plan}$$ and\n        $\\lvert\\text{treatments}(X)\\rvert = 1$.\"\"\"\n>       assert XLocalOracleRestore.plan is XId.plan\nE       assert <function XLocalOracleRestore.plan at 0x<ADDR>> is <function XId.plan at 0x<ADDR>>\nE        +  where <function XLocalOracleRestore.plan at 0x<ADDR>> = XLocalOracleRestore.plan\nE        +  and   <function XId.plan at 0x<ADDR>> = XId.plan\ntests\\rebuild\\test_x_controller.py:259: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_x_controller.py::test_9_the_alias_is_a_real_implementation_alias\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "_______________ test_9_the_alias_is_a_real_implementation_alias _______________\n    def test_9_the_alias_is_a_real_implementation_alias():\n        r\"\"\"$$\\boxed{XLocalOracleRestore.plan\\ \\text{is}\\ XId.plan}$$ and\n        $\\lvert\\text{treatments}(X)\\rvert = 1$.\"\"\"\n>       assert XLocalOracleRestore.plan is XId.plan\nE       assert <function XLocalOracleRestore.plan at 0x<ADDR>> is <function XId.plan at 0x<ADDR>>\nE        +  where <function XLocalOracleRestore.plan at 0x<ADDR>> = XLocalOracleRestore.plan\nE        +  and   <function XId.plan at 0x<ADDR>> = XId.plan\ntests\\rebuild\\test_x_controller.py:265: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_x_controller.py::test_9_the_alias_is_a_real_implementation_alias\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -62,7 +62,7 @@
       "matched": 1,
       "expected_failure_text": "DID NOT RAISE",
       "exit_code": 1,
-      "tail": "        assert K.ControllerSite(state=site.state, cmd=float(site.cmd)) == site\n        if site.cmd in (0, 1):\n            assert K.ControllerSite(state=site.state, cmd=bool(site.cmd)) == site\n        # and the domain refuses every one of them, because `C_X` is a function OF THE COMMAND\n        for alias in aliases:\n>           with pytest.raises(ProtocolError):\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE           Failed: DID NOT RAISE <class 'rfl_rebuild.b1.errors.ProtocolError'>\ntests\\rebuild\\test_x_controller.py:154: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_x_controller.py::test_4_the_credited_site_is_strictly_typed\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "        assert K.ControllerSite(state=site.state, cmd=float(site.cmd)) == site\n        if site.cmd in (0, 1):\n            assert K.ControllerSite(state=site.state, cmd=bool(site.cmd)) == site\n        # and the domain refuses every one of them, because `C_X` is a function OF THE COMMAND\n        for alias in aliases:\n>           with pytest.raises(ProtocolError):\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE           Failed: DID NOT RAISE <class 'rfl_rebuild.b1.errors.ProtocolError'>\ntests\\rebuild\\test_x_controller.py:160: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_x_controller.py::test_4_the_credited_site_is_strictly_typed\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -73,7 +73,29 @@
       "matched": 1,
       "expected_failure_text": "DID NOT RAISE",
       "exit_code": 1,
-      "tail": "            name, alias_of, tier = \"MisOwned\", None, Tier.L0_FACTUAL\n            def plan(self, addresses, targets):\n                return LawPlan(self.name, tuple(\n                    AddressPlan(s, (Edit(CONTROLLER, other, s.cmd),)) if s is victim\n                    else AddressPlan(s) for s in addresses))\n>       with pytest.raises(ProtocolError) as ei:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.b1.errors.ProtocolError'>\ntests\\rebuild\\test_x_controller.py:197: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_x_controller.py::test_6_owner_x_is_load_bearing_on_the_real_path\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "            name, alias_of, tier = \"MisOwned\", None, Tier.L0_FACTUAL\n            def plan(self, addresses, targets):\n                return LawPlan(self.name, tuple(\n                    AddressPlan(s, (Edit(CONTROLLER, other, s.cmd),)) if s is victim\n                    else AddressPlan(s) for s in addresses))\n>       with pytest.raises(ProtocolError) as ei:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.b1.errors.ProtocolError'>\ntests\\rebuild\\test_x_controller.py:203: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_x_controller.py::test_6_owner_x_is_load_bearing_on_the_real_path\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "rho_x_accepts_the_decision_family",
+      "hole": "the controller parser is widened back to the decision family, so rho_X consumes Decision_t again -- the merge of A69's two families that A76 63.10 keeps apart. This is the Step 2 blocker: every store-side gate stays green while the arrow's input is wrong",
+      "gate": "test_18_rho_x_consumes_the_controller_family_and_refuses_the_decision_family",
+      "site": "src\\rfl_rebuild\\b1\\controller.py",
+      "matched": 1,
+      "expected_failure_text": "DID NOT RAISE",
+      "exit_code": 1,
+      "tail": "                    singular = tuple(resolve_controller_site(f\"ControllerSite_{t}\", trace, kappa, phi)\n                                     for t in ordered)\n                    assert singular == sites\n                    # the decision family is refused -- not translated into the same site\n                    for t in ordered:\n>                       with pytest.raises(ProtocolError) as ei:\n                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE                       Failed: DID NOT RAISE <class 'rfl_rebuild.b1.errors.ProtocolError'>\ntests\\rebuild\\test_x_controller.py:448: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_x_controller.py::test_18_rho_x_consumes_the_controller_family_and_refuses_the_decision_family\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "rho_x_duplicate_guard_dead",
+      "hole": "the duplicate check can never fire, so two copies of one controller unit are silently de-duplicated -- the historical shape of this defect in targets.py, and the reason the gate asserts the rule's own message rather than that something was refused",
+      "gate": "test_19_rho_x_fails_stop_on_bad_units",
+      "site": "src\\rfl_rebuild\\b1\\controller.py",
+      "matched": 1,
+      "expected_failure_text": "both resolve to",
+      "exit_code": 1,
+      "tail": "            assert \"not a controller credit unit\" in str(ei.value)\n        # duplicates are refused, not de-duplicated\n        with pytest.raises(ProtocolError) as ei:\n            resolve_controller_sites((ok, ok), trace, 0, 0)\n>       assert \"more than once\" in str(ei.value)\nE       assert 'more than once' in \"credited units 'ControllerSite_0' and 'ControllerSite_0' both resolve to ControllerSite(state=State(x=0, y=2, t=0, kappa=0, phi=0), cmd=3); one site cannot be credited twice\"\nE        +  where \"credited units 'ControllerSite_0' and 'ControllerSite_0' both resolve to ControllerSite(state=State(x=0, y=2, t=0, kappa=0, phi=0), cmd=3); one site cannot be credited twice\" = str(ProtocolError(\"credited units 'ControllerSite_0' and 'ControllerSite_0' both resolve to ControllerSite(state=State(x=0, y=2, t=0, kappa=0, phi=0), cmd=3); one site cannot be credited twice\"))\nE        +    where ProtocolError(\"credited units 'ControllerSite_0' and 'ControllerSite_0' both resolve to ControllerSite(state=State(x=0, y=2, t=0, kappa=0, phi=0), cmd=3); one site cannot be credited twice\") = <ExceptionInfo ProtocolError(\"credited units 'ControllerSite_0' and 'ControllerSite_0' both resolve to ControllerSite(state=State(x=0, y=2, t=0, kappa=0, phi=0), cmd=3); one site cannot be credited twice\") tblen=2>.value\ntests\\rebuild\\test_x_controller.py:490: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_x_controller.py::test_19_rho_x_fails_stop_on_bad_units\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     }
   ]

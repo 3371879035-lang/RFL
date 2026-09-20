@@ -27,7 +27,7 @@ from rfl_rebuild.b1 import (  # noqa: E402
     APPLIED, EVALUABLE_NOOP, AddressPlan, ControllerTarget, ILL_TYPED,
     LawPlan, NoWriteRef, ProtocolError, Tier, XId, XLocalOracleRestore, X_DOMAIN, X_LAWS,
     X_SLICE, independent_treatment_count, law_metadata, require_admissible_sites,
-    resolve_controller_sites, run_controller_law,
+    resolve_controller_site, resolve_controller_sites, run_controller_law,
 )
 from rfl_rebuild.env import kernel as K  # noqa: E402
 from rfl_rebuild.env.kernel import ControlState, State  # noqa: E402
@@ -45,14 +45,20 @@ SOL = solve_reference()
 # --------------------------------------------------------------------------- #
 
 def scene(kappa=0, phi=0, z0=1):
-    """A real scene: its trace, its rows, and its credited controller sites."""
+    """A real scene: its trace, its rows, and its credited controller sites.
+
+    The credit units are the **controller** family, ``ControllerSite_<t>``. They were
+    ``Decision_<t>`` until the Step 2 closure: $\\rho_X$ was composing on $\\rho_D$ and reading
+    the site out of a decision unit, which made one family spendable as the other (A69, A76
+    §63.10). The fixture is what the bug looked like from the outside.
+    """
     trace = K.rollout(kappa=kappa, tape=K.SemanticTape(phase=phi, error_flag=0, cause_rank=0),
                       command_provider=lambda s, c: SOL.best_action(s, c.z, c.m),
                       base_option=z0)
     rows = learner_rows(trace, kappa, phi)
     steps = sorted({r[2] for r in rows})
-    sites = resolve_controller_sites(tuple(f"Decision_{t}" for t in steps), trace, kappa,
-                                     phi)
+    sites = resolve_controller_sites(tuple(f"ControllerSite_{t}" for t in steps), trace,
+                                     kappa, phi)
     return trace, rows, sites
 
 
@@ -395,3 +401,97 @@ def test_17_the_cell_table_is_the_frozen_one():
     assert X_SLICE.store == CONTROLLER
     kinds = [k for _n, k, _a in law_metadata(X_LAWS)]
     assert kinds == ["reference", "operation", "reference", "alias"]
+
+
+# --------------------------------------------------------------------------- #
+# 5. the entry of the arrow: the credit-unit family rho_X consumes
+# --------------------------------------------------------------------------- #
+
+def test_18_rho_x_consumes_the_controller_family_and_refuses_the_decision_family():
+    r"""$$\boxed{\rho_X(\texttt{ControllerSite}_t) = \texttt{ControllerSite}(s_t, a^{cmd}_t)}
+    \qquad \texttt{Decision}_t \text{ passed to } \rho_X \Rightarrow \texttt{PROTOCOL\_ERROR}$$
+
+    The defect this gate exists for was **not** visible from the store side: the write, the
+    $L_0$/$L_3$ alias, the dirty-state restore and owner locality were all correct while the
+    arrow's *input* was wrong. $\rho_X$ composed on $\rho_D$, so a `Decision_t` unit was read as
+    the controller site at the same $t$ -- merging the two families A69 froze apart and A76 §63.10
+    gave two different images: $(s_t, z_t, m_t)$ versus $(s_t, a^{cmd}_t)$.
+
+    A gate that only checked "the resolver returns sites" would still pass under the alias, so
+    this one fixes both ends: the controller unit resolves to **the factual row's** site, and the
+    decision unit is refused rather than translated.
+    """
+    checked = 0
+    for kappa in (0, 1):
+        for phi in range(6):
+            for z0 in range(4):
+                try:
+                    trace, rows, sites = scene(kappa, phi, z0)
+                except Exception:                                  # pragma: no cover
+                    continue
+                by_t = {r[2]: r for r in rows}
+                ordered = sorted(by_t)
+                assert len(sites) == len(ordered)
+                for t, site in zip(ordered, sites):
+                    row = by_t[t]
+                    assert type(site) is K.ControllerSite
+                    assert (site.state.x, site.state.y, site.state.t, site.state.kappa,
+                            site.state.phi) == (row[0], row[1], row[2], row[3], row[4]), \
+                        f"t={t}: the resolved site is not the factual row's state"
+                    assert site.cmd == row[7], f"t={t}: the site's cmd is not the factual command"
+                # the singular resolver agrees with the population resolver, element by element
+                singular = tuple(resolve_controller_site(f"ControllerSite_{t}", trace, kappa, phi)
+                                 for t in ordered)
+                assert singular == sites
+                # the decision family is refused -- not translated into the same site
+                for t in ordered:
+                    with pytest.raises(ProtocolError) as ei:
+                        resolve_controller_site(f"Decision_{t}", trace, kappa, phi)
+                    assert "not a controller credit unit" in str(ei.value)
+                with pytest.raises(ProtocolError):
+                    resolve_controller_sites((f"Decision_{ordered[0]}",), trace, kappa, phi)
+                # a mixed population is refused as a whole, not partially credited
+                mixed = (f"ControllerSite_{ordered[0]}", f"Decision_{ordered[-1]}")
+                with pytest.raises(ProtocolError) as ei:
+                    resolve_controller_sites(mixed, trace, kappa, phi)
+                assert "not a controller credit unit" in str(ei.value)
+                checked += len(sites)
+    assert checked >= 100, f"the premise needs a real support, got {checked} sites"
+
+
+def test_19_rho_x_fails_stop_on_bad_units():
+    r"""The resolver's own fail-stop set, in the order $\rho_D$ already had to learn it.
+
+    Type first, so an unhashable unit cannot turn the duplicate guard into a ``TypeError``;
+    then the family; then $t$ on the factual timeline; then the population rules.
+
+    The **collision** guard is an invariant rather than a branch reachable from evidence: the
+    site key carries $t$, so two distinct controller units cannot resolve to one site. It is
+    asserted here as the rule about the population, and this gate does not claim to exercise it.
+    """
+    trace, rows, sites = scene()
+    ts = sorted({r[2] for r in rows})
+    ok = f"ControllerSite_{ts[0]}"
+    bad_units = [["ControllerSite_0"], {"ControllerSite_0": 1}, 0, None, True, 1.0,
+                 ("ControllerSite_0",)]
+    for bad in bad_units:
+        with pytest.raises(ProtocolError) as ei:
+            resolve_controller_sites((bad,), trace, 0, 0)
+        assert "is not a string" in str(ei.value)
+    # family spelling: the <t> form is the unit; a site *descriptor* is not one
+    for wrong_family in ("ControllerSite", "ControllerSite_", "controllerSite_0",
+                         "ControllerSite_0_0_0_1", "Decision_0", "Strategy"):
+        with pytest.raises(ProtocolError) as ei:
+            resolve_controller_site(wrong_family, trace, 0, 0)
+        assert "not a controller credit unit" in str(ei.value)
+    # duplicates are refused, not de-duplicated
+    with pytest.raises(ProtocolError) as ei:
+        resolve_controller_sites((ok, ok), trace, 0, 0)
+    assert "more than once" in str(ei.value)
+    # t off the factual timeline
+    with pytest.raises(ProtocolError) as ei:
+        resolve_controller_site(f"ControllerSite_{max(ts) + 1000}", trace, 0, 0)
+    assert "not on the factual trace" in str(ei.value)
+    # the single unit that does resolve is the factual site, and the healthy population is real
+    assert resolve_controller_site(ok, trace, 0, 0) == sites[0]
+
