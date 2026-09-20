@@ -4764,6 +4764,35 @@ A75 §62.10's fourth gate layer enforces: $\texttt{FutureConsequenceViewBuilder}
 reach $\mathcal H_{\text{forbidden}}$, and the mutation that proves the gate is live — fabricate
 $1[\texttt{Decision}_t \in \Gamma_P^\ast]$ and try to place it in the view — **must be killed**.
 
+**Truth-blind is necessary and not sufficient.** It closes $\Gamma^\ast \to$ input and leaves a
+second selection channel open, one that needs no evaluator truth at all:
+
+$$\boxed{\text{post-update outcome} \;\to\; \text{a set chosen because it flatters this arm}}$$
+
+So the set is additionally constrained. For each scene,
+
+$$\boxed{U_{\text{unaffected}} \text{ is built BEFORE any arm executes and before } \Delta W}$$
+
+* the constructor may not read the **law or arm identity**, $\Delta W$, the
+  $\texttt{UpdateLedger}$, **post-update outcomes**, or anything in
+  $\mathcal H_{\text{forbidden}}$;
+* paired arms of one scene use **the same set** — the same constructed object, not two
+  constructions that happen to agree;
+
+$$\boxed{\text{truth-blind} \;+\; \text{arm-blind} \;+\; \text{pre-update} \;+\;
+\text{one set per scene across paired arms}}$$
+
+The concrete algorithm is a **development-stage decision**, and the rule for making it is frozen
+now, on the same pattern as Retention (§67.5): choose on measurement properties — coverage of the
+future context space, baseline stability of the pre-update values, interpretability, and
+sensitivity to a **synthetic** injected spillover — and
+
+$$\boxed{\text{never on which construction makes the treatment effect largest}}$$
+
+A construction that cannot detect a synthetic spillover it was built to detect is not measurable
+evidence whatever the direction of its effect; that is a calibration question, and it is settled
+on development seeds.
+
 The quantities that count *how much was written* — $N_{\text{addresses}}$, $N_{\text{scalar}}$,
 $\sum\lvert\Delta\theta\rvert$, $\max\lvert\Delta\theta\rvert$, pre/post fingerprints — stay in
 $\texttt{UpdateLedger}$ as intervention cost. They are not external criteria:
@@ -4780,18 +4809,38 @@ than inherited from its name.
 Retention is frozen **as a dimension**: an effect that exists for one or two episodes and then
 decays is a different finding from one that holds, and pooling them would hide it. Its
 operationalisation is **not** frozen here, because unlike RMST there is no already-frozen
-statistical argument that selects one form. Candidates include $\text{Retention}@H$ and the
-fraction of post-recovery checkpoints that stay recovered, e.g.
+statistical argument that selects one form.
 
-$$\text{RetentionFraction} = \frac{\#\{t \ge \tau : V(t) \ge 0.95\,V_{\text{pre}}\}}{\#\{t \ge \tau\}}$$
+**One requirement is frozen, and it is the one that rules forms out:**
 
-The choice is made on **development seeds** under `05` §2, and the rule for making it is frozen
-now:
+$$\boxed{\text{the confirmatory Retention primary must be defined for EVERY seed}}$$
+
+A form conditioned on recovery having happened is not admissible as the confirmatory endpoint.
+$\tau$ does not exist for a seed that never recovers, and the natural repair — analyse over the
+recovered seeds — reintroduces exactly the bias RMST was chosen to avoid (`05` §8): the worse the
+arm, the more of its seeds the condition removes, so the comparison silently narrows towards the
+seeds the arm handled well. The candidate set is therefore the forms that are total on seeds:
+
+* $\boxed{\text{Retention}@H}$ — where $H$ is a **fixed absolute horizon measured from the
+  update/trigger**, *not* "$H$ episodes after recovery". A fixed horizon is defined for every
+  seed, and it is also the form that answers the question Retention is for: does the effect
+  persist over a horizon the design chose in advance;
+* $\boxed{\text{LateWindowRetention}}$ — the maintained-performance level over a pre-registered
+  late window $[H_1, H_2]$, likewise defined for every seed;
+* and, **demoted to a conditional descriptive diagnostic**,
+
+$$\text{RetentionFraction} = \frac{\#\{t \ge \tau : V(t) \ge 0.95\,V_{\text{pre}}\}}{\#\{t \ge \tau\}}
+\qquad\text{reported only alongside the }\tau\text{-conditioned denominator}$$
+
+The choice among the all-seed forms is made on **development seeds** under `05` §2, and the rule
+for making it is frozen now:
 
 $$\boxed{\text{choose on measurement properties — stability, interpretability, redundancy with RMST/DeficitAUC — not on which form makes the effect largest}}$$
 
-It is frozen with $T$, $N_{\text{eval}}$ and $\mathcal G_{\text{ckpt}}$, **before** confirmatory
-seeds, and may not be changed afterwards (`05` §6.1, §9).
+The dev stage may add forms to the candidate set; it may not promote a $\tau$-conditioned one to
+the confirmatory primary. The choice is frozen with $T$, $N_{\text{eval}}$ and
+$\mathcal G_{\text{ckpt}}$, **before** confirmatory seeds, and may not be changed afterwards
+(`05` §6.1, §9).
 
 ### 67.6 Oracle roles: a matched ceiling and a diagnostic ceiling
 
@@ -4808,13 +4857,20 @@ clause fixes only which oracle normalises what.)
 
 ### 67.7 Arms are compared within their information tier, and the tiers are not a ranking
 
-Each tier is contrasted against **its own same-tier reference**, per A77 §65.3 and §65.8:
+Each tier is contrasted against **its own same-tier reference**, per A77 §65.3 and §65.8. The
+table below is the **completed $D_Q$ Decision row** — not the whole B2 matrix, which has no $D_Q$
+$L_1$ cell and no rows for the stores §67.8 still owes:
 
 | tier | treatments | reference | what it establishes |
 |---|---|---|---|
 | $L_0$ | `FactualReturnWrite` | `NoWriteRef(L0)` | learner-feasible |
 | $L_2$ | `CounterfactualReturnWrite`, `DualReturnWrite` | `NoWriteRef(L2)` | evaluator-assisted counterfactual ceiling |
 | $L_3$ | `LocalOracleRestore` | `NoWriteRef(L3)` | constructional oracle ceiling |
+
+Process and Controller inherit A76 §63.9's cell/tier matrix **unchanged** once §67.8's
+prerequisites exist — including their own same-tier references and their $L_3$ aliases — and
+**A79 defines no treatments for them**. Read as "each tier" over the whole matrix, the table
+above would appear to be missing $L_1$ entirely; it is a statement about one completed row.
 
 Curves may be compared across tiers, but the interpretation is fixed in advance:
 
@@ -4885,6 +4941,24 @@ B2's gates, in order:
 
 $$\boxed{\text{any gate FAIL} \Longrightarrow \text{no confirmatory B2 seed is collected}}$$
 
+**What V0.3R PASS means, as a conjunction and not a score.** A79 §67.1 forbids collapsing the
+outcome space into one number, so the version's verdict may not be one either. The logic is
+frozen here; the thresholds are not, because they are instantiated at the dev freeze:
+
+$$\boxed{\text{V0.3R PASS} = \text{FutureUtility benefit} \;\land\; \text{no unacceptable
+Collateral} \;\land\; \text{Retention criterion satisfied} \;\land\; \text{T-regime harm
+constraint satisfied}}$$
+
+each conjunct being a pre-registered four-way verdict or bound (`05` §4), instantiated after the
+dev stage as, for the learner-feasible $L_0$ treatment in $P$: FutureUtility `SUPPORT_A`;
+`BehavioralCollateral` within the pre-registered harm bound; the Retention form meeting its
+pre-registered persistence / non-inferiority rule; and $T$ showing no erroneous internalisation
+beyond its threshold. This is a **conjunction gate, not a weighted sum** — it does not
+re-introduce the composite that §67.1 refuses, because it never trades one dimension against
+another:
+
+$$\boxed{\text{if the conjuncts cannot hold simultaneously, } V0.3R \neq PASS \text{ and } V0.4R \text{ does not run}}$$
+
 If B2 reaches its confirmatory stage and the tier-matched contrasts are `EQUIVALENT` or
 `SUPPORT_B` — that is, the strongest available $L_0$ write does not improve the future over
 writing nothing — the conclusion is that **incremental correction of this kind does not improve
@@ -4892,10 +4966,17 @@ learning in this environment**, and the programme redirects to a different updat
 than to more attribution work. That is the falsification branch A75 anticipated, and it is a
 result rather than a failure.
 
-**V0.4R entry condition.** V0.4R does not begin on a B2 *result*; it begins once B2's design is
-frozen and its first confirmatory look exists, so that V0.4R inherits a settled endpoint
-definition rather than a moving one. No V0.4R claim may be made about a B2 contrast that is still
-`INCONCLUSIVE`.
+**V0.4R entry condition.** V0.4R begins only when V0.1R, V0.2R and V0.3R have each **passed their
+gates**, which is `09-V04R.md` §1 and §6 and is not this amendment's to relax:
+
+$$\boxed{\text{V0.3R's FINAL confirmatory analysis PASSES} \;\Longrightarrow\; \text{V0.4R may begin}}$$
+
+"Final" is the whole of it. `05` §4.1 freezes that only $N = 400$ is confirmatory, so a
+diagnostic look at 100, 200 or 300 — however favourable — is not a PASS, cannot open V0.4R, and
+cannot be reported as one. `09` §5 makes the reason concrete in the other direction: if
+`OracleRFL ≈ NoDiagnosticCorrection` the primitive did not hold and V0.4R **should not have been
+run**, which is only knowable from a completed V0.3R. No V0.4R claim may be made about a B2
+contrast that is still `INCONCLUSIVE`.
 
 ### 67.12 What this amendment does not do
 
@@ -4903,9 +4984,10 @@ definition rather than a moving one. No V0.4R claim may be made about a B2 contr
 * it writes no code: §67.8's prerequisites need their own authorisation;
 * it sets no $\Delta_{\min}$ value, no $h$ other than `05`'s default, no $T$, no $N_{\text{eval}}$,
   no Retention formula — each is a dev-stage decision frozen under §67.5/§67.10;
-* it specifies no formula for `BehavioralCollateral`'s "unaffected" set beyond requiring it to be
-  truth-blind: the construction is dev-stage work under §62.10's gate, not a number to be guessed
-  here;
+* it specifies no formula for `BehavioralCollateral`'s "unaffected" set beyond the four
+  properties §67.4 freezes for it — truth-blind, arm-blind, pre-update, one set per scene
+  across paired arms — and the rule by which dev chooses among constructions; it also fixes
+  no retention formula, only that the confirmatory form must be defined for every seed;
 * it does not re-open $L_0$, $L_2$, $L_3$, the $D_Q$ store, or $D_{patch}$, and it may not be used
   to justify modifying a frozen B1 artifact;
 * it makes no claim about $\Gamma$: every census measures over-credit under a **fixed** ontology
@@ -4959,7 +5041,7 @@ section above; the most recent is:
 | **A77** | the $D_Q$ row, and the information contract that replaces the boolean `requires_alternative`: a closed opaque `Tier` enum declared exactly once with a `None` sentinel; delivery as an **exact per-(architecture, tier) field set** — $D_Q$'s $L_0=\{a_t^F,G_t^F\}$, $L_2=\{a_t^F,G_t^F,a_t^+,G_t^{CF}\}$, $L_3=\varnothing$ — with **same cell ⇒ same envelope**, the reference constructed through the same field construction, and `scalar write law ∧ L_1 ⇒ PROTOCOL_ERROR`; `NoWriteRef(ℓ)` as one object per cell with a substantive treatment, sharing one no-op plan and excluded from the treatment count; the $Q$ store as a sparse override table on an **injected frozen** `QReferenceView` (`QAddress` entries inside a `DecisionAddress` budget, identity canonicalisation to deletion, co-residence of $P_D^L$ and $Q_D^L$ a **construction-time** `PROTOCOL_ERROR`); **domain closure** $\operatorname{dom}(Q_D^L)\subseteq\operatorname{dom}(\texttt{QReferenceView})$ with the 13,824-row census as its evidence; $F_t=(a_t^F,G_t^F)$ built from the **learner-visible rows only**; the **frozen reverse Bellman fold** for $G^F$ and $G^{CF}$ (`sum`/`fsum`/reordering prohibited — measured 278/278 exact vs 92/278 mismatch); $G_t^{CF}$ as a full replay carrying `DecisionReadView_pre` with the intervention at $t$ **replaced**; the $D_Q$ matrix (4 independent treatments, no $L_1$ cell, `LocalOracleRestore` a genuinely new row-scoped operation); **owner-based locality** with one address-plan and one receipt per credited context and the row operation lowered by the slice; and the scalar ledger with an **effective-$Q$** $\Delta$ and $N_{\text{scalar}}=0 \iff \Sigma=0 \iff fp_{\text{pre}}=fp_{\text{post}}$ | **P0 (spec)** | **frozen — specification only, no implementation authorised**; implementation in the frozen order: slice refactor → $Q$ store/read → $L_0$ → $L_2$ |
 
 | **A78** | $L_3$ `LocalOracleRestore` on $D_Q$ as A77 §65.12's **fifth** implementation step — one step, one commit, no mixing, and no new scope for the four already-closed steps; the cell's `NoWriteRef(L3)` alongside its treatment, giving $\lvert\text{treatments}\rvert(D_Q)=4$ exactly as A76 §63.8 froze ($D_{patch}$ stays 3); the B1 law domain fixed as **every credited address for $L_2$ and $L_3$ alike**, with `NO_VALID_ALTERNATIVE` addresses remaining in the population and $L_3$ forbidden to key its domain on $a^+$ availability; "no reference" scoped to the **lowering** and to *no new* $L_3-specific reference entry point, since §65.10's deleted leg still needs the existing `q_reference`; the row operation kept a **B1** object so `owner_Q` stays a `QAddress` function and the substrate does not learn an update law; lowering as an explicit **pre-commit phase** against **one** frozen pre-state, with status, $n_{\text{changed\_addresses}}$ and the scalar accounting computed from the **lowered concrete edits**; a $D_Q$-only law implementation beside the untouched $D_{patch}$ alias, with no architecture branching inside a law; and the gate obligations, including **idempotence** ($k=0$, `EVALUABLE_NOOP` on a second run, i.e. the lowering reads its own run's pre-state) and a **poison-evidence** empty-cell gate proving $L_3$ reads no evaluator-side inputs | **P0 (spec)** | **frozen — implementation authorised in this step only**; further change requires a new amendment |
-| **A79** | V0.3R **B2 pre-registration**: the stage that answers *what did this write do to this learner's future*, and a pre-registration in the strict sense -- no code, no seed. It **supersedes `08-V03R.md` on B2** (whose Block 2 arms A76 retired and whose process reading $do(z=z')$ the frozen reading rejects) while leaving `08` §2 unaddressed. It fixes $Y^{\text{future}}=\{\text{FutureUtility},\text{Collateral},\text{Retention}\}$ as **three independent dimensions with no composite primary** (a weighted score would let utility buy collateral); keeps $T$ and $P$ as **separate populations that may not be pooled**, with $T$'s primary being harm/erroneous internalisation against a weakly dominating `NoWrite` and $P$'s requiring future rollout **endogenous to $\Delta W$**; freezes $\mathrm{RMST}(T_{\max})$ primary with $\mathrm{DeficitAUC}$ mandatory by reference to `05` §8 ($K=3$, right-censored); defines primary collateral as **future behavioural spillover** with the unaffected set constructed truth-blind under A75 §62.10's four gate layers, and keeps $N_{\text{scalar}}$/$\sum|\Delta\theta|$ in $\texttt{UpdateLedger}$ as intervention cost because *writing less is not causing less collateral*; retains **Retention** as a dimension with its formula chosen on development seeds by a declared rule (measurement properties, never which form maximises the effect); makes `LocalOracleRestore` the **matrix-matched normalisation ceiling** and the global oracle a **diagnostic ceiling only** that may not be a treatment's denominator; fixes **tier-matched contrasts** so $L_3$ beating $L_0$ measures headroom, not merit; and states that **the Process/Controller B1 alias-write paths are B2 prerequisites under their own authorisation**, because ``D6/B1 CLOSED'' is the Decision path and not all three stores. `05` governs unchanged, with $T$ frozen from the baseline only and no treatment curve inspectable beforehand. | **P0 (spec)** | **frozen — pre-registration only; no seed collected, no code authorised**; further change requires a new amendment |
+| **A79** | V0.3R **B2 pre-registration**: the stage that answers *what did this write do to this learner's future*, and a pre-registration in the strict sense -- no code, no seed. It **supersedes `08-V03R.md` on B2** (whose Block 2 arms A76 retired and whose process reading $do(z=z')$ the frozen reading rejects) while leaving `08` §2 unaddressed. It fixes $Y^{\text{future}}=\{\text{FutureUtility},\text{Collateral},\text{Retention}\}$ as **three independent dimensions with no composite primary** (a weighted score would let utility buy collateral); keeps $T$ and $P$ as **separate populations that may not be pooled**, with $T$'s primary being harm/erroneous internalisation against a weakly dominating `NoWrite` and $P$'s requiring future rollout **endogenous to $\Delta W$**; freezes $\mathrm{RMST}(T_{\max})$ primary with $\mathrm{DeficitAUC}$ mandatory by reference to `05` §8 ($K=3$, right-censored); defines primary collateral as future behavioural spillover on a set that is **truth-blind, arm-blind, pre-update, and identical across a scene's paired arms** with the unaffected set constructed truth-blind under A75 §62.10's four gate layers, and keeps $N_{\text{scalar}}$/$\sum|\Delta\theta|$ in $\texttt{UpdateLedger}$ as intervention cost because *writing less is not causing less collateral*; retains **Retention** as a dimension **whose confirmatory form must be defined for every seed** ($\tau$-conditioned forms demoted to conditional descriptive diagnostics), the choice among all-seed forms being a declared development-stage decision on measurement properties only; makes `LocalOracleRestore` the **matrix-matched normalisation ceiling** and the global oracle a **diagnostic ceiling only** that may not be a treatment's denominator; fixes **tier-matched contrasts** so $L_3$ beating $L_0$ measures headroom, not merit; and states that **the Process/Controller B1 alias-write paths are B2 prerequisites under their own authorisation**, because ``D6/B1 CLOSED'' is the Decision path and not all three stores. `05` governs unchanged, with $T$ frozen from the baseline only and no treatment curve inspectable beforehand; **V0.3R PASS is a conjunction** of FutureUtility benefit, no unacceptable Collateral, the Retention criterion and the $T$-regime harm constraint -- a gate rather than a weighted sum, so the outcome space is never collapsed -- and **V0.4R begins only on V0.3R's FINAL confirmatory PASS**, a diagnostic look at 100/200/300 being neither a PASS nor able to open it. | **P0 (spec)** | **frozen — pre-registration only; no seed collected, no code authorised**; further change requires a new amendment |
 
 ---
 
