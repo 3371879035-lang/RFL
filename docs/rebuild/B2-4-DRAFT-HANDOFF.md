@@ -5,7 +5,8 @@ $$\boxed{\text{development checkpoint} \neq \text{scientific evidence}}$$
 Nothing on this branch is a frozen revision, an implementation revision, or authorisation of any
 seed. The frozen basis stays `rebuild @ 143e911`. This file exists so that a context-limited round
 does not have to re-derive a design that was already verified end to end once: the runner below ran,
-its ten gates passed, and the event order was measured. The mutation suite is the missing piece.
+its ten gates passed, and the event order was measured. The mutation suite is the missing piece, and
+one further gate is owed -- see "gate count" below.
 
 ## What was measured (on the reverted draft)
 
@@ -59,7 +60,7 @@ Selection / dispatch integrity:
 | `runner_defaults_the_form` | signature-default gate | `inspect.signature(select_form).parameters` |
 | `runner_defaults_the_construction` | signature-default gate | `inspect.signature(select_construction).parameters` |
 | `arm_accepts_arbitrary_callable` | nominal registry gate | `DID NOT RAISE` |
-| `arm_uses_wrong_architecture_registry` | registry/dispatch gate | add a cross-architecture gate first |
+| `arm_uses_wrong_architecture_registry` | the cross-architecture gate (owed, see below) | `not in the X registry` |
 
 Information boundary / outcome space:
 
@@ -70,6 +71,26 @@ Information boundary / outcome space:
 
 All declarations are to be **measured, then written** — a mismatch is corrected to what the run
 prints, never accommodated by weakening the check.
+
+## Gate count: the closure target is eleven, not ten
+
+The reverted draft had ten gates, and the ninth mutation above needs a case they do not yet cover:
+a **P** law handed to an **X** arm (or the reverse), which the ten do not distinguish from an
+ordinary stand-in. The closure target is therefore
+
+$$\boxed{10\ \text{existing gates} + 1\ \text{cross-architecture registry gate} = 11}$$
+
+*unless* the cross-architecture case is folded into the existing nominal-registry gate **and that
+single gate is shown to kill both independent holes** -- arbitrary callable and wrong-architecture
+registry -- with its own mutation each. Otherwise the count must read eleven, so that "the gates are
+complete" and "every mutation has a gate" cannot disagree.
+
+## Working rule for this branch
+
+Do **not** revert this branch when a round runs out of budget or time. Commit the unclosed state as
+`draft: ...`, mark it `NOT evidence` exactly as `515c4e9` does, and continue from there. Only
+`rebuild` has to stay frozen-clean: development progress and the scientific evidence chain must not
+be traded against each other again.
 
 ## Gate-writing discipline (three self-inflicted findings, same root cause)
 
