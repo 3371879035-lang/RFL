@@ -355,7 +355,9 @@ IMPORT_ALLOWLIST = (
     "rfl_rebuild.b1.errors", "rfl_rebuild.learner.store", "rfl_rebuild.env.kernel",
     # B2's own audited chain: the producer and the view are one closure, so each may import the
     # other, and a module outside this list is a dependency the audit has not seen.
-    "rfl_rebuild.b2.producer", "rfl_rebuild.b2.view",
+    "rfl_rebuild.b2.producer", "rfl_rebuild.b2.view", "rfl_rebuild.b2.utility",
+    "rfl_rebuild.b2.environment", "rfl_rebuild.b2.collateral",
+    "rfl_rebuild.b2.retention",
 )
 
 

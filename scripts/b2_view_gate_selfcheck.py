@@ -43,6 +43,9 @@ VIEW = SRC / "b2" / "view.py"
 PRODUCER = SRC / "b2" / "producer.py"
 ENVIRONMENT = SRC / "b2" / "environment.py"
 UTILITY = SRC / "b2" / "utility.py"
+COLLATERAL = SRC / "b2" / "collateral.py"
+RETENTION = SRC / "b2" / "retention.py"
+B2_CAND_TESTS = "tests/rebuild/test_b2_candidates.py"
 B2_ENV_TESTS = "tests/rebuild/test_b2_environment.py"
 
 #: (id, hole, path, old, new, pytest node id[, expected failure text])
@@ -307,6 +310,55 @@ MUTATIONS: tuple = (
         f"{B2_ENV_TESTS}::test_9_the_grid_contract_is_enforced",
         "DID NOT RAISE",
     ),
+    (
+        "unaffected_constructor_takes_an_arm",
+        "the unaffected-set constructor can be told which arm it is in: a constructor that CAN be "
+        "told is one that may one day branch on it, and the set stops being arm-blind while still "
+        "producing a number",
+        COLLATERAL,
+        "def _unaffected_visited_complement(domain, visited) -> UnaffectedSet:\n",
+        "def _unaffected_visited_complement(domain, visited, arm=None) -> UnaffectedSet:  # MUTATED\n",
+        f"{B2_CAND_TESTS}::test_1_the_constructors_see_only_pre_update_learner_visible_material",
+        "assert not (set(params) & set(forbidden))",
+    ),
+    (
+        "collateral_ignores_the_set",
+        "the metric is computed over the values it was handed rather than over the unaffected set, "
+        "so the caller's choice of contexts decides the number -- including a choice that leaks the "
+        "visited region the set exists to exclude",
+        COLLATERAL,
+        "        if got != expected:\n",
+        "        if False:                            # MUTATED: coverage unchecked\n",
+        f"{B2_CAND_TESTS}::test_4_the_metric_is_defined_on_exactly_the_set_it_is_given",
+        # Measured: with the coverage check gone the sum hits the absent context and dies with a
+        # KeyError -- i.e. the check is what turns a contract violation into the promised
+        # PROTOCOL_ERROR. Same family as the origin guard in B2-2a.
+        "KeyError",
+    ),
+    (
+        "retention_diagnostic_promoted",
+        "the tau-conditioned RetentionFraction is registered as a confirmatory candidate, so a form "
+        "undefined for a never-recovered seed becomes eligible for the primary endpoint",
+        RETENTION,
+        '    "LateWindowRetention": LateWindowRetention.value,\n}',
+        '    "LateWindowRetention": LateWindowRetention.value,\n'
+        '    "RetentionFraction": retention_fraction,          # MUTATED\n}',
+        f"{B2_CAND_TESTS}::test_8_the_conditional_form_is_a_diagnostic_by_type_and_by_registry",
+        'assert "RetentionFraction" not in CANDIDATE_FORMS',
+    ),
+    (
+        "retention_needs_recovery",
+        "RetentionAtH is made to depend on recovery, so it is undefined for exactly the seeds A79 "
+        "67.5 requires the confirmatory primary to cover",
+        RETENTION,
+        "        values, episodes = _require_grid(values, episodes)\n        if isinstance(H, bool)",
+        "        values, episodes = _require_grid(values, episodes)\n"
+        '        if not [v for v in values if v >= 0.95]:\n'
+        '            raise ProtocolError("never recovered")            # MUTATED\n'
+        "        if isinstance(H, bool)",
+        f"{B2_CAND_TESTS}::test_7_both_eligible_forms_are_defined_for_every_seed_including_never_recovered",
+        "never recovered",
+    ),
 )
 
 
@@ -321,7 +373,7 @@ def main() -> int:
         print(f"[STALE_NODE_ID       ] {key:34} -> {node} ({why})")
 
     results, restored = harness.run_mutations(
-        MUTATIONS, ROOT, (VIEW, PRODUCER, ENVIRONMENT, UTILITY))
+        MUTATIONS, ROOT, (VIEW, PRODUCER, ENVIRONMENT, UTILITY, COLLATERAL, RETENTION))
     return harness.summarise("B2-1 view/builder gate mutation self-check", MUTATIONS, results,
                              restored, stale, ROOT, pathlib.Path(args.json))
 
