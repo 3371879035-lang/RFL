@@ -5593,18 +5593,25 @@ frozen value}}$$
 
 $$V_{\text{pre}} = \mathcal E\bigl(Q^{*};\ N_{\text{eval}},\ \mathcal S_{\text{eval}}\bigr)$$
 
-  together with "compute once, fingerprint, share by both arms, never re-measure per run" — while
-  A83 §71.4 keeps $N_{\text{eval}}$ and the evaluation design **open** until they are frozen with
-  $T$, $\mathcal G_{\text{ckpt}}$ and the Retention form. The two are not in conflict, and reading
-  them as one another is how an instrument-validation step would instantiate a confirmatory design
-  quantity early:
+  together with "compute once, fingerprint, share by both arms, never re-measure per run".
+  **A83 §71.4 explicitly keeps $N_{\text{eval}}$ open**; and because `11` §12.3 requires
+  $V_{\text{pre}}$ and the post-corruption checkpoints to use the **same evaluation scenes**, the
+  concrete $\mathcal S_{\text{eval}}$ used to instantiate $V_{\text{pre}}$ must be fixed
+  consistently with the eventual evaluation design. **That consistency requirement is recorded here
+  by A85; it is not an already-enumerated A83 design quantity**, so the chain of attribution is
+
+$$\boxed{\text{A83 supplies the open } N_{\text{eval}}, \quad \text{§12.3 supplies the
+  same-scenes constraint}, \quad \text{A85 makes their consequence explicit}}$$
+
+  The rule and the instance are not in conflict, and reading them as one another is how an
+  instrument-validation step would instantiate a confirmatory design quantity early:
 
 $$\boxed{\text{the provenance rule is frozen} \;\neq\; \text{the final numerical instance is frozen}}$$
 
   During instrument validation only a **nominal, fixed test artifact** may exercise the interface.
   The confirmatory instance of $V_{\text{pre}}$ is frozen together with the chosen
-  $N_{\text{eval}}$ and evaluation design under A83 §71.4, and from then on it is shared by both
-  arms and never re-measured per run;
+  $N_{\text{eval}}$ (A83 §71.4) and the evaluation scenes that satisfy §12.3's same-scenes
+  requirement, and from then on it is shared by both arms and never re-measured per run;
 
 * and the two "pre"s are different quantities:
 
@@ -5613,7 +5620,7 @@ V_{\text{unaffected,pre}}\ (\text{pre-write behaviour on the unaffected set})}$$
 
 They share a word and nothing else. $V_{\text{pre}}$ comes from $Q^{*}$ through the frozen artifact
 and is architecture-independent; $V_{\text{unaffected,pre}}$ is measured on **this learner's**
-pre-update state, over the contexts the update was not supposed to touch. Merging them because both
+pre-update state, over the evaluation units -- the unaffected region -- the update was not supposed to touch. Merging them because both
 are called "pre" would silently replace one of the two definitions with the other.
 
 ### 73.2 The measurement contract
@@ -5625,7 +5632,7 @@ before the Collateral path in B2-4 may be closed.
 $$\boxed{\text{A85 freezes properties} \;\neq\; \text{A85 authorises implementation to choose
 the unit}}$$
 
-1. **Measured, not assembled.** $V_W(c)$ is behaviour the **audited environment** actually produces
+1. **Measured, not assembled.** $V_W(u)$ is behaviour the **audited environment** actually produces
    from learner state $W$. No index, hash, modulo, resampling or other adapter may fabricate it from
    a temporal reward array. A number whose provenance is an indexing convention is not a measurement.
 2. **Pre from the raw state, post from the arm's own state.** Every pre value is measured on the
