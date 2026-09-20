@@ -1,7 +1,7 @@
 {
   "check": "B2-1 view/builder gate mutation self-check",
-  "n_mutations": 16,
-  "n_gate_is_real": 16,
+  "n_mutations": 22,
+  "n_gate_is_real": 22,
   "n_not_a_gate": 0,
   "n_node_not_found": 0,
   "n_harness_error": 0,
@@ -150,7 +150,7 @@
       "matched": 1,
       "expected_failure_text": "not on the allowlist",
       "exit_code": 1,
-      "tail": "                            f\"{path}: imports {alias.name!r}, which is not on the allowlist \"\n                            f\"{IMPORT_ALLOWLIST!r}\")\n            elif isinstance(node, ast.ImportFrom):\n                module = node.module or \"\"\n                if module not in IMPORT_ALLOWLIST:\n>                   raise ProtocolError(\n                        f\"{path}: imports from {module!r}, which is not on the allowlist \"\nE                       rfl_rebuild.b1.errors.ProtocolError: D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\src\\rfl_rebuild\\b2\\view.py: imports from 'rfl_rebuild.method', which is not on the allowlist ('__future__', 'abc', 'ast', 'pathlib', 'dataclasses', 'enum', 'types', 'typing', 'rfl_rebuild.b1.errors', 'rfl_rebuild.learner.store', 'rfl_rebuild.b2.producer', 'rfl_rebuild.b2.view')\nsrc\\rfl_rebuild\\b2\\view.py:444: ProtocolError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_view.py::test_7_the_ast_allowlist_layer_covers_the_chain_and_is_not_vacuous\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "                            f\"{path}: imports {alias.name!r}, which is not on the allowlist \"\n                            f\"{IMPORT_ALLOWLIST!r}\")\n            elif isinstance(node, ast.ImportFrom):\n                module = node.module or \"\"\n                if module not in IMPORT_ALLOWLIST:\n>                   raise ProtocolError(\n                        f\"{path}: imports from {module!r}, which is not on the allowlist \"\nE                       rfl_rebuild.b1.errors.ProtocolError: D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\src\\rfl_rebuild\\b2\\view.py: imports from 'rfl_rebuild.method', which is not on the allowlist ('__future__', 'abc', 'ast', 'pathlib', 'dataclasses', 'enum', 'types', 'typing', 'rfl_rebuild.b1.errors', 'rfl_rebuild.learner.store', 'rfl_rebuild.env.kernel', 'rfl_rebuild.b2.producer', 'rfl_rebuild.b2.view')\nsrc\\rfl_rebuild\\b2\\view.py:444: ProtocolError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_view.py::test_7_the_ast_allowlist_layer_covers_the_chain_and_is_not_vacuous\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -172,7 +172,7 @@
       "matched": 1,
       "expected_failure_text": "test-only fixture module",
       "exit_code": 1,
-      "tail": "        leak_fixture = tmp_path / \"leak_fixture.py\"\n        leak_fixture.write_text(\"from rfl_rebuild.b2 import testing\\n\", encoding=\"utf-8\")\n        with pytest.raises(ProtocolError) as ei:\n            assert_modules_are_closed([leak_fixture])\n>       assert \"test-only fixture module\" in str(ei.value)\nE       assert 'test-only fixture module' in \"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-214\\\\test_7_the_ast_allowlist_layer0\\\\leak_fixture.py...es', 'typing', 'rfl_rebuild.b1.errors', 'rfl_rebuild.learner.store', 'rfl_rebuild.b2.producer', 'rfl_rebuild.b2.view')\"\nE        +  where \"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-214\\\\test_7_the_ast_allowlist_layer0\\\\leak_fixture.py...es', 'typing', 'rfl_rebuild.b1.errors', 'rfl_rebuild.learner.store', 'rfl_rebuild.b2.producer', 'rfl_rebuild.b2.view')\" = str(ProtocolError(\"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-214\\\\test_7_the_ast_allowlist_layer0\\\\l...s', 'typing', 'rfl_rebuild.b1.errors', 'rfl_rebuild.learner.store', 'rfl_rebuild.b2.producer', 'rfl_rebuild.b2.view')\"))\nE        +    where ProtocolError(\"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-214\\\\test_7_the_ast_allowlist_layer0\\\\l...s', 'typing', 'rfl_rebuild.b1.errors', 'rfl_rebuild.learner.store', 'rfl_rebuild.b2.producer', 'rfl_rebuild.b2.view')\") = <ExceptionInfo ProtocolError(\"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-214\\\\test_7_the_ast_allo...ng', 'rfl_rebuild.b1.errors', 'rfl_rebuild.learner.store', 'rfl_rebuild.b2.producer', 'rfl_rebuild.b2.view')\") tblen=3>.value\ntests\\rebuild\\test_b2_view.py:291: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_view.py::test_7_the_ast_allowlist_layer_covers_the_chain_and_is_not_vacuous\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "        leak_fixture = tmp_path / \"leak_fixture.py\"\n        leak_fixture.write_text(\"from rfl_rebuild.b2 import testing\\n\", encoding=\"utf-8\")\n        with pytest.raises(ProtocolError) as ei:\n            assert_modules_are_closed([leak_fixture])\n>       assert \"test-only fixture module\" in str(ei.value)\nE       assert 'test-only fixture module' in \"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-227\\\\test_7_the_ast_allowlist_layer0\\\\leak_fixture.py...d.b1.errors', 'rfl_rebuild.learner.store', 'rfl_rebuild.env.kernel', 'rfl_rebuild.b2.producer', 'rfl_rebuild.b2.view')\"\nE        +  where \"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-227\\\\test_7_the_ast_allowlist_layer0\\\\leak_fixture.py...d.b1.errors', 'rfl_rebuild.learner.store', 'rfl_rebuild.env.kernel', 'rfl_rebuild.b2.producer', 'rfl_rebuild.b2.view')\" = str(ProtocolError(\"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-227\\\\test_7_the_ast_allowlist_layer0\\\\l....b1.errors', 'rfl_rebuild.learner.store', 'rfl_rebuild.env.kernel', 'rfl_rebuild.b2.producer', 'rfl_rebuild.b2.view')\"))\nE        +    where ProtocolError(\"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-227\\\\test_7_the_ast_allowlist_layer0\\\\l....b1.errors', 'rfl_rebuild.learner.store', 'rfl_rebuild.env.kernel', 'rfl_rebuild.b2.producer', 'rfl_rebuild.b2.view')\") = <ExceptionInfo ProtocolError(\"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-227\\\\test_7_the_ast_allo...s', 'rfl_rebuild.learner.store', 'rfl_rebuild.env.kernel', 'rfl_rebuild.b2.producer', 'rfl_rebuild.b2.view')\") tblen=3>.value\ntests\\rebuild\\test_b2_view.py:291: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_view.py::test_7_the_ast_allowlist_layer_covers_the_chain_and_is_not_vacuous\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -184,6 +184,72 @@
       "expected_failure_text": "mint capability",
       "exit_code": 1,
       "tail": "                            if alias.name in CAPABILITY_OWNERS:\n>                               raise ProtocolError(\n                                    f\"{path}: imports the mint capability {alias.name!r} from \"\n                                    f\"{node.module!r}; {CAPABILITY_OWNERS[alias.name]!r} is its only \"\n                                    \"holder inside the audited production graph, and an allowlisted \"\n                                    \"import is still an escalation when the name it brings is the \"\n                                    \"ability to mint evidence\")\nE                               rfl_rebuild.b1.errors.ProtocolError: D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\src\\rfl_rebuild\\b2\\view.py: imports the mint capability '_mint_rollout' from 'rfl_rebuild.b2.producer'; 'producer.py' is its only holder inside the audited production graph, and an allowlisted import is still an escalation when the name it brings is the ability to mint evidence\nsrc\\rfl_rebuild\\b2\\view.py:393: ProtocolError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_view.py::test_10_the_mint_capability_has_exactly_one_holder_in_the_production_graph\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "environment_ignores_the_state",
+      "hole": "the real environment rolls the future out from a FRESH state instead of the one it was handed, so the future is no longer a function of W + Delta W -- the defect B2 exists to measure, and the one a plausible-looking rollout would hide",
+      "gate": "test_2_each_persistent_channel_moves_the_future",
+      "site": "src\\rfl_rebuild\\b2\\environment.py",
+      "matched": 1,
+      "expected_failure_text": "C_P^L channel is not read",
+      "exit_code": 1,
+      "tail": "        # C_P^L: a process commit that is no longer the identity\n        process_state = LearnerPersistentState()\n        process_state.apply_transaction([Edit(PROCESS, 1, 2)])\n>       assert env.future_records(process_state) != base, \"the C_P^L channel is not read\"\nE       AssertionError: the C_P^L channel is not read\nE       assert ((-0.02, -0.02, -0.02, -0.02, -0.02, 0.98), (0, 0, 0, 0, 0, 1), ((None, State(x=1, y=2, t=1, kappa=0, phi=0)), (State(...t=5, kappa=0, phi=0), State(x=4, y=2, t=6, kappa=0, phi=0))), (3, 0, 3, 1, 3, 3), (None, None, None, None, None, None)) != ((-0.02, -0.02, -0.02, -0.02, -0.02, 0.98), (0, 0, 0, 0, 0, 1), ((None, State(x=1, y=2, t=1, kappa=0, phi=0)), (State(...t=5, kappa=0, phi=0), State(x=4, y=2, t=6, kappa=0, phi=0))), (3, 0, 3, 1, 3, 3), (None, None, None, None, None, None))\nE        +  where ((-0.02, -0.02, -0.02, -0.02, -0.02, 0.98), (0, 0, 0, 0, 0, 1), ((None, State(x=1, y=2, t=1, kappa=0, phi=0)), (State(...t=5, kappa=0, phi=0), State(x=4, y=2, t=6, kappa=0, phi=0))), (3, 0, 3, 1, 3, 3), (None, None, None, None, None, None)) = future_records(<rfl_rebuild.learner.store.LearnerPersistentState object at 0x<ADDR>>)\nE        +    where future_records = <rfl_rebuild.b2.environment.KernelLearnerEnvironment object at 0x<ADDR>>.future_records\ntests\\rebuild\\test_b2_environment.py:82: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_environment.py::test_2_each_persistent_channel_moves_the_future\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "environment_drops_a_channel",
+      "hole": "the process channel is not wired into the rollout, so C_P^L is bypassed by the kernel's identity default: a reference shortcut in the one place where a shortcut is the whole question",
+      "gate": "test_2_each_persistent_channel_moves_the_future",
+      "site": "src\\rfl_rebuild\\b2\\environment.py",
+      "matched": 1,
+      "expected_failure_text": "C_P^L channel is not read",
+      "exit_code": 1,
+      "tail": "        # C_P^L: a process commit that is no longer the identity\n        process_state = LearnerPersistentState()\n        process_state.apply_transaction([Edit(PROCESS, 1, 2)])\n>       assert env.future_records(process_state) != base, \"the C_P^L channel is not read\"\nE       AssertionError: the C_P^L channel is not read\nE       assert ((-0.02, -0.02, -0.02, -0.02, -0.02, 0.98), (0, 0, 0, 0, 0, 1), ((None, State(x=1, y=2, t=1, kappa=0, phi=0)), (State(...t=5, kappa=0, phi=0), State(x=4, y=2, t=6, kappa=0, phi=0))), (3, 0, 3, 1, 3, 3), (None, None, None, None, None, None)) != ((-0.02, -0.02, -0.02, -0.02, -0.02, 0.98), (0, 0, 0, 0, 0, 1), ((None, State(x=1, y=2, t=1, kappa=0, phi=0)), (State(...t=5, kappa=0, phi=0), State(x=4, y=2, t=6, kappa=0, phi=0))), (3, 0, 3, 1, 3, 3), (None, None, None, None, None, None))\nE        +  where ((-0.02, -0.02, -0.02, -0.02, -0.02, 0.98), (0, 0, 0, 0, 0, 1), ((None, State(x=1, y=2, t=1, kappa=0, phi=0)), (State(...t=5, kappa=0, phi=0), State(x=4, y=2, t=6, kappa=0, phi=0))), (3, 0, 3, 1, 3, 3), (None, None, None, None, None, None)) = future_records(<rfl_rebuild.learner.store.LearnerPersistentState object at 0x<ADDR>>)\nE        +    where future_records = <rfl_rebuild.b2.environment.KernelLearnerEnvironment object at 0x<ADDR>>.future_records\ntests\\rebuild\\test_b2_environment.py:82: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_environment.py::test_2_each_persistent_channel_moves_the_future\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "environment_not_audited",
+      "hole": "the production environment leaves the audited module list, so the module that decides where the future evidence comes from is the one module nobody checks",
+      "gate": "test_4_the_environment_is_in_the_audited_production_chain",
+      "site": "src\\rfl_rebuild\\b2\\environment.py",
+      "matched": 1,
+      "expected_failure_text": "environment.py",
+      "exit_code": 1,
+      "tail": "    def test_4_the_environment_is_in_the_audited_production_chain():\n        r\"\"\"The provenance gap B2-2a left open closes here: the production environment is not merely a\n        nominal `LearnerEnvironment`, it is a module the same AST/import/dependency audit covers.\"\"\"\n        modules = audited_modules(ROOT / \"src\")\n        assert all(p.exists() for p in modules), modules\n>       assert any(p.name == \"environment.py\" for p in modules)\nE       assert False\nE        +  where False = any(<generator object test_4_the_environment_is_in_the_audited_production_chain.<locals>.<genexpr> at 0x<ADDR>>)\ntests\\rebuild\\test_b2_environment.py:156: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_environment.py::test_4_the_environment_is_in_the_audited_production_chain\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "recovery_window_two",
+      "hole": "the maintained-recovery window shrinks to K=2, so two checkpoints at the threshold are reported as a recovery the study never defined",
+      "gate": "test_5_recovery_needs_k_consecutive_checkpoints",
+      "site": "src\\rfl_rebuild\\b2\\utility.py",
+      "matched": 1,
+      "expected_failure_text": "assert K_RECOVERY == 3",
+      "exit_code": 1,
+      "tail": "_______________ test_5_recovery_needs_k_consecutive_checkpoints _______________\n    def test_5_recovery_needs_k_consecutive_checkpoints():\n        r\"\"\"The frozen rule is a **window**: $\\tau$ is the first $t$ whose next $K$ checkpoints are all\n        at or above the threshold. One or two crossings are not a recovery, and the very first window\n        that qualifies is the answer.\"\"\"\n        episodes = (0, 5, 10, 15, 20, 25)\n>       assert K_RECOVERY == 3\nE       assert 2 == 3\ntests\\rebuild\\test_b2_environment.py:169: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_environment.py::test_5_recovery_needs_k_consecutive_checkpoints\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "rmst_returns_the_position",
+      "hole": "tau is returned as the ARRAY POSITION of the checkpoint rather than its real episode index, which is invisible on a uniform fixture and wrong on every real grid",
+      "gate": "test_8_both_estimators_integrate_over_real_episode_indices",
+      "site": "src\\rfl_rebuild\\b2\\utility.py",
+      "matched": 1,
+      "expected_failure_text": "== 5",
+      "exit_code": 1,
+      "tail": "        assert deficit_auc(values, (0, 1, 2, 3), pre_level=1.0) == pytest.approx(0.21)\n        assert recovery_time(values, episodes, pre_level=1.0, t_max=16) is None   # only two at 0.99\n        # tau must be the EPISODE index of the window's start, not its array position: the window here\n        # begins at position 1, which is episode 5\n        values_recovered = [0.90, 0.99, 0.99, 0.99]\n>       assert recovery_time(values_recovered, episodes, pre_level=1.0, t_max=16) == 5\nE       assert 1 == 5\nE        +  where 1 = recovery_time([0.9, 0.99, 0.99, 0.99], (0, 5, 15, 16), pre_level=1.0, t_max=16)\ntests\\rebuild\\test_b2_environment.py:224: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_environment.py::test_8_both_estimators_integrate_over_real_episode_indices\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "deficit_assumes_unit_spacing",
+      "hole": "DeficitAUC integrates as if every checkpoint were one episode after the last, rescaling every deficit by the grid spacing",
+      "gate": "test_8_both_estimators_integrate_over_real_episode_indices",
+      "site": "src\\rfl_rebuild\\b2\\utility.py",
+      "matched": 1,
+      "expected_failure_text": "assert deficit_auc(values, episodes, pre_level=1.0)",
+      "exit_code": 1,
+      "tail": "        # deficits 0.10 at t=0 (spans 5) and 0.10 at t=5 (spans 10), then nothing\n        # deficits: 0.10 over [0,5], 0.10 over [5,15], and 0.01 over [15,16] because 0.99 < V_pre\n>       assert deficit_auc(values, episodes, pre_level=1.0) == pytest.approx(0.10 * 5 + 0.10 * 10 + 0.01)\nE       assert 0.20999999999999996 == 1.51 \u00b1 1.5e-06\nE         \nE         comparison failed\nE         Obtained: 0.20999999999999996\nE         Expected: 1.51 \u00b1 1.5e-06\ntests\\rebuild\\test_b2_environment.py:217: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_environment.py::test_8_both_estimators_integrate_over_real_episode_indices\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     }
   ]

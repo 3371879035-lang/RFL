@@ -41,6 +41,9 @@ SRC = ROOT / "src" / "rfl_rebuild"
 TESTS = "tests/rebuild/test_b2_view.py"
 VIEW = SRC / "b2" / "view.py"
 PRODUCER = SRC / "b2" / "producer.py"
+ENVIRONMENT = SRC / "b2" / "environment.py"
+UTILITY = SRC / "b2" / "utility.py"
+B2_ENV_TESTS = "tests/rebuild/test_b2_environment.py"
 
 #: (id, hole, path, old, new, pytest node id[, expected failure text])
 MUTATIONS: tuple = (
@@ -210,6 +213,68 @@ MUTATIONS: tuple = (
         f"{TESTS}::test_10_the_mint_capability_has_exactly_one_holder_in_the_production_graph",
         "mint capability",
     ),
+    (
+        "environment_ignores_the_state",
+        "the real environment rolls the future out from a FRESH state instead of the one it was "
+        "handed, so the future is no longer a function of W + Delta W -- the defect B2 exists to "
+        "measure, and the one a plausible-looking rollout would hide",
+        ENVIRONMENT,
+        "        snapshot = state.snapshot()\n",
+        "        snapshot = LearnerPersistentState().snapshot()   # MUTATED\n",
+        f"{B2_ENV_TESTS}::test_2_each_persistent_channel_moves_the_future",
+        "C_P^L channel is not read",
+    ),
+    (
+        "environment_drops_a_channel",
+        "the process channel is not wired into the rollout, so C_P^L is bypassed by the kernel's "
+        "identity default: a reference shortcut in the one place where a shortcut is the whole "
+        "question",
+        ENVIRONMENT,
+        "            learner_process_commit=snapshot.process_commit_provider(),\n",
+        "            learner_process_commit=None,                       # MUTATED\n",
+        f"{B2_ENV_TESTS}::test_2_each_persistent_channel_moves_the_future",
+        "C_P^L channel is not read",
+    ),
+    (
+        "environment_not_audited",
+        "the production environment leaves the audited module list, so the module that decides "
+        "where the future evidence comes from is the one module nobody checks",
+        ENVIRONMENT,
+        '    "rfl_rebuild/b2/environment.py",\n',
+        "",
+        f"{B2_ENV_TESTS}::test_4_the_environment_is_in_the_audited_production_chain",
+        "environment.py",
+    ),
+    (
+        "recovery_window_two",
+        "the maintained-recovery window shrinks to K=2, so two checkpoints at the threshold are "
+        "reported as a recovery the study never defined",
+        UTILITY,
+        "K_RECOVERY = 3\n",
+        "K_RECOVERY = 2        # MUTATED\n",
+        f"{B2_ENV_TESTS}::test_5_recovery_needs_k_consecutive_checkpoints",
+        "assert K_RECOVERY == 3",
+    ),
+    (
+        "rmst_returns_the_position",
+        "tau is returned as the ARRAY POSITION of the checkpoint rather than its real episode "
+        "index, which is invisible on a uniform fixture and wrong on every real grid",
+        UTILITY,
+        "            return episodes[i]\n",
+        "            return i                              # MUTATED\n",
+        f"{B2_ENV_TESTS}::test_8_both_estimators_integrate_over_real_episode_indices",
+        "== 5",
+    ),
+    (
+        "deficit_assumes_unit_spacing",
+        "DeficitAUC integrates as if every checkpoint were one episode after the last, rescaling "
+        "every deficit by the grid spacing",
+        UTILITY,
+        "        total += deficit * (episodes[i + 1] - episodes[i])\n",
+        "        total += deficit                              # MUTATED: unit spacing\n",
+        f"{B2_ENV_TESTS}::test_8_both_estimators_integrate_over_real_episode_indices",
+        "assert deficit_auc(values, episodes, pre_level=1.0)",
+    ),
 )
 
 
@@ -223,7 +288,8 @@ def main() -> int:
     for key, node, why in stale:
         print(f"[STALE_NODE_ID       ] {key:34} -> {node} ({why})")
 
-    results, restored = harness.run_mutations(MUTATIONS, ROOT, (VIEW, PRODUCER))
+    results, restored = harness.run_mutations(
+        MUTATIONS, ROOT, (VIEW, PRODUCER, ENVIRONMENT, UTILITY))
     return harness.summarise("B2-1 view/builder gate mutation self-check", MUTATIONS, results,
                              restored, stale, ROOT, pathlib.Path(args.json))
 
