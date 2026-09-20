@@ -314,16 +314,29 @@ with **three** steps — a generic address/receipt substrate refactor first, bec
 objects are Decision-shaped while $\rho_X$ yields a site handle and $\rho_P$ an integer, so a
 two-step plan would force the address contract to be invented at code time. Step 1 may add no
 capability and must move no number; $X$ and $P$ are then implemented as A76 froze them, each with its
-own commit and gates. Step 1 is **CLOSED** (`6f78949`, its evidence rebound at `3eeec3a`); Step 2 is
-implemented and its closure is under review; **Step 3 is not started and not authorised**, and A80
-authorises **no B2 runner, no $\texttt{FutureConsequenceView}$, no $\texttt{BehavioralCollateral}$,
-and no seed of any stage**.
+own commit and gates. **All three steps are now CLOSED**: Step 1 at `6f78949` (evidence `3eeec3a`),
+Step 2 at `e1c7141` (evidence `81cb162`), Step 3 at `5fcb750` (evidence `c311b42`), with the
+mutation-instrument reproducibility maintenance accepted at `aab5727`. A80 authorised **no B2
+runner, no $\texttt{FutureConsequenceView}$, no $\texttt{BehavioralCollateral}$, and no seed of any
+stage**, and none of those exists.
 
 **A82 (§70) fixes the wire contract Step 2's entry depends on.** A69's $\texttt{ControllerSite}_t$ is
 index notation; A71's concrete encoding $\texttt{ControllerSite}_{x,y,t,a^{cmd}}$ — the string
 `PublicSCMView.credit_unit` emits — is the interface, and B1's $\rho_X$ consumes that same unit, with
 neither the index spelling nor $\texttt{Decision}_t$ accepted as an alias. Read §70 before touching
 either side of that boundary: A75's chain starts at $\Gamma^\ast$, whose units are exactly these.
+
+**A83 (§71) is the B2 implementation authorisation, and it stops at implementation.** With A80's
+prerequisites satisfied, it authorises building the B2 measurement stage — the view and its builder,
+the future rollout, RMST with mandatory DeficitAUC, the Collateral and Retention candidate
+machinery, and the paired runner — and it authorises **no seed of any stage** and no V0.4R.
+Implementation authorisation is not seed authorisation, and the 32 development seeds may not be run
+once the runner exists: an instrument must first be shown to hold against truth leakage, arm
+leakage and post-update selection leakage, because dev data from an unvalidated instrument is not dev
+data. It also restates §67.11's B1 regression gate from the historical "five self-checks" to the
+**measured eight tables** (Q 14, B1 13, L0 8, L2 11, L3 11, address-domain 6, X 10, P 11) plus the
+$D_{patch}$ `ENCODING_ONLY` binding, and leaves every open quantity to the development stage under
+§67.5/§67.9/§67.10.
 
 ---
 

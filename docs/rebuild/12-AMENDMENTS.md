@@ -5379,6 +5379,125 @@ encoding a second time.
 
 ---
 
+## 71. A83 — B2 implementation authorisation, and the boundary it does not cross
+
+A79 §67.12 wrote: *it writes no code; it authorises no seed; §67.8's prerequisites need their own
+authorisation.* A80 supplied those prerequisites, and its three steps are now **CLOSED**, each with
+its own commit and its own gates:
+
+| step | what | closure revision | evidence binding |
+|---|---|---|---|
+| Step 1 | the generic address/receipt substrate, generalised by type | `6f78949` | `3eeec3a` |
+| — | reproducibility maintenance of the mutation instruments (accepted) | `aab5727` | — |
+| Step 2 | $X$: the controller path, and $\rho_X$ over the concrete $\Gamma$ unit (A82 §70) | `e1c7141` | `81cb162` |
+| Step 3 | $P$: the process path, the assisted input, and the entry point that binds both cells to $\rho_P$ | `5fcb750` | `c311b42` |
+
+$$\boxed{\text{A79 §67.8's prerequisites} = \text{SATISFIED}}$$
+
+A83 is what turns that fact into an **implementation** authorisation. It re-designs nothing: A79
+§§67.1–§67.11 stand as frozen and A79's text is not edited. This amendment fixes only what may be
+built now, what must still be decided later, and what may not happen at all.
+
+### 71.1 What is authorised
+
+Implementation of the B2 measurement stage, as A79 froze it and not otherwise:
+
+* `FutureConsequenceView` and its builder — A75 §62.10's four gate layers, with the
+  fabricated-feature mutation live;
+* the future rollout that produces $Y^{\text{future}}$ from a post-update state;
+* the three dimensions' estimators: RMST as FutureUtility's primary with DeficitAUC mandatory,
+  `BehavioralCollateral`'s candidate machinery, and Retention's candidate machinery;
+* the paired B2 runner: paired arms on common random numbers, the treatment/reference pair per
+  cell, and the per-scene record that keeps the three dimensions separate.
+
+$$\boxed{\text{implementation authorisation} \neq \text{seed authorisation}}$$
+
+Nothing above authorises a seed, and "the code exists now" softens nothing:
+
+$$\boxed{\text{NO smoke seed},\quad \text{NO development seed},\quad
+\text{NO confirmatory seed},\quad \text{NO V0.4R}}$$
+
+In particular the 32 development seeds of §67.9 may **not** be run once the runner exists. The
+reason is the order of evidence rather than caution: dev data produced by an unvalidated instrument
+is not dev data. The instrument's own gates close first (§71.3).
+
+### 71.2 The B1 regression gate, restated by measurement rather than by count
+
+§67.11's gate table opens with "the **five** B1 mutation self-checks and the $D_{patch}$ ledger
+baseline still hold". That count was written when five tables existed. The live set is **eight**,
+and it grew the way it was supposed to: each architecture's table joins the gate when its step
+closes. B2's gate is therefore the measured set, not the historical number:
+
+| table | mutations that must all go red |
+|---|---|
+| Q substrate | 14/14 |
+| B1 interface | 13/13 |
+| $L_0$ factual | 8/8 |
+| $L_2$ counterfactual | 11/11 |
+| $L_3$ row restore | 11/11 |
+| address domain (A80 Step 1's synthetic second domain) | 6/6 |
+| $X$ controller | 10/10 |
+| $P$ process | 11/11 |
+
+plus the $D_{patch}$ 396-entry ledger baseline reported `ENCODING_ONLY` with 0 mismatches outside
+the fingerprint fields and 0 structural, at a revision bound in its own evidence commit.
+
+**The rule this restates:** a self-check's *count* is not the gate. A table whose mutations are not
+all `GATE_IS_REAL`, or whose artifacts were not regenerated at the revision under test, is not
+evidence. Reading "five" literally in B2 would silently drop the address-domain, $X$ and $P$ tables
+— that is, exactly the three steps A80 added — which is why the interpretation is recorded here
+rather than left to whoever runs the gate.
+
+### 71.3 The instrument must be validated before the first dev seed exists
+
+The leakages A79 §67.2–§67.4 name are implementation errors before they are statistical ones, and
+each needs a gate that can go **red**:
+
+* **truth leakage** — a feature derived from $\mathcal H_{\text{forbidden}}$ reaching the view. A75
+  §62.10's four layers plus the fabricated-feature mutation are the gate, and it must be shown to
+  kill a truth-derived feature rather than merely to be present;
+* **arm leakage** — an arm seeing the other arm's outcome, or its own future, through the runner.
+  The gate is the paired construction and the per-scene record: one pre-update state, one shared
+  $U_{\text{unaffected}}$, and no post-update information in the treatment's input;
+* **post-update selection leakage** — choosing $T$, the checkpoint grid, $N_{\text{eval}}$, the
+  Retention form or a $\Delta_{\min}$ *after* seeing treatment curves. §67.10 forbids the first of
+  these in the strongest terms; §71.4 keeps all of them open until the dev freeze.
+
+$$\boxed{\text{no development seed until the instrument's own gates close}}$$
+
+### 71.4 What stays open, and where it is decided
+
+A83 decides none of these. Each is a development-stage decision, made under the rule
+§67.5/§67.9/§67.10 already fixed and committed **before** any confirmatory seed:
+
+* the concrete construction of `BehavioralCollateral`'s unaffected set — §67.4's four properties
+  (truth-blind, arm-blind, pre-update, one set per scene across paired arms) are frozen; the
+  construction is chosen on measurement properties;
+* the all-seed Retention form — §67.5 froze that the confirmatory primary must be defined for
+  **every** seed and named the candidate forms; which one is chosen is a dev decision;
+* $T$, from the baseline only and by §67.10's rule, with no treatment-arm curve plotted, printed or
+  summarised before it is frozen and committed;
+* $N_{\text{eval}}$ and the checkpoint grid $\mathcal G_{\text{ckpt}}$;
+* $\Delta_{\min}$ per endpoint;
+* and $N_{\text{train}}$, which does not exist yet and may not be named here.
+
+$$\boxed{T,\ \mathcal G_{\text{ckpt}},\ N_{\text{eval}},\ \text{the Retention form, and each }
+\Delta_{\min} \text{ are frozen together, before the first confirmatory seed}}$$
+
+The statistical protocol is unchanged and is not re-opened: $N_{\text{dev}} = 32$,
+$N_{\text{confirm}} = 400 = 4\times100$, secondary $N = 200 = 2\times100$, paired seeds with common
+random numbers, cumulative **and** fresh block at every look with only $N=400$ confirmatory, the
+four-way verdict, and V0.3R PASS as §67.11's conjunction rather than a score.
+
+### 71.5 What this amendment does not do
+
+It writes no code, moves no number, collects no seed of any stage, sets no threshold, changes no A79
+endpoint or open item, does not touch the frozen $D_Q$ or $D_{patch}$ semantics, and does not begin
+V0.4R. It does not convert A79 from pre-registration into anything else: §67.11's gate order and its
+"any gate FAIL $\Longrightarrow$ no confirmatory B2 seed is collected" stand exactly as written.
+
+---
+
 ## 64. Summary and what remains open
 
 | # | what | severity | status |
@@ -5429,6 +5548,7 @@ section above; the most recent is:
 | **A80** | the $X$ and $P$ B1 paths and the substrate refactor they need, as A79 §67.8's prerequisites -- **authorisation text only, no code**. The replacing plan's two steps are **three**: a generic address/receipt substrate refactor first, because the shared B1 objects are Decision-shaped (`AddressPlan.address`, `DecisionWriteReceipt.address` and its canonicalisation, `SliceDescriptor.owner`) while $\rho_X$ yields a site handle and $\rho_P$ an integer, and an implementer given only "$X$ then $P$" would have to invent the address contract at code time. Step 1 generalises **by type, not by duck typing** -- `address: Any` would discard the nominal closure -- keeps per-architecture strict domains, typed store addresses, $owner_\alpha$ and deterministic canonical receipts, keeps same-cell same-admissibility, and must move no number (five self-checks still pass, $D_{patch}$ still `ENCODING_ONLY`). Step 2 implements $X$ as frozen ($C_X^L(\rho_X(\texttt{ControllerSite})) \leftarrow a^{cmd}$, $L_0$ with $\lvert$treatments$\rvert=1$, $L_3$ an alias that **reuses the same operation implementation**), with $a^{cmd} \in A_z(m,s)$ because a learner write does not inherit fault privilege (A75 §62.3). Step 3 implements $P$ as frozen with $P_{id}\colon L_1$ and **not** $L_0$ -- the factual rows never carry $z^{\text{proposal}}$ -- and forbids **assisted-input laundering** ($P_{id}$ at $L_0 \Rightarrow$ `PROTOCOL_ERROR`), requiring the $L_1$ envelope to deliver the proposal explicitly and the integer-semantics process key to pass an exact type check before domain membership. Authorises **no B2 runner, no $\texttt{FutureConsequenceView}$, no $\texttt{BehavioralCollateral}$, no seed of any stage**, and may not be used to touch $D_Q$, to repair the frozen $D_{patch}$ asymmetry, to change an A79 endpoint or threshold, or to begin V0.4R. The exact delivery rows are **written here rather than deferred** (A77 §65.2's "when implemented"): $fields(X,L_0)=\{a^{cmd}\}$, $fields(X,L_3)=\varnothing$, $fields(P,L_1)=\{z^{\text{proposal}}\}$, $fields(P,L_3)=\varnothing$, and an empty cell acquires **no arm and no same-tier reference** merely because the infrastructure could express one. $X$'s $z,m$ come from the **unique learner-visible factual row** for the visited site, used only by a pre-plan validator that **both arms share**, without widening the law's $\{a^{cmd}\}$ delivery. $P$'s order is frozen -- **cell-level $\rho_P$ resolution before any arm planning**, the resolved true-int key as the locality unit, the $L_1$ envelope delivering $\{z^{\text{proposal}}\}$ to reference and treatment alike, and $\texttt{Edit}(\texttt{PROCESS},z,z)$ so the $L_3$ alias reuses the same plan function -- under the distinction $\boxed{\text{address resolution} \neq \text{information delivered to the law}}$. Step 1 must also prove the generalisation with a **test-only synthetic second domain** (an $A$-slice rejects a $B$-address, a stand-in is refused, and relaxing the validator reddens the gate) and its canonical form must be **injective on the legal domain**, not merely deterministic, since an $X$ canonical omitting $a^{cmd}$ would give two credited sites one receipt identity. | **P0 (spec)** | **frozen -- three implementation steps authorised, one commit each, own gates each; further change requires a new amendment** |
 | **A81** | **domain identity is out of band from the canonical ledger**: the contract's address identity is the pair $(\text{domain tag}, canon_\alpha(\text{address}))$ while the **frozen ledger serialises only** $canon_\alpha(\text{address})$, because A77 \u00a765.12 puts the architecture in the arm descriptor and a tag in the receipt bytes would be a ledger **schema change** -- which is why the $D_{patch}$ baseline stays `ENCODING_ONLY` instead of becoming `DRIFTED`. It rules that **cross-domain admission comes from `require_credited`, not from comparing tags** (two architectures may legitimately admit value-equal addresses, so a tag comparison is neither necessary nor sufficient, and a gate asserting two tags differ proves a property of two constants rather than of admission); restates that the runner asks the domain for every architecture while the *policy* executed is that architecture's own; and fixes the reading of \u00a768.2 without editing A80. Writes no code, moves no number, collects no seed. | **P0 (spec)** | **frozen -- clarification only**; further change requires a new amendment |
 | **A82** | **the concrete $\Gamma$ encoding is the wire contract, and A69's index notation is not a spelling**: $\texttt{ControllerSite}_t$ is mathematical index notation while A71's concrete encoding ($\texttt{ControllerSite}_{x,y,t,a^{cmd}}$, the string `PublicSCMView.credit_unit` emits for a `ControllerFault`) is the implementation interface, so V0.3R B1's $\rho_X$ consumes **that same unit** -- with $\texttt{ControllerSite}_t$ **not** accepted as a compatibility alias (two wire spellings for one $\Gamma$ unit would reopen the ambiguity A71 closed) and $\texttt{Decision}_t$ refused (A69's two families, A76 §63.10's two images). The parsed fields are the unit's identity: $(x,y,t,a^{cmd})$ must equal the factual row's, $\kappa/\phi$ come from the row, and $\mathrm{render}(\mathrm{parse}(u)) = u$ keeps the namespace injective -- so a descriptor cannot decay into decoration. A test-only cross-layer gate resolves a method-produced unit and a hostile gate tampers with each field; production code imports no method layer. A75's chain begins at $\Gamma^\ast$, which is why this is a cross-layer interface rather than a downstream detail. Writes no science, moves no number, collects no seed. | **P0 (interface)** | **frozen -- clarification only**; further change requires a new amendment |
+| **A83** | **B2 implementation authorisation, and the boundary it does not cross**: A80's three steps are CLOSED (Step 1 `6f78949`/`3eeec3a`, reproducibility maintenance `aab5727`, Step 2 `e1c7141`/`81cb162`, Step 3 `5fcb750`/`c311b42`), so A79 §67.8's Process/Controller prerequisites are **SATISFIED** -- which authorises implementing the B2 measurement stage (`FutureConsequenceView` and its builder, the future rollout, RMST with mandatory DeficitAUC, the Collateral and Retention candidate machinery, the paired runner) and **nothing else**. $\text{implementation authorisation} \neq \text{seed authorisation}$: NO smoke, development or confirmatory seed, and no V0.4R, until the instrument's own gates close, because dev data from an unvalidated instrument is not dev data (truth leakage, arm leakage, post-update selection leakage each need a gate that can go red). §67.11's "five B1 mutation self-checks" is restated as the **measured eight-table set** (Q 14, B1 13, L0 8, L2 11, L3 11, address-domain 6, X 10, P 11) plus the $D_{patch}$ `ENCODING_ONLY` binding, since reading the historical count literally would silently drop exactly the three tables A80 added. Every open item stays open and is decided at the development stage under §67.5/§67.9/§67.10 -- the unaffected-set construction, the all-seed Retention form, $T$, $N_{\text{eval}}$, $\mathcal G_{\text{ckpt}}$, each $\Delta_{\min}$, and $N_{\text{train}}$ (which may not be named yet). Writes no code, moves no number, collects no seed. | **P0 (process)** | **frozen -- authorisation only**; further change requires a new amendment |
 
 ---
 
