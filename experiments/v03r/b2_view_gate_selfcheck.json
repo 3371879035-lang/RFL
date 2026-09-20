@@ -1,7 +1,7 @@
 {
   "check": "B2-1 view/builder gate mutation self-check",
-  "n_mutations": 29,
-  "n_gate_is_real": 29,
+  "n_mutations": 32,
+  "n_gate_is_real": 32,
   "n_not_a_gate": 0,
   "n_node_not_found": 0,
   "n_harness_error": 0,
@@ -172,7 +172,7 @@
       "matched": 1,
       "expected_failure_text": "test-only fixture module",
       "exit_code": 1,
-      "tail": "        leak_fixture = tmp_path / \"leak_fixture.py\"\n        leak_fixture.write_text(\"from rfl_rebuild.b2 import testing\\n\", encoding=\"utf-8\")\n        with pytest.raises(ProtocolError) as ei:\n            assert_modules_are_closed([leak_fixture])\n>       assert \"test-only fixture module\" in str(ei.value)\nE       assert 'test-only fixture module' in \"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-261\\\\test_7_the_ast_allowlist_layer0\\\\leak_fixture.py...iew', 'rfl_rebuild.b2.utility', 'rfl_rebuild.b2.environment', 'rfl_rebuild.b2.collateral', 'rfl_rebuild.b2.retention')\"\nE        +  where \"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-261\\\\test_7_the_ast_allowlist_layer0\\\\leak_fixture.py...iew', 'rfl_rebuild.b2.utility', 'rfl_rebuild.b2.environment', 'rfl_rebuild.b2.collateral', 'rfl_rebuild.b2.retention')\" = str(ProtocolError(\"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-261\\\\test_7_the_ast_allowlist_layer0\\\\l...ew', 'rfl_rebuild.b2.utility', 'rfl_rebuild.b2.environment', 'rfl_rebuild.b2.collateral', 'rfl_rebuild.b2.retention')\"))\nE        +    where ProtocolError(\"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-261\\\\test_7_the_ast_allowlist_layer0\\\\l...ew', 'rfl_rebuild.b2.utility', 'rfl_rebuild.b2.environment', 'rfl_rebuild.b2.collateral', 'rfl_rebuild.b2.retention')\") = <ExceptionInfo ProtocolError(\"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-261\\\\test_7_the_ast_allo..._rebuild.b2.utility', 'rfl_rebuild.b2.environment', 'rfl_rebuild.b2.collateral', 'rfl_rebuild.b2.retention')\") tblen=3>.value\ntests\\rebuild\\test_b2_view.py:291: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_view.py::test_7_the_ast_allowlist_layer_covers_the_chain_and_is_not_vacuous\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "        leak_fixture = tmp_path / \"leak_fixture.py\"\n        leak_fixture.write_text(\"from rfl_rebuild.b2 import testing\\n\", encoding=\"utf-8\")\n        with pytest.raises(ProtocolError) as ei:\n            assert_modules_are_closed([leak_fixture])\n>       assert \"test-only fixture module\" in str(ei.value)\nE       assert 'test-only fixture module' in \"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-274\\\\test_7_the_ast_allowlist_layer0\\\\leak_fixture.py...iew', 'rfl_rebuild.b2.utility', 'rfl_rebuild.b2.environment', 'rfl_rebuild.b2.collateral', 'rfl_rebuild.b2.retention')\"\nE        +  where \"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-274\\\\test_7_the_ast_allowlist_layer0\\\\leak_fixture.py...iew', 'rfl_rebuild.b2.utility', 'rfl_rebuild.b2.environment', 'rfl_rebuild.b2.collateral', 'rfl_rebuild.b2.retention')\" = str(ProtocolError(\"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-274\\\\test_7_the_ast_allowlist_layer0\\\\l...ew', 'rfl_rebuild.b2.utility', 'rfl_rebuild.b2.environment', 'rfl_rebuild.b2.collateral', 'rfl_rebuild.b2.retention')\"))\nE        +    where ProtocolError(\"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-274\\\\test_7_the_ast_allowlist_layer0\\\\l...ew', 'rfl_rebuild.b2.utility', 'rfl_rebuild.b2.environment', 'rfl_rebuild.b2.collateral', 'rfl_rebuild.b2.retention')\") = <ExceptionInfo ProtocolError(\"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-274\\\\test_7_the_ast_allo..._rebuild.b2.utility', 'rfl_rebuild.b2.environment', 'rfl_rebuild.b2.collateral', 'rfl_rebuild.b2.retention')\") tblen=3>.value\ntests\\rebuild\\test_b2_view.py:291: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_view.py::test_7_the_ast_allowlist_layer_covers_the_chain_and_is_not_vacuous\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -288,12 +288,12 @@
     {
       "mutation": "unaffected_constructor_takes_an_arm",
       "hole": "the unaffected-set constructor can be told which arm it is in: a constructor that CAN be told is one that may one day branch on it, and the set stops being arm-blind while still producing a number",
-      "gate": "test_1_the_constructors_see_only_pre_update_learner_visible_material",
+      "gate": "test_1_the_constructors_are_blind_locally_and_the_rest_belongs_to_b2_4",
       "site": "src\\rfl_rebuild\\b2\\collateral.py",
       "matched": 1,
       "expected_failure_text": "assert not (set(params) & set(forbidden))",
       "exit_code": 1,
-      "tail": "                     \"future\", \"stratum\", \"world_id\", \"block_id\", \"tau\", \"true\", \"truth\")\n        for name, fn in CANDIDATE_CONSTRUCTIONS.items():\n            params = tuple(inspect.signature(fn).parameters)\n>           assert not (set(params) & set(forbidden)), (name, params)\nE           AssertionError: ('visited_complement', ('domain', 'visited', 'arm'))\nE           assert not ({'arm', 'domain', 'visited'} & {'arm', 'arm_id', 'block_id', 'delta_w', 'future', 'law', ...})\nE            +  where {'arm', 'domain', 'visited'} = set(('domain', 'visited', 'arm'))\nE            +  and   {'arm', 'arm_id', 'block_id', 'delta_w', 'future', 'law', ...} = set(('arm', 'arm_id', 'law', 'post_state', 'post', 'delta_w', ...))\ntests\\rebuild\\test_b2_candidates.py:54: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_candidates.py::test_1_the_constructors_see_only_pre_update_learner_visible_material\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "                     \"future\", \"stratum\", \"world_id\", \"block_id\", \"tau\", \"true\", \"truth\")\n        for name, fn in CANDIDATE_CONSTRUCTIONS.items():\n            params = tuple(inspect.signature(fn).parameters)\n>           assert not (set(params) & set(forbidden)), (name, params)\nE           AssertionError: ('visited_complement', ('domain', 'visited', 'arm'))\nE           assert not ({'arm', 'domain', 'visited'} & {'arm', 'arm_id', 'block_id', 'delta_w', 'future', 'law', ...})\nE            +  where {'arm', 'domain', 'visited'} = set(('domain', 'visited', 'arm'))\nE            +  and   {'arm', 'arm_id', 'block_id', 'delta_w', 'future', 'law', ...} = set(('arm', 'arm_id', 'law', 'post_state', 'post', 'delta_w', ...))\ntests\\rebuild\\test_b2_candidates.py:62: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_candidates.py::test_1_the_constructors_are_blind_locally_and_the_rest_belongs_to_b2_4\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -302,9 +302,9 @@
       "gate": "test_4_the_metric_is_defined_on_exactly_the_set_it_is_given",
       "site": "src\\rfl_rebuild\\b2\\collateral.py",
       "matched": 1,
-      "expected_failure_text": "KeyError",
+      "expected_failure_text": "DID NOT RAISE",
       "exit_code": 1,
-      "tail": "                raise ProtocolError(\n                    f\"the {name}-update values cover {len(got)} contexts but the unaffected set has \"\n                    f\"{len(expected)} (extra {extra[:3]!r}, missing {missing[:3]!r}); the metric is \"\n                    \"defined on exactly the set it was given\")\n            for context in unaffected.contexts:\n>               v = values[context]\n                    ^^^^^^^^^^^^^^^\nE               KeyError: (State(x=1, y=1, t=9, kappa=1, phi=4), 1, 0)\nsrc\\rfl_rebuild\\b2\\collateral.py:147: KeyError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_candidates.py::test_4_the_metric_is_defined_on_exactly_the_set_it_is_given\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "        with pytest.raises(ProtocolError) as ei:\n            behavioral_collateral(unaffected, values_pre=pre, values_post=missing)\n        assert \"cover\" in str(ei.value), \"a missing context would shrink the denominator silently\"\n        extra = dict(post)\n        extra[VISITED[0]] = 1.0\n>       with pytest.raises(ProtocolError):\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.b1.errors.ProtocolError'>\ntests\\rebuild\\test_b2_candidates.py:122: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_candidates.py::test_4_the_metric_is_defined_on_exactly_the_set_it_is_given\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -315,7 +315,7 @@
       "matched": 1,
       "expected_failure_text": "assert \"RetentionFraction\" not in CANDIDATE_FORMS",
       "exit_code": 1,
-      "tail": "        with pytest.raises(ProtocolError) as ei:\n            retention_fraction(NEVER_RECOVERED, EPISODES, tau=None, pre_level=1.0)\n        assert \"undefined for a seed that never recovered\" in str(ei.value)\n        assert retention_fraction(RECOVERED, EPISODES, tau=2, pre_level=1.0) == pytest.approx(1.0)\n        assert retention_fraction.role is RetentionRole.CONDITIONAL_DIAGNOSTIC\n        assert retention_fraction.always_defined is False\n>       assert \"RetentionFraction\" not in CANDIDATE_FORMS\nE       AssertionError: assert 'RetentionFraction' not in {'LateWindowRetention': <function LateWindowRetention.value at 0x<ADDR>>, 'RetentionAtH': <function RetentionAtH.value at 0x<ADDR>>, 'RetentionFraction': <function retention_fraction at 0x<ADDR>>}\ntests\\rebuild\\test_b2_candidates.py:186: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_candidates.py::test_8_the_conditional_form_is_a_diagnostic_by_type_and_by_registry\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "        with pytest.raises(ProtocolError) as ei:\n            retention_fraction(NEVER_RECOVERED, EPISODES, tau=None, pre_level=1.0)\n        assert \"undefined for a seed that never recovered\" in str(ei.value)\n        assert retention_fraction(RECOVERED, EPISODES, tau=2, pre_level=1.0) == pytest.approx(1.0)\n        assert retention_fraction.role is RetentionRole.CONDITIONAL_DIAGNOSTIC\n        assert retention_fraction.always_defined is False\n>       assert \"RetentionFraction\" not in CANDIDATE_FORMS\nE       AssertionError: assert 'RetentionFraction' not in {'LateWindowRetention': <function LateWindowRetention.value at 0x<ADDR>>, 'RetentionAtH': <function RetentionAtH.value at 0x<ADDR>>, 'RetentionFraction': <function retention_fraction at 0x<ADDR>>}\ntests\\rebuild\\test_b2_candidates.py:205: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_candidates.py::test_8_the_conditional_form_is_a_diagnostic_by_type_and_by_registry\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -327,6 +327,39 @@
       "expected_failure_text": "never recovered",
       "exit_code": 1,
       "tail": "episodes = (0, 1, 2, 5, 10, 20, ...)\n    @staticmethod\n    def value(values, episodes, *, H: int) -> float:\n        values, episodes = _require_grid(values, episodes)\n        if not [v for v in values if v >= 0.95]:\n>           raise ProtocolError(\"never recovered\")            # MUTATED\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE           rfl_rebuild.b1.errors.ProtocolError: never recovered\nsrc\\rfl_rebuild\\b2\\retention.py:94: ProtocolError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_candidates.py::test_7_both_eligible_forms_are_defined_for_every_seed_including_never_recovered\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "utility_reads_forbidden_truth",
+      "hole": "utility.py -- a real per-scene metric -- reads forbidden truth. It was outside the audited production chain, so the whole B2 measurement audit could not see it: the number would be well-formed and the dependency would be invisible",
+      "gate": "test_10_the_machinery_is_in_the_audited_production_chain",
+      "site": "src\\rfl_rebuild\\b2\\utility.py",
+      "matched": 1,
+      "expected_failure_text": "forbidden dependency set",
+      "exit_code": 1,
+      "tail": "                    raise ProtocolError(\n                        f\"{path}: imports from {module!r}, which is not on the allowlist \"\n                        f\"{IMPORT_ALLOWLIST!r}\")\n            elif isinstance(node, ast.Name) and isinstance(node.ctx, ast.Load):\n                if node.id in forbidden:\n>                   raise ProtocolError(\n                        f\"{path}: reads {node.id!r}, which is in the forbidden dependency set; the \"\nE                       rfl_rebuild.b1.errors.ProtocolError: D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\src\\rfl_rebuild\\b2\\utility.py: reads 'Gamma_P_star', which is in the forbidden dependency set; the view's constructor must not reach it even through a local alias\nsrc\\rfl_rebuild\\b2\\view.py:450: ProtocolError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_candidates.py::test_10_the_machinery_is_in_the_audited_production_chain\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "retention_form_chosen_by_default",
+      "hole": "select_form acquires a default, so the confirmatory primary is chosen by whoever typed the signature rather than by the development protocol",
+      "gate": "test_9_no_form_or_window_is_selected_or_defaulted",
+      "site": "src\\rfl_rebuild\\b2\\retention.py",
+      "matched": 1,
+      "expected_failure_text": "inspect.signature(select_form).parameters",
+      "exit_code": 1,
+      "tail": "        typed it.\"\"\"\n        # the caller must NAME a form, and the signature says so\n>       assert inspect.signature(select_form).parameters[\"name\"].default \\\n            is inspect.Parameter.empty\nE       assert 'RetentionAtH' is <class 'inspect._empty'>\nE        +  where 'RetentionAtH' = <Parameter \"name: 'str' = 'RetentionAtH'\">.default\nE        +  and   <class 'inspect._empty'> = <class 'inspect.Parameter'>.empty\nE        +    where <class 'inspect.Parameter'> = inspect.Parameter\ntests\\rebuild\\test_b2_candidates.py:215: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_candidates.py::test_9_no_form_or_window_is_selected_or_defaulted\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "collateral_construction_chosen_by_default",
+      "hole": "select_construction acquires a default, so the unaffected-set construction -- the choice A79 67.4 leaves to measurement properties -- is made by inaction",
+      "gate": "test_2_no_construction_is_selected_by_default",
+      "site": "src\\rfl_rebuild\\b2\\collateral.py",
+      "matched": 1,
+      "expected_failure_text": "inspect.signature(select_construction).parameters",
+      "exit_code": 1,
+      "tail": "        told to name one, rather than handed a default that would become the decision by inaction.\"\"\"\n        # the caller must NAME a candidate: there is no sentinel, so \"no choice\" is a signature fact\n>       assert inspect.signature(select_construction).parameters[\"name\"].default \\\n            is inspect.Parameter.empty\nE       assert 'visited_complement' is <class 'inspect._empty'>\nE        +  where 'visited_complement' = <Parameter \"name: 'str' = 'visited_complement'\">.default\nE        +  and   <class 'inspect._empty'> = <class 'inspect.Parameter'>.empty\nE        +    where <class 'inspect.Parameter'> = inspect.Parameter\ntests\\rebuild\\test_b2_candidates.py:78: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_candidates.py::test_2_no_construction_is_selected_by_default\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     }
   ]

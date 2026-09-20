@@ -318,7 +318,7 @@ MUTATIONS: tuple = (
         COLLATERAL,
         "def _unaffected_visited_complement(domain, visited) -> UnaffectedSet:\n",
         "def _unaffected_visited_complement(domain, visited, arm=None) -> UnaffectedSet:  # MUTATED\n",
-        f"{B2_CAND_TESTS}::test_1_the_constructors_see_only_pre_update_learner_visible_material",
+        f"{B2_CAND_TESTS}::test_1_the_constructors_are_blind_locally_and_the_rest_belongs_to_b2_4",
         "assert not (set(params) & set(forbidden))",
     ),
     (
@@ -328,12 +328,9 @@ MUTATIONS: tuple = (
         "visited region the set exists to exclude",
         COLLATERAL,
         "        if got != expected:\n",
-        "        if False:                            # MUTATED: coverage unchecked\n",
+        "        if not expected <= got:              # MUTATED: superset accepted\n",
         f"{B2_CAND_TESTS}::test_4_the_metric_is_defined_on_exactly_the_set_it_is_given",
-        # Measured: with the coverage check gone the sum hits the absent context and dies with a
-        # KeyError -- i.e. the check is what turns a contract violation into the promised
-        # PROTOCOL_ERROR. Same family as the origin guard in B2-2a.
-        "KeyError",
+        "DID NOT RAISE",
     ),
     (
         "retention_diagnostic_promoted",
@@ -358,6 +355,38 @@ MUTATIONS: tuple = (
         "        if isinstance(H, bool)",
         f"{B2_CAND_TESTS}::test_7_both_eligible_forms_are_defined_for_every_seed_including_never_recovered",
         "never recovered",
+    ),
+    (
+        "utility_reads_forbidden_truth",
+        "utility.py -- a real per-scene metric -- reads forbidden truth. It was outside the audited "
+        "production chain, so the whole B2 measurement audit could not see it: the number would be "
+        "well-formed and the dependency would be invisible",
+        UTILITY,
+        "def deficit_auc(values, episodes, *, pre_level: float, t_max: int) -> float:\n",
+        "def deficit_auc(values, episodes, *, pre_level: float, t_max: int) -> float:\n"
+        "    _leak = Gamma_P_star                                  # MUTATED\n",
+        f"{B2_CAND_TESTS}::test_10_the_machinery_is_in_the_audited_production_chain",
+        "forbidden dependency set",
+    ),
+    (
+        "retention_form_chosen_by_default",
+        "select_form acquires a default, so the confirmatory primary is chosen by whoever typed the "
+        "signature rather than by the development protocol",
+        RETENTION,
+        "def select_form(name: str) -> Callable:\n",
+        'def select_form(name: str = "RetentionAtH") -> Callable:      # MUTATED\n',
+        f"{B2_CAND_TESTS}::test_9_no_form_or_window_is_selected_or_defaulted",
+        "inspect.signature(select_form).parameters",
+    ),
+    (
+        "collateral_construction_chosen_by_default",
+        "select_construction acquires a default, so the unaffected-set construction -- the choice "
+        "A79 67.4 leaves to measurement properties -- is made by inaction",
+        COLLATERAL,
+        "def select_construction(name: str) -> Callable:\n",
+        'def select_construction(name: str = "visited_complement") -> Callable:   # MUTATED\n',
+        f"{B2_CAND_TESTS}::test_2_no_construction_is_selected_by_default",
+        "inspect.signature(select_construction).parameters",
     ),
 )
 

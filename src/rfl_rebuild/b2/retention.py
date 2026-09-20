@@ -97,11 +97,17 @@ class RetentionAtH:
 
 @dataclass(frozen=True, slots=True)
 class LateWindowRetention:
-    r"""$\text{LateWindowRetention}[H_1, H_2]$: the maintained level over a late window.
+    r"""$\text{LateWindowRetention}[H_1, H_2]$: the **checkpoint mean** over a late window.
 
-    Both ends are pre-registered checkpoints and the mean is over the checkpoints inside the
-    closed window, so the form is defined for a seed that decays, one that never recovers, and one
-    that recovers late.
+    $H_1$ and $H_2$ are pre-registered **episode bounds**, not required to be checkpoints
+    themselves: the value is the arithmetic mean of the checkpoints inside the closed window, and
+    at least two must lie inside or the window is refused. That makes the form defined for a seed
+    that decays, one that never recovers, and one that recovers late.
+
+    It is a *checkpoint mean* and says so: a time-weighted late-window form is a **different
+    candidate** the development stage may compare it against on measurement properties, and naming
+    this one precisely is what keeps that comparison available instead of implying the formula was
+    frozen by A79.
     """
 
     role = RetentionRole.CANDIDATE
@@ -161,17 +167,12 @@ DIAGNOSTIC_FORMS: Mapping[str, Callable] = {
 }
 
 
-def select_form(name: str = "") -> Callable:
+def select_form(name: str) -> Callable:
     r"""$$\boxed{\text{the Retention form is chosen at the development stage, not here}}$$
 
     §67.5's rule for the choice is frozen (defined for every seed; chosen on measurement
     properties); which of the eligible forms is primary is a dev-stage decision and stays open.
     """
-    if not name:
-        raise ProtocolError(
-            "no Retention form is selected by default: A79 67.5 leaves the confirmatory primary to "
-            f"the development stage, and the eligible forms are {sorted(CANDIDATE_FORMS)}; the "
-            f"conditional diagnostic(s) {sorted(DIAGNOSTIC_FORMS)} are not eligible")
     if name in DIAGNOSTIC_FORMS:
         raise ProtocolError(
             f"{name!r} is a conditional descriptive diagnostic, not an eligible confirmatory form: "

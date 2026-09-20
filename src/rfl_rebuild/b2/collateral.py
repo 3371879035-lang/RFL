@@ -3,20 +3,27 @@ r"""B2-3 — `BehavioralCollateral` and the $U_{\text{unaffected}}$ **candidate*
 $$\boxed{\text{BehavioralCollateral} = V_{\text{unaffected,pre}} -
 V_{\text{unaffected,post}}}$$
 
-A79 §67.4 froze four properties of the unaffected set, and three of them are mechanical here:
+**What this module proves, stated narrowly: constructor-local blindness.**
 
-$$\boxed{\text{truth-blind} + \text{arm-blind} + \text{pre-update}}$$
+$$\boxed{\text{a constructor cannot be *handed* an arm, a law, a ledger, a truth or a post-outcome}}$$
 
-The fourth — **the paired arms share the same constructed object** — is a property of the paired
-runner: this module provides the object and the builder contract, and B2-4 must pass *one* instance
-to both arms and prove `u_reference is u_treatment`. Nothing here claims that identity, and an
-equality check would not be it: two constructions that agree are exactly what a shared object is
-not.
+The signatures take `(domain, visited)` and nothing else, so no argument through which forbidden
+material could arrive exists. That is **not** the same as truth-blindness of the set, and the
+difference is the whole reason this paragraph exists: a caller can compute `domain = f(Gamma_P*)`
+and `visited` from a post-update trajectory, and the constructor would be locally clean while the
+set was truth-derived. A signature is not a provenance.
 
-**What a constructor may see.** Pre-update, learner-visible material and nothing else. The
-signatures carry no arm or law identity, no post-update state, no $\Delta W$, no `UpdateLedger`, no
-future outcome, none of $\mathcal H_{\text{forbidden}}$, and no stratum/world/block identifier —
-so the blindness is a property of the interface rather than a promise about its use.
+$$\boxed{\text{constructor-local blindness} \neq \text{truth-blind} + \text{pre-update}}$$
+
+The real properties are the **paired runner's**, and B2-4 must gate all three of them:
+
+1. **input provenance** — `domain` and `visited` come from a pre-update learner-visible source, and
+   the runner owns that source rather than receiving it;
+2. **construction before either arm executes** — and before $\Delta W$ exists at all;
+3. **one object** — `u_reference is u_treatment`, an identity rather than an agreement. Two
+   constructions that happen to agree are exactly what a shared object is not.
+
+Until then, a candidate set produced here is a *fixture*, not evidence about blindness.
 
 **Several candidates, and no choice.** A79 §67.4 leaves the construction to the development stage
 *on measurement properties*; this module therefore provides more than one and refuses to pick:
@@ -73,7 +80,7 @@ def _unaffected_visited_complement(domain, visited) -> UnaffectedSet:
     return UnaffectedSet(contexts=contexts, construction="visited_complement")
 
 
-def _unaffected_state_parity(domain, visited, *, parity: int = 0) -> UnaffectedSet:
+def _unaffected_state_parity(domain, visited, *, parity: int) -> UnaffectedSet:
     r"""Candidate 2: the **unvisited** contexts whose state $x$ has a declared parity.
 
     A second candidate exists so that the development stage has something to choose *between*; its
@@ -88,16 +95,23 @@ def _unaffected_state_parity(domain, visited, *, parity: int = 0) -> UnaffectedS
 
 
 #: The candidate constructions, **all of them frozen as candidates and none of them chosen**.
+#:
+#: `state_parity` is registered as two **fixed** candidates rather than as one parametrised family
+#: with a defaulted parity: a family whose unspecified member is "even" carries a choice inside a
+#: registry whose whole point is that no choice has been made.
 CANDIDATE_CONSTRUCTIONS: Mapping[str, Callable] = {
     "visited_complement": _unaffected_visited_complement,
-    "state_parity": _unaffected_state_parity,
+    "state_parity_even": lambda domain, visited: _unaffected_state_parity(
+        domain, visited, parity=0),
+    "state_parity_odd": lambda domain, visited: _unaffected_state_parity(
+        domain, visited, parity=1),
 }
 
 #: Kept under the name the docs use.
 UNAFFECTED_CONSTRUCTIONS = CANDIDATE_CONSTRUCTIONS
 
 
-def select_construction(name: str = "") -> Callable:
+def select_construction(name: str) -> Callable:
     r"""$$\boxed{\text{the construction is chosen at the development stage, not here}}$$
 
     A79 §67.4 leaves the choice to measurement properties gathered under the development protocol,
@@ -105,11 +119,6 @@ def select_construction(name: str = "") -> Callable:
     construction is told to say which one, rather than being handed a default that would become the
     decision by inaction.
     """
-    if not name:
-        raise ProtocolError(
-            "no unaffected-set construction is selected by default: A79 67.4 leaves the choice to "
-            f"the development stage on measurement properties, and the candidates are "
-            f"{sorted(CANDIDATE_CONSTRUCTIONS)}")
     if name not in CANDIDATE_CONSTRUCTIONS:
         raise ProtocolError(
             f"{name!r} is not a candidate construction; the candidates are "

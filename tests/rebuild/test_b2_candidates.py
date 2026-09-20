@@ -29,6 +29,7 @@ from rfl_rebuild.b1.errors import ProtocolError  # noqa: E402
 from rfl_rebuild.b2.collateral import (  # noqa: E402
     CANDIDATE_CONSTRUCTIONS, UnaffectedSet, behavioral_collateral, select_construction,
 )
+from rfl_rebuild.b2.view import assert_modules_are_closed  # noqa: E402
 from rfl_rebuild.b2.retention import (  # noqa: E402
     CANDIDATE_FORMS, DIAGNOSTIC_FORMS, LateWindowRetention, RetentionAtH, RetentionRole,
     retention_fraction, select_form,
@@ -44,9 +45,16 @@ VISITED = DOMAIN[:12]
 # 1. the constructors: blindness by signature, and several of them
 # --------------------------------------------------------------------------- #
 
-def test_1_the_constructors_see_only_pre_update_learner_visible_material():
-    r"""Truth-blind, arm-blind, pre-update — as properties of the **interface**, since a constructor
-    that *can* be told which arm it is in may one day branch on it."""
+def test_1_the_constructors_are_blind_locally_and_the_rest_belongs_to_b2_4():
+    r"""$$\boxed{\text{constructor-local blindness} \neq \text{truth-blind} + \text{pre-update}}$$
+
+    A constructor that *can* be told which arm it is in may one day branch on it, so the signatures
+    take `(domain, visited)` and nothing else. That is all this gate proves. It does **not** prove
+    the set is truth-blind: a caller can compute `domain = f(Gamma_P*)` and `visited` from a
+    post-update trajectory, and the constructor would be locally clean while the set was
+    truth-derived. A signature is not a provenance, so B2-4 must gate input provenance, the
+    construction happening before either arm executes, and `u_reference is u_treatment`.
+    """
     forbidden = ("arm", "arm_id", "law", "post_state", "post", "delta_w", "ledger", "outcome",
                  "future", "stratum", "world_id", "block_id", "tau", "true", "truth")
     for name, fn in CANDIDATE_CONSTRUCTIONS.items():
@@ -54,20 +62,29 @@ def test_1_the_constructors_see_only_pre_update_learner_visible_material():
         assert not (set(params) & set(forbidden)), (name, params)
         assert params[0] == "domain" and params[1] == "visited", (name, params)
     assert len(CANDIDATE_CONSTRUCTIONS) >= 2, "one candidate is a choice made by omission"
+    # and no candidate hides a defaulted parameter: a family whose unspecified member is "even"
+    # carries a choice inside a registry whose point is that no choice has been made
+    for name, fn in CANDIDATE_CONSTRUCTIONS.items():
+        for pname, param in inspect.signature(fn).parameters.items():
+            assert param.default is inspect.Parameter.empty, (name, pname)
+    assert set(CANDIDATE_CONSTRUCTIONS) == {"visited_complement", "state_parity_even",
+                                            "state_parity_odd"}
 
 
 def test_2_no_construction_is_selected_by_default():
     r"""The development stage chooses on measurement properties (A79 67.4); until then a caller is
     told to name one, rather than handed a default that would become the decision by inaction."""
-    with pytest.raises(ProtocolError) as ei:
+    # the caller must NAME a candidate: there is no sentinel, so "no choice" is a signature fact
+    assert inspect.signature(select_construction).parameters["name"].default \
+        is inspect.Parameter.empty
+    with pytest.raises(TypeError):
         select_construction()
-    assert "selected by default" in str(ei.value)
     with pytest.raises(ProtocolError) as ei:
         select_construction("the_best_one")
     assert "not a candidate construction" in str(ei.value)
     assert select_construction("visited_complement") is CANDIDATE_CONSTRUCTIONS["visited_complement"]
     # a candidate that "wins" on a synthetic fixture is not thereby chosen
-    assert set(CANDIDATE_CONSTRUCTIONS) == {"visited_complement", "state_parity"}
+    assert len(CANDIDATE_CONSTRUCTIONS) == 3
 
 
 def test_3_the_unaffected_set_is_non_empty_and_duplicate_free():
@@ -80,8 +97,10 @@ def test_3_the_unaffected_set_is_non_empty_and_duplicate_free():
     with pytest.raises(ProtocolError) as ei:
         UnaffectedSet(contexts=(DOMAIN[0], DOMAIN[0]), construction="x")
     assert "duplicate" in str(ei.value)
-    parity = CANDIDATE_CONSTRUCTIONS["state_parity"](DOMAIN, VISITED, parity=1)
-    assert all(getattr(c[0], "x", 0) % 2 == 1 for c in parity.contexts)
+    for name, parity in (("state_parity_even", 0), ("state_parity_odd", 1)):
+        candidate = CANDIDATE_CONSTRUCTIONS[name](DOMAIN, VISITED)
+        assert all(getattr(c[0], "x", 0) % 2 == parity for c in candidate.contexts), name
+        assert candidate.contexts and set(candidate.contexts).isdisjoint(VISITED)
 
 
 # --------------------------------------------------------------------------- #
@@ -192,9 +211,11 @@ def test_9_no_form_or_window_is_selected_or_defaulted():
     r"""No default form, no defaulted $H$, $H_1$ or $H_2$: they are development-stage quantities
     (A83 §71.4), and a "reasonable" default in code would be the design decision made by whoever
     typed it."""
-    with pytest.raises(ProtocolError) as ei:
+    # the caller must NAME a form, and the signature says so
+    assert inspect.signature(select_form).parameters["name"].default \
+        is inspect.Parameter.empty
+    with pytest.raises(TypeError):
         select_form()
-    assert "selected by default" in str(ei.value)
     with pytest.raises(ProtocolError) as ei:
         select_form("RetentionFraction")
     assert "conditional descriptive diagnostic" in str(ei.value)
@@ -211,6 +232,10 @@ def test_9_no_form_or_window_is_selected_or_defaulted():
     with pytest.raises(ProtocolError) as ei:
         LateWindowRetention.value(RECOVERED, EPISODES, H1=11, H2=20)   # only episode 20 inside
     assert "at least two" in str(ei.value)
+    # the bounds are episode bounds, not required checkpoints -- documented as what it is
+    # checkpoints inside [3, 20] are episodes 5, 10 and 20
+    assert LateWindowRetention.value(RECOVERED, EPISODES, H1=3, H2=20) == \
+        pytest.approx((0.97 + 0.98 + 0.99) / 3)
 
 
 def test_10_the_machinery_is_in_the_audited_production_chain():
@@ -221,5 +246,5 @@ def test_10_the_machinery_is_in_the_audited_production_chain():
 
     modules = audited_modules(ROOT / "src")
     names = {p.name for p in modules}
-    assert {"collateral.py", "retention.py"} <= names, names
+    assert {"utility.py", "collateral.py", "retention.py"} <= names, names
     assert_modules_are_closed(modules)
