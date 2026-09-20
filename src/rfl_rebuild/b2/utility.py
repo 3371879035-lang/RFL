@@ -1,31 +1,38 @@
 r"""B2-2 — FutureUtility: the recovery time, and the deficit it integrates.
 
-$$\boxed{\mathrm{RMST}(T_{\max})\ \text{primary}}, \qquad
-\boxed{\mathrm{DeficitAUC}\ \text{mandatory}}$$
+`05` §8.3 froze a **continuous** integral over the whole horizon:
 
-**Recovery is a run, not a crossing.** A13 §? no — A79 §67.3's definition is a *maintained* one:
+$$\boxed{\mathrm{DeficitAUC} = \frac{1}{T_{\max}}\int_0^{T_{\max}}
+\bigl[V_{\text{pre}} - V(t)\bigr]_+\,dt}$$
 
-$$\tau = \inf\{t : V_{t'} \ge 0.95\,V_{\text{pre}} \ \ \forall t' \in [t, t+K-1]\}, \qquad K = 3$$
+and A84 (§72) freezes how that integral is realised on a checkpoint grid, because the choice moves
+the number and was therefore not the implementation's to make silently:
 
-and if no such $t$ exists the observation is **right-censored at $T_{\max}$**. The window is what
-separates "the effect persists" from "the curve touched the threshold once", which is the whole
-reason Retention is a separate dimension rather than a second reading of the same number.
+$$\boxed{\mathrm{DeficitAUC} = \frac{1}{T_{\max}} \sum_i \frac{d_i + d_{i+1}}{2}
+\,(t_{i+1} - t_i)}, \qquad d_i = \bigl[V_{\text{pre}} - V_{t_i}\bigr]_+$$
 
-**The grid is not uniform, and that is not a detail.** Checkpoints are a set
-$\mathcal G_{\text{ckpt}}$ of **real episode indices**, and a value observed at episode 40 does not
-sit one unit after the value observed at episode 10. Both estimators therefore integrate over the
-indices they are given:
+**trapezoidal, and normalised.** Trapezoidal on the real episode grid is the direct numerical
+reading of a continuous integral under the minimal assumption — linear interpolation between
+adjacent checkpoints — rather than left-hold, which additionally assumes the previous measurement
+holds across the whole interval. The calibration is analytic and seedless: on a constant deficit and
+on a linear one the rule must reproduce the analytic integral exactly.
 
-$$\mathrm{DeficitAUC} = \sum_i \bigl(V_{\text{pre}} - V_{t_i}\bigr)^{+}\,\Delta t_i,
-\qquad \Delta t_i = t_{i+1} - t_i$$
+**The grid spans the horizon.** `05` §6.2's grid is $\mathcal G_{\text{ckpt}} = \{0, 1, 2, 5,
+\dots, T\}$ — it contains both ends — so the curve contract is `episodes[0] == 0`,
+`episodes[-1] == T_max`, and every index inside $[0, T_{\max}]$. A curve that stops short is
+refused rather than padded: a rule for the unobserved tail would be an estimator chosen silently
+inside an estimator, and RMST and DeficitAUC must describe one interval.
 
-An array-position reading would silently rescale every deficit by the checkpoint spacing, and would
-be invisible on a uniform fixture — so the gates use a non-uniform one.
+**Recovery is a maintained run, not a crossing.** $\tau$ is the first $t$ whose next $K=3$
+checkpoints are all at or above $0.95\,V_{\text{pre}}$, right-censored at $T_{\max}$.
 
-**No design number is chosen here.** The horizon $T_{\max}$, the checkpoint grid, $N_{\text{eval}}$
-and the pre-update level $V_{\text{pre}}$ are **arguments**. There is deliberately no defaulted
-"reasonable" episode count: $N_{\text{train}}$ does not exist yet, and A83 §71.4 keeps $T$,
-$\mathcal G_{\text{ckpt}}$, $N_{\text{eval}}$ and every $\Delta_{\min}$ to the development stage.
+**Naming, deliberately.** The per-seed $\min(\tau, T_{\max})$ is **not** RMST: RMST is
+$\mathbb E[\min(\tau, T_{\max})]$ across seeds, which is B2-4's aggregation. This module calls
+the per-seed quantity `restricted_time` and leaves the name to the estimator that averages.
+
+**No design number is chosen here.** $T_{\max}$, the grid and $V_{\text{pre}}$ are **arguments**,
+and $N_{\text{train}}$ does not exist: A83 §71.4 keeps $T$, $\mathcal G_{\text{ckpt}}$,
+$N_{\text{eval}}$ and every $\Delta_{\min}$ to the development stage.
 """
 
 from __future__ import annotations
@@ -49,11 +56,26 @@ K_RECOVERY = 3
 RECOVERY_FRACTION = 0.95
 
 
-def _require_curve(values, episodes) -> tuple:
-    r"""A curve is a sequence of observations at **real episode indices**, strictly increasing.
+def _require_real(value, what: str) -> float:
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        raise ProtocolError(f"{what} {value!r} is not a real number")
+    return float(value)
 
-    Both are required and neither is inferred: a curve whose indices are assumed to be
-    $0,1,2,\dots$ is the array-position reading this module exists to refuse.
+
+def _require_horizon(t_max) -> int:
+    if isinstance(t_max, bool) or not isinstance(t_max, int):
+        raise ProtocolError(
+            f"T_max {t_max!r} is not an integer episode index; the horizon is a design quantity "
+            "supplied by the caller, never inferred from the curve")
+    if t_max <= 0:
+        raise ProtocolError(f"T_max {t_max!r} must be a positive episode index")
+    return t_max
+
+
+def _require_curve(values, episodes, t_max: int) -> tuple:
+    r"""A curve is a sequence of observations at **real episode indices spanning the horizon**.
+
+    $$\boxed{episodes[0] = 0, \qquad episodes[-1] = T_{\max}, \qquad 0 \le t_i \le T_{\max}}$$
     """
     values, episodes = tuple(values), tuple(episodes)
     if len(values) != len(episodes):
@@ -63,16 +85,29 @@ def _require_curve(values, episodes) -> tuple:
     if not values:
         raise ProtocolError("the curve is empty; an empty curve has no recovery and no deficit")
     for i, (v, t) in enumerate(zip(values, episodes)):
-        if isinstance(v, bool) or not isinstance(v, (int, float)):
-            raise ProtocolError(f"the curve value at index {i} is {v!r}, not a real number")
+        _require_real(v, f"the curve value at position {i}")
         if isinstance(t, bool) or not isinstance(t, int):
             raise ProtocolError(
                 f"the episode index at position {i} is {t!r}, not an integer; a checkpoint grid is "
                 "a set of real episode indices")
+        if not 0 <= t <= t_max:
+            raise ProtocolError(
+                f"the episode index {t} at position {i} lies outside [0, T_max={t_max}]; the curve "
+                "describes the horizon and nothing beyond it")
     for a, b in zip(episodes, episodes[1:]):
         if not a < b:
             raise ProtocolError(
                 f"the episode indices must be strictly increasing, got {a} then {b}")
+    if episodes[0] != 0:
+        raise ProtocolError(
+            f"the curve starts at episode {episodes[0]} rather than 0; the checkpoint grid contains "
+            "the start of the horizon (05 6.2), so a curve missing it would leave the first "
+            "interval unobserved")
+    if episodes[-1] != t_max:
+        raise ProtocolError(
+            f"the curve ends at episode {episodes[-1]} but T_max is {t_max}; a curve that stops "
+            "short is refused rather than padded, because RMST and DeficitAUC would then describe "
+            "different intervals and any tail rule would be an estimator chosen silently")
     return values, episodes
 
 
@@ -85,34 +120,36 @@ def recovery_time(values, episodes, *, pre_level: float, t_max: int) -> int | No
     crossings are not a recovery, and a dip inside a window voids that window rather than being
     averaged away.
     """
-    values, episodes = _require_curve(values, episodes)
-    if not isinstance(pre_level, (int, float)) or isinstance(pre_level, bool):
-        raise ProtocolError(f"the pre-update level {pre_level!r} is not a real number")
-    if not isinstance(t_max, int) or isinstance(t_max, bool):
-        raise ProtocolError(f"T_max {t_max!r} is not an integer episode index")
-    threshold = RECOVERY_FRACTION * float(pre_level)
+    t_max = _require_horizon(t_max)
+    values, episodes = _require_curve(values, episodes, t_max)
+    threshold = RECOVERY_FRACTION * _require_real(pre_level, "the pre-update level")
     at_or_above = [v >= threshold for v in values]
     for i in range(len(values) - K_RECOVERY + 1):
+        if episodes[i + K_RECOVERY - 1] > t_max:
+            continue                      # a window reaching past the horizon cannot qualify
         if all(at_or_above[i:i + K_RECOVERY]):
             return episodes[i]
     return None
 
 
-def deficit_auc(values, episodes, *, pre_level: float) -> float:
-    r"""$\sum_i (V_{\text{pre}} - V_{t_i})^{+}\,\Delta t_i$ over the **real** indices.
+def deficit_auc(values, episodes, *, pre_level: float, t_max: int) -> float:
+    r"""$\frac{1}{T_{\max}}\int_0^{T_{\max}} [V_{\text{pre}} - V(t)]_+\,dt$, trapezoidally.
 
-    A trapezoid on the left-endpoint deficit, multiplied by the actual spacing. The spacing is
-    taken from the episode indices, so a non-uniform grid is integrated correctly rather than
-    being rescaled to a unit grid.
+    $$\boxed{\frac{1}{T_{\max}} \sum_i \frac{d_i + d_{i+1}}{2}\,(t_{i+1} - t_i)}, \qquad
+    d_i = \bigl[V_{\text{pre}} - V_{t_i}\bigr]_+$$
+
+    Both halves matter: the $1/T_{\max}$ is `05` §8.3's normalisation, so the number is a mean
+    deficit over the horizon rather than an area that grows with it; and the rule is trapezoidal on
+    the real grid (A84 §72), exact on constant and linear deficits.
     """
-    values, episodes = _require_curve(values, episodes)
-    if not isinstance(pre_level, (int, float)) or isinstance(pre_level, bool):
-        raise ProtocolError(f"the pre-update level {pre_level!r} is not a real number")
+    t_max = _require_horizon(t_max)
+    values, episodes = _require_curve(values, episodes, t_max)
+    pre = _require_real(pre_level, "the pre-update level")
+    deficits = [max(0.0, pre - v) for v in values]
     total = 0.0
     for i in range(len(values) - 1):
-        deficit = max(0.0, float(pre_level) - float(values[i]))
-        total += deficit * (episodes[i + 1] - episodes[i])
-    return total
+        total += 0.5 * (deficits[i] + deficits[i + 1]) * (episodes[i + 1] - episodes[i])
+    return total / t_max
 
 
 @dataclass(frozen=True, slots=True)
@@ -125,18 +162,23 @@ class FutureUtility:
 
     tau: int | None
     recovered: bool
-    rmst: int
+    restricted_time: int
     deficit_auc: float
     t_max: int
 
     @staticmethod
     def from_curve(values, episodes, *, pre_level: float, t_max: int) -> "FutureUtility":
-        r"""RMST is $\min(\tau, T_{\max})$: a censored observation contributes the full horizon."""
+        r"""`restricted_time` is $\min(\tau, T_{\max})$ **per seed**.
+
+        It is not RMST: $\mathrm{RMST}(T_{\max}) = \mathbb E[\min(\tau, T_{\max})]$ is the
+        cross-seed aggregation and belongs to B2-4. Naming the per-seed number after the population
+        summary is how the two get conflated later, so the name is reserved there.
+        """
         tau = recovery_time(values, episodes, pre_level=pre_level, t_max=t_max)
         return FutureUtility(
             tau=tau,
             recovered=tau is not None,
-            rmst=t_max if tau is None else tau,
-            deficit_auc=deficit_auc(values, episodes, pre_level=pre_level),
+            restricted_time=t_max if tau is None else tau,
+            deficit_auc=deficit_auc(values, episodes, pre_level=pre_level, t_max=t_max),
             t_max=t_max,
         )

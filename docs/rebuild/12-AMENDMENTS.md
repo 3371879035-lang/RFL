@@ -5498,6 +5498,65 @@ V0.4R. It does not convert A79 from pre-registration into anything else: §67.11
 
 ---
 
+## 72. A84 — the DeficitAUC numerical-integration contract
+
+`05` §8.3 froze a **continuous** integral, and B2-2's first implementation realised it as a
+left-rectangle sum with **no normalisation**:
+
+$$\text{implemented}: \sum_i d_i\,(t_{i+1} - t_i) \qquad\text{vs}\qquad
+\text{frozen}: \frac{1}{T_{\max}}\int_0^{T_{\max}} \bigl[V_{\text{pre}} -
+V(t)\bigr]_+ dt, \quad d_i = \bigl[V_{\text{pre}} - V_{t_i}\bigr]_+$$
+
+Two things were wrong and only one of them was arithmetic. The missing $1/T_{\max}$ made the
+quantity an *area* that grows with the horizon rather than a mean deficit over it; and the
+quadrature rule itself — left-hold, right-hold, or interpolation — was **nowhere frozen**, so the
+implementation was choosing an estimator, which A83 §71.4 keeps to the development stage for
+exactly this reason. A gate that pins an unfrozen rule pins the implementation's opinion.
+
+**Frozen: trapezoidal integration on the real episode grid.**
+
+$$\boxed{\mathrm{DeficitAUC} = \frac{1}{T_{\max}} \sum_i \frac{d_i + d_{i+1}}{2}
+\,(t_{i+1} - t_i)}$$
+
+with $d_i = [V_{\text{pre}} - V_{t_i}]_+$ and $t_{i+1} > t_i$ the **real episode indices**.
+The reason is assumption-minimality rather than preference: `05` defines a continuous integral
+between the checkpoints, and on a grid the direct reading of that integral assumes linear
+interpolation between adjacent observations. Left-hold instead assumes that the measurement at
+$t_i$ persists across the whole of $[t_i, t_{i+1}]$, which the frozen definition never says, and it
+is not neutral — on a curve that recovers *within* an interval, left-hold overstates the deficit.
+An array-position reading is refused for the same reason one step further out: it silently rescales
+every deficit by the grid spacing.
+
+**Calibrated analytically, and seedlessly.** On a constant deficit the rule must return that
+constant; on a linear deficit it must return the analytic integral. Both are exact for trapezoid
+and neither is for left-hold, so the calibration distinguishes the rules rather than merely
+exercising the code. `tests/rebuild/test_b2_environment.py::test_8` carries both cases; no seed of
+any stage is involved.
+
+**And the curve spans the horizon.** `05` §6.2's grid is $\mathcal G_{\text{ckpt}} = \{0, 1, 2,
+5, \dots, T\}$: it contains both ends. So
+
+$$\boxed{episodes[0] = 0, \qquad episodes[-1] = T_{\max}, \qquad 0 \le t_i \le T_{\max}}$$
+
+are part of the contract, and a curve that stops short is **refused rather than padded** — a rule
+for the unobserved tail would be a second estimator chosen silently inside the first, and RMST and
+DeficitAUC must describe one and the same $[0, T_{\max}]$. A recovery window that would only
+complete past the horizon does not qualify, so $T_{\max}$ bounds the *answer* and not only the
+grid.
+
+**Naming.** The per-seed $\min(\tau, T_{\max})$ is **not** RMST. RMST is
+$\mathbb E[\min(\tau, T_{\max})]$ across seeds and belongs to B2-4's aggregation; the per-seed
+quantity is `restricted_time`. Exposing one under the other's name is how a restricted time and a
+population summary get conflated when the aggregator is written.
+
+**What this amendment does not do.** It re-opens nothing in A79: the endpoint stays DeficitAUC as
+`05` §8.3 defines it, RMST stays the primary, the three dimensions and the four-way verdict are
+untouched. It sets no $T$, no $\Delta_{\min}$, no $N_{\text{eval}}$, no checkpoint grid value,
+and collects no seed. It fixes the **numerical realisation** of an already-frozen endpoint, and it
+exists so that the realisation is a decision on the record rather than one inside a loop.
+
+---
+
 ## 64. Summary and what remains open
 
 | # | what | severity | status |
@@ -5549,6 +5608,7 @@ section above; the most recent is:
 | **A81** | **domain identity is out of band from the canonical ledger**: the contract's address identity is the pair $(\text{domain tag}, canon_\alpha(\text{address}))$ while the **frozen ledger serialises only** $canon_\alpha(\text{address})$, because A77 \u00a765.12 puts the architecture in the arm descriptor and a tag in the receipt bytes would be a ledger **schema change** -- which is why the $D_{patch}$ baseline stays `ENCODING_ONLY` instead of becoming `DRIFTED`. It rules that **cross-domain admission comes from `require_credited`, not from comparing tags** (two architectures may legitimately admit value-equal addresses, so a tag comparison is neither necessary nor sufficient, and a gate asserting two tags differ proves a property of two constants rather than of admission); restates that the runner asks the domain for every architecture while the *policy* executed is that architecture's own; and fixes the reading of \u00a768.2 without editing A80. Writes no code, moves no number, collects no seed. | **P0 (spec)** | **frozen -- clarification only**; further change requires a new amendment |
 | **A82** | **the concrete $\Gamma$ encoding is the wire contract, and A69's index notation is not a spelling**: $\texttt{ControllerSite}_t$ is mathematical index notation while A71's concrete encoding ($\texttt{ControllerSite}_{x,y,t,a^{cmd}}$, the string `PublicSCMView.credit_unit` emits for a `ControllerFault`) is the implementation interface, so V0.3R B1's $\rho_X$ consumes **that same unit** -- with $\texttt{ControllerSite}_t$ **not** accepted as a compatibility alias (two wire spellings for one $\Gamma$ unit would reopen the ambiguity A71 closed) and $\texttt{Decision}_t$ refused (A69's two families, A76 §63.10's two images). The parsed fields are the unit's identity: $(x,y,t,a^{cmd})$ must equal the factual row's, $\kappa/\phi$ come from the row, and $\mathrm{render}(\mathrm{parse}(u)) = u$ keeps the namespace injective -- so a descriptor cannot decay into decoration. A test-only cross-layer gate resolves a method-produced unit and a hostile gate tampers with each field; production code imports no method layer. A75's chain begins at $\Gamma^\ast$, which is why this is a cross-layer interface rather than a downstream detail. Writes no science, moves no number, collects no seed. | **P0 (interface)** | **frozen -- clarification only**; further change requires a new amendment |
 | **A83** | **B2 implementation authorisation, and the boundary it does not cross**: A80's three steps are CLOSED (Step 1 `6f78949`/`3eeec3a`, reproducibility maintenance `aab5727`, Step 2 `e1c7141`/`81cb162`, Step 3 `5fcb750`/`c311b42`), so A79 §67.8's Process/Controller prerequisites are **SATISFIED** -- which authorises implementing the B2 measurement stage (`FutureConsequenceView` and its builder, the future rollout, RMST with mandatory DeficitAUC, the Collateral and Retention candidate machinery, the paired runner) and **nothing else**. $\text{implementation authorisation} \neq \text{seed authorisation}$: NO smoke, development or confirmatory seed, and no V0.4R, until the instrument's own gates close, because dev data from an unvalidated instrument is not dev data (truth leakage, arm leakage, post-update selection leakage each need a gate that can go red). §67.11's "five B1 mutation self-checks" is restated as the **measured eight-table set** (Q 14, B1 13, L0 8, L2 11, L3 11, address-domain 6, X 10, P 11) plus the $D_{patch}$ `ENCODING_ONLY` binding, since reading the historical count literally would silently drop exactly the three tables A80 added. Every open item stays open and is decided at the development stage under §67.5/§67.9/§67.10 -- the unaffected-set construction, the all-seed Retention form, $T$, $N_{\text{eval}}$, $\mathcal G_{\text{ckpt}}$, each $\Delta_{\min}$, and $N_{\text{train}}$ (which may not be named yet). Writes no code, moves no number, collects no seed. | **P0 (process)** | **frozen -- authorisation only**; further change requires a new amendment |
+| **A84** | **the DeficitAUC numerical-integration contract**: `05` §8.3 froze a continuous integral with a $1/T_{\max}$ normalisation, and B2-2's first implementation realised it as an unnormalised left-rectangle sum — wrong in the normalisation **and** in the quadrature rule, which was frozen nowhere and was therefore the implementation choosing an estimator. Frozen now: trapezoidal integration on the real episode grid, $\mathrm{DeficitAUC} = \frac{1}{T_{\max}}\sum_i \frac{d_i+d_{i+1}}{2}(t_{i+1}-t_i)$ with $d_i=[V_{\text{pre}}-V_{t_i}]_+$, on the grounds of assumption-minimality (linear interpolation between adjacent observations, rather than left-hold's extra assumption that a measurement persists across its whole interval); calibrated analytically on constant and linear deficits, seedlessly. Also frozen: the curve spans the horizon ($episodes[0]=0$, $episodes[-1]=T_{\max}$, $0\le t_i\le T_{\max}$), a short curve is refused rather than padded, and a recovery window completing past $T_{\max}$ does not qualify. Terminology: the per-seed $\min(\tau,T_{\max})$ is `restricted_time`, **not** RMST, which is the cross-seed expectation and belongs to B2-4. Re-opens no A79 endpoint, sets no design quantity, collects no seed. | **P0 (numerics)** | **frozen -- clarification only**; further change requires a new amendment |
 
 ---
 

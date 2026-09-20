@@ -1,7 +1,7 @@
 {
   "check": "B2-1 view/builder gate mutation self-check",
-  "n_mutations": 22,
-  "n_gate_is_real": 22,
+  "n_mutations": 25,
+  "n_gate_is_real": 25,
   "n_not_a_gate": 0,
   "n_node_not_found": 0,
   "n_harness_error": 0,
@@ -172,7 +172,7 @@
       "matched": 1,
       "expected_failure_text": "test-only fixture module",
       "exit_code": 1,
-      "tail": "        leak_fixture = tmp_path / \"leak_fixture.py\"\n        leak_fixture.write_text(\"from rfl_rebuild.b2 import testing\\n\", encoding=\"utf-8\")\n        with pytest.raises(ProtocolError) as ei:\n            assert_modules_are_closed([leak_fixture])\n>       assert \"test-only fixture module\" in str(ei.value)\nE       assert 'test-only fixture module' in \"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-227\\\\test_7_the_ast_allowlist_layer0\\\\leak_fixture.py...d.b1.errors', 'rfl_rebuild.learner.store', 'rfl_rebuild.env.kernel', 'rfl_rebuild.b2.producer', 'rfl_rebuild.b2.view')\"\nE        +  where \"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-227\\\\test_7_the_ast_allowlist_layer0\\\\leak_fixture.py...d.b1.errors', 'rfl_rebuild.learner.store', 'rfl_rebuild.env.kernel', 'rfl_rebuild.b2.producer', 'rfl_rebuild.b2.view')\" = str(ProtocolError(\"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-227\\\\test_7_the_ast_allowlist_layer0\\\\l....b1.errors', 'rfl_rebuild.learner.store', 'rfl_rebuild.env.kernel', 'rfl_rebuild.b2.producer', 'rfl_rebuild.b2.view')\"))\nE        +    where ProtocolError(\"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-227\\\\test_7_the_ast_allowlist_layer0\\\\l....b1.errors', 'rfl_rebuild.learner.store', 'rfl_rebuild.env.kernel', 'rfl_rebuild.b2.producer', 'rfl_rebuild.b2.view')\") = <ExceptionInfo ProtocolError(\"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-227\\\\test_7_the_ast_allo...s', 'rfl_rebuild.learner.store', 'rfl_rebuild.env.kernel', 'rfl_rebuild.b2.producer', 'rfl_rebuild.b2.view')\") tblen=3>.value\ntests\\rebuild\\test_b2_view.py:291: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_view.py::test_7_the_ast_allowlist_layer_covers_the_chain_and_is_not_vacuous\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "        leak_fixture = tmp_path / \"leak_fixture.py\"\n        leak_fixture.write_text(\"from rfl_rebuild.b2 import testing\\n\", encoding=\"utf-8\")\n        with pytest.raises(ProtocolError) as ei:\n            assert_modules_are_closed([leak_fixture])\n>       assert \"test-only fixture module\" in str(ei.value)\nE       assert 'test-only fixture module' in \"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-240\\\\test_7_the_ast_allowlist_layer0\\\\leak_fixture.py...d.b1.errors', 'rfl_rebuild.learner.store', 'rfl_rebuild.env.kernel', 'rfl_rebuild.b2.producer', 'rfl_rebuild.b2.view')\"\nE        +  where \"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-240\\\\test_7_the_ast_allowlist_layer0\\\\leak_fixture.py...d.b1.errors', 'rfl_rebuild.learner.store', 'rfl_rebuild.env.kernel', 'rfl_rebuild.b2.producer', 'rfl_rebuild.b2.view')\" = str(ProtocolError(\"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-240\\\\test_7_the_ast_allowlist_layer0\\\\l....b1.errors', 'rfl_rebuild.learner.store', 'rfl_rebuild.env.kernel', 'rfl_rebuild.b2.producer', 'rfl_rebuild.b2.view')\"))\nE        +    where ProtocolError(\"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-240\\\\test_7_the_ast_allowlist_layer0\\\\l....b1.errors', 'rfl_rebuild.learner.store', 'rfl_rebuild.env.kernel', 'rfl_rebuild.b2.producer', 'rfl_rebuild.b2.view')\") = <ExceptionInfo ProtocolError(\"C:\\\\Users\\\\huani\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-huani\\\\pytest-240\\\\test_7_the_ast_allo...s', 'rfl_rebuild.learner.store', 'rfl_rebuild.env.kernel', 'rfl_rebuild.b2.producer', 'rfl_rebuild.b2.view')\") tblen=3>.value\ntests\\rebuild\\test_b2_view.py:291: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_view.py::test_7_the_ast_allowlist_layer_covers_the_chain_and_is_not_vacuous\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -216,7 +216,7 @@
       "matched": 1,
       "expected_failure_text": "environment.py",
       "exit_code": 1,
-      "tail": "    def test_4_the_environment_is_in_the_audited_production_chain():\n        r\"\"\"The provenance gap B2-2a left open closes here: the production environment is not merely a\n        nominal `LearnerEnvironment`, it is a module the same AST/import/dependency audit covers.\"\"\"\n        modules = audited_modules(ROOT / \"src\")\n        assert all(p.exists() for p in modules), modules\n>       assert any(p.name == \"environment.py\" for p in modules)\nE       assert False\nE        +  where False = any(<generator object test_4_the_environment_is_in_the_audited_production_chain.<locals>.<genexpr> at 0x<ADDR>>)\ntests\\rebuild\\test_b2_environment.py:156: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_environment.py::test_4_the_environment_is_in_the_audited_production_chain\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "    def test_4_the_environment_is_in_the_audited_production_chain():\n        r\"\"\"The provenance gap B2-2a left open closes here: the production environment is not merely a\n        nominal `LearnerEnvironment`, it is a module the same AST/import/dependency audit covers.\"\"\"\n        modules = audited_modules(ROOT / \"src\")\n        assert all(p.exists() for p in modules), modules\n>       assert any(p.name == \"environment.py\" for p in modules)\nE       assert False\nE        +  where False = any(<generator object test_4_the_environment_is_in_the_audited_production_chain.<locals>.<genexpr> at 0x<ADDR>>)\ntests\\rebuild\\test_b2_environment.py:184: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_environment.py::test_4_the_environment_is_in_the_audited_production_chain\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -227,7 +227,7 @@
       "matched": 1,
       "expected_failure_text": "assert K_RECOVERY == 3",
       "exit_code": 1,
-      "tail": "_______________ test_5_recovery_needs_k_consecutive_checkpoints _______________\n    def test_5_recovery_needs_k_consecutive_checkpoints():\n        r\"\"\"The frozen rule is a **window**: $\\tau$ is the first $t$ whose next $K$ checkpoints are all\n        at or above the threshold. One or two crossings are not a recovery, and the very first window\n        that qualifies is the answer.\"\"\"\n        episodes = (0, 5, 10, 15, 20, 25)\n>       assert K_RECOVERY == 3\nE       assert 2 == 3\ntests\\rebuild\\test_b2_environment.py:169: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_environment.py::test_5_recovery_needs_k_consecutive_checkpoints\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "_______________ test_5_recovery_needs_k_consecutive_checkpoints _______________\n    def test_5_recovery_needs_k_consecutive_checkpoints():\n        r\"\"\"The frozen rule is a **window**: $\\tau$ is the first $t$ whose next $K$ checkpoints are all\n        at or above the threshold. One or two crossings are not a recovery, and the very first window\n        that qualifies is the answer.\"\"\"\n        episodes = (0, 5, 10, 15, 20, 25)\n>       assert K_RECOVERY == 3\nE       assert 2 == 3\ntests\\rebuild\\test_b2_environment.py:197: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_environment.py::test_5_recovery_needs_k_consecutive_checkpoints\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -238,18 +238,51 @@
       "matched": 1,
       "expected_failure_text": "== 5",
       "exit_code": 1,
-      "tail": "        assert deficit_auc(values, (0, 1, 2, 3), pre_level=1.0) == pytest.approx(0.21)\n        assert recovery_time(values, episodes, pre_level=1.0, t_max=16) is None   # only two at 0.99\n        # tau must be the EPISODE index of the window's start, not its array position: the window here\n        # begins at position 1, which is episode 5\n        values_recovered = [0.90, 0.99, 0.99, 0.99]\n>       assert recovery_time(values_recovered, episodes, pre_level=1.0, t_max=16) == 5\nE       assert 1 == 5\nE        +  where 1 = recovery_time([0.9, 0.99, 0.99, 0.99], (0, 5, 15, 16), pre_level=1.0, t_max=16)\ntests\\rebuild\\test_b2_environment.py:224: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_environment.py::test_8_both_estimators_integrate_over_real_episode_indices\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "        # the same values on a unit grid are a different integral, not a rescaled one\n        assert deficit_auc(values, (0, 1, 2, 3), pre_level=1.0, t_max=3) == pytest.approx(0.165 / 3)\n        assert recovery_time(values, episodes, pre_level=1.0, t_max=t_max) is None  # only two at .99\n        # tau must be the EPISODE index of the window's start, not its array position\n        values_recovered = [0.90, 0.99, 0.99, 0.99]\n>       assert recovery_time(values_recovered, episodes, pre_level=1.0, t_max=t_max) == 5\nE       assert 1 == 5\nE        +  where 1 = recovery_time([0.9, 0.99, 0.99, 0.99], (0, 5, 15, 16), pre_level=1.0, t_max=16)\ntests\\rebuild\\test_b2_environment.py:253: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_environment.py::test_8_both_estimators_integrate_over_real_episode_indices\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
-      "mutation": "deficit_assumes_unit_spacing",
-      "hole": "DeficitAUC integrates as if every checkpoint were one episode after the last, rescaling every deficit by the grid spacing",
+      "mutation": "environment_drops_decision_patch_channel",
+      "hole": "P_D^L is bypassed: the rollout stays on the Q read path, so a decision patch the learner holds is never applied. The future is still plausible, which is why only a gate that writes the channel can see it",
+      "gate": "test_2b_the_decision_patch_channel_moves_the_future",
+      "site": "src\\rfl_rebuild\\b2\\environment.py",
+      "matched": 1,
+      "expected_failure_text": "P_D^L is bypassed",
+      "exit_code": 1,
+      "tail": "            patched.apply_transaction([Edit(DECISION, address, 0)])\n            if env.future_records(patched) != base:\n                moved = True\n                break\n            previous = step.state\n>       assert moved, \"no visited decision context's patch moved the future: P_D^L is bypassed\"\nE       AssertionError: no visited decision context's patch moved the future: P_D^L is bypassed\nE       assert False\ntests\\rebuild\\test_b2_environment.py:161: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_environment.py::test_2b_the_decision_patch_channel_moves_the_future\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "deficit_not_normalised",
+      "hole": "the 1/T_max of 05 8.3 is dropped, so DeficitAUC becomes an area that grows with the horizon instead of a mean deficit over it -- and the frozen endpoint is a different number",
       "gate": "test_8_both_estimators_integrate_over_real_episode_indices",
       "site": "src\\rfl_rebuild\\b2\\utility.py",
       "matched": 1,
-      "expected_failure_text": "assert deficit_auc(values, episodes, pre_level=1.0)",
+      "expected_failure_text": "1.06 / 16",
       "exit_code": 1,
-      "tail": "        # deficits 0.10 at t=0 (spans 5) and 0.10 at t=5 (spans 10), then nothing\n        # deficits: 0.10 over [0,5], 0.10 over [5,15], and 0.01 over [15,16] because 0.99 < V_pre\n>       assert deficit_auc(values, episodes, pre_level=1.0) == pytest.approx(0.10 * 5 + 0.10 * 10 + 0.01)\nE       assert 0.20999999999999996 == 1.51 \u00b1 1.5e-06\nE         \nE         comparison failed\nE         Obtained: 0.20999999999999996\nE         Expected: 1.51 \u00b1 1.5e-06\ntests\\rebuild\\test_b2_environment.py:217: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_environment.py::test_8_both_estimators_integrate_over_real_episode_indices\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "        # deficits 0.10 at t=0 (spans 5) and 0.10 at t=5 (spans 10), then nothing\n        # trapezoids over d = [.10, .10, .01, .01]: .5*5 + .055*10 + .01*1 = 1.06, normalised by T_max\n>       assert deficit_auc(values, episodes, pre_level=1.0, t_max=t_max) == pytest.approx(1.06 / 16)\nE       assert 1.0599999999999998 == 0.06625 \u00b1 6.6e-08\nE         \nE         comparison failed\nE         Obtained: 1.0599999999999998\nE         Expected: 0.06625 \u00b1 6.6e-08\ntests\\rebuild\\test_b2_environment.py:247: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_environment.py::test_8_both_estimators_integrate_over_real_episode_indices\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "deficit_uses_left_hold",
+      "hole": "the quadrature reverts to a left rectangle, which assumes each measurement persists across its whole interval -- an assumption the frozen continuous integral does not make",
+      "gate": "test_8_both_estimators_integrate_over_real_episode_indices",
+      "site": "src\\rfl_rebuild\\b2\\utility.py",
+      "matched": 1,
+      "expected_failure_text": "1.06 / 16",
+      "exit_code": 1,
+      "tail": "        # deficits 0.10 at t=0 (spans 5) and 0.10 at t=5 (spans 10), then nothing\n        # trapezoids over d = [.10, .10, .01, .01]: .5*5 + .055*10 + .01*1 = 1.06, normalised by T_max\n>       assert deficit_auc(values, episodes, pre_level=1.0, t_max=t_max) == pytest.approx(1.06 / 16)\nE       assert 0.09437499999999997 == 0.06625 \u00b1 6.6e-08\nE         \nE         comparison failed\nE         Obtained: 0.09437499999999997\nE         Expected: 0.06625 \u00b1 6.6e-08\ntests\\rebuild\\test_b2_environment.py:247: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_environment.py::test_8_both_estimators_integrate_over_real_episode_indices\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "curve_need_not_span_the_horizon",
+      "hole": "a curve that stops short of T_max is accepted, so RMST and DeficitAUC describe different intervals and the unobserved tail is silently given a rule",
+      "gate": "test_9_the_grid_contract_is_enforced",
+      "site": "src\\rfl_rebuild\\b2\\utility.py",
+      "matched": 1,
+      "expected_failure_text": "DID NOT RAISE",
+      "exit_code": 1,
+      "tail": "            deficit_auc((0.9, 0.9), (0, 1), pre_level=1.0, t_max=True)\n        assert \"not an integer\" in str(ei.value)\n        with pytest.raises(ProtocolError):\n            deficit_auc((), (), pre_level=1.0, t_max=10)\n        # the curve must span the horizon: a short curve is refused, not padded\n>       with pytest.raises(ProtocolError) as ei:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.b1.errors.ProtocolError'>\ntests\\rebuild\\test_b2_environment.py:288: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_environment.py::test_9_the_grid_contract_is_enforced\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     }
   ]

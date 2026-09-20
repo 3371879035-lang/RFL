@@ -9,8 +9,8 @@ joins `PRODUCTION_MODULES`: it is audited by the same AST/import/dependency laye
 the producer, so "the environment read the truth and labelled the result as the learner's" has a
 gate that can go red.
 
-**What makes the rollout endogenous.** The kernel reads three persistent channels, and the
-environment wires **all three from the snapshot of the state it was handed**:
+**What makes the rollout endogenous.** The kernel reads four learner channels, and the
+environment wires **all four from the snapshot of the state it was handed**:
 
 | channel | read path |
 |---|---|

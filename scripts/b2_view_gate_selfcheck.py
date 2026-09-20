@@ -266,14 +266,46 @@ MUTATIONS: tuple = (
         "== 5",
     ),
     (
-        "deficit_assumes_unit_spacing",
-        "DeficitAUC integrates as if every checkpoint were one episode after the last, rescaling "
-        "every deficit by the grid spacing",
+        "environment_drops_decision_patch_channel",
+        "P_D^L is bypassed: the rollout stays on the Q read path, so a decision patch the learner "
+        "holds is never applied. The future is still plausible, which is why only a gate that "
+        "writes the channel can see it",
+        ENVIRONMENT,
+        "        command_provider = snapshot.decision_provider(\n"
+        "            snapshot.q_decision_provider(self._q_reference))\n",
+        "        command_provider = snapshot.q_decision_provider(self._q_reference)   # MUTATED\n",
+        f"{B2_ENV_TESTS}::test_2b_the_decision_patch_channel_moves_the_future",
+        "P_D^L is bypassed",
+    ),
+    (
+        "deficit_not_normalised",
+        "the 1/T_max of 05 8.3 is dropped, so DeficitAUC becomes an area that grows with the "
+        "horizon instead of a mean deficit over it -- and the frozen endpoint is a different number",
         UTILITY,
-        "        total += deficit * (episodes[i + 1] - episodes[i])\n",
-        "        total += deficit                              # MUTATED: unit spacing\n",
+        "    return total / t_max\n",
+        "    return total                              # MUTATED: unnormalised\n",
         f"{B2_ENV_TESTS}::test_8_both_estimators_integrate_over_real_episode_indices",
-        "assert deficit_auc(values, episodes, pre_level=1.0)",
+        "1.06 / 16",
+    ),
+    (
+        "deficit_uses_left_hold",
+        "the quadrature reverts to a left rectangle, which assumes each measurement persists across "
+        "its whole interval -- an assumption the frozen continuous integral does not make",
+        UTILITY,
+        "        total += 0.5 * (deficits[i] + deficits[i + 1]) * (episodes[i + 1] - episodes[i])\n",
+        "        total += deficits[i] * (episodes[i + 1] - episodes[i])   # MUTATED: left-hold\n",
+        f"{B2_ENV_TESTS}::test_8_both_estimators_integrate_over_real_episode_indices",
+        "1.06 / 16",
+    ),
+    (
+        "curve_need_not_span_the_horizon",
+        "a curve that stops short of T_max is accepted, so RMST and DeficitAUC describe different "
+        "intervals and the unobserved tail is silently given a rule",
+        UTILITY,
+        '    if episodes[-1] != t_max:\n',
+        '    if False:                                 # MUTATED: short curves accepted\n',
+        f"{B2_ENV_TESTS}::test_9_the_grid_contract_is_enforced",
+        "DID NOT RAISE",
     ),
 )
 

@@ -133,6 +133,34 @@ def _trace():
                    learner_process_commit=snap.process_commit_provider())
 
 
+def test_2b_the_decision_patch_channel_moves_the_future():
+    r"""$P_D^L$ is the fourth channel, and it is not decoration: the kernel's `decision=` path takes
+    precedence over the Q read path, so an implementation that bypassed
+    `snapshot.decision_provider(...)` would still roll out *a* future -- the wrong one. The override
+    is placed at a visited context and with an action the choice itself can take.
+    """
+    from rfl_rebuild.env.kernel import START, State
+    from rfl_rebuild.learner.store import DECISION, DecisionAddress
+
+    env = environment()
+    base = env.future_records(LearnerPersistentState())
+    trace = _trace()
+    previous = State(x=START[0], y=START[1], t=0, kappa=0, phi=0)
+    moved = False
+    for step in trace.steps:
+        if step.a_cmd != 3 or previous.t == 0:
+            previous = step.state
+            continue
+        address = DecisionAddress(state=previous, z=trace.option_in_force, m=trace.control.m)
+        patched = LearnerPersistentState()
+        patched.apply_transaction([Edit(DECISION, address, 0)])
+        if env.future_records(patched) != base:
+            moved = True
+            break
+        previous = step.state
+    assert moved, "no visited decision context's patch moved the future: P_D^L is bypassed"
+
+
 def test_3_the_environment_refuses_what_it_cannot_answer():
     r"""No reference view, no Q read path: the healthy referent *is* that view, so guessing one
     would answer a different question. A non-state is refused for the same reason."""
@@ -199,48 +227,88 @@ def test_6_a_dip_inside_a_window_voids_that_window():
 def test_7_never_recovered_is_right_censored_at_t_max():
     episodes = (0, 7, 14)
     values = [0.5, 0.6, 0.94]
-    utility = FutureUtility.from_curve(values, episodes, pre_level=1.0, t_max=40)
+    utility = FutureUtility.from_curve(values, episodes, pre_level=1.0, t_max=14)
     assert utility.tau is None and utility.recovered is False
-    assert utility.rmst == 40 == utility.t_max
+    assert utility.restricted_time == 14 == utility.t_max
 
 
 def test_8_both_estimators_integrate_over_real_episode_indices():
-    r"""$$\mathrm{DeficitAUC} = \sum_i (V_{\text{pre}} - V_{t_i})^{+}\,\Delta t_i$$
+    r"""$$\mathrm{DeficitAUC} = \frac{1}{T_{\max}} \sum_i \frac{d_i + d_{i+1}}{2}
+    (t_{i+1} - t_i)$$
 
     A non-uniform grid is the point: the same values on a unit grid must give a different answer,
-    and RMST must be an episode index rather than an array position.
+    and tau must be an episode index rather than an array position.
     """
     episodes = (0, 5, 15, 16)                     # deliberately non-uniform
     values = [0.90, 0.90, 0.99, 0.99]
+    t_max = 16
     # deficits 0.10 at t=0 (spans 5) and 0.10 at t=5 (spans 10), then nothing
-    # deficits: 0.10 over [0,5], 0.10 over [5,15], and 0.01 over [15,16] because 0.99 < V_pre
-    assert deficit_auc(values, episodes, pre_level=1.0) == pytest.approx(0.10 * 5 + 0.10 * 10 + 0.01)
-    # the same values on a unit grid: 0.10 + 0.10 + 0.01 (the 0.99 point is below V_pre too)
-    assert deficit_auc(values, (0, 1, 2, 3), pre_level=1.0) == pytest.approx(0.21)
-    assert recovery_time(values, episodes, pre_level=1.0, t_max=16) is None   # only two at 0.99
-    # tau must be the EPISODE index of the window's start, not its array position: the window here
-    # begins at position 1, which is episode 5
+    # trapezoids over d = [.10, .10, .01, .01]: .5*5 + .055*10 + .01*1 = 1.06, normalised by T_max
+    assert deficit_auc(values, episodes, pre_level=1.0, t_max=t_max) == pytest.approx(1.06 / 16)
+    # the same values on a unit grid are a different integral, not a rescaled one
+    assert deficit_auc(values, (0, 1, 2, 3), pre_level=1.0, t_max=3) == pytest.approx(0.165 / 3)
+    assert recovery_time(values, episodes, pre_level=1.0, t_max=t_max) is None  # only two at .99
+    # tau must be the EPISODE index of the window's start, not its array position
     values_recovered = [0.90, 0.99, 0.99, 0.99]
-    assert recovery_time(values_recovered, episodes, pre_level=1.0, t_max=16) == 5
-    # an observation at episode 15 is not one unit after episode 5
+    assert recovery_time(values_recovered, episodes, pre_level=1.0, t_max=t_max) == 5
+    # the per-seed quantity is named for what it is, and it is not RMST
     utility = FutureUtility.from_curve([0.5, 0.5], (0, 20), pre_level=1.0, t_max=20)
-    assert utility.deficit_auc == pytest.approx(0.5 * 20)
+    assert utility.restricted_time == 20
+    assert not hasattr(utility, "rmst")
+    # a constant deficit integrates analytically: mean deficit .5 over the horizon
+    assert deficit_auc([0.5, 0.5, 0.5], (0, 5, 10), pre_level=1.0,
+                       t_max=10) == pytest.approx(0.5)
+    # and so does a linear one: d = t/10 on [0,10] integrates to 1/2 after normalisation
+    assert deficit_auc([1.0, 0.5, 0.0], (0, 5, 10), pre_level=1.0,
+                       t_max=10) == pytest.approx(0.5)
 
 
 def test_9_the_grid_contract_is_enforced():
-    r"""A curve without real, strictly increasing episode indices is refused rather than assumed to
-    be uniformly spaced — the assumption that would rescale every deficit unnoticed."""
+    r"""$$\boxed{episodes[0] = 0, \qquad episodes[-1] = T_{\max}}$$
+
+    Both ends are required, because $T_{\max}$ is what RMST and DeficitAUC must agree on. A curve
+    that stops short is refused rather than padded, and the indices are required rather than assumed
+    to be uniformly spaced.
+    """
     with pytest.raises(ProtocolError) as ei:
-        deficit_auc((0.9, 0.9), (0, 0), pre_level=1.0)
+        deficit_auc((0.9, 0.9), (0, 0), pre_level=1.0, t_max=10)
     assert "strictly increasing" in str(ei.value)
     with pytest.raises(ProtocolError) as ei:
-        deficit_auc((0.9,), (0, 1), pre_level=1.0)
+        deficit_auc((0.9,), (0, 1), pre_level=1.0, t_max=10)
     assert "episode indices" in str(ei.value)
     with pytest.raises(ProtocolError) as ei:
-        deficit_auc((0.9, 0.9), (0, 1.5), pre_level=1.0)
+        deficit_auc((0.9, 0.9), (0, 1.5), pre_level=1.0, t_max=10)
     assert "not an integer" in str(ei.value)
     with pytest.raises(ProtocolError) as ei:
-        recovery_time((0.9, 0.9), (0, 1), pre_level=1.0, t_max=True)
+        deficit_auc((0.9, 0.9), (0, 1), pre_level=1.0, t_max=True)
     assert "not an integer" in str(ei.value)
     with pytest.raises(ProtocolError):
-        deficit_auc((), (), pre_level=1.0)
+        deficit_auc((), (), pre_level=1.0, t_max=10)
+    # the curve must span the horizon: a short curve is refused, not padded
+    with pytest.raises(ProtocolError) as ei:
+        deficit_auc((0.9, 0.9), (0, 7), pre_level=1.0, t_max=40)
+    assert "ends at episode 7 but T_max is 40" in str(ei.value)
+    with pytest.raises(ProtocolError) as ei:
+        recovery_time((0.9, 0.9), (5, 40), pre_level=1.0, t_max=40)
+    assert "starts at episode 5 rather than 0" in str(ei.value)
+    with pytest.raises(ProtocolError) as ei:
+        deficit_auc((0.9, 0.9), (0, 50), pre_level=1.0, t_max=40)
+    assert "outside [0, T_max=40]" in str(ei.value)
+    with pytest.raises(ProtocolError) as ei:
+        deficit_auc((0.9, 0.9), (0, 40), pre_level=1.0, t_max=0)
+    assert "positive episode index" in str(ei.value)
+
+
+def test_10_a_recovery_only_after_the_horizon_is_censored():
+    r"""The horizon bounds the **answer**, not just the grid: a run of checkpoints that would only
+    complete past $T_{\max}$ does not count, and the observation is right-censored."""
+    # the run is complete inside the horizon
+    assert recovery_time([0.90, 0.99, 0.99, 0.99], (0, 5, 10, 15), pre_level=1.0,
+                         t_max=15) == 5
+    # the threshold is reached only in the last two checkpoints of the horizon: censored
+    assert recovery_time([0.50, 0.50, 0.99, 0.99], (0, 5, 10, 15), pre_level=1.0,
+                         t_max=15) is None
+    utility = FutureUtility.from_curve([0.50, 0.50, 0.99, 0.99], (0, 5, 10, 15),
+                                       pre_level=1.0, t_max=15)
+    assert utility.tau is None and utility.recovered is False
+    assert utility.restricted_time == 15 == utility.t_max
