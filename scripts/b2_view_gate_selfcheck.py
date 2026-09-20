@@ -70,7 +70,7 @@ MUTATIONS: tuple = (
         "any object can be presented as a rollout that reports its own provenance -- the hole "
         "B2-2a closes by minting rather than by labelling",
         VIEW,
-        "        if self._seal is not ROLLOUT_SEAL:\n",
+        "        if not is_sealed(self._seal):\n",
         "        if False:                        # MUTATED: self-reported provenance accepted\n",
         f"{TESTS}::test_3_the_rollout_is_sealed_and_the_view_is_one_future",
         "DID NOT RAISE",
@@ -196,6 +196,19 @@ MUTATIONS: tuple = (
         "                if False:                # MUTATED: fixture mint reachable\n",
         f"{TESTS}::test_7_the_ast_allowlist_layer_covers_the_chain_and_is_not_vacuous",
         "test-only fixture module",
+    ),
+    (
+        "capability_imported_outside_owner",
+        "another production module reaches for the mint itself. An allowlisted import is still an "
+        "escalation when the name it brings is the ability to mint evidence: with the capability in "
+        "hand, a truth-derived payload can be minted with a VALID seal, and no downstream layer can "
+        "tell -- which is why the holder is one module and the audit enforces it",
+        VIEW,
+        "from rfl_rebuild.learner.store import LearnerPersistentState\n",
+        "from rfl_rebuild.learner.store import LearnerPersistentState\n"
+        "from rfl_rebuild.b2.producer import _mint_rollout          # MUTATED\n",
+        f"{TESTS}::test_10_the_mint_capability_has_exactly_one_holder_in_the_production_graph",
+        "mint capability",
     ),
 )
 

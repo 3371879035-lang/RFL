@@ -16,9 +16,9 @@ from __future__ import annotations
 
 from rfl_rebuild.b2.producer import (
     ENVIRONMENT_INTERFACE,
-    ROLLOUT_SEAL,
     FutureRolloutProducer,
     LearnerEnvironment,
+    is_sealed,
 )
 from rfl_rebuild.b2.view import (
     H_FORBIDDEN,
@@ -37,8 +37,8 @@ from rfl_rebuild.b2.view import (
 
 __all__ = [
     "ENVIRONMENT_INTERFACE",
-    "ROLLOUT_SEAL",
     "FutureRolloutProducer",
+    "is_sealed",
     "LearnerEnvironment",
     "H_FORBIDDEN",
     "IMPORT_ALLOWLIST",

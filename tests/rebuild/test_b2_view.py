@@ -43,8 +43,12 @@ from rfl_rebuild.b2 import (  # noqa: E402
     LearnerEnvironment, assert_module_is_closed, assert_modules_are_closed,
     require_learner_rollout,
 )
+# The mint capability is private and audited: production modules may not hold it. A hostile gate
+# MUST be able to reach it anyway, or it could not build the objects it exists to attack -- so the
+# escalation below is deliberate, and labelled as an escalation rather than presented as a
+# production route.
 from rfl_rebuild.b2.producer import (  # noqa: E402
-    ENVIRONMENT_INTERFACE, ROLLOUT_SEAL, mint_rollout,
+    ENVIRONMENT_INTERFACE, _ROLLOUT_SEAL, _mint_rollout,
 )
 from rfl_rebuild.b2.testing import toy_environment, toy_records, toy_rollout  # noqa: E402
 from rfl_rebuild.learner.store import LearnerPersistentState  # noqa: E402
@@ -110,12 +114,12 @@ def test_3_the_rollout_is_sealed_and_the_view_is_one_future():
                       future_rewards=(), future_outcomes=(), future_trajectories=(),
                       future_actions=(), future_observations=(), t_index=())
     assert "may only be minted" in str(ei.value)
-    assert toy_rollout()._seal is ROLLOUT_SEAL
+    assert toy_rollout()._seal is _ROLLOUT_SEAL
     view = clean_view()
     clean = view.fields["future_rewards"].rollout
     records = tuple(getattr(clean, name) for name in VIEW_FIELDS)
     other_records = (((99.0,) + tuple(records[0][1:])),) + records[1:]
-    other = mint_rollout(EvidenceOrigin.LEARNER_FUTURE_ROLLOUT, other_records, clean.t_index)
+    other = _mint_rollout(EvidenceOrigin.LEARNER_FUTURE_ROLLOUT, other_records, clean.t_index)
     mixed = {**view.fields, "future_rewards": FutureField.from_rollout("future_rewards", other)}
     with pytest.raises(ProtocolError) as ei:
         FutureConsequenceView(fields=mixed, t_index=view.t_index)
@@ -190,7 +194,7 @@ def test_5_only_the_learners_own_future_rollout_may_feed_the_view():
     # `require_learner_rollout`'s own nominal check -- otherwise this gate would pass while the
     # guard it names was inert.
     with pytest.raises(ProtocolError) as ei:
-        require_learner_rollout(FutureRollout(_seal=ROLLOUT_SEAL,
+        require_learner_rollout(FutureRollout(_seal=_ROLLOUT_SEAL,
                                               origin="learner_future_rollout",
                                               future_rewards=(), future_outcomes=(),
                                               future_trajectories=(), future_actions=(),
@@ -366,3 +370,80 @@ def source_names(path: pathlib.Path) -> set:
         elif isinstance(node, ast.Constant) and isinstance(node.value, str):
             names.add(node.value)
     return names
+
+
+def test_10_the_mint_capability_has_exactly_one_holder_in_the_production_graph(tmp_path):
+    r"""$$\boxed{\text{inside the audited production graph, only } \texttt{producer.py} \text{ may
+    mint}}$$
+
+    B2-2a's own gates could not see the hole this closes: `rollout_seal_check_removed` asks whether
+    a *wrong* seal is refused, while the defect was that the *right* seal was a public API. So this
+    gate asks the ownership question in both directions.
+
+    **The escalation is real and it is labelled.** A hostile gate must be able to build the object
+    it attacks, so it reaches the private path deliberately — and what it then shows is the honest
+    boundary: a payload that was minted with a valid seal is *not* detectable downstream. No type
+    can tell where a float came from, and the view does not pretend to. The boundary is the mint
+    owner plus the audited environment.
+    """
+    import ast as _ast
+
+    # The audited production chain itself, first: without this the gate would only ever inspect
+    # synthetic leaks and would pass while a real production module held the capability.
+    assert_modules_are_closed(PRODUCTION_MODULES)
+    package = __import__("rfl_rebuild.b2", fromlist=["__all__"])
+    for name in ("ROLLOUT_SEAL", "mint_rollout", "_ROLLOUT_SEAL", "_mint_rollout"):
+        assert name not in package.__all__, f"{name} is exported by the package"
+        assert not hasattr(package, name), f"{name} is reachable from the package"
+    for name in ("_ROLLOUT_SEAL", "_mint_rollout"):
+        assert name not in PRODUCER_MODULE.read_text(encoding="utf-8").split("__all__ = [")[1] \
+            .split("]")[0], f"{name} is in producer.__all__"
+
+    # (a) the escalation: a valid seal and a truth-derived payload, minted through the private path
+    gamma_P_star = {(0, 1)}
+    fake_feature = 1 if (0, 1) in gamma_P_star else 0
+    forged = _mint_rollout(EvidenceOrigin.LEARNER_FUTURE_ROLLOUT,
+                           ((fake_feature,), (0,), ((0, 1),), (0,), ((0, 0),)), (0,))
+    assert type(forged) is FutureRollout
+    hostile = FutureConsequenceViewBuilder(FutureRolloutProducer(
+        _EnvironmentReturning(forged))).build(LearnerPersistentState())
+    assert hostile.fields["future_rewards"].value == (fake_feature,), (
+        "the downstream layers CANNOT detect an already-minted truth payload, and this gate says "
+        "so rather than claiming otherwise")
+
+    # (b) production reachability: the audit refuses any other production module taking the
+    # capability, whether by import, by attribute, or by a bare load
+    for source, why in (
+        ("from rfl_rebuild.b2.producer import _mint_rollout\n", "an import"),
+        ("import rfl_rebuild.b2.producer as p\nx = p._ROLLOUT_SEAL\n", "an attribute load"),
+        ("x = _mint_rollout\n", "a bare load"),
+    ):
+        leak = tmp_path / f"leak_{abs(hash(source)) % 1000}.py"
+        leak.write_text(source, encoding="utf-8")
+        with pytest.raises(ProtocolError) as ei:
+            assert_modules_are_closed([leak])
+        assert "mint capability" in str(ei.value), why
+    # the ownership rule is data, so the gate reads the same list the check enforces
+    from rfl_rebuild.b2.view import CAPABILITY_OWNERS
+
+    assert set(CAPABILITY_OWNERS) == {"_mint_rollout", "_ROLLOUT_SEAL"}
+    assert set(CAPABILITY_OWNERS.values()) == {"producer.py"}
+    # only the owner (and the labelled test-only fixture module) mentions the capability at all
+    for path in PRODUCTION_MODULES:
+        tree = _ast.parse(path.read_text(encoding="utf-8"))
+        if path.name == "producer.py":
+            continue
+        assert not [n for n in _ast.walk(tree)
+                    if isinstance(n, _ast.Name) and n.id in CAPABILITY_OWNERS]
+
+
+class _EnvironmentReturning(LearnerEnvironment):
+    """A labelled hostile environment: it returns records that were already minted elsewhere."""
+
+    __slots__ = ("_rollout",)
+
+    def __init__(self, rollout):
+        self._rollout = rollout
+
+    def future_records(self, state):
+        return tuple(getattr(self._rollout, name) for name in VIEW_FIELDS)

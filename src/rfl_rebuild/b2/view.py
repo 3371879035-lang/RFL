@@ -78,6 +78,22 @@ H_FORBIDDEN = (
     "Z_fire", "J_L", "Gamma_T_star", "Gamma_P_star", "R_mech", "R_rescue", "pi_credit",
 )
 
+#: The mint capability and the module allowed to hold it. The allowlist above says which modules a
+#: production module may *import*; this says which names it may not **load at all** outside their
+#: owner, because an allowlisted import is still an escalation if the name it brings is the ability
+#: to mint evidence:
+#:
+#: $$\boxed{\texttt{\_mint\_rollout},\ \texttt{\_ROLLOUT\_SEAL}\ \text{may be loaded only
+#: inside}\ \texttt{producer.py}}$$
+#:
+#: `testing.py` holds the capability too and is deliberately not on this list: it is test-only, the
+#: audit refuses a production module that imports it, and a hostile fixture that escalates through
+#: it is labelled as an escalation rather than mistaken for a production route.
+CAPABILITY_OWNERS = {
+    "_mint_rollout": "producer.py",
+    "_ROLLOUT_SEAL": "producer.py",
+}
+
 #: The per-scene identifiers a **metric** may additionally not receive: the selector may use truth
 #: to choose the report table, but the metric may not learn which table it is in.
 SCENE_FORBIDDEN = (
@@ -138,9 +154,9 @@ class FutureRollout:
         value is minted by `b2.producer`, and provenance is therefore answered by *who could have
         built it* rather than by what the object claims.
         """
-        from rfl_rebuild.b2.producer import ROLLOUT_SEAL
+        from rfl_rebuild.b2.producer import is_sealed
 
-        if self._seal is not ROLLOUT_SEAL:
+        if not is_sealed(self._seal):
             raise ProtocolError(
                 "a FutureRollout may only be minted by the audited producer "
                 "(rfl_rebuild.b2.producer); a directly constructed rollout reports its own "
@@ -358,8 +374,32 @@ def assert_modules_are_closed(paths) -> None:
     for path in paths:
         # The specific refusal comes first: "you imported the test-only fixture module" is a more
         # useful diagnostic than "that module is not on the allowlist", and both would fire.
-        source = pathlib.Path(path).read_text(encoding="utf-8")
+        path = pathlib.Path(path)
+        source = path.read_text(encoding="utf-8")
         tree = ast.parse(source)
+        # Capability ownership, before the import allowlist: a module may import the owner and
+        # still not be allowed to take the mint out of it.
+        if path.name not in set(CAPABILITY_OWNERS.values()):
+            for node in ast.walk(tree):
+                loaded = None
+                if isinstance(node, ast.Name) and isinstance(node.ctx, ast.Load):
+                    loaded = node.id
+                elif isinstance(node, ast.Attribute) and isinstance(node.ctx, ast.Load):
+                    loaded = node.attr
+                elif isinstance(node, ast.ImportFrom):
+                    for alias in node.names:
+                        if alias.name in CAPABILITY_OWNERS:
+                            raise ProtocolError(
+                                f"{path}: imports the mint capability {alias.name!r} from "
+                                f"{node.module!r}; {CAPABILITY_OWNERS[alias.name]!r} is its only "
+                                "holder inside the audited production graph, and an allowlisted "
+                                "import is still an escalation when the name it brings is the "
+                                "ability to mint evidence")
+                if loaded in CAPABILITY_OWNERS:
+                    raise ProtocolError(
+                        f"{path}: loads the mint capability {loaded!r}, which only "
+                        f"{CAPABILITY_OWNERS[loaded]!r} may hold; minting is what makes a rollout "
+                        "trusted, so a second holder makes the trust boundary decorative")
         for node in ast.walk(tree):
             names = []
             if isinstance(node, ast.Import):

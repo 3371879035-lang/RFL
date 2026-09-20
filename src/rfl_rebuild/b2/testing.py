@@ -9,13 +9,17 @@ sanctioned way to mint a clean rollout, and the honest way to provide one is a m
 
 `assert_modules_are_closed` refuses a production module that imports `rfl_rebuild.b2.testing`.
 
+This module is also the one **explicitly acknowledged** holder of the mint capability outside
+`producer.py`: it is test-only, and production may not import it, so the capability stays inside
+`producer.py` for everything the audit covers.
+
 Nothing here is a sampled run, a seed, or a development-stage choice: `toy_environment` and
 `toy_rollout` are deterministic fixtures, and the numbers in them are arbitrary on purpose.
 """
 
 from __future__ import annotations
 
-from rfl_rebuild.b2.producer import LearnerEnvironment, mint_rollout
+from rfl_rebuild.b2.producer import LearnerEnvironment, _mint_rollout
 from rfl_rebuild.b2.view import EvidenceOrigin
 
 __all__ = ["toy_environment", "toy_rollout", "toy_records"]
@@ -54,4 +58,4 @@ def toy_rollout(horizon: int = 3, origin: EvidenceOrigin = EvidenceOrigin.LEARNE
     It is minted through the same seal as production, which is the point of a test-only module:
     the fixtures exercise the *real* construction path rather than a bypass of it.
     """
-    return mint_rollout(origin, toy_records(horizon), tuple(range(horizon)))
+    return _mint_rollout(origin, toy_records(horizon), tuple(range(horizon)))

@@ -39,15 +39,17 @@ __all__ = [
     "ENVIRONMENT_INTERFACE",
     "FutureRolloutProducer",
     "LearnerEnvironment",
-    "ROLLOUT_SEAL",
-    "mint_rollout",
+    "is_sealed",
 ]
 
-#: The mint. Only this module holds it, and `FutureRollout.__post_init__` requires it, so a
-#: rollout cannot be constructed by a caller who merely *says* where the evidence came from. Python
-#: cannot make a module-private name unreachable, and this does not pretend otherwise: what it
-#: removes is the *public* route, which is the route an implementation takes by default.
-ROLLOUT_SEAL = object()
+#: The mint capability. **Private by name and by audit**: it is absent from `__all__`, absent from
+#: the package's exports, and `framework.assert_modules_are_closed` refuses any audited production
+#: module other than this one that loads `_ROLLOUT_SEAL` or `_mint_rollout`
+#: (`CAPABILITY_OWNERS`). Python cannot make a module-private name unreachable and this does not
+#: pretend otherwise; what it establishes is the property that matters:
+#:
+#: $$\boxed{\text{inside the audited production graph, only this module may mint}}$$
+_ROLLOUT_SEAL = object()
 
 #: The producer's whole input surface, declared as data so a gate can read it rather than trust it.
 ENVIRONMENT_INTERFACE = ("future_records",)
@@ -76,7 +78,17 @@ class LearnerEnvironment(ABC):
         raise NotImplementedError
 
 
-def mint_rollout(origin, records, t_index):
+def is_sealed(value: object) -> bool:
+    r"""Whether a value carries this module's mint. **Verification only** -- it cannot mint.
+
+    `FutureRollout.__post_init__` needs to check the seal and lives in `view.py`, so the
+    alternative was to hand `view.py` the capability itself. A verifier keeps the asymmetry: the
+    view can ask "was this minted here" and cannot answer "yes" by making one.
+    """
+    return value is _ROLLOUT_SEAL
+
+
+def _mint_rollout(origin, records, t_index):
     r"""Mint a sealed `FutureRollout`. The **only** production construction path.
 
     Called by `FutureRolloutProducer`, and by B2's test-only fixture module, which the AST audit
@@ -92,7 +104,7 @@ def mint_rollout(origin, records, t_index):
             "member")
     rewards, outcomes, trajectories, actions, observations = records
     return FutureRollout(
-        _seal=ROLLOUT_SEAL,
+        _seal=_ROLLOUT_SEAL,
         origin=origin,
         future_rewards=tuple(rewards),
         future_outcomes=tuple(outcomes),
@@ -159,5 +171,5 @@ class FutureRolloutProducer:
                 f"the future record sequences have lengths {sorted(lengths)}; the five sequences "
                 "describe one horizon and must agree")
         horizon = lengths.pop()
-        return mint_rollout(EvidenceOrigin.LEARNER_FUTURE_ROLLOUT, records,
-                            tuple(range(horizon)))
+        return _mint_rollout(EvidenceOrigin.LEARNER_FUTURE_ROLLOUT, records,
+                             tuple(range(horizon)))
