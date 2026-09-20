@@ -42,6 +42,15 @@ from rfl_rebuild.learner.store import (  # noqa: E402
 OPTIONS = K.option_ids()
 Z0, Z1 = OPTIONS[0], OPTIONS[1]
 
+#: The credited population of a legal $P$ run: the static unit, and nothing else.
+UNITS = ("ProcessCommit",)
+
+
+class PIdAtL0(PId):
+    """A real subclass declaring the L0 cell -- the placement defect, as a law."""
+
+    tier = Tier.L0_FACTUAL
+
 
 def dirty_state(z, value):
     """A pre-state that already carries an override at ``z``, so a restore has something to do."""
@@ -143,16 +152,11 @@ def test_4_p_id_at_l0_is_a_protocol_error_even_with_a_legal_integer_in_hand():
     address, the store *is* writable, and the run is refused anyway, because a proposal the cell
     was not handed is not a proposal it may use.
     """
-    class PIdAtL0(PId):
-        """A real subclass declaring the L0 cell — the placement defect, as a law."""
-
-        tier = Tier.L0_FACTUAL
-
     state = dirty_state(Z0, Z1)
     addresses = resolve_process_addresses(("ProcessCommit",), AssistedInput(Z0))
     assert addresses == (Z0,)
     with pytest.raises(ProtocolError) as ei:
-        run_process_law(PIdAtL0, state, addresses, AssistedInput(Z0))
+        run_process_law(PIdAtL0, state, UNITS, AssistedInput(Z0))
     assert "no substantive treatment at tier" in str(ei.value)
     # ... and the table itself is the reason, not the runner's mood
     assert P_SLICE.cells[Tier.L0_FACTUAL] is ILL_TYPED
@@ -195,7 +199,7 @@ def test_5_the_l1_delivery_is_the_assisted_input_and_nothing_else():
             return super().plan(addresses, targets)
 
     addresses = (Z0,)
-    run_process_law(Recording, LearnerPersistentState(), addresses, AssistedInput(Z0))
+    run_process_law(Recording, LearnerPersistentState(), UNITS, AssistedInput(Z0))
     assert len(seen) == 1 and seen[0] is not None
     delivered = seen[0][Z0]
     # the law is handed a projection over the cell's *declared* names, not the record itself
@@ -211,7 +215,7 @@ def test_5_the_l1_delivery_is_the_assisted_input_and_nothing_else():
     projected = P_SLICE.deliver(Tier.L1_CORRECTIVE, addresses, {Z0: wide})
     assert dict(projected[Z0]) == {"z_proposal": Z0}
     seen.clear()
-    run_process_law(RecordingL3, LearnerPersistentState(), addresses, AssistedInput(Z0))
+    run_process_law(RecordingL3, LearnerPersistentState(), UNITS, AssistedInput(Z0))
     assert seen == [None], "the L3 delivery must be empty, not another proposal source"
     # the envelope the runner builds carries exactly the credited address and the resolved value
     envelope = build_process_envelope(addresses, AssistedInput(Z0))
@@ -259,7 +263,7 @@ def test_7_a_run_without_a_delivered_proposal_is_refused():
     state = dirty_state(Z0, Z1)
     for missing in (None, Z0, "ProcessCommit"):
         with pytest.raises(ProtocolError) as ei:
-            run_process_law(PId, state, addresses, missing)
+            run_process_law(PId, state, UNITS, missing)
         assert "AssistedInput" in str(ei.value), missing
     # the state is untouched by the refused runs
     assert dict(state.process_overrides) == {Z0: Z1}
@@ -282,7 +286,7 @@ def test_8_the_proposal_comes_from_the_assisted_input_not_from_the_store():
     addresses = resolve_process_addresses(("ProcessCommit",), AssistedInput(Z0))
     state = dirty_state(Z0, Z1)
     assert dict(state.process_overrides) == {Z0: Z1}
-    res = run_process_law(PId, state, addresses, AssistedInput(Z0))
+    res = run_process_law(PId, state, UNITS, AssistedInput(Z0))
     assert dict(state.process_overrides) == {}, "the identity write must delete the override"
     assert set(r.status for r in res.ledger.receipts) == {APPLIED}
     assert res.ledger.store_changed
@@ -326,8 +330,8 @@ def test_10_the_alias_is_one_implementation_and_the_same_transformation():
     assert PLocalOracleRestore.tier is Tier.L3_ORACLE
     addresses = resolve_process_addresses(("ProcessCommit",), AssistedInput(Z0))
     a, b = dirty_state(Z0, Z1), dirty_state(Z0, Z1)
-    ra = run_process_law(PId, a, addresses, AssistedInput(Z0))
-    rb = run_process_law(PLocalOracleRestore, b, addresses, AssistedInput(Z0))
+    ra = run_process_law(PId, a, UNITS, AssistedInput(Z0))
+    rb = run_process_law(PLocalOracleRestore, b, UNITS, AssistedInput(Z0))
     assert dict(a.process_overrides) == dict(b.process_overrides) == {}
     assert ra.ledger.fingerprint_post == rb.ledger.fingerprint_post
     assert ra.ledger.n_addressed == rb.ledger.n_addressed == 1
@@ -337,13 +341,13 @@ def test_10_the_alias_is_one_implementation_and_the_same_transformation():
 def test_11_healthy_state_is_a_noop_and_the_second_run_is_idempotent():
     addresses = (Z0,)
     healthy = LearnerPersistentState()
-    first = run_process_law(PId, healthy, addresses, AssistedInput(Z0)).ledger
+    first = run_process_law(PId, healthy, UNITS, AssistedInput(Z0)).ledger
     assert not first.store_changed
     assert set(r.status for r in first.receipts) == {EVALUABLE_NOOP}
     assert first.fingerprint_pre == first.fingerprint_post
     dirty = dirty_state(Z0, Z1)
-    assert run_process_law(PId, dirty, addresses, AssistedInput(Z0)).ledger.store_changed
-    second = run_process_law(PId, dirty, addresses, AssistedInput(Z0)).ledger
+    assert run_process_law(PId, dirty, UNITS, AssistedInput(Z0)).ledger.store_changed
+    second = run_process_law(PId, dirty, UNITS, AssistedInput(Z0)).ledger
     assert not second.store_changed
     assert second.fingerprint_pre == second.fingerprint_post
 
@@ -366,7 +370,7 @@ def test_12_locality_owner_and_the_store_boundary_are_load_bearing():
 
     addresses = resolve_process_addresses(("ProcessCommit",), AssistedInput(Z0))
     with pytest.raises(ProtocolError) as ei:
-        run_process_law(WrongOwner, LearnerPersistentState(), addresses, AssistedInput(Z0))
+        run_process_law(WrongOwner, LearnerPersistentState(), UNITS, AssistedInput(Z0))
     assert "owner" in str(ei.value) or "locality" in str(ei.value)
     # a plan that writes another store is refused by the domain's store rule
     class WrongStore(PId):
@@ -382,7 +386,7 @@ def test_12_locality_owner_and_the_store_boundary_are_load_bearing():
                 AddressPlan(z, (Edit(DECISION, addr, 1),)) for z in addresses))
 
     with pytest.raises(ProtocolError) as ei:
-        run_process_law(WrongStore, LearnerPersistentState(), addresses, AssistedInput(Z0))
+        run_process_law(WrongStore, LearnerPersistentState(), UNITS, AssistedInput(Z0))
     assert "store" in str(ei.value)
     # the domain's store rule types the key
     for bad in (True, 1.0, "1", None, max(OPTIONS) + 5):
@@ -409,7 +413,7 @@ def test_13_one_transaction_and_one_receipt_per_resolved_address():
 
     LearnerPersistentState.apply_transaction = spy
     try:
-        res = run_process_law(PId, state, addresses, AssistedInput(Z0))
+        res = run_process_law(PId, state, UNITS, AssistedInput(Z0))
     finally:
         LearnerPersistentState.apply_transaction = original
     assert len(calls) == 1, f"one scene commits once, got {len(calls)}"
@@ -429,8 +433,8 @@ def test_15_the_two_l1_arms_share_one_resolution_and_one_envelope():
     """
     addresses = resolve_process_addresses(("ProcessCommit",), AssistedInput(Z0))
     ref_state, treat_state = dirty_state(Z0, Z1), dirty_state(Z0, Z1)
-    ref = run_process_law(NoWriteRef(Tier.L1_CORRECTIVE), ref_state, addresses, AssistedInput(Z0))
-    treat = run_process_law(PId, treat_state, addresses, AssistedInput(Z0))
+    ref = run_process_law(NoWriteRef(Tier.L1_CORRECTIVE), ref_state, UNITS, AssistedInput(Z0))
+    treat = run_process_law(PId, treat_state, UNITS, AssistedInput(Z0))
     assert not ref.ledger.store_changed and ref_state.process_overrides == {Z0: Z1}
     assert treat.ledger.store_changed and treat_state.process_overrides == {}
     assert ref.ledger.n_addressed == treat.ledger.n_addressed == 1
@@ -438,10 +442,10 @@ def test_15_the_two_l1_arms_share_one_resolution_and_one_envelope():
     # the same illegal assisted input refuses both arms, identically
     for arm in (NoWriteRef(Tier.L1_CORRECTIVE), PId):
         with pytest.raises(ProtocolError) as ei:
-            run_process_law(arm, dirty_state(Z0, Z1), addresses, AssistedInput(True))
+            run_process_law(arm, dirty_state(Z0, Z1), UNITS, AssistedInput(True))
         assert "not int" in str(ei.value)
         with pytest.raises(ProtocolError):
-            run_process_law(arm, dirty_state(Z0, Z1), addresses, AssistedInput(99))
+            run_process_law(arm, dirty_state(Z0, Z1), UNITS, AssistedInput(99))
 
 
 def test_14_the_cell_table_is_the_frozen_one():
@@ -460,3 +464,87 @@ def test_14_the_cell_table_is_the_frozen_one():
     # the L0/L2 cells get no arm and no same-tier reference
     assert all(getattr(x, "tier", None) not in (Tier.L0_FACTUAL, Tier.L2_COUNTERFACTUAL)
                for x in P_LAWS)
+
+
+def test_16_both_l3_arms_consume_the_assisted_input_before_planning():
+    r"""Same cell $\Rightarrow$ same admissibility, and at $L_3$ the input is still required.
+
+    $L_3$ builds no envelope, so before this closure it never read the assisted input at all — and
+    the two arms could then differ: a malformed address carrying no edits reached the receipt under
+    `NoWriteRef(L3)` while the identical address under the alias was refused at the store. $P$ has
+    no frozen-legacy exemption for that asymmetry (unlike $D_{patch}$, §68.5), so both arms now
+    pass through one resolution and refuse the same bad inputs at the same boundary.
+    """
+    class StandIn:
+        z_proposal = Z0
+
+    bad_inputs = [None, Z0, "ProcessCommit", (Z0,), True, 1.0, 99, StandIn()]
+    for arm in (NoWriteRef(Tier.L3_ORACLE), PLocalOracleRestore):
+        for bad in bad_inputs:
+            state = dirty_state(Z0, Z1)
+            with pytest.raises(ProtocolError):
+                run_process_law(arm, state, UNITS, bad)
+            assert dict(state.process_overrides) == {Z0: Z1}, "a refused run wrote the store"
+    # the two arms are refused by the same rule with the same message, not by two accidents
+    reasons = set()
+    for arm in (NoWriteRef(Tier.L3_ORACLE), PLocalOracleRestore):
+        with pytest.raises(ProtocolError) as ei:
+            run_process_law(arm, dirty_state(Z0, Z1), UNITS, True)
+        reasons.add(str(ei.value).split(";")[0])
+    assert len(reasons) == 1, reasons
+    # a legal input still runs both arms
+    for arm in (NoWriteRef(Tier.L3_ORACLE), PLocalOracleRestore):
+        run_process_law(arm, dirty_state(Z0, Z1), UNITS, AssistedInput(Z0))
+
+
+def test_17_the_credited_population_is_units_and_the_address_follows_the_input():
+    r"""$$\boxed{\text{a credit unit is not a store key}}$$ (A76 §63.10)
+
+    The entry point accepts **units**, so a caller cannot assert an address $\rho_P$ did not
+    produce: an integer in that position is refused, which is what makes
+
+    $$\text{WriteSet} \subseteq \rho_P(\texttt{ProcessCommit}, z^{\text{proposal}})$$
+
+    a property of the API rather than of the caller's discipline. And because $L_3$ resolves through
+    the same $\rho_P$, its receipt address *follows the assisted value* — the provenance is
+    observable, not assumed.
+    """
+    for not_a_population in ((Z1,), (True,), (1.0,), ("ProcessCommit", Z1), ("Decision_0",)):
+        for arm in (PId, PLocalOracleRestore):
+            with pytest.raises(ProtocolError):
+                run_process_law(arm, dirty_state(Z0, Z1), not_a_population, AssistedInput(Z0))
+    for z in OPTIONS:
+        other = next(o for o in OPTIONS if o != z)
+        state = dirty_state(z, other)
+        res = run_process_law(PLocalOracleRestore, state, UNITS, AssistedInput(z))
+        assert [r.address for r in res.ledger.receipts] == [z], "the address must be rho_P's"
+        assert [r.canonical_form for r in res.ledger.receipts] == [f"z={z}"]
+        assert dict(state.process_overrides) == {}
+
+
+def test_18_the_l0_refusal_happens_before_the_resolver_runs():
+    r"""The $L_0$ cell has no authority to run $\rho_P$ at all (A80 §68.5).
+
+    So a fabricated $P_{id}@L_0$ must die at **cell typing**, not after consuming the assisted
+    input and being refused "anyway". A spy on the resolver measures that directly, instead of
+    inferring it from the exception type happening to be right.
+    """
+    import rfl_rebuild.b1.runner as R
+
+    calls = []
+    original = R.resolve_process_addresses
+
+    def spy(*a, **k):
+        calls.append((a, k))
+        return original(*a, **k)
+
+    R.resolve_process_addresses = spy
+    try:
+        with pytest.raises(ProtocolError):
+            R.run_process_law(PIdAtL0, LearnerPersistentState(), UNITS, AssistedInput(Z0))
+        assert calls == [], "the L0 cell ran the resolver it is not authorised to run"
+        # the legal cells do run it, so the assertion above is not trivially true
+        R.run_process_law(PId, LearnerPersistentState(), UNITS, AssistedInput(Z0))
+        assert len(calls) == 1
+    finally:
+        R.resolve_process_addresses = original

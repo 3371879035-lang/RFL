@@ -151,6 +151,36 @@ MUTATIONS: tuple = (
         f"{TESTS}::test_1_the_credit_unit_is_the_static_process_family",
         "DID NOT RAISE",
     ),
+    (
+        "entry_point_trusts_a_pre_resolved_address",
+        "the entry point treats an integer in the units position as an address rho_P already "
+        "produced, so a caller can assert an address the resolver never yielded -- the provenance "
+        "blocker, in the shape the review found it: the L3 arm then writes a key that is not "
+        "rho_P(ProcessCommit, z^proposal) at all",
+        RUNNER,
+        "    addresses = resolve_process_addresses(credited_units, assisted)\n",
+        "    addresses = tuple(u for u in credited_units if type(u) is int) or \\\n"
+        "        resolve_process_addresses(credited_units, assisted)        # MUTATED\n",
+        f"{TESTS}::test_17_the_credited_population_is_units_and_the_address_follows_the_input",
+        "DID NOT RAISE",
+    ),
+    (
+        "l3_skips_rho_p",
+        "L3 resolves its address from the credited population directly instead of through rho_P, "
+        "so it never consumes the assisted input and the same-cell guarantee goes with it -- the "
+        "other half of the provenance blocker. It is killed on the BAD-INPUT loop, which is the "
+        "point: an input nobody reads cannot be refused",
+        RUNNER,
+        "    law, tier = _law_contract(law, spec)\n"
+        "    addresses = resolve_process_addresses(credited_units, assisted)\n"
+        "    described = spec.fields(tier)\n",
+        "    law, tier = _law_contract(law, spec)\n"
+        "    described = spec.fields(tier)\n"
+        "    addresses = (resolve_process_addresses(credited_units, assisted)\n"
+        "                 if described else credited_units)                 # MUTATED\n",
+        f"{TESTS}::test_16_both_l3_arms_consume_the_assisted_input_before_planning",
+        "DID NOT RAISE",
+    ),
 )
 
 

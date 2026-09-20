@@ -80,6 +80,7 @@ from rfl_rebuild.b1.controller import (
 )
 from rfl_rebuild.b1.process import (
     build_process_envelope,
+    resolve_process_addresses,
     validate_process_envelope,
 )
 from rfl_rebuild.b1.tier import (
@@ -681,40 +682,58 @@ def run_row_restore_law(law, pre_state: LearnerPersistentState,
     return run_dq_law(law, pre_state, addresses, None, q_reference, spec=spec)
 
 
-def run_process_law(law, pre_state: LearnerPersistentState, addresses: Sequence,
+def run_process_law(law, pre_state: LearnerPersistentState, credited_units,
                     assisted, spec: SliceDescriptor = P_SLICE) -> B1Result:
-    r"""The $P$ entry point: the cell's own envelope, built from the **assisted input**.
+    r"""The $P$ entry point: cell typing, then $\rho_P$, then the cell's own delivery.
 
-    $$\boxed{\text{credit unit} + \text{allowed assisted input} \xrightarrow{\rho_P}
-    \text{resolved address } z \rightarrow \text{envelope } \{z^{\text{proposal}}\} \rightarrow
-    \text{arm planning}}$$
+    $$\boxed{\texttt{\_law\_contract} \rightarrow \rho_P(\text{credited units}, \text{assisted})
+    \rightarrow \text{cell delivery} \rightarrow \text{plan}}$$
 
-    The resolution itself happens upstream, in cell construction (``resolve_process_addresses``),
-    so that the address-plan and the receipt take the same resolved true-integer option key as
-    their locality unit. What this function does is the part the runner owns: at $L_1$ it builds
-    the cell's delivery from the assisted input **and from nothing else**, and checks that delivery
-    against the credited address before any arm plans.
+    **The resolver is inside this function, and the accepted population is credit units rather
+    than addresses.** A version that took pre-resolved addresses could not bind $L_3$ to the
+    assisted input at all: $L_3$ builds no envelope, so it would never read that input, and a
+    caller who passed a different legal option than $\rho_P$ yields would have the cell write
+
+    $$\text{WriteSet} = \{a\} \not\subseteq \rho_P(\texttt{ProcessCommit}, z^{\text{proposal}}) =
+    \{z^{\text{proposal}}\},$$
+
+    which is A76 §63.10's address locality broken by the public entry point itself. It also let the
+    two $L_3$ arms differ in admissibility — a malformed address with no edits reached the receipt
+    under `NoWriteRef(L3)`, while the same address under the alias was refused at the store — and
+    $P$ has no frozen-legacy exemption for that (unlike $D_{patch}$).
+
+    Taking units makes both defects **inexpressible** rather than checked: there is no argument
+    through which a caller can assert an address $\rho_P$ did not produce, and both arms of a cell
+    pass through one resolution. An integer in the units position is refused for the same reason:
+    *a credit unit is not a store key* (A76 §63.10's distinction, which is the whole content of
+    $\rho_A$).
+
+    **Cell typing comes first, before the resolver runs.** $P_{id}$ at $L_0$ is refused by the
+    frozen table, and the $L_0$ cell has no authority to run $\rho_P$ at all — so a fabricated
+    $P_{id}@L_0$ must die at the cell boundary rather than after consuming the assisted input and
+    being refused "anyway".
 
     $$\boxed{\text{address resolution} \neq \text{information delivered to the law}}$$
 
-    The two are separate on purpose. The caller having a legal integer is not evidence that the
-    cell was handed a proposal, so the fact that some state or kernel object can *reach* one does
-    not license the path: a run that read the proposal from the store would be laundering the
-    assisted input (A80 §68.5), and the cell not seeing the delivery is not evidence that the cell
-    was not handed it. $L_3$ delivers $\varnothing$ while reusing the same upstream resolution,
-    which is why the alias is one plan function rather than a second delete-law.
+    The two stay separate: the caller having a legal integer is not evidence that the cell was
+    handed a proposal, so the fact that some state or kernel object can *reach* one does not
+    license the path. A run that read the proposal from the store would be laundering the assisted
+    input (A80 §68.5). At $L_3$ the law's delivery is $\varnothing$ while the **same upstream**
+    $\rho_P$ address is used, which is why the alias is one plan function rather than a second
+    delete-law.
     """
     law, tier = _law_contract(law, spec)
+    addresses = resolve_process_addresses(credited_units, assisted)
     described = spec.fields(tier)
     if described:
         envelope = build_process_envelope(addresses, assisted)
         validate_process_envelope(addresses, envelope)
-    elif tier is Tier.L3_ORACLE:
+    else:                                                  # $L_3$: the delivery is empty
+        # Exactly $L_3$, and not by assumption: `_law_contract` already refused every ill-typed and
+        # every unimplemented tier, and the only *well-typed empty* cell this slice has is $L_3$.
+        # So "declares no field" and "$L_3$" are one statement here rather than two cases, which is
+        # why no tier branch is needed.
         envelope = None
-    else:                                                  # pragma: no cover - ill-typed cells
-        raise ProtocolError(
-            f"{spec.name} at tier {tier.name} declares no field and is not $L_3$; a law may not "
-            "be declared in it (A76 §63.9)")
     return _run(law, tier, pre_state, addresses, envelope, spec)
 
 
