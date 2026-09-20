@@ -32,7 +32,7 @@ must not travel together or the first cannot be checked against the second:
 |---|---|
 | type boundary | a view field is a `FutureField`, a nominal type that cannot be built from a bare value |
 | AST / import allowlist | `assert_module_is_closed` reads this module's own AST and refuses a forbidden import or attribute load |
-| constructor-flow | `FutureField.from_rollout` fixes $\mathrm{Deps}(F) = \{\text{the rollout}\}$, and the rollout's origin must be the learner's own future rollout |
+| constructor-flow | `FutureField.from_rollout` fixes $\mathrm{Deps}(F) = \{\text{the rollout}\}$; the rollout is **sealed** and only the audited producer can mint one (B2-2a), so provenance is not a claim; and the view re-derives every payload and the time index from that one rollout |
 | mutation power | `tests/rebuild/test_b2_view.py::test_5` fabricates $1[\texttt{Decision}_t \in \Gamma_P^\ast]$ and requires the first three layers to kill it |
 
 The fourth layer exists because the first three could all be present and *inert*. A gate that only
@@ -68,6 +68,7 @@ __all__ = [
     "FutureField",
     "FutureRollout",
     "assert_module_is_closed",
+    "assert_modules_are_closed",
     "require_learner_rollout",
 ]
 
@@ -112,11 +113,12 @@ class FutureRollout:
     r"""The future, as the learner's own rollout observes it — and nothing else.
 
     This is the only admissible source of a view field. It carries the future record plus the
-    ordinary time indices needed to read it, and it carries its `origin` so that a rollout built
-    from evaluator truth cannot be *mistaken* for one built from the learner's environment: the
-    type says where the evidence came from rather than leaving it to the caller's word.
+    ordinary time indices needed to read it, and it is **sealed**: only the audited producer can
+    mint one, so its provenance is a fact about who could have built it rather than a field the
+    caller filled in (B2-2a).
     """
 
+    _seal: object
     origin: EvidenceOrigin
     future_rewards: tuple
     future_outcomes: tuple
@@ -124,6 +126,25 @@ class FutureRollout:
     future_actions: tuple
     future_observations: tuple
     t_index: tuple
+
+    def __post_init__(self) -> None:
+        """Only the audited mint may produce a rollout.
+
+        $$\boxed{\text{a source label} \neq \text{a proof of source}}$$
+
+        B2-1 checked `origin`, and `origin` is a field the caller fills in -- so an injected
+        callable could close over forbidden truth and return an object that *said* it came from
+        the learner. The seal is what makes that impossible through the public constructor: the
+        value is minted by `b2.producer`, and provenance is therefore answered by *who could have
+        built it* rather than by what the object claims.
+        """
+        from rfl_rebuild.b2.producer import ROLLOUT_SEAL
+
+        if self._seal is not ROLLOUT_SEAL:
+            raise ProtocolError(
+                "a FutureRollout may only be minted by the audited producer "
+                "(rfl_rebuild.b2.producer); a directly constructed rollout reports its own "
+                "provenance, which is exactly the claim B2-2a replaces with a mint")
 
 
 def require_learner_rollout(rollout: object) -> FutureRollout:
@@ -231,6 +252,28 @@ class FutureConsequenceView:
                 raise ProtocolError(
                     f"the view field {name!r} carries the name {field.name!r}")
             require_learner_rollout(field.rollout)
+        # The payload is re-derived, not trusted. A clean rollout with a forged value, or fields
+        # drawn from several futures, would satisfy every check above and still carry a
+        # truth-derived feature inside a legitimate-looking shell.
+        rollouts = {id(self.fields[name].rollout) for name in VIEW_FIELDS}
+        if len(rollouts) != 1:
+            raise ProtocolError(
+                "the view's fields come from more than one rollout; \"what happened next\" is one "
+                "future, so a view assembled from several futures cannot be read as one horizon "
+                "(A75 §62.10)")
+        rollout = self.fields[VIEW_FIELDS[0]].rollout
+        for name in VIEW_FIELDS:
+            field = self.fields[name]
+            if tuple(field.value) != tuple(getattr(rollout, name)):
+                raise ProtocolError(
+                    f"the view field {name!r} carries a value that is not the projection of its "
+                    "own rollout; a clean rollout with a forged payload is how a truth-derived "
+                    "feature still arrives inside a legitimate-looking shell (A75 §62.10)")
+        if tuple(self.t_index) != tuple(rollout.t_index):
+            raise ProtocolError(
+                "the view's t_index is not its rollout's t_index; the ordinary time indices belong "
+                "to the same future rather than being a second quantity that can be supplied "
+                "separately")
         object.__setattr__(self, "fields", MappingProxyType(dict(self.fields)))
         object.__setattr__(self, "t_index", tuple(self.t_index))
 
@@ -251,14 +294,24 @@ class FutureConsequenceViewBuilder:
     than the intent.
     """
 
-    __slots__ = ("_future_rollout",)
+    __slots__ = ("_producer",)
 
-    def __init__(self, future_rollout: Callable) -> None:
-        if not callable(future_rollout):
+    def __init__(self, producer) -> None:
+        """Accept the **audited producer**, never an arbitrary callable.
+
+        B2-1 took `Callable`, and that made the closure unenforceable: a lambda can close over
+        forbidden truth, and the module that would then need auditing is the caller's. A nominal
+        producer is a class the audited module defines, so the chain
+        `state -> producer -> rollout -> view` is inside the audit rather than outside it.
+        """
+        from rfl_rebuild.b2.producer import FutureRolloutProducer
+
+        if type(producer) is not FutureRolloutProducer:
             raise ProtocolError(
-                f"the future rollout {future_rollout!r} is not callable; the builder is handed the "
-                "one function that produces future evidence and nothing else")
-        object.__setattr__(self, "_future_rollout", future_rollout)
+                f"the future rollout producer {producer!r} has type {type(producer).__name__}, not "
+                "FutureRolloutProducer; an injected callable answers the provenance question by "
+                "assertion, and the audited producer answers it by construction (B2-2a)")
+        object.__setattr__(self, "_producer", producer)
 
     def build(self, state) -> FutureConsequenceView:
         r"""Build the view for one post-update learner state.
@@ -273,7 +326,7 @@ class FutureConsequenceViewBuilder:
             raise ProtocolError(
                 f"the view is built from a learner state, got {type(state).__name__}; the update "
                 "ledger and the fingerprints belong to the other view (A75 §62.10)")
-        rollout = self._future_rollout(state)
+        rollout = self._producer.produce(state)
         require_learner_rollout(rollout)
         fields = {name: FutureField.from_rollout(name, rollout) for name in VIEW_FIELDS}
         return FutureConsequenceView(fields=fields, t_index=rollout.t_index)
@@ -282,9 +335,45 @@ class FutureConsequenceViewBuilder:
 #: Modules this one may import. Kept as data so the AST gate and its mutation read the same list:
 #: an allowlist that lives in the checker but not in the check's subject is a comment.
 IMPORT_ALLOWLIST = (
-    "__future__", "ast", "pathlib", "dataclasses", "enum", "types", "typing",
+    "__future__", "abc", "ast", "pathlib", "dataclasses", "enum", "types", "typing",
     "rfl_rebuild.b1.errors", "rfl_rebuild.learner.store",
+    # B2's own audited chain: the producer and the view are one closure, so each may import the
+    # other, and a module outside this list is a dependency the audit has not seen.
+    "rfl_rebuild.b2.producer", "rfl_rebuild.b2.view",
 )
+
+
+def assert_modules_are_closed(paths) -> None:
+    r"""The AST/import layer over the **whole production chain**, not one module.
+
+    B2-1 scanned `view.py` alone, and the path it therefore could not see was the one that
+    mattered: the evidence producer. The chain is
+    `state -> producer -> rollout -> view`, so the audit covers producer and view together.
+
+    It also refuses a production module that imports `rfl_rebuild.b2.testing`: the fixture mint
+    exists so that gates can build clean rollouts through the real seal, and a production module
+    reaching it would be production code imported from the fixtures rather than the other way
+    round.
+    """
+    for path in paths:
+        # The specific refusal comes first: "you imported the test-only fixture module" is a more
+        # useful diagnostic than "that module is not on the allowlist", and both would fire.
+        source = pathlib.Path(path).read_text(encoding="utf-8")
+        tree = ast.parse(source)
+        for node in ast.walk(tree):
+            names = []
+            if isinstance(node, ast.Import):
+                names = [a.name for a in node.names]
+            elif isinstance(node, ast.ImportFrom):
+                # `from rfl_rebuild.b2 import testing` names the package in `module` and the
+                # submodule in the alias, so the module alone would miss it.
+                names = [f"{node.module or ''}.{a.name}" for a in node.names]
+            for name in names:
+                if name.startswith("rfl_rebuild.b2.testing"):
+                    raise ProtocolError(
+                        f"{path}: imports the test-only fixture module {name!r}; fixtures may "
+                        "import production, not the reverse")
+        assert_module_is_closed(path)
 
 
 def assert_module_is_closed(path: str | pathlib.Path) -> None:

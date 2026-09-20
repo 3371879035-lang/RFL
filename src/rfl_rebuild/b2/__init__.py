@@ -14,6 +14,12 @@ under A83 §71.4 and are deliberately absent.
 
 from __future__ import annotations
 
+from rfl_rebuild.b2.producer import (
+    ENVIRONMENT_INTERFACE,
+    ROLLOUT_SEAL,
+    FutureRolloutProducer,
+    LearnerEnvironment,
+)
 from rfl_rebuild.b2.view import (
     H_FORBIDDEN,
     IMPORT_ALLOWLIST,
@@ -25,10 +31,15 @@ from rfl_rebuild.b2.view import (
     FutureField,
     FutureRollout,
     assert_module_is_closed,
+    assert_modules_are_closed,
     require_learner_rollout,
 )
 
 __all__ = [
+    "ENVIRONMENT_INTERFACE",
+    "ROLLOUT_SEAL",
+    "FutureRolloutProducer",
+    "LearnerEnvironment",
     "H_FORBIDDEN",
     "IMPORT_ALLOWLIST",
     "SCENE_FORBIDDEN",
@@ -39,5 +50,6 @@ __all__ = [
     "FutureField",
     "FutureRollout",
     "assert_module_is_closed",
+    "assert_modules_are_closed",
     "require_learner_rollout",
 ]
