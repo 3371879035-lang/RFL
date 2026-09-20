@@ -5280,6 +5280,53 @@ carry B2 work.
 
 ---
 
+## 69. A81 — domain identity is out of band from the canonical ledger
+
+A80 §68.2 requires a canonical address form that is "architecture/store-tagged", and A77 §65.12
+freezes that the architecture lives in the arm descriptor and **not** in the canonical ledger,
+where moving anything into that schema is a versioned change of its own. Read together, the two can
+suggest that a receipt should serialise `D_Q|…`, `X|…`, `P|…`. It must not, and the implementation
+does not. This amendment states the division, and under it §68.2's phrase is to be read; A80's text
+is frozen and is not edited.
+
+$$\boxed{\text{the contract's address identity} = \bigl(\text{domain tag},\
+canon_\alpha(\text{address})\bigr)}$$
+
+$$\boxed{\text{what the frozen ledger serialises} = canon_\alpha(\text{address})}$$
+
+The architecture is already carried by the arm and slice descriptor, so the serialised form is the
+per-domain canonical **alone**. That is also why the 396-entry $D_{patch}$ baseline remains
+`ENCODING_ONLY` rather than becoming `DRIFTED`: a tag in the receipt bytes would have been a
+**ledger schema change**, not a detail of generalising the address contract. The pair above is
+therefore the whole identity while only its right-hand half is written down — out of band, by
+construction rather than by omission.
+
+$$\boxed{\text{cross-domain admission comes from } \texttt{require\_credited},\ \text{not from
+comparing tags}}$$
+
+Two architectures may legitimately admit value-equal addresses — $D_Q$ and $D_{patch}$ both credit
+decision addresses — so a tag comparison is neither necessary nor sufficient for admission:
+
+* what stops an $A$-slice accepting a $B$-address is that the slice asks **its own domain**, whose
+  `require_credited` closes its own type and range (A80 §68.2);
+* the tag's jobs are domain identity (equality and hashing of domains) and diagnostics, and
+  nothing else;
+* consequently a gate that "proves" cross-domain isolation by asserting that two tags differ
+  proves a property of two constants, not of admission. `tests/rebuild/test_address_domain.py`
+  asserts admission itself: `test_2` that an $A$-slice rejects a $B$-address, `test_3c` that a slice
+  whose domain is not an `AddressDomain` fails stop.
+
+One sentence of §68.2 stands as written and is worth restating here because the two clauses are
+easy to conflate: the runner asks the domain for **every** architecture, while the *policy* it
+executes is that architecture's own. $D_Q$ is strict, $D_{patch}$ keeps its frozen legacy policy,
+and the substrate does neither on its own behalf.
+
+**What this amendment does not do.** It writes no code, moves no number, collects no seed, and
+changes none of A80's three steps; it exists so that the next implementer does not read §68.2 as
+requiring a tag in the ledger bytes.
+
+---
+
 ## 64. Summary and what remains open
 
 | # | what | severity | status |
@@ -5328,6 +5375,7 @@ section above; the most recent is:
 | **A78** | $L_3$ `LocalOracleRestore` on $D_Q$ as A77 §65.12's **fifth** implementation step — one step, one commit, no mixing, and no new scope for the four already-closed steps; the cell's `NoWriteRef(L3)` alongside its treatment, giving $\lvert\text{treatments}\rvert(D_Q)=4$ exactly as A76 §63.8 froze ($D_{patch}$ stays 3); the B1 law domain fixed as **every credited address for $L_2$ and $L_3$ alike**, with `NO_VALID_ALTERNATIVE` addresses remaining in the population and $L_3$ forbidden to key its domain on $a^+$ availability; "no reference" scoped to the **lowering** and to *no new* $L_3-specific reference entry point, since §65.10's deleted leg still needs the existing `q_reference`; the row operation kept a **B1** object so `owner_Q` stays a `QAddress` function and the substrate does not learn an update law; lowering as an explicit **pre-commit phase** against **one** frozen pre-state, with status, $n_{\text{changed\_addresses}}$ and the scalar accounting computed from the **lowered concrete edits**; a $D_Q$-only law implementation beside the untouched $D_{patch}$ alias, with no architecture branching inside a law; and the gate obligations, including **idempotence** ($k=0$, `EVALUABLE_NOOP` on a second run, i.e. the lowering reads its own run's pre-state) and a **poison-evidence** empty-cell gate proving $L_3$ reads no evaluator-side inputs | **P0 (spec)** | **frozen — implementation authorised in this step only**; further change requires a new amendment |
 | **A79** | V0.3R **B2 pre-registration**: the stage that answers *what did this write do to this learner's future*, and a pre-registration in the strict sense -- no code, no seed. It **supersedes `08-V03R.md` on B2** (whose Block 2 arms A76 retired and whose process reading $do(z=z')$ the frozen reading rejects) while leaving `08` §2 unaddressed. It fixes $Y^{\text{future}}=\{\text{FutureUtility},\text{Collateral},\text{Retention}\}$ as **three independent dimensions with no composite primary** (a weighted score would let utility buy collateral); keeps $T$ and $P$ as **separate populations that may not be pooled**, with $T$'s primary being harm/erroneous internalisation against a weakly dominating `NoWrite` and $P$'s requiring future rollout **endogenous to $\Delta W$**; freezes $\mathrm{RMST}(T_{\max})$ primary with $\mathrm{DeficitAUC}$ mandatory by reference to `05` §8 ($K=3$, right-censored); defines primary collateral as future behavioural spillover on a set that is **truth-blind, arm-blind, pre-update, and identical across a scene's paired arms** with the unaffected set constructed truth-blind under A75 §62.10's four gate layers, and keeps $N_{\text{scalar}}$/$\sum|\Delta\theta|$ in $\texttt{UpdateLedger}$ as intervention cost because *writing less is not causing less collateral*; retains **Retention** as a dimension **whose confirmatory form must be defined for every seed** ($\tau$-conditioned forms demoted to conditional descriptive diagnostics), the choice among all-seed forms being a declared development-stage decision on measurement properties only; makes `LocalOracleRestore` the **matrix-matched normalisation ceiling** and the global oracle a **diagnostic ceiling only** that may not be a treatment's denominator; fixes **tier-matched contrasts** so $L_3$ beating $L_0$ measures headroom, not merit; and states that **the Process/Controller B1 alias-write paths are B2 prerequisites under their own authorisation**, because ``D6/B1 CLOSED'' is the Decision path and not all three stores. `05` governs unchanged, with $T$ frozen from the baseline only and no treatment curve inspectable beforehand; **V0.3R PASS is a conjunction** of FutureUtility benefit, no unacceptable Collateral, the Retention criterion and the $T$-regime harm constraint -- a gate rather than a weighted sum, so the outcome space is never collapsed -- and **V0.4R begins only on V0.3R's FINAL confirmatory PASS**, a diagnostic look at 100/200/300 being neither a PASS nor able to open it. | **P0 (spec)** | **frozen — pre-registration only; no seed collected, no code authorised**; further change requires a new amendment |
 | **A80** | the $X$ and $P$ B1 paths and the substrate refactor they need, as A79 §67.8's prerequisites -- **authorisation text only, no code**. The replacing plan's two steps are **three**: a generic address/receipt substrate refactor first, because the shared B1 objects are Decision-shaped (`AddressPlan.address`, `DecisionWriteReceipt.address` and its canonicalisation, `SliceDescriptor.owner`) while $\rho_X$ yields a site handle and $\rho_P$ an integer, and an implementer given only "$X$ then $P$" would have to invent the address contract at code time. Step 1 generalises **by type, not by duck typing** -- `address: Any` would discard the nominal closure -- keeps per-architecture strict domains, typed store addresses, $owner_\alpha$ and deterministic canonical receipts, keeps same-cell same-admissibility, and must move no number (five self-checks still pass, $D_{patch}$ still `ENCODING_ONLY`). Step 2 implements $X$ as frozen ($C_X^L(\rho_X(\texttt{ControllerSite})) \leftarrow a^{cmd}$, $L_0$ with $\lvert$treatments$\rvert=1$, $L_3$ an alias that **reuses the same operation implementation**), with $a^{cmd} \in A_z(m,s)$ because a learner write does not inherit fault privilege (A75 §62.3). Step 3 implements $P$ as frozen with $P_{id}\colon L_1$ and **not** $L_0$ -- the factual rows never carry $z^{\text{proposal}}$ -- and forbids **assisted-input laundering** ($P_{id}$ at $L_0 \Rightarrow$ `PROTOCOL_ERROR`), requiring the $L_1$ envelope to deliver the proposal explicitly and the integer-semantics process key to pass an exact type check before domain membership. Authorises **no B2 runner, no $\texttt{FutureConsequenceView}$, no $\texttt{BehavioralCollateral}$, no seed of any stage**, and may not be used to touch $D_Q$, to repair the frozen $D_{patch}$ asymmetry, to change an A79 endpoint or threshold, or to begin V0.4R. The exact delivery rows are **written here rather than deferred** (A77 §65.2's "when implemented"): $fields(X,L_0)=\{a^{cmd}\}$, $fields(X,L_3)=\varnothing$, $fields(P,L_1)=\{z^{\text{proposal}}\}$, $fields(P,L_3)=\varnothing$, and an empty cell acquires **no arm and no same-tier reference** merely because the infrastructure could express one. $X$'s $z,m$ come from the **unique learner-visible factual row** for the visited site, used only by a pre-plan validator that **both arms share**, without widening the law's $\{a^{cmd}\}$ delivery. $P$'s order is frozen -- **cell-level $\rho_P$ resolution before any arm planning**, the resolved true-int key as the locality unit, the $L_1$ envelope delivering $\{z^{\text{proposal}}\}$ to reference and treatment alike, and $\texttt{Edit}(\texttt{PROCESS},z,z)$ so the $L_3$ alias reuses the same plan function -- under the distinction $\boxed{\text{address resolution} \neq \text{information delivered to the law}}$. Step 1 must also prove the generalisation with a **test-only synthetic second domain** (an $A$-slice rejects a $B$-address, a stand-in is refused, and relaxing the validator reddens the gate) and its canonical form must be **injective on the legal domain**, not merely deterministic, since an $X$ canonical omitting $a^{cmd}$ would give two credited sites one receipt identity. | **P0 (spec)** | **frozen -- three implementation steps authorised, one commit each, own gates each; further change requires a new amendment** |
+| **A81** | **domain identity is out of band from the canonical ledger**: the contract's address identity is the pair $(\text{domain tag}, canon_\alpha(\text{address}))$ while the **frozen ledger serialises only** $canon_\alpha(\text{address})$, because A77 \u00a765.12 puts the architecture in the arm descriptor and a tag in the receipt bytes would be a ledger **schema change** -- which is why the $D_{patch}$ baseline stays `ENCODING_ONLY` instead of becoming `DRIFTED`. It rules that **cross-domain admission comes from `require_credited`, not from comparing tags** (two architectures may legitimately admit value-equal addresses, so a tag comparison is neither necessary nor sufficient, and a gate asserting two tags differ proves a property of two constants rather than of admission); restates that the runner asks the domain for every architecture while the *policy* executed is that architecture's own; and fixes the reading of \u00a768.2 without editing A80. Writes no code, moves no number, collects no seed. | **P0 (spec)** | **frozen -- clarification only**; further change requires a new amendment |
 
 ---
 
