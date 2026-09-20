@@ -287,6 +287,19 @@ artifact rather than a side effect of another step. It is recorded here so that 
 property of the frozen architecture rather than a rediscovery, and reopening it would need its
 own authorisation.
 
+**The current next step is B2, and it is pre-registered before it is run.** `08-V03R.md` §3 — the
+old "online recovery" block — is **superseded on B2 by A79 (§67)**: its arms were retired by A76
+and its process reading ($do(z = z')$ as mechanism repair) is rejected by the frozen reading. A79
+fixes B2's design and **collects no seed**: the question (*what did this write do to this
+learner's future?*), the three independent outcome dimensions with **no composite primary**, $T$
+and $P$ as separate populations that may not be pooled, RMST as FutureUtility's primary with
+DeficitAUC mandatory, primary collateral as **truth-blind future behavioural spillover**,
+Retention as a dimension whose formula is a declared development-stage decision, the local/global
+oracle roles, tier-matched contrasts, and `05`'s protocol unchanged — including that $T$ is frozen
+from the baseline only and that no $N_{\text{train}}$ may be named in advance. It also records one
+prerequisite plainly: ``D6/B1 CLOSED'' is the **Decision** path, and the Process and Controller B1
+alias-write paths need their own authorisation before B2 can run.
+
 ---
 
 ## 8. What the specification fixes, and what it leaves open
