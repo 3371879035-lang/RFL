@@ -1,0 +1,91 @@
+{
+  "check": "B2-1 view/builder gate mutation self-check",
+  "n_mutations": 7,
+  "n_gate_is_real": 7,
+  "n_not_a_gate": 0,
+  "n_node_not_found": 0,
+  "n_harness_error": 0,
+  "n_mutation_not_applied": 0,
+  "n_wrong_failure_reason": 0,
+  "tree_restored_byte_identical": true,
+  "stale_node_ids": [],
+  "results": [
+    {
+      "mutation": "origin_check_removed",
+      "hole": "evidence tagged as evaluator truth is admitted, so the view can be built from forbidden truth one step upstream of the metric",
+      "gate": "test_3_only_the_learners_own_future_rollout_may_feed_the_view",
+      "site": "src\\rfl_rebuild\\b2\\view.py",
+      "matched": 1,
+      "expected_failure_text": "DID NOT RAISE",
+      "exit_code": 1,
+      "tail": "________ test_3_only_the_learners_own_future_rollout_may_feed_the_view ________\n    def test_3_only_the_learners_own_future_rollout_may_feed_the_view():\n        r\"\"\"$$\\mathrm{Deps}(F) \\cap \\mathcal H_{\\text{forbidden}} = \\varnothing$$ \u2014 enforced at the\n        only door a field can come through.\"\"\"\n        for forbidden in (EvidenceOrigin.EVALUATOR_TRUTH, EvidenceOrigin.SCENE_ROUTING):\n>           with pytest.raises(ProtocolError) as ei:\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE           Failed: DID NOT RAISE <class 'rfl_rebuild.b1.errors.ProtocolError'>\ntests\\rebuild\\test_b2_view.py:109: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_view.py::test_3_only_the_learners_own_future_rollout_may_feed_the_view\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "origin_type_check_removed",
+      "hole": "a string that spells the right origin is accepted for the member itself -- and the guard then crashes formatting `origin.value`, so the promised PROTOCOL_ERROR is an AttributeError: the error path failing first, which the gates caught while this arrow was written",
+      "gate": "test_3_only_the_learners_own_future_rollout_may_feed_the_view",
+      "site": "src\\rfl_rebuild\\b2\\view.py",
+      "matched": 1,
+      "expected_failure_text": "has no attribute 'value'",
+      "exit_code": 1,
+      "tail": "            raise ProtocolError(\n>               f\"the future evidence originates from {rollout.origin.value!r}; only \"\n                                                       ^^^^^^^^^^^^^^^^^^^^\n                f\"{EvidenceOrigin.LEARNER_FUTURE_ROLLOUT.value!r} may feed a FutureConsequenceView. \"\n                \"Evaluator truth and scene routing are exactly what the dependency closure \"\n                f\"{H_FORBIDDEN!r} and {SCENE_FORBIDDEN!r} exist to keep out, however indirect the \"\n                \"path from truth to a derived feature\")\nE           AttributeError: 'str' object has no attribute 'value'\nsrc\\rfl_rebuild\\b2\\view.py:154: AttributeError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_view.py::test_3_only_the_learners_own_future_rollout_may_feed_the_view\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "raw_value_accepted",
+      "hole": "a bare value is admitted as a view field, which is exactly how an already-computed truth-derived scalar enters while the metric imports nothing forbidden",
+      "gate": "test_5_the_fabricated_truth_feature_is_killed",
+      "site": "src\\rfl_rebuild\\b2\\view.py",
+      "matched": 1,
+      "expected_failure_text": "has no attribute 'name'",
+      "exit_code": 1,
+      "tail": "            if False:                    # MUTATED: bare values admitted\n                raise ProtocolError(\n                    f\"the view field {name!r} has type {type(field).__name__}, not FutureField; a \"\n                    \"bare value could be a scalar computed from forbidden truth, and its \"\n                    \"dependencies would then be invisible\")\n>           if field.name != name:\n               ^^^^^^^^^^\nE           AttributeError: 'int' object has no attribute 'name'\nsrc\\rfl_rebuild\\b2\\view.py:230: AttributeError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_view.py::test_5_the_fabricated_truth_feature_is_killed\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "closed_fields_widened",
+      "hole": "the field surface becomes a superset, so a fabricated feature rides along in the envelope the metric receives",
+      "gate": "test_5_the_fabricated_truth_feature_is_killed",
+      "site": "src\\rfl_rebuild\\b2\\view.py",
+      "matched": 1,
+      "expected_failure_text": "DID NOT RAISE",
+      "exit_code": 1,
+      "tail": "        fake_feature = 1 if (0, 1) in gamma_P_star else 0       # the fabricated feature itself\n        assert fake_feature == 1\n        view = builder().build(LearnerPersistentState())\n        legal = dict(view.fields)\n        # route 1: as an extra field (the field-surface layer)\n>       with pytest.raises(ProtocolError) as ei:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.b1.errors.ProtocolError'>\ntests\\rebuild\\test_b2_view.py:184: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_view.py::test_5_the_fabricated_truth_feature_is_killed\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "arm_parameter_added",
+      "hole": "the builder can be told which arm it is in. A builder that CAN be told is one that may one day branch on it, which is why the gate reads the signature rather than the intent",
+      "gate": "test_4_arm_blind_by_signature_and_pre_update_by_absence",
+      "site": "src\\rfl_rebuild\\b2\\view.py",
+      "matched": 1,
+      "expected_failure_text": "assert params == (\"state\",)",
+      "exit_code": 1,
+      "tail": "        import inspect\n        params = tuple(inspect.signature(builder().build).parameters)\n>       assert params == (\"state\",), params\nE       AssertionError: ('state', 'arm')\nE       assert ('state', 'arm') == ('state',)\nE         \nE         Left contains one more item: 'arm'\nE         Use -v to get more diff\ntests\\rebuild\\test_b2_view.py:147: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_view.py::test_4_arm_blind_by_signature_and_pre_update_by_absence\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "update_metadata_added",
+      "hole": "the view gains a ledger member, merging 'what was written' into 'what happened next' -- the merge A75 62.10 forbids, because the first can then not be checked against the second",
+      "gate": "test_4_arm_blind_by_signature_and_pre_update_by_absence",
+      "site": "src\\rfl_rebuild\\b2\\view.py",
+      "matched": 1,
+      "expected_failure_text": "assert members == {\"fields\", \"t_index\"}",
+      "exit_code": 1,
+      "tail": "        members = set(FutureConsequenceView.__dataclass_fields__)\n>       assert members == {\"fields\", \"t_index\"}, members\nE       AssertionError: {'fields', 'ledger', 't_index'}\nE       assert {'fields', 'l...r', 't_index'} == {'fields', 't_index'}\nE         \nE         Extra items in the left set:\nE         'ledger'\nE         Use -v to get more diff\ntests\\rebuild\\test_b2_view.py:152: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_view.py::test_4_arm_blind_by_signature_and_pre_update_by_absence\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "import_allowlist_widened",
+      "hole": "the module reaches a non-allowlisted import, which is the AST layer's job to refuse: the type boundary alone would not notice the dependency",
+      "gate": "test_6_the_ast_allowlist_layer_is_not_vacuous",
+      "site": "src\\rfl_rebuild\\b2\\view.py",
+      "matched": 1,
+      "expected_failure_text": "not on the allowlist",
+      "exit_code": 1,
+      "tail": "                            f\"{path}: imports {alias.name!r}, which is not on the allowlist \"\n                            f\"{IMPORT_ALLOWLIST!r}\")\n            elif isinstance(node, ast.ImportFrom):\n                module = node.module or \"\"\n                if module not in IMPORT_ALLOWLIST:\n>                   raise ProtocolError(\n                        f\"{path}: imports from {module!r}, which is not on the allowlist \"\nE                       rfl_rebuild.b1.errors.ProtocolError: D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\src\\rfl_rebuild\\b2\\view.py: imports from 'rfl_rebuild.method', which is not on the allowlist ('__future__', 'ast', 'pathlib', 'dataclasses', 'enum', 'types', 'typing', 'rfl_rebuild.b1.errors', 'rfl_rebuild.learner.store')\nsrc\\rfl_rebuild\\b2\\view.py:315: ProtocolError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_view.py::test_6_the_ast_allowlist_layer_is_not_vacuous\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    }
+  ]
+}
