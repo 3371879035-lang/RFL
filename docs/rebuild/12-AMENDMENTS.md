@@ -5815,8 +5815,7 @@ exactly one of:
    did not move, so the failure mode is recorded;
 2. **detection.** $\exists u \in U: V_{W+\Delta W_A^{\text{cal}}}(u) \neq V_W(u)$;
 3. **direction at the witness.** $\operatorname{sign}\bigl[V_W(u^*_{A,U}) -
-   V_{W+\Delta W_A^{\text{cal}}}(u^*_{A,U})\bigr] = d_A$, against the numeric direction A87 declared
-   A87 declared.
+   V_{W+\Delta W_A^{\text{cal}}}(u^*_{A,U})\bigr] = d_A$, against the numeric direction A87 declared.
 
 $$\boxed{\text{status}(U, A) \in \{\texttt{STRUCTURAL\_PASS},\ \texttt{BLIND},\
 \texttt{DIRECTION\_FAIL},\ \texttt{DIRECTION\_UNRESOLVED}\}}$$
