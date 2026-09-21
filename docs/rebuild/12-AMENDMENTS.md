@@ -6086,6 +6086,28 @@ ever wanted, it must use an **episode-index** grid, and only then does A86's re-
 
 $\mathcal M_{\text{screen}}$ is the measurement protocol, not unit identity.
 
+**The screening domains are frozen, finite, and exhaustive.** A86's detection quantifies over the
+candidate's units, so the domain is part of the instrument rather than an implementation choice:
+
+$$\boxed{U_1 = \mathcal X_D = \{(s,z,m)\}: \qquad \lvert U_1 \rvert = 1728 \times 4 \times 2 = 13824,
+\quad\text{the frozen enumeration of } \texttt{env/domain.py}}$$
+
+$$\boxed{U_2 = \mathcal K \times \mathcal T_{\text{SemanticTape}} \times \mathcal Z: \qquad
+\lvert U_2 \rvert = 2 \times (6 \times 2 \times 60) \times 4 = 5760}$$
+
+with $\mathcal K = \{0,1\}$ (the keys of `CONTEXT_PERIODS`), $\mathcal Z = \texttt{option\_ids()} =
+\{0,1,2,3\}$, and $\mathcal T$ the kernel's **full** tape support
+$\text{PHASE\_DOMAIN} \times \{0,1\} \times [0,60)$ -- the frozen support, not a subset a screening
+script selects. Measurement is the closed nominal map of A85 §73.2:
+
+$$\boxed{V_W^{meas}: U \to \mathbb{R}_{\text{finite}}, \qquad
+\text{missing units and extra units both rejected}}$$
+
+and detection is read off the completed map. A positive may not be inferred from a partial domain:
+`BLIND` requires $\forall u \in U:\ \Delta V^{meas}(u) = 0$, so the map is completed rather than
+short-circuited on the first non-zero -- the domains are finite, and a data-dependent stopping rule
+would make the recorded domain depend on the outcome.
+
 ### 75.5 The authorisation chain, and why it has a middle step
 
 $U_2$ is measurable today: the audited environment runs a scene from the episode start. $U_1$ is
@@ -6095,13 +6117,13 @@ inventing that mapping inside a screening script would be the modulo adapter und
 
 $$\boxed{\text{A87 frozen} \;\Longrightarrow\; \text{the continuation instrument may be implemented}}$$
 
-$$\boxed{\text{continuation CLOSED} \;:=\; \text{G1} \land \text{G2} \land \text{G3} \land \text{G4}
+$$\boxed{\text{continuation CLOSED} \;:=\; \text{G1} \land \text{G2} \land \text{G3} \land \text{G4} \land \text{G5}
 \;\land\; \text{the existing kernel/B1 regression suite is clean}}$$
 
 $$\boxed{\text{continuation CLOSED} \;\Longrightarrow\; \text{the structural screening is authorised}}$$
 
 The regression conjunct is not decoration: §75.6 factors the kernel's episode loop into a shared
-continuation core, which is a refactor of the primary execution path, so four green continuation gates
+continuation core, which is a refactor of the primary execution path, so five green continuation gates
 standing next to a red kernel or B1 suite is a broken environment with four passing assertions, not a
 closed instrument.
 
@@ -6213,7 +6235,22 @@ must include at least one $t > 0$ with $m = 0$ and, if the frozen healthy traces
 one $t > 0$ with $m = 1$. Without G4 the contract's "arbitrary legal decision context" would be a
 $\texttt{START}$-only continuation carrying an $\mathcal X_D$ signature.
 
-All four are **seedless instrument gates**: frozen tape, common random numbers, no B2 scientific
+**G5 closes the arbitrary-$\mathcal X_D$ gap.** G4 covers the interior of the canary traces, which is
+what a `START`-only wrapper fails, but detection is quantified over all of $U_1 = \mathcal X_D$, so the
+continuation's scalar semantics must hold on the whole domain. The oracle already exists and is
+seedless -- the frozen exact solve:
+
+$$\boxed{\text{G5 (full domain): } \forall (s,z,m) \in \mathcal X_D:\
+V^{cont}_{W_{\text{pre}}}(s,z,m) = V^{*}(s,z,m), \qquad
+\texttt{tape.phase} = s.\phi,\ \ \kappa = s.\kappa}$$
+
+The float comparison uses the **existing DP correctness gate**'s tolerance -- `tests/rebuild/test_dp.py`
+compares with `pytest.approx`, i.e. relative $10^{-6}$ and absolute $10^{-12}$ -- so no tolerance is
+invented when the continuation is implemented. G1, G2 and G4 prove the core is not a second simulator,
+G3 proves the no-recommit rule, G5 proves the scalar semantics on every legal context, and the kernel/B1
+regression proves the refactor left the original path intact.
+
+All five are **seedless instrument gates**: frozen tape, common random numbers, no B2 scientific
 seed, and no candidate is evaluated. They run once A87 is frozen and before the screening; passing
 them is a statement about the instrument, never about $U_1$ or $U_2$.
 
@@ -6248,8 +6285,23 @@ convention as the sign of the behavioural **loss**, and A87 declares the directi
 $$\boxed{\Delta V_A^{ref} := Q^{*}\bigl(\text{pre policy}\bigr) - Q^{*}\bigl(\text{post policy}\bigr),
 \qquad d_A := \operatorname{sign}\bigl(\Delta V_A^{ref}\bigr)}$$
 
-$$\boxed{\Delta V_A^{meas}(u^*) := V_W^{meas}(u^*) - V_{W+\Delta W_A^{\text{cal}}}^{meas}(u^*):
-\quad\text{measured by the screening, never by A87}}$$
+$$\boxed{\Delta V^{meas}_{A,U}(u) := V_W^{meas}(u) - V_{W+\Delta W_A^{\text{cal}}}^{meas}(u),
+\qquad u \in U}$$
+
+The screening then has **two separate conditions**, exactly as A86 §74.3 freezes them -- a detection
+quantified over the candidate's whole domain, and a direction test at the witness:
+
+$$\boxed{D_{A,U} := \bigl[\exists u \in U:\ \Delta V^{meas}_{A,U}(u) \neq 0\bigr]}$$
+
+$$\boxed{S_{A,U} := \bigl[\operatorname{sign} \Delta V^{meas}_{A,U}(u^*_{A,U}) = d_A\bigr],
+\qquad u^*_{A,U} = g_U(\xi_A^*)}$$
+
+Detection is therefore **not** the witness-local statement $\Delta V^{meas}_{A,U}(u^*) \neq 0$. An
+earlier draft of this section wrote it that way, silently narrowing A86's $\exists u \in U$ to
+$u = u^*$; the two are not equivalent, because $\Delta V(u^*) = 0$ with some $u' \neq u^*$ moving is
+`detection = PASS` together with a failed direction test -- a `DIRECTION_FAIL` -- while the narrowed
+reading calls the same cell `BLIND`. Both are cell-level `STRUCTURAL_REJECT`, so the aggregate verdicts
+agree, and that is exactly why such a substitution would escape review. A87 does not amend A86.
 
 Every number in $\Delta V^{ref}$ is a row of the **frozen solver** at $\texttt{State}(0,2,0,0,0)$:
 
@@ -6272,9 +6324,7 @@ Q^{*}(x^{*},\ 3) = 0.88, \qquad Q^{*}(x^{*},\ 4) = 0.86$$
   $$\boxed{\Delta V^{ref}_{P} = 0.92 - 0.88 = +0.04 \;\Longrightarrow\; d_P = +1}$$
 
 A87 therefore freezes the **predicted** loss, not a measured one, and it does **not** establish A86's
-detection. Detection is the proposition about the measured pair -- $\Delta V_A^{meas}(u^*) \neq 0$, with
-$\operatorname{sign}\bigl(\Delta V_A^{meas}(u^*)\bigr) = d_A$ -- and it remains exactly what the
-screening measures. The distinction is not bookkeeping: an earlier phrasing of this section wrote
+detection. Detection is $D_{A,U}$, the domain-quantified proposition above, with $S_{A,U}$ as the separate direction condition; both remain exactly what the screening measures. The distinction is not bookkeeping: an earlier phrasing of this section wrote
 $V_W - V_{W+\Delta W} = +0.02$ as an established fact, which would have made detection a consequence of
 the specification rather than a result of the run.
 
@@ -6291,7 +6341,7 @@ load-bearing: they license $\Delta W^{\text{cal}}_A$ as a **legal persistent edi
 substrate, type and read-path contract. They do not license a behavioural verdict, because A86's
 detection proposition is
 
-$$\exists u:\ V_{W + \Delta W^{\text{cal}}_A}(u) \neq V_W(u)$$
+$$\exists u:\ V_{W + \Delta W^{\text{cal}}_A}(u) \neq V_W(u) \qquad (= D_{A,U})$$
 
 which is a B2 measurement, and it is a measurement under a **newly frozen** functional: B1 cannot have
 tested movement of the return-to-go of §75.3 under these three specific canaries. Asserting detection
@@ -6300,7 +6350,7 @@ screening measures, for five of the six cells.
 
 **The exception is $P \times U_1$, and it is structural.** By (iv) of §75.6 a $U_1$ evaluation fixes
 $z$ at its entry while the $P$ edit acts on the commit edge, so no read path from the edit into the
-evaluation exists; a difference requires a channel, so $\lnot$detection follows from the frozen
+evaluation exists -- for **every** $u \in U_1$, since a continuation never re-executes $C_P^{L}$ at any entry, so the argument is domain-wide and not witness-local; a difference requires a channel, so $\lnot$detection follows from the frozen
 continuation contract rather than from a measurement. Hence $P \times U_1$ is `BLIND` and is a
 **cell-level** `STRUCTURAL_REJECT`, and $U_1$ already carries at least one rejected cell. This stops
 being prose only once gate **G3** of §75.6 passes: until then the absence of a read is a claim about
@@ -6402,6 +6452,15 @@ which is precisely what the screening exists to test.
 
 ---
 
+
+**Review round 5 (d210078).** A87 had narrowed A86 §74.3's domain-quantified detection
+$\exists u \in U$ to the witness, which is a different cell status (`DIRECTION_FAIL` versus `BLIND`)
+even though both aggregate to `STRUCTURAL_REJECT`. The narrowing is withdrawn rather than absorbed:
+detection is restored as $D_{A,U}$ and direction kept as $S_{A,U}$ (§75.7), the screening domains
+$U_1$, $U_2$ are frozen with their cardinals and measured as a closed nominal map (§75.4), and G5
+checks the continuation against the frozen exact solve on all of $\mathcal X_D$ (§75.6). A86 is not
+amended.
+
 ## 64. Summary and what remains open
 
 | # | what | severity | status |
@@ -6456,7 +6515,7 @@ section above; the most recent is:
 | **A84** | **the DeficitAUC numerical-integration contract**: `05` §8.3 froze a continuous integral with a $1/T_{\max}$ normalisation, and B2-2's first implementation realised it as an unnormalised left-rectangle sum — wrong in the normalisation **and** in the quadrature rule, which was frozen nowhere and was therefore the implementation choosing an estimator. Frozen now: trapezoidal integration on the real episode grid, $\mathrm{DeficitAUC} = \frac{1}{T_{\max}}\sum_i \frac{d_i+d_{i+1}}{2}(t_{i+1}-t_i)$ with $d_i=[V_{\text{pre}}-V_{t_i}]_+$, on the grounds of assumption-minimality (linear interpolation between adjacent observations, rather than left-hold's extra assumption that a measurement persists across its whole interval); calibrated analytically on constant and linear deficits, seedlessly. Also frozen: the curve spans the horizon ($episodes[0]=0$, $episodes[-1]=T_{\max}$, $0\le t_i\le T_{\max}$), a short curve is refused rather than padded, and a recovery window completing past $T_{\max}$ does not qualify. Terminology: the per-seed $\min(\tau,T_{\max})$ is `restricted_time`, **not** RMST, which is the cross-seed expectation and belongs to B2-4. Re-opens no A79 endpoint, sets no design quantity, collects no seed. | **P0 (numerics)** | **frozen -- clarification only**; further change requires a new amendment |
 | **A85** | **the behavioural measurement contract for future performance**: A79 §67.4 froze `BehavioralCollateral` and its unaffected set's four properties but no executable $c \mapsto V_W(c)$, and B2-4 filled the gap with an adapter mapping a context coordinate onto a temporal reward index. Frozen here as **properties**: measured by the audited environment rather than assembled by an adapter; pre from the raw pre-update state and post from each arm's own post-update state; one shared evaluation scene and CRN draw, so a difference can only come from $\Delta W$; a closed nominal measurement $V_W: U_{\text{unaffected}} \to \mathbb R_{\text{finite}}$ refusing missing **and** extra units, never an arbitrary callable; behaviourally load-bearing for every architecture without deciding that one unit type carries all three; and calibrated on synthetic injected spillover **per architecture**, because correct types can still be structurally blind. Also records that $V_{\text{pre}}$ is already frozen by `11` §12.3 and §13 item 13 (measured on $Q^{*}$, same $N_{\text{eval}}$ and evaluation scenes, shipped in the reference artifact, never re-measured) and that $V_{\text{pre}} \neq V_{\text{unaffected,pre}}$ despite the shared word. It **poses without answering** whether the evaluation unit is a unified scene domain or architecture-specific domains, naming the $P$ counterexample that decides it ($z^{\text{proposal}} \to z^{\text{in-force}}$ cannot be seen from a context that already fixes $z$). Chooses no candidate, sets no design quantity, collects no seed, writes no code, and **does not authorise implementation to choose the evaluation unit**: the unified-vs-architecture-specific decision is the next specification question, to be settled by a seedless structural/calibration study (inject known spillover per architecture, keep the $P$ counterexample as canary, discard a candidate that is structurally blind). | **P0 (interface)** | **frozen -- properties only; evaluation unit unresolved; further change requires a new amendment** |
 | **A86** | **the evaluation-unit structural screening method**: A85 left one question open (a **unified** evaluation scene domain or **architecture-specific** domains) and A86 freezes the **method** of screening it, explicitly **not** authorising calibration --- the concrete canaries are A87's, and until they are frozen the screening may not be run. Pre-registers $\mathcal U^{\text{pre}}_{\text{unified}} = \{U_1, U_2\}$ with a **deterministic projection** $g_U$ from a semantic witness to a unit: $U_1$ = the decision triple $(s,z,m)$; $U_2$ = an **evaluation scene unit** whose closed field surface is $(\kappa, \text{tape}, \text{base option})$, the tape entering by its full frozen assignment $(\text{phase}, \text{error\_flag}, \text{cause\_rank})$ and the scene entered upstream of $C_P^L$ so $z^{\text{in-force}}$ is produced during evaluation. Units are **pre-constructed and arm-blind** (what is post-update is the measurement, never the unit's identity); a standalone $\varphi$ is not a field, since the kernel reads `tape`; and the reference view is a **measurement-instrument dependency, not identity**, because the wider artifact carries a $V_{\text{pre}}$ whose instance A85 keeps stage-dependent. The **measurement schedule is excluded from unit identity** but IS a preregistered protocol input: A87 declares $\mathcal M_{\text{screen}}$, and when the final $\mathcal G_{\text{ckpt}}$ is frozen the screening is re-run before any conclusion travels. The shared object across candidates is the **semantic witness** $\xi_A^*$, not a representation: each candidate projects it, and $g_U(\xi) = \varnothing$ is a coverage `BLIND`. The direction has exactly **one** field: **status-typed** $d_A \in \{+1, -1, \texttt{DIRECTION\_UNRESOLVED}\}$, where a numeric $d_A$ is the independently declared expected direction and `DIRECTION_UNRESOLVED` is the explicit no-direction state; the gate reads that field and applies no equality test when it is unresolved. A cell's status is a single-valued, priority-ordered function of (coverage, detection, $d_A$, measured direction): `BLIND` first if coverage or detection fails, since a direction cannot be judged where nothing was seen; then `DIRECTION_UNRESOLVED` if $d_A$ is unresolved; then `STRUCTURAL_PASS` or `DIRECTION_FAIL` by the measured direction. $\texttt{STRUCTURAL\_REJECT} = \{\texttt{BLIND}, \texttt{DIRECTION\_FAIL}\}$, and `DIRECTION_UNRESOLVED` is neither a pass nor a rejection. Three conclusions, not two: `UNIFIED_SURVIVES` if some preregistered candidate passes all three; `ALL_PREREG_UNIFIED_REJECTED` if every one is structurally rejected --- which triggers architecture-specific specification but is **not** a proof that no unified domain exists; and otherwise **`SCREENING_INCONCLUSIVE`**, because an unresolved cell is neither a pass nor a rejection and must not become a trigger by omission. Detectability remains necessary but not sufficient, so a survivor is admissible rather than selected and $U_3$ is not conditional on structural rejection alone. Chooses no unit, runs nothing, authorises no seed. | **P0 (interface)** | **frozen -- method only; A87 required before screening** |
-| **A87** | **the concrete injection fixtures, the six projection images, the scalar functional, the $U_1$ continuation contract, and the declared directions**: $\xi_A^*$ is the candidate-independent **semantic witness**, which **induces two cells per architecture**, $(U_1,A)$ and $(U_2,A)$, whose content is $g_U(\xi_A^*)$ -- keeping the witness candidate-independent is what makes one canary screen every candidate. Canaries: $D_Q$ takes the canonical multi-action context $(\texttt{State}(0,2,0,0,0), z{=}1, m{=}0)$ with row $\{3{:}0.88, 4{:}0.86\}$ and lowers the argmax to $\min_a Q^{*}-1 = -0.14 < 0.86$; $X$ takes the healthy path's first multi-action site with the command the learner **actually sends**, $\texttt{ControllerSite}(s^*,3) \leftarrow 4$; $P$ keeps $C_P^{L}(z_0) \leftarrow z_1 \neq z_0$ with base option $z_0$. Freezes all **six projection images**, with $g_{U_1}(\xi_P^*) = (\texttt{START}, z{=}z_0{=}0, m{=}0)$ taken **pre-update** so the $z$ sealed into $U_1$'s identity is the scene's proposal, not the arm's post-write output. Freezes $V_W(u) = \sum_{j=t(u)}^{T_F-1} r_j$ (undiscounted return-to-go, reward mode A, to termination or $H=12$) and the protocol as **one rollout or continuation, no checkpoint grid**. Freezes the $U_1$ continuation contract -- entry satisfying the executable `env/domain.py` $\texttt{is\_decision\_context}$, exogenous consistency $\texttt{tape.phase} = s.\phi$ and $\kappa = s.\kappa$, one shared continuation core, no re-execution of $C_P^{L}$, one complete tape assignment shared by pre and post -- and replaces its false single equality with G1/G2/G3, whose frozen comparison object is the behaviour-bearing suffix signature $\Sigma_{\text{suffix}} = (\texttt{steps}, \texttt{outcome}, \texttt{final control})$ compared field by field, $V_W$ being derived from it; G3's liveness half is witnessed by the option in force, not by a return, and G4 extends the suffix equality to every pre-action context with $t > 0$ on the frozen canary healthy traces, so the contract's arbitrary-$\mathcal X_D$ claim is not a $\texttt{START}$-only continuation. Declares $d_{D_Q} = d_X = d_P = +1$ by **preregistered reference prediction** $d_A = \operatorname{sign}(\Delta V_A^{ref})$, discharged against the frozen solver at $\texttt{State}(0,2,0,0,0)$ -- $Q^{*}(z{=}0) = 0.92$, $Q^{*}(z{=}1) = 0.88$, $Q^{*}(x^{*},3) = 0.88$, $Q^{*}(x^{*},4) = 0.86$ -- giving losses $+0.02$, $+0.02$, $+0.04$ under A86's sign convention $\operatorname{sign}[V_W - V_{W+\Delta W}] = d_A$, $\Delta V_A^{ref}$ being kept distinct from the measured $\Delta V_A^{meas}$ the screening forms, so detection is not decided here; with coverage PASS and all three directions numeric, this instance excludes `DIRECTION_UNRESOLVED` and its aggregate space is the **two states** $\{\texttt{UNIFIED\_SURVIVES}, \texttt{ALL\_PREREG\_UNIFIED\_REJECTED}\}$, reachable through $U_2$, while $U_1$ cannot survive because $P \times U_1$ is `BLIND`. Coverage frozen PASS $\times 6$ against the frozen candidate-domain contracts, not from scene reachability; **detection not frozen and not inherited from B1** (B1 licenses $\Delta W^{\text{cal}}_A$ as a persistent edit, not A86's behavioural proposition). Records the authorisation chain: A87 frozen permits the $U_1$ continuation instrument to be implemented, and only $\text{CLOSED} := \text{G1} \land \text{G2} \land \text{G3} \land \text{G4} \land$ a clean existing kernel/B1 regression suite authorises the screening. | **P0 (interface)** | **draft -- awaiting review; not yet frozen** |
+| **A87** | **the concrete injection fixtures, the six projection images, the scalar functional, the $U_1$ continuation contract, and the declared directions**: $\xi_A^*$ is the candidate-independent **semantic witness**, which **induces two cells per architecture**, $(U_1,A)$ and $(U_2,A)$, whose content is $g_U(\xi_A^*)$ -- keeping the witness candidate-independent is what makes one canary screen every candidate. Canaries: $D_Q$ takes the canonical multi-action context $(\texttt{State}(0,2,0,0,0), z{=}1, m{=}0)$ with row $\{3{:}0.88, 4{:}0.86\}$ and lowers the argmax to $\min_a Q^{*}-1 = -0.14 < 0.86$; $X$ takes the healthy path's first multi-action site with the command the learner **actually sends**, $\texttt{ControllerSite}(s^*,3) \leftarrow 4$; $P$ keeps $C_P^{L}(z_0) \leftarrow z_1 \neq z_0$ with base option $z_0$. Freezes all **six projection images**, with $g_{U_1}(\xi_P^*) = (\texttt{START}, z{=}z_0{=}0, m{=}0)$ taken **pre-update** so the $z$ sealed into $U_1$'s identity is the scene's proposal, not the arm's post-write output. Freezes $V_W(u) = \sum_{j=t(u)}^{T_F-1} r_j$ (undiscounted return-to-go, reward mode A, to termination or $H=12$) and the protocol as **one rollout or continuation, no checkpoint grid**. Freezes the $U_1$ continuation contract -- entry satisfying the executable `env/domain.py` $\texttt{is\_decision\_context}$, exogenous consistency $\texttt{tape.phase} = s.\phi$ and $\kappa = s.\kappa$, one shared continuation core, no re-execution of $C_P^{L}$, one complete tape assignment shared by pre and post -- and replaces its false single equality with G1/G2/G3, whose frozen comparison object is the behaviour-bearing suffix signature $\Sigma_{\text{suffix}} = (\texttt{steps}, \texttt{outcome}, \texttt{final control})$ compared field by field, $V_W$ being derived from it; G3's liveness half is witnessed by the option in force, not by a return, G4 extends the suffix equality to every pre-action context with $t > 0$ on the frozen canary healthy traces, and G5 checks $V^{cont}_{W_{\text{pre}}} = V^{*}$ on all of $\mathcal X_D$ against the frozen exact solve, using the existing DP gate's tolerance, so the contract's arbitrary-$\mathcal X_D$ claim is backed on the whole domain. Declares $d_{D_Q} = d_X = d_P = +1$ by **preregistered reference prediction** $d_A = \operatorname{sign}(\Delta V_A^{ref})$, discharged against the frozen solver at $\texttt{State}(0,2,0,0,0)$ -- $Q^{*}(z{=}0) = 0.92$, $Q^{*}(z{=}1) = 0.88$, $Q^{*}(x^{*},3) = 0.88$, $Q^{*}(x^{*},4) = 0.86$ -- giving losses $+0.02$, $+0.02$, $+0.04$ under A86's sign convention $\operatorname{sign}[V_W - V_{W+\Delta W}] = d_A$, $\Delta V_A^{ref}$ being kept distinct from the measured $\Delta V^{meas}_{A,U}(u)$ the screening forms, so detection is not decided here; detection is restored to A86's **domain-quantified** form $D_{A,U} = [\exists u \in U: \Delta V^{meas}_{A,U}(u) \neq 0]$ with direction kept separate as $S_{A,U}$ at the witness, and the screening domains are frozen and finite -- $U_1 = \mathcal X_D$ with $\lvert U_1 \rvert = 13824$ and $U_2 = \mathcal K \times \mathcal T \times \mathcal Z$ with $\lvert U_2 \rvert = 5760$ -- measured as the closed nominal map $V_W^{meas}: U \to \mathbb{R}_{\text{finite}}$ with missing and extra units rejected and no short-circuit on positives; with coverage PASS and all three directions numeric, this instance excludes `DIRECTION_UNRESOLVED` and its aggregate space is the **two states** $\{\texttt{UNIFIED\_SURVIVES}, \texttt{ALL\_PREREG\_UNIFIED\_REJECTED}\}$, reachable through $U_2$, while $U_1$ cannot survive because $P \times U_1$ is `BLIND`. Coverage frozen PASS $\times 6$ against the frozen candidate-domain contracts, not from scene reachability; **detection not frozen and not inherited from B1** (B1 licenses $\Delta W^{\text{cal}}_A$ as a persistent edit, not A86's behavioural proposition). Records the authorisation chain: A87 frozen permits the $U_1$ continuation instrument to be implemented, and only $\text{CLOSED} := \text{G1} \land \text{G2} \land \text{G3} \land \text{G4} \land \text{G5} \land$ a clean existing kernel/B1 regression suite authorises the screening. | **P0 (interface)** | **draft -- awaiting review; not yet frozen** |
 
 ---
 
