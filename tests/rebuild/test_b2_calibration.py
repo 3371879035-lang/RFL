@@ -347,7 +347,7 @@ def test_gate_a_a_mid_episode_edit_is_predicted_with_its_own_step_reward(traces)
                      if (channel == "D_Q" and (state, control.z, control.m, step_result.u) == (
                          edit.channel_address.state, edit.channel_address.z, edit.channel_address.m,
                          edit.channel_address.a))
-                     or (channel == "X" and step_result.u == edit.channel_address.cmd
+                     or (channel == "X" and step_result.a_cmd == edit.channel_address.cmd
                          and state == edit.channel_address.state))
         state, control, _step = walk[index]
         prefix = sum(s.reward for s in traces.trace(scene).steps[:index])
@@ -418,9 +418,18 @@ def test_the_trace_source_is_the_pairs_own_w_pre(traces):
     bad = pre_update_traces(learner=defective, q_reference=REFERENCE)
 
     assert bad.rows(scene) != healthy.rows(scene), "the trace source must be the learner it was given"
-    # the remapped controller changes which sites that episode consults, so the X channel's trace
-    # source moves with it -- while the P channel's eligibility cannot move, since it reads only the
-    # base option and the outcome
+    # The *edited step's own* site is the command-keyed lookup site the kernel builds, and a remap may
+    # not rewrite the key it was looked up by: the same site is consulted under both learners, and the
+    # divergence is downstream -- the controller's return value changes the trajectory, hence the later
+    # commands and the later sites. A trace that keyed this site by u instead would report a different
+    # site here, which is the defect this assertion exists to catch.
+    edited_state, _edited_control, edited_step = next(
+        (st, ct, sr) for (st, ct, sr) in healthy.walk(scene)
+        if ControllerSite(state=st, cmd=sr.a_cmd) == site)
+    edited_site = CreditedSite("X", ControllerSite(state=edited_state, cmd=edited_step.a_cmd))
+    assert edited_site.address == site
+    assert edited_site in healthy.consulted("X", scene)
+    assert edited_site in bad.consulted("X", scene)
     assert set(bad.consulted("X", scene)) != set(healthy.consulted("X", scene))
     moved = [c for c in set(bad.consulted("X", scene)) ^ set(healthy.consulted("X", scene))
              if eligibility(c, bad) != eligibility(c, healthy)]

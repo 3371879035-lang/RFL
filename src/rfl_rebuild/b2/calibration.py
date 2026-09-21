@@ -174,7 +174,7 @@ def _consulted_channel_sites(channel: str, traces: PreUpdateTraces, scene: Evalu
     if channel == "X":
         out, seen = [], set()
         for state, _control, step_result in _walk(traces, scene):
-            site = ControllerSite(state=state, cmd=step_result.u)
+            site = ControllerSite(state=state, cmd=step_result.a_cmd)
             if site not in seen:
                 seen.add(site)
                 out.append(site)
@@ -268,7 +268,7 @@ def predicted_spill_value(channel: str, scene: EvaluationScene, edit: SpilloverE
                     edit.channel_address.a):
                 continue
         else:
-            if ControllerSite(state=state, cmd=step_result.u) != edit.channel_address:
+            if ControllerSite(state=state, cmd=step_result.a_cmd) != edit.channel_address:
                 continue
         prefix = sum(s.reward for s in traces.trace(scene).steps[:index])
         successor_state, successor_control, reward, terminal = _successor(

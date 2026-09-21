@@ -32,16 +32,17 @@ from typing import Mapping, Sequence
 
 from rfl_rebuild.b1.contract import fingerprint
 from rfl_rebuild.b1.errors import ProtocolError
-from rfl_rebuild.b1.laws import P_LAWS, X_LAWS
-from rfl_rebuild.b1.runner import run_controller_law, run_process_law
+from rfl_rebuild.b1.laws import DQ_LAWS, P_LAWS, X_LAWS
+from rfl_rebuild.b1.runner import run_controller_law, run_dq_law, run_process_law
 from rfl_rebuild.b1.tier import Tier
-from rfl_rebuild.b2.collateral import scene_collateral
+from rfl_rebuild.b2.collateral import behavioral_collateral_scenes, measure_scene_map
 from rfl_rebuild.b2.producer import FutureRolloutProducer
 from rfl_rebuild.b2.retention import select_form
 from rfl_rebuild.b2.unaffected import (
     REFINEMENTS,
     CreditedSite,
     build_unaffected,
+    credited_domain,
     pre_update_traces,
 )
 from rfl_rebuild.b2.utility import FutureUtility
@@ -51,11 +52,13 @@ from rfl_rebuild.learner.store import LearnerPersistentState
 __all__ = ["ARCHITECTURES", "EXOGENOUS_FIELDS", "ArmSpec", "ExogenousSetup", "PairedRunner",
            "PairedSceneRecord"]
 
-ARCHITECTURES = ("P", "X")
+ARCHITECTURES = ("D_Q", "X", "P")
 
 #: Each architecture's frozen law registry: an arm's law must be a member, which is what makes a
-#: stand-in or a lambda impossible rather than merely discouraged.
-LAW_REGISTRIES = {"P": P_LAWS, "X": X_LAWS}
+#: stand-in or a lambda impossible rather than merely discouraged. $D_Q$ is present because A85
+#: §73.2.5 requires the measurement interface to be behaviourally load-bearing for all three, and B1
+#: already ships the entry point -- the runner dispatches to it rather than inventing $D_Q$ semantics.
+LAW_REGISTRIES = {"D_Q": DQ_LAWS, "P": P_LAWS, "X": X_LAWS}
 
 #: The exact field surface of `ExogenousSetup`. Shared exogenous configuration is not routing truth.
 EXOGENOUS_FIELDS = ("kappa", "phi", "tape", "base_option", "q_reference", "checkpoints")
@@ -167,7 +170,7 @@ class PairedSceneRecord:
     unaffected_size: int
     retention_form: str
     future_utility: Mapping
-    collateral: float
+    collateral: Mapping
     retention: Mapping
     ledgers: Mapping
     fingerprints_pre: Mapping
@@ -227,6 +230,15 @@ class PairedRunner:
                 f"the credited unit {credited_site!r} has type {type(credited_site).__name__}; the "
                 "unaffected region is defined relative to a credited site, not to a bare domain")
         traces = pre_update_traces(learner=state, q_reference=self._q_reference)
+        # A89 §77.4: the credited unit must be a member of the executable production extent for this
+        # learner -- the same domain the Gate C enumeration defines, not merely a well-typed address.
+        domain = credited_domain(credited_site.channel, traces)
+        if credited_site not in domain:
+            raise ProtocolError(
+                f"the credited unit {credited_site.render()} is not in "
+                f"{credited_site.channel}'s production credited domain for this W_pre "
+                f"({len(domain)} units); a well-typed address outside the extent would build "
+                "E(c) for a unit the runner was never entitled to credit")
         return build_unaffected(credited_site, traces, self._refinement)
 
     def run(self, state: LearnerPersistentState, *, arms: Sequence[ArmSpec], evidence: Mapping,
@@ -277,6 +289,12 @@ class PairedRunner:
         unaffected = self.pre_update_source(state, credited_site)
         self._recorder("unaffected", unaffected, id(unaffected))
 
+        # (1b) ONE pre measurement from the RAW pre state, taken once and shared: A85 §73.2.2 fixes
+        #      that the two arms' pre values are the same measurement rather than two that happen to
+        #      agree, so the map is measured here and handed to both collateral computations
+        pre_map = measure_scene_map(state, unaffected.units, q_reference=self._q_reference)
+        self._recorder("pre_map", id(pre_map), len(pre_map))
+
         # (2) independent clones from ONE pre-update state
         clones = [state.clone() for _ in arms]
         pre_fingerprints = {arm.name: fingerprint(clone) for arm, clone in zip(arms, clones)}
@@ -287,7 +305,7 @@ class PairedRunner:
 
         # (3) the updates, each on its own clone, before any future exists
         for arm, clone in zip(arms, clones):
-            self._apply(arm, clone, evidence)
+            self._apply(arm, clone, evidence, self._q_reference)
             self._recorder("update_applied", arm.name, id(clone))
 
         # (4) the paired futures on ONE shared exogenous setup
@@ -305,11 +323,15 @@ class PairedRunner:
                 levels, grid, pre_level=_baseline_level(levels), t_max=grid[-1])
             self._recorder("future", arm.name, view)
 
-        # (5) the three dimensions, separately: collateral is taken over the unit set, by measuring
-        #     every unit under each arm's own clone -- the re-typing A89 §77.8 requires, with no
-        #     context-to-level adapter standing in for a measurement
-        collateral = scene_collateral(unaffected, clones[0], clones[1],
-                                      q_reference=self._q_reference)["value"]
+        # (5) the three dimensions, separately. Collateral is V_unaffected,pre - V_unaffected,post(a)
+        #     **per arm**, over the unit set, against the one shared pre map -- not a difference
+        #     between the two arms, which is the paired contrast this dimension is not
+        collateral, post_maps = {}, {}
+        for arm, clone in zip(arms, clones):
+            post_maps[arm.name] = measure_scene_map(clone, unaffected.units,
+                                                    q_reference=self._q_reference)
+            collateral[arm.name] = behavioral_collateral_scenes(
+                unaffected, values_pre=pre_map, values_post=post_maps[arm.name])
         retention = {}
         for arm in arms:
             levels = _levels(views[arm.name])
@@ -321,7 +343,7 @@ class PairedRunner:
             unaffected_size=unaffected.size,
             retention_form=self._form_name,
             future_utility=MappingProxyType(futures),
-            collateral=collateral,
+            collateral=MappingProxyType(collateral),
             retention=MappingProxyType(retention),
             ledgers=MappingProxyType({arm.name: _ledger_of(clone)
                                       for arm, clone in zip(arms, clones)}),
@@ -330,9 +352,16 @@ class PairedRunner:
         )
 
     @staticmethod
-    def _apply(arm: ArmSpec, clone: LearnerPersistentState, evidence: Mapping) -> None:
+    def _apply(arm: ArmSpec, clone: LearnerPersistentState, evidence: Mapping,
+               q_reference=None) -> None:
         """Dispatch to the architecture's **existing B1 entry point**. No new update path."""
-        if arm.architecture == "P":
+        if arm.architecture == "D_Q":
+            for key in ("addresses", "rows"):
+                if key not in evidence:
+                    raise ProtocolError(f"the D_Q arm needs {key!r} in the evidence")
+            run_dq_law(arm.law, clone, evidence["addresses"], evidence["rows"], q_reference,
+                       sol=evidence.get("sol"), episode=evidence.get("episode"))
+        elif arm.architecture == "P":
             for key in ("units", "assisted"):
                 if key not in evidence:
                     raise ProtocolError(f"the P arm needs {key!r} in the evidence")

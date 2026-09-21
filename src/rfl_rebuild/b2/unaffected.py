@@ -271,7 +271,12 @@ class PreUpdateTraces:
         if channel == "X":
             out, seen = [], set()
             for state, _control, step in self._walks[scene]:
-                site = ControllerSite(state=state, cmd=step.u)
+                # The kernel's order is a_cmd -> ControllerSite(s, a_cmd) -> u, so the address the
+                # controller channel is *consulted at* is keyed by the COMMAND. Under a healthy learner
+                # a_cmd == u and the two readings coincide; under a pre-update learner that carries a
+                # controller override they do not, and using u would credit the controller's own output
+                # as the lookup key.
+                site = ControllerSite(state=state, cmd=step.a_cmd)
                 if site not in seen:
                     seen.add(site)
                     out.append(CreditedSite("X", site))
@@ -284,8 +289,9 @@ class PreUpdateTraces:
         * $D_Q$: the decision read path consults the credited decision context $(s,z,m)$ at every step
           whose pre-action context is that context, entry included;
         * $X$: the controller channel is consulted at
-          $\texttt{ControllerSite}(s_j, a^{\text{eff}}_j)$; with no controller override the effective
-          action is the step's own $u$, so the site is recoverable from the trace;
+          $\texttt{ControllerSite}(s_j, a^{\text{cmd}}_j)$ -- the **lookup key the kernel builds** before
+          the controller runs, not the action it returns. The audited learner path keeps the command
+          inside $A_z$, so the command is the kernel's own $a^{\text{eff}}$;
         * $P$: the commit edge is consulted once, at the episode's proposal, so the credited proposal
           is consulted exactly when it is the scene's base option.
         """

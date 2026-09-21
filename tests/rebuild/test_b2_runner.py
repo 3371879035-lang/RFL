@@ -128,7 +128,29 @@ def test_2_the_runner_owns_the_pre_update_material():
     # the raw pre state, not a minted one: a state carrying an unrelated override gives different traces
     carried = LearnerPersistentState()
     carried.apply_transaction([Edit(PROCESS, 1, 2)])
-    assert runner().pre_update_source(carried, CreditedSite("P", 0)).units != built.units or True
+    # The claim is about the *source*, not about one particular c: an override the learner carries
+    # changes the episodes, and a region is a function of those episodes. Whether E(c) itself moves
+    # depends on c, so the gate reads the traces.
+    from rfl_rebuild.b2.unaffected import pre_update_traces, scene_domain
+
+    # the probe must be a scene the carried override actually touches: it remaps the *proposal* 1,
+    # so a base-option-0 episode is untouched by construction
+    probe = next(s for s in sorted(scene_domain(), key=lambda s: s.key) if s.base_option == 1)
+    with_carry = pre_update_traces(learner=carried, q_reference=REFERENCE_VIEW)
+    assert with_carry.rows(probe) != pre_update_traces(learner=LearnerPersistentState(),
+                                                       q_reference=REFERENCE_VIEW).rows(probe), (
+        "a pre state carrying an override must produce different traces than the empty state")
+    # and a well-typed credited unit outside the production extent is refused
+    with pytest.raises(ProtocolError) as ei:
+        runner().pre_update_source(LearnerPersistentState(),
+                                  CreditedSite("X", __import__("rfl_rebuild.env.kernel",
+                                                               fromlist=["ControllerSite"])
+                                               .ControllerSite(state=__import__(
+                                                   "rfl_rebuild.env.kernel",
+                                                   fromlist=["State"]).State(x=1, y=1, t=0,
+                                                                             kappa=0, phi=0),
+                                                   cmd=0)))
+    assert "production credited domain" in str(ei.value)
 
 
 def test_3_the_arms_are_handed_one_object_not_two_equal_ones():
@@ -136,18 +158,19 @@ def test_3_the_arms_are_handed_one_object_not_two_equal_ones():
     import rfl_rebuild.b2.runner as R
 
     seen, events = [], []
-    original = R.scene_collateral
+    original = R.behavioral_collateral_scenes
 
-    def spy(unaffected, pre_learner, post_learner, *, q_reference):
+    def spy(unaffected, *, values_pre, values_post):
         seen.append(id(unaffected))
-        return original(unaffected, pre_learner, post_learner, q_reference=q_reference)
+        return original(unaffected, values_pre=values_pre, values_post=values_post)
 
-    R.scene_collateral = spy
+    R.behavioral_collateral_scenes = spy
     try:
         run(events)
     finally:
-        R.behavioral_collateral = original
-    assert len(seen) == 1, "the metric saw more than one object"
+        R.behavioral_collateral_scenes = original
+    assert len(seen) == 2, "the metric runs once per arm"
+    assert len(set(seen)) == 1, "the two arms' metrics saw different objects"
     built = [e[2] for e in events if e[0] == "unaffected"]
     assert len(built) == 1, "the set was constructed more than once"
     assert seen[0] == built[0], "the metric was handed a different object than the one built"
@@ -277,7 +300,7 @@ def test_8_the_arms_are_nominal_and_dispatch_to_the_frozen_entry_points():
     with pytest.raises(ProtocolError) as ei:
         ArmSpec("treatment", "P", Tier.L3_ORACLE, P_LAWS[1])       # wrong tier
     assert "declares" in str(ei.value)
-    assert ARCHITECTURES == ("P", "X")
+    assert ARCHITECTURES == ("D_Q", "X", "P")
     assert set(ArmSpec.__dataclass_fields__) == {"name", "architecture", "tier", "law"}
     assert "apply" not in inspect.signature(PairedRunner.run).parameters
     assert "apply" not in inspect.signature(ArmSpec.__init__).parameters
@@ -340,9 +363,71 @@ def test_10_the_record_keeps_three_dimensions_and_no_composite():
     assert not (set(record.__dataclass_fields__) & forbidden)
     assert set(record.future_utility) == set(record.arm_names)
     assert set(record.retention) == set(record.arm_names)
+    assert set(record.collateral) == set(record.arm_names), (
+        "collateral is per arm: V_unaffected,pre - V_unaffected,post(a), not a difference between arms")
     assert "UpdateLedger" not in {type(v).__name__ for v in record.future_utility.values()}
     names = _module_names(RUNNER_MODULE)
     assert not (names & {"rmst", "RMST", "holm", "bootstrap", "verdict", "conclusion", "p_value"})
+
+
+def test_11b_the_two_arms_share_one_pre_measurement():
+    r"""A85 §73.2.2: the two arms' pre values are **one measurement**, not two that happen to agree.
+
+    $$M_{\text{pre}} = \text{measure}(W_{\text{pre}}, C) \quad\text{once}$$
+    $$\text{Collateral}_a = \text{BehavioralCollateral}(C, M_{\text{pre}}, M_{\text{post},a})$$
+
+    The gate reads object identity: three measurements (one pre, one per arm) and a single pre-map
+    object handed to both collateral computations.
+    """
+    import rfl_rebuild.b2.runner as R
+
+    maps, pre_ids = [], []
+    original_map, original_bc = R.measure_scene_map, R.behavioral_collateral_scenes
+
+    def spy_map(learner, units, *, q_reference):
+        out = original_map(learner, units, q_reference=q_reference)
+        maps.append(id(out))
+        return out
+
+    def spy_bc(unaffected, *, values_pre, values_post):
+        pre_ids.append(id(values_pre))
+        return original_bc(unaffected, values_pre=values_pre, values_post=values_post)
+
+    R.measure_scene_map, R.behavioral_collateral_scenes = spy_map, spy_bc
+    try:
+        record = run()
+    finally:
+        R.measure_scene_map, R.behavioral_collateral_scenes = original_map, original_bc
+    assert len(maps) == 3, f"expected one pre map and one per arm, got {len(maps)}"
+    assert len(set(pre_ids)) == 1 and pre_ids[0] == maps[0], (
+        "both arms must be handed the same pre-map object that was measured first")
+    assert set(record.collateral) == set(record.arm_names)
+
+
+def test_11c_a_dq_pair_runs_through_the_b1_entry_point():
+    r"""A85 §73.2.5: the measurement interface is behaviourally load-bearing for $D_Q$ too.
+
+    B1 already ships `run_dq_law` and `DQ_LAWS`; the runner dispatches to them rather than inventing
+    $D_Q$ semantics, and this gate is what says the third architecture is actually reachable.
+    """
+    from rfl_rebuild.b1.laws import DQ_LAWS
+    from rfl_rebuild.b2.unaffected import credited_domain, pre_update_traces, scene_domain
+
+    traces = pre_update_traces(learner=LearnerPersistentState(), q_reference=REFERENCE_VIEW)
+    credit = credited_domain("D_Q", traces)[0]
+    reference = next(x for x in DQ_LAWS
+                     if type(x).__name__ == "NoWriteRef" and x.tier is Tier.L3_ORACLE)
+    treatment = next(x for x in DQ_LAWS if getattr(x, "name", None) == "LocalOracleRestore")
+    arms = (ArmSpec("reference", "D_Q", Tier.L3_ORACLE, reference),
+            ArmSpec("treatment", "D_Q", Tier.L3_ORACLE, treatment))
+    scene = min(scene_domain(), key=lambda s: s.key)
+    record = runner().run(
+        LearnerPersistentState(), arms=arms,
+        evidence={"addresses": (credit.address,), "rows": traces.rows(scene)},
+        exogenous=exogenous(), credited_site=credit)
+    assert record.architecture == "D_Q"
+    assert set(record.collateral) == {"reference", "treatment"}
+    assert record.unaffected_size > 0
 
 
 def test_11_the_runner_is_in_the_audited_production_chain():
