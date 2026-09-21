@@ -290,15 +290,23 @@ def aggregate_verdict(cells) -> str:
     cannot inherit a verdict it did not earn.
     """
     cells = tuple(cells)
-    units = sorted({c.unit for c in cells})
+    units = {c.unit for c in cells}
     arches = {c.arch for c in cells}
-    for unit in units:
+    pairs = {(c.unit, c.arch) for c in cells}
+    # Fail closed on anything but the complete matrix. A86's conclusions are defined on the 2 x 3
+    # status matrix, so a subset that happens to look evaluable must not produce a verdict: the same
+    # discipline as the closed nominal map, applied to the cells rather than to the units.
+    if (len(cells) != 6 or len(pairs) != 6
+            or units != {UNIT_1, UNIT_2} or arches != set(ARCHITECTURES)):
+        raise ProtocolError(
+            f"the status matrix must be exactly {sorted((UNIT_1, UNIT_2))} x "
+            f"{sorted(ARCHITECTURES)}; got {len(cells)} cells, {len(pairs)} distinct pairs, "
+            f"units {sorted(units)} and architectures {sorted(arches)}")
+    for unit in sorted(units):
         rows = [c for c in cells if c.unit == unit]
-        if {c.arch for c in rows} != arches:
-            raise ProtocolError(f"{unit} is missing cells; the matrix must be complete")
         if all(c.status == STATUS_STRUCTURAL_PASS for c in rows):
             return VERDICT_SURVIVES
-    if all(any(c.rejected for c in cells if c.unit == unit) for unit in units):
+    if all(any(c.rejected for c in cells if c.unit == unit) for unit in sorted(units)):
         return VERDICT_ALL_REJECTED
     return VERDICT_INCONCLUSIVE
 

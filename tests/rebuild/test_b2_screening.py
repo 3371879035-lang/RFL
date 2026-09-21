@@ -201,22 +201,60 @@ def _cell(unit, arch, status):
                           "rejected": status in STRUCTURAL_REJECT})()
 
 
+def _matrix(overrides=None):
+    """A complete 2 x 3 matrix, all PASS except the pairs named in ``overrides``."""
+    overrides = overrides or {}
+    return [_cell(u, a, overrides.get((u, a), STATUS_STRUCTURAL_PASS))
+            for u in (UNIT_1, UNIT_2) for a in ARCHITECTURES]
+
+
 def test_7_the_three_aggregate_rules_fire_in_their_frozen_order():
-    r"""A86 §74.4, including the third rule the present instance cannot reach."""
-    P, B, F, U = (STATUS_STRUCTURAL_PASS, STATUS_BLIND, STATUS_DIRECTION_FAIL,
-                  STATUS_DIRECTION_UNRESOLVED)
-    all_pass = [_cell(u, a, P) for u in (UNIT_1, UNIT_2) for a in ARCHITECTURES]
-    assert aggregate_verdict(all_pass) == VERDICT_SURVIVES
-    one_unresolved = [_cell(u, a, U if (u, a) == (UNIT_2, "P") else P)
-                      for u in (UNIT_1, UNIT_2) for a in ARCHITECTURES]
-    one_unresolved = [c for c in one_unresolved if not (c.unit == UNIT_1 and c.arch == "P")]
-    one_unresolved.append(_cell(UNIT_1, "P", B))
-    assert aggregate_verdict(one_unresolved) == VERDICT_INCONCLUSIVE
-    both_rejected = one_unresolved + [_cell(UNIT_2, "P", F)]
-    both_rejected = [c for c in both_rejected if not (c.unit == UNIT_2 and c.arch == "P")]
-    both_rejected.append(_cell(UNIT_2, "P", F))
-    assert aggregate_verdict(both_rejected) == VERDICT_ALL_REJECTED
+    r"""A86 §74.4's three rules, in their own order, including the third.
+
+    The first rule is **existential in the candidate**: one candidate passing all three architectures
+    is enough, so a rejected cell elsewhere does not stop it. That is exactly why the present
+    instance's survival route runs through $U_2$ alone, and why the third rule is reachable only when
+    no candidate passes everything and none is rejected somewhere either.
+    """
+    # rule 1: some candidate passes all three
+    assert aggregate_verdict(_matrix()) == VERDICT_SURVIVES
+    assert aggregate_verdict(_matrix({(UNIT_1, "P"): STATUS_BLIND})) == VERDICT_SURVIVES
+    assert aggregate_verdict(_matrix({(UNIT_1, "P"): STATUS_BLIND,
+                                      (UNIT_1, "D_Q"): STATUS_DIRECTION_FAIL})) == VERDICT_SURVIVES
+    # rule 3: $U_1$ rejected somewhere, $U_2$ unresolved somewhere -- neither rule 1 nor rule 2 fires
+    unresolved = _matrix({(UNIT_1, "P"): STATUS_BLIND, (UNIT_2, "P"): STATUS_DIRECTION_UNRESOLVED})
+    assert aggregate_verdict(unresolved) == VERDICT_INCONCLUSIVE
+    assert any(c.rejected for c in unresolved), "the third rule is not 'nothing was rejected'"
+    # rule 2: every candidate is rejected on at least one architecture
+    assert aggregate_verdict(_matrix({(UNIT_1, "P"): STATUS_BLIND,
+                                      (UNIT_2, "P"): STATUS_DIRECTION_FAIL})) == VERDICT_ALL_REJECTED
+    assert aggregate_verdict(_matrix({(UNIT_1, "P"): STATUS_BLIND,
+                                      (UNIT_2, "X"): STATUS_BLIND})) == VERDICT_ALL_REJECTED
+    # an unresolved cell is not a rejection, so it cannot carry rule 2 on its own
+    assert aggregate_verdict(_matrix({(UNIT_1, "P"): STATUS_DIRECTION_UNRESOLVED,
+                                      (UNIT_2, "X"): STATUS_BLIND})) == VERDICT_INCONCLUSIVE
     assert DECLARED_DIRECTION == {"D_Q": +1, "X": +1, "P": +1}
+
+
+def test_7b_the_aggregate_fails_closed_on_an_incomplete_matrix():
+    r"""A86's conclusions live on the 2 x 3 matrix, so a subset that looks evaluable earns nothing.
+
+    Same discipline as the closed nominal map, applied to the cells: missing, extra and duplicated
+    entries are all refused rather than silently aggregated.
+    """
+    complete = _matrix()
+    with pytest.raises(ProtocolError):
+        aggregate_verdict([c for c in complete if c.arch != "P"])              # missing architecture
+    with pytest.raises(ProtocolError):
+        aggregate_verdict([c for c in complete if c.unit != UNIT_2])           # missing unit
+    with pytest.raises(ProtocolError):
+        aggregate_verdict(complete[:1])                                        # a single cell
+    with pytest.raises(ProtocolError):
+        aggregate_verdict(complete + [_cell(UNIT_1, "P", STATUS_BLIND)])       # duplicate pair
+    with pytest.raises(ProtocolError):
+        aggregate_verdict(complete[:-1] + [_cell(UNIT_3 := "U3", "P", STATUS_BLIND)])  # extra unit
+    with pytest.raises(ProtocolError):
+        aggregate_verdict(complete[:-1] + [_cell(UNIT_1, "Z", STATUS_BLIND)])  # extra architecture
 
 
 # --------------------------------------------------------------------------- #
@@ -255,7 +293,14 @@ def test_8_the_new_X_witness_is_what_the_strengthened_rule_selects():
         if alternatives:
             valid.append(((state, control.z, control.m), cmd, alternatives[0]))
     assert valid, "the strengthened rule must admit at least one site"
-    ((state, z, m), cmd, target) = valid[0]
+    # A87's canonical rule is the **lexicographically first** valid element; selecting `valid[0]`
+    # would silently rely on path order happening to agree with it.
+    selected = min(valid, key=lambda item: (item[0][0].x, item[0][0].y, item[0][0].t,
+                                            item[0][0].kappa, item[0][0].phi,
+                                            item[1], item[2]))
+    assert len(valid) >= 2, "the path must offer more than one valid site, or the rule is untested"
+    assert selected == valid[0] or selected[0][0].t < valid[0][0].t
+    ((state, z, m), cmd, target) = selected
     assert (state, z, m) == (X_SITE, 1, 0)
     assert (cmd, target) == (3, 1)
     # the old witness is excluded by the rule, not by preference
@@ -278,12 +323,15 @@ def test_9_the_X_edit_is_legal_on_the_whole_frozen_domain():
                      tape=exogenous_lift(s, z, m), q_reference=REFERENCE)
     for (kappa, tape, base) in u2_domain():
         learned_rollout(learner, kappa=kappa, tape=tape, base_option=base, q_reference=REFERENCE)
-    # and the other two edits are legal on both domains as well, so the defect was X-specific
+    # and the other two edits are legal on **both** domains as well, so the defect was X-specific
     for arch in ("D_Q", "P"):
         other = learner_prestate(arch, q_reference=REFERENCE)
         for (s, z, m) in u1_domain():
             continuation(learner=other, state=s, z=z, m=m, kappa=s.kappa,
                          tape=exogenous_lift(s, z, m), q_reference=REFERENCE)
+        for (kappa, tape, base) in u2_domain():
+            learned_rollout(other, kappa=kappa, tape=tape, base_option=base,
+                            q_reference=REFERENCE)
 
 
 # --------------------------------------------------------------------------- #
