@@ -6066,6 +6066,79 @@ run, no V0.4R, and no change to `runner.py` on the screening's account. If the s
 `SCREENING_INCONCLUSIVE`, the response is a specification response — derive directions or amend the
 candidate set — not a search for a fixture that behaves better.
 
+### 75.6 Review record: the draft's DQ and X canaries are structurally degenerate
+
+Recorded as **measured structural facts**, obtained by reading the frozen kernel and the frozen
+reference artifact only -- no pre/post behaviour was measured, and no screening was run. They
+confirm the review's first two findings and supply deterministic replacements.
+
+**The canonical scene is degenerate for both canaries.** With base option $=\min
+\texttt{option\_ids}() = 0$, the canonical decision context
+$(\texttt{State}(0,2,t{=}0), z{=}0, m{=}0)$ has
+
+$$\bigl|A_{z_0}(m{=}0, s^*)\bigr| = 1$$
+
+so the reference row is single-action as well: lowering the only action's value cannot move an
+argmax, and $\mathcal C_{D_Q}$ as drafted perturbs nothing. The same degeneracy leaves
+$A_z(m,s^*) \setminus \{a^{\text{cmd}}\} = \varnothing$, so the drafted $\mathcal C_X$ has no
+alternative action to use and is not a concrete fixture at all.
+
+**A structurally valid $\mathcal C_{D_Q}$, by the same canonical rule.** The first decision context
+in canonical order with at least two admissible actions is
+
+$$x^* = \bigl(\texttt{State}(0,2,t{=}0),\ z{=}1,\ m{=}0\bigr), \qquad
+A_{z}(m,s^*) = \{3, 4\}, \qquad Q^{*}(x^*) = \{3: 0.88,\ 4: 0.86\}$$
+
+with healthy argmax $a^* = 3$ and alternative $b = 4$. The drafted edit form then does move the
+selection **structurally**: $Q^{\text{eff}}(x^*,3) \leftarrow \min_a Q^{*} - 1 = -0.14 < 0.86 =
+Q^{*}(x^*,4)$, and the read path is an argmax, so the choice becomes $4$ without any measurement
+being needed to establish that.
+
+**A structurally valid $\mathcal C_X$, on the healthy reference path.** The healthy baseline path
+for the canonical tape visits sites whose option in force is $1$ with $m = 1$; at its first step the
+site is
+
+$$s^* = \texttt{State}(0,2,t{=}0), \qquad a^{\text{cmd}} = 3, \qquad
+A_z(m{=}1, s^*) = \{3, 4\}, \qquad a' = 4$$
+
+so a scene with base option $1$ supplies a load-bearing `ControllerSite` keyed by the command the
+healthy learner **actually sends**, together with a legal alternative. The drafted scene's base
+option of $0$ was wrong for this canary as well: the site's key is $(s, a^{\text{cmd}})$, so a site
+built from "the first admissible action" of a different option would never be looked up.
+
+**Two items that A87 v2 cannot settle by itself**, and which is why this section is a record rather
+than a frozen fixture:
+
+1. **the scalar functional $V_W(u) \in \mathbb{R}$.** A85 froze the *type*; the audited environment
+   returns five sequences, not a real. Which functional turns a rollout into the real -- episode
+   return, terminal outcome, a checkpoint value, a mean -- changes whether
+   $V_{W+\Delta W}(u) \neq V_W(u)$ holds at all, so it is a measurement definition and must be
+   frozen before any screening. The frozen kernel already defines `RolloutTrace.return_value` as
+   $\sum_t r_t$, so that is the natural candidate, but the choice is A87's to make explicitly;
+2. **audited measurement of $U_1$.** $U_2$ is runnable from the episode start, but the audited
+   environment always begins at $\texttt{START}, t=0, \texttt{initial\_control}(z)$: no interface
+   currently measures $V_W$ at an arbitrary $(s,z,m)$. Either a continuation measurement
+   $(W, s, z, m, \text{shared exogenous continuation}) \to V$ is specified with its own
+   implementation and gates -- before the screening -- or the plan must be narrowed to candidates
+   the existing audited path can measure. Inventing the mapping inside the screening script is the
+   modulo-adapter defect under a new name.
+
+**The schedule axis.** $\mathcal M_{\text{screen}}$ must not borrow $\mathcal G_{\text{ckpt}}$'s
+name: a within-episode step index sequence is not a future-episode checkpoint grid, and the two were
+conflated once already in B2-4. For a single fixed-state behavioural evaluation the simplest
+axis-free choice is one **complete episode** at the frozen horizon $H = 12$, scored by the frozen
+functional -- no checkpoint grid at all -- and if a grid is ever wanted it must be an episode-index
+grid.
+
+**The $P$ canary stands as drafted**: $C_P^{L}(z_0) \leftarrow z_1 \neq z_0$ with base option $z_0$
+does force the read path through $z^{\text{proposal}} \to C_P^{L} \to z^{\text{in-force}}$. The
+generalisation "for all three canaries the construction shows the choice changes" is withdrawn for
+$D_Q$ and $X$, and for $P$ the honest statement is narrower still:
+
+$$\boxed{\text{persistent structural channel changes} \neq \text{measured behavioural value changes}}$$
+
+which is precisely what the screening exists to test.
+
 ---
 
 ## 64. Summary and what remains open
