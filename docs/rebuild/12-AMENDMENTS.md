@@ -5815,8 +5815,7 @@ exactly one of:
    did not move, so the failure mode is recorded;
 2. **detection.** $\exists u \in U: V_{W+\Delta W_A^{\text{cal}}}(u) \neq V_W(u)$;
 3. **direction at the witness.** $\operatorname{sign}\bigl[V_W(u^*_{A,U}) -
-   V_{W+\Delta W_A^{\text{cal}}}(u^*_{A,U})\bigr] = d_A$, against the numeric direction A87 declared
-   A87 declared.
+   V_{W+\Delta W_A^{\text{cal}}}(u^*_{A,U})\bigr] = d_A$, against the numeric direction A87 declared.
 
 $$\boxed{\text{status}(U, A) \in \{\texttt{STRUCTURAL\_PASS},\ \texttt{BLIND},\
 \texttt{DIRECTION\_FAIL},\ \texttt{DIRECTION\_UNRESOLVED}\}}$$
@@ -5943,33 +5942,131 @@ its ancestry contains a commit made on an unresolved conflict. Promotion must re
 
 ---
 
-## 75. A87 — the injection fixtures (reserved; not yet written)
+## 75. A87 — the concrete injection fixtures and the nominal screening protocol
 
-A86 §74.6 fixes the boundary this section exists to fill:
+A86 §74.6 fixes what this section owes, and A86 §74.2 fixes the schema:
 
-$$\boxed{\text{A86 freezes the screening method} \;\to\; \text{A87 freezes the canaries}
-\;\to\; \text{only then may the seedless screening run}}$$
+$$\mathcal C_A = \bigl(W_{\text{pre}},\ \Delta W_A^{\text{cal}},\ \xi_A^*,\ d_A\bigr),
+\qquad A \in \{D_Q, X, P\}$$
 
-**Nothing is frozen here yet.** This heading is reserved so that A86's references to A87 are
-resolvable rather than dangling, and so that the obligation is visible in the amendment record
-rather than only in a draft branch.
+**No measurement was consulted to choose anything below.** Every fixture is selected by a
+**deterministic rule over a pre-declared structurally valid set**, so that a canary which later
+screens badly is a **scientific result** rather than an invitation to pick a better-looking address:
 
-When it is written, A87 must contain, for each $A \in \{D_Q, X, P\}$, a concrete fixture
+$$\boxed{\text{selection} = \text{the canonical (lexicographically first) element of a declared
+structurally valid set}}$$
 
-$$\mathcal C_A = \bigl(W_{\text{pre}},\ \Delta W_A^{\text{cal}},\ \xi_A^*,\
-d_A\bigr)$$
+Static work only: this section reads frozen contracts and uses already-generated reference artifacts.
+Running the environment to see whether behaviour moves, or comparing rewards/values/outcomes, is the
+screening itself and is **not** authorised by this draft.
 
-with the edit, the semantic witness and the direction field $d_A$ (numeric, or the explicit
-`DIRECTION_UNRESOLVED`) all named, with each preregistered candidate's projection image
-$g_U(\xi_A^*)$, **and with the screening's measurement protocol**
-$\mathcal G^{\text{nominal}}_{\text{screen}}$ (or $\mathcal M_{\text{screen}}$) -- all before any
-calibration run. Until
-then the structural screening of A86 §74.3 is **not authorised**, and neither is any change to
-`runner.py` on its account.
+### 75.1 The shared starting material
 
-| # | what | severity | status |
-|---|---|---|---|
-| A87 | the concrete injection fixtures $\mathcal C_{D_Q}, \mathcal C_X, \mathcal C_P$, their direction fields $d_A$, and the screening measurement protocol $\mathcal G^{\text{nominal}}_{\text{screen}}$ -- everything A86 §74.6 requires before the screening may run | **P0 (interface)** | **reserved -- not yet written** |
+| element | value | rule that selects it |
+|---|---|---|
+| $W_{\text{pre}}$ | the learner state with **no overrides** at all | the only element of the set of pre-update states carrying no persistent write |
+| scene | $\kappa = 0$; tape $= (0, 0, 0)$; base option $= \min \texttt{option\_ids}()$ | canonical element of the declared scene set: each field takes its smallest admissible value |
+| horizon | the canonical scene's own episode length | produced by the environment, not chosen |
+
+The scene is a $U_2$ unit, so its tape enters by the full assignment $(\text{phase},
+\text{error\_flag}, \text{cause\_rank})$ as A86 §74.1 requires.
+
+### 75.2 The three canaries
+
+**$\mathcal C_{D_Q}$ — the decision canary.** The witness is the **decision situation of the
+canonical decision context**: the lexicographically first element $x^*$ of the enumerated
+$\operatorname{dom}(\texttt{QReferenceView})$, whose canonical admissible action is the first action
+of its row. The edit is
+
+$$\Delta W^{\text{cal}}_{D_Q}:\quad
+Q^{\text{eff}}(x^*, a^*) \leftarrow \min_{a} Q^{*}(x^*, a) - 1$$
+
+— a value strictly below every reference value in that row, taken **from the frozen reference
+artifact**, never from a measurement. The witness $\xi^*_{D_Q}$ is $x^*$'s decision situation; the
+edit moves the choice at that context away from the reference's argmax, which is what the $D_Q$ read
+path (an argmax over $Q^{\text{eff}}$) is built to respond to.
+
+**$\mathcal C_X$ — the controller canary.** The witness is the **site at the canonical initial
+state**: $s^* = \texttt{State}(x = \texttt{START}_x, y = \texttt{START}_y, t = 0, \kappa = 0,
+\varphi = 0)$ with $a^{\text{cmd}} = $ the first action of that state's admissible set in the option
+in force. The edit replaces the command executed at that site:
+
+$$\Delta W^{\text{cal}}_X:\quad C_X^{L}(s^*, a^{\text{cmd}}) \leftarrow a'$$
+
+where $a'$ is the **first element of $A_z(m, s^*)$ different from $a^{\text{cmd}}$** — chosen from
+the option's own admissible set so that the kernel's contract check (A75 §62.3) admits it, and so
+that the canary is a legal learner write rather than a fault.
+
+**$\mathcal C_P$ — the process canary, and the one that decides the shape of the answer.** With
+$z_0 = \min \texttt{option\_ids}()$ and $z_1$ the next element, the witness is the
+**process-commit situation of the canonical scene**, and the edit is
+
+$$\Delta W^{\text{cal}}_P:\quad C_P^{L}(z_0) \leftarrow z_1, \qquad z_1 \neq z_0$$
+
+a **non-identity commit**. The scene's base option is $z_0$, so the in-force option is produced by
+the commit rather than given with the scene:
+
+$$z^{\text{proposal}} = z_0 \;\longrightarrow\; C_P^{L} \;\longrightarrow\; z^{\text{in-force}} = z_1
+\;\longrightarrow\; \texttt{initial\_control}(z^{\text{in-force}})$$
+
+which is exactly the edge A86 §74.4 requires the $P$ canary to traverse. A $U_1$ unit that fixes $z$
+at its entry cannot see this edit; that is the structural blindness the screening is for.
+
+### 75.3 The direction fields, and an honest limitation
+
+$$d_A \in \{+1,\ -1,\ \texttt{DIRECTION\_UNRESOLVED}\}$$
+
+is declared **from the construction alone**. For all three canaries above the construction shows that
+the *choice* changes — the edits are built to make the reference's selection move — but it does not
+show the **sign of the behavioural loss** $V_W - V_{W + \Delta W}$, which is a statement about the
+future's value and not about the selection rule. Nothing in the frozen contracts derives that sign
+without measuring, so
+
+$$\boxed{d_{D_Q} = d_X = d_P = \texttt{DIRECTION\_UNRESOLVED}}$$
+
+and A86's direction gate therefore applies **no equality test** in this screening. This is the honest
+state A86 §74.3 preserves the label for, and it has a consequence that must be stated rather than
+discovered later:
+
+$$\boxed{\text{the first screening is a rejection screen: it can report }
+\texttt{ALL\_PREREG\_UNIFIED\_REJECTED} \text{ or } \texttt{SCREENING\_INCONCLUSIVE}, \text{ but by
+construction it cannot report } \texttt{UNIFIED\_SURVIVES}}$$
+
+because that verdict requires `STRUCTURAL_PASS` on all three architectures for some candidate. A
+later amendment may declare directions if it can derive them structurally; until then, a survivor is
+reported as inconclusive rather than promoted. Nothing here is repaired by measuring first, and
+nothing here is a defect of the method: it is what the method says when the directions are not known.
+
+### 75.4 The projections, and the nominal screening protocol
+
+Each candidate projects each witness through its own $g_U$ (A86 §74.1), and a projection that is
+undefined is a coverage `BLIND`:
+
+$$g_{U_1}(\xi_A^*) = \text{the decision triple } (s, z, m) \text{ of } \xi_A^*, \qquad
+g_{U_2}(\xi_A^*) = \text{the evaluation scene unit } (\kappa, \text{tape}, \text{base option})$$
+
+For $\mathcal C_{D_Q}$ both are defined by construction. For $\mathcal C_X$ and $\mathcal C_P$ the
+projections are *declared here as rules* and their definedness is exactly what the screening is asked
+to establish — that is the coverage clause, not a fact this section may assume.
+
+$$\boxed{\mathcal M_{\text{screen}}:\ \text{the nominal schedule is the canonical scene's own
+per-step index sequence, and } V \text{ is measured by the audited environment}}$$
+
+This is the measurement protocol, **not** unit identity (A86 §74.1): it is a nominal test schedule,
+it is not the final $\mathcal G_{\text{ckpt}}$, and when that grid is frozen the screening is re-run
+against it before any conclusion travels.
+
+### 75.5 What a freeze of this section would and would not authorise
+
+$$\boxed{\text{A87 frozen} \;\Longrightarrow\; \text{the seedless structural screening may be run
+once}}$$
+
+and it authorises nothing else: no B2 scientific seed, no smoke or development stage, no confirmatory
+run, no V0.4R, and no change to `runner.py` on the screening's account. If the screening returns
+`SCREENING_INCONCLUSIVE`, the response is a specification response — derive directions or amend the
+candidate set — not a search for a fixture that behaves better.
+
+---
 
 ## 64. Summary and what remains open
 
@@ -6024,7 +6121,8 @@ section above; the most recent is:
 | **A83** | **B2 implementation authorisation, and the boundary it does not cross**: A80's three steps are CLOSED (Step 1 `6f78949`/`3eeec3a`, reproducibility maintenance `aab5727`, Step 2 `e1c7141`/`81cb162`, Step 3 `5fcb750`/`c311b42`), so A79 §67.8's Process/Controller prerequisites are **SATISFIED** -- which authorises implementing the B2 measurement stage (`FutureConsequenceView` and its builder, the future rollout, RMST with mandatory DeficitAUC, the Collateral and Retention candidate machinery, the paired runner) and **nothing else**. $\text{implementation authorisation} \neq \text{seed authorisation}$: NO smoke, development or confirmatory seed, and no V0.4R, until the instrument's own gates close, because dev data from an unvalidated instrument is not dev data (truth leakage, arm leakage, post-update selection leakage each need a gate that can go red). §67.11's "five B1 mutation self-checks" is restated as the **measured eight-table set** (Q 14, B1 13, L0 8, L2 11, L3 11, address-domain 6, X 10, P 11) plus the $D_{patch}$ `ENCODING_ONLY` binding, since reading the historical count literally would silently drop exactly the three tables A80 added. Every open item stays open and is decided at the development stage under §67.5/§67.9/§67.10 -- the unaffected-set construction, the all-seed Retention form, $T$, $N_{\text{eval}}$, $\mathcal G_{\text{ckpt}}$, each $\Delta_{\min}$, and $N_{\text{train}}$ (which may not be named yet). Writes no code, moves no number, collects no seed. | **P0 (process)** | **frozen -- authorisation only**; further change requires a new amendment |
 | **A84** | **the DeficitAUC numerical-integration contract**: `05` §8.3 froze a continuous integral with a $1/T_{\max}$ normalisation, and B2-2's first implementation realised it as an unnormalised left-rectangle sum — wrong in the normalisation **and** in the quadrature rule, which was frozen nowhere and was therefore the implementation choosing an estimator. Frozen now: trapezoidal integration on the real episode grid, $\mathrm{DeficitAUC} = \frac{1}{T_{\max}}\sum_i \frac{d_i+d_{i+1}}{2}(t_{i+1}-t_i)$ with $d_i=[V_{\text{pre}}-V_{t_i}]_+$, on the grounds of assumption-minimality (linear interpolation between adjacent observations, rather than left-hold's extra assumption that a measurement persists across its whole interval); calibrated analytically on constant and linear deficits, seedlessly. Also frozen: the curve spans the horizon ($episodes[0]=0$, $episodes[-1]=T_{\max}$, $0\le t_i\le T_{\max}$), a short curve is refused rather than padded, and a recovery window completing past $T_{\max}$ does not qualify. Terminology: the per-seed $\min(\tau,T_{\max})$ is `restricted_time`, **not** RMST, which is the cross-seed expectation and belongs to B2-4. Re-opens no A79 endpoint, sets no design quantity, collects no seed. | **P0 (numerics)** | **frozen -- clarification only**; further change requires a new amendment |
 | **A85** | **the behavioural measurement contract for future performance**: A79 §67.4 froze `BehavioralCollateral` and its unaffected set's four properties but no executable $c \mapsto V_W(c)$, and B2-4 filled the gap with an adapter mapping a context coordinate onto a temporal reward index. Frozen here as **properties**: measured by the audited environment rather than assembled by an adapter; pre from the raw pre-update state and post from each arm's own post-update state; one shared evaluation scene and CRN draw, so a difference can only come from $\Delta W$; a closed nominal measurement $V_W: U_{\text{unaffected}} \to \mathbb R_{\text{finite}}$ refusing missing **and** extra units, never an arbitrary callable; behaviourally load-bearing for every architecture without deciding that one unit type carries all three; and calibrated on synthetic injected spillover **per architecture**, because correct types can still be structurally blind. Also records that $V_{\text{pre}}$ is already frozen by `11` §12.3 and §13 item 13 (measured on $Q^{*}$, same $N_{\text{eval}}$ and evaluation scenes, shipped in the reference artifact, never re-measured) and that $V_{\text{pre}} \neq V_{\text{unaffected,pre}}$ despite the shared word. It **poses without answering** whether the evaluation unit is a unified scene domain or architecture-specific domains, naming the $P$ counterexample that decides it ($z^{\text{proposal}} \to z^{\text{in-force}}$ cannot be seen from a context that already fixes $z$). Chooses no candidate, sets no design quantity, collects no seed, writes no code, and **does not authorise implementation to choose the evaluation unit**: the unified-vs-architecture-specific decision is the next specification question, to be settled by a seedless structural/calibration study (inject known spillover per architecture, keep the $P$ counterexample as canary, discard a candidate that is structurally blind). | **P0 (interface)** | **frozen -- properties only; evaluation unit unresolved; further change requires a new amendment** |
-| **A86** | **the evaluation-unit structural screening method**: A85 left one question open (a **unified** evaluation scene domain or **architecture-specific** domains) and A86 freezes the **method** of screening it, explicitly **not** authorising calibration --- the concrete canaries are A87's, and until they are frozen the screening may not be run. Pre-registers $\mathcal U^{\text{pre}}_{\text{unified}} = \{U_1, U_2\}$ with a **deterministic projection** $g_U$ from a semantic witness to a unit: $U_1$ = the decision triple $(s,z,m)$; $U_2$ = an **evaluation scene unit** whose closed field surface is $(\kappa, \text{tape}, \text{base option})$, the tape entering by its full frozen assignment $(\text{phase}, \text{error\_flag}, \text{cause\_rank})$ and the scene entered upstream of $C_P^L$ so $z^{\text{in-force}}$ is produced during evaluation. Units are **pre-constructed and arm-blind** (what is post-update is the measurement, never the unit's identity); a standalone $\varphi$ is not a field, since the kernel reads `tape`; and the reference view is a **measurement-instrument dependency, not identity**, because the wider artifact carries a $V_{\text{pre}}$ whose instance A85 keeps stage-dependent. The **measurement schedule is excluded from unit identity** but IS a preregistered protocol input: A87 declares $\mathcal M_{\text{screen}}$, and when the final $\mathcal G_{\text{ckpt}}$ is frozen the screening is re-run before any conclusion travels. The shared object across candidates is the **semantic witness** $\xi_A^*$, not a representation: each candidate projects it, and $g_U(\xi) = \varnothing$ is a coverage `BLIND`. The direction has exactly **one** field: **status-typed** $d_A \in \{+1, -1, \texttt{DIRECTION\_UNRESOLVED}\}$, where a numeric $d_A$ is the independently declared expected direction and `DIRECTION_UNRESOLVED` is the explicit no-direction state; the gate reads that field and applies no equality test when it is unresolved. A cell's status is a single-valued, priority-ordered function of (coverage, detection, $d_A$, measured direction): `BLIND` first if coverage or detection fails, since a direction cannot be judged where nothing was seen; then `DIRECTION_UNRESOLVED` if $d_A$ is unresolved; then `STRUCTURAL_PASS` or `DIRECTION_FAIL` by the measured direction. $\texttt{STRUCTURAL\_REJECT} = \{\texttt{BLIND}, \texttt{DIRECTION\_FAIL}\}$, and `DIRECTION_UNRESOLVED` is neither a pass nor a rejection. Three conclusions, not two: `UNIFIED_SURVIVES` if some preregistered candidate passes all three; `ALL_PREREG_UNIFIED_REJECTED` if every one is structurally rejected --- which triggers architecture-specific specification but is **not** a proof that no unified domain exists; and otherwise **`SCREENING_INCONCLUSIVE`**, because an unresolved cell is neither a pass nor a rejection and must not become a trigger by omission. Detectability remains necessary but not sufficient, so a survivor is admissible rather than selected and $U_3$ is not conditional on structural rejection alone. Chooses no unit, runs nothing, authorises no seed. | **P0 (interface)** | **draft -- awaiting review; not yet frozen** |
+| **A86** | **the evaluation-unit structural screening method**: A85 left one question open (a **unified** evaluation scene domain or **architecture-specific** domains) and A86 freezes the **method** of screening it, explicitly **not** authorising calibration --- the concrete canaries are A87's, and until they are frozen the screening may not be run. Pre-registers $\mathcal U^{\text{pre}}_{\text{unified}} = \{U_1, U_2\}$ with a **deterministic projection** $g_U$ from a semantic witness to a unit: $U_1$ = the decision triple $(s,z,m)$; $U_2$ = an **evaluation scene unit** whose closed field surface is $(\kappa, \text{tape}, \text{base option})$, the tape entering by its full frozen assignment $(\text{phase}, \text{error\_flag}, \text{cause\_rank})$ and the scene entered upstream of $C_P^L$ so $z^{\text{in-force}}$ is produced during evaluation. Units are **pre-constructed and arm-blind** (what is post-update is the measurement, never the unit's identity); a standalone $\varphi$ is not a field, since the kernel reads `tape`; and the reference view is a **measurement-instrument dependency, not identity**, because the wider artifact carries a $V_{\text{pre}}$ whose instance A85 keeps stage-dependent. The **measurement schedule is excluded from unit identity** but IS a preregistered protocol input: A87 declares $\mathcal M_{\text{screen}}$, and when the final $\mathcal G_{\text{ckpt}}$ is frozen the screening is re-run before any conclusion travels. The shared object across candidates is the **semantic witness** $\xi_A^*$, not a representation: each candidate projects it, and $g_U(\xi) = \varnothing$ is a coverage `BLIND`. The direction has exactly **one** field: **status-typed** $d_A \in \{+1, -1, \texttt{DIRECTION\_UNRESOLVED}\}$, where a numeric $d_A$ is the independently declared expected direction and `DIRECTION_UNRESOLVED` is the explicit no-direction state; the gate reads that field and applies no equality test when it is unresolved. A cell's status is a single-valued, priority-ordered function of (coverage, detection, $d_A$, measured direction): `BLIND` first if coverage or detection fails, since a direction cannot be judged where nothing was seen; then `DIRECTION_UNRESOLVED` if $d_A$ is unresolved; then `STRUCTURAL_PASS` or `DIRECTION_FAIL` by the measured direction. $\texttt{STRUCTURAL\_REJECT} = \{\texttt{BLIND}, \texttt{DIRECTION\_FAIL}\}$, and `DIRECTION_UNRESOLVED` is neither a pass nor a rejection. Three conclusions, not two: `UNIFIED_SURVIVES` if some preregistered candidate passes all three; `ALL_PREREG_UNIFIED_REJECTED` if every one is structurally rejected --- which triggers architecture-specific specification but is **not** a proof that no unified domain exists; and otherwise **`SCREENING_INCONCLUSIVE`**, because an unresolved cell is neither a pass nor a rejection and must not become a trigger by omission. Detectability remains necessary but not sufficient, so a survivor is admissible rather than selected and $U_3$ is not conditional on structural rejection alone. Chooses no unit, runs nothing, authorises no seed. | **P0 (interface)** | **frozen -- method only; A87 required before screening** |
+| **A87** | **the concrete injection fixtures and the nominal screening protocol**: every fixture is selected by a **deterministic rule over a declared structurally valid set** -- the canonical (lexicographically first) element -- so a canary that screens badly is a scientific result rather than a reason to pick another address; **no measurement was consulted** to choose anything. Fixes the shared material ($W_{\text{pre}}$ with no overrides; the canonical scene $\kappa=0$, tape $(0,0,0)$, base option $\min \texttt{option\_ids}()$), and the three canaries: $\mathcal C_{D_Q}$ sets the canonical context's canonical action to $\min_a Q^{*}(x^*,a) - 1$ (values from the frozen reference artifact); $\mathcal C_X$ replaces the canonical site's command with the first **admissible** alternative in $A_z(m,s^*)$ so the write is legal rather than a fault; $\mathcal C_P$ sets $C_P^{L}(z_0) \leftarrow z_1 \neq z_0$, a **non-identity commit**, so the scene's base option $z_0$ reaches the in-force option only through the commit edge. Declares $d_{D_Q} = d_X = d_P = \texttt{DIRECTION\_UNRESOLVED}$, because the construction shows the *choice* moves but never the **sign of the behavioural loss**; A86's direction gate therefore applies no equality test, and consequently the first screening is a **rejection screen** -- it can return `ALL_PREREG_UNIFIED_REJECTED` or `SCREENING_INCONCLUSIVE` but cannot by construction return `UNIFIED_SURVIVES`. The projections $g_{U_1}, g_{U_2}$ are declared as rules, with definedness for the X and P witnesses being exactly what the coverage clause is asked to establish. $\mathcal M_{\text{screen}}$ is the canonical scene's own per-step index sequence, measured by the audited environment: the protocol, not unit identity. Freezing A87 authorises **one** seedless screening run and nothing else. | **P0 (interface)** | **draft -- awaiting review; not yet frozen** |
 
 ---
 
