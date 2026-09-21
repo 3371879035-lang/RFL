@@ -5557,6 +5557,152 @@ exists so that the realisation is a decision on the record rather than one insid
 
 ---
 
+## 73. A85 — the behavioural measurement contract for future performance
+
+A79 §67.4 froze `BehavioralCollateral` as **future behavioural spillover**, and froze four properties
+of its unaffected set (truth-blind, arm-blind, pre-update, one set per scene across paired arms). It
+did **not** freeze an executable measurement interface $c \mapsto V_W(c)$, and B2-4's first closure
+attempt filled that gap with an adapter:
+
+$$V_W(c) \;=\; \text{rewards}\big[\,c.\text{state}.x \bmod \#\text{rewards}\,\big]$$
+
+which maps a **context** coordinate onto an index of a **temporal** reward array. The type is
+plausible and the science is not: nothing about where a decision context sits in $x$ says which
+episode reward measures the behaviour at that context. This amendment replaces that with a contract,
+and it deliberately **chooses no unaffected-set candidate**: which construction is primary stays a
+development-stage decision under §67.4/A83 §71.4.
+
+### 73.1 $V_{\text{pre}}$ is already frozen, and it is not $V_{\text{unaffected,pre}}$
+
+`11-ENVIRONMENT.md` §12.3 and §13 item 13 settle the FutureUtility side: $V_{\text{pre}}$ is measured on
+$Q^{*}$ itself, at the same $N_{\text{eval}}$ and over the same evaluation scenes as the
+post-corruption checkpoints, and it ships **inside the shared, frozen, fingerprinted reference
+artifact** — it is not re-measured per run. Three consequences, all of them binding on B2:
+
+$$\boxed{V_{\text{pre}} \text{ is read from the reference artifact, and both arms read the same
+frozen value}}$$
+
+* it is **not** the pre-update learner state's value, **not** the reference arm's outcome, and
+  **not** the treatment's own post-update curve summarised as $\max|v|$ — reading a recovery target
+  off the arm's own result makes the target a function of the thing it is supposed to judge;
+* the runner may read it **before** any arm runs: the prohibition on producing a future before the
+  update governs futures that participate in *this* pairing's outcome, not a pre-corruption
+  measurement that was frozen and fingerprinted before the episode existed;
+* and **the frozen thing is the rule, not the number**. §12.3 fixes $V_{\text{pre}}$'s provenance
+  and generation rule,
+
+$$V_{\text{pre}} = \mathcal E\bigl(Q^{*};\ N_{\text{eval}},\ \mathcal S_{\text{eval}}\bigr)$$
+
+  together with "compute once, fingerprint, share by both arms, never re-measure per run".
+  **A83 §71.4 explicitly keeps $N_{\text{eval}}$ open**; and because `11` §12.3 requires
+  $V_{\text{pre}}$ and the post-corruption checkpoints to use the **same evaluation scenes**, the
+  concrete $\mathcal S_{\text{eval}}$ used to instantiate $V_{\text{pre}}$ must be fixed
+  consistently with the eventual evaluation design. **That consistency requirement is recorded here
+  by A85; it is not an already-enumerated A83 design quantity**, so the chain of attribution is
+
+$$\boxed{\text{A83 supplies the open } N_{\text{eval}}, \quad \text{§12.3 supplies the
+  same-scenes constraint}, \quad \text{A85 makes their consequence explicit}}$$
+
+  The rule and the instance are not in conflict, and reading them as one another is how an
+  instrument-validation step would instantiate a confirmatory design quantity early:
+
+$$\boxed{\text{the provenance rule is frozen} \;\neq\; \text{the final numerical instance is frozen}}$$
+
+  During instrument validation only a **nominal, fixed test artifact** may exercise the interface.
+  The confirmatory instance of $V_{\text{pre}}$ is frozen together with the chosen
+  $N_{\text{eval}}$ (A83 §71.4) and the evaluation scenes that satisfy §12.3's same-scenes
+  requirement, and from then on it is shared by both arms and never re-measured per run;
+
+* and the two "pre"s are different quantities:
+
+$$\boxed{V_{\text{pre}}\ (\text{the health reference}) \;\neq\;
+V_{\text{unaffected,pre}}\ (\text{pre-write behaviour on the unaffected set})}$$
+
+They share a word and nothing else. $V_{\text{pre}}$ comes from $Q^{*}$ through the frozen artifact
+and is architecture-independent; $V_{\text{unaffected,pre}}$ is measured on **this learner's**
+pre-update state, over the evaluation units -- the unaffected region -- the update was not supposed to touch. Merging them because both
+are called "pre" would silently replace one of the two definitions with the other.
+
+### 73.2 The measurement contract
+
+$V_W(u)$ must satisfy all of the following. **They are properties, not formulas**, and the
+executable measurement form remains **unchosen**: it requires a subsequent specification decision
+before the Collateral path in B2-4 may be closed.
+
+$$\boxed{\text{A85 freezes properties} \;\neq\; \text{A85 authorises implementation to choose
+the unit}}$$
+
+1. **Measured, not assembled.** $V_W(u)$ is behaviour the **audited environment** actually produces
+   from learner state $W$. No index, hash, modulo, resampling or other adapter may fabricate it from
+   a temporal reward array. A number whose provenance is an indexing convention is not a measurement.
+2. **Pre from the raw state, post from the arm's own state.** Every pre value is measured on the
+   **original pre-update** learner state; every post value on the post-update state of the arm it
+   describes. No post measurement may be reused as a pre, and the two arms' pre values are the same
+   measurement rather than two equal ones.
+3. **One exogenous schedule, one CRN draw.** Pre and post, reference and treatment, share the same
+   evaluation scenes and the same exogenous schedule, so a difference between two values can only
+   come from $\Delta W$. This is the same requirement the paired runner already carries, raised to
+   the measurement interface itself.
+4. **A closed nominal measurement.** The result is a closed nominal object carrying exactly
+   $\mathrm{dom} = U_{\text{unaffected}}$: a mapping from the **evaluation unit**
+   $u \in U_{\text{unaffected}}$ to a finite real, with **missing and extra units both refused**.
+
+$$\boxed{V_W: U_{\text{unaffected}} \to \mathbb R_{\text{finite}}}$$
+
+   The unit is written $u$ and **not** `context` on purpose: §73.3 has not yet decided whether the
+   unit is a decision context, and naming it here would decide by vocabulary what the next
+   specification question is supposed to settle. No arbitrary callable may stand in for the measurement, for
+   the reason A75 §62.10 and B2-2a spent two rounds establishing: a callable is a hole with a
+   signature.
+5. **Behaviourally load-bearing for every architecture.** The *interface* must be able to register a
+   behavioural effect of a write in $D_Q$, $X$ **and** $P$; it is not required that a single unit type
+   carry all three, because §73.3 has not decided that it does:
+
+$$\boxed{\text{the measurement interface must be behaviourally load-bearing for every architecture}}$$
+
+   * if the **unified** form is chosen, that one domain must be shown to register detectable effects
+     of all three architectures' writes;
+   * if **architecture-specific** domains are chosen, each domain must be load-bearing for its own
+     architecture's write, and the rule for comparing **across** architectures must be frozen
+     separately rather than assumed.
+6. **Calibrated on synthetic spillover, per architecture.** For each of $D_Q$, $X$ and $P$, a known
+   injected behavioural change in the unaffected region must be **detected** by the interface. A
+   metric whose types are all correct can still be structurally blind for one architecture, and
+   only a per-architecture calibration shows which.
+
+### 73.3 The question this amendment poses and does not answer
+
+$$\boxed{\text{what is a behavioural evaluation unit that is fair to all three architectures?}}$$
+
+The obvious candidate — "roll out from each decision context $(s, z, m)$ and take its value" — is
+**not** obviously fair, and $P$ is the witness. A $P$ update changes the process commit,
+$z^{\text{proposal}} \to z^{\text{in-force}}$, and a decision context already *fixes* $z$: an
+evaluation unit that begins at a decision context can bypass the very process edge the write acts on,
+so $P$'s real behavioural collateral could be measured as **zero** by a contract that is completely
+silent about it. If that turns out to be the case, the honest outcomes are either
+
+* a **unified evaluation scene domain** that all three architectures read through, with the property
+  in §73.2.5 demonstrated rather than assumed; or
+* **architecture-specific evaluation domains**, frozen as such, with the cross-architecture
+  comparison then carried by the unaffected-set construction rather than by a shared context type.
+
+Choosing either one now would repeat the error this amendment exists to correct: an interface
+decision taken inside an implementation. A85 therefore settles the **properties**, and the choice
+between these two forms is the next specification question — it should be attacked with the $P$
+counterexample above, not with a default.
+
+### 73.4 What this amendment does not do
+
+It does not choose an unaffected-set construction, does not name a Retention form, sets no $T$, no
+$\Delta_{\min}$, no $N_{\text{eval}}$ value and no checkpoint grid, and collects no seed. It
+re-opens nothing in A79: three dimensions, no composite primary, and the four-way verdict stand as
+frozen. It writes no code — **corrective** changes to `utility.py`, `runner.py` and the environment are made
+only after A85 is reviewed and frozen (the first closure attempt at `9bb04bf` is recorded as REVIEW
+FAIL, so "these files are untouched" is not the historical claim), and the $V_{\text{pre}}$ half of it is a **reading of `11` §12.3**, not a
+new definition.
+
+---
+
 ## 64. Summary and what remains open
 
 | # | what | severity | status |
@@ -5609,6 +5755,7 @@ section above; the most recent is:
 | **A82** | **the concrete $\Gamma$ encoding is the wire contract, and A69's index notation is not a spelling**: $\texttt{ControllerSite}_t$ is mathematical index notation while A71's concrete encoding ($\texttt{ControllerSite}_{x,y,t,a^{cmd}}$, the string `PublicSCMView.credit_unit` emits for a `ControllerFault`) is the implementation interface, so V0.3R B1's $\rho_X$ consumes **that same unit** -- with $\texttt{ControllerSite}_t$ **not** accepted as a compatibility alias (two wire spellings for one $\Gamma$ unit would reopen the ambiguity A71 closed) and $\texttt{Decision}_t$ refused (A69's two families, A76 §63.10's two images). The parsed fields are the unit's identity: $(x,y,t,a^{cmd})$ must equal the factual row's, $\kappa/\phi$ come from the row, and $\mathrm{render}(\mathrm{parse}(u)) = u$ keeps the namespace injective -- so a descriptor cannot decay into decoration. A test-only cross-layer gate resolves a method-produced unit and a hostile gate tampers with each field; production code imports no method layer. A75's chain begins at $\Gamma^\ast$, which is why this is a cross-layer interface rather than a downstream detail. Writes no science, moves no number, collects no seed. | **P0 (interface)** | **frozen -- clarification only**; further change requires a new amendment |
 | **A83** | **B2 implementation authorisation, and the boundary it does not cross**: A80's three steps are CLOSED (Step 1 `6f78949`/`3eeec3a`, reproducibility maintenance `aab5727`, Step 2 `e1c7141`/`81cb162`, Step 3 `5fcb750`/`c311b42`), so A79 §67.8's Process/Controller prerequisites are **SATISFIED** -- which authorises implementing the B2 measurement stage (`FutureConsequenceView` and its builder, the future rollout, RMST with mandatory DeficitAUC, the Collateral and Retention candidate machinery, the paired runner) and **nothing else**. $\text{implementation authorisation} \neq \text{seed authorisation}$: NO smoke, development or confirmatory seed, and no V0.4R, until the instrument's own gates close, because dev data from an unvalidated instrument is not dev data (truth leakage, arm leakage, post-update selection leakage each need a gate that can go red). §67.11's "five B1 mutation self-checks" is restated as the **measured eight-table set** (Q 14, B1 13, L0 8, L2 11, L3 11, address-domain 6, X 10, P 11) plus the $D_{patch}$ `ENCODING_ONLY` binding, since reading the historical count literally would silently drop exactly the three tables A80 added. Every open item stays open and is decided at the development stage under §67.5/§67.9/§67.10 -- the unaffected-set construction, the all-seed Retention form, $T$, $N_{\text{eval}}$, $\mathcal G_{\text{ckpt}}$, each $\Delta_{\min}$, and $N_{\text{train}}$ (which may not be named yet). Writes no code, moves no number, collects no seed. | **P0 (process)** | **frozen -- authorisation only**; further change requires a new amendment |
 | **A84** | **the DeficitAUC numerical-integration contract**: `05` §8.3 froze a continuous integral with a $1/T_{\max}$ normalisation, and B2-2's first implementation realised it as an unnormalised left-rectangle sum — wrong in the normalisation **and** in the quadrature rule, which was frozen nowhere and was therefore the implementation choosing an estimator. Frozen now: trapezoidal integration on the real episode grid, $\mathrm{DeficitAUC} = \frac{1}{T_{\max}}\sum_i \frac{d_i+d_{i+1}}{2}(t_{i+1}-t_i)$ with $d_i=[V_{\text{pre}}-V_{t_i}]_+$, on the grounds of assumption-minimality (linear interpolation between adjacent observations, rather than left-hold's extra assumption that a measurement persists across its whole interval); calibrated analytically on constant and linear deficits, seedlessly. Also frozen: the curve spans the horizon ($episodes[0]=0$, $episodes[-1]=T_{\max}$, $0\le t_i\le T_{\max}$), a short curve is refused rather than padded, and a recovery window completing past $T_{\max}$ does not qualify. Terminology: the per-seed $\min(\tau,T_{\max})$ is `restricted_time`, **not** RMST, which is the cross-seed expectation and belongs to B2-4. Re-opens no A79 endpoint, sets no design quantity, collects no seed. | **P0 (numerics)** | **frozen -- clarification only**; further change requires a new amendment |
+| **A85** | **the behavioural measurement contract for future performance**: A79 §67.4 froze `BehavioralCollateral` and its unaffected set's four properties but no executable $c \mapsto V_W(c)$, and B2-4 filled the gap with an adapter mapping a context coordinate onto a temporal reward index. Frozen here as **properties**: measured by the audited environment rather than assembled by an adapter; pre from the raw pre-update state and post from each arm's own post-update state; one shared evaluation scene and CRN draw, so a difference can only come from $\Delta W$; a closed nominal measurement $V_W: U_{\text{unaffected}} \to \mathbb R_{\text{finite}}$ refusing missing **and** extra units, never an arbitrary callable; behaviourally load-bearing for every architecture without deciding that one unit type carries all three; and calibrated on synthetic injected spillover **per architecture**, because correct types can still be structurally blind. Also records that $V_{\text{pre}}$ is already frozen by `11` §12.3 and §13 item 13 (measured on $Q^{*}$, same $N_{\text{eval}}$ and evaluation scenes, shipped in the reference artifact, never re-measured) and that $V_{\text{pre}} \neq V_{\text{unaffected,pre}}$ despite the shared word. It **poses without answering** whether the evaluation unit is a unified scene domain or architecture-specific domains, naming the $P$ counterexample that decides it ($z^{\text{proposal}} \to z^{\text{in-force}}$ cannot be seen from a context that already fixes $z$). Chooses no candidate, sets no design quantity, collects no seed, writes no code, and **does not authorise implementation to choose the evaluation unit**: the unified-vs-architecture-specific decision is the next specification question, to be settled by a seedless structural/calibration study (inject known spillover per architecture, keep the $P$ counterexample as canary, discard a candidate that is structurally blind). | **P0 (interface)** | **frozen -- properties only; evaluation unit unresolved; further change requires a new amendment** |
 
 ---
 
