@@ -34,6 +34,7 @@ from rfl_rebuild.b2.calibration import (  # noqa: E402
     predicted_spill_value,
     spillover_edit,
 )
+from rfl_rebuild.b2.collateral import measured_scene_collateral  # noqa: E402
 from rfl_rebuild.b2.environment import PRODUCTION_MODULES, audited_modules  # noqa: E402
 from rfl_rebuild.b2.unaffected import (  # noqa: E402
     REFINEMENTS,
@@ -265,25 +266,89 @@ def test_gate_a_the_predictions_are_frozen_row_reads_not_simulations(traces):
         assert spilled != pre, "the fixture's own unit must be one the edit reaches"
 
 
-def test_gate_a_the_dq_cells_fail_closed_on_a_value_neutral_site(traces):
-    r"""A89 §77.7's rule selects the lexicographically least address with a *defined* edit, and a defined
-    edit need not be a **value-moving** one. On the $D_Q$ channel the least eligible address is
-    $\texttt{QAddress}(\texttt{State}(0,2,0,0,0), z{=}2, m{=}0, a{=}3)$, where the taken action and the
-    best alternative tie: lowering the taken row changes which action the read path selects and leaves
-    the return unchanged, so the aggregate prediction is exactly zero and the cell is `CALIBRATION_FAIL`
-    -- reported, not repaired. Relocating the site or narrowing the candidate would be exactly what
-    §77.7 forbids, so the six $D_Q$ cells are recorded as uncalibrated under the frozen rule.
-    """
-    from rfl_rebuild.b2 import calibration as module
+def test_gate_a_the_measured_collateral_equals_the_aggregate_prediction(traces):
+    r"""Gate A: $\texttt{BehavioralCollateral}^{meas}_{C,A} \approx B^{ref}_{C,A}$, within G5's
+    tolerance -- equality with a prediction, not merely non-vanishing.
 
-    for name in REFINEMENTS:
-        with pytest.raises(ProtocolError) as excinfo:
-            aggregate_reference("D_Q", traces, name, solution=SOLUTION)
-        assert module.CALIBRATION_FAIL in str(excinfo.value), name
-    edit = spillover_edit("D_Q", traces, "eligible_all", solution=SOLUTION)
-    pre = predicted_pre_value("D_Q", edit.unit, solution=SOLUTION)
-    spilled = predicted_spill_value("D_Q", edit.unit, edit, traces=traces, solution=SOLUTION)
-    assert pre == pytest.approx(spilled), "the finding is a value-neutral row, not a missing edit"
+    The prediction is formed first and the measurement second; the fixture is not re-derived between
+    them, and the post state carries exactly the one substrate edit the fixture named.
+    """
+    from rfl_rebuild.b2.unaffected import build_unaffected
+
+    for channel in ("D_Q", "X", "P"):
+        for name in REFINEMENTS:
+            predicted = aggregate_reference(channel, traces, name, solution=SOLUTION)
+            units = build_unaffected(cal_site(channel), traces, name)
+            measured = measured_scene_collateral(units, LearnerPersistentState(), predicted["edit"],
+                                                 q_reference=REFERENCE)
+            assert measured["value"] == pytest.approx(predicted["B_ref"], rel=1e-6, abs=1e-12), (
+                channel, name, measured["value"], predicted["B_ref"])
+            assert predicted["B_ref"] != 0.0, "a zero prediction would be CALIBRATION_FAIL"
+            assert measured["post_overrides"] == 1, "the post state carries the fixture and nothing else"
+            # no post-hoc map editing: the reported number *is* the mean of the measured maps
+            raw = sum(measured["values_pre"][u] - measured["values_post"][u]
+                      for u in units.units) / units.size
+            assert measured["value"] == pytest.approx(raw, rel=1e-12, abs=1e-15)
+
+
+def test_gate_a_independence_the_prediction_cannot_reach_the_measurement(traces, monkeypatch):
+    r"""The `expected := measured` mutation, in the only form that can catch it.
+
+    Setting $B^{ref}$ from the measured collateral would make `measured = expected` true by construction,
+    so the defence is structural: the prediction takes no learner, no measured map and no post state, and
+    it does not move when the measurement path is broken under it.
+    """
+    import inspect
+    predicted = aggregate_reference("P", traces, "eligible_all", solution=SOLUTION)["B_ref"]
+    for function in (aggregate_reference, predicted_spill_value, predicted_pre_value):
+        parameters = inspect.signature(function).parameters
+        for forbidden in ("learner", "values_pre", "values_post", "measured", "collateral", "post"):
+            assert forbidden not in parameters, f"{function.__name__} must not take {forbidden}"
+    from rfl_rebuild.b2 import collateral as collateral_module
+
+    def _broken(*args, **kwargs):
+        raise AssertionError("the measurement path is broken")
+
+    monkeypatch.setattr(collateral_module, "measure_scene_map", _broken)
+    monkeypatch.setattr(collateral_module, "behavioral_collateral_scenes", _broken)
+    again = aggregate_reference("P", traces, "eligible_all", solution=SOLUTION)["B_ref"]
+    assert again == predicted
+
+
+def test_gate_a_a_mid_episode_edit_is_predicted_with_its_own_step_reward(traces):
+    r"""Regression for the defect this gate caught.
+
+    The first revision of `predicted_spill_value` added the successor's value but not the edited step's
+    **own** reward, so it under-predicted every mid-episode edit by exactly that reward -- and reported a
+    value-neutral $\mathcal C_{D_Q}$ site that the measurement disagreed with. The decomposition is
+    re-derived here independently, from the frozen transition:
+
+    $$V^{ref}_{\text{spill}}(u) = \text{prefix} + r(\text{edited step}) + V^{*}(\text{successor})$$
+    """
+    from rfl_rebuild.b2.calibration import _successor, _walk
+
+    for channel in ("D_Q", "X"):
+        result = aggregate_reference(channel, traces, "eligible_all", solution=SOLUTION)
+        edit = result["edit"]
+        scene = edit.unit
+        walk = _walk(traces, scene)
+        index = next(i for i, (state, control, step_result) in enumerate(walk)
+                     if (channel == "D_Q" and (state, control.z, control.m, step_result.u) == (
+                         edit.channel_address.state, edit.channel_address.z, edit.channel_address.m,
+                         edit.channel_address.a))
+                     or (channel == "X" and step_result.u == edit.channel_address.cmd
+                         and state == edit.channel_address.state))
+        state, control, _step = walk[index]
+        prefix = sum(s.reward for s in traces.trace(scene).steps[:index])
+        successor_state, successor_control, reward, terminal = _successor(
+            state, control, edit.applied_action, scene)
+        expected = prefix + reward + (0.0 if terminal else SOLUTION.value(
+            successor_state, successor_control.z, successor_control.m))
+        assert predicted_spill_value(channel, scene, edit, traces=traces,
+                                     solution=SOLUTION) == pytest.approx(expected, rel=1e-12)
+        assert predicted_spill_value(channel, scene, edit, traces=traces,
+                                     solution=SOLUTION) != predicted_pre_value(
+            channel, scene, solution=SOLUTION), "a mid-episode edit must move the value"
 
 
 def test_gate_a_and_b_and_e_are_registered_in_the_audited_chain():

@@ -271,12 +271,17 @@ def predicted_spill_value(channel: str, scene: EvaluationScene, edit: SpilloverE
             if ControllerSite(state=state, cmd=step_result.u) != edit.channel_address:
                 continue
         prefix = sum(s.reward for s in traces.trace(scene).steps[:index])
-        successor_state, successor_control, _reward, terminal = _successor(
+        successor_state, successor_control, reward, terminal = _successor(
             state, control, edit.applied_action, scene)
+        # The edited step's **own** reward is part of the value and it changes with the action: a
+        # prediction that adds only the successor's value is short by exactly that reward, which is
+        # how this module first reported a value-neutral $D_Q$ site that the measurement disagreed
+        # with. Gate A's equality requirement is what caught it.
         if terminal:
-            return float(prefix)
-        return float(prefix) + float(solution.value(successor_state, successor_control.z,
-                                                    successor_control.m))
+            return float(prefix) + float(reward)
+        return float(prefix) + float(reward) + float(solution.value(successor_state,
+                                                                    successor_control.z,
+                                                                    successor_control.m))
     return pre
 
 

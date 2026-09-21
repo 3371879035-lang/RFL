@@ -34,16 +34,22 @@ answer.
 
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass
 from typing import Callable, Mapping
 
 from rfl_rebuild.b1.errors import ProtocolError
+from rfl_rebuild.b2.environment import learned_rollout
+from rfl_rebuild.b2.unaffected import UnaffectedSet as SceneUnaffectedSet
+from rfl_rebuild.learner.store import LearnerPersistentState
 
 __all__ = [
     "CANDIDATE_CONSTRUCTIONS",
     "UNAFFECTED_CONSTRUCTIONS",
     "UnaffectedSet",
     "behavioral_collateral",
+    "behavioral_collateral_scenes",
+    "measure_scene_map",
     "select_construction",
 ]
 
@@ -160,3 +166,95 @@ def behavioral_collateral(unaffected: UnaffectedSet, *, values_pre: Mapping,
     pre = sum(float(values_pre[c]) for c in unaffected.contexts) / len(unaffected.contexts)
     post = sum(float(values_post[c]) for c in unaffected.contexts) / len(unaffected.contexts)
     return pre - post
+
+
+# --------------------------------------------------------------------------- #
+# A89 §77.8 — the same instrument, re-typed onto the surviving unit
+# --------------------------------------------------------------------------- #
+
+def behavioral_collateral_scenes(unaffected, *, values_pre: Mapping,
+                                 values_post: Mapping) -> float:
+    r"""$V_{\text{unaffected,pre}} - V_{\text{unaffected,post}}$ over **evaluation scenes**.
+
+    A89 §77.8's re-typing, and deliberately the *same* functional as
+    :func:`behavioral_collateral`: the mean of the per-unit values over exactly the set that was handed
+    in. The measurement's unit changed when the screening gave $U_2$ the survival; the definition of
+    the metric did not.
+
+    Both mappings must cover exactly the set -- a missing unit would shrink the denominator silently and
+    an extra one would import a unit the set does not contain -- and every value must be a finite real,
+    because the contract is $V_W : U \to \mathbb R_{\text{finite}}$.
+    """
+    if type(unaffected) is not SceneUnaffectedSet:
+        raise ProtocolError(
+            f"the unaffected set {unaffected!r} has type {type(unaffected).__name__}, not the "
+            "evaluation-scene UnaffectedSet; a bare container would carry no construction")
+    expected = set(unaffected.units)
+    for name, values in (("pre", values_pre), ("post", values_post)):
+        if not isinstance(values, Mapping):
+            raise ProtocolError(f"the {name}-update values are not a mapping")
+        got = set(values)
+        if got != expected:
+            extra = sorted((e.key for e in got - expected))[:3]
+            missing = sorted((e.key for e in expected - got))[:3]
+            raise ProtocolError(
+                f"the {name}-update values cover {len(got)} units but the unaffected set has "
+                f"{len(expected)} (extra {extra!r}, missing {missing!r}); the metric is defined on "
+                "exactly the set it was given")
+        for unit in unaffected.units:
+            v = values[unit]
+            if isinstance(v, bool) or not isinstance(v, (int, float)):
+                raise ProtocolError(f"the {name}-update value at {unit!r} is {v!r}, not a real number")
+            if not math.isfinite(float(v)):
+                raise ProtocolError(
+                    f"the {name}-update value at {unit!r} is {v!r}; the contract is R_finite")
+    pre = sum(float(values_pre[u]) for u in unaffected.units) / len(unaffected.units)
+    post = sum(float(values_post[u]) for u in unaffected.units) / len(unaffected.units)
+    return pre - post
+
+
+def measure_scene_map(learner, units, *, q_reference) -> dict:
+    r"""$V_W^{meas}(u)$ for every unit, through the **audited** environment.
+
+    One rollout per scene, from the learner state it is handed: the measured side of the calibration
+    reads the state, and nothing here can substitute an index, a cached value or a post-processed number
+    for a measurement.
+    """
+    if type(learner) is not LearnerPersistentState:
+        raise ProtocolError(f"the measurement reads a learner state, got {type(learner).__name__}")
+    out = {}
+    for unit in units:
+        trace = learned_rollout(learner, kappa=unit.kappa, tape=unit.tape,
+                                base_option=unit.base_option, q_reference=q_reference)
+        out[unit] = float(trace.return_value)
+    if set(out) != set(units):
+        raise ProtocolError("the measured map is not closed over the unit set")
+    return out
+
+
+def measured_scene_collateral(unaffected, learner, edit, *, q_reference) -> dict:
+    r"""The measured side of Gate A for one cell, with the edit that was frozen before it ran.
+
+    The post state is the pre state plus **that one substrate edit** and nothing else; the gate asserts
+    the override count so that "and nothing else" is checked rather than assumed.
+    """
+    from rfl_rebuild.learner.store import LearnerPersistentState as _State
+
+    if type(learner) is not _State:
+        raise ProtocolError(f"the measured side starts from a learner state, got {type(learner).__name__}")
+    post = _State()
+    post.apply_transaction([edit.substrate_edit], q_reference=q_reference)
+    values_pre = measure_scene_map(learner, unaffected.units, q_reference=q_reference)
+    values_post = measure_scene_map(post, unaffected.units, q_reference=q_reference)
+    for store, name in ((post.q_overrides, "q"), (post.controller_overrides, "controller"),
+                        (post.process_overrides, "process")):
+        if len(store) > 1:
+            raise ProtocolError(f"the post state carries more than the fixture's single edit ({name})")
+    return {
+        "value": behavioral_collateral_scenes(unaffected, values_pre=values_pre,
+                                              values_post=values_post),
+        "values_pre": values_pre,
+        "values_post": values_post,
+        "post_overrides": (len(post.q_overrides) + len(post.controller_overrides)
+                           + len(post.process_overrides)),
+    }

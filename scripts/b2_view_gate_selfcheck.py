@@ -330,7 +330,9 @@ MUTATIONS: tuple = (
         "so the caller's choice of contexts decides the number -- including a choice that leaks the "
         "visited region the set exists to exclude",
         COLLATERAL,
+        "        got = set(map(repr, values))\n"
         "        if got != expected:\n",
+        "        got = set(map(repr, values))\n"
         "        if not expected <= got:              # MUTATED: superset accepted\n",
         f"{B2_CAND_TESTS}::test_4_the_metric_is_defined_on_exactly_the_set_it_is_given",
         "DID NOT RAISE",
