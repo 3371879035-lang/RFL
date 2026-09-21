@@ -5815,7 +5815,7 @@ exactly one of:
    did not move, so the failure mode is recorded;
 2. **detection.** $\exists u \in U: V_{W+\Delta W_A^{\text{cal}}}(u) \neq V_W(u)$;
 3. **direction at the witness.** $\operatorname{sign}\bigl[V_W(u^*_{A,U}) -
-   V_{W+\Delta W_A^{\text{cal}}}(u^*_{A,U})\bigr] = s_A^{\text{expected}}$, against the constant
+   V_{W+\Delta W_A^{\text{cal}}}(u^*_{A,U})\bigr] = d_A$, against the numeric direction A87 declared
    A87 declared.
 
 $$\boxed{\text{status}(U, A) \in \{\texttt{STRUCTURAL\_PASS},\ \texttt{BLIND},\
@@ -5912,7 +5912,7 @@ A87}}$$
 
 A86 deliberately registers the fixture **schema** $\mathcal C_A$ and the projections $g_U$, and not
 the fixtures themselves: which `QAddress`, which `ControllerSite`, which process-proposal mapping,
-which $(\kappa, \text{tape}, \text{base option})$ evaluation scene and which witness each $s_A^{\text{expected}}$ describes are the
+which $(\kappa, \text{tape}, \text{base option})$ evaluation scene and which witness each $d_A$ describes are the
 instances that make a screening mean anything. Leaving them to the calibration code would be exactly
 the implementation-chooses-the-definition error this sequence exists to prevent, so
 
@@ -5957,7 +5957,7 @@ rather than only in a draft branch.
 When it is written, A87 must contain, for each $A \in \{D_Q, X, P\}$, a concrete fixture
 
 $$\mathcal C_A = \bigl(W_{\text{pre}},\ \Delta W_A^{\text{cal}},\ \xi_A^*,\
-s_A^{\text{expected}}\bigr)$$
+d_A\bigr)$$
 
 with the edit, the semantic witness and the direction field $d_A$ (numeric, or the explicit
 `DIRECTION_UNRESOLVED`) all named, with each preregistered candidate's projection image
