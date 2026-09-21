@@ -5703,6 +5703,95 @@ new definition.
 
 ---
 
+## 74. A86 — pre-registration of the evaluation-unit calibration
+
+A85 froze the measurement contract's **properties** and left exactly one question open:
+
+$$\boxed{\text{unified evaluation scene domain} \quad\text{vs}\quad \text{architecture-specific
+domains}}$$
+
+This amendment pre-registers how that question is answered, **before any calibration is run**, and
+it decides nothing about the answer. It is a specification of method: which candidates are on the
+table, what a detection has to show, and which rule turns the table into a decision.
+
+### 74.1 The candidate domains
+
+| candidate | unit $u$ | why it is on the table |
+|---|---|---|
+| $U_1$ | a decision context $(s, z, m)$ — the type B2-3's candidate machinery already uses | it is the natural "context" of the environment, and it is the suspect: it **fixes** $z$ |
+| $U_2$ | a post-update evaluation unit in which $z^{\text{in-force}}$ is an *outcome* of the learner's own process commit rather than an input | the only form that can, in principle, register a change in the $z^{\text{proposal}} \to z^{\text{in-force}}$ edge |
+| $U_3$ | architecture-specific domains, one per architecture, with the cross-architecture comparison rule frozen separately | the fallback A85 §73.3 names, admissible only if no unified candidate survives §74.4 |
+
+$U_2$ is deliberately written in terms of what it must be able to see rather than as a chosen type:
+naming its type now would decide by vocabulary what this amendment exists to test.
+
+### 74.2 The detection protocol, fixed in advance
+
+For a candidate domain $U$ and an architecture $A \in \{D_Q, X, P\}$:
+
+1. **choose the injection first.** Fix $(u^*, \delta)$ with $u^* \in U$ and $\delta$ the known
+   behavioural change, *before* measuring anything;
+2. **coverage.** $u^*$ must be inside the measurement's domain — a candidate that does not even
+   cover the injected unit has failed, not "not detected yet";
+3. **detection.** $\exists u \in U: V_{W + \Delta W_A}(u) \neq V_W(u)$ where $\Delta W_A$ is the
+   injection's update;
+4. **direction.** $\operatorname{sign}\bigl[V_W(u^*) - V_{W+\Delta W_A}(u^*)\bigr] =
+   \operatorname{sign}(\delta)$ at the injected unit, not merely somewhere;
+5. **magnitude** only where the architectures' scales are directly comparable. Where they are not,
+   the comparable part is **not** forced to a shared ratio: the frozen claim is the detectable
+   property, not a calibrated common unit.
+
+A cell that satisfies 1–4 is recorded `DETECT`; one that fails 2, 3 or 4 is recorded `BLIND`, and
+the failure mode is recorded with it, because "the domain excluded the injection" and "the metric
+did not move" are different defects.
+
+### 74.3 The $P$ canary
+
+$$\boxed{\text{the } P \text{ injection must genuinely traverse }
+z^{\text{proposal}} \to z^{\text{in-force}}}$$
+
+A $P$ evaluation that is merely a process-store write does not test the question. The canary
+injection is constructed so that its behavioural effect exists **only if** the learner's process
+commit is read by the rollout. Any candidate whose evaluation unit fixes $z$ at its entry therefore
+bypasses the edge, and — with the type correct, the state correct, the CRN shared and the value
+genuinely measured — it is still recorded
+
+$$\boxed{\texttt{STRUCTURALLY\_BLIND\_FOR\_P}}$$
+
+and eliminated. This is the cell that decides the shape of the answer, and it is why the calibration
+cannot be replaced by an argument.
+
+### 74.4 The decision rule, frozen before the table exists
+
+$$\boxed{\exists U_{\text{unified}} \text{ passing } D_Q, X, P \;\Longrightarrow\;
+\text{a unified form remains admissible}}$$
+
+$$\boxed{\forall U_{\text{unified}},\ \exists A \in \{D_Q, X, P\}: \ blind(U, A)
+\;\Longrightarrow\; \text{the unified form is eliminated by structural evidence}}$$
+
+and, explicitly:
+
+$$\boxed{\text{detectability is necessary, not automatically sufficient}}$$
+
+Detecting all three writes does not by itself select a candidate. The A85-frozen properties still
+have to hold for the survivor — closed nominal exact-domain measurement, interpretability, stability
+of the synthetic calibration, and a definable unaffected region — and §73.3's two branches are the
+only admissible outcomes. A candidate that reports a larger effect is **not** thereby preferred:
+this is an identifiability study, not a treatment-effect comparison.
+
+### 74.5 What this amendment does not do
+
+It chooses no unit, runs nothing, and authorises no seed: the calibration is a **seedless structural
+study** over synthetic injections. It sets no $T$, no $N_{\text{eval}}$, no grid, no $\Delta_{\min}$
+and no Retention form, and it changes nothing in A79 or A85.
+
+It also records the dependency that must be honoured before B2-4b: **if the chosen $u$ is not the
+decision-context type, B2-3's compatibility closure comes first** — `UnaffectedSet.contexts` and the
+`state_parity_*` / `visited_complement` candidates were closed against the old unit ontology and do
+not inherit a new one by being called candidates.
+
+---
+
 ## 64. Summary and what remains open
 
 | # | what | severity | status |
@@ -5755,7 +5844,12 @@ section above; the most recent is:
 | **A82** | **the concrete $\Gamma$ encoding is the wire contract, and A69's index notation is not a spelling**: $\texttt{ControllerSite}_t$ is mathematical index notation while A71's concrete encoding ($\texttt{ControllerSite}_{x,y,t,a^{cmd}}$, the string `PublicSCMView.credit_unit` emits for a `ControllerFault`) is the implementation interface, so V0.3R B1's $\rho_X$ consumes **that same unit** -- with $\texttt{ControllerSite}_t$ **not** accepted as a compatibility alias (two wire spellings for one $\Gamma$ unit would reopen the ambiguity A71 closed) and $\texttt{Decision}_t$ refused (A69's two families, A76 §63.10's two images). The parsed fields are the unit's identity: $(x,y,t,a^{cmd})$ must equal the factual row's, $\kappa/\phi$ come from the row, and $\mathrm{render}(\mathrm{parse}(u)) = u$ keeps the namespace injective -- so a descriptor cannot decay into decoration. A test-only cross-layer gate resolves a method-produced unit and a hostile gate tampers with each field; production code imports no method layer. A75's chain begins at $\Gamma^\ast$, which is why this is a cross-layer interface rather than a downstream detail. Writes no science, moves no number, collects no seed. | **P0 (interface)** | **frozen -- clarification only**; further change requires a new amendment |
 | **A83** | **B2 implementation authorisation, and the boundary it does not cross**: A80's three steps are CLOSED (Step 1 `6f78949`/`3eeec3a`, reproducibility maintenance `aab5727`, Step 2 `e1c7141`/`81cb162`, Step 3 `5fcb750`/`c311b42`), so A79 §67.8's Process/Controller prerequisites are **SATISFIED** -- which authorises implementing the B2 measurement stage (`FutureConsequenceView` and its builder, the future rollout, RMST with mandatory DeficitAUC, the Collateral and Retention candidate machinery, the paired runner) and **nothing else**. $\text{implementation authorisation} \neq \text{seed authorisation}$: NO smoke, development or confirmatory seed, and no V0.4R, until the instrument's own gates close, because dev data from an unvalidated instrument is not dev data (truth leakage, arm leakage, post-update selection leakage each need a gate that can go red). §67.11's "five B1 mutation self-checks" is restated as the **measured eight-table set** (Q 14, B1 13, L0 8, L2 11, L3 11, address-domain 6, X 10, P 11) plus the $D_{patch}$ `ENCODING_ONLY` binding, since reading the historical count literally would silently drop exactly the three tables A80 added. Every open item stays open and is decided at the development stage under §67.5/§67.9/§67.10 -- the unaffected-set construction, the all-seed Retention form, $T$, $N_{\text{eval}}$, $\mathcal G_{\text{ckpt}}$, each $\Delta_{\min}$, and $N_{\text{train}}$ (which may not be named yet). Writes no code, moves no number, collects no seed. | **P0 (process)** | **frozen -- authorisation only**; further change requires a new amendment |
 | **A84** | **the DeficitAUC numerical-integration contract**: `05` §8.3 froze a continuous integral with a $1/T_{\max}$ normalisation, and B2-2's first implementation realised it as an unnormalised left-rectangle sum — wrong in the normalisation **and** in the quadrature rule, which was frozen nowhere and was therefore the implementation choosing an estimator. Frozen now: trapezoidal integration on the real episode grid, $\mathrm{DeficitAUC} = \frac{1}{T_{\max}}\sum_i \frac{d_i+d_{i+1}}{2}(t_{i+1}-t_i)$ with $d_i=[V_{\text{pre}}-V_{t_i}]_+$, on the grounds of assumption-minimality (linear interpolation between adjacent observations, rather than left-hold's extra assumption that a measurement persists across its whole interval); calibrated analytically on constant and linear deficits, seedlessly. Also frozen: the curve spans the horizon ($episodes[0]=0$, $episodes[-1]=T_{\max}$, $0\le t_i\le T_{\max}$), a short curve is refused rather than padded, and a recovery window completing past $T_{\max}$ does not qualify. Terminology: the per-seed $\min(\tau,T_{\max})$ is `restricted_time`, **not** RMST, which is the cross-seed expectation and belongs to B2-4. Re-opens no A79 endpoint, sets no design quantity, collects no seed. | **P0 (numerics)** | **frozen -- clarification only**; further change requires a new amendment |
+<<<<<<< HEAD
 | **A85** | **the behavioural measurement contract for future performance**: A79 §67.4 froze `BehavioralCollateral` and its unaffected set's four properties but no executable $c \mapsto V_W(c)$, and B2-4 filled the gap with an adapter mapping a context coordinate onto a temporal reward index. Frozen here as **properties**: measured by the audited environment rather than assembled by an adapter; pre from the raw pre-update state and post from each arm's own post-update state; one shared evaluation scene and CRN draw, so a difference can only come from $\Delta W$; a closed nominal measurement $V_W: U_{\text{unaffected}} \to \mathbb R_{\text{finite}}$ refusing missing **and** extra units, never an arbitrary callable; behaviourally load-bearing for every architecture without deciding that one unit type carries all three; and calibrated on synthetic injected spillover **per architecture**, because correct types can still be structurally blind. Also records that $V_{\text{pre}}$ is already frozen by `11` §12.3 and §13 item 13 (measured on $Q^{*}$, same $N_{\text{eval}}$ and evaluation scenes, shipped in the reference artifact, never re-measured) and that $V_{\text{pre}} \neq V_{\text{unaffected,pre}}$ despite the shared word. It **poses without answering** whether the evaluation unit is a unified scene domain or architecture-specific domains, naming the $P$ counterexample that decides it ($z^{\text{proposal}} \to z^{\text{in-force}}$ cannot be seen from a context that already fixes $z$). Chooses no candidate, sets no design quantity, collects no seed, writes no code, and **does not authorise implementation to choose the evaluation unit**: the unified-vs-architecture-specific decision is the next specification question, to be settled by a seedless structural/calibration study (inject known spillover per architecture, keep the $P$ counterexample as canary, discard a candidate that is structurally blind). | **P0 (interface)** | **draft -- awaiting review; not yet frozen** |
+=======
+| **A85** | **the behavioural measurement contract for future performance**: A79 §67.4 froze `BehavioralCollateral` and its unaffected set's four properties but no executable $c \mapsto V_W(c)$, and B2-4 filled the gap with an adapter mapping a context coordinate onto a temporal reward index. Frozen here as **properties**: measured by the audited environment rather than assembled by an adapter; pre from the raw pre-update state and post from each arm's own post-update state; one shared evaluation scene and CRN draw, so a difference can only come from $\Delta W$; a closed nominal measurement $V_W: U_{\text{unaffected}} \to \mathbb R_{\text{finite}}$ refusing missing **and** extra units, never an arbitrary callable; behaviourally load-bearing for every architecture without deciding that one unit type carries all three; and calibrated on synthetic injected spillover **per architecture**, because correct types can still be structurally blind. Also records that $V_{\text{pre}}$ is already frozen by `11` §12.3 and §13 item 13 (measured on $Q^{*}$, same $N_{\text{eval}}$ and evaluation scenes, shipped in the reference artifact, never re-measured) and that $V_{\text{pre}} \neq V_{\text{unaffected,pre}}$ despite the shared word. It **poses without answering** whether the evaluation unit is a unified scene domain or architecture-specific domains, naming the $P$ counterexample that decides it ($z^{\text{proposal}} \to z^{\text{in-force}}$ cannot be seen from a context that already fixes $z$). Chooses no candidate, sets no design quantity, collects no seed, writes no code, and **does not authorise implementation to choose the evaluation unit**: the unified-vs-architecture-specific decision is the next specification question, to be settled by a seedless structural/calibration study (inject known spillover per architecture, keep the $P$ counterexample as canary, discard a candidate that is structurally blind). | **P0 (interface)** | **frozen -- properties only; evaluation unit unresolved; further change requires a new amendment** |
+| **A86** | **pre-registration of the evaluation-unit calibration**: A85 left one question open — a **unified** evaluation scene domain or **architecture-specific** domains — and A86 fixes the method of answering it without answering it. Names the candidates ($U_1$ = the decision context B2-3 already uses, and the suspect because it fixes $z$; $U_2$ = a unit in which $z^{\text{in-force}}$ is an outcome of the learner's own commit rather than an input; $U_3$ = architecture-specific domains as the fallback), fixes the detection protocol in advance (injection $(u^*, \delta)$ chosen first; coverage of $u^*$; detection; **direction** at the injected unit; magnitude only where scales are comparable, with no forced common ratio), and specifies the $P$ **canary** — an injection whose effect exists only if $z^{\text{proposal}} \to z^{\text{in-force}}$ is traversed, so a unit that fixes $z$ is recorded `STRUCTURALLY\_BLIND\_FOR\_P` and eliminated even with correct types, state, CRN and genuinely measured values. The decision rule is frozen before the table exists: a unified candidate passing all three keeps the unified form admissible; if every unified candidate is blind for some architecture the unified form is eliminated by structural evidence; and detectability is necessary but **not** sufficient (nominal closure, interpretability, calibration stability and a definable unaffected region still apply). Records the dependency that B2-3's compatibility closure precedes B2-4b if the chosen unit is not the decision-context type. Chooses no unit, runs nothing, authorises no seed, sets no design quantity. | **P0 (interface)** | **draft -- awaiting review; not yet frozen** |
+>>>>>>> 81c3e94 (docs: promote the reviewed A85 to rebuild, with its status recorded as frozen)
 
 ---
 
