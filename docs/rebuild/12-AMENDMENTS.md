@@ -5867,6 +5867,31 @@ its ancestry contains a commit made on an unresolved conflict. Promotion must re
 
 ---
 
+## 75. A87 — the injection fixtures (reserved; not yet written)
+
+A86 §74.6 fixes the boundary this section exists to fill:
+
+$$\boxed{\text{A86 freezes the screening method} \;\to\; \text{A87 freezes the canaries}
+\;\to\; \text{only then may the seedless screening run}}$$
+
+**Nothing is frozen here yet.** This heading is reserved so that A86's references to A87 are
+resolvable rather than dangling, and so that the obligation is visible in the amendment record
+rather than only in a draft branch.
+
+When it is written, A87 must contain, for each $A \in \{D_Q, X, P\}$, a concrete fixture
+
+$$\mathcal C_A = \bigl(W_{\text{pre}},\ \Delta W_A^{\text{cal}},\ \xi_A^*,\
+s_A^{\text{expected}}\bigr)$$
+
+with the edit, the semantic witness and the independently stated expected sign all named, and with
+each preregistered candidate's projection image $g_U(\xi_A^*)$ — before any calibration run. Until
+then the structural screening of A86 §74.3 is **not authorised**, and neither is any change to
+`runner.py` on its account.
+
+| # | what | severity | status |
+|---|---|---|---|
+| A87 | the concrete injection fixtures $\mathcal C_{D_Q}, \mathcal C_X, \mathcal C_P$ that A86 §74.6 requires before the screening may run | **P0 (interface)** | **reserved -- not yet written** |
+
 ## 64. Summary and what remains open
 
 | # | what | severity | status |
