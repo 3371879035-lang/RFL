@@ -6016,6 +6016,40 @@ so the scene's proposal reaches the option in force only through
 $z^{\text{proposal}} \to C_P^{L} \to z^{\text{in-force}} \to \texttt{initial\_control}$, which is the
 edge A86 §74.4 requires. A $U_1$ unit that fixes $z$ at its entry cannot see it.
 
+$\xi_A^*$ is a **cell** $(U, A)$; what a fixture injects is its projection under the candidate's
+identity map, and A86 §74.6 requires the image to be frozen **before** the run. Six cells:
+
+| cell | $g_{U_1}(\xi_A^*) = (s, z, m)$ | $g_{U_2}(\xi_A^*) = (\kappa, \text{tape}, \text{base option})$ |
+|---|---|---|
+| $D_Q$ | $(\texttt{State}(0,2,0,0,0),\ z{=}1,\ m{=}0)$ | $(0,\ (0,0,0),\ 1)$ |
+| $X$ | $(\texttt{State}(0,2,0,0,0),\ z{=}1,\ m{=}0)$ | $(0,\ (0,0,0),\ 1)$ |
+| $P$ | $(\texttt{State}(0,2,0,0,0),\ z{=}0,\ m{=}0)$ | $(0,\ (0,0,0),\ 0)$ |
+
+$\texttt{State}(0,2,0,0,0) = (x{=}0, y{=}2, t{=}0, \kappa{=}0, \phi{=}0)$ and the tape triple is
+$(\text{phase}, \texttt{error\_flag}, \texttt{cause\_rank})$. Both coordinates are **pre-update**
+projections: they are built from the scene and the frozen reference, never from anything the arm
+produced.
+
+The $P \times U_1$ image is the load-bearing one:
+
+$$\boxed{g_{U_1}(\xi_P^*) = (\texttt{START},\ z = z_0,\ m = 0), \qquad z_0 = \min \texttt{option\_ids}() = 0}$$
+
+$z_0$ is the value the scene **proposes**, not $z_1 = C_P^{L}(z_0)$, the option the arm's process law
+puts in force. Handing the continuation the post-write option would make $U_1$'s blindness to $P$ an
+artefact of the harness instead of a property of the candidate, because the entire content of
+
+$$U_1 \text{ fixes } z \text{ before the arm-specific process write can affect evaluation}$$
+
+is that the $z$ sealed into the unit's identity is the one that exists **independently of the arm
+under test**. The projection is therefore taken before the commit, by rule, as a frozen part of the
+cell rather than a choice left to the fixture builder.
+
+The degeneracy note of §75.8 is not in tension with this table: $\lvert A_z \rvert$ decides whether a
+*decision-channel injection* is admissible, while legality of an image decides whether it is a
+*member of the candidate's domain*. $(\texttt{START}, z{=}0, m{=}0)$ is legal -- it is in
+$\mathcal X_D$ by construction -- with a single admissible action, which is exactly why the $P$
+canary is injected through the process channel rather than through a decision edit.
+
 ### 75.3 The frozen scalar functional $V_W(u)$
 
 A85 froze $V_W : U_{\text{unaffected}} \to \mathbb{R}$; the audited environment returns five
@@ -6061,55 +6095,144 @@ $$\boxed{\text{continuation instrument closed} \;\Longrightarrow\; \text{the scr
 and A87's own freeze authorises nothing else: no B2 scientific seed, no smoke or development stage,
 no confirmatory run, no V0.4R, and no change to `runner.py` on the screening's account.
 
-### 75.7 The $U_1$ continuation contract
+### 75.6 The $U_1$ continuation contract
 
-To measure $V_W$ at a decision context, the instrument is
+To measure $V_W$ at a decision context the instrument is
 
 $$\boxed{(W,\ s,\ z,\ m,\ \text{exogenous continuation}) \;\longrightarrow\;
-\text{roll from that State/ControlState to terminal or } H}$$
+\text{roll from that } State/ControlState \text{ to terminal or } H}$$
 
-with three binding properties:
+with five binding properties. The first two are domain conditions: they say which inputs the
+instrument may be handed at all.
 
-1. **no second simulator.** The existing episode loop is factored into a shared **continuation
-   core**; a full rollout is `construct initial state/control` $\to$ core, and a $U_1$ measurement is
-   `given state/control` $\to$ the *same* core. Two implementations that agree are not one
-   implementation, and the gates below are what distinguish them;
-2. **no re-execution of $C_P^{L}$.** A continuation from $(s,z,m)$ takes $z$ as **already in force**:
-   it does not apply the process commit again. That is not a convenience -- $U_1$'s structural
-   blindness to $P$ *consists* in fixing $z$ at its entry, so a continuation evaluator that re-ran
-   $C_P^{L}$ would manufacture the very sensitivity A86 asks the screening to test for;
-3. **the same exogenous continuation** for pre and post measurement, so a difference between
-   $V_W$ and $V_{W+\Delta W}$ can only come from $\Delta W$ (A85 §73.2.3).
+**(i) The entry must be a legal decision context.**
 
-Seedless gates required before the screening may run:
+$$\boxed{\texttt{is\_decision\_context}(s, z, m) = \texttt{True}}$$
 
-$$\boxed{\text{continuation from } (\texttt{START},\ \texttt{initial\_control}(z))
-\;=\; \text{the ordinary rollout}}$$
+judged by the **frozen** enumerator in `env/domain.py`, which checks types first and then values
+(`is_true_int`, `is_strict_decision_state`, `M_DOMAIN`, `Z_DOMAIN`). The instrument may not carry its
+own copy of the domain: a continuation that redefined legality would be measuring a different
+environment, and a contract validated by the code that consumes it is not validated. An arbitrary
+`State`/`ControlState` pair is therefore **not** accepted -- membership in $\mathcal X_D$ is required,
+which is also what makes the image table of §75.2 well defined.
 
-$$\boxed{\text{continuation from a context the healthy path visited}
-\;=\; \text{that rollout's suffix from the same point}}$$
+**(ii) The exogenous continuation must be consistent with the entry.**
 
-These two are what let the screening claim it measured $V_W$ with the audited environment rather
-than with a second one.
+$$\boxed{\texttt{tape.phase} = s.\phi, \qquad \kappa = s.\kappa}$$
 
-### 75.8 Status of the three canaries at freeze
+The kernel **derives** the episode's phase from the tape rather than sampling it separately, so a
+continuation carrying $\texttt{State}(\phi{=}0)$ together with a tape whose phase is $3$ describes a
+suffix the frozen environment cannot produce. The tape is drawn once per episode, so this is a single
+equality, not a per-step one. The $\kappa$ agreement is the same principle applied to the other
+exogenous coordinate, stated rather than assumed because both the state and the setup carry it. One
+**complete** tape assignment $(\text{phase}, \texttt{error\_flag}, \texttt{cause\_rank})$ is shared by
+the pre and the post measurement (A85 §73.2.3), so a difference between $V_W$ and $V_{W + \Delta W}$
+can only come from $\Delta W$.
 
-None of the three fixtures is a measurement, and none of them fixes a direction. By construction:
+**(iii) One simulator, not two.** The episode loop is factored into a shared **continuation core**: a
+full rollout is `construct initial state/control` $\to$ core, and a $U_1$ measurement is `given
+state/control` $\to$ the *same* core. Two implementations that agree are still two implementations,
+and gates G1--G3 below are what distinguish agreement from identity.
 
-* **coverage** holds for all three -- each fixture is applied to a scene whose structure makes the
-  relevant quantity reachable, which is exactly what the per-canary valid set of §75.1 encodes;
-* **detection** is not asserted here but inherited from the frozen B1 mutation self-checks, which
-  already kill this class of override;
-* **direction** is unresolved for all three:
+**(iv) No re-execution of $C_P^{L}$.** A continuation from $(s,z,m)$ takes $z$ as **already in force**
+and does not apply the process commit again. This is not a convenience: $U_1$'s structural blindness
+to $P$ *consists* in fixing $z$ at its entry, so a continuation that re-ran $C_P^{L}$ would
+manufacture the sensitivity the screening is supposed to test for, and could only ever "detect" it.
 
-$$\boxed{d_{D_Q} \;=\; d_X \;=\; d_P \;=\; \texttt{DIRECTION\_UNRESOLVED}}$$
+**(v) One complete tape assignment for pre and post**, as fixed in (ii); listed separately because it
+is the property that makes a difference interpretable.
 
-because the sign of a difference between $V_W$ and $V_{W + \Delta W^{\text{cal}}}$ depends on the
-measured exogenous consequence, which no static argument can settle. The first screening is
-therefore a **rejection screen**: it can produce `STRUCTURAL_REJECT` or `SCREENING_INCONCLUSIVE`,
-and `UNIFIED_SURVIVES` is unreachable on it.
+**The equivalence gates.** A87@8c16deb stated a single equality,
+`continuation(START, initial_control(z)) == ordinary rollout`, which is **false as written** for an
+arbitrary $W$: the ordinary rollout runs
+$z^{\text{proposal}} \to C_P^{L} \to z^{\text{in-force}} \to \texttt{initial\_control}$, while the
+continuation deliberately does not run $C_P^{L}$, so for a $W$ with $C_P^{L}(z_0) = z_1$ the two begin
+from different options and *should* differ. It is replaced by two equivalence gates and a poison gate:
 
-### 75.6 Review record: the draft's DQ and X canaries are structurally degenerate
+$$\boxed{\text{G1 (refactor equivalence): for } W \text{ with no process override, }
+\texttt{continuation}(\texttt{START}, \texttt{initial\_control}(z_0)) = \text{ordinary rollout}}$$
+
+$$\boxed{\text{G2 (decomposition equivalence): }
+\texttt{continuation}(\texttt{START}, \texttt{ControlState}(z^{\text{in-force}}, 0))
+= \text{ordinary rollout from the post-commit state onward}, \qquad
+z^{\text{in-force}} = C_P^{L}(z_0)}$$
+
+$$\boxed{\text{G3 ($P$-poison): a process override that would change } z
+\text{ must not be read by the continuation}}$$
+
+G1 is the healthy case and is what licenses replacing the episode entry with the core. G2 is the
+general case and is what licenses reading a continuation as *the suffix* of an ordinary rollout:
+without it, $V_W$ measured by continuation and $V_W$ measured inside a rollout would be two
+quantities. G3 is what makes (iv) more than a comment -- a $C_P^{L}$ override is planted whose
+application would change the option in force at entry, and the continuation's result must be
+**identical** to its result without the poison, while the paired ordinary rollout under the same
+poison **must** differ. The second half is what proves the poison is live, so the gate can fail.
+
+All three are **seedless instrument gates**: frozen tape, common random numbers, no B2 scientific
+seed, and no candidate is evaluated. They run once A87 is frozen and before the screening; passing
+them is a statement about the instrument, never about $U_1$ or $U_2$.
+
+
+### 75.7 What is known before the screening
+
+Coverage and detection are **cell-level**, and there are $2 \times 3 = 6$ cells, so the status of "the
+canaries" is not one statement. Before the screening runs:
+
+| cell | coverage | detection | direction |
+|---|---|---|---|
+| $D_Q \times U_1$ | PASS (static) | not frozen | `DIRECTION_UNRESOLVED` |
+| $D_Q \times U_2$ | PASS (static) | not frozen | `DIRECTION_UNRESOLVED` |
+| $X \times U_1$ | PASS (static) | not frozen | `DIRECTION_UNRESOLVED` |
+| $X \times U_2$ | PASS (static) | not frozen | `DIRECTION_UNRESOLVED` |
+| $P \times U_1$ | PASS (static) | **false by contract** | `DIRECTION_UNRESOLVED` |
+| $P \times U_2$ | PASS (static) | not frozen | `DIRECTION_UNRESOLVED` |
+
+**Coverage is frozen PASS for all six, and it is a representation property, not a measurement**: each
+image $g_U(\xi_A^*)$ of §75.2 is checked against the candidate's nominal domain by the frozen
+validators. It must not be argued from reachability of the canary scene -- a structurally reachable
+scene does not make $g_U(\xi_A^*)$ a legal member of the candidate's domain, and coverage asks the
+latter.
+
+**Detection is not frozen by A87, and is not inherited from B1.** B1's mutation self-checks establish
+that $\Delta W_A \neq 0$ and that the persistent channel and its read path are mechanically
+load-bearing: they license $\Delta W^{\text{cal}}_A$ as a **legal persistent edit** under the frozen
+substrate, type and read-path contract. They do not license a behavioural verdict, because A86's
+detection proposition is
+
+$$\exists u:\ V_{W + \Delta W^{\text{cal}}_A}(u) \neq V_W(u)$$
+
+which is a B2 measurement, and it is a measurement under a **newly frozen** functional: B1 cannot have
+tested movement of the return-to-go of §75.3 under these three specific canaries. Asserting detection
+here would decide the screening before it runs; detection is exactly what the authorised structural
+screening measures, for five of the six cells.
+
+**The exception is $P \times U_1$, and it is structural.** By (iv) of §75.6 a $U_1$ evaluation fixes
+$z$ at its entry while the $P$ edit acts on the commit edge, so no read path from the edit into the
+evaluation exists; a difference requires a channel, so $\lnot$detection follows from the frozen
+continuation contract rather than from a measurement. Hence $P \times U_1$ is `BLIND` and is a
+**cell-level** `STRUCTURAL_REJECT`, and $U_1$ already carries at least one rejected cell. This stops
+being prose only once gate **G3** of §75.6 passes: until then the absence of a read is a claim about
+code rather than a verified property of the instrument.
+
+**Direction is unresolved in all three architectures**, because the sign of
+$V_{W + \Delta W^{\text{cal}}} - V_W$ depends on the measured exogenous consequence and no static
+argument settles it:
+
+$$\boxed{d_{D_Q} = d_X = d_P = \texttt{DIRECTION\_UNRESOLVED}}$$
+
+**Consequences for the aggregate.** Since every $d_A$ is `DIRECTION_UNRESOLVED`, `UNIFIED_SURVIVES` is
+unreachable on this screening. The rest is not frozen here and the other five cells are not
+pre-judged: if $U_2$ detects on all three architectures those cells are unresolved rather than failed
+and the aggregate is `SCREENING_INCONCLUSIVE`, while if $U_2$ has at least one detection failure the
+aggregate is `ALL_PREREG_UNIFIED_REJECTED`. So
+
+$$\text{first screening} \in \{\texttt{ALL\_PREREG\_UNIFIED\_REJECTED},\ \texttt{SCREENING\_INCONCLUSIVE}\}$$
+
+Note the vocabulary: `STRUCTURAL_REJECT` is a **cell-level** category while A86 §74.3's aggregate
+verdicts are the three above. A87@8c16deb used the two interchangeably; this is the correction.
+
+
+### 75.8 Review record (history): the draft's DQ and X canaries are structurally degenerate
 
 Recorded as **measured structural facts**, obtained by reading the frozen kernel and the frozen
 reference artifact only -- no pre/post behaviour was measured, and no screening was run. They
@@ -6240,7 +6363,7 @@ section above; the most recent is:
 | **A84** | **the DeficitAUC numerical-integration contract**: `05` §8.3 froze a continuous integral with a $1/T_{\max}$ normalisation, and B2-2's first implementation realised it as an unnormalised left-rectangle sum — wrong in the normalisation **and** in the quadrature rule, which was frozen nowhere and was therefore the implementation choosing an estimator. Frozen now: trapezoidal integration on the real episode grid, $\mathrm{DeficitAUC} = \frac{1}{T_{\max}}\sum_i \frac{d_i+d_{i+1}}{2}(t_{i+1}-t_i)$ with $d_i=[V_{\text{pre}}-V_{t_i}]_+$, on the grounds of assumption-minimality (linear interpolation between adjacent observations, rather than left-hold's extra assumption that a measurement persists across its whole interval); calibrated analytically on constant and linear deficits, seedlessly. Also frozen: the curve spans the horizon ($episodes[0]=0$, $episodes[-1]=T_{\max}$, $0\le t_i\le T_{\max}$), a short curve is refused rather than padded, and a recovery window completing past $T_{\max}$ does not qualify. Terminology: the per-seed $\min(\tau,T_{\max})$ is `restricted_time`, **not** RMST, which is the cross-seed expectation and belongs to B2-4. Re-opens no A79 endpoint, sets no design quantity, collects no seed. | **P0 (numerics)** | **frozen -- clarification only**; further change requires a new amendment |
 | **A85** | **the behavioural measurement contract for future performance**: A79 §67.4 froze `BehavioralCollateral` and its unaffected set's four properties but no executable $c \mapsto V_W(c)$, and B2-4 filled the gap with an adapter mapping a context coordinate onto a temporal reward index. Frozen here as **properties**: measured by the audited environment rather than assembled by an adapter; pre from the raw pre-update state and post from each arm's own post-update state; one shared evaluation scene and CRN draw, so a difference can only come from $\Delta W$; a closed nominal measurement $V_W: U_{\text{unaffected}} \to \mathbb R_{\text{finite}}$ refusing missing **and** extra units, never an arbitrary callable; behaviourally load-bearing for every architecture without deciding that one unit type carries all three; and calibrated on synthetic injected spillover **per architecture**, because correct types can still be structurally blind. Also records that $V_{\text{pre}}$ is already frozen by `11` §12.3 and §13 item 13 (measured on $Q^{*}$, same $N_{\text{eval}}$ and evaluation scenes, shipped in the reference artifact, never re-measured) and that $V_{\text{pre}} \neq V_{\text{unaffected,pre}}$ despite the shared word. It **poses without answering** whether the evaluation unit is a unified scene domain or architecture-specific domains, naming the $P$ counterexample that decides it ($z^{\text{proposal}} \to z^{\text{in-force}}$ cannot be seen from a context that already fixes $z$). Chooses no candidate, sets no design quantity, collects no seed, writes no code, and **does not authorise implementation to choose the evaluation unit**: the unified-vs-architecture-specific decision is the next specification question, to be settled by a seedless structural/calibration study (inject known spillover per architecture, keep the $P$ counterexample as canary, discard a candidate that is structurally blind). | **P0 (interface)** | **frozen -- properties only; evaluation unit unresolved; further change requires a new amendment** |
 | **A86** | **the evaluation-unit structural screening method**: A85 left one question open (a **unified** evaluation scene domain or **architecture-specific** domains) and A86 freezes the **method** of screening it, explicitly **not** authorising calibration --- the concrete canaries are A87's, and until they are frozen the screening may not be run. Pre-registers $\mathcal U^{\text{pre}}_{\text{unified}} = \{U_1, U_2\}$ with a **deterministic projection** $g_U$ from a semantic witness to a unit: $U_1$ = the decision triple $(s,z,m)$; $U_2$ = an **evaluation scene unit** whose closed field surface is $(\kappa, \text{tape}, \text{base option})$, the tape entering by its full frozen assignment $(\text{phase}, \text{error\_flag}, \text{cause\_rank})$ and the scene entered upstream of $C_P^L$ so $z^{\text{in-force}}$ is produced during evaluation. Units are **pre-constructed and arm-blind** (what is post-update is the measurement, never the unit's identity); a standalone $\varphi$ is not a field, since the kernel reads `tape`; and the reference view is a **measurement-instrument dependency, not identity**, because the wider artifact carries a $V_{\text{pre}}$ whose instance A85 keeps stage-dependent. The **measurement schedule is excluded from unit identity** but IS a preregistered protocol input: A87 declares $\mathcal M_{\text{screen}}$, and when the final $\mathcal G_{\text{ckpt}}$ is frozen the screening is re-run before any conclusion travels. The shared object across candidates is the **semantic witness** $\xi_A^*$, not a representation: each candidate projects it, and $g_U(\xi) = \varnothing$ is a coverage `BLIND`. The direction has exactly **one** field: **status-typed** $d_A \in \{+1, -1, \texttt{DIRECTION\_UNRESOLVED}\}$, where a numeric $d_A$ is the independently declared expected direction and `DIRECTION_UNRESOLVED` is the explicit no-direction state; the gate reads that field and applies no equality test when it is unresolved. A cell's status is a single-valued, priority-ordered function of (coverage, detection, $d_A$, measured direction): `BLIND` first if coverage or detection fails, since a direction cannot be judged where nothing was seen; then `DIRECTION_UNRESOLVED` if $d_A$ is unresolved; then `STRUCTURAL_PASS` or `DIRECTION_FAIL` by the measured direction. $\texttt{STRUCTURAL\_REJECT} = \{\texttt{BLIND}, \texttt{DIRECTION\_FAIL}\}$, and `DIRECTION_UNRESOLVED` is neither a pass nor a rejection. Three conclusions, not two: `UNIFIED_SURVIVES` if some preregistered candidate passes all three; `ALL_PREREG_UNIFIED_REJECTED` if every one is structurally rejected --- which triggers architecture-specific specification but is **not** a proof that no unified domain exists; and otherwise **`SCREENING_INCONCLUSIVE`**, because an unresolved cell is neither a pass nor a rejection and must not become a trigger by omission. Detectability remains necessary but not sufficient, so a survivor is admissible rather than selected and $U_3$ is not conditional on structural rejection alone. Chooses no unit, runs nothing, authorises no seed. | **P0 (interface)** | **frozen -- method only; A87 required before screening** |
-| **A87** | **the concrete injection fixtures, the scalar functional, and the $U_1$ continuation contract**: a canonical rule applied **inside each canary's structurally valid set** rather than to the whole environment, because the shared minimal scene was measured degenerate for two of them -- $\mathcal C_{D_Q}$ takes the canonical multi-action context $(\texttt{State}(0,2,0), z{=}1, m{=}0)$ with row $\{3{:}0.88, 4{:}0.86\}$ and lowers the argmax to $\min_a Q^{*}-1 = -0.14 < 0.86$, moving the selection structurally; $\mathcal C_X$ takes the healthy path's first multi-action site with the command the learner **actually sends**, $\texttt{ControllerSite}(s^*,3) \leftarrow 4$ inside $A_z$; $\mathcal C_P$ keeps $C_P^{L}(z_0) \leftarrow z_1 \neq z_0$ with base option $z_0$, forcing the commit edge. Freezes the scalar functional $V_W(u) = \sum_{j=t(u)}^{T_F-1} r_j$ -- undiscounted return-to-go from the unit's entry point, reward mode A, to termination or $H=12$ -- so one definition serves both candidates, and freezes the protocol as **one rollout or continuation, no checkpoint grid**, removing the within-episode-step-versus-episode-index conflation. Declares $d_{D_Q} = d_X = d_P = \texttt{DIRECTION\_UNRESOLVED}$ from construction alone, so the first screening is a rejection screen. Adds the middle step in the authorisation chain: A87 frozen permits the $U_1$ continuation instrument to be implemented, and only its closure authorises the screening -- with two seedless gates proving the continuation equals the ordinary rollout, and the binding rule that a continuation from $(s,z,m)$ does **not** re-execute $C_P^{L}$, since $U_1$'s $P$-blindness consists in fixing $z$ at entry. | **P0 (interface)** | **draft -- awaiting review; not yet frozen** |
+| **A87** | **the concrete injection fixtures, the six projection images, the scalar functional, and the $U_1$ continuation contract**: a canonical rule applied **inside each canary's structurally valid set** rather than to the whole environment, because the shared minimal scene was measured degenerate for two of them -- $\mathcal C_{D_Q}$ takes the canonical multi-action context $(\texttt{State}(0,2,0,0,0), z{=}1, m{=}0)$ with row $\{3{:}0.88, 4{:}0.86\}$ and lowers the argmax to $\min_a Q^{*}-1 = -0.14 < 0.86$, moving the selection structurally; $\mathcal C_X$ takes the healthy path's first multi-action site with the command the learner **actually sends**, $\texttt{ControllerSite}(s^*,3) \leftarrow 4$ inside $A_z$; $\mathcal C_P$ keeps $C_P^{L}(z_0) \leftarrow z_1 \neq z_0$ with base option $z_0$. Freezes all **six projection images** $g_U(\xi_A^*)$, with the load-bearing cell $g_{U_1}(\xi_P^*) = (\texttt{START}, z{=}z_0{=}0, m{=}0)$ taken **pre-update**, so the $z$ sealed into $U_1$'s identity is the scene's proposal rather than the arm's own post-write output. Freezes the scalar functional $V_W(u) = \sum_{j=t(u)}^{T_F-1} r_j$ -- undiscounted return-to-go from the unit's entry point, reward mode A, to termination or $H=12$ -- and the protocol as **one rollout or continuation, no checkpoint grid**. Freezes the $U_1$ continuation contract with five binding properties -- the entry must satisfy the frozen `env/domain.py` $\texttt{is\_decision\_context}$, the exogenous continuation must satisfy $\texttt{tape.phase} = s.\phi$ and $\kappa = s.\kappa$, one shared continuation core, no re-execution of $C_P^{L}$, and one complete tape assignment shared by pre and post -- and replaces the single equality of A87@8c16deb, false for arbitrary $W$, with three seedless instrument gates: G1 refactor equivalence, G2 decomposition equivalence at $z^{\text{in-force}} = C_P^{L}(z_0)$, and G3 the $P$-poison gate that makes the bypass verifiable rather than asserted. States what is known before the screening in **cell-level** terms over all six cells: coverage frozen PASS statically as a representation property of the images, **detection not frozen and not inherited from B1** (B1 licenses the legality of $\Delta W^{\text{cal}}_A$ as a persistent edit, not A86's behavioural proposition $\exists u: V_{W+\Delta W}(u) \neq V_W(u)$), all three $d_A = \texttt{DIRECTION\_UNRESOLVED}$, and $P \times U_1$ `BLIND` by the frozen no-recommit contract, so $U_1$ carries one cell-level `STRUCTURAL_REJECT`. Consequently `UNIFIED_SURVIVES` is unreachable and the first screening's aggregate lies in $\{\texttt{ALL\_PREREG\_UNIFIED\_REJECTED}, \texttt{SCREENING\_INCONCLUSIVE}\}$ -- `STRUCTURAL_REJECT` being cell-level, not an aggregate verdict. Adds the middle step in the authorisation chain: A87 frozen permits the $U_1$ continuation instrument to be implemented, and only its closure authorises the screening. | **P0 (interface)** | **draft -- awaiting review; not yet frozen** |
 
 ---
 
