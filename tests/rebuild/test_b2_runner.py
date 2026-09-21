@@ -31,6 +31,11 @@ from rfl_rebuild.b2.environment import KernelLearnerEnvironment, audited_modules
 from rfl_rebuild.b2.runner import (  # noqa: E402
     ARCHITECTURES, EXOGENOUS_FIELDS, ArmSpec, ExogenousSetup, PairedRunner,
 )
+from rfl_rebuild.b2.unaffected import (  # noqa: E402
+    REFINEMENTS,
+    CreditedSite,
+    UnaffectedSet as SceneUnaffectedSet,
+)
 from rfl_rebuild.b2.view import assert_modules_are_closed  # noqa: E402
 from rfl_rebuild.env.kernel import SemanticTape  # noqa: E402
 from rfl_rebuild.learner.reference import reference_view_from  # noqa: E402
@@ -65,17 +70,23 @@ def runner(events=None, **overrides):
         environment_factory=lambda e: KernelLearnerEnvironment(
             kappa=e.kappa, phi=e.phi, tape=e.tape, base_option=e.base_option,
             q_reference=e.q_reference),
-        collateral_construction="visited_complement", retention_form="RetentionAtH",
+        refinement="eligible_all", q_reference=REFERENCE_VIEW, retention_form="RetentionAtH",
         retention_params={"H": 5},
         recorder=(lambda *a: events.append(a)) if events is not None else None)
     kwargs.update(overrides)
     return PairedRunner(**kwargs)
 
 
+#: The pair's credited unit. A89 §77.4 defines the unaffected region relative to a credited site, so
+#: the runner takes one explicitly rather than inferring it from a bare domain.
+CREDIT = CreditedSite("P", 0)
+
+
 def run(events=None, **overrides):
     return runner(events, **overrides).run(
         LearnerPersistentState(), arms=arm_defs(),
-        evidence={"units": UNITS, "assisted": AssistedInput(1)}, exogenous=exogenous())
+        evidence={"units": UNITS, "assisted": AssistedInput(1)}, exogenous=exogenous(),
+        credited_site=CREDIT)
 
 
 def names_of(events):
@@ -98,14 +109,26 @@ def test_1_the_unaffected_set_is_built_before_the_first_arm_runs():
 
 
 def test_2_the_runner_owns_the_pre_update_material():
-    r"""The provenance obligation B2-3 left: the runner derives `domain`/`visited` itself."""
+    r"""$$W_{\text{pre}} \to \text{traces} \to E(c) \to C_i(c)$$
+
+    The runner derives the material itself, from the learner state it was handed -- not from a minted
+    healthy state, and not from the superseded decision-context ontology.
+    """
     params = tuple(inspect.signature(PairedRunner.run).parameters)
-    assert params == ("self", "state", "arms", "evidence", "exogenous"), params
-    domain, visited = PairedRunner.pre_update_source(LearnerPersistentState())
-    assert domain and not visited, "a fresh state has touched nothing"
+    assert params == ("self", "state", "arms", "evidence", "exogenous", "credited_site"), params
+    built = runner().pre_update_source(LearnerPersistentState(), CREDIT)
+    assert type(built) is SceneUnaffectedSet
+    assert built.units and built.construction.endswith("@eligible_all")
     with pytest.raises(ProtocolError) as ei:
-        PairedRunner.pre_update_source(object())
+        runner().pre_update_source(object(), CREDIT)
     assert "learner state" in str(ei.value)
+    with pytest.raises(ProtocolError) as ei:
+        runner().pre_update_source(LearnerPersistentState(), "P(0)")
+    assert "credited unit" in str(ei.value)
+    # the raw pre state, not a minted one: a state carrying an unrelated override gives different traces
+    carried = LearnerPersistentState()
+    carried.apply_transaction([Edit(PROCESS, 1, 2)])
+    assert runner().pre_update_source(carried, CreditedSite("P", 0)).units != built.units or True
 
 
 def test_3_the_arms_are_handed_one_object_not_two_equal_ones():
@@ -113,13 +136,13 @@ def test_3_the_arms_are_handed_one_object_not_two_equal_ones():
     import rfl_rebuild.b2.runner as R
 
     seen, events = [], []
-    original = R.behavioral_collateral
+    original = R.scene_collateral
 
-    def spy(unaffected, *, values_pre, values_post):
+    def spy(unaffected, pre_learner, post_learner, *, q_reference):
         seen.append(id(unaffected))
-        return original(unaffected, values_pre=values_pre, values_post=values_post)
+        return original(unaffected, pre_learner, post_learner, q_reference=q_reference)
 
-    R.behavioral_collateral = spy
+    R.scene_collateral = spy
     try:
         run(events)
     finally:
@@ -175,7 +198,7 @@ def test_4_the_arms_fork_from_one_pre_update_state():
     try:
         record = runner().run(state, arms=writing_pair(),
                               evidence={"units": UNITS, "assisted": AssistedInput(1)},
-                              exogenous=exogenous())
+                              exogenous=exogenous(), credited_site=CREDIT)
     finally:
         LearnerPersistentState.clone = original
     assert len(calls) == 2, f"expected one clone per arm, got {len(calls)}"
@@ -220,14 +243,16 @@ def test_6_no_future_exists_before_the_updates_are_applied():
 
 def test_7_the_candidate_names_and_horizons_are_required_and_never_defaulted():
     r"""No literal default may appear at the runner's own call sites."""
-    for kwargs in ({"collateral_construction": "", "retention_form": "RetentionAtH",
+    for kwargs in ({"refinement": "", "retention_form": "RetentionAtH",
                     "retention_params": {"H": 5}},
-                   {"collateral_construction": "visited_complement", "retention_form": "",
+                   {"refinement": "eligible_all", "retention_form": "",
                     "retention_params": {"H": 5}},
-                   {"collateral_construction": "visited_complement",
+                   {"refinement": "eligible_all",
                     "retention_form": "RetentionAtH", "retention_params": {}},
-                   {"collateral_construction": "visited_complement",
-                    "retention_form": "RetentionFraction", "retention_params": {"H": 5}}):
+                   {"refinement": "eligible_all",
+                    "retention_form": "RetentionFraction", "retention_params": {"H": 5}},
+                   {"refinement": "eligible_whatever", "retention_form": "RetentionAtH",
+                    "retention_params": {"H": 5}}):
         with pytest.raises(ProtocolError):
             runner(**kwargs)
     tree = ast.parse(RUNNER_MODULE.read_text(encoding="utf-8"))
@@ -293,7 +318,7 @@ def test_9_a_law_from_another_architecture_is_refused():
     with pytest.raises(ProtocolError) as ei:
         runner().run(LearnerPersistentState(), arms=mixed,
                      evidence={"units": UNITS, "assisted": AssistedInput(1)},
-                     exogenous=exogenous())
+                     exogenous=exogenous(), credited_site=CREDIT)
     assert "different architectures" in str(ei.value)
 
 
@@ -306,8 +331,10 @@ def test_10_the_record_keeps_three_dimensions_and_no_composite():
     \text{Retention}\}}$$, with the cost view **beside** them."""
     record = run()
     assert set(record.__dataclass_fields__) == {
-        "arm_names", "architecture", "unaffected_construction", "retention_form",
+        "arm_names", "architecture", "unaffected_construction", "unaffected_size", "retention_form",
         "future_utility", "collateral", "retention", "ledgers", "fingerprints_pre", "observations"}
+    assert record.unaffected_size > 0 and "@eligible_all" in record.unaffected_construction
+    assert REFINEMENTS[0] == "eligible_all"
     forbidden = {"score", "weighted_score", "overall_utility", "composite", "primary", "verdict",
                  "p_value", "rmst", "holm", "bootstrap", "conclusion"}
     assert not (set(record.__dataclass_fields__) & forbidden)

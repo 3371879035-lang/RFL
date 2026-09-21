@@ -200,13 +200,26 @@ class PreUpdateTraces:
     the learner were rebuilt between them.
     """
 
-    __slots__ = ("_traces", "_rows", "_walks")
+    __slots__ = ("_traces", "_rows", "_walks", "_learner")
 
-    def __init__(self, *, q_reference, domain=None) -> None:
+    def __init__(self, *, learner, q_reference, domain=None) -> None:
+        r"""Built from **the actual $W_{\text{pre}}$** of the pair, never from a minted healthy state.
+
+        $$\boxed{W_{\text{pre}} \to \text{traces} \to E(c)}$$
+
+        The distinction is not cosmetic. A pre-update learner may carry persistent defects of its own;
+        they change which scenes succeed, which trajectories run, and therefore which X sites are
+        consulted -- so $E(c)$, $H_{\text{pre}}$ and $\mathcal D^{\text{credit}}_X$ are all functions of the
+        learner state they were read from. A calibration harness may hand in a healthy empty state
+        explicitly, and then it is that state which is being calibrated.
+        """
+        if type(learner) is not LearnerPersistentState:
+            raise ProtocolError(
+                f"eligibility reads a pre-update learner, got {type(learner).__name__}; a minted "
+                "healthy state would answer a different question than the pair's")
         if q_reference is None:
             raise ProtocolError("eligibility needs the injected reference artifact")
         scenes = scene_domain() if domain is None else tuple(domain)
-        learner = LearnerPersistentState()
         traces, rows, walks = {}, {}, {}
         for scene in scenes:
             trace = learned_rollout(learner, kappa=scene.kappa, tape=scene.tape,
@@ -218,7 +231,7 @@ class PreUpdateTraces:
                 (state.x, state.y, state.t, state.kappa, state.phi,
                  control.z, control.m, step.a_cmd, step.a_realized, step.reward)
                 for state, control, step in walk)
-        self._traces, self._rows, self._walks = traces, rows, walks
+        self._traces, self._rows, self._walks, self._learner = traces, rows, walks, learner
 
     def trace(self, scene: EvaluationScene):
         return self._traces[scene]
@@ -228,6 +241,11 @@ class PreUpdateTraces:
 
     def walk(self, scene: EvaluationScene) -> tuple:
         return self._walks[scene]
+
+    @property
+    def learner(self):
+        r"""The $W_{\text{pre}}$ these traces were read from -- part of their provenance."""
+        return self._learner
 
     def successful(self, scene: EvaluationScene) -> bool:
         r"""$H_{\text{pre}}(u)$: the unedited episode's own healthy outcome."""
@@ -276,8 +294,9 @@ class PreUpdateTraces:
         return any(consulted == site for consulted in self.consulted(site.channel, scene))
 
 
-def pre_update_traces(*, q_reference, domain=None) -> PreUpdateTraces:
-    return PreUpdateTraces(q_reference=q_reference, domain=domain)
+def pre_update_traces(*, learner, q_reference, domain=None) -> PreUpdateTraces:
+    r"""The unedited episodes of $U_2$ under the pair's own $W_{\text{pre}}$."""
+    return PreUpdateTraces(learner=learner, q_reference=q_reference, domain=domain)
 
 
 def eligibility(site: CreditedSite, traces: PreUpdateTraces, *, domain=None) -> tuple:

@@ -50,6 +50,8 @@ __all__ = [
     "behavioral_collateral",
     "behavioral_collateral_scenes",
     "measure_scene_map",
+    "measured_scene_collateral",
+    "scene_collateral",
     "select_construction",
 ]
 
@@ -232,29 +234,68 @@ def measure_scene_map(learner, units, *, q_reference) -> dict:
     return out
 
 
-def measured_scene_collateral(unaffected, learner, edit, *, q_reference) -> dict:
-    r"""The measured side of Gate A for one cell, with the edit that was frozen before it ran.
+def scene_collateral(unaffected, pre_learner, post_learner, *, q_reference) -> dict:
+    r"""$V_{\text{unaffected,pre}} - V_{\text{unaffected,post}}$ for a **pair** of learner states.
 
-    The post state is the pre state plus **that one substrate edit** and nothing else; the gate asserts
-    the override count so that "and nothing else" is checked rather than assumed.
+    The production shape: two states arrive, each is measured over the same unit set through the
+    audited environment, and the metric is the same functional. Nothing is cloned and nothing is
+    patched here, because both sides already exist.
     """
-    from rfl_rebuild.learner.store import LearnerPersistentState as _State
-
-    if type(learner) is not _State:
-        raise ProtocolError(f"the measured side starts from a learner state, got {type(learner).__name__}")
-    post = _State()
-    post.apply_transaction([edit.substrate_edit], q_reference=q_reference)
-    values_pre = measure_scene_map(learner, unaffected.units, q_reference=q_reference)
-    values_post = measure_scene_map(post, unaffected.units, q_reference=q_reference)
-    for store, name in ((post.q_overrides, "q"), (post.controller_overrides, "controller"),
-                        (post.process_overrides, "process")):
-        if len(store) > 1:
-            raise ProtocolError(f"the post state carries more than the fixture's single edit ({name})")
+    values_pre = measure_scene_map(pre_learner, unaffected.units, q_reference=q_reference)
+    values_post = measure_scene_map(post_learner, unaffected.units, q_reference=q_reference)
     return {
         "value": behavioral_collateral_scenes(unaffected, values_pre=values_pre,
                                               values_post=values_post),
         "values_pre": values_pre,
         "values_post": values_post,
-        "post_overrides": (len(post.q_overrides) + len(post.controller_overrides)
-                           + len(post.process_overrides)),
     }
+
+
+def _override_diff(pre, post) -> dict:
+    """The stores in which ``post`` differs from ``pre``, as ``{kind: {address: value}}``."""
+    out = {}
+    for name, before, after in (("q", pre.q_overrides, post.q_overrides),
+                                ("controller", pre.controller_overrides, post.controller_overrides),
+                                ("process", pre.process_overrides, post.process_overrides)):
+        added = {k: after[k] for k in after if k not in before or before[k] != after[k]}
+        removed = [k for k in before if k not in after]
+        if removed:
+            raise ProtocolError(
+                f"the post state lost {name} overrides the pre state carried ({removed[:3]!r}); a "
+                "fresh state would do exactly that, and the pair would no longer be pre + one edit")
+        if added:
+            out[name] = added
+    return out
+
+
+def measured_scene_collateral(unaffected, learner, edit, *, q_reference) -> dict:
+    r"""The measured side of Gate A for one cell, with the edit that was frozen before it ran.
+
+    $$\boxed{W_{\text{post}} = W_{\text{pre}} + \Delta W^{\text{spill}}}$$
+
+    The post state is a **clone** of the pre state plus that one substrate edit, and what the gate
+    checks is the **differential** rather than a count: a pre state carrying overrides of its own must
+    keep them, and a fresh state with one override would satisfy a count while losing them. On an
+    empty pre state the two readings coincide, which is exactly why the calibration fixture alone could
+    not tell them apart.
+    """
+    from rfl_rebuild.learner.store import LearnerPersistentState as _State
+
+    if type(learner) is not _State:
+        raise ProtocolError(f"the measured side starts from a learner state, got {type(learner).__name__}")
+    post = learner.clone()
+    post.apply_transaction([edit.substrate_edit], q_reference=q_reference)
+    added = _override_diff(learner, post)
+    if added != {_store_name(edit.substrate_edit): {edit.substrate_edit.address:
+                                                    edit.substrate_edit.value}}:
+        raise ProtocolError(
+            f"the post state differs from the pre state by {added!r}, not by exactly the fixture's "
+            "edit; the pair must be pre + one edit")
+    measured = scene_collateral(unaffected, learner, post, q_reference=q_reference)
+    measured["override_diff"] = added
+    return measured
+
+
+def _store_name(edit) -> str:
+    from rfl_rebuild.learner.store import CONTROLLER, PROCESS, Q
+    return {Q: "q", CONTROLLER: "controller", PROCESS: "process"}[edit.store]

@@ -35,12 +35,17 @@ from rfl_rebuild.b1.errors import ProtocolError
 from rfl_rebuild.b1.laws import P_LAWS, X_LAWS
 from rfl_rebuild.b1.runner import run_controller_law, run_process_law
 from rfl_rebuild.b1.tier import Tier
-from rfl_rebuild.b2.collateral import behavioral_collateral, select_construction
+from rfl_rebuild.b2.collateral import scene_collateral
 from rfl_rebuild.b2.producer import FutureRolloutProducer
 from rfl_rebuild.b2.retention import select_form
+from rfl_rebuild.b2.unaffected import (
+    REFINEMENTS,
+    CreditedSite,
+    build_unaffected,
+    pre_update_traces,
+)
 from rfl_rebuild.b2.utility import FutureUtility
 from rfl_rebuild.b2.view import SCENE_FORBIDDEN, FutureConsequenceViewBuilder
-from rfl_rebuild.env.domain import decision_contexts
 from rfl_rebuild.learner.store import LearnerPersistentState
 
 __all__ = ["ARCHITECTURES", "EXOGENOUS_FIELDS", "ArmSpec", "ExogenousSetup", "PairedRunner",
@@ -150,11 +155,16 @@ class PairedSceneRecord:
     r"""One scene's instrument record: three dimensions, kept apart, cost beside them.
 
     $$\boxed{Y^{\text{future}} = \{\text{FutureUtility},\ \text{Collateral},\ \text{Retention}\}}$$
+
+    `unaffected_construction` names the **evaluation-scene** set the collateral was taken over, and
+    `unaffected_size` is kept beside it: A89 §77.8 re-typed this dimension onto the surviving unit, so a
+    record that named a decision-context construction would be describing a different instrument.
     """
 
     arm_names: tuple
     architecture: str
     unaffected_construction: str
+    unaffected_size: int
     retention_form: str
     future_utility: Mapping
     collateral: float
@@ -167,50 +177,60 @@ class PairedSceneRecord:
 class PairedRunner:
     r"""Run one scene's paired arms, exposing the properties a gate has to be able to see."""
 
-    __slots__ = ("_environment_factory", "_construction", "_construction_name", "_form",
+    __slots__ = ("_environment_factory", "_refinement", "_q_reference", "_form",
                  "_form_name", "_params", "_recorder")
 
-    def __init__(self, *, environment_factory, collateral_construction: str, retention_form: str,
+    def __init__(self, *, environment_factory, refinement: str, q_reference, retention_form: str,
                  retention_params: Mapping, recorder=None) -> None:
+        r"""A89 §77.8: the collateral dimension is $U_2$-native, and the refinement is the caller's.
+
+        There is no default refinement and no construction registry to choose from: A79 §67.4 leaves
+        that choice to the development stage, and an instrument that embodied one could not compare
+        candidates. The reference artifact is the same single object for eligibility and for both arms.
+        """
         if not callable(environment_factory):
             raise ProtocolError("the environment factory is not callable")
-        construction = select_construction(collateral_construction)
+        if refinement not in REFINEMENTS:
+            raise ProtocolError(
+                f"{refinement!r} is not one of the six frozen refinements {REFINEMENTS!r}; the runner "
+                "has no default and does not choose one")
+        if q_reference is None:
+            raise ProtocolError(
+                "the runner needs the injected nominal reference artifact: eligibility and both arms "
+                "read one shared object")
         form = select_form(retention_form)
         if not isinstance(retention_params, Mapping) or not retention_params:
             raise ProtocolError(
                 "the Retention horizons must be given explicitly: H, or H1 and H2, are "
                 "development-stage quantities and the runner has no default for them")
         object.__setattr__(self, "_environment_factory", environment_factory)
-        object.__setattr__(self, "_construction", construction)
-        object.__setattr__(self, "_construction_name", collateral_construction)
+        object.__setattr__(self, "_refinement", refinement)
+        object.__setattr__(self, "_q_reference", q_reference)
         object.__setattr__(self, "_form", form)
         object.__setattr__(self, "_form_name", retention_form)
         object.__setattr__(self, "_params", MappingProxyType(dict(retention_params)))
         object.__setattr__(self, "_recorder", recorder or (lambda *a, **k: None))
 
-    @staticmethod
-    def pre_update_source(state: LearnerPersistentState):
-        r"""$$\boxed{\text{the runner builds the design material from pre-update state}}$$
+    def pre_update_source(self, state: LearnerPersistentState, credited_site: CreditedSite):
+        r"""$$\boxed{W_{\text{pre}} \to \text{traces} \to E(c) \to C_i(c)}$$
 
-        B2-3 proved only constructor-local blindness and left the provenance obligation here: the
-        inputs must come from a pre-update, learner-visible source the **runner** owns. The material
-        is the enumerated decision domain and the contexts the learner already carries an override
-        for -- the part of the world it has already touched. No arm has run, and no future exists.
+        The design material is built from **the pair's own pre-update learner** -- not a minted healthy
+        state -- and from the credited unit, before any arm exists. A89 §77.2 is explicit about why the
+        old path cannot simply be re-pointed: `decision_contexts()` and a `contexts`-typed set are the
+        superseded ontology, and the old algorithms reading scene tuples would run and mean nothing.
         """
         if type(state) is not LearnerPersistentState:
             raise ProtocolError(
                 f"the pre-update source is read from a learner state, got {type(state).__name__}")
-        domain = tuple(decision_contexts())
-        known = set(domain)
-        touched = set()
-        for address in tuple(state.decision_overrides) + tuple(state.q_overrides):
-            key = (address.state, address.z, address.m)
-            if key in known:
-                touched.add(key)
-        return domain, tuple(c for c in domain if c in touched)
+        if type(credited_site) is not CreditedSite:
+            raise ProtocolError(
+                f"the credited unit {credited_site!r} has type {type(credited_site).__name__}; the "
+                "unaffected region is defined relative to a credited site, not to a bare domain")
+        traces = pre_update_traces(learner=state, q_reference=self._q_reference)
+        return build_unaffected(credited_site, traces, self._refinement)
 
     def run(self, state: LearnerPersistentState, *, arms: Sequence[ArmSpec], evidence: Mapping,
-            exogenous: ExogenousSetup) -> PairedSceneRecord:
+            exogenous: ExogenousSetup, credited_site: CreditedSite) -> PairedSceneRecord:
         r"""$$\boxed{\text{unaffected set} \to \text{clone per arm} \to \text{updates} \to
         \text{futures} \to \text{metrics}}$$
 
@@ -244,9 +264,17 @@ class PairedRunner:
             raise ProtocolError(
                 f"the exogenous setup has type {type(exogenous).__name__}, not ExogenousSetup")
 
-        # (1) the shared design material, built BEFORE any arm exists
-        domain, visited = self.pre_update_source(state)
-        unaffected = self._construction(domain, visited)
+        if type(credited_site) is not CreditedSite:
+            raise ProtocolError(
+                f"the credited unit {credited_site!r} has type {type(credited_site).__name__}, not "
+                "CreditedSite")
+        if credited_site.channel != arms[0].architecture:
+            raise ProtocolError(
+                f"the credited unit belongs to {credited_site.channel!r} but the arms are "
+                f"{arms[0].architecture!r}; the region and the write are about one architecture")
+
+        # (1) the shared design material, built from the RAW pre-update state BEFORE any arm exists
+        unaffected = self.pre_update_source(state, credited_site)
         self._recorder("unaffected", unaffected, id(unaffected))
 
         # (2) independent clones from ONE pre-update state
@@ -277,12 +305,11 @@ class PairedRunner:
                 levels, grid, pre_level=_baseline_level(levels), t_max=grid[-1])
             self._recorder("future", arm.name, view)
 
-        # (5) the three dimensions, separately
-        def levels_for(view):
-            return {c: _context_level(_levels(view), c) for c in unaffected.contexts}
-
-        collateral = behavioral_collateral(unaffected, values_pre=levels_for(views[arms[0].name]),
-                                           values_post=levels_for(views[arms[1].name]))
+        # (5) the three dimensions, separately: collateral is taken over the unit set, by measuring
+        #     every unit under each arm's own clone -- the re-typing A89 §77.8 requires, with no
+        #     context-to-level adapter standing in for a measurement
+        collateral = scene_collateral(unaffected, clones[0], clones[1],
+                                      q_reference=self._q_reference)["value"]
         retention = {}
         for arm in arms:
             levels = _levels(views[arm.name])
@@ -290,7 +317,8 @@ class PairedRunner:
         return PairedSceneRecord(
             arm_names=tuple(a.name for a in arms),
             architecture=arms[0].architecture,
-            unaffected_construction=self._construction_name,
+            unaffected_construction=unaffected.construction,
+            unaffected_size=unaffected.size,
             retention_form=self._form_name,
             future_utility=MappingProxyType(futures),
             collateral=collateral,
@@ -331,13 +359,6 @@ def _levels(view) -> tuple:
 
 def _baseline_level(levels) -> float:
     return max(abs(v) for v in levels) if levels else 1.0
-
-
-def _context_level(levels, context) -> float:
-    """A per-context level, taken from the rollout rather than fabricated."""
-    if not levels:
-        raise ProtocolError("the future view carries no levels; collateral is undefined")
-    return float(levels[getattr(context[0], "x", 0) % len(levels)])
 
 
 def _ledger_of(state) -> object:

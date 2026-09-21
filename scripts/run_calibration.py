@@ -69,7 +69,8 @@ def fixture_key(edit) -> dict:
 def main() -> int:
     solution = solve_reference()
     reference = reference_view_from(solution)
-    traces = pre_update_traces(q_reference=reference)
+    # the calibration world's W_pre is the healthy empty state: explicit, not minted inside
+    traces = pre_update_traces(learner=LearnerPersistentState(), q_reference=reference)
     domains = scene_domain()
 
     cells, worst = [], 0.0
@@ -93,7 +94,7 @@ def main() -> int:
                 "abs_gap": gap,
                 "agrees_within_tolerance": gap <= max(ABS_TOL, REL_TOL * abs(predicted["B_ref"])),
                 "nonzero_units": nonzero,
-                "post_overrides": measured["post_overrides"],
+                "override_diff_size": sum(len(v) for v in measured["override_diff"].values()),
                 "fixture": fixture_key(predicted["edit"]),
                 "status": "CALIBRATED",
             })

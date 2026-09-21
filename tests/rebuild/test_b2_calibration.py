@@ -42,7 +42,13 @@ from rfl_rebuild.b2.unaffected import (  # noqa: E402
     pre_update_traces,
     refinement,
 )
-from rfl_rebuild.env.kernel import ControlState, State, option_actions, option_ids  # noqa: E402
+from rfl_rebuild.env.kernel import (  # noqa: E402
+    ControlState,
+    ControllerSite,
+    State,
+    option_actions,
+    option_ids,
+)
 from rfl_rebuild.learner.reference import reference_view_from  # noqa: E402
 from rfl_rebuild.learner.store import (  # noqa: E402
     CONTROLLER,
@@ -64,7 +70,8 @@ MODULE = ROOT / "src" / "rfl_rebuild" / "b2" / "calibration.py"
 
 @pytest.fixture(scope="module")
 def traces():
-    return pre_update_traces(q_reference=REFERENCE)
+    # the calibration world's own W_pre is the healthy empty state, stated rather than minted
+    return pre_update_traces(learner=LearnerPersistentState(), q_reference=REFERENCE)
 
 
 def _walk(traces, scene):
@@ -284,7 +291,11 @@ def test_gate_a_the_measured_collateral_equals_the_aggregate_prediction(traces):
             assert measured["value"] == pytest.approx(predicted["B_ref"], rel=1e-6, abs=1e-12), (
                 channel, name, measured["value"], predicted["B_ref"])
             assert predicted["B_ref"] != 0.0, "a zero prediction would be CALIBRATION_FAIL"
-            assert measured["post_overrides"] == 1, "the post state carries the fixture and nothing else"
+            diff = measured["override_diff"]
+            assert sum(len(v) for v in diff.values()) == 1, "exactly one store changed"
+            store, mapping = next(iter(diff.items()))
+            assert list(mapping) == [predicted["edit"].substrate_edit.address]
+            assert list(mapping.values()) == [predicted["edit"].substrate_edit.value]
             # no post-hoc map editing: the reported number *is* the mean of the measured maps
             raw = sum(measured["values_pre"][u] - measured["values_post"][u]
                       for u in units.units) / units.size
@@ -349,6 +360,128 @@ def test_gate_a_a_mid_episode_edit_is_predicted_with_its_own_step_reward(traces)
         assert predicted_spill_value(channel, scene, edit, traces=traces,
                                      solution=SOLUTION) != predicted_pre_value(
             channel, scene, solution=SOLUTION), "a mid-episode edit must move the value"
+
+
+def _common_legal_alternative(state, cmd):
+    r"""A target legal for **every** $(z, m)$ that can arrive at the site -- A88 §76.2's rule.
+
+    Taking the alternative of one $(z,m)$ is the mistake that fixture defect was about: the mapped
+    command then leaves the option's admissible set wherever another option reaches the same site, and
+    the kernel raises `LearnerContractViolation` by design.
+    """
+    common = None
+    for z in option_ids():
+        for m in (0, 1):
+            allowed = set(option_actions(z, ControlState(z=z, m=m), state))
+            common = allowed if common is None else (common & allowed)
+    alternatives = sorted((common or set()) - {cmd})
+    return alternatives[0] if alternatives else None
+
+
+def _a_remappable_site(walk, *, skip_address=None):
+    for state, control, step_result in walk:
+        target = _common_legal_alternative(state, step_result.u)
+        if target is None:
+            continue
+        site = ControllerSite(state=state, cmd=step_result.u)
+        if skip_address is not None and site == skip_address:
+            continue
+        return site, target
+    return None, None
+
+
+def test_the_trace_source_is_the_pairs_own_w_pre(traces):
+    r"""$$W_{\text{pre}} \to \text{traces} \to E(c)$$
+
+    A pre-update learner may carry persistent defects of its own. If the trace source were a minted
+    healthy state, those defects would change nothing -- which is precisely the failure this gate
+    exists to catch: a defective $W_{\text{pre}}$ must move what eligibility sees.
+    """
+    from rfl_rebuild.b2.unaffected import (
+        CreditedSite,
+        eligibility,
+        pre_update_traces,
+        scene_domain,
+    )
+    from rfl_rebuild.env.kernel import ControlState, option_actions
+    from rfl_rebuild.learner.store import CONTROLLER, Edit
+
+    healthy = pre_update_traces(learner=LearnerPersistentState(), q_reference=REFERENCE)
+    scene = min(scene_domain(), key=lambda s: s.key)
+    site, target = _a_remappable_site(healthy.walk(scene))
+    if site is None:
+        scene = sorted(scene_domain(), key=lambda s: s.key)[1]
+        site, target = _a_remappable_site(healthy.walk(scene))
+    assert site is not None, "the gate needs a remappable site"
+    defective = LearnerPersistentState()
+    defective.apply_transaction([Edit(CONTROLLER, site, target)], q_reference=REFERENCE)
+    bad = pre_update_traces(learner=defective, q_reference=REFERENCE)
+
+    assert bad.rows(scene) != healthy.rows(scene), "the trace source must be the learner it was given"
+    # the remapped controller changes which sites that episode consults, so the X channel's trace
+    # source moves with it -- while the P channel's eligibility cannot move, since it reads only the
+    # base option and the outcome
+    assert set(bad.consulted("X", scene)) != set(healthy.consulted("X", scene))
+    moved = [c for c in set(bad.consulted("X", scene)) ^ set(healthy.consulted("X", scene))
+             if eligibility(c, bad) != eligibility(c, healthy)]
+    assert moved, "a defective W_pre must be able to change E(c) on the channel it moved"
+    assert bad.learner is defective and healthy.learner is not defective
+
+
+def test_an_unrelated_pre_override_survives_the_measurement(traces):
+    r"""The measured pair is $W_{\text{pre}} + \Delta W^{\text{spill}}$, not a fresh state plus an edit.
+
+    An override the pre state already carries must still be there afterwards, and the measurement must
+    read it: a fresh state with one override would satisfy an override *count* while losing exactly
+    this. On an empty pre state the two readings coincide, which is why the calibration fixture alone
+    could not tell them apart.
+    """
+    from rfl_rebuild.b2.collateral import measured_scene_collateral
+    from rfl_rebuild.b2.unaffected import build_unaffected, scene_domain
+    from rfl_rebuild.env.kernel import ControlState, option_actions
+    from rfl_rebuild.learner.store import CONTROLLER, Edit
+
+    healthy = pre_update_traces(learner=LearnerPersistentState(), q_reference=REFERENCE)
+    fixture = aggregate_reference("P", traces, "eligible_all", solution=SOLUTION)["edit"]
+    site, target = None, None
+    for scene in sorted(scene_domain(), key=lambda s: s.key):
+        site, target = _a_remappable_site(healthy.walk(scene))
+        if site is not None:
+            break
+    assert site is not None
+    carry = LearnerPersistentState()
+    carry.apply_transaction([Edit(CONTROLLER, site, target)], q_reference=REFERENCE)
+    assert carry.controller_overrides, "the gate needs a pre state that already carries an override"
+    assert site != fixture.substrate_edit.address, "the carried override is unrelated to the fixture"
+
+    units = build_unaffected(cal_site("P"), traces, "eligible_all")
+    measured = measured_scene_collateral(units, carry, fixture, q_reference=REFERENCE)
+    assert measured["override_diff"], "the measurement still changes exactly the fixture's store"
+    healthy_map = measured_scene_collateral(units, LearnerPersistentState(), fixture,
+                                            q_reference=REFERENCE)
+    assert measured["values_pre"] != healthy_map["values_pre"], (
+        "the measured side must read the pre state it was handed, not a healthy one")
+
+
+def test_the_x_prediction_agrees_with_the_controllers_own_semantics(traces):
+    r"""One step at the fixture's X site: stepping with the target *as the command* must agree with
+    keeping the command and letting the controller remap it. The frozen `automaton_transition` does not
+    read the command today, so the two coincide -- this gate is what notices if that ever changes.
+    """
+    from rfl_rebuild.env.kernel import step
+
+    edit = spillover_edit("X", traces, "eligible_all", solution=SOLUTION)
+    site = edit.site.address
+    scene = edit.unit
+    for state, control, step_result in traces.walk(scene):
+        if ControllerSite(state=state, cmd=step_result.u) == site:
+            break
+    else:                                                    # pragma: no cover - the fixture guarantees it
+        raise AssertionError("the fixture's site is not on its own unit's walk")
+    as_command = step(state, control, edit.target, tape=scene.tape)
+    via_controller = step(state, control, site.cmd, tape=scene.tape, controller={site: edit.target})
+    assert (as_command.state, as_command.control, as_command.u, as_command.reward) == (
+        via_controller.state, via_controller.control, via_controller.u, via_controller.reward)
 
 
 def test_gate_a_and_b_and_e_are_registered_in_the_audited_chain():

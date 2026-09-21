@@ -46,6 +46,7 @@ from rfl_rebuild.b2.unaffected import (  # noqa: E402
 from rfl_rebuild.env.domain import decision_contexts  # noqa: E402
 from rfl_rebuild.env.kernel import ControllerSite, State, option_ids  # noqa: E402
 from rfl_rebuild.learner.reference import reference_view_from  # noqa: E402
+from rfl_rebuild.learner.store import LearnerPersistentState  # noqa: E402
 from rfl_rebuild.solve.dp import solve_reference  # noqa: E402
 
 REFERENCE = reference_view_from(solve_reference())
@@ -53,7 +54,8 @@ REFERENCE = reference_view_from(solve_reference())
 
 @pytest.fixture(scope="module")
 def traces():
-    return pre_update_traces(q_reference=REFERENCE)
+    # the calibration world's own W_pre is the healthy empty state, stated rather than minted
+    return pre_update_traces(learner=LearnerPersistentState(), q_reference=REFERENCE)
 
 
 # --------------------------------------------------------------------------- #
