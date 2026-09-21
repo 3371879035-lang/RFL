@@ -1,0 +1,150 @@
+{
+  "cells": [
+    {
+      "arch": "D_Q",
+      "coverage": true,
+      "d_A": 1,
+      "detection": true,
+      "measured_sign": 1,
+      "n_moved": 1,
+      "n_units": 13824,
+      "rejected": false,
+      "status": "STRUCTURAL_PASS",
+      "unit": "U1",
+      "witness_delta": 0.020000000000000018,
+      "witness_post": 0.86,
+      "witness_pre": 0.88
+    },
+    {
+      "arch": "X",
+      "coverage": true,
+      "d_A": 1,
+      "detection": true,
+      "measured_sign": 1,
+      "n_moved": 4,
+      "n_units": 13824,
+      "rejected": false,
+      "status": "STRUCTURAL_PASS",
+      "unit": "U1",
+      "witness_delta": 0.039999999999999925,
+      "witness_post": 0.88,
+      "witness_pre": 0.9199999999999999
+    },
+    {
+      "arch": "P",
+      "coverage": true,
+      "d_A": 1,
+      "detection": false,
+      "measured_sign": 0,
+      "n_moved": 0,
+      "n_units": 13824,
+      "rejected": true,
+      "status": "BLIND",
+      "unit": "U1",
+      "witness_delta": 0.0,
+      "witness_post": 0.9199999999999999,
+      "witness_pre": 0.9199999999999999
+    },
+    {
+      "arch": "D_Q",
+      "coverage": true,
+      "d_A": 1,
+      "detection": true,
+      "measured_sign": 1,
+      "n_moved": 120,
+      "n_units": 5760,
+      "rejected": false,
+      "status": "STRUCTURAL_PASS",
+      "unit": "U2",
+      "witness_delta": 0.020000000000000018,
+      "witness_post": 0.86,
+      "witness_pre": 0.88
+    },
+    {
+      "arch": "X",
+      "coverage": true,
+      "d_A": 1,
+      "detection": true,
+      "measured_sign": 1,
+      "n_moved": 120,
+      "n_units": 5760,
+      "rejected": false,
+      "status": "STRUCTURAL_PASS",
+      "unit": "U2",
+      "witness_delta": 0.040000000000000036,
+      "witness_post": 0.84,
+      "witness_pre": 0.88
+    },
+    {
+      "arch": "P",
+      "coverage": true,
+      "d_A": 1,
+      "detection": true,
+      "measured_sign": 1,
+      "n_moved": 1440,
+      "n_units": 5760,
+      "rejected": false,
+      "status": "STRUCTURAL_PASS",
+      "unit": "U2",
+      "witness_delta": 0.039999999999999925,
+      "witness_post": 0.88,
+      "witness_pre": 0.9199999999999999
+    }
+  ],
+  "instrument": {
+    "declared_direction": {
+      "D_Q": 1,
+      "P": 1,
+      "X": 1
+    },
+    "domains_canonical_digest": {
+      "U1": "9443c867d5bac07d77784c3c664250f1105611027ee7b56b2418fc95cceb8daa",
+      "U2": "c630c19fa3acb76c1c89143a902dd4298e526a82779adb3562ec40c43aacc637"
+    },
+    "reference_artifact": {
+      "canonical_digest": "01bb5c97d2c9bbf6552dbe4d3017e17162bddd7ac5344583d169da2f573061ae",
+      "role": "one fixed nominal artifact shared by every cell and both sides of the pair",
+      "rows": 13824
+    },
+    "reward_mode": "A",
+    "unit_1": {
+      "domain": "X_D",
+      "entry": "b2.continuation.continuation",
+      "lift": "SemanticTape(s.phi, 0, 0)",
+      "size": 13824
+    },
+    "unit_2": {
+      "domain": "K x T x Z",
+      "entry": "b2.environment.learned_rollout",
+      "size": 5760
+    }
+  },
+  "measurement": {
+    "closed_map": true,
+    "map_digests": {
+      "U1|D_Q": "21cf2c14adfb708ee815589a184b475c4fdc9c1a4cf24ee4df2c1a2e52be23b1",
+      "U1|P": "f16a5f009021d20baf284e3efc9bcd6b85c41331e82bc928106aa050569cf992",
+      "U1|X": "8e4bd8a143ea4e73c0aba1ba476a6b33dea3bc11bf6175968442b8276c334f14",
+      "U2|D_Q": "f8f2563a19160d9ef991063a4f3fa4a0024ed91af35c20b4f02a0226ed4c1703",
+      "U2|P": "1601e906f0d76da11d1aa147cc344912f06bba815590a9c9a64cb45be5e40a1e",
+      "U2|X": "71870c7fb8c35937278cdc54d43dbabaeed8a1cabd15672e7cd7a9e99fef84fd",
+      "pre|U1": "f16a5f009021d20baf284e3efc9bcd6b85c41331e82bc928106aa050569cf992",
+      "pre|U2": "0af7d8c6814c362364ad3d24419e8f50d3fbbeae6cf80947b453bc5423087f72"
+    },
+    "map_sizes": {
+      "U1|D_Q": 13824,
+      "U1|P": 13824,
+      "U1|X": 13824,
+      "U2|D_Q": 5760,
+      "U2|P": 5760,
+      "U2|X": 5760,
+      "pre|U1": 13824,
+      "pre|U2": 5760
+    },
+    "missing_or_extra_units": "refused",
+    "short_circuit_on_positive": false
+  },
+  "verdict": "UNIFIED_SURVIVES",
+  "verdict_space_note": "A86 \u00a774.4 defines three conclusions; A87 \u00a775.7 shows this instance cannot reach SCREENING_INCONCLUSIVE because every declared direction is numeric, so every cell is STRUCTURAL_PASS or a STRUCTURAL_REJECT.",
+  "what": "A86 \u00a774.3 structural screening over A87 \u00a775's fixtures"
+}
