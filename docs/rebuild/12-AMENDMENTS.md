@@ -5769,7 +5769,12 @@ proposal), and for $P$ the write and the observation site are different objects.
 across candidates is the **semantic witness**, not a representation of it:
 
 $$\boxed{\mathcal C_A = \bigl(W_{\text{pre}},\ \Delta W_A^{\text{cal}},\ \xi_A^*,\
-s_A^{\text{expected}}\bigr)}, \qquad A \in \{D_Q, X, P\}}$$
+d_A\bigr)}, \qquad A \in \{D_Q, X, P\}}$$
+
+where the direction field is **status-typed**, not a sign that occasionally holds a status:
+
+$$\boxed{d_A \in \{+1,\ -1,\ \texttt{DIRECTION\_UNRESOLVED}\}}$$
+
 
 * $\xi_A^*$ — the semantic **evaluation situation** the synthetic edit is expected to affect. It is
   candidate-independent: each candidate projects it through its own $g_U$;
@@ -5798,72 +5803,86 @@ $\mathcal C_A$ through its own projection $g_U(\xi_A^*)$: candidates are screene
 chosen to suit one of them. $\mathcal C_P$ in particular is one situation whose effect genuinely
 depends on the commit edge.
 
-### 74.3 The detection protocol
+### 74.3 The detection protocol, and its closed status space
 
-For a candidate $U$ and architecture $A$, with $u^*_{A,U} := g_U(\xi_A^*)$:
+For a candidate $U$ and architecture $A$, with $u^*_{A,U} := g_U(\xi_A^*)$, a cell's status is
+exactly one of:
 
-1. **coverage.** $u^*_{A,U} \neq \varnothing$, i.e. the candidate can represent the witness at all.
-   A candidate that cannot has failed for a structural reason, recorded with its failure mode — this
-   is a different defect from a metric that did not move;
+1. **coverage.** $u^*_{A,U} \neq \varnothing$: the candidate can represent the witness at all. A
+   candidate that cannot has failed structurally, and this is a different defect from a metric that
+   did not move, so the failure mode is recorded;
 2. **detection.** $\exists u \in U: V_{W+\Delta W_A^{\text{cal}}}(u) \neq V_W(u)$;
 3. **direction at the witness.** $\operatorname{sign}\bigl[V_W(u^*_{A,U}) -
    V_{W+\Delta W_A^{\text{cal}}}(u^*_{A,U})\bigr] = s_A^{\text{expected}}$, against the constant
    A87 declared.
 
-A cell satisfying 1–3 is `STRUCTURAL_PASS`; failing 1 or 2 is `BLIND`, with the failure mode
-recorded. A cell for which A87 could not declare an independent sign at all is
+$$\boxed{\text{status}(U, A) \in \{\texttt{STRUCTURAL\_PASS},\ \texttt{BLIND},\
+\texttt{DIRECTION\_FAIL},\ \texttt{DIRECTION\_UNRESOLVED}\}}$$
 
-$$\boxed{\texttt{DIRECTION\_UNRESOLVED}}$$
+* `STRUCTURAL_PASS` — 1, 2 and 3 all hold;
+* `BLIND` — 1 or 2 fails; the failure mode is recorded with it;
+* `DIRECTION_FAIL` — coverage and detection hold, a sign **was** declared, and the measured sign is
+  **not** it. The metric moved and moved the wrong way, which is neither "cannot see" nor
+  "unresolved". An earlier draft left this reachable state undefined, so a genuine direction failure
+  would have been reported as whatever the reader assumed;
+* `DIRECTION_UNRESOLVED` — A87 could not declare an independent sign at all. It may show
+  sensitivity, but it cannot be counted as $U$ passing $A$, and §74.4 reads `STRUCTURAL_PASS` only.
+  Leaving the status undefined is not an option, because it would decide the screening by omission.
 
-which **is not a structural PASS**: it may show sensitivity, but it cannot be counted as $U$ passing
-$A$, and §74.4's decision rule reads `STRUCTURAL_PASS` only. A87 must therefore declare, for each of
-the three canaries, either a sign or an explicit `DIRECTION_UNRESOLVED`; leaving the status undefined
-is not an option, because it would decide the screening's conclusion by omission.
+$$\boxed{\texttt{STRUCTURAL\_REJECT} = \texttt{BLIND} \cup \texttt{DIRECTION\_FAIL}}$$
 
 Values are measured by the **audited environment** (A85 §73.2.1); no index, hash, modulo or
 resampling adapter may stand in for a measurement.
 
-### 74.4 The $P$ canary, and the bounded conclusion
+### 74.4 The $P$ canary, and the three possible conclusions
 
 $$\boxed{\text{the } P \text{ injection must genuinely traverse }
 z^{\text{proposal}} \to C_P^L \to z^{\text{in-force}}}$$
 
 The kernel realises the edge exactly this way: the process commit maps the proposal to the option in
 force, and the episode starts from that option. A unit that fixes $z$ at its entry therefore bypasses
-the edge, and — with type, state and CRN correct and the value genuinely measured — is recorded
+the edge, and — with type, state and CRN correct and the value genuinely measured — is
+`BLIND` for $P$, by the coverage or detection clause. This is the cell that decides the shape of the
+answer.
 
-$$\boxed{\texttt{STRUCTURALLY\_BLIND\_FOR\_P}}$$
+The screening has **three** possible conclusions, and they are defined on the status matrix:
 
-and rejected. The screening's conclusions are bounded by what was registered:
+$$\boxed{\exists U\ \forall A:\ \texttt{STRUCTURAL\_PASS}(U, A)
+\;\Longrightarrow\; \texttt{UNIFIED\_SURVIVES}}$$
 
-$$\boxed{\exists U \in \mathcal U^{\text{pre}}_{\text{unified}} \text{ with }
-\texttt{STRUCTURAL\_PASS} \text{ on } D_Q, X, P
-\;\Longrightarrow\; \text{the unified family survives structural screening}}$$
+$$\boxed{\forall U\ \exists A:\ \texttt{STRUCTURAL\_REJECT}(U, A)
+\;\Longrightarrow\; \texttt{ALL\_PREREG\_UNIFIED\_REJECTED}}$$
 
-$$\boxed{\forall U \in \mathcal U^{\text{pre}}_{\text{unified}},\ \exists A: \ blind(U, A)
-\;\Longrightarrow\; \text{every preregistered unified candidate is rejected, which triggers
-architecture-specific specification directly}}$$
+$$\boxed{\text{otherwise} \;\Longrightarrow\; \texttt{SCREENING\_INCONCLUSIVE}}$$
 
-The second is **not** the claim that no unified domain can exist: that would require
+The third is not a formality. With $U_1$ `BLIND` for $P$ and $U_2$ `DIRECTION_UNRESOLVED` for $P$, no
+candidate passes all three and no candidate is structurally rejected either, so neither of the first
+two rules fires — and the honest reading is that the screening **could not adjudicate**:
 
-$$\boxed{\mathcal U^{\text{pre}}_{\text{unified}} \text{ complete for admissible unified designs}}$$
+$$\boxed{\texttt{DIRECTION\_UNRESOLVED} \neq \texttt{STRUCTURAL\_PASS}, \qquad
+\neq \texttt{STRUCTURAL\_REJECT}}$$
 
-which is neither proved nor claimed.
+`SCREENING_INCONCLUSIVE` must not be allowed to become an architecture-specific trigger by omission:
+the trigger is `ALL_PREREG_UNIFIED_REJECTED`, and an unresolved cell is not a rejection. What it
+licenses is a narrower response — amend A86 or extend A87 so that the direction becomes declarable,
+and screen again.
 
-$$U_3 \text{'s entry is not exclusive to that case.}$$
+Two further bounds stand. `ALL_PREREG_UNIFIED_REJECTED` rejects the **preregistered** candidates and
+is not the claim that no unified domain can exist, which would need $\mathcal U^{\text{pre}}_{\text{unified}}$
+complete for admissible unified designs, neither proved nor claimed. And since
 
 $$\boxed{\text{detectability is necessary, not automatically sufficient}}$$
 
-A survivor is **admissible, not selected**: it may still fail A85's other properties — nominal
+a survivor is **admissible, not selected**: it may still fail A85's other properties — nominal
 closure, a definable unaffected region, interpretability, calibration stability — and if every
-survivor fails them, the architecture-specific branch must remain enterable. A86 therefore does not
-make $U_3$ conditional on a structural rejection alone.
+survivor fails them, the architecture-specific branch must remain enterable. $U_3$ is therefore not
+conditional on a structural rejection alone.
 
 ### 74.5 What this amendment does not do
 
 It chooses no unit, runs nothing, authorises no seed and **authorises no calibration**. It sets no
 $T$, no $N_{\text{eval}}$, no grid value, no $\Delta_{\min}$ and no Retention form, and changes
-nothing in A79 or A85. Its output, when the calibration is eventually run, is a DETECT/BLIND matrix
+nothing in A79 or A85. Its output, when the calibration is eventually run, is a structural-screening status matrix
 plus a structural admissibility conclusion — not a final evaluation unit.
 
 It records the dependency owed before B2-4b: if the chosen $u$ is not the decision-context type,
@@ -5878,7 +5897,7 @@ A87}}$$
 
 A86 deliberately registers the fixture **schema** $\mathcal C_A$ and the projections $g_U$, and not
 the fixtures themselves: which `QAddress`, which `ControllerSite`, which process-proposal mapping,
-which $\kappa/\varphi$ scene and which witness each $s_A^{\text{expected}}$ describes are the
+which $(\kappa, \text{tape}, \text{base option})$ evaluation scene and which witness each $s_A^{\text{expected}}$ describes are the
 instances that make a screening mean anything. Leaving them to the calibration code would be exactly
 the implementation-chooses-the-definition error this sequence exists to prevent, so
 
@@ -5990,7 +6009,7 @@ section above; the most recent is:
 | **A83** | **B2 implementation authorisation, and the boundary it does not cross**: A80's three steps are CLOSED (Step 1 `6f78949`/`3eeec3a`, reproducibility maintenance `aab5727`, Step 2 `e1c7141`/`81cb162`, Step 3 `5fcb750`/`c311b42`), so A79 §67.8's Process/Controller prerequisites are **SATISFIED** -- which authorises implementing the B2 measurement stage (`FutureConsequenceView` and its builder, the future rollout, RMST with mandatory DeficitAUC, the Collateral and Retention candidate machinery, the paired runner) and **nothing else**. $\text{implementation authorisation} \neq \text{seed authorisation}$: NO smoke, development or confirmatory seed, and no V0.4R, until the instrument's own gates close, because dev data from an unvalidated instrument is not dev data (truth leakage, arm leakage, post-update selection leakage each need a gate that can go red). §67.11's "five B1 mutation self-checks" is restated as the **measured eight-table set** (Q 14, B1 13, L0 8, L2 11, L3 11, address-domain 6, X 10, P 11) plus the $D_{patch}$ `ENCODING_ONLY` binding, since reading the historical count literally would silently drop exactly the three tables A80 added. Every open item stays open and is decided at the development stage under §67.5/§67.9/§67.10 -- the unaffected-set construction, the all-seed Retention form, $T$, $N_{\text{eval}}$, $\mathcal G_{\text{ckpt}}$, each $\Delta_{\min}$, and $N_{\text{train}}$ (which may not be named yet). Writes no code, moves no number, collects no seed. | **P0 (process)** | **frozen -- authorisation only**; further change requires a new amendment |
 | **A84** | **the DeficitAUC numerical-integration contract**: `05` §8.3 froze a continuous integral with a $1/T_{\max}$ normalisation, and B2-2's first implementation realised it as an unnormalised left-rectangle sum — wrong in the normalisation **and** in the quadrature rule, which was frozen nowhere and was therefore the implementation choosing an estimator. Frozen now: trapezoidal integration on the real episode grid, $\mathrm{DeficitAUC} = \frac{1}{T_{\max}}\sum_i \frac{d_i+d_{i+1}}{2}(t_{i+1}-t_i)$ with $d_i=[V_{\text{pre}}-V_{t_i}]_+$, on the grounds of assumption-minimality (linear interpolation between adjacent observations, rather than left-hold's extra assumption that a measurement persists across its whole interval); calibrated analytically on constant and linear deficits, seedlessly. Also frozen: the curve spans the horizon ($episodes[0]=0$, $episodes[-1]=T_{\max}$, $0\le t_i\le T_{\max}$), a short curve is refused rather than padded, and a recovery window completing past $T_{\max}$ does not qualify. Terminology: the per-seed $\min(\tau,T_{\max})$ is `restricted_time`, **not** RMST, which is the cross-seed expectation and belongs to B2-4. Re-opens no A79 endpoint, sets no design quantity, collects no seed. | **P0 (numerics)** | **frozen -- clarification only**; further change requires a new amendment |
 | **A85** | **the behavioural measurement contract for future performance**: A79 §67.4 froze `BehavioralCollateral` and its unaffected set's four properties but no executable $c \mapsto V_W(c)$, and B2-4 filled the gap with an adapter mapping a context coordinate onto a temporal reward index. Frozen here as **properties**: measured by the audited environment rather than assembled by an adapter; pre from the raw pre-update state and post from each arm's own post-update state; one shared evaluation scene and CRN draw, so a difference can only come from $\Delta W$; a closed nominal measurement $V_W: U_{\text{unaffected}} \to \mathbb R_{\text{finite}}$ refusing missing **and** extra units, never an arbitrary callable; behaviourally load-bearing for every architecture without deciding that one unit type carries all three; and calibrated on synthetic injected spillover **per architecture**, because correct types can still be structurally blind. Also records that $V_{\text{pre}}$ is already frozen by `11` §12.3 and §13 item 13 (measured on $Q^{*}$, same $N_{\text{eval}}$ and evaluation scenes, shipped in the reference artifact, never re-measured) and that $V_{\text{pre}} \neq V_{\text{unaffected,pre}}$ despite the shared word. It **poses without answering** whether the evaluation unit is a unified scene domain or architecture-specific domains, naming the $P$ counterexample that decides it ($z^{\text{proposal}} \to z^{\text{in-force}}$ cannot be seen from a context that already fixes $z$). Chooses no candidate, sets no design quantity, collects no seed, writes no code, and **does not authorise implementation to choose the evaluation unit**: the unified-vs-architecture-specific decision is the next specification question, to be settled by a seedless structural/calibration study (inject known spillover per architecture, keep the $P$ counterexample as canary, discard a candidate that is structurally blind). | **P0 (interface)** | **frozen -- properties only; evaluation unit unresolved; further change requires a new amendment** |
-| **A86** | **the evaluation-unit structural screening method**: A85 left one question open (a **unified** evaluation scene domain or **architecture-specific** domains) and A86 freezes the **method** of screening it, explicitly **not** authorising calibration --- the concrete canaries are A87's, and until they are frozen the screening may not be run. Pre-registers $\mathcal U^{\text{pre}}_{\text{unified}} = \{U_1, U_2\}$ with a **deterministic projection** $g_U$ from a semantic witness to a unit: $U_1$ = the decision triple $(s,z,m)$; $U_2$ = an **evaluation scene unit** whose closed field surface is $(\kappa, \varphi, \text{base option}, \text{reference artifact})$, entered upstream of $C_P^L$ so $z^{\text{in-force}}$ is produced during evaluation. Units are **pre-constructed and arm-blind** (what is post-update is the measurement, never the unit's identity), and the **measurement schedule is excluded from unit identity** --- the grid is A83-open and interrogates a unit, so screening uses a nominal test schedule and is re-run against the final grid before its conclusion travels. The shared thing across candidates is the **semantic witness** $\xi_A^*$, not a representation: each candidate projects it, and $g_U(\xi) = \varnothing$ is a coverage `BLIND`. $s_A^{\text{expected}}$ is an **independently stated** expected sign of the behavioural loss --- not the sign of the measurement it is checked against, which was a tautology --- and a canary whose direction needs the measurement has no direction gate for that cell. Conclusions are bounded: a passing preregistered candidate leaves the unified family admissible; rejecting all of them triggers architecture-specific specification directly but is **not** a proof that no unified domain exists (that needs a completeness proof A86 does not claim); and since detectability is necessary but not sufficient, $U_3$ is **not** conditional on structural rejection alone --- a survivor that later fails A85's other properties still leaves the architecture-specific branch enterable. Chooses no unit, runs nothing, authorises no seed. | **P0 (interface)** | **draft -- awaiting review; not yet frozen** |
+| **A86** | **the evaluation-unit structural screening method**: A85 left one question open (a **unified** evaluation scene domain or **architecture-specific** domains) and A86 freezes the **method** of screening it, explicitly **not** authorising calibration --- the concrete canaries are A87's, and until they are frozen the screening may not be run. Pre-registers $\mathcal U^{\text{pre}}_{\text{unified}} = \{U_1, U_2\}$ with a **deterministic projection** $g_U$ from a semantic witness to a unit: $U_1$ = the decision triple $(s,z,m)$; $U_2$ = an **evaluation scene unit** whose closed field surface is $(\kappa, \text{tape}, \text{base option})$, the tape entering by its full frozen assignment $(\text{phase}, \text{error\_flag}, \text{cause\_rank})$ and the scene entered upstream of $C_P^L$ so $z^{\text{in-force}}$ is produced during evaluation. Units are **pre-constructed and arm-blind** (what is post-update is the measurement, never the unit's identity); a standalone $\varphi$ is not a field, since the kernel reads `tape`; and the reference view is a **measurement-instrument dependency, not identity**, because the wider artifact carries a $V_{\text{pre}}$ whose instance A85 keeps stage-dependent. The **measurement schedule is excluded from unit identity** but IS a preregistered protocol input: A87 declares $\mathcal M_{\text{screen}}$, and when the final $\mathcal G_{\text{ckpt}}$ is frozen the screening is re-run before any conclusion travels. The shared object across candidates is the **semantic witness** $\xi_A^*$, not a representation: each candidate projects it, and $g_U(\xi) = \varnothing$ is a coverage `BLIND`. The direction is **status-typed**, $d_A \in \{+1, -1, \texttt{DIRECTION\_UNRESOLVED}\}$, and $s_A^{\text{expected}}$ is a constant A87 declares from the canary construction --- never the sign of the measurement it is checked against. A cell's status is exactly one of `STRUCTURAL_PASS`, `BLIND`, `DIRECTION_FAIL` (coverage and detection hold but the measured direction is not the declared one) or `DIRECTION_UNRESOLVED`, with $\texttt{STRUCTURAL\_REJECT} = \texttt{BLIND} \cup \texttt{DIRECTION\_FAIL}$. Three conclusions, not two: `UNIFIED_SURVIVES` if some preregistered candidate passes all three; `ALL_PREREG_UNIFIED_REJECTED` if every one is structurally rejected --- which triggers architecture-specific specification but is **not** a proof that no unified domain exists; and otherwise **`SCREENING_INCONCLUSIVE`**, because an unresolved cell is neither a pass nor a rejection and must not become a trigger by omission. Detectability remains necessary but not sufficient, so a survivor is admissible rather than selected and $U_3$ is not conditional on structural rejection alone. Chooses no unit, runs nothing, authorises no seed. | **P0 (interface)** | **draft -- awaiting review; not yet frozen** |
 
 ---
 
