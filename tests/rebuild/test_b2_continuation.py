@@ -171,17 +171,50 @@ def test_1_the_entry_must_be_a_legal_decision_context():
     assert sigma_suffix(cont(learner, START_STATE, 1, 0)).steps
 
 
-def test_2_the_exogenous_continuation_must_agree_with_the_entry():
-    r"""§75.6 (ii): the kernel derives the episode's phase from the tape, so a mismatch describes a
-    suffix the frozen environment cannot produce."""
+def test_2_the_exogenous_continuation_must_be_the_frozen_lift():
+    r"""§75.4 and §75.6 (ii): exactly $\lambda_{U_1}(s,z,m)$, not merely phase-compatible.
+
+    A tape that agrees on the phase but differs in `error_flag` or `cause_rank` is a *different*
+    legal completion of the same unit, so accepting it would restore the freedom the lift removed --
+    $u \mapsto V$ would be a relation again. That those two fields happen not to move the current
+    physics is deliberately not relied on; if it were the argument, the lift would not be needed.
+    """
     learner = learner_with()
     with pytest.raises(ContinuationContractError):
         continuation(learner=learner, state=START_STATE, z=1, m=0, kappa=0,
                      tape=SemanticTape(phase=3, error_flag=0, cause_rank=0), q_reference=REFERENCE)
+    for tape in (SemanticTape(phase=0, error_flag=1, cause_rank=0),
+                 SemanticTape(phase=0, error_flag=0, cause_rank=59),
+                 SemanticTape(phase=0, error_flag=1, cause_rank=59)):
+        with pytest.raises(ContinuationContractError):
+            continuation(learner=learner, state=START_STATE, z=1, m=0, kappa=0,
+                         tape=tape, q_reference=REFERENCE)
     wrong_kappa = State(x=START[0], y=START[1], t=0, kappa=1, phi=0)
     with pytest.raises(ContinuationContractError):
         continuation(learner=learner, state=wrong_kappa, z=1, m=0, kappa=0,
                      tape=SemanticTape(phase=0, error_flag=0, cause_rank=0), q_reference=REFERENCE)
+
+
+def test_2b_the_measurement_signature_is_closed():
+    r"""§75.3: the reward mode is part of the functional, so it is not an argument.
+
+    $$\boxed{\text{generic kernel core} \neq \text{frozen B2 measurement instrument}}$$
+
+    The core keeps both freedoms; an entry that could be handed a different reward mode or a
+    different completion could form two values for one $u$, which is the defect the lift closes.
+    """
+    import inspect
+    parameters = inspect.signature(continuation).parameters
+    assert "reward_mode" not in parameters
+    assert not any(p.kind is inspect.Parameter.VAR_KEYWORD for p in parameters.values())
+    with pytest.raises(TypeError):
+        continuation(learner=learner_with(), state=START_STATE, z=1, m=0, kappa=0,
+                     tape=CANARY_TAPE, q_reference=REFERENCE, reward_mode="B")
+    source = INSTRUMENT.read_text(encoding="utf-8")
+    assigned = {node.targets[0].id for node in ast.walk(ast.parse(source))
+                if isinstance(node, ast.Assign) and isinstance(node.targets[0], ast.Name)}
+    assert "reward_mode" not in assigned
+    assert source.count('reward_mode="A"') == 1, "the mode is fixed, once, at the call"
 
 
 def test_3_lambda_U1_is_a_deterministic_lift_and_not_unit_identity():
@@ -237,8 +270,23 @@ def test_g1_refactor_equivalence_bound_to_the_frozen_projection_images():
         state, z, m = entry_image(kind)
         assert (state, z, m) == (START_STATE, 1, 0)     # the frozen $U_1$ image
         pre, cal = learner_with(), learner_with([canary_edit(kind)])
-        # non-vacuity: the scene actually executes the edited channel
-        assert sigma_suffix(ordinary(kind, cal)) != sigma_suffix(ordinary(kind, pre))
+        # Non-vacuity, established from **frozen structural facts** rather than by comparing
+        # pre-edit with post-edit behaviour: that comparison belongs to the screening, not to the
+        # instrument. An earlier revision of this gate asserted the signature inequality instead,
+        # and it is withdrawn -- see experiments/v03r/continuation_instrument_log.md.
+        provider_pre, controller_pre = learner_channels(pre.snapshot(), REFERENCE)
+        provider_cal, controller_cal = learner_channels(cal.snapshot(), REFERENCE)
+        healthy = ordinary(kind, pre)
+        if kind == "D_Q":
+            # the calibration write lands on the row the decision read path actually consults
+            assert provider_pre(START_STATE, ControlState(z=1, m=0)) == 3
+            assert provider_cal(START_STATE, ControlState(z=1, m=0)) == 4
+            assert len(controller_pre) == 0
+        else:
+            site = ControllerSite(state=START_STATE, cmd=3)
+            assert healthy.steps[0].a_cmd == 3        # the command the healthy learner sends
+            assert site not in controller_pre
+            assert controller_cal[site] == 4
         for learner in (pre, cal):
             assert sigma_suffix(cont(learner, state, z, m)) == sigma_suffix(ordinary(kind, learner))
 

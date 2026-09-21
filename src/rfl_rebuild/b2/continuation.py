@@ -18,7 +18,15 @@ plausible implementation gets wrong while still passing a scalar comparison:
 * **a legal entry (§75.6 (i), (ii)).** The entry must satisfy the frozen
   `env.domain.is_decision_context`, and the exogenous continuation must agree with it --
   `tape.phase == s.phi` and `kappa == s.kappa` -- because the kernel derives the episode's phase from
-  the tape, so a mismatch describes a suffix the frozen environment cannot produce.
+  the tape, so a mismatch describes a suffix the frozen environment cannot produce;
+* **a closed measurement signature.** The entry takes **no reward mode** and **no tape other than**
+  $\lambda_{U_1}$. A87 §75.3 makes reward mode A part of the functional and §75.4 makes the lift part
+  of the protocol, so leaving either one as an argument would reopen
+  $u \mapsto V$ as a relation rather than a function -- the defect $\lambda_{U_1}$ exists to close.
+  The generic kernel core keeps both freedoms on purpose; this instrument, which is the frozen B2
+  measurement, does not.
+
+$$\boxed{\text{generic kernel core} \;\neq\; \text{frozen B2 measurement instrument}}$$
 
 `exogenous_lift` is $\lambda_{U_1}$ of §75.4: the frozen, deterministic completion that makes
 $u \mapsto V$ a function instead of a relation. It is a **measurement-protocol input, not unit
@@ -118,7 +126,6 @@ def continuation(
     kappa: int,
     tape: SemanticTape,
     q_reference,
-    reward_mode: str = "A",
 ) -> RolloutTrace:
     r"""Measure the learner's future from the decision context $(s,z,m)$ — §75.6's entry point.
 
@@ -131,8 +138,18 @@ def continuation(
     continuation exactly as they reach the rollout -- an instrument that quietly used the reference
     provider would report candidate blindness that belongs to the harness.
 
-    Rejected: a non-context entry, a state that is not strictly typed, an exogenous continuation
-    whose phase or context disagrees with the entry, and a learner that is not a persistent state.
+    The measurement is closed, so that $u \mapsto V$ is a **function**:
+
+    * ``tape`` must be exactly $\lambda_{U_1}(s,z,m)$, not merely phase-compatible. A tape that
+      agrees on the phase but differs in `error_flag` or `cause_rank` is a *different* legal
+      completion of the same unit, and accepting it would restore the freedom §75.4 removed. That
+      `error_flag`/`cause_rank` happen not to move the current physics is deliberately not relied
+      on -- if that were the argument, $\lambda_{U_1}$ would not have been needed;
+    * the reward mode is fixed to ``"A"`` by §75.3 and is not an argument. A caller that could pass
+      ``"B"`` could form two different scalars for one $u$.
+
+    Rejected: a non-context entry, a state that is not strictly typed, a tape that is not the lift,
+    a $\kappa$ that disagrees with the entry, and a learner that is not a persistent state.
     """
     if type(learner) is not LearnerPersistentState:
         raise ContinuationContractError(
@@ -149,12 +166,13 @@ def continuation(
             "continuation must be the episode the entry claims to be in")
     if type(tape) is not SemanticTape:
         raise ContinuationContractError(f"the tape is a SemanticTape, got {type(tape).__name__}")
-    if tape.phase != state.phi:
+    expected = exogenous_lift(state, z, m)
+    if tape != expected:
         raise ContinuationContractError(
-            f"tape.phase={tape.phase!r} disagrees with the entry's phi={state.phi!r}: the kernel "
-            "derives the episode's phase from the tape, so this suffix cannot be produced")
-    if reward_mode not in ("A", "B"):
-        raise ContinuationContractError(f"unknown reward mode {reward_mode!r}")
+            f"the exogenous continuation must be lambda_U1(s,z,m); got phase={tape.phase!r}, "
+            f"error_flag={tape.error_flag!r}, cause_rank={tape.cause_rank!r} but the lift is "
+            f"phase={expected.phase!r}, error_flag={expected.error_flag!r}, "
+            f"cause_rank={expected.cause_rank!r}. Any other completion makes u -> V a relation")
 
     snapshot = learner.snapshot()
     command_provider, controller = learner_channels(snapshot, q_reference)
@@ -168,5 +186,6 @@ def continuation(
         base_option=z,
         option_in_force=z,
         controller=controller,
-        reward_mode=reward_mode,
+        # §75.3: reward mode A is part of the frozen functional, so it is not a parameter here.
+        reward_mode="A",
     )
