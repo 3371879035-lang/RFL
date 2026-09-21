@@ -47,6 +47,7 @@ PRODUCTION_MODULES = (
     "rfl_rebuild/b2/continuation.py",
     "rfl_rebuild/b2/screening.py",
     "rfl_rebuild/b2/unaffected.py",
+    "rfl_rebuild/b2/calibration.py",
     "rfl_rebuild/b2/collateral.py",
     "rfl_rebuild/b2/retention.py",
     "rfl_rebuild/b2/runner.py",

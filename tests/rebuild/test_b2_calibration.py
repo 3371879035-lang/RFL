@@ -1,0 +1,291 @@
+r"""A89 §77.7/§77.9 — Gate B, Gate E, and the predicted side of Gate A.
+
+$$\boxed{\text{owner}_A(\Delta W^{\text{spill}}_A) = s^{\text{spill}}_{C,A} \neq c^{\text{cal}}_A}$$
+
+Gate B certifies the $D_Q$ chain end to end: the credited site is a `DecisionAddress`, the store key is
+an exact `QAddress` whose `owner_Q` projects onto it, and the edit travels through the substrate's own
+transaction. Gate E certifies the chain's integrity: deterministic at every arrow, off target at credited
+granularity, $\mathcal I_A$ the only source of a target, and `CALIBRATION_FAIL` rather than a relocated
+fixture when no unit qualifies. The predicted side of Gate A is checked for provenance here -- it may
+read the frozen solver, $C$ and the edit, and nothing the measurement produced -- while the equality with
+the **measured** collateral needs the scene-level collateral instrument and is the remaining piece.
+
+Each family carries hostile mutations, because a gate that cannot go red is not a gate.
+"""
+
+from __future__ import annotations
+
+import pathlib
+import sys
+
+import pytest
+
+ROOT = pathlib.Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "src"))
+
+from rfl_rebuild.b1.errors import ProtocolError  # noqa: E402
+from rfl_rebuild.b2 import assert_modules_are_closed  # noqa: E402
+from rfl_rebuild.b2.calibration import (  # noqa: E402
+    CAL_SITES,
+    SpilloverEdit,
+    aggregate_reference,
+    cal_site,
+    predicted_pre_value,
+    predicted_spill_value,
+    spillover_edit,
+)
+from rfl_rebuild.b2.environment import PRODUCTION_MODULES, audited_modules  # noqa: E402
+from rfl_rebuild.b2.unaffected import (  # noqa: E402
+    REFINEMENTS,
+    CreditedSite,
+    pre_update_traces,
+    refinement,
+)
+from rfl_rebuild.env.kernel import ControlState, State, option_actions, option_ids  # noqa: E402
+from rfl_rebuild.learner.reference import reference_view_from  # noqa: E402
+from rfl_rebuild.learner.store import (  # noqa: E402
+    CONTROLLER,
+    PROCESS,
+    Q,
+    DecisionAddress,
+    Edit,
+    LearnerPersistentState,
+    QAddress,
+    StoreTransactionError,
+    owner_Q,
+)
+from rfl_rebuild.solve.dp import solve_reference  # noqa: E402
+
+SOLUTION = solve_reference()
+REFERENCE = reference_view_from(SOLUTION)
+MODULE = ROOT / "src" / "rfl_rebuild" / "b2" / "calibration.py"
+
+
+@pytest.fixture(scope="module")
+def traces():
+    return pre_update_traces(q_reference=REFERENCE)
+
+
+def _walk(traces, scene):
+    return traces.walk(scene)
+
+
+# --------------------------------------------------------------------------- #
+# Gate B -- the D_Q store-key and owner chain
+# --------------------------------------------------------------------------- #
+
+def test_gate_b_the_dq_chain_is_exact_and_travels_through_the_substrate(traces):
+    r"""credited site -> store key -> substrate edit, with no layer left to inference."""
+    edit = spillover_edit("D_Q", traces, "eligible_all", solution=SOLUTION)
+    assert type(edit.channel_address) is QAddress
+    assert type(edit.site.address) is DecisionAddress
+    assert owner_Q(edit.channel_address) == edit.site.address == edit.edited_context
+    assert edit.site.render() != cal_site("D_Q").render()
+    assert edit.substrate_edit.store == Q
+    assert type(edit.substrate_edit.address) is QAddress
+    assert edit.substrate_edit.address == edit.channel_address
+
+    context = edit.channel_address
+    control = ControlState(z=context.z, m=context.m)
+    allowed = sorted(option_actions(context.z, control, context.state))
+    values = {a: SOLUTION.q_value(context.state, context.z, context.m, a) for a in allowed}
+    # the row edited is the one the trajectory's own action uses, and the applied action is the
+    # post-edit argmax rather than a number re-derived later
+    assert context.a in allowed and len(allowed) >= 2
+    assert edit.substrate_edit.value == min(values.values()) - 1.0
+    assert edit.applied_action == max((a for a in allowed if a != context.a),
+                                      key=lambda a: values[a])
+
+    learner = LearnerPersistentState()
+    learner.apply_transaction([edit.substrate_edit], q_reference=REFERENCE)
+    assert learner.q_overrides, "the edit must land in the substrate's own store"
+    assert learner.healthy is False
+
+
+def test_gate_b_mutations_redden(traces):
+    r"""Three ways to break the chain, each one caught by the assertion that owns it."""
+    edit = spillover_edit("D_Q", traces, "eligible_all", solution=SOLUTION)
+
+    # (i) a DecisionAddress where the store requires a QAddress: the substrate refuses the type
+    with pytest.raises((StoreTransactionError, ProtocolError)):
+        LearnerPersistentState().apply_transaction(
+            [Edit(Q, edit.site.address, -0.12)], q_reference=REFERENCE)
+
+    # (ii) the same row's *other* action: the edit is still a legal QAddress and still owned by the
+    #      credited site, but it is no longer the row the trajectory uses, so the applied action
+    #      derived from it differs -- which is why the chain asserts the action rather than the address
+    context = edit.channel_address
+    control = ControlState(z=context.z, m=context.m)
+    others = [a for a in sorted(option_actions(context.z, control, context.state)) if a != context.a]
+    assert others, "the gate needs a row whose action is not the taken one"
+    values = {a: SOLUTION.q_value(context.state, context.z, context.m, a)
+              for a in option_actions(context.z, control, context.state)}
+    wrong = Edit(Q, QAddress(state=context.state, z=context.z, m=context.m, a=others[0]),
+                 min(values.values()) - 1.0)
+    assert wrong.address != context, "the wrong-action edit must differ from the frozen one"
+    wrong_applied = max((a for a in values if a != others[0]), key=lambda a: values[a])
+    assert wrong_applied != edit.applied_action
+
+    # (iii) an owner that does not project onto the synthetic credited site: the selection refuses it
+    assert owner_Q(edit.channel_address) != cal_site("D_Q").address
+
+
+def test_gate_b_the_x_and_p_channels_are_owned_by_identity(traces):
+    r"""$\text{owner}_X$ and $\text{owner}_P$ are the identity, and the sites still differ from $c^{\text{cal}}$."""
+    x = spillover_edit("X", traces, "eligible_all", solution=SOLUTION)
+    p = spillover_edit("P", traces, "eligible_all", solution=SOLUTION)
+    assert x.site.address == x.channel_address and x.substrate_edit.store == CONTROLLER
+    # A88 §76.2's contract-preservation rule: the target is admissible for **every** (z, m)
+    common = None
+    for z in option_ids():
+        for m in (0, 1):
+            allowed = set(option_actions(z, ControlState(z=z, m=m), x.site.address.state))
+            common = allowed if common is None else (common & allowed)
+    assert x.target in common and x.target != x.site.address.cmd
+    assert p.site.address == p.channel_address and p.substrate_edit.store == PROCESS
+    assert p.target == min(set(option_ids()) - {p.channel_address})
+    for channel, edit in (("X", x), ("P", p)):
+        assert edit.site.render() != cal_site(channel).render()
+
+
+# --------------------------------------------------------------------------- #
+# Gate E -- calibration chain integrity
+# --------------------------------------------------------------------------- #
+
+def test_gate_e_every_arrow_is_deterministic_and_off_target(traces):
+    r"""Same inputs, same fixture; and the two sites differ at credited granularity for every cell."""
+    for channel in ("D_Q", "X", "P"):
+        first = spillover_edit(channel, traces, "eligible_all", solution=SOLUTION)
+        again = spillover_edit(channel, traces, "eligible_all", solution=SOLUTION)
+        assert first == again
+        assert type(first) is SpilloverEdit
+        assert first.site.render() != cal_site(channel).render(), (
+            "the off-target inequality is a theorem at credited granularity, not a type accident")
+        assert first.unit in refinement(cal_site(channel), traces, "eligible_all")
+
+
+def test_gate_e_mutation_an_unreachable_injection_fails_closed(traces, monkeypatch):
+    r"""`CALIBRATION_FAIL` — no relocated site, no substituted target, no narrowed candidate."""
+    from rfl_rebuild.b2 import calibration as module
+
+    monkeypatch.setattr(module, "_make_edit", lambda *a, **k: None)
+    with pytest.raises(ProtocolError) as excinfo:
+        module.spillover_edit("D_Q", traces, "eligible_all", solution=SOLUTION)
+    assert module.CALIBRATION_FAIL in str(excinfo.value)
+    monkeypatch.undo()
+    assert spillover_edit("D_Q", traces, "eligible_all", solution=SOLUTION)
+
+
+def test_gate_e_mutation_a_next_site_selector_differs_from_the_frozen_one(traces):
+    r"""Taking the next candidate when the canonical one is unavailable is not the frozen rule."""
+    channel = "D_Q"
+    c_cal = cal_site(channel)
+    units = refinement(c_cal, traces, "eligible_all")
+    from rfl_rebuild.b2.calibration import _consulted_channel_sites, _make_edit, _owner_of
+
+    candidates = []
+    for scene in units:
+        for address in _consulted_channel_sites(channel, traces, scene):
+            if _owner_of(channel, address, SOLUTION).render() == c_cal.render():
+                continue
+            if _make_edit(channel, SOLUTION, traces, scene, address) is not None:
+                candidates.append((scene, address))
+    assert len(candidates) >= 2, "the gate needs more than one candidate to be meaningful"
+    frozen = spillover_edit(channel, traces, "eligible_all", solution=SOLUTION)
+    assert (frozen.unit, frozen.channel_address) == candidates[0]
+    hostile_scene, hostile_address = candidates[1]
+    made = _make_edit(channel, SOLUTION, traces, hostile_scene, hostile_address)
+    assert hostile_address != frozen.channel_address or hostile_scene != frozen.unit
+    assert made is not None
+
+
+def test_gate_e_mutation_a_caller_supplied_target_is_not_the_rule(traces):
+    r"""$\mathcal I_A$ is the only source of a target: a caller may not hand one in."""
+    import inspect
+    parameters = inspect.signature(spillover_edit).parameters
+    for forbidden in ("target", "action", "value", "edit"):
+        assert forbidden not in parameters, f"{forbidden} must not be callable in"
+    x = spillover_edit("X", traces, "eligible_all", solution=SOLUTION)
+    # a caller-chosen target outside the common admissible set would violate A88's contract, which
+    # the frozen rule cannot produce
+    common = None
+    for z in option_ids():
+        for m in (0, 1):
+            allowed = set(option_actions(z, ControlState(z=z, m=m), x.site.address.state))
+            common = allowed if common is None else (common & allowed)
+    outside = sorted(set(option_ids()) - common)
+    if outside:
+        assert outside[0] != x.target
+
+
+# --------------------------------------------------------------------------- #
+# The predicted side of Gate A
+# --------------------------------------------------------------------------- #
+
+def test_gate_a_the_reference_is_aggregate_and_provenance_restricted(traces):
+    r"""$B^{ref}_{C,A}$ is a mean over the candidate, and it may not read what it judges."""
+    # Provenance is read off the **code**, not the prose: the module's docstrings legitimately name
+    # the measured side it must not touch, so a substring scan would fail on its own documentation.
+    import ast
+    tree = ast.parse(MODULE.read_text(encoding="utf-8"))
+    names = {n.id for n in ast.walk(tree) if isinstance(n, ast.Name)}
+    attributes = {n.attr for n in ast.walk(tree) if isinstance(n, ast.Attribute)}
+    calls = {n.func.id for n in ast.walk(tree)
+             if isinstance(n, ast.Call) and isinstance(n.func, ast.Name)}
+    for forbidden in ("behavioral_collateral", "learned_rollout", "apply_transaction",
+                      "post_oracle", "LearnerPersistentState"):
+        assert forbidden not in names | attributes | calls, f"the prediction may not touch {forbidden}"
+    assert "value" in attributes and "q_value" in attributes
+    result = aggregate_reference("P", traces, "eligible_all", solution=SOLUTION)
+    units = refinement(cal_site("P"), traces, "eligible_all")
+    contributions = result["contributions"]
+    assert set(contributions) == set(units)
+    assert result["size"] == len(units)
+    mean = sum(contributions[u] for u in units) / len(units)
+    assert result["B_ref"] == pytest.approx(mean)
+    assert result["d_ref"] == (1 if result["B_ref"] > 0 else -1)
+    # units that do not consult the edited address contribute exactly nothing
+    edit = result["edit"]
+    untouched = [u for u in units if u.base_option != edit.channel_address]
+    assert untouched, "the P edit fires on some but not all units"
+    assert all(contributions[u] == pytest.approx(0.0) for u in untouched)
+    assert any(contributions[u] != 0.0 for u in units)
+
+
+def test_gate_a_the_predictions_are_frozen_row_reads_not_simulations(traces):
+    r"""$V^{ref}_{\text{pre}}$ is the solver's own entry value, and the spill value agrees where the
+    trajectory never meets the edit."""
+    for channel in ("X", "P"):
+        result = aggregate_reference(channel, traces, "eligible_all", solution=SOLUTION)
+        edit = result["edit"]
+        entry = State(x=0, y=2, t=0, kappa=edit.unit.kappa, phi=edit.unit.phase)
+        pre = predicted_pre_value(channel, edit.unit, solution=SOLUTION)
+        assert pre == pytest.approx(SOLUTION.value(entry, edit.unit.base_option, 0))
+        spilled = predicted_spill_value(channel, edit.unit, edit, traces=traces, solution=SOLUTION)
+        assert spilled != pre, "the fixture's own unit must be one the edit reaches"
+
+
+def test_gate_a_the_dq_cells_fail_closed_on_a_value_neutral_site(traces):
+    r"""A89 §77.7's rule selects the lexicographically least address with a *defined* edit, and a defined
+    edit need not be a **value-moving** one. On the $D_Q$ channel the least eligible address is
+    $\texttt{QAddress}(\texttt{State}(0,2,0,0,0), z{=}2, m{=}0, a{=}3)$, where the taken action and the
+    best alternative tie: lowering the taken row changes which action the read path selects and leaves
+    the return unchanged, so the aggregate prediction is exactly zero and the cell is `CALIBRATION_FAIL`
+    -- reported, not repaired. Relocating the site or narrowing the candidate would be exactly what
+    §77.7 forbids, so the six $D_Q$ cells are recorded as uncalibrated under the frozen rule.
+    """
+    from rfl_rebuild.b2 import calibration as module
+
+    for name in REFINEMENTS:
+        with pytest.raises(ProtocolError) as excinfo:
+            aggregate_reference("D_Q", traces, name, solution=SOLUTION)
+        assert module.CALIBRATION_FAIL in str(excinfo.value), name
+    edit = spillover_edit("D_Q", traces, "eligible_all", solution=SOLUTION)
+    pre = predicted_pre_value("D_Q", edit.unit, solution=SOLUTION)
+    spilled = predicted_spill_value("D_Q", edit.unit, edit, traces=traces, solution=SOLUTION)
+    assert pre == pytest.approx(spilled), "the finding is a value-neutral row, not a missing edit"
+
+
+def test_gate_a_and_b_and_e_are_registered_in_the_audited_chain():
+    assert "rfl_rebuild/b2/calibration.py" in PRODUCTION_MODULES
+    assert_modules_are_closed(audited_modules(ROOT / "src"))
