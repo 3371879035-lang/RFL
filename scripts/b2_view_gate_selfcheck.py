@@ -478,6 +478,15 @@ MUTATIONS: tuple = (
         "one pre map and one per arm",
     ),
     (
+        "dq_dispatch_removed",
+        "the DQ arm's dispatch to the existing B1 entry point is turned into a no-op, so the architecture is nameable but not load-bearing",
+        RUNNER,
+        "            run_dq_law(arm.law, clone, evidence[\"addresses\"], evidence[\"rows\"], q_reference,\n                       sol=evidence.get(\"sol\"), episode=evidence.get(\"episode\"))",
+        "            pass   # MUTATED: the DQ dispatch is removed",
+        f"{B2_RUN_TESTS}::test_11c_a_dq_pair_runs_through_the_b1_entry_point",
+        "LocalOracleRestore must have deleted the override",
+    ),
+    (
         "serial_arm_chain",
         "the second arm is cloned from the first arm's POST-update state instead of from the shared pre-update state, so the pair is a serial chain and the contrast is contaminated",
         RUNNER,

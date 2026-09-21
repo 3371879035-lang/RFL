@@ -37,15 +37,17 @@ from rfl_rebuild.b2.unaffected import (  # noqa: E402
     UnaffectedSet as SceneUnaffectedSet,
 )
 from rfl_rebuild.b2.view import assert_modules_are_closed  # noqa: E402
-from rfl_rebuild.env.kernel import SemanticTape  # noqa: E402
+from rfl_rebuild.env.kernel import ControlState, SemanticTape, option_actions  # noqa: E402
 from rfl_rebuild.learner.reference import reference_view_from  # noqa: E402
 from rfl_rebuild.learner.store import (  # noqa: E402
-    PROCESS, Edit, LearnerPersistentState,
+    PROCESS, Q, Edit, LearnerPersistentState,
 )
 from rfl_rebuild.solve.dp import solve_reference  # noqa: E402
 
 RUNNER_MODULE = ROOT / "src" / "rfl_rebuild" / "b2" / "runner.py"
-REFERENCE_VIEW = reference_view_from(solve_reference())
+#: The frozen solve and the one artifact every dimension reads, in this file's fixture.
+SOLUTION = solve_reference()
+REFERENCE_VIEW = reference_view_from(SOLUTION)
 UNITS = ("ProcessCommit",)
 GRID = (0, 1, 2, 3, 4, 5)
 
@@ -77,9 +79,10 @@ def runner(events=None, **overrides):
     return PairedRunner(**kwargs)
 
 
-#: The pair's credited unit. A89 §77.4 defines the unaffected region relative to a credited site, so
-#: the runner takes one explicitly rather than inferring it from a bare domain.
-CREDIT = CreditedSite("P", 0)
+#: The pair's credited unit. A89 §77.4 defines the unaffected region relative to a credited site, and
+#: the runner now binds it to the unit B1 will actually credit: rho_P(ProcessCommit, AssistedInput(1))
+#: is (1,), so the region is E(P(1)) rather than E(P(0)).
+CREDIT = CreditedSite("P", 1)
 
 
 def run(events=None, **overrides):
@@ -405,29 +408,98 @@ def test_11b_the_two_arms_share_one_pre_measurement():
 
 
 def test_11c_a_dq_pair_runs_through_the_b1_entry_point():
-    r"""A85 §73.2.5: the measurement interface is behaviourally load-bearing for $D_Q$ too.
+    r"""A85 §73.2.5: the $D_Q$ dispatch is **load-bearing**, not merely nameable.
 
-    B1 already ships `run_dq_law` and `DQ_LAWS`; the runner dispatches to them rather than inventing
-    $D_Q$ semantics, and this gate is what says the third architecture is actually reachable.
+    The pair runs on a raw pre state that already carries a $Q$ override at the credited row: the
+    reference law keeps it and `LocalOracleRestore` restores the row, i.e. deletes the override by
+    A77 §65.4's canonicalisation. The gate reads the two post states the instrument measured -- so a
+    dispatch that was quietly turned into a no-op would leave them identical and turn this red.
     """
     from rfl_rebuild.b1.laws import DQ_LAWS
     from rfl_rebuild.b2.unaffected import credited_domain, pre_update_traces, scene_domain
+    from rfl_rebuild.learner.store import QAddress
 
     traces = pre_update_traces(learner=LearnerPersistentState(), q_reference=REFERENCE_VIEW)
     credit = credited_domain("D_Q", traces)[0]
+    address = credit.address
+    # the row must be one the read path can reach: a Q entry outside the reference domain is refused
+    # by the store, because a row the read path never consults would move the fingerprint while being
+    # invisible in behaviour
+    allowed = sorted(option_actions(address.z, ControlState(z=address.z, m=address.m), address.state))
+    assert allowed, "the credited decision context must have an admissible action"
+    row = QAddress(state=address.state, z=address.z, m=address.m, a=allowed[0])
+    state = LearnerPersistentState()
+    state.apply_transaction([Edit(Q, row, SOLUTION.q_value(address.state, address.z, address.m,
+                                                           allowed[0]) - 1.0)],
+                            q_reference=REFERENCE_VIEW)
+    assert state.q_overrides, "the gate needs a credited row that already carries an override"
+
     reference = next(x for x in DQ_LAWS
                      if type(x).__name__ == "NoWriteRef" and x.tier is Tier.L3_ORACLE)
     treatment = next(x for x in DQ_LAWS if getattr(x, "name", None) == "LocalOracleRestore")
     arms = (ArmSpec("reference", "D_Q", Tier.L3_ORACLE, reference),
             ArmSpec("treatment", "D_Q", Tier.L3_ORACLE, treatment))
-    scene = min(scene_domain(), key=lambda s: s.key)
-    record = runner().run(
-        LearnerPersistentState(), arms=arms,
-        evidence={"addresses": (credit.address,), "rows": traces.rows(scene)},
-        exogenous=exogenous(), credited_site=credit)
+    scene = next(s for s in sorted(scene_domain(), key=lambda s: s.key) if s.base_option == 1)
+
+    import rfl_rebuild.b2.runner as R
+    learners = []
+    original = R.measure_scene_map
+
+    def spy(learner, units, *, q_reference):
+        learners.append(learner)
+        return original(learner, units, q_reference=q_reference)
+
+    R.measure_scene_map = spy
+    try:
+        record = runner().run(state, arms=arms,
+                              evidence={"addresses": (address,), "rows": traces.rows(scene)},
+                              exogenous=exogenous(), credited_site=credit)
+    finally:
+        R.measure_scene_map = original
+
     assert record.architecture == "D_Q"
     assert set(record.collateral) == {"reference", "treatment"}
+    assert len(learners) == 3, "one pre measurement and one per arm"
+    pre_learner, post_ref, post_treat = learners
+    assert pre_learner.q_overrides, "the pre measurement must read the state it was handed"
+    assert post_ref.q_overrides == pre_learner.q_overrides, (
+        "NoWriteRef must leave the credited row alone")
+    assert not post_treat.q_overrides, (
+        "LocalOracleRestore must have deleted the override: a no-op dispatch would keep it")
+    assert fingerprint(post_ref) != fingerprint(post_treat), (
+        "the two arms' post states must differ, or the DQ dispatch is not load-bearing")
     assert record.unaffected_size > 0
+
+
+def test_11d_a_legal_but_unrelated_credited_unit_is_refused():
+    r"""$$\boxed{\text{resolved B1 credit} = \text{the runner's credited site}}$$
+
+    Membership in the credited domain is not enough: a legal $c$ that is not the unit this pair writes
+    would define the region for a different pair. `ProcessCommit` with `AssistedInput(1)` resolves to
+    $P(1)$, so $P(0)$ must fail stop.
+    """
+    with pytest.raises(ProtocolError) as ei:
+        runner().run(LearnerPersistentState(), arms=arm_defs(),
+                     evidence={"units": UNITS, "assisted": AssistedInput(1)},
+                     exogenous=exogenous(), credited_site=CreditedSite("P", 0))
+    assert "resolves to (1,)" in str(ei.value)
+
+
+def test_11e_a_second_reference_object_is_refused():
+    r"""A89 §77.8 freezes **one** nominal reference artifact, by object rather than by value.
+
+    A second view with identical content would let eligibility, the collateral maps and the $D_Q$ write
+    path run under one artifact while the futures run under another -- and every number would still look
+    consistent.
+    """
+    same_content_other_object = reference_view_from(solve_reference())
+    assert same_content_other_object is not REFERENCE_VIEW
+    with pytest.raises(ProtocolError) as ei:
+        runner().run(LearnerPersistentState(), arms=arm_defs(),
+                     evidence={"units": UNITS, "assisted": AssistedInput(1)},
+                     exogenous=exogenous(q_reference=same_content_other_object),
+                     credited_site=CREDIT)
+    assert "different reference artifact" in str(ei.value)
 
 
 def test_11_the_runner_is_in_the_audited_production_chain():

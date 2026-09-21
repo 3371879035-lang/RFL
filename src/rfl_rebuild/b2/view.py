@@ -360,7 +360,7 @@ IMPORT_ALLOWLIST = (
     "rfl_rebuild.b2.environment", "rfl_rebuild.b2.continuation",
     "rfl_rebuild.b2.screening", "rfl_rebuild.b2.unaffected",
     "rfl_rebuild.b2.calibration",
-    "rfl_rebuild.b1.controller", "rfl_rebuild.b1.tier",
+    "rfl_rebuild.b1.controller", "rfl_rebuild.b1.tier", "rfl_rebuild.b1.process",
     "rfl_rebuild.b2.collateral",
     "rfl_rebuild.b2.retention", "rfl_rebuild.b2.runner",
     "rfl_rebuild.b1.contract", "rfl_rebuild.b1.laws", "rfl_rebuild.b1.runner",

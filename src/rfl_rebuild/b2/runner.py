@@ -33,6 +33,7 @@ from typing import Mapping, Sequence
 from rfl_rebuild.b1.contract import fingerprint
 from rfl_rebuild.b1.errors import ProtocolError
 from rfl_rebuild.b1.laws import DQ_LAWS, P_LAWS, X_LAWS
+from rfl_rebuild.b1.process import resolve_process_addresses
 from rfl_rebuild.b1.runner import run_controller_law, run_dq_law, run_process_law
 from rfl_rebuild.b1.tier import Tier
 from rfl_rebuild.b2.collateral import behavioral_collateral_scenes, measure_scene_map
@@ -285,6 +286,24 @@ class PairedRunner:
                 f"the credited unit belongs to {credited_site.channel!r} but the arms are "
                 f"{arms[0].architecture!r}; the region and the write are about one architecture")
 
+        # The credited unit must be the one B1 will actually credit, resolved by that architecture's
+        # own resolver from the very evidence the arms run on. Membership in the credited domain is not
+        # enough: a legal-but-unrelated $c$ would define the region for a pair that writes elsewhere,
+        # which is the failure A89's "the credited unit the pair is testing" exists to prevent. The
+        # ontology carries a single $c$, so the resolved population must be exactly a singleton.
+        resolved = self._resolved_credit(arms[0].architecture, evidence)
+        if resolved != (credited_site.address,):
+            raise ProtocolError(
+                f"this pair's B1 credit resolves to {resolved!r}, but the unaffected region was asked "
+                f"for {credited_site.render()}; the region would describe a pair that writes somewhere "
+                "else")
+
+        if exogenous.q_reference is not self._q_reference:
+            raise ProtocolError(
+                "the exogenous setup carries a different reference artifact than the runner's: A89 "
+                "§77.8 freezes ONE nominal artifact for eligibility, both arms' collateral and the $D_Q$ "
+                "write path, and a second object would let the dimensions disagree while looking equal")
+
         # (1) the shared design material, built from the RAW pre-update state BEFORE any arm exists
         unaffected = self.pre_update_source(state, credited_site)
         self._recorder("unaffected", unaffected, id(unaffected))
@@ -350,6 +369,27 @@ class PairedRunner:
             fingerprints_pre=MappingProxyType(pre_fingerprints),
             observations=tuple(observations),
         )
+
+    @staticmethod
+    def _resolved_credit(architecture: str, evidence: Mapping) -> tuple:
+        r"""The unit B1 will actually credit, from the architecture's own resolver.
+
+        $D_Q$ and $X$ are handed resolved addresses, so the binding is the tuple the caller declared;
+        $P$ is resolved here through the frozen $\rho_P$ (`resolve_process_addresses`) rather than by
+        reading a field out of `AssistedInput` and re-implementing it.
+        """
+        if architecture == "D_Q":
+            if "addresses" not in evidence:
+                raise ProtocolError("the D_Q credit cannot be resolved without 'addresses'")
+            return tuple(evidence["addresses"])
+        if architecture == "X":
+            if "sites" not in evidence:
+                raise ProtocolError("the X credit cannot be resolved without 'sites'")
+            return tuple(evidence["sites"])
+        for key in ("units", "assisted"):
+            if key not in evidence:
+                raise ProtocolError(f"the P credit cannot be resolved without {key!r}")
+        return tuple(resolve_process_addresses(evidence["units"], evidence["assisted"]))
 
     @staticmethod
     def _apply(arm: ArmSpec, clone: LearnerPersistentState, evidence: Mapping,
