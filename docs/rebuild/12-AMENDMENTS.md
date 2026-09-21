@@ -6893,6 +6893,17 @@ $$\boxed{C_i = E_{\text{unaffected}}(c) \cap S_i}, \qquad
 S_i \in \{\texttt{all},\ \texttt{phase\_even},\ \texttt{phase\_odd},\
 \texttt{cause\_rank\_lower},\ \texttt{error\_absent},\ \texttt{base\_option\_nonzero}\}}$$
 
+The candidate names are frozen with them, and each is an intersection rather than a rival definition:
+
+| candidate | definition | what the slice selects inside $E_{\text{unaffected}}(c)$ |
+|---|---|---|
+| `eligible_all` | $E$ | the whole unaffected universe; the eligibility layer itself |
+| `eligible_phase_even` | $E \cap \{\text{phase} \in \{0,2,4\}\}$ | the even hazard-schedule phases |
+| `eligible_phase_odd` | $E \cap \{\text{phase} \in \{1,3,5\}\}$ | its complement within $E$; together the pair partitions $E$ |
+| `eligible_cause_rank_lower` | $E \cap \{r < 30\}$ | the lower half of the feedback-rank support |
+| `eligible_error_absent` | $E \cap \{e = 0\}$ | the no-feedback-error stratum |
+| `eligible_base_option_nonzero` | $E \cap \{z_{\text{base}} \neq 0\}$ | the non-proposal stratum |
+
 So `eligible_all` *is* the eligibility layer, and the other five are sub-regions of a region that is
 already legitimate. **A slice answers "which part of the unaffected universe do we report"; it is no
 longer asked to answer "why is this universe unaffected".** Neither the eligibility construction nor
