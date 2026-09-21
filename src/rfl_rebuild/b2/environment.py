@@ -31,11 +31,11 @@ $$\boxed{\text{no channel may be bypassed by a reference shortcut}}$$
 from __future__ import annotations
 
 from rfl_rebuild.b1.errors import ProtocolError
-from rfl_rebuild.env.kernel import Outcome, rollout
+from rfl_rebuild.env.kernel import Outcome, RolloutTrace, rollout
 from rfl_rebuild.learner.store import LearnerPersistentState
 from rfl_rebuild.b2.producer import ENVIRONMENT_INTERFACE, LearnerEnvironment
 
-__all__ = ["KernelLearnerEnvironment", "PRODUCTION_MODULES"]
+__all__ = ["KernelLearnerEnvironment", "PRODUCTION_MODULES", "learned_rollout", "learner_channels"]
 
 #: Every module in the audited production chain. The list lives here rather than in a test so the
 #: audit and the gates read one source: adding a module to the chain is adding it here.
@@ -44,10 +44,43 @@ PRODUCTION_MODULES = (
     "rfl_rebuild/b2/producer.py",
     "rfl_rebuild/b2/utility.py",
     "rfl_rebuild/b2/environment.py",
+    "rfl_rebuild/b2/continuation.py",
     "rfl_rebuild/b2/collateral.py",
     "rfl_rebuild/b2/retention.py",
     "rfl_rebuild/b2/runner.py",
 )
+
+
+def learner_channels(snapshot, q_reference) -> tuple:
+    r"""The two channels an episode reads from a snapshot: the decision read path and $C_X^L$.
+
+    $\Delta W$ arrives only through the state, and both the ordinary rollout of A87 §75.6 and the
+    $U_1$ continuation entry must read it through **this** function. A second copy of the wiring
+    would make the two sides of a gate agree for the wrong reason -- they would be agreeing with
+    each other's bug -- so the wiring exists once.
+    """
+    return (snapshot.decision_provider(snapshot.q_decision_provider(q_reference)),
+            snapshot.controller_mapping())
+
+
+def learned_rollout(state, *, kappa: int, tape, base_option: int, q_reference) -> "RolloutTrace":
+    r"""The ordinary rollout of A87 §75.6: the commit edge **included**, from the episode's start.
+
+    $$\boxed{z^{\text{proposal}} \to C_P^{L} \to z^{\text{in-force}} \to \texttt{initial\_control}
+    \to \text{the shared core}}$$
+
+    This is the behaviour the continuation gates compare against, so it is exposed rather than
+    reached through `future_records`: the gates compare *suffix signatures*, not record sequences.
+    """
+    if type(state) is not LearnerPersistentState:
+        raise ProtocolError(
+            f"the future is rolled out from a learner state, got {type(state).__name__}")
+    snapshot = state.snapshot()
+    command_provider, controller = learner_channels(snapshot, q_reference)
+    return rollout(
+        kappa=kappa, tape=tape, command_provider=command_provider, base_option=base_option,
+        controller=controller, learner_process_commit=snapshot.process_commit_provider(),
+    )
 
 
 class KernelLearnerEnvironment(LearnerEnvironment):
@@ -93,19 +126,11 @@ class KernelLearnerEnvironment(LearnerEnvironment):
         if type(state) is not LearnerPersistentState:
             raise ProtocolError(
                 f"the future is rolled out from a learner state, got {type(state).__name__}")
-        snapshot = state.snapshot()
-        # The decision read path: the decision store takes precedence, and its healthy referent is
-        # the Q read path over the injected reference view.
-        command_provider = snapshot.decision_provider(
-            snapshot.q_decision_provider(self._q_reference))
-        trace = rollout(
-            kappa=self._kappa,
-            tape=self._tape,
-            command_provider=command_provider,
-            base_option=self._base_option,
-            controller=snapshot.controller_mapping(),
-            learner_process_commit=snapshot.process_commit_provider(),
-        )
+        # The wiring lives in `learned_rollout`/`learner_channels` so the continuation gates compare
+        # against the *same* channel construction rather than against a second copy of it.
+        trace = learned_rollout(
+            state, kappa=self._kappa, tape=self._tape,
+            base_option=self._base_option, q_reference=self._q_reference)
         rewards, outcomes, trajectories, actions, observations = [], [], [], [], []
         previous = None
         for step in trace.steps:

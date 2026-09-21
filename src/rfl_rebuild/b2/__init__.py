@@ -35,6 +35,15 @@ from rfl_rebuild.b2.view import (
     require_learner_rollout,
 )
 
+from rfl_rebuild.b2.continuation import (
+    ContinuationContractError,
+    SuffixSignature,
+    continuation,
+    exogenous_lift,
+    sigma_suffix,
+    suffix_from,
+)
+
 __all__ = [
     "ENVIRONMENT_INTERFACE",
     "FutureRolloutProducer",
@@ -52,4 +61,10 @@ __all__ = [
     "assert_module_is_closed",
     "assert_modules_are_closed",
     "require_learner_rollout",
+    "ContinuationContractError",
+    "SuffixSignature",
+    "continuation",
+    "exogenous_lift",
+    "sigma_suffix",
+    "suffix_from",
 ]

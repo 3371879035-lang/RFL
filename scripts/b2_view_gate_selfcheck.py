@@ -224,8 +224,8 @@ MUTATIONS: tuple = (
         "handed, so the future is no longer a function of W + Delta W -- the defect B2 exists to "
         "measure, and the one a plausible-looking rollout would hide",
         ENVIRONMENT,
-        "        snapshot = state.snapshot()\n",
-        "        snapshot = LearnerPersistentState().snapshot()   # MUTATED\n",
+        "    snapshot = state.snapshot()\n",
+        "    snapshot = LearnerPersistentState().snapshot()   # MUTATED: ignores the passed state\n",
         f"{B2_ENV_TESTS}::test_2_each_persistent_channel_moves_the_future",
         "C_P^L channel is not read",
     ),
@@ -235,8 +235,8 @@ MUTATIONS: tuple = (
         "identity default: a reference shortcut in the one place where a shortcut is the whole "
         "question",
         ENVIRONMENT,
-        "            learner_process_commit=snapshot.process_commit_provider(),\n",
-        "            learner_process_commit=None,                       # MUTATED\n",
+        "        controller=controller, learner_process_commit=snapshot.process_commit_provider(),\n",
+        "        controller=controller, learner_process_commit=None,   # MUTATED: C_P^L dropped\n",
         f"{B2_ENV_TESTS}::test_2_each_persistent_channel_moves_the_future",
         "C_P^L channel is not read",
     ),
@@ -276,9 +276,10 @@ MUTATIONS: tuple = (
         "holds is never applied. The future is still plausible, which is why only a gate that "
         "writes the channel can see it",
         ENVIRONMENT,
-        "        command_provider = snapshot.decision_provider(\n"
-        "            snapshot.q_decision_provider(self._q_reference))\n",
-        "        command_provider = snapshot.q_decision_provider(self._q_reference)   # MUTATED\n",
+        "    return (snapshot.decision_provider(snapshot.q_decision_provider(q_reference)),\n"
+        "            snapshot.controller_mapping())\n",
+        "    return (snapshot.q_decision_provider(q_reference),   # MUTATED: decision channel dropped\n"
+        "            snapshot.controller_mapping())\n",
         f"{B2_ENV_TESTS}::test_2b_the_decision_patch_channel_moves_the_future",
         "P_D^L is bypassed",
     ),

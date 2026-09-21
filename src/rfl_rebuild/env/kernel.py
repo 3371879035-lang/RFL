@@ -29,7 +29,7 @@ __all__ = [
     "LearnerContractViolation", "ProcessCommitProvider", "CommandProvider",
     "ACTIONS", "Action", "START", "GOAL", "CONTESTED", "WALLS", "OPEN_CELLS",
     "HORIZON", "STEP_COST",
-    "step", "rollout", "option_actions", "automaton_transition",
+    "step", "rollout", "continue_rollout", "option_actions", "automaton_transition",
     "legal_actions", "hazard_at", "option_ids", "option_name",
     "initial_control", "but_for_relevance",
 ]
@@ -842,6 +842,47 @@ def rollout(
     control = initial_control(z0)
 
     state = State(x=START[0], y=START[1], t=0, kappa=kappa, phi=tape.phase)
+    # A87 §75.6 (iii): the episode loop is factored into **one shared core**, so that a
+    # continuation and an ordinary rollout are the same code path rather than two implementations
+    # that happen to agree. The commit edge above stays *outside* the core: a continuation takes
+    # the option as already in force and must not re-execute C_P^L (§75.6 (iv)).
+    return continue_rollout(
+        state=state, control=control, tape=tape, command_provider=command_provider,
+        base_option=base_option, option_in_force=z0, mask=mask,
+        interventions=interventions, controller=controller, reward_mode=reward_mode,
+    )
+
+
+def continue_rollout(
+    *,
+    state: State,
+    control: ControlState,
+    tape: SemanticTape,
+    command_provider: CommandProvider,
+    base_option: int,
+    option_in_force: int,
+    mask: FaultMask = FaultMask(),
+    interventions: InterventionSet = InterventionSet(),
+    controller: Mapping[ControllerSite, Action] | None = None,
+    reward_mode: str = "A",
+) -> "RolloutTrace":
+    r"""The shared continuation core: steps from a given ``(state, control)`` to terminal or ``H``.
+
+    This is the body of :func:`rollout` after the commit edge has been resolved, and it is the
+    **only** implementation of the episode loop in the package.
+
+    $$\boxed{\text{one core} \;\Longrightarrow\; \text{no second simulator to disagree with}}$$
+
+    A87 §75.6 (iv) fixes what it must *not* do: it never re-executes $C_P^{L}$. That is structural
+    rather than documented -- the core has no process-commit parameter, so an entry's option is
+    already in force by construction, and a caller that wanted to recommit would have to go back
+    through :func:`rollout` and step *before* the core.
+
+    ``base_option`` and ``option_in_force`` are carried for the trace's provenance fields. For a
+    continuation entered at $(s,z,m)$ there is no proposal distinct from the option in force, so
+    both are the entry's $z$; the gates assert the asymmetry on the ordinary side instead, where
+    $z^{\text{in-force}} = C_P^{L}(z^{\text{proposal}})$ may differ from the proposal.
+    """
     site_repairs = interventions.site_repairs()
 
     steps: list[StepResult] = []
@@ -877,7 +918,7 @@ def rollout(
         steps=tuple(steps),
         outcome=steps[-1].outcome if steps else Outcome.TIMEOUT,
         control=control, mask=mask, interventions=interventions,
-        base_option=base_option, option_in_force=z0,
+        base_option=base_option, option_in_force=option_in_force,
     )
 
 
