@@ -5729,7 +5729,7 @@ $$\boxed{g_U(\xi) \text{ is single-valued: the same witness yields one unit of t
 | candidate | $g_U(\xi)$ | closed field surface of the unit |
 |---|---|---|
 | $U_1$ | the decision situation of the witness | $(s, z, m)$ — the enumerated decision-context triple |
-| $U_2$ | the witness's **evaluation scene unit** | $(\kappa, \varphi, \text{base option}, \text{reference artifact})$: the episode's starting condition, entered **upstream of $C_P^L$** so that $z^{\text{in-force}}$ is produced during evaluation |
+| $U_2$ | the witness's **evaluation scene unit** | $(\kappa,\ \text{tape},\ \text{base option})$: the episode's starting condition, entered **upstream of $C_P^L$** so that $z^{\text{in-force}}$ is produced during evaluation. The tape enters **by its full frozen assignment** $(\text{phase},\ \text{error\_flag},\ \text{cause\_rank})$ |
 
 Three properties of these definitions are load-bearing, and the review produced each of them:
 
@@ -5737,6 +5737,18 @@ Three properties of these definitions are load-bearing, and the review produced 
   every evaluation unit — to be fixed before any arm runs and shared across the pair. What is
   post-update is the **measurement** $V_{W+\Delta W}(u)$; the unit's identity never is. $U_2$ is
   therefore not a "post-update unit";
+* **the tape is not a phase.** A standalone $\varphi$ is not a field of the unit: the kernel reads
+  `tape`, and `state.phi` is `tape.phase`, so naming only the phase would leave
+  $(\kappa, \varphi, \text{base option})$ compatible with several distinct tapes -- several distinct
+  evaluation scenes -- and the projection's single-valuedness would be false. Omitting `error_flag`
+  or `cause_rank` would require a proof that neither can affect $V_W$, and no such proof is claimed;
+* **the reference view is an instrument dependency, not unit identity.** The environment needs a
+  `QReferenceView` to define "no override" at all, but it is not part of what the unit *is*: the
+  wider shared reference artifact also carries $V_{\text{pre}}$, whose final instance A85 §73.1 keeps
+  stage-dependent (A83 §71.4's open $N_{\text{eval}}$ plus `11` §12.3's same-scenes rule). Putting
+  it in the identity would change the unit's identity when a design quantity is frozen -- the same
+  defect that keeps the checkpoint schedule out. It is a **fixed measurement-instrument dependency**,
+  so a nominal artifact may serve during screening while the unit identifies the scene;
 * **the measurement schedule is not part of the unit.** The checkpoint grid $\mathcal
   G_{\text{ckpt}}$ is an A83-open design quantity and interrogates a unit rather than constituting
   it, so it is **excluded** from $U_2$'s field surface. Screening therefore uses a **nominal test
@@ -5762,16 +5774,22 @@ s_A^{\text{expected}}\bigr)}, \qquad A \in \{D_Q, X, P\}}$$
 * $\xi_A^*$ — the semantic **evaluation situation** the synthetic edit is expected to affect. It is
   candidate-independent: each candidate projects it through its own $g_U$;
 * $\Delta W_A^{\text{cal}}$ — the concrete synthetic persistent edit, declared with the witness;
-* $s_A^{\text{expected}} \in \{-1, +1\}$ — the expected sign of the **behavioural loss**
+* $s_A^{\text{expected}} \in \{-1, +1\}$ — **a constant A87 declares from the canary's
+  construction**, before any candidate is projected and before anything is measured:
 
-$$s_A^{\text{expected}} = \operatorname{sign}\bigl[V_W(u) - V_{W+\Delta W_A^{\text{cal}}}(u)\bigr]
-\quad\text{stated by construction, before any measurement}$$
+$$\boxed{s_A^{\text{expected}} \text{ is a declared constant, not a function of any } V}$$
 
-  and it must be knowable **without** the measurement it will be checked against. An earlier draft
-  defined $s_A$ *as* the sign of that difference and then compared the difference to it, which is
-  $x = \operatorname{sign}(M)$ followed by $\operatorname{sign}(M) = x$ — a tautology, not a
-  pre-registration. A canary whose direction cannot be stated without measuring has **no direction
-  gate** for that cell; that is recorded as a limitation rather than repaired after the fact;
+  An earlier draft *defined* $s_A$ as the sign of the measured difference and then compared that
+  difference to it -- $x = \operatorname{sign}(M)$ followed by $\operatorname{sign}(M) = x$ -- which
+  is a tautology rather than a pre-registration; and its bare $u$ had no candidate-independent
+  meaning once $U_1$ and $U_2$ are different unit ontologies. The measurement's only job is to test
+  the declared constant at the candidate's own image of the witness:
+
+$$\operatorname{sign}\!\left[V_W\bigl(g_U(\xi_A^*)\bigr) -
+  V_{W+\Delta W_A^{\text{cal}}}\bigl(g_U(\xi_A^*)\bigr)\right] = s_A^{\text{expected}}$$
+
+  so `semantic canary -> expected sign` happens before any candidate, while
+  `g_U(xi) -> measurement` is the candidate-specific step;
 * a magnitude $m_A$ only where it is analytically known, and never a forced common ratio across
   architectures.
 
@@ -5789,12 +5807,21 @@ For a candidate $U$ and architecture $A$, with $u^*_{A,U} := g_U(\xi_A^*)$:
    is a different defect from a metric that did not move;
 2. **detection.** $\exists u \in U: V_{W+\Delta W_A^{\text{cal}}}(u) \neq V_W(u)$;
 3. **direction at the witness.** $\operatorname{sign}\bigl[V_W(u^*_{A,U}) -
-   V_{W+\Delta W_A^{\text{cal}}}(u^*_{A,U})\bigr] = s_A^{\text{expected}}$, where that sign is
-   independently stated as above — otherwise the cell reports detection only.
+   V_{W+\Delta W_A^{\text{cal}}}(u^*_{A,U})\bigr] = s_A^{\text{expected}}$, against the constant
+   A87 declared.
 
-A cell satisfying 1–3 is `DETECT`; failing any is `BLIND`, with the failure mode recorded. Values are
-measured by the **audited environment** (A85 §73.2.1); no index, hash, modulo or resampling adapter
-may stand in for a measurement.
+A cell satisfying 1–3 is `STRUCTURAL_PASS`; failing 1 or 2 is `BLIND`, with the failure mode
+recorded. A cell for which A87 could not declare an independent sign at all is
+
+$$\boxed{\texttt{DIRECTION\_UNRESOLVED}}$$
+
+which **is not a structural PASS**: it may show sensitivity, but it cannot be counted as $U$ passing
+$A$, and §74.4's decision rule reads `STRUCTURAL_PASS` only. A87 must therefore declare, for each of
+the three canaries, either a sign or an explicit `DIRECTION_UNRESOLVED`; leaving the status undefined
+is not an option, because it would decide the screening's conclusion by omission.
+
+Values are measured by the **audited environment** (A85 §73.2.1); no index, hash, modulo or
+resampling adapter may stand in for a measurement.
 
 ### 74.4 The $P$ canary, and the bounded conclusion
 
@@ -5809,7 +5836,8 @@ $$\boxed{\texttt{STRUCTURALLY\_BLIND\_FOR\_P}}$$
 
 and rejected. The screening's conclusions are bounded by what was registered:
 
-$$\boxed{\exists U \in \mathcal U^{\text{pre}}_{\text{unified}} \text{ passing } D_Q, X, P
+$$\boxed{\exists U \in \mathcal U^{\text{pre}}_{\text{unified}} \text{ with }
+\texttt{STRUCTURAL\_PASS} \text{ on } D_Q, X, P
 \;\Longrightarrow\; \text{the unified family survives structural screening}}$$
 
 $$\boxed{\forall U \in \mathcal U^{\text{pre}}_{\text{unified}},\ \exists A: \ blind(U, A)
@@ -5857,9 +5885,23 @@ the implementation-chooses-the-definition error this sequence exists to prevent,
 $$\boxed{\mathcal C_{D_Q},\ \mathcal C_X,\ \mathcal C_P \text{ are frozen by A87, before any
 calibration run}}$$
 
-A87 freezes those three fixtures concretely — the edit, the witness, the independently stated
-expected sign, and for each candidate the projection's image — and only then may the seedless
-structural screening be executed. **A86's freeze does not authorise the run.**
+A87 freezes those three fixtures concretely — the edit, the witness, the individually declared
+expected sign (or an explicit `DIRECTION_UNRESOLVED`), and for each candidate the projection's image
+— and it **also freezes the screening's measurement protocol**:
+
+$$\boxed{\mathcal G^{\text{nominal}}_{\text{screen}} \text{ (or, more generally, }
+\mathcal M_{\text{screen}}) \text{ is A87's to declare}}$$
+
+Otherwise the schedule would be chosen by the calibration code, which can decide whether an effect is
+detectable at all -- the same defect as an unoperationalised candidate, merely moved from unit
+identity to interrogation protocol. Two statements that do not conflict:
+
+$$\boxed{\mathcal G_{\text{ckpt}} \notin \text{unit identity}} \qquad
+\boxed{\mathcal M_{\text{screen}} \in \text{the preregistered measurement protocol}}$$
+
+and the rule already stated holds: when the **final** $\mathcal G_{\text{ckpt}}$ is frozen, the
+screening is re-run against it before any structural conclusion travels. Only then may the seedless
+screening be executed. **A86's freeze does not authorise the run.**
 
 Finally, a promotion note: this draft's revision is **not** cherry-pickable into `rebuild`, because
 its ancestry contains a commit made on an unresolved conflict. Promotion must rebuild this file from
@@ -5883,14 +5925,17 @@ When it is written, A87 must contain, for each $A \in \{D_Q, X, P\}$, a concrete
 $$\mathcal C_A = \bigl(W_{\text{pre}},\ \Delta W_A^{\text{cal}},\ \xi_A^*,\
 s_A^{\text{expected}}\bigr)$$
 
-with the edit, the semantic witness and the independently stated expected sign all named, and with
-each preregistered candidate's projection image $g_U(\xi_A^*)$ — before any calibration run. Until
+with the edit, the semantic witness and the individually declared expected sign (or an explicit
+`DIRECTION_UNRESOLVED`) all named, with each preregistered candidate's projection image
+$g_U(\xi_A^*)$, **and with the screening's measurement protocol**
+$\mathcal G^{\text{nominal}}_{\text{screen}}$ (or $\mathcal M_{\text{screen}}$) -- all before any
+calibration run. Until
 then the structural screening of A86 §74.3 is **not authorised**, and neither is any change to
 `runner.py` on its account.
 
 | # | what | severity | status |
 |---|---|---|---|
-| A87 | the concrete injection fixtures $\mathcal C_{D_Q}, \mathcal C_X, \mathcal C_P$ that A86 §74.6 requires before the screening may run | **P0 (interface)** | **reserved -- not yet written** |
+| A87 | the concrete injection fixtures $\mathcal C_{D_Q}, \mathcal C_X, \mathcal C_P$, their individually declared expected signs, and the screening measurement protocol $\mathcal G^{\text{nominal}}_{\text{screen}}$ -- everything A86 §74.6 requires before the screening may run | **P0 (interface)** | **reserved -- not yet written** |
 
 ## 64. Summary and what remains open
 
