@@ -351,7 +351,8 @@ class FutureConsequenceViewBuilder:
 #: Modules this one may import. Kept as data so the AST gate and its mutation read the same list:
 #: an allowlist that lives in the checker but not in the check's subject is a comment.
 IMPORT_ALLOWLIST = (
-    "__future__", "abc", "ast", "pathlib", "dataclasses", "enum", "types", "typing",
+    "__future__", "abc", "ast", "math", "pathlib", "dataclasses", "enum", "types",
+    "typing",
     "rfl_rebuild.b1.errors", "rfl_rebuild.learner.store", "rfl_rebuild.env.kernel",
     # B2's own audited chain: the producer and the view are one closure, so each may import the
     # other, and a module outside this list is a dependency the audit has not seen.

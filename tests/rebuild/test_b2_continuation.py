@@ -46,6 +46,11 @@ from rfl_rebuild.b2.environment import (  # noqa: E402
     learned_rollout,
     learner_channels,
 )
+from rfl_rebuild.b2.screening import (  # noqa: E402
+    WITNESS_SUFFIX_STEP,
+    X_SITE,
+    canary_edit,
+)
 from rfl_rebuild.env.domain import decision_contexts, is_decision_context  # noqa: E402
 from rfl_rebuild.env.kernel import (  # noqa: E402
     HORIZON,
@@ -56,6 +61,7 @@ from rfl_rebuild.env.kernel import (  # noqa: E402
     State,
     continue_rollout,
     initial_control,
+    option_actions,
     option_ids,
 )
 from rfl_rebuild.learner.reference import reference_view_from  # noqa: E402
@@ -82,18 +88,8 @@ U2_BASE_OPTION = {"D_Q": 1, "X": 1, "P": 0}
 CANARIES = ("D_Q", "X", "P")
 
 
-def canary_edit(kind: str) -> Edit:
-    r"""$\Delta W_A^{cal}$ of §75.2, in the substrate's own edit vocabulary."""
-    if kind == "D_Q":
-        # The healthy argmax at x* falls below the alternative: the read path is an argmax, so
-        # selection moves to action 4 structurally, and 0.86 is the frozen row it moves to.
-        return Edit(Q, QAddress(state=START_STATE, z=1, m=0, a=3), -0.14)
-    if kind == "X":
-        # The site the healthy learner actually queries: its command is 3, and 4 is inside A_z.
-        return Edit(CONTROLLER, ControllerSite(state=START_STATE, cmd=3), 4)
-    if kind == "P":
-        return Edit(PROCESS, 0, 1)
-    raise AssertionError(kind)
+# `canary_edit` is imported from the harness, so the fixture exists once: a second copy here
+# could drift from the one the screening measures with.
 
 
 def learner_with(edits=()) -> LearnerPersistentState:
@@ -117,8 +113,12 @@ def ordinary(kind: str, learner: LearnerPersistentState):
 
 
 def entry_image(kind: str) -> tuple:
-    r"""$g_{U_1}(\xi_A^*)$ of §75.2: the load-bearing $P$ image is the **pre-update** option."""
-    return (START_STATE, 1, 0) if kind in ("D_Q", "X") else (START_STATE, 0, 0)
+    r"""$g_{U_1}(\xi_A^*)$: A88 §76.3 moves the X witness, and the $P$ image stays pre-update."""
+    if kind == "D_Q":
+        return (START_STATE, 1, 0)
+    if kind == "X":
+        return (X_SITE, 1, 0)
+    return (START_STATE, 0, 0)
 
 
 def cont(learner: LearnerPersistentState, state: State, z: int, m: int):
@@ -262,18 +262,18 @@ def test_g1_refactor_equivalence_bound_to_the_frozen_projection_images():
     r"""G1: $\Sigma_{\text{suffix}}$ agrees for every $W \in \mathcal W_{\text{gate}}$
     restricted to the two decision/controller canaries, on their own frozen images.
 
-    The non-vacuity assertion is the point of the binding: the edit must be on the executed path, or
-    a continuation that ignored the post-update learner would pass this gate as well.
+    A88 §76.4 rebinds the comparison to a **suffix**: the X witness sits at $t = 2$, so the rollout
+    side is taken from $t_A^*$ (`WITNESS_SUFFIX_STEP`, $t_{D_Q}^* = 0$ and $t_X^* = 2$) rather than
+    from the episode start. Non-vacuity is established from **frozen structural facts** -- that the
+    calibration write lands on the channel the scene consults -- and not by comparing pre-edit with
+    post-edit behaviour, which belongs to the screening.
     """
     assert START == (START_STATE.x, START_STATE.y)
     for kind in ("D_Q", "X"):
         state, z, m = entry_image(kind)
-        assert (state, z, m) == (START_STATE, 1, 0)     # the frozen $U_1$ image
+        t_star = WITNESS_SUFFIX_STEP[kind]
+        assert (state, z, m) == (START_STATE, 1, 0) if kind == "D_Q" else (state, z, m) == (X_SITE, 1, 0)
         pre, cal = learner_with(), learner_with([canary_edit(kind)])
-        # Non-vacuity, established from **frozen structural facts** rather than by comparing
-        # pre-edit with post-edit behaviour: that comparison belongs to the screening, not to the
-        # instrument. An earlier revision of this gate asserted the signature inequality instead,
-        # and it is withdrawn -- see experiments/v03r/continuation_instrument_log.md.
         provider_pre, controller_pre = learner_channels(pre.snapshot(), REFERENCE)
         provider_cal, controller_cal = learner_channels(cal.snapshot(), REFERENCE)
         healthy = ordinary(kind, pre)
@@ -283,12 +283,19 @@ def test_g1_refactor_equivalence_bound_to_the_frozen_projection_images():
             assert provider_cal(START_STATE, ControlState(z=1, m=0)) == 4
             assert len(controller_pre) == 0
         else:
-            site = ControllerSite(state=START_STATE, cmd=3)
-            assert healthy.steps[0].a_cmd == 3        # the command the healthy learner sends
+            site = ControllerSite(state=X_SITE, cmd=3)
+            assert healthy.steps[t_star].a_cmd == 3   # the command the healthy path sends there
             assert site not in controller_pre
-            assert controller_cal[site] == 4
+            assert controller_cal[site] == 1
+            # A88 §76.2: the rewrite is legal for **every** option and automaton state that can
+            # arrive at the site. This is the constraint A87's definition was missing, and the
+            # defect it caused is why the witness moved.
+            for zz in option_ids():
+                for mm in (0, 1):
+                    assert 1 in option_actions(zz, ControlState(z=zz, m=mm), X_SITE)
         for learner in (pre, cal):
-            assert sigma_suffix(cont(learner, state, z, m)) == sigma_suffix(ordinary(kind, learner))
+            assert (sigma_suffix(cont(learner, state, z, m))
+                    == suffix_from(ordinary(kind, learner), t_star))
 
 
 def test_g2_decomposition_equivalence_at_the_frozen_p_scene():
@@ -461,7 +468,8 @@ def test_11_the_instrument_refuses_an_entry_outside_the_frozen_canary_images():
     $P$ image to the post-commit option, or the $D_Q$ image to $z = 0$ -- the gate would exercise a
     different scene while still printing `PASS`.
     """
-    assert entry_image("D_Q") == entry_image("X") == (START_STATE, 1, 0)
+    assert entry_image("D_Q") == (START_STATE, 1, 0)
+    assert entry_image("X") == (X_SITE, 1, 0)          # A88 §76.3
     assert entry_image("P") == (START_STATE, 0, 0)
     assert U2_BASE_OPTION == {"D_Q": 1, "X": 1, "P": 0}
     assert CANARY_TAPE == SemanticTape(phase=0, error_flag=0, cause_rank=0)

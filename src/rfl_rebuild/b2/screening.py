@@ -26,6 +26,7 @@ finished:
 
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass
 
 from rfl_rebuild.b1.errors import ProtocolError
@@ -60,6 +61,8 @@ __all__ = [
     "STRUCTURAL_REJECT",
     "UNIT_1",
     "UNIT_2",
+    "WITNESS_SUFFIX_STEP",
+    "X_SITE",
     "CellResult",
     "ScreeningReport",
     "VERDICT_ALL_REJECTED",
@@ -100,7 +103,13 @@ TAPE_ERROR_SUPPORT = (0, 1)
 TAPE_CAUSE_SUPPORT = tuple(range(60))
 
 WITNESS_STATE = State(x=START[0], y=START[1], t=0, kappa=0, phi=0)
+#: A88 §76.3: the X witness moved to the healthy path's first site at which the rewrite is legal
+#: for **every** $(z, m)$ -- the constraint A87 §75.1 was missing.
+X_SITE = State(x=1, y=1, t=2, kappa=0, phi=0)
 CANARY_TAPE = SemanticTape(phase=0, error_flag=0, cause_rank=0)
+
+#: A88 §76.4: where G1's suffix comparison starts on each architecture's frozen $U_2$ image.
+WITNESS_SUFFIX_STEP = {"D_Q": 0, "X": 2, "P": 0}
 
 
 def u1_domain() -> tuple:
@@ -122,7 +131,7 @@ def canary_edit(arch: str) -> Edit:
     if arch == "D_Q":
         return Edit(Q, QAddress(state=WITNESS_STATE, z=1, m=0, a=3), -0.14)
     if arch == "X":
-        return Edit(CONTROLLER, ControllerSite(state=WITNESS_STATE, cmd=3), 4)
+        return Edit(CONTROLLER, ControllerSite(state=X_SITE, cmd=3), 1)
     if arch == "P":
         return Edit(PROCESS, 0, 1)
     raise ProtocolError(f"unknown architecture {arch!r}")
@@ -143,7 +152,11 @@ def learner_prestate(arch: str | None = None, *, q_reference) -> LearnerPersiste
 def witness(unit: str, arch: str) -> object:
     r"""$u^*_{A,U} = g_U(\xi_A^*)$: the frozen projection images of A87 §75.2."""
     if unit == UNIT_1:
-        return (WITNESS_STATE, 1, 0) if arch in ("D_Q", "X") else (WITNESS_STATE, 0, 0)
+        if arch == "D_Q":
+            return (WITNESS_STATE, 1, 0)
+        if arch == "X":
+            return (X_SITE, 1, 0)
+        return (WITNESS_STATE, 0, 0)
     if unit == UNIT_2:
         return (0, CANARY_TAPE, 1) if arch in ("D_Q", "X") else (0, CANARY_TAPE, 0)
     raise ProtocolError(f"unknown unit {unit!r}")
@@ -152,6 +165,12 @@ def witness(unit: str, arch: str) -> object:
 def _require_closed(measured: dict, domain: tuple, unit: str) -> None:
     missing = set(domain) - set(measured)
     extra = set(measured) - set(domain)
+    nonfinite = [u for u, v in measured.items() if not math.isfinite(v)]
+    if nonfinite:
+        raise ProtocolError(
+            f"the {unit} map has {len(nonfinite)} non-finite values; the frozen contract is "
+            "V_W^{meas} : U -> R_finite, so NaN and the infinities are refused as well as missing "
+            "and extra units")
     if missing or extra:
         raise ProtocolError(
             f"the {unit} map is not closed: {len(missing)} missing and {len(extra)} extra units; "
@@ -206,8 +225,11 @@ def cell_status(*, coverage: bool, detection: bool, d_A: object, measured: objec
         return STATUS_DIRECTION_UNRESOLVED
     if d_A not in (-1, +1):
         raise ProtocolError(f"the direction field is status-typed, got {d_A!r}")
-    if measured not in (-1, +1):
-        raise ProtocolError(f"a measured sign must be -1 or +1, got {measured!r}")
+    if measured not in (-1, 0, +1):
+        # A86 §74.3: the measured quantity can be zero. Delta V(u*) = 0 with some other u moving
+        # is detection with a failed direction test -- DIRECTION_FAIL -- not a crash, and
+        # collapsing it here would re-open the BLIND-versus-DIRECTION_FAIL distinction.
+        raise ProtocolError(f"a measured sign must be -1, 0 or +1, got {measured!r}")
     return STATUS_STRUCTURAL_PASS if measured == d_A else STATUS_DIRECTION_FAIL
 
 
