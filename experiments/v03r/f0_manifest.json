@@ -87,7 +87,7 @@
     "platform": "Windows-11-10.0.26200-SP0",
     "python": "3.14.3",
     "script": "scripts/f0_manifest.py",
-    "script_digest": "b4f8055477d8b806a2fc810c1cc194e2e186af721f1295b3a4affc8f166daa05"
+    "script_digest": "fa4c804d0a10dfb924dbc51c95dfb44ab83d49d6b9cb3ab6bc5c29ba840fd435"
   },
   "harness": {
     "run_scripts": {
@@ -189,7 +189,6 @@
     "crlf_artifacts_on_disk": [
       "experiments/v03r/address_domain_gate_selfcheck.json",
       "experiments/v03r/b1_interface_gate_selfcheck.json",
-      "experiments/v03r/b2_run_gate_selfcheck.json",
       "experiments/v03r/dpatch_ledger_baseline.json",
       "experiments/v03r/dq_return_fold.json",
       "experiments/v03r/l0_factual_gate_selfcheck.json",
@@ -201,10 +200,12 @@
     ],
     "dirty_code_paths": [],
     "dirty_evidence_artifacts": [
-      "experiments/v03r/b2_run_gate_selfcheck.json"
+      "experiments/v03r/b2_run_gate_selfcheck.json",
+      "experiments/v03r/f0_manifest.json",
+      "experiments/v03r/f0_manifest_selfcheck.json"
     ],
-    "execution_revision": "3156e17a5af347032649ae6fec1c01a897b2d56f",
-    "head_at_generation": "3156e17a5af347032649ae6fec1c01a897b2d56f"
+    "execution_revision": "9820209fd1917025438b51f67b2e370bddc47a86",
+    "head_at_generation": "9820209fd1917025438b51f67b2e370bddc47a86"
   },
   "runtime_benchmark": {
     "bounds_seconds": {
@@ -224,8 +225,8 @@
         "COLLISION": 16,
         "SUCCESS": 1008
       },
-      "per_scene_s": 6.0675e-05,
-      "runtime_s": 0.062132,
+      "per_scene_s": 6.204e-05,
+      "runtime_s": 0.063529,
       "seedless": true,
       "writes_artifact": false
     },
@@ -234,15 +235,15 @@
   },
   "runtime_reference_seconds": {
     "calibration": 92.42,
-    "full_suite": 94.25
+    "full_suite": 97.0
   },
   "status": "PROPOSED -- F0 is a draft; nothing downstream is authorised",
   "tests": {
     "available": true,
-    "count": 716,
+    "count": 721,
     "format": "node_ids",
-    "node_id_digest": "5cdb4346e5ede62ad068b1ebd207bbbf2cc640d05a0b8966a5da3c74b83e967e",
-    "test_list": "f0_testlist2.txt"
+    "node_id_digest": "ee6336a1a57f1fa24c89afd5e7392973bd7b1fa5d56206de0554c7c29839bebf",
+    "test_list": "f0_testlist3.txt"
   },
   "what": "F0 DEV_PROTOCOL_FREEZE instrument manifest"
 }

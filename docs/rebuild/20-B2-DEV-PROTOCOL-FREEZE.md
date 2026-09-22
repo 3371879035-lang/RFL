@@ -483,17 +483,17 @@ As generated on this revision's execution commit:
 
 | recorded quantity | value |
 |---|---|
-| execution revision | `3156e17`, code tree clean, closure `a4451cc` an asserted ancestor |
-| generator | `scripts/f0_manifest.py`, digest `b4f8055477…` |
+| execution revision | `9820209`, code tree clean, closure `a4451cc` an asserted ancestor |
+| generator | `scripts/f0_manifest.py`, digest `fa4c804d0a…` |
 | instrument sources | 54 files, tree digest `196a06b206…` |
 | run harness | 5 run scripts, tree digest `2c3bb7b9d2…`, with the two seed-set files in the same block |
-| test inventory | 716 collected node ids, digest `5cdb4346e5…` |
+| test inventory | 721 collected node ids, digest `ee6336a1a5…` |
 | evaluation sample | $\lvert U_2 \rvert = 5760$, $N_{\max} = 1024$, first-$N_{\max}$ digest `43c4a6011c…` |
 | reference artifact | digest `01bb5c97d2c9bbf6552dbe4d3017e17162bddd7ac5344583d169da2f573061ae` |
 | calibration artifact | digest `c3a58df529…`, 18/18 CALIBRATED, worst absolute gap `4.44e-16` |
 | screening artifact | digest `1d493488d9…`, six cells, five non-rejected, `UNIFIED_SURVIVES` |
 | mutation artifact | digest `671fa421a1…`, 45/45 `GATE_IS_REAL` across 31 distinct gates |
-| runtime benchmark | $1024$ scenes in `0.062132 s`, seedless, from which §8's bounds follow |
+| runtime benchmark | $1024$ scenes in `0.063529 s`, seedless, from which §8's bounds follow |
 
 The frozen instrument's own fingerprints -- closure commit, reference-artifact digest, calibration and
 mutation artifacts, the source tree digest and the test inventory -- are recorded in

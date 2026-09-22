@@ -1,7 +1,7 @@
 {
   "check": "F0 manifest generator mutation self-check",
-  "n_mutations": 9,
-  "n_gate_is_real": 9,
+  "n_mutations": 10,
+  "n_gate_is_real": 10,
   "n_not_a_gate": 0,
   "n_node_not_found": 0,
   "n_harness_error": 0,
@@ -19,7 +19,7 @@
       "site": "scripts/f0_manifest.py",
       "expected_failure_text": "is not an ancestor",
       "exit_code": 1,
-      "tail": "Traceback (most recent call last):\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 432, in <module>\n    sys.exit(main())\n             ~~~~^^\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 352, in main\n    assert ancestor.returncode == 0, (\n           ^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: A89 closure commit deadbeef is not an ancestor of HEAD 3156e17a5af347032649ae6fec1c01a897b2d56f",
+      "tail": "Traceback (most recent call last):\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 466, in <module>\n    sys.exit(main())\n             ~~~~^^\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 386, in main\n    assert ancestor.returncode == 0, (\n           ^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: A89 closure commit deadbeef is not an ancestor of HEAD 3cced0abfdf1351c8e24a414d05a2e58cabc5ddd",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -29,7 +29,7 @@
       "site": "experiments/v03r/calibration_report.json",
       "expected_failure_text": "no longer 18/18",
       "exit_code": 1,
-      "tail": "Traceback (most recent call last):\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 432, in <module>\n    sys.exit(main())\n             ~~~~^^\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 383, in main\n    \"gates\": gate_summaries(),\n             ~~~~~~~~~~~~~~^^\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 151, in gate_summaries\n    assert summary[\"calibrated\"] == 18, f\"calibration no longer 18/18: {summary}\"\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: calibration no longer 18/18: {'all_agree': True, 'calibrated': 17, 'cells': 18, 'failures': [], 'worst_abs_gap': 4.440892098500626e-16}",
+      "tail": "Traceback (most recent call last):\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 466, in <module>\n    sys.exit(main())\n             ~~~~^^\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 417, in main\n    \"gates\": gate_summaries(),\n             ~~~~~~~~~~~~~~^^\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 151, in gate_summaries\n    assert summary[\"calibrated\"] == 18, f\"calibration no longer 18/18: {summary}\"\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: calibration no longer 18/18: {'all_agree': True, 'calibrated': 17, 'cells': 18, 'failures': [], 'worst_abs_gap': 4.440892098500626e-16}",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -39,7 +39,7 @@
       "site": "experiments/v03r/b2_view_gate_selfcheck.json",
       "expected_failure_text": "no longer fails its gate",
       "exit_code": 1,
-      "tail": "Traceback (most recent call last):\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 432, in <module>\n    sys.exit(main())\n             ~~~~^^\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 383, in main\n    \"gates\": gate_summaries(),\n             ~~~~~~~~~~~~~~^^\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 181, in gate_summaries\n    assert data[\"n_gate_is_real\"] == n, \"a mutation no longer fails its gate\"\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: a mutation no longer fails its gate",
+      "tail": "Traceback (most recent call last):\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 466, in <module>\n    sys.exit(main())\n             ~~~~^^\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 417, in main\n    \"gates\": gate_summaries(),\n             ~~~~~~~~~~~~~~^^\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 181, in gate_summaries\n    assert data[\"n_gate_is_real\"] == n, \"a mutation no longer fails its gate\"\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: a mutation no longer fails its gate",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -49,7 +49,7 @@
       "site": "experiments/v03r/structural_screening.json",
       "expected_failure_text": "no aggregate verdict field found",
       "exit_code": 1,
-      "tail": "Traceback (most recent call last):\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 432, in <module>\n    sys.exit(main())\n             ~~~~^^\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 383, in main\n    \"gates\": gate_summaries(),\n             ~~~~~~~~~~~~~~^^\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 168, in gate_summaries\n    assert verdict is not None, f\"{rel}: no aggregate verdict field found\"\n           ^^^^^^^^^^^^^^^^^^^\nAssertionError: experiments/v03r/structural_screening.json: no aggregate verdict field found",
+      "tail": "Traceback (most recent call last):\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 466, in <module>\n    sys.exit(main())\n             ~~~~^^\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 417, in main\n    \"gates\": gate_summaries(),\n             ~~~~~~~~~~~~~~^^\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 168, in gate_summaries\n    assert verdict is not None, f\"{rel}: no aggregate verdict field found\"\n           ^^^^^^^^^^^^^^^^^^^\nAssertionError: experiments/v03r/structural_screening.json: no aggregate verdict field found",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -59,7 +59,7 @@
       "site": "experiments/v03r/structural_screening.json",
       "expected_failure_text": "would not survive a checkout",
       "exit_code": 1,
-      "tail": "Traceback (most recent call last):\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 432, in <module>\n    sys.exit(main())\n             ~~~~^^\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 383, in main\n    \"gates\": gate_summaries(),\n             ~~~~~~~~~~~~~~^^\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 141, in gate_summaries\n    assert b\"\\r\\n\" not in raw, (\n           ^^^^^^^^^^^^^^^^^^\nAssertionError: experiments/v03r/structural_screening.json: the working tree carries CRLF while .gitattributes declares eol=lf, so this digest would not survive a checkout of the same revision",
+      "tail": "Traceback (most recent call last):\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 466, in <module>\n    sys.exit(main())\n             ~~~~^^\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 417, in main\n    \"gates\": gate_summaries(),\n             ~~~~~~~~~~~~~~^^\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 141, in gate_summaries\n    assert b\"\\r\\n\" not in raw, (\n           ^^^^^^^^^^^^^^^^^^\nAssertionError: experiments/v03r/structural_screening.json: the working tree carries CRLF while .gitattributes declares eol=lf, so this digest would not survive a checkout of the same revision",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -69,7 +69,7 @@
       "site": null,
       "expected_failure_text": "test listing names files that do not exist",
       "exit_code": 1,
-      "tail": "Traceback (most recent call last):\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 432, in <module>\n    sys.exit(main())\n             ~~~~^^\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 384, in main\n    \"tests\": test_inventory(args.test_list),\n             ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 94, in test_inventory\n    assert not missing, f\"test listing names files that do not exist: {missing[:3]}\"\n           ^^^^^^^^^^^\nAssertionError: test listing names files that do not exist: ['tests/rebuild/test_that_does_not_exist.py']",
+      "tail": "Traceback (most recent call last):\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 466, in <module>\n    sys.exit(main())\n             ~~~~^^\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 418, in main\n    \"tests\": test_inventory(args.test_list),\n             ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 94, in test_inventory\n    assert not missing, f\"test listing names files that do not exist: {missing[:3]}\"\n           ^^^^^^^^^^^\nAssertionError: test listing names files that do not exist: ['tests/rebuild/test_that_does_not_exist.py']",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -79,7 +79,7 @@
       "site": "experiments/v03r/calibration_report.json",
       "expected_failure_text": "no longer 18/18",
       "exit_code": 1,
-      "tail": "Traceback (most recent call last):\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 432, in <module>\n    sys.exit(main())\n             ~~~~^^\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 383, in main\n    \"gates\": gate_summaries(),\n             ~~~~~~~~~~~~~~^^\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 151, in gate_summaries\n    assert summary[\"calibrated\"] == 18, f\"calibration no longer 18/18: {summary}\"\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: calibration no longer 18/18: {'all_agree': True, 'calibrated': 17, 'cells': 18, 'failures': [], 'worst_abs_gap': 4.440892098500626e-16}",
+      "tail": "Traceback (most recent call last):\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 466, in <module>\n    sys.exit(main())\n             ~~~~^^\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 417, in main\n    \"gates\": gate_summaries(),\n             ~~~~~~~~~~~~~~^^\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 151, in gate_summaries\n    assert summary[\"calibrated\"] == 18, f\"calibration no longer 18/18: {summary}\"\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: calibration no longer 18/18: {'all_agree': True, 'calibrated': 17, 'cells': 18, 'failures': [], 'worst_abs_gap': 4.440892098500626e-16}",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -89,7 +89,17 @@
       "site": "src/rfl_rebuild/b2/unaffected.py",
       "expected_failure_text": "disagree element-wise",
       "exit_code": 1,
-      "tail": "Traceback (most recent call last):\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 432, in <module>\n    sys.exit(main())\n             ~~~~^^\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 382, in main\n    \"eval_sample\": eval_sample(),\n                   ~~~~~~~~~~~^^\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 275, in eval_sample\n    assert projected == keys, (\n           ^^^^^^^^^^^^^^^^^\nAssertionError: the two frozen enumerations of U2 disagree element-wise, so 'the first N scenes' would name different sets depending on which one a stage read",
+      "tail": "Traceback (most recent call last):\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 466, in <module>\n    sys.exit(main())\n             ~~~~^^\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 416, in main\n    \"eval_sample\": eval_sample(),\n                   ~~~~~~~~~~~^^\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 309, in eval_sample\n    assert projected == keys, (\n           ^^^^^^^^^^^^^^^^^\nAssertionError: the two frozen enumerations of U2 disagree element-wise, so 'the first N scenes' would name different sets depending on which one a stage read",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "porcelain_first_line_decapitated",
+      "hole": "the status parser strips the whole output before splitting, so the first line's leading status space is eaten and a path loses its first character -- the defect that shipped in revision 1's manifest, where `experiments/...` was recorded as `xperiments/...` and misread as code. The dirty evidence file this mutation creates makes the consequence deterministic: a correct parser treats it as evidence and lets the run through, the shipped parser decapitates it into code",
+      "gate": "manifest::porcelain_parse",
+      "site": "scripts/f0_manifest.py",
+      "expected_failure_text": "xperiments",
+      "exit_code": 1,
+      "tail": "Traceback (most recent call last):\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 466, in <module>\n    sys.exit(main())\n             ~~~~^^\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 389, in main\n    dirty_code, dirty_evidence = dirty_split(args.out, args.allow_dirty)\n                                 ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 248, in dirty_split\n    assert not code, (\n           ^^^^^^^^\nAssertionError: the instrument is dirty, so this manifest would pin a working tree rather than a revision: ['scripts/f0_manifest.py', 'scripts/f0_manifest_selfcheck.py', 'xperiments/v03r/b2_run_gate_selfcheck.json'] -- commit the code, then regenerate",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -99,7 +109,7 @@
       "site": "scripts/f0_manifest.py",
       "expected_failure_text": "the instrument is dirty",
       "exit_code": 1,
-      "tail": "Traceback (most recent call last):\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 432, in <module>\n    sys.exit(main())\n             ~~~~^^\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 355, in main\n    dirty_code, dirty_evidence = dirty_split(args.out, args.allow_dirty)\n                                 ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 214, in dirty_split\n    assert not code, (\n           ^^^^^^^^\nAssertionError: the instrument is dirty, so this manifest would pin a working tree rather than a revision: ['scripts/f0_manifest.py', 'xperiments/v03r/f0_manifest.json'] -- commit the code, then regenerate",
+      "tail": "Traceback (most recent call last):\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 466, in <module>\n    sys.exit(main())\n             ~~~~^^\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 389, in main\n    dirty_code, dirty_evidence = dirty_split(args.out, args.allow_dirty)\n                                 ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\scripts\\f0_manifest.py\", line 248, in dirty_split\n    assert not code, (\n           ^^^^^^^^\nAssertionError: the instrument is dirty, so this manifest would pin a working tree rather than a revision: ['scripts/f0_manifest.py', 'scripts/f0_manifest_selfcheck.py'] -- commit the code, then regenerate",
       "verdict": "GATE_IS_REAL"
     }
   ]
