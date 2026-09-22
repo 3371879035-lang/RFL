@@ -1,22 +1,30 @@
-# 20 — $F_0$: the development protocol freeze (revision 2, draft for review)
+# 20 --- $F_0$: the development protocol freeze (revision 3, construction in progress)
 
-**Status: `DRAFT FOR REVIEW (rev 2)`. Not valid, so nothing downstream of it is authorised.**
+**Status: `CONSTRUCTION IN PROGRESS (rev 3)`, on branch `f0-rev3` based on the frozen `rebuild@b5c5762`. Not valid, so nothing downstream of it is authorised.**
 
-$$\boxed{F_0@\texttt{698eca2}:\ \textbf{REVIEW FAIL}} \qquad \boxed{F_0 = \text{NOT VALID}} \qquad
-\boxed{\texttt{smoke5} = \texttt{dev32} = \text{confirmatory} = \text{V0.4R} = \textbf{NOT AUTHORISED}}$$
+$$\boxed{F_0@\texttt{698eca2}:\ \textbf{REVIEW FAIL}} \qquad
+\boxed{F_0@\texttt{c643b73}:\ \textbf{REVIEW FAIL (science layer; execution layer PASS)}} \qquad
+\boxed{F_0 = \text{NOT VALID}}$$
+
+$$\boxed{A91:\ \textbf{FROZEN}@\texttt{3f02724}, \qquad \textbf{instrument and integration CLOSED}
+@\texttt{b35f649}, \qquad \text{promoted as } \texttt{rebuild@b5c5762}}$$
+
+$$\boxed{\texttt{smoke5} = \texttt{dev32} = \text{confirmatory} = \text{V0.4R} = \textbf{NOT AUTHORISED}}$$
 
 $$\boxed{\text{A90 FROZEN} \;\Longrightarrow\; F_0\ \text{may be constructed and reviewed}}$$
 
 $$\boxed{\text{A90 FROZEN} \;\land\; F_0\ \text{VALID} \;\Longrightarrow\; \texttt{smoke5}\ \text{authorised}}$$
 
-Revision 2 answers the review of `698eca2`, which failed $F_0$ on twelve findings while accepting the
-skeleton: the seed sets, the four universes' *form*, the complete rule family, the dependency graph, the
-mutation self-check and the LF fingerprint principle all stand. §12 records every finding and its
-disposition. The findings were not cosmetic: the first revision filled in designer choices and the
-failures were scientific and unit errors in those values -- a fixed checkpoint grid that contradicts
-$episodes[-1] = T_{\max}$, an evaluation sample ordered by the wrong unit, two different design questions
-sharing one metric, two inverted rankings, a dimensional error in a threshold, and a final manifest that
-pinned a dirty working tree rather than a runnable revision.
+This revision is written on top of a **closed instrument**. A91 froze the training-time and
+episode-axis contract (`3f02724`) and its instrument and integration were closed (`b35f649`, promoted as
+`rebuild@b5c5762`), so the axis, the ordinary-learning transition system and the runner integration are
+consumed here rather than re-specified. Revisions 1 and 2 are historical: §12 records their review rounds
+and dispositions, and §13 records the review of rev 2 in full.
+
+**Values marked `[PROPOSED]` are proposals for ratification, not frozen numbers**, and §11 is the checklist
+a reviewer works through. Everything not marked `[PROPOSED]` is either derived from a frozen constant (and
+says which) or is the *form* of a declaration. Where this revision says a construction was **verified**, the
+verification was run before the text was written, and the check is named.
 
 **Values marked `[PROPOSED]` are proposals for ratification, not frozen numbers**, and §11 is the checklist
 a reviewer works through. Everything not marked `[PROPOSED]` is either derived from a frozen constant
@@ -48,11 +56,25 @@ Both are **sets**, written element by element: neither is a range and neither is
 sets are also written to `experiments/v03r/smoke_seeds.txt` and `experiments/v03r/dev_seeds.txt`, which
 the run commands of §7 consume, so the drawn set and the declared set are the same bytes.
 
-**What a seed is, and what it is not.** A seed identifies a stochastic *stream* -- the noise tape of one
-development episode -- and is the statistical unit. It is **not** the unit of the evaluation sample: the
-evaluation sample's units are $U_2$ scenes (§3). Seeds are, in the reviewer's phrase, sample-generation
-provenance rather than unit identity, and this revision separates the two because revision 1 conflated
-them.
+**What a seed is, and what it is not.** A seed $\sigma$ identifies a **whole training run's** keyed
+exogenous stream, exactly as A91 §79.5 froze it:
+
+$$\boxed{\sigma \;\longrightarrow\; \{\Xi_e\}_{e \ge 0}, \qquad
+\Xi_e = \bigl(\kappa_e,\ \zeta_e,\ \text{Tape}_e,\ \chi_e(\cdot)\bigr)}$$
+
+Revision 2 said "the noise tape of one development episode", which is the pre-A91 reading and is wrong in
+both directions: one seed supplies the *entire* run, and an episode's tape is one component of $\Xi_e$. The
+seed remains the **statistical unit** and is **not** the unit of the evaluation sample -- those are $U_2$
+scenes (§3) -- so it is sample-generation provenance rather than unit identity. The pre-data constants this
+document must declare are therefore the seed sets here **and** the four constants A91 §79.4(f) fixes:
+
+$$\boxed{\alpha,\quad \varepsilon_{\text{explore}},\quad \epsilon_s,\quad \epsilon_f
+\ \text{ are pre-data } F_0 \text{ constants, declared before the first seed}}$$
+
+with A91's domains $0 < \alpha \le 1$ (a finite real), $\varepsilon_{\text{explore}} = p/q$ an
+**exact rational** in $(0,1]$, $\epsilon_s > 0$ and $0 < \epsilon_f \le 1$. Their **values** are declared in
+§1's constant block below the seed sets; the convergence tolerances belong here rather than with $f_T$'s
+mechanics, because they are constants of the experiment and not outputs of any rule.
 
 ## 2. Candidate universes, exhaustively named
 
@@ -82,13 +104,26 @@ only legal when $T^{*} = 40$; A84 §71.6 freezes $episodes[0] = 0$, $episodes[-1
 tuple would either contradict the frozen contract or silently define $T$ by the grid. What is frozen here
 is the *functions*, each of which is well-defined for every admissible $T$:
 
-$$\mathcal G^{\text{skeleton}} = \{0, 1, 2, 5, 10, 20, 50, 100, 150, 200, 300, 500, \ldots\}$$
+$$s_0 \ldots s_{11} = 0, 1, 2, 5, 10, 20, 50, 100, 150, 200, 300, 500, \qquad
+\boxed{s_j = 2\,s_{j-1} \ \text{ for } j \ge 12}$$
 
-| template | rule |
+`05` §6.2 prints that list with a trailing "$\ldots$" and never says what follows $500$, so revision 3's
+earlier draft verified $T = 1200$ against a continuation rule that existed only inside the checking script.
+The rule is frozen here instead: **the tail doubles**, which continues the skeleton's own growth (steps of
+$50, 50, 100, 200$) and keeps the late phase coarse. Write
+$\mathcal G^{\text{skeleton}}(T) = \{s_j : s_j < T\} \cup \{T\}$ for the skeleton truncated and completed at
+$T$, and $\texttt{interior}(T)$ for its elements strictly between $0$ and $T$. Then, exactly:
+
+| template | rule (exact) |
 |---|---|
-| $G_{\text{coarse}}(T)$ | the skeleton's points below $T$, thinned by keeping every second interior point, plus $T$ |
-| $G_{\text{medium}}(T)$ | the skeleton's points below $T$, plus $T$ |
-| $G_{\text{fine}}(T)$ | the skeleton's points below $T$, the midpoints of its gaps, plus $T$ |
+| $G_{\text{coarse}}(T) = G_1(T)$ | $(0) \,\|\, \texttt{interior}(T)[0::2] \,\|\, (T)$ -- the **even-indexed** interior points (0-based), so the first interior point is kept |
+| $G_{\text{medium}}(T) = G_2(T)$ | $(0) \,\|\, \texttt{interior}(T) \,\|\, (T)$ |
+| $G_{\text{fine}}(T) = G_3(T)$ | $(0) \,\|\, \texttt{interior}(T) \,\|\, \bigl\{\lfloor (a+b)/2 \rfloor : a < b \text{ adjacent in } (0) \,\|\, \texttt{interior}(T) \,\|\, (T),\ b - a > 1\bigr\} \,\|\, (T)$, sorted and deduplicated |
+
+so the three ambiguities the construction review named are decided here rather than by an implementer:
+**which** interior points `coarse` keeps (even indices, the first kept), **how** `fine`'s midpoint rounds
+(floor division, and only for a gap wider than one episode), and **what** lies beyond $500$ (doubling). The
+aliases $G_1 = G_{\text{coarse}}$, $G_2 = G_{\text{medium}}$, $G_3 = G_{\text{fine}}$ are frozen with them.
 
 The family is a **coarsening of `05` §6.2's frozen dense-early skeleton**, not an equal-spaced split.
 Revision 2 froze $(0,5,15,40)$, which is legal only when $T^{*} = 40$; the follow-up used
@@ -245,6 +280,15 @@ as the ceiling: $1.2\,x_{(29)}$ need not be an integer while $T_{\max}$ is an in
 `NO_ADMISSIBLE_T` rather than a value from a smaller sample; ties at the rank are resolved by taking the
 lower order statistic only when the tie spans the rank, so no tie-break rests on a sort's stability.
 
+**The acquisition cap fails here, not at the grid.** The envelope acquired episodes $0 \ldots
+\texttt{ACQUISITION\_CAP}$; a horizon the acquisition cannot reach is a *horizon* failure, and reporting it
+as a grid failure would disguise "the acquisition was too short" as "no grid suited":
+
+$$\boxed{T^{*} > \texttt{ACQUISITION\_CAP} \;\Longrightarrow\; f_T \to \texttt{NO\_ADMISSIBLE\_T}
+\;\Longrightarrow\; \text{new amendment, fresh seeds}}$$
+
+Revision 3's earlier draft put this consequence on $f_G$, which the construction review corrected.
+
 ### 4.2 $f_N$ — the evaluation-sample size (Monte-Carlo stability)
 
 Revision 1 measured $N_{\text{eval}}$ with the same across-checkpoint spread as the grid, which answers a
@@ -265,14 +309,21 @@ stops a healthy baseline that genuinely changes over time from being read as sam
 * **admissibility**: $m_N(N) \le \theta_N$, with $\theta_N = 0.25$ `[PROPOSED]` -- a quarter of one
   cross-scene standard deviation is below the resolution at which two candidate prefixes could be
   distinguished by any downstream endpoint;
-* **ranking**: the **smallest** admissible $N$, not the largest (**this reverses revision 1's tie-break**,
-  which preferred more evaluation when stability did not separate candidates; the reviewer's ruling is
-  that $N_{\text{eval}}$ is a cost as well as a precision, and the selector picks the smallest sample that
-  is stable). The total order is $(m_N \text{ ascending}, N \text{ ascending})$;
-* **zero and undefined cases**: if $\mathrm{sd}_{\text{scenes}}(t) = 0$ and the numerator is $0$ the term
-  is defined as $0$ (an exactly stable sample); if the numerator is positive while the spread is zero the
-  term is $\text{numerator}/\epsilon_N \ge 1 > \theta_N$, so the candidate is **inadmissible** rather than
-  credited;
+* **ranking**: the **smallest sufficient sample**, expressed as the total order
+  $(N \text{ ascending}, m_N \text{ ascending})$ over the admissible candidates --- $N$ first, because the
+  principle is "the smallest sample that is stable", and an $m_N$-first order would systematically prefer
+  the larger candidate, which is the opposite. Revision 3's draft wrote the order the other way round while
+  describing the same principle, and the construction review caught the contradiction;
+* **zero and undefined cases, without an epsilon argument**: where $\mathrm{sd}_{\text{scenes}}(t) = 0$
+  the ratio is undefined, and the two cases are decided directly ---
+
+$$\boxed{\mathrm{sd} = 0 \ \land\ \text{numerator} = 0 \;\Rightarrow\; \text{term} = 0} \qquad
+\boxed{\mathrm{sd} = 0 \ \land\ \text{numerator} > 0 \;\Rightarrow\; \text{candidate inadmissible}}$$
+
+  so a zero spread never has to be compared against $\epsilon_N$ to decide anything. (Revision 3 derived
+  inadmissibility from $\text{numerator}/\epsilon_N \ge 1$, which is false for small positive numerators ---
+  a numerator of $10^{-12}$ would have been credited.) $\epsilon_N$ therefore only floors the *denominator*
+  in the ordinary case;
 * **missing**: a candidate whose curves cannot be computed on the envelope is inadmissible; if none is
   admissible, $f_N \to \texttt{NO\_ADMISSIBLE\_N\_EVAL}$, and then there is no design lock and no
   confirmatory stage.
@@ -282,11 +333,25 @@ stops a healthy baseline that genuinely changes over time from being read as sam
 $f_G$ now asks whether **the grid preserves the frozen endpoints** rather than whether the baseline curve
 is flat. For $G \in \mathcal C_{\mathcal G}$, on the baseline curve bank:
 
-$$m_G(G) = \max\Biggl(
-\underbrace{\frac{\left|\tau_G - \tau_{\text{full}}\right|}{K}}_{\text{recovery time, } K = 3},
-\ \underbrace{\frac{\left|\mathrm{RMST}_G - \mathrm{RMST}_{\text{full}}\right|}{T^{*}}}_{\text{primary endpoint}},
-\ \underbrace{\left|\mathrm{DeficitAUC}_G - \mathrm{DeficitAUC}_{\text{full}}\right|}_{
+**Every term is per seed, and the seeds are combined by a maximum.** $\tau$ and `restricted_time` are
+per-seed quantities and DeficitAUC is a per-seed endpoint too (A84 §72: RMST is the *cross-seed*
+expectation, so comparing an "RMST on the grid" with an "RMST on the full grid" would compare two
+population summaries while pretending to measure one seed's distortion). "full" is the **complete episode
+axis** $0, 1, \ldots, T^{*}$ that the acquisition stores, and $G$ is read as the curve restricted to $G$'s
+checkpoints. For dev seed $i$:
+
+$$\delta_i(G) = \max\Biggl(
+\underbrace{\frac{\left|\tau_i(G) - \tau_i(\text{full})\right|}{K}}_{\text{recovery time } (K = 3)},
+\ \underbrace{\frac{\left|\texttt{restricted\_time}_i(G) -
+\texttt{restricted\_time}_i(\text{full})\right|}{T^{*}}}_{\text{the per-seed endpoint}},
+\ \underbrace{\left|\mathrm{DeficitAUC}_i(G) - \mathrm{DeficitAUC}_i(\text{full})\right|}_{
 \text{co-primary, already normalised}}\Biggr)$$
+
+$$\boxed{m_G(G) = \max_{i \in \mathcal S_{\text{dev}}}\ \delta_i(G)}$$
+
+The maximum over seeds is deliberate: averaging would let one seed's destroyed recovery time hide behind
+thirty-one unchanged ones, and the grid's job is to represent *every* seed's curve. A seed that never
+recovers on either reading is right-censored at $T^{*}$ in both, so its term is $0$ rather than undefined.
 
 * **the projection rule is A84's, and it is not step-hold.** Revision 2 wrote step-hold (last
   observation carried forward), which A84 §72 rejects in as many words: left-hold "assumes that the
@@ -343,7 +408,21 @@ which is the same object `EvaluationScene` carries and the same field set A86 §
   refined collateral mean at that site. The metric is that standard error **relative to the unrefined
   pool**, so it is dimensionless and compares candidates rather than sites:
 
-$$\boxed{m_C(c) = \max_i\ \frac{\mathrm{se}_i(c)}{\mathrm{se}_i(\texttt{eligible\_all})}}$$
+$$\boxed{m_C(c) = \max_{i}\
+\frac{\mathrm{se}_i(c)}{\mathrm{se}_i(\texttt{eligible\_all})},
+\qquad \text{with the zero cases decided directly}}$$
+
+$$\boxed{\mathrm{se}_i(\texttt{all}) = 0 \ \land\ \mathrm{se}_i(c) = 0 \;\Rightarrow\; \text{ratio} = 1}
+\qquad
+\boxed{\mathrm{se}_i(\texttt{all}) = 0 \ \land\ \mathrm{se}_i(c) > 0 \;\Rightarrow\; \text{inadmissible}}$$
+
+A $0/0$ means "this site's whole pool is exactly stable and so is the slice", which is *equal* stability
+rather than an undefined comparison; a slice that moves where its pool does not is one the pool's own
+stability cannot excuse, and it is refused rather than credited. The index $i$ ranges over the **credited
+sites of the frozen credited domains of every architecture** $\{D_Q, X, P\}$: $f_C$ is evaluated at $F_1$
+before any pair exists, and A85 §73.4 requires the construction to be behaviourally load-bearing for every
+architecture rather than only for the one that happens to be run. An architecture-free maximum is the
+fail-closed reading, and it needs nothing beyond the baseline traces.
 
   A slice can be more or less stable than the full pool --- dropping atypical units lowers the numerator,
   dropping units lowers the denominator's own $n$ --- which is exactly the trade a refinement makes, and
@@ -371,8 +450,9 @@ with the parameters **derived by a frozen function of the locked design values**
 
 $$H^{*} = T^{*} \qquad \text{(the level at the frozen horizon)}$$
 
-$$H_1^{*} = G^{*}_{n-2}, \qquad H_2^{*} = G^{*}_{n} = T^{*} \qquad
-\text{(the last three locked checkpoints)}$$
+$$H_1^{*} = \texttt{grid}[-3], \qquad H_2^{*} = \texttt{grid}[-1] = T^{*} \qquad
+\text{(the last three locked checkpoints, written as indices into the locked grid rather than as } n\text{-relative
+notation, because } n \text{ could mean a length or a last index)}$$
 
 The last-three choice is deliberate: the window then contains three checkpoints, matching the $K = 3$
 maintained-recovery contract, and every admissible grid has at least three checkpoints by §2. Both
@@ -381,11 +461,17 @@ parameters are integer episode indices, which is what the estimators require.
 Input surface: $\mathcal C_R$ and **baseline/static diagnostics only** (A90 §78.10's amendment to A79
 §67.5).
 
-* **stability**: instrument = the form's own `.value` on baseline material; metric = the **closed**
-  relative range over the frozen grid's cells,
-  $s = \dfrac{\max_i v_i - \min_i v_i}{\max_i \lvert v_i\rvert + \epsilon_R}$ with $\epsilon_R = 10^{-9}$
-  declared. Revision 1 divided by the median, which is undefined for a non-positive median and unbounded
-  near a zero median; the maximum-magnitude denominator is closed, and $s = 0$ when every $v_i = 0$ by
+* **stability, over the development runs.** A configured Retention form maps **one training curve to one
+  scalar**, so there is no "spread over the grid's cells" to take: the estimator object is the per-run
+  value. Revision 3's earlier draft carried that phrase over from the pre-A91 step-indexed reading, where a
+  "cell" was a step; the construction review caught the type error. The frozen series is
+
+$$R_i = \text{form}\bigl(\text{curve}_i\bigr), \qquad i \in \mathcal S_{\text{dev}}$$
+
+  --- the same $32$ baseline runs the redundancy uses --- and the metric is the **closed relative range**
+  over it, $s = \dfrac{\max_i R_i - \min_i R_i}{\max_i \lvert R_i\rvert + \epsilon_R}$ with
+  $\epsilon_R = 10^{-9}$ declared. The maximum-magnitude denominator is closed (revision 1's median was
+  undefined for a non-positive median and unbounded near a zero median), and $s = 0$ when every $R_i = 0$ by
   direct evaluation rather than by convention. Admissible iff $s \le 0.10$ `[PROPOSED]`, inclusive;
 * **interpretability**: **gate** -- the estimator must be a declared functional of the episode record with
   no fitted quantity;
@@ -430,8 +516,9 @@ $$\boxed{\text{a shared numeric bound is a declared alias, not a shared identity
 | `(P, RMST)` | primary endpoint of regime P | $\Delta_{\min} = 1.5$ episodes `[PROPOSED]`, **designer judgement** with its **$K/2$ rationale withdrawn**: $K = 3$ counts *checkpoints*, not episodes, and the grid is non-uniform, so $K/2 = 1.5$ has no automatic "1.5 episodes" meaning. The value stands as a proposal and **needs an independent practical-meaning rationale** before $F_0$ can be VALID |
 | `(P, DeficitAUC)` | mandatory co-primary of regime P (A79 §67.3) | $\Delta_{\min} = 0.01$ -- **inherited frozen default** from `11-ENVIRONMENT` §10's AUC-like row, which itself inherits the legacy `noninferiority_margin`; **not** a designer judgement |
 | `(P, BehavioralCollateral)` | collateral bound of regime P, over the refinement $f_C$ selects | **derived**: the nearest-rank $Q_{0.95}$ of that endpoint's own baseline sampling spread -- the per-credited-site standard deviation of $V_{\text{unaffected,pre}}$ across $\mathcal S_{\text{eval}}(N_{\max})$; if the spread is identically zero the endpoint is inadmissible rather than assigned a zero bound |
-| `(P, Retention)` | the $f_R$-configured endpoint -- `RetentionAtH(H*)` or `LateWindowRetention(H1*,H2*)`, under that form's own name and parameters | **derived in the endpoint's own units**: $\Delta_{\min} = \rho_R \cdot \mathrm{sd}_{\text{scenes}}\!\left(\text{form}^{*}\right)$, $\rho_R = 0.25$ `[PROPOSED]`, computed on the deterministic scene sample; identically-zero spread makes the form inadmissible |
+| `(P, Retention)` | the $f_R$-configured endpoint -- `RetentionAtH(H*)` or `LateWindowRetention(H1*,H2*)`, under that form's own name and parameters | **derived in the endpoint's own units from its own per-run spread**: $\Delta_{\min} = \kappa_R \cdot \mathrm{sd}_i\bigl(R_i\bigr)$ over the $32$ baseline runs of §4.5, $\kappa_R = 0.25$ `[PROPOSED]`; an identically zero spread makes the form inadmissible. (Revision 3's draft wrote $\rho_R$ for this and $\rho_R$ for $f_R$'s Spearman redundancy, and read a *scene-level* spread for an endpoint that is a per-run scalar; the construction review caught both.) |
 | `(T, RMST)` | regime T's harm bound | $\Delta_{\min} := \Delta_{\min}\texttt{(P, RMST)}$ as a **declared alias** -- the same number, a separate identity, because the populations and the claims are separate |
+| `(T, DeficitAUC)` | regime T's mandatory companion, approved by review | $\Delta_{\min} := \Delta_{\min}\texttt{(P, DeficitAUC)} = 0.01$ -- the inherited frozen default, shared by value and **separate by identity**. A79 §67.3 makes DeficitAUC a mandatory companion of the primary endpoint, and A79 §62.5 keeps the two regimes' populations and claims apart, so this row exists rather than the statistic being reused across regimes |
 
 $$\boxed{\{\mathrm{RMST},\ \mathrm{DeficitAUC}\} \subseteq \text{the registry's statistic set}}$$
 
@@ -450,17 +537,11 @@ sampling spread is the per-credited-site standard deviation of $V_{\text{unaffec
 evaluation-scene sample, taken site by site, and the bound is its nearest-rank $Q_{0.95}$ -- the same
 quantile convention §4.1 freezes, so no library's interpolation enters.
 
-**Two rows remain proposals a reviewer must rule on**, and both are consequential rather than cosmetic:
-
-1. `(T, RMST)`'s shared numeric value. Sharing the number is proposed because the two regimes' harm claims
-   are the same *kind* of claim about the same statistic; separating the identities is required because
-   A79's populations are separate. A reviewer may instead require an independent number with its own
-   rationale, which is a one-line change to this row;
-2. `(T, DeficitAUC)`. A79 §67.3 makes DeficitAUC a **mandatory** co-primary; this revision reads that as a
-   dimension-level requirement and therefore proposes that the T regime carries it too, with the same
-   inherited default `0.01`, as `[PROPOSED — reviewer]`. The alternative -- DeficitAUC being mandatory only
-   in the population that exists -- is equally readable from A79, and $F_0$ must not settle a frozen
-   document's scope by silence.
+**The T-regime rows are settled, and their provenance is per row.** The review ruled that the T regime
+carries DeficitAUC as a mandatory companion (so `(T, DeficitAUC)` exists with $\Delta_{\min} = 0.01$ and its
+own identity) and that `(T, RMST)` shares the P-regime **number** as a declared alias while remaining a
+separate identity. Nothing in this table is left for a reviewer to rule on; what remains open is
+$d_{(P,\mathrm{RMST})}$'s *rationale* (§5's first row), which is a value question and not a registry one.
 
 ## 6. The dependency graph $\mathcal D_{F_1}$
 
@@ -472,15 +553,28 @@ D^{\text{master}}_{\text{dev,baseline}}\bigr)}$$
 $$\boxed{F_1^{\text{threshold}} = \operatorname{Eval}\bigl(\{f_{\Delta,e}\}_{e \in \mathcal E_\Delta};\
 F_1^{\text{design}}\bigr)}$$
 
-Edges, now including the two **intra-stage** dependencies this revision introduced:
+Edges. Revision 3's earlier draft still carried $f_N \to f_C$ from the aggregate coverage floor, which
+$\S$4.4 has since withdrawn; the construction review caught the contradiction, and the graph is now:
 
-$$\boxed{\text{envelope} \to \{f_T,\ f_N,\ f_G\}, \qquad f_N \to f_C, \qquad
+$$\boxed{\text{envelope} \to \{f_T,\ f_N,\ f_G,\ f_C,\ f_R\}, \qquad f_T \to f_G, \qquad
 \{f_T,\ f_G\} \to f_R, \qquad F_1^{\text{design}} \to F_1^{\text{threshold}}}$$
 
-* $f_N \to f_C$: $f_C$'s aggregate coverage floor reads $N^{*}_{\text{eval}}$;
-* $\{f_T, f_G\} \to f_R$: $f_R$'s parameters are derived from $T^{*}$ and $G^{*}$;
-* every *derived* threshold reads the design stage's outputs; a designer-constant threshold has no
-  upstream dependency.
+* **the envelope feeds all five selectors directly**: each reads the one acquisition, and none reads
+  another selector's *output* except where listed below. In particular $f_C$ reads the baseline traces and
+  the envelope only --- its coverage is a descriptor and its metric is the $m_C$ of $\S$4.4, so the old
+  $f_N \to f_C$ edge is gone;
+* $f_T \to f_G$: the templates are functions of $T^{*}$ ($G_j(T^{*})$), and "full" is the episode axis
+  $0 \ldots T^{*}$, so $f_G$ cannot be evaluated before $T$ exists;
+* $\{f_T,\ f_G\} \to f_R$: $f_R$'s parameters are $H^{*} = T^{*}$ and
+  $(H_1^{*}, H_2^{*}) = (\texttt{grid}[-3], \texttt{grid}[-1])$;
+* **there is deliberately no $f_N \to f_G$ or $f_N \to f_R$ edge.** Every design-stage quantity is computed
+  on the **master bank** $\mathcal S_{\text{eval}}(N_{\max})$, because the acquisition happens once and the
+  candidate sizes are *re-estimates from that same bank* --- which is exactly what $f_N$'s metric compares.
+  $N^{*}$ tells the confirmatory run how many scenes it must use; it does not re-measure the design stage.
+  Freezing this is the point: an implementer who instead made $f_G$/$f_R$ read $\mathcal S_{\text{eval}}(N^{*})$
+  would produce different numbers from the same frozen text;
+* every *derived* threshold reads the design stage's outputs; a designer-constant threshold has no upstream
+  dependency.
 
 The graph stays acyclic and both stages live in **one** $F_1$ commit: nothing between them may read an
 arm, be revised by hand, or differ from the single commit that carries both.
@@ -497,10 +591,25 @@ The seed sets of §1 are written to `experiments/v03r/smoke_seeds.txt` and `expe
 and the commands consume those files rather than a re-typed range: `1000-1031` in a command line would be a
 range again, and §1's point is that the sets are sets.
 
-**The three scripts are implemented and gated, and have not been executed.** A frozen command list that
-cannot run is not a protocol, so the harness is part of $F_0$'s *construction* rather than follow-up work:
-`src/rfl_rebuild/b2/devstage.py` plus the three thin CLIs, with tests and a mutation self-check. What they
-may not do is draw a seed:
+**The command surface is declared here and is not yet implemented on this branch.** Revision 2's
+harness (`devstage.py`, the three CLIs, the manifest generator, the seed files) lives on the
+`f0-dev-protocol-freeze` line and does **not** carry over: it was written against the step-indexed future
+A91 retired. Bringing it forward is $F_0$'s *construction* work, and this section specifies it:
+
+* `run_smoke.py` must **execute and record the frozen gate suite** --- one exit code per gate command ---
+  and compute the artifact digests, because §9's PASS criteria include both, and an empty `gate_exit_codes`
+  would leave the decision to whoever read the file;
+* `experiments/v03r/evaluate_smoke_gate.py`, frozen with the smoke command, reads that report plus the
+  manifest and decides PASS or the first failed criterion mechanically;
+* `run_dev_baseline.py` must acquire through `BaselineAcquisitionPlan` --- the envelope is
+  `ACQUISITION_CAP` training episodes per development seed, evaluated on the master bank --- not through a
+  one-episode-per-seed probe;
+* `run_dev_lock.py` must evaluate §4's rules on that acquisition and refuse rather than invent: every
+  fail-closed outcome of §4 is a legal result of the lock, and none of them is an error.
+
+Neither the scripts nor the manifest exist on this branch; the manifest table below is **rev 2's evidence
+from a different line**, kept as history and to be regenerated on this line's own clean execution
+revision.
 
 * each stage refuses to execute unless the manifest's `currently_authorises` contains its own stage name,
   and the refusal is a `ProtocolError` that writes nothing;
@@ -561,7 +670,20 @@ red. Ten **pre-existing** artifacts still carry CRLF on disk relative to their L
 in `repo.crlf_artifacts_on_disk`, not rewritten, because rewriting them would change working-tree bytes
 that earlier arrows produced (**ACCEPTED** as ledger treatment).
 
-## 8. Runtime bound, derived from a seedless benchmark
+## 8. Runtime bound, derived from two measurements
+
+$$\boxed{\text{bound} = \left(\text{gate suite} + 10 \times \text{seedless benchmark}\right) \times 2
+\qquad \texttt{[PROPOSED, derived from two measurements]}}$$
+
+| stage | bound |
+|---|---|
+| smoke (five seeds) | `[PROPOSED]` $\left(T_{\text{suite}} + 10\,T_{\text{bench}}\right) \times 2$ --- about $220$ s at the rev-2 measurements $T_{\text{suite}} \approx 110$ s, $T_{\text{bench}} \approx 0.064$ s |
+| development baseline acquisition | `[PROPOSED]` the same rule with the acquisition's own measured benchmark |
+
+Revision 2's $30$ s bound could not contain the **mandatory** full-suite criterion of §9 --- a passing smoke
+would not have fitted inside its own budget --- which is why the construction review rejected it. The rule
+is stated over *both* measurements rather than over the workload alone, and both are to be re-measured on
+this line's execution revision before the bound is ratified.
 
 $$\boxed{\text{bound} = \max\left(\text{floor},\ \text{multiple} \times
 \text{seedless benchmark}\right)}, \qquad \text{multiple} = 100$$
@@ -591,12 +713,21 @@ the work.
 
 Operational and instrumental only; no criterion may depend on a treatment effect:
 
-1. every gate green: the full suite exits 0 at the frozen execution revision;
+1. every gate green: each gate command of §7 exits $0$ at the frozen execution revision, and its exit
+   code is recorded in the smoke report;
 2. every artifact written at its declared path, with a valid JSON parse;
 3. no exception, no fallback, no `NO_ADMISSIBLE_*` outcome taken anywhere;
-4. runtime inside §8's bound (which must be ratified before this criterion can be applied);
-5. the manifest's digests matching the ones recorded here, at the execution revision it pins;
+4. runtime inside §8's bound;
+5. the manifest's digests matching the ones recorded here, at the execution revision it pins, with the
+   smoke report's `artifact_digests` reproducing them;
 6. the smoke report's key set being exactly the operational field set below.
+
+**PASS/FAIL is decided by a frozen evaluator, not by a reader.**
+`experiments/v03r/evaluate_smoke_gate.py` (declared with the smoke command in §7) takes the smoke report and
+the manifest and returns PASS or the first criterion that failed; the report itself carries no verdict, so
+nobody has to interpret an empty field. Revision 2 wrote `gate_exit_codes = {}` and `artifact_digests = {}`
+and left the decision to whoever happened to look --- the gap the construction review refused to leave
+open.
 
 ```
 {stage, seeds, tree, runtime_s, gate_exit_codes, artifact_paths, artifact_digests,
