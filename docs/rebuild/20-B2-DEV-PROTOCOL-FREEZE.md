@@ -72,9 +72,21 @@ $$\boxed{\alpha,\quad \varepsilon_{\text{explore}},\quad \epsilon_s,\quad \epsil
 \ \text{ are pre-data } F_0 \text{ constants, declared before the first seed}}$$
 
 with A91's domains $0 < \alpha \le 1$ (a finite real), $\varepsilon_{\text{explore}} = p/q$ an
-**exact rational** in $(0,1]$, $\epsilon_s > 0$ and $0 < \epsilon_f \le 1$. Their **values** are declared in
-§1's constant block below the seed sets; the convergence tolerances belong here rather than with $f_T$'s
-mechanics, because they are constants of the experiment and not outputs of any rule.
+**exact rational** in $(0,1]$, $\epsilon_s > 0$ and $0 < \epsilon_f \le 1$. Their **values** are declared in the block below; the convergence tolerances belong with them rather
+than inside $f_T$'s mechanics, because they are constants of the experiment and not outputs of any rule.
+
+| pre-data constant | value | type / domain | provenance |
+|---|---|---|---|
+| $\alpha$ | $1/2$ `[PROPOSED]` | finite real, $0 < \alpha \le 1$ (A91 §79.4(f)) | designer judgement: the tabular $Q$-learning step size, declared before the first seed |
+| $\varepsilon_{\text{explore}}$ | $1/10$ `[PROPOSED]` | **exact rational** $p/q$ in $(0,1]$ (A91 §79.4(f)) | designer judgement: the training behaviour policy's exploration rate; rational because §79.5's coin compares integers |
+| $\epsilon_s$ | $10^{-3}$ `[PROPOSED]` | $\epsilon_s > 0$, in units of the level per episode | designer judgement: $\lvert\mathrm{slope}_K\rvert$ below this counts as flat |
+| $\epsilon_f$ | $1/10$ `[PROPOSED]` | $0 < \epsilon_f \le 1$, dimensionless | designer judgement: at most one reversal in ten adjacent non-zero increment pairs counts as stable |
+| $\texttt{ACQUISITION\_CAP}$ | $40$ `[PROPOSED]` | positive integer, episodes | designer judgement: the envelope's episode budget, and the number $T^{*}$ must not exceed (§4.1) |
+
+Every one of them is a constant of the **experiment**, so none may be set after the first seed: A91 §79.4(f)
+fixes the domains and this block fixes the values, which is what makes "pre-data" checkable rather than
+merely stated. The seed **sets** above are the sixth pre-data declaration; unlike the five constants they
+are sets rather than numbers, and they are already written element by element.
 
 ## 2. Candidate universes, exhaustively named
 
@@ -125,11 +137,13 @@ so the three ambiguities the construction review named are decided here rather t
 (floor division, and only for a gap wider than one episode), and **what** lies beyond $500$ (doubling). The
 aliases $G_1 = G_{\text{coarse}}$, $G_2 = G_{\text{medium}}$, $G_3 = G_{\text{fine}}$ are frozen with them.
 
-The family is a **coarsening of `05` §6.2's frozen dense-early skeleton**, not an equal-spaced split.
-Revision 2 froze $(0,5,15,40)$, which is legal only when $T^{*} = 40$; the follow-up used
-$T/2, T/3, T/4$ spacing, which the review rejected for the opposite reason: at $T = 500$ it puts
-checkpoints at $125, 250, 375$ --- sparse exactly where `05` §6.2 requires density, because recovery is
-fast when it happens. Every candidate truncates at $T$ and contains both ends.
+The family is a set of **dense-early grid transformations** of `05` §6.2's frozen skeleton ---
+"coarsening" would be the wrong word for $G_{\text{fine}}$, which adds midpoints and is therefore a
+refinement of the skeleton while all three remain coarse relative to the full episode axis. Revision 2 froze
+$(0,5,15,40)$, which is legal only when $T^{*} = 40$; the follow-up used $T/2, T/3, T/4$ spacing, which the
+review rejected for the opposite reason: at $T = 500$ it puts checkpoints at $125, 250, 375$ --- sparse
+exactly where `05` §6.2 requires density, because recovery is fast when it happens. Every candidate
+truncates at $T$ and contains both ends.
 
 Each candidate is admissible only for a $T$ that makes it well-defined, and the frozen contract each
 template must satisfy is
@@ -143,13 +157,15 @@ with fewer than three checkpoints cannot represent the maintained-recovery time 
 exactly because $K \ge 3$ allows three; $G_3$ is the finest. The templates' minima differ, and each is
 declared rather than assumed:
 
-$$\boxed{G_1, G_2\ \text{well-defined for } T \ge 2; \qquad G_3\ \text{well-defined for } T \ge 4}$$
+$$$\boxed{\text{all three templates are well-defined for } T \ge 2}$$
 
-$G_3(T)$ at $T = 3$ would be $(0, 1, 2, 3, 3)$, which is not strictly increasing, so it is inadmissible
-there by the contract rather than silently deduplicated. Since
-$T^{*} = \lceil 1.2\,x_{(29)} \rceil \ge 2$ for any non-empty convergence sample, $G_1$ and $G_2$ are
-well-defined whenever the lock exists at all; and the fail-closed outcome stays declared anyway, because
-"it cannot happen" is not a rule:
+Revision 3's earlier draft carried a "$G_3$ needs $T \ge 4$" bound and a "$G_3(3) = (0,1,2,3,3)$" example
+from the superseded $T/4$-spacing rule. Under the frozen fine rule neither holds: at $T = 3$ the skeleton is
+$(0,1,2,3)$, every adjacent gap is already $1$, no midpoint is added, and
+$G_{\text{fine}}(3) = (0,1,2,3)$ is strictly increasing and legal. Since
+$T^{*} = \lceil 1.2\,x_{(29)} \rceil \ge 2$ for any non-empty convergence sample, all three are well-defined
+whenever the lock exists at all --- and the fail-closed outcome stays declared anyway, because "it cannot
+happen" is not a rule:
 
 $$\boxed{\text{no template satisfies the contract at } T^{*} \;\Longrightarrow\;
 f_G \to \texttt{NO\_ADMISSIBLE\_GRID}}$$
@@ -187,9 +203,11 @@ selection; it is not an evaluation design. The frozen order is built to cover th
   the first $96$ units already contain every cell;
 * the cause rank advances by a stride coprime with $60$ on each pass, so consecutive cells rotate through
   the whole cause support;
-* writing $n = 96q + r$ with $0 \le r < 96$: the unit is the $r$-th cell in ascending
-  $(\kappa, \phi, \texttt{error\_flag}, z_{\text{base}})$ order, with
-  $\texttt{cause\_rank} = (7q + 37r) \bmod 60$.
+* the order is a bijection $n \mapsto u_{n+1}$ on $n = 0, \ldots, 5759$, generated from
+  $n = 96q + r$ with $0 \le r < 96$: $u_{n+1}$ is the $r$-th cell (0-based) in ascending
+  $(\kappa, \phi, \texttt{error\_flag}, z_{\text{base}})$ order carrying
+  $\texttt{cause\_rank} = (7q + 37r) \bmod 60$ --- written explicitly so that no reader has to decide
+  whether $r$ or the prose's "first unit" is 0-based.
 
 $$\boxed{\forall N \in \mathcal C_{N_{\text{eval}}}:\ \text{prefix}(N) \text{ covers every } \kappa, \
 \phi, \texttt{error\_flag}, z_{\text{base}} \text{ and all } 60 \text{ cause ranks}}$$
@@ -208,13 +226,29 @@ $4/4$ options and $60/60$ cause ranks. Two consequences are deliberate:
 
 $$\boxed{D^{\text{master}}_{\text{dev,baseline}}\ \text{is the only acquisition before } F_1}$$
 
-* the envelope stores **complete training-episode-indexed baseline curves** $V(e)$ for
-  $e = 0 \ldots \texttt{ACQUISITION\_CAP}$, for each of the first $N_{\max}$ scenes -- not a fixed
-  checkpoint tuple. That is what makes $\mathcal C_{\mathcal G}$'s $T$-parameterised templates usable at
-  $F_1$: **grids are projections of curves**, and a grid chosen before $T$ existed could not be. The
-  curves are produced by the frozen instrument of §3's last subsection
-  (`BaselineAcquisitionPlan` $\to$ `train_curve`), so the acquisition is an episode-indexed training run
-  rather than a single rollout's step sequence;
+* the envelope stores the **master scene matrix**, not a mean and not a checkpoint tuple:
+
+$$\boxed{\texttt{BaselineAcquisitionPlan} \;\longrightarrow\; \texttt{acquire\_master\_baseline}
+\;\longrightarrow\; \left\{V_{\sigma,e,u}\right\}_{\sigma \in \mathcal S_{\text{dev}},\
+e \le \texttt{ACQUISITION\_CAP},\ u \in \mathcal S_{\text{eval}}(N_{\max})}}$$
+
+  one level per (development seed, episode, evaluation scene) --- A87 §75.3's reward-mode-A return of the
+  run's learner at that scene --- plus the derived mean curve $V_\sigma(e) =
+  \mathrm{mean}_u V_{\sigma,e,u}$ as a **view** of the matrix rather than the stored object. The matrix is
+  what $f_N$ and $f_C$ need (per-scene values) and what $f_T$, $f_G$ and $f_R$ summarise (per-seed curves);
+  a mean-only acquisition would have made $f_N$'s cross-scene scale and $f_C$'s per-site spread
+  uncomputable, and that is why the output contract is written here rather than left to the harness.
+  `acquire_master_baseline` **reuses A91's frozen machinery** --- the keyed episode generator
+  `ExogenousEpisode`, the training behaviour policy, and `sweep_edits`' chronological $Q$ sweep --- while
+  doing its own evaluation gathering, because `train_curve` returns the evaluation-sample *mean* and takes a
+  `FutureTrainingProtocol` that does not exist before $F_1$:
+
+$$\boxed{\texttt{BaselineAcquisitionPlan} \;\not\to\; \texttt{train\_curve}}$$
+
+  Revision 3's draft wrote that arrow, which is a type error: the pre-$F_1$ plan deliberately has no
+  $T^{*}$, no final grid and no $V_{\text{pre}}^{*}$, so it cannot instantiate the production protocol;
+* that matrix is what makes $\mathcal C_{\mathcal G}$'s $T$-parameterised templates usable at $F_1$:
+  **grids are projections of curves**, and a grid chosen before $T$ existed could not be;
 * the cap is the pre-data envelope budget of §3, and it is enforced fail-closed rather than extended:
 
 * $S_2$ runs **baseline and static material only**; the treatment arms of that seed set are not run before
@@ -340,12 +374,22 @@ population summaries while pretending to measure one seed's distortion). "full" 
 axis** $0, 1, \ldots, T^{*}$ that the acquisition stores, and $G$ is read as the curve restricted to $G$'s
 checkpoints. For dev seed $i$:
 
-$$\delta_i(G) = \max\Biggl(
-\underbrace{\frac{\left|\tau_i(G) - \tau_i(\text{full})\right|}{K}}_{\text{recovery time } (K = 3)},
-\ \underbrace{\frac{\left|\texttt{restricted\_time}_i(G) -
-\texttt{restricted\_time}_i(\text{full})\right|}{T^{*}}}_{\text{the per-seed endpoint}},
-\ \underbrace{\left|\mathrm{DeficitAUC}_i(G) - \mathrm{DeficitAUC}_i(\text{full})\right|}_{
-\text{co-primary, already normalised}}\Biggr)$$
+$$\boxed{\delta_i(G) = \max\Biggl(
+\frac{\left|\texttt{restricted\_time}_i(G) - \texttt{restricted\_time}_i(\text{full})\right|}{T^{*}},
+\ \left|\mathrm{DeficitAUC}_i(G) - \mathrm{DeficitAUC}_i(\text{full})\right|\Biggr)}$$
+
+**The raw $\tau$ term is withdrawn, and with it a dimensional error.** Revision 3 divided
+$\lvert\tau_i(G) - \tau_i(\text{full})\rvert$ by $K = 3$ and called $K$ a scale of three *episodes*; the
+review had already ruled, on the RMST threshold, that $K$ counts **checkpoints**, and on a non-uniform grid
+three checkpoints have no fixed episode width --- the same mistake as $K/2 = 1.5$ episodes, one paragraph
+over. The per-seed primary endpoint is `restricted_time` $= \min(\tau, T^{*})$, in episodes, so dividing by
+$T^{*}$ is dimensionally correct and needs no $K$ at all.
+
+**Censoring is closed on both sides.** `restricted_time` is defined for every seed because $\tau$ is
+right-censored at $T^{*}$: both readings censored gives $T^{*} - T^{*} = 0$; one side censored gives a finite
+non-zero distortion in the correct direction (the coarse grid *lost* a recovery the full curve shows), which
+is exactly the failure $f_G$ exists to detect. Revision 3's draft defined only the both-censored case and
+left the one-sided case to the implementer.
 
 $$\boxed{m_G(G) = \max_{i \in \mathcal S_{\text{dev}}}\ \delta_i(G)}$$
 
@@ -405,7 +449,21 @@ which is the same object `EvaluationScene` carries and the same field set A86 §
 * **the stability metric, as a formula.** For candidate $c$ and credited site $i$, on the baseline
   envelope (no arm is involved), let $v_u$ be the scene's baseline level for $u \in C_i(c)$, and let
   $\mathrm{se}_i(c) = \mathrm{sd}\{v_u\} / \sqrt{\lvert C_i(c)\rvert}$ be the standard error of the
-  refined collateral mean at that site. The metric is that standard error **relative to the unrefined
+  refined collateral mean at that site.
+
+  **$v_u$ has one value per scene, and it is static.** The reading is
+
+$$\boxed{v_u = V_{Q^{*}}(u) \quad \text{--- the reference's own level at scene } u}$$
+
+  which is frozen by A85 §73.1's provenance for $V_{\text{pre}}$ ("measured on $Q^{*}$, shipped in the
+  reference artifact, never re-measured"). $f_C$ is therefore a **static measurement-property selector**: it
+  reads the frozen reference and the frozen eligibility, and no seed and no episode index enters it. The
+  alternative --- a development reading $v_{u,\sigma,e}$ over the $32$ runs and the episode axis, aggregated
+  by a worst case --- is **not** taken, because the quantity whose stability $f_C$ ranks is the *pre-update*
+  collateral measurement, which is a property of $Q^{*}$ and the scene rather than of any run; a
+  $\sigma$-and-$e$ index would have to be introduced by an aggregation rule that no frozen definition
+  supplies. Revision 3's draft wrote "the baseline envelope" without saying which of the two it meant, which
+  left an implementer to invent the index. The metric is that standard error **relative to the unrefined
   pool**, so it is dimensionless and compares candidates rather than sites:
 
 $$\boxed{m_C(c) = \max_{i}\
@@ -619,8 +677,19 @@ revision.
 
 $$\boxed{\texttt{currently\_authorises} = [\,] \quad \text{until a reviewer marks } F_0\ \text{VALID}}$$
 
-**Manifest provenance.** Revision 1's manifest recorded `repo.head = 507bc90` with a dirty tree, so it
-evidenced a working-tree generation rather than a runnable revision. The manifest now
+**The rev 3 manifest contract, which the generator must implement rather than inherit.** The manifest
+of this revision must record, at minimum: the **balanced ordering algorithm and its digest** (the cell
+order and the two strides, plus a digest of the resulting $5760$-unit permutation), the **prefix summaries**
+for $\mathcal C_{N_{\text{eval}}}$ (each candidate's size and its stratum-coverage counts), the pre-data
+constant block of §1 verbatim, the frozen grid templates' outputs at the locked $T^{*}$ once $F_1$ exists,
+the master-matrix digest of the acquisition, the gate artifacts' digests and the runtime measurements of
+§8. Revision 2's manifest recorded an **A88 lexicographic prefix** as the evaluation sample, which rev 3
+replaced; a generator copied from that line would re-freeze the retired ordering, so the contract is written
+here instead of being inferred from the old artifact.
+
+**What the table below is.** It is **HISTORICAL REV 2 EVIDENCE**, produced on the `f0-dev-protocol-freeze`
+line and *not* evidence about this revision: the scripts, the seed files and the manifest do not exist on
+this branch, and the digests are rev 2's.
 
 * **asserts that the code tree is clean** -- only the manifest output file itself may be dirty -- so a
   manifest cannot be produced from an uncommitted instrument;
@@ -640,6 +709,8 @@ evidenced a working-tree generation rather than a runnable revision. The manifes
 ```
 
 As generated on this revision's execution commit:
+
+**HISTORICAL REV2 EVIDENCE --- NOT CURRENT $F_0$ EVIDENCE**
 
 | recorded quantity | value |
 |---|---|
@@ -685,26 +756,26 @@ would not have fitted inside its own budget --- which is why the construction re
 is stated over *both* measurements rather than over the workload alone, and both are to be re-measured on
 this line's execution revision before the bound is ratified.
 
-$$\boxed{\text{bound} = \max\left(\text{floor},\ \text{multiple} \times
-\text{seedless benchmark}\right)}, \qquad \text{multiple} = 100$$
+| stage | old rule (`[HISTORICAL rev 2]`) |
+|---|---|
+| smoke (5 seeds) | $\max(30\ \text{s},\ 100 \times \text{benchmark})$ |
+| development baseline acquisition | $\max(300\ \text{s},\ 100 \times \text{benchmark})$ |
 
-| stage | floor | bound |
-|---|---|---|
-| smoke (5 seeds) | 30 s | 30 s `[PROPOSED, derived]` |
-| development baseline acquisition (32 seeds, baseline/static only) | 300 s | 300 s `[PROPOSED, derived]` |
+The old rule and its floors are kept **only as history**: it was computed from a benchmark that measured a
+single $1024$-scene rollout pass, and its $30$ s smoke bound could not contain the mandatory gate suite, so
+it cannot be the rev 3 rule. It is recorded rather than silently deleted because §12's log refers to it.
 
-The measurement is the seedless pass of §3's evaluation sample: $1024$ scenes' rollouts on the frozen
-instrument, recorded in `experiments/v03r/f0_manifest.json` as `runtime_benchmark` together with this
-rule, the multiple and the floors -- so "the bound was measured" is checkable rather than asserted. The
-measured value is of the order of $0.07$ s, which both floors dominate: they cover what the benchmark does
-not, namely interpreter start, the reference solve and the gate re-checks a stage performs around its
-workload.
+**What $T_{\text{bench}}$ must measure, per stage.** For smoke it is the smoke workload's own
+seedless pass; for the development baseline it must represent **A91's master acquisition**
+(`acquire_master_baseline`: one training run per development seed to `ACQUISITION_CAP`, evaluated on the
+master bank), not the retired $1024$-scene single-rollout probe. Both are `[PROPOSED]` until measured on
+this line's execution revision, and neither may be inferred from rev 2's numbers.
 
-Seedless is structural here rather than a matter of restraint: the evaluation sample is a prefix of the
-frozen $U_2$ enumeration, so this workload is a property of the instrument and not of a sample, and it
-draws no stream from $\mathcal S_{\text{smoke}}$ or $\mathcal S_{\text{dev}}$. Had the frozen instrument
-required a noise stream even on that path, the honest outcome would have been to keep this section
-provisional rather than to draw a seed and call it a benchmark.
+Seedless is structural rather than a matter of restraint: the acquisition's evaluation sample is the
+balanced ordering of §3, a deterministic object, and the *training* streams are keyed by the development
+seeds that the acquisition is defined to draw. The benchmark of a stage therefore measures the instrument,
+not a sample, and no benchmark may draw a stream from $\mathcal S_{\text{smoke}}$ or
+$\mathcal S_{\text{dev}}$.
 
 A bound is a smoke *criterion*: exceeding it fails smoke, and no bound is a target to be met by shrinking
 the work.
@@ -761,7 +832,7 @@ development: development waits on smoke's operational PASS.
 | 7 | $f_N$'s metric on the balanced sample, $\theta_N = 0.25$, smallest-first | `[PROPOSED]` |
 | 8 | $f_G$'s metric with **A84's trapezoidal reading**, scales $K/T^{*}/1$, $\theta_G = 0.05$, coarsest-first | `[PROPOSED]` (step-hold withdrawn) |
 | 9 | $f_C$'s $U_2$ ontology, **coverage as a descriptor**, the $m_C$ formula, $\theta_C = 1.0$, smaller-first | `[PROPOSED]` (both floors withdrawn) |
-| 10 | $f_R$'s parameters $H^{*} = T^{*}$, $(H_1^{*}, H_2^{*}) = (G^{*}_{n-2}, G^{*}_n)$ | `[PROPOSED]`, contingent on the grid |
+| 10 | $f_R$'s parameters $H^{*} = T^{*} = \texttt{grid}[-1]$, $(H_1^{*}, H_2^{*}) = (\texttt{grid}[-3], \texttt{grid}[-1])$ | `[PROPOSED]`, contingent on the grid |
 | 11 | $f_R$'s metrics: closed relative range, **per-seed** redundancy over $\mathcal S_{\text{dev}}$, $\max\lvert\rho\rvert \le 0.9$, undefined $\Rightarrow$ inadmissible | `[PROPOSED]` |
 | 12 | registry keys $(\text{regime}, \text{statistic})$; the `(T, RMST)` alias | **APPROVED** |
 | 13 | the `(T, DeficitAUC)` role, sharing $0.01$ with its own identity | **APPROVED** |
@@ -773,7 +844,7 @@ development: development waits on smoke's operational PASS.
 | 19 | the execution revision, the clean-tree assertion and the manifest's authorisation fields | computed at the execution revision; reviewer verifies |
 | 20 | the ten pre-existing CRLF artifacts | **APPROVED** as ledger treatment |
 | 21 | **the episode index of a baseline curve** (§3) | **RESOLVED by A91**, FROZEN at `3f02724`, instrument closed at `b35f649`; this document consumes `train_curve` / `FutureTrainingProtocol` |
-| 22 | the pre-data constant block of §1 ($\alpha$, $\varepsilon_{\text{explore}}$, the cap) with its declared domains | `[PROPOSED]`, and A91 §79.4(f) fixes the domains |
+| 22 | the pre-data constant block of §1 ($\alpha$, $\varepsilon_{\text{explore}}$, $\epsilon_s$, $\epsilon_f$, `ACQUISITION_CAP`) with each value, type and provenance | `[PROPOSED]` values; A91 §79.4(f) fixes three of the domains |
 
 ## 12. Revision log
 
