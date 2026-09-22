@@ -37,8 +37,8 @@ from rfl_rebuild.b1.process import resolve_process_addresses
 from rfl_rebuild.b1.runner import run_controller_law, run_dq_law, run_process_law
 from rfl_rebuild.b1.tier import Tier
 from rfl_rebuild.b2.collateral import behavioral_collateral_scenes, measure_scene_map
-from rfl_rebuild.b2.producer import FutureRolloutProducer
 from rfl_rebuild.b2.retention import select_form
+from rfl_rebuild.b2.training import TrainingProtocol, train_curve
 from rfl_rebuild.b2.unaffected import (
     REFINEMENTS,
     CreditedSite,
@@ -47,7 +47,7 @@ from rfl_rebuild.b2.unaffected import (
     pre_update_traces,
 )
 from rfl_rebuild.b2.utility import FutureUtility
-from rfl_rebuild.b2.view import SCENE_FORBIDDEN, FutureConsequenceViewBuilder
+from rfl_rebuild.b2.view import SCENE_FORBIDDEN
 from rfl_rebuild.learner.store import LearnerPersistentState
 
 __all__ = ["ARCHITECTURES", "EXOGENOUS_FIELDS", "ArmSpec", "ExogenousSetup", "PairedRunner",
@@ -181,19 +181,31 @@ class PairedSceneRecord:
 class PairedRunner:
     r"""Run one scene's paired arms, exposing the properties a gate has to be able to see."""
 
-    __slots__ = ("_environment_factory", "_refinement", "_q_reference", "_form",
+    __slots__ = ("_environment_factory", "_training", "_refinement", "_q_reference", "_form",
                  "_form_name", "_params", "_recorder")
 
     def __init__(self, *, environment_factory, refinement: str, q_reference, retention_form: str,
-                 retention_params: Mapping, recorder=None) -> None:
+                 retention_params: Mapping, training, recorder=None) -> None:
         r"""A89 §77.8: the collateral dimension is $U_2$-native, and the refinement is the caller's.
 
         There is no default refinement and no construction registry to choose from: A79 §67.4 leaves
         that choice to the development stage, and an instrument that embodied one could not compare
         candidates. The reference artifact is the same single object for eligibility and for both arms.
+
+        **`training` is required, and it is A91's.** The future curve used to be read off
+        `view.fields["future_rewards"]` and indexed by `range(len(levels))` --- the *step* index of one
+        kernel rollout. A91 §§79.4--79.9 retired that reading, so the level curve now comes from the
+        training instrument and its index is the **training episode**. The protocol carries the design
+        quantities ($\alpha$, $\varepsilon_{\text{explore}}$, the acquisition cap,
+        $\mathcal G_{\text{ckpt}}$, the evaluation sample) as declared inputs: the runner obeys them and
+        chooses none of them.
         """
         if not callable(environment_factory):
             raise ProtocolError("the environment factory is not callable")
+        if not isinstance(training, TrainingProtocol):
+            raise ProtocolError(
+                "the runner needs A91's training protocol: the future curve is indexed by training "
+                "episode, and a step-indexed curve is refused rather than reinterpreted")
         if refinement not in REFINEMENTS:
             raise ProtocolError(
                 f"{refinement!r} is not one of the six frozen refinements {REFINEMENTS!r}; the runner "
@@ -208,6 +220,7 @@ class PairedRunner:
                 "the Retention horizons must be given explicitly: H, or H1 and H2, are "
                 "development-stage quantities and the runner has no default for them")
         object.__setattr__(self, "_environment_factory", environment_factory)
+        object.__setattr__(self, "_training", training)
         object.__setattr__(self, "_refinement", refinement)
         object.__setattr__(self, "_q_reference", q_reference)
         object.__setattr__(self, "_form", form)
@@ -327,20 +340,21 @@ class PairedRunner:
             self._apply(arm, clone, evidence, self._q_reference)
             self._recorder("update_applied", arm.name, id(clone))
 
-        # (4) the paired futures on ONE shared exogenous setup
-        futures, views, observations = {}, {}, []
+        # (4) the paired futures on ONE shared exogenous setup. The curve's index is the TRAINING EPISODE
+        #     (A91): each arm's post-write learner is trained under the same protocol, and both arms share
+        #     the keyed episode stream, so a between-arm difference can only come from the initial write.
+        futures, curves, observations = {}, {}, []
         for arm, clone in zip(arms, clones):
             environment = self._environment_factory(exogenous)
             self._recorder("exogenous", arm.name, id(exogenous))
+            self._recorder("environment", arm.name, id(environment))
             observations.append((arm.name, exogenous.kappa, exogenous.phi, exogenous.base_option,
                                  exogenous.tape, exogenous.checkpoints))
-            view = FutureConsequenceViewBuilder(FutureRolloutProducer(environment)).build(clone)
-            views[arm.name] = view
-            levels = _levels(view)
-            grid = _episode_grid(levels)
+            curve = train_curve(clone, protocol=self._training, q_reference=self._q_reference)
+            curves[arm.name] = curve
             futures[arm.name] = FutureUtility.from_curve(
-                levels, grid, pre_level=_baseline_level(levels), t_max=grid[-1])
-            self._recorder("future", arm.name, view)
+                curve.values, curve.episodes, pre_level=curve.pre_level, t_max=curve.t_max)
+            self._recorder("future", arm.name, (curve.values, curve.episodes))
 
         # (5) the three dimensions, separately. Collateral is V_unaffected,pre - V_unaffected,post(a)
         #     **per arm**, over the unit set, against the one shared pre map -- not a difference
@@ -353,8 +367,8 @@ class PairedRunner:
                 unaffected, values_pre=pre_map, values_post=post_maps[arm.name])
         retention = {}
         for arm in arms:
-            levels = _levels(views[arm.name])
-            retention[arm.name] = self._form(levels, _episode_grid(levels), **dict(self._params))
+            curve = curves[arm.name]
+            retention[arm.name] = self._form(curve.values, curve.episodes, **dict(self._params))
         return PairedSceneRecord(
             arm_names=tuple(a.name for a in arms),
             architecture=arms[0].architecture,
@@ -411,23 +425,6 @@ class PairedRunner:
                 if key not in evidence:
                     raise ProtocolError(f"the X arm needs {key!r} in the evidence")
             run_controller_law(arm.law, clone, evidence["sites"], evidence["rows"])
-
-
-def _episode_grid(levels) -> tuple:
-    r"""The observed future as a checkpoint grid spanning $[0, T_{\max}]$ (A84 §72)."""
-    if len(levels) < 2:
-        raise ProtocolError(
-            f"the future view carries {len(levels)} level(s); a curve needs at least two "
-            "checkpoints to span a horizon")
-    return tuple(range(len(levels)))
-
-
-def _levels(view) -> tuple:
-    return tuple(view.fields["future_rewards"].value)
-
-
-def _baseline_level(levels) -> float:
-    return max(abs(v) for v in levels) if levels else 1.0
 
 
 def _ledger_of(state) -> object:

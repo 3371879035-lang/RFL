@@ -50,6 +50,9 @@ PRODUCTION_MODULES = (
     "rfl_rebuild/b2/calibration.py",
     "rfl_rebuild/b2/collateral.py",
     "rfl_rebuild/b2/retention.py",
+    # A91 §79: the training-time instrument produces the future curve, so it is on the audited path
+    # from a learner state to a measurement rather than beside it.
+    "rfl_rebuild/b2/training.py",
     "rfl_rebuild/b2/runner.py",
 )
 

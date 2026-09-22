@@ -184,9 +184,15 @@ def _episode_walk(trace, scene: EvaluationScene):
 
     ``step.state`` is the *post*-action state, so a walk that used it as the context would be off by
     one and would ask about sites the episode never constructed.
+
+    The initial control is the option that was **in force**, not the scene's proposal. The frozen chain is
+    $z^{\text{proposal}} \to C_P^{L} \to z^{\text{in-force}} \to \texttt{initial\_control}$, and a
+    $P$-architecture write makes $C_P^{L}(\zeta) \neq \zeta$; binding the proposal here would attribute
+    every step-0 context to an option the learner never had. A91 §79.4(c) froze the corrected
+    reconstruction and recorded this helper as carrying the defect; this is that correction.
     """
     state = State(x=START[0], y=START[1], t=0, kappa=scene.kappa, phi=scene.phase)
-    control = initial_control(scene.base_option)
+    control = initial_control(trace.option_in_force)
     for step in trace.steps:
         yield state, control, step
         state, control = step.state, step.control

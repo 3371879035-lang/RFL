@@ -353,6 +353,10 @@ class FutureConsequenceViewBuilder:
 IMPORT_ALLOWLIST = (
     "__future__", "abc", "ast", "math", "pathlib", "dataclasses", "enum", "types",
     "typing",
+    # A91 §79.5 freezes the exploration probability as an **exact rational** and the coin as an integer
+    # comparison, so `fractions` is the frozen type rather than a convenience: a float epsilon would put
+    # a rounding boundary inside the behaviour policy.
+    "fractions",
     "rfl_rebuild.b1.errors", "rfl_rebuild.learner.store", "rfl_rebuild.env.kernel",
     # B2's own audited chain: the producer and the view are one closure, so each may import the
     # other, and a module outside this list is a dependency the audit has not seen.
@@ -363,6 +367,10 @@ IMPORT_ALLOWLIST = (
     "rfl_rebuild.b1.controller", "rfl_rebuild.b1.tier", "rfl_rebuild.b1.process",
     "rfl_rebuild.b2.collateral",
     "rfl_rebuild.b2.retention", "rfl_rebuild.b2.runner",
+    # A91 §79: the training-time instrument. It joins the audited chain because the future curve is now
+    # produced by it -- the runner trains each arm's post-write learner under one shared protocol and the
+    # curve's index is the training episode, so this module is on the path from a state to a measurement.
+    "rfl_rebuild.b2.training",
     "rfl_rebuild.b1.contract", "rfl_rebuild.b1.laws", "rfl_rebuild.b1.runner",
     "rfl_rebuild.b1.tier", "rfl_rebuild.env.domain",
 )

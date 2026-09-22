@@ -22,6 +22,8 @@ import pytest
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
+from fractions import Fraction  # noqa: E402
+
 from rfl_rebuild.b1.contract import fingerprint  # noqa: E402
 from rfl_rebuild.b1.errors import ProtocolError  # noqa: E402
 from rfl_rebuild.b1.laws import P_LAWS, X_LAWS  # noqa: E402
@@ -31,10 +33,12 @@ from rfl_rebuild.b2.environment import KernelLearnerEnvironment, audited_modules
 from rfl_rebuild.b2.runner import (  # noqa: E402
     ARCHITECTURES, EXOGENOUS_FIELDS, ArmSpec, ExogenousSetup, PairedRunner,
 )
+from rfl_rebuild.b2.training import TrainingProtocol  # noqa: E402
 from rfl_rebuild.b2.unaffected import (  # noqa: E402
     REFINEMENTS,
     CreditedSite,
     UnaffectedSet as SceneUnaffectedSet,
+    scene_domain,
 )
 from rfl_rebuild.b2.view import assert_modules_are_closed  # noqa: E402
 from rfl_rebuild.env.kernel import ControlState, SemanticTape, option_actions  # noqa: E402
@@ -74,6 +78,11 @@ def runner(events=None, **overrides):
             q_reference=e.q_reference),
         refinement="eligible_all", q_reference=REFERENCE_VIEW, retention_form="RetentionAtH",
         retention_params={"H": 5},
+        # A91: the future curve is indexed by TRAINING EPISODE, and the protocol carries the design
+        # quantities. H = 5 must be a checkpoint of this grid, which is the F1 consistency the frozen
+        # retention estimator enforces by refusing a horizon the curve does not contain.
+        training=TrainingProtocol(seed=11, alpha=Fraction(1, 2), epsilon=Fraction(1, 4), cap=6,
+                                  grid=(0, 1, 2, 5, 6), evaluation_sample=scene_domain()[:2]),
         recorder=(lambda *a: events.append(a)) if events is not None else None)
     kwargs.update(overrides)
     return PairedRunner(**kwargs)
