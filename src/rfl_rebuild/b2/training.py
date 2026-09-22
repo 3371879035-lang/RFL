@@ -223,8 +223,17 @@ def _require_scene_sample(sample, *, what: str) -> tuple:
 
 
 def _require_learning_constants(alpha, epsilon) -> None:
-    if not isinstance(alpha, Fraction) or not 0 < alpha <= 1:
-        raise ProtocolError(f"alpha must be an exact rational in (0, 1], got {alpha!r}")
+    r"""$\alpha$ is a finite real in $(0,1]$; $\varepsilon$ is an **exact rational** in $(0,1]$.
+
+    The asymmetry is frozen rather than stylistic: A91 §79.4(f) declares $0 < \alpha \le 1$, and only the
+    exploration probability is required to be a rational $p/q$, because only there does the coin compare
+    integers. Requiring `Fraction` of $\alpha$ would be implementation-time narrowing -- and it would buy
+    nothing, since the update arithmetic is binary64 either way.
+    """
+    if isinstance(alpha, bool) or not isinstance(alpha, (int, float, Fraction)):
+        raise ProtocolError(f"alpha must be a finite real in (0, 1], got {alpha!r}")
+    if not math.isfinite(float(alpha)) or not 0 < float(alpha) <= 1:
+        raise ProtocolError(f"alpha must be a finite real in (0, 1], got {alpha!r}")
     if not isinstance(epsilon, Fraction) or not 0 < epsilon <= 1:
         raise ProtocolError(f"eps_explore must be an exact rational in (0, 1], got {epsilon!r}")
 
@@ -338,7 +347,8 @@ class Curve:
                 f"{self.episodes[0]}..{self.episodes[-1]} with t_max = {self.t_max}")
 
 
-def _behaviour_provider(learner, episode: ExogenousEpisode, protocol: TrainingProtocol, q_reference):
+def _behaviour_provider(learner, episode: ExogenousEpisode, protocol: FutureTrainingProtocol,
+                        q_reference):
     """The **training** behaviour policy: ε-greedy over the effective table, draws keyed by step."""
     greedy = learner.snapshot().q_decision_provider(q_reference)
     draws = {"i": 0}
@@ -354,7 +364,8 @@ def _behaviour_provider(learner, episode: ExogenousEpisode, protocol: TrainingPr
     return provider
 
 
-def episode_rollout(learner, episode: ExogenousEpisode, *, protocol: TrainingProtocol, q_reference):
+def episode_rollout(learner, episode: ExogenousEpisode, *, protocol: FutureTrainingProtocol,
+                    q_reference):
     r"""One training episode, rolled out against the **frozen** learner state $W_e$.
 
     No update happens inside the episode, so the trace is a function of $(W_e, \Xi_e)$ alone.
@@ -397,7 +408,7 @@ def visited_order(trace, *, kappa: int, phi: int) -> tuple:
     return tuple(out)
 
 
-def sweep_edits(learner, trace, episode: ExogenousEpisode, *, protocol: TrainingProtocol,
+def sweep_edits(learner, trace, episode: ExogenousEpisode, *, protocol: FutureTrainingProtocol,
                 q_reference) -> tuple:
     r"""The chronological sweep, returning **one edit per visited address** with its final value.
 

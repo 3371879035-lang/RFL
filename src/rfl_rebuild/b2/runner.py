@@ -14,9 +14,12 @@ closure over $\Gamma^\ast$, a future or the other arm would arrive as an update 
 module stayed clean. An arm is a nominal `ArmSpec` naming a **frozen registry law**, and the runner
 dispatches to the existing B1 entry points itself.
 
-**Shared exogenous configuration is not evaluator truth.** CRN needs shared randomness, not shared
-routing truth: `ExogenousSetup` is a closed nominal type with no `world_id`, no `block_id`, no
-stratum and none of $\mathcal H_{\text{forbidden}}$.
+**Shared training randomness is not evaluator truth.** CRN needs shared randomness, not shared routing
+truth. Since A91 that randomness is the training instrument's keyed stream: the arms share one
+`FutureTrainingProtocol` (one seed, one episode draw generator), whose declared inputs are $F_0$/$F_1$
+quantities rather than anything this module may read from the world. The old closed-nominal
+`ExogenousSetup` and the arbitrary `environment_factory` are retired --- after A91 neither fed a
+measurement, and an unused callable on the production path is a side-effect surface, not a boundary.
 
 **No conclusion can be produced here.** No cross-seed aggregation, no
 $\mathrm{RMST} = \mathbb E[\text{restricted\_time}]$, no verdict, no Holm, no bootstrap; the record
@@ -26,7 +29,6 @@ keeps the three dimensions apart with the cost view beside them.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from dataclasses import fields as dataclass_fields
 from types import MappingProxyType
 from typing import Mapping, Sequence
 
@@ -47,10 +49,9 @@ from rfl_rebuild.b2.unaffected import (
     pre_update_traces,
 )
 from rfl_rebuild.b2.utility import FutureUtility
-from rfl_rebuild.b2.view import SCENE_FORBIDDEN
 from rfl_rebuild.learner.store import LearnerPersistentState
 
-__all__ = ["ARCHITECTURES", "EXOGENOUS_FIELDS", "ArmSpec", "ExogenousSetup", "PairedRunner",
+__all__ = ["ARCHITECTURES", "ArmSpec", "PairedRunner",
            "PairedSceneRecord"]
 
 ARCHITECTURES = ("D_Q", "X", "P")
@@ -60,10 +61,6 @@ ARCHITECTURES = ("D_Q", "X", "P")
 #: §73.2.5 requires the measurement interface to be behaviourally load-bearing for all three, and B1
 #: already ships the entry point -- the runner dispatches to it rather than inventing $D_Q$ semantics.
 LAW_REGISTRIES = {"D_Q": DQ_LAWS, "P": P_LAWS, "X": X_LAWS}
-
-#: The exact field surface of `ExogenousSetup`. Shared exogenous configuration is not routing truth.
-EXOGENOUS_FIELDS = ("kappa", "phi", "tape", "base_option", "q_reference", "checkpoints")
-
 
 def _is_frozen_law(law, registry) -> bool:
     r"""Whether a law is one the registry froze.
@@ -81,44 +78,6 @@ def _is_frozen_law(law, registry) -> bool:
         if type(law) is type(entry) and getattr(law, "tier", None) is getattr(entry, "tier", None):
             return True
     return False
-
-
-@dataclass(frozen=True, slots=True)
-class ExogenousSetup:
-    r"""The shared exogenous future: tape, structural option, reference view, checkpoint grid.
-
-    $$\boxed{\text{shared exogenous randomness} \neq \text{forbidden evaluator truth}}$$
-
-    A closed nominal type: its field surface is exactly `EXOGENOUS_FIELDS`, so routing truth cannot
-    ride along "and simply not be read". The arms may differ in $\Delta W$ and in nothing else.
-    """
-
-    kappa: int
-    phi: int
-    tape: object
-    base_option: int
-    q_reference: object
-    checkpoints: tuple
-
-    def __post_init__(self) -> None:
-        names = {f.name for f in dataclass_fields(self)}
-        if names != set(EXOGENOUS_FIELDS):
-            raise ProtocolError(
-                f"the exogenous setup's fields are {sorted(names)!r} but its surface is frozen as "
-                f"{sorted(EXOGENOUS_FIELDS)!r}")
-        leaked = names & (set(SCENE_FORBIDDEN) | {"stratum", "arm", "world", "block"})
-        if leaked:                                             # pragma: no cover - unreachable
-            raise ProtocolError(f"the exogenous setup carries routing truth {sorted(leaked)!r}")
-        for name in ("kappa", "phi", "base_option"):
-            value = getattr(self, name)
-            if isinstance(value, bool) or not isinstance(value, int):
-                raise ProtocolError(f"{name}={value!r} is not an integer")
-        if not self.checkpoints or any(
-                isinstance(t, bool) or not isinstance(t, int) for t in self.checkpoints):
-            raise ProtocolError(
-                "the checkpoint schedule is an explicit non-empty tuple of integer episodes; the "
-                "runner has no default schedule")
-        object.__setattr__(self, "checkpoints", tuple(self.checkpoints))
 
 
 @dataclass(frozen=True, slots=True)
@@ -182,10 +141,10 @@ class PairedSceneRecord:
 class PairedRunner:
     r"""Run one scene's paired arms, exposing the properties a gate has to be able to see."""
 
-    __slots__ = ("_environment_factory", "_training", "_refinement", "_q_reference", "_form",
+    __slots__ = ("_training", "_refinement", "_q_reference", "_form",
                  "_form_name", "_params", "_recorder")
 
-    def __init__(self, *, environment_factory, refinement: str, q_reference, retention_form: str,
+    def __init__(self, *, refinement: str, q_reference, retention_form: str,
                  retention_params: Mapping, training, recorder=None) -> None:
         r"""A89 §77.8: the collateral dimension is $U_2$-native, and the refinement is the caller's.
 
@@ -196,13 +155,18 @@ class PairedRunner:
         **`training` is required, and it is A91's.** The future curve used to be read off
         `view.fields["future_rewards"]` and indexed by `range(len(levels))` --- the *step* index of one
         kernel rollout. A91 §§79.4--79.9 retired that reading, so the level curve now comes from the
-        training instrument and its index is the **training episode**. The protocol carries the design
-        quantities ($\alpha$, $\varepsilon_{\text{explore}}$, the acquisition cap,
-        $\mathcal G_{\text{ckpt}}$, the evaluation sample) as declared inputs: the runner obeys them and
-        chooses none of them.
+        training instrument and its index is the **training episode**. The protocol carries
+        $(\alpha, \varepsilon, T^{*}, \mathcal G^{*}, \mathcal S_{\text{eval}}^{*},
+        V_{\text{pre}}^{*})$ as declared inputs: the runner obeys them and chooses none of them.
+
+        **What is no longer here.** The old `environment_factory` and `ExogenousSetup` used to be handed
+        to this constructor and to `run`, and after A91 neither fed any measurement: the factory was an
+        arbitrary callable whose return value was discarded, which left a side-effect and exception
+        surface on the production path with no scientific role, and the exogenous setup's
+        `q_reference` identity check guarded a field the future no longer read. Both are retired
+        rather than kept as decoration; the shared-stream contract now lives on `training`, and the
+        one-reference contract is asserted against the consumers that actually read it.
         """
-        if not callable(environment_factory):
-            raise ProtocolError("the environment factory is not callable")
         if not isinstance(training, FutureTrainingProtocol):
             raise ProtocolError(
                 "the runner needs A91's training protocol: the future curve is indexed by training "
@@ -220,7 +184,6 @@ class PairedRunner:
             raise ProtocolError(
                 "the Retention horizons must be given explicitly: H, or H1 and H2, are "
                 "development-stage quantities and the runner has no default for them")
-        object.__setattr__(self, "_environment_factory", environment_factory)
         object.__setattr__(self, "_training", training)
         object.__setattr__(self, "_refinement", refinement)
         object.__setattr__(self, "_q_reference", q_reference)
@@ -257,7 +220,7 @@ class PairedRunner:
         return build_unaffected(credited_site, traces, self._refinement)
 
     def run(self, state: LearnerPersistentState, *, arms: Sequence[ArmSpec], evidence: Mapping,
-            exogenous: ExogenousSetup, credited_site: CreditedSite) -> PairedSceneRecord:
+            credited_site: CreditedSite) -> PairedSceneRecord:
         r"""$$\boxed{\text{unaffected set} \to \text{clone per arm} \to \text{updates} \to
         \text{futures} \to \text{metrics}}$$
 
@@ -287,10 +250,6 @@ class PairedRunner:
             raise ProtocolError(
                 f"the arms are at different tiers ({arms[0].tier.name}, {arms[1].tier.name}); "
                 "B2's contrast is same-cell")
-        if type(exogenous) is not ExogenousSetup:
-            raise ProtocolError(
-                f"the exogenous setup has type {type(exogenous).__name__}, not ExogenousSetup")
-
         if type(credited_site) is not CreditedSite:
             raise ProtocolError(
                 f"the credited unit {credited_site!r} has type {type(credited_site).__name__}, not "
@@ -312,11 +271,13 @@ class PairedRunner:
                 f"for {credited_site.render()}; the region would describe a pair that writes somewhere "
                 "else")
 
-        if exogenous.q_reference is not self._q_reference:
-            raise ProtocolError(
-                "the exogenous setup carries a different reference artifact than the runner's: A89 "
-                "§77.8 freezes ONE nominal artifact for eligibility, both arms' collateral and the $D_Q$ "
-                "write path, and a second object would let the dimensions disagree while looking equal")
+        # The ONE-reference contract is asserted against the consumers that actually read the
+        # reference, not against a field on a discarded object: A89 §77.8 freezes one nominal artifact
+        # for eligibility, both arms' collateral, the $D_Q$ write path and --- since A91 --- the training
+        # instrument. `self._q_reference` is the single source, and no other reference object exists on
+        # this path to pass in; a spy on the three consumers is what proves it (test_12).
+        if self._q_reference is None:                          # pragma: no cover - constructor guards
+            raise ProtocolError("the runner lost its reference artifact")
 
         # (1) the shared design material, built from the RAW pre-update state BEFORE any arm exists
         unaffected = self.pre_update_source(state, credited_site)
@@ -354,17 +315,16 @@ class PairedRunner:
         futures, curves, observations = {}, {}, []
         protocol_ids = set()
         for arm, clone in zip(arms, clones):
-            environment = self._environment_factory(exogenous)
-            self._recorder("exogenous", arm.name, id(exogenous))
-            self._recorder("environment", arm.name, id(environment))
             # ONE protocol object for both arms: this is the binding the CRN gate reads, and the
             # assertion below is what makes "the arms share one episode stream" mechanical
             protocol = self._training
             protocol_ids.add(id(protocol))
             self._recorder("training_protocol", arm.name, id(protocol))
-            observations.append((arm.name, exogenous.kappa, exogenous.phi, exogenous.base_option,
-                                 exogenous.tape, exogenous.checkpoints,
-                                 protocol.seed, protocol.t_max, protocol.grid))
+            # the observation records the TRAINING provenance, which is what now decides the future:
+            # the old single-episode (kappa, phi, tape, base_option, checkpoints) tuple described an
+            # object that no longer feeds any measurement
+            observations.append((arm.name, protocol.seed, protocol.t_max, protocol.grid,
+                                 len(protocol.evaluation_sample), protocol.v_pre))
             # the future learns on a CLONE of the post-B1 state; the post state itself is the
             # collateral's measurement target and must come out of this loop untouched. The identity
             # check comes first because it is decisive on its own: a value-level check passes vacuously

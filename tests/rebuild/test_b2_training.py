@@ -36,6 +36,7 @@ from rfl_rebuild.b2.training import (  # noqa: E402
     BaselineAcquisitionPlan,
     FutureTrainingProtocol,
     effective_value,
+    episode_rollout,
     is_explore,
     key,
     mix,
@@ -366,7 +367,7 @@ def test_19_training_leaves_the_non_q_stores_alone():
 # --- the declared inputs ---------------------------------------------------------------------------
 
 def test_20_the_protocol_refuses_constants_outside_the_frozen_domains():
-    with pytest.raises(ProtocolError, match="alpha must be an exact rational in"):
+    with pytest.raises(ProtocolError, match="alpha must be a finite real in"):
         _protocol(alpha=Fraction(0, 1))
     with pytest.raises(ProtocolError, match="eps_explore must be an exact rational in"):
         _protocol(epsilon=0.25)
@@ -444,3 +445,31 @@ def test_26_the_pre_f1_acquisition_plan_has_no_grid_and_no_t_max():
     with pytest.raises(ProtocolError, match="master evaluation bank holds"):
         BaselineAcquisitionPlan(seed=SEED, alpha=Fraction(1, 2), epsilon=Fraction(1, 4),
                                 acquisition_cap=3, evaluation_bank=(object(),))
+
+
+def test_27_alpha_is_a_finite_real_while_epsilon_stays_an_exact_rational():
+    r"""A91 §79.4(f) freezes $0<\alpha\le1$ and a rational $\varepsilon$ --- and only $\varepsilon$.
+
+    Requiring `Fraction` of $\alpha$ would be implementation-time narrowing: the update arithmetic is
+    binary64 either way, so the demand would buy no exactness and would refuse a legitimate value.
+    """
+    assert _protocol(alpha=0.5).alpha == 0.5
+    assert _protocol(alpha=1).alpha == 1
+    assert _protocol(alpha=Fraction(1, 3)).alpha == Fraction(1, 3)
+    for bad in (True, 0, -0.5, 1.5, float("nan"), float("inf")):
+        with pytest.raises(ProtocolError, match="alpha must be a finite real in"):
+            _protocol(alpha=bad)
+    with pytest.raises(ProtocolError, match="eps_explore must be an exact rational in"):
+        _protocol(epsilon=0.25)
+
+
+def test_28_every_public_annotation_resolves():
+    """A stale annotation is invisible under `from __future__ import annotations` until someone asks."""
+    import typing
+
+    for fn in (episode_rollout, sweep_edits, train_curve, pre_level, visited_order):
+        hints = typing.get_type_hints(fn)
+        assert hints, fn.__name__
+    hints = typing.get_type_hints(episode_rollout)
+    assert hints["protocol"] is FutureTrainingProtocol, hints
+    assert typing.get_type_hints(sweep_edits)["protocol"] is FutureTrainingProtocol

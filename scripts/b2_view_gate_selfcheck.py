@@ -430,16 +430,18 @@ MUTATIONS: tuple = (
         "DID NOT RAISE",
     ),
     (
-        "runner_accepts_forbidden_exogenous_field",
-        "the exogenous setup's field surface widens, so routing truth rides along in the object the arms share -- the information boundary B2-4 exists to hold",
+        "runner_records_a_second_protocol_in_observations",
+        "the record's training provenance describes a protocol the second arm never consumed, so the audit surface would certify a pairing the run did not perform. This replaces `runner_accepts_forbidden_exogenous_field`, whose subject (the closed `ExogenousSetup` surface) A91 retired: the boundary moved to the provenance of the training stream, and a mutation must guard a load-bearing path rather than a deleted object",
         RUNNER,
-        "    checkpoints: tuple\n",
-        "    checkpoints: tuple\n    world_id: object = None                        # MUTATED\n",
+        "            observations.append((arm.name, protocol.seed, protocol.t_max, protocol.grid,\n"
+        "                                 len(protocol.evaluation_sample), protocol.v_pre))",
+        "            observations.append((arm.name,\n"
+        "                                 protocol.seed if arm.name == arms[0].name\n"
+        "                                 else protocol.seed + 1,  # MUTATED\n"
+        "                                 protocol.t_max, protocol.grid,\n"
+        "                                 len(protocol.evaluation_sample), protocol.v_pre))",
         f"{B2_RUN_TESTS}::test_5_the_paired_futures_share_one_training_stream",
-        # Measured: the widened surface is refused by ExogenousSetup.__post_init__ itself,
-        # so the closed-surface check is load-bearing production code and the gate never
-        # reaches its own assertion. The declaration records the mechanism that fires.
-        "but its surface is frozen as",
+        "the arms' recorded provenance must describe the one protocol both consumed",
     ),
     (
         "runner_adds_composite_score",

@@ -29,10 +29,11 @@ from rfl_rebuild.b1.errors import ProtocolError  # noqa: E402
 from rfl_rebuild.b1.laws import P_LAWS, X_LAWS  # noqa: E402
 from rfl_rebuild.b1.process import AssistedInput  # noqa: E402
 from rfl_rebuild.b1.tier import Tier  # noqa: E402
-from rfl_rebuild.b2.environment import KernelLearnerEnvironment, audited_modules  # noqa: E402
+from rfl_rebuild.b2.environment import audited_modules  # noqa: E402
 from rfl_rebuild.b2.runner import (  # noqa: E402
-    ARCHITECTURES, EXOGENOUS_FIELDS, ArmSpec, ExogenousSetup, PairedRunner,
+    ARCHITECTURES, ArmSpec, PairedRunner,
 )
+import rfl_rebuild.b2.runner as runner_module  # noqa: E402
 from rfl_rebuild.b2.training import FutureTrainingProtocol, pre_level  # noqa: E402
 from rfl_rebuild.b2.unaffected import (  # noqa: E402
     REFINEMENTS,
@@ -56,13 +57,6 @@ UNITS = ("ProcessCommit",)
 GRID = (0, 1, 2, 3, 4, 5)
 
 
-def exogenous(**overrides) -> ExogenousSetup:
-    kwargs = dict(kappa=0, phi=0, tape=SemanticTape(phase=0, error_flag=0, cause_rank=0),
-                  base_option=1, q_reference=REFERENCE_VIEW, checkpoints=GRID)
-    kwargs.update(overrides)
-    return ExogenousSetup(**kwargs)
-
-
 def arm_defs():
     reference = next(x for x in P_LAWS
                      if type(x).__name__ == "NoWriteRef" and x.tier is Tier.L1_CORRECTIVE)
@@ -73,9 +67,6 @@ def arm_defs():
 
 def runner(events=None, **overrides):
     kwargs = dict(
-        environment_factory=lambda e: KernelLearnerEnvironment(
-            kappa=e.kappa, phi=e.phi, tape=e.tape, base_option=e.base_option,
-            q_reference=e.q_reference),
         refinement="eligible_all", q_reference=REFERENCE_VIEW, retention_form="RetentionAtH",
         retention_params={"H": 5},
         # A91: the future curve is indexed by TRAINING EPISODE, and the protocol carries the design
@@ -101,7 +92,7 @@ CREDIT = CreditedSite("P", 1)
 def run(events=None, **overrides):
     return runner(events, **overrides).run(
         LearnerPersistentState(), arms=arm_defs(),
-        evidence={"units": UNITS, "assisted": AssistedInput(1)}, exogenous=exogenous(),
+        evidence={"units": UNITS, "assisted": AssistedInput(1)},
         credited_site=CREDIT)
 
 
@@ -131,7 +122,7 @@ def test_2_the_runner_owns_the_pre_update_material():
     healthy state, and not from the superseded decision-context ontology.
     """
     params = tuple(inspect.signature(PairedRunner.run).parameters)
-    assert params == ("self", "state", "arms", "evidence", "exogenous", "credited_site"), params
+    assert params == ("self", "state", "arms", "evidence", "credited_site"), params
     built = runner().pre_update_source(LearnerPersistentState(), CREDIT)
     assert type(built) is SceneUnaffectedSet
     assert built.units and built.construction.endswith("@eligible_all")
@@ -237,7 +228,7 @@ def test_4_the_arms_fork_from_one_pre_update_state():
     try:
         record = runner().run(state, arms=writing_pair(),
                               evidence={"units": UNITS, "assisted": AssistedInput(1)},
-                              exogenous=exogenous(), credited_site=CREDIT)
+                              credited_site=CREDIT)
     finally:
         LearnerPersistentState.clone = original
     assert len(calls) == 4, f"expected two arm clones and two future clones, got {len(calls)}"
@@ -264,21 +255,18 @@ def test_5_the_paired_futures_share_one_training_stream():
     """
     events = []
     record = run(events)
-    setup_ids = [e[2] for e in events if e[0] == "exogenous"]
-    assert len(setup_ids) == 2 and len(set(setup_ids)) == 1, setup_ids
     protocol_ids = [e[2] for e in events if e[0] == "training_protocol"]
     assert len(protocol_ids) == 2 and len(set(protocol_ids)) == 1, (
         f"the paired arms did not consume ONE training protocol: {protocol_ids}")
-    assert record.observations[0][1:] == record.observations[1][1:], record.observations
+    assert record.observations[0][1:] == record.observations[1][1:], (
+        f"the arms' recorded provenance must describe the one protocol both consumed: "
+        f"{record.observations}")
     assert record.observations[0][0] != record.observations[1][0]
-    assert record.observations[0][6] == record.observations[1][6] == 11  # the shared seed
-    assert set(EXOGENOUS_FIELDS) == set(ExogenousSetup.__dataclass_fields__)
-    with pytest.raises(TypeError):
-        ExogenousSetup(kappa=0, phi=0, tape=None, base_option=1, q_reference=None,
-                       checkpoints=GRID, world_id=7)
-    with pytest.raises(ProtocolError) as ei:
-        exogenous(checkpoints=())
-    assert "no default schedule" in str(ei.value)
+    # the recorded provenance is the TRAINING one, because that is what now decides the future: the old
+    # single-episode (kappa, phi, tape, base_option, checkpoints) tuple described a retired object
+    assert record.observations[0][1] == record.observations[1][1] == 11  # the shared seed
+    assert record.observations[0][2] == 6                                # the locked t_max
+    assert record.observations[0][3] == (0, 1, 2, 5, 6)                  # the locked grid
 
 
 def test_5b_the_collateral_measures_the_immediate_post_b1_state():
@@ -391,7 +379,7 @@ def test_9_a_law_from_another_architecture_is_refused():
     with pytest.raises(ProtocolError) as ei:
         runner().run(LearnerPersistentState(), arms=mixed,
                      evidence={"units": UNITS, "assisted": AssistedInput(1)},
-                     exogenous=exogenous(), credited_site=CREDIT)
+                     credited_site=CREDIT)
     assert "different architectures" in str(ei.value)
 
 
@@ -501,7 +489,7 @@ def test_11c_a_dq_pair_runs_through_the_b1_entry_point():
     try:
         record = runner().run(state, arms=arms,
                               evidence={"addresses": (address,), "rows": traces.rows(scene)},
-                              exogenous=exogenous(), credited_site=credit)
+                              credited_site=credit)
     finally:
         R.measure_scene_map = original
 
@@ -529,25 +517,45 @@ def test_11d_a_legal_but_unrelated_credited_unit_is_refused():
     with pytest.raises(ProtocolError) as ei:
         runner().run(LearnerPersistentState(), arms=arm_defs(),
                      evidence={"units": UNITS, "assisted": AssistedInput(1)},
-                     exogenous=exogenous(), credited_site=CreditedSite("P", 0))
+                     credited_site=CreditedSite("P", 0))
     assert "resolves to (1,)" in str(ei.value)
 
 
 def test_11e_a_second_reference_object_is_refused():
-    r"""A89 §77.8 freezes **one** nominal reference artifact, by object rather than by value.
+    r"""A89 §77.8 freezes **one** nominal reference artifact, and the gate reads the consumers.
 
-    A second view with identical content would let eligibility, the collateral maps and the $D_Q$ write
-    path run under one artifact while the futures run under another -- and every number would still look
-    consistent.
+    The retired `ExogenousSetup` used to be the place this was checked, by handing the runner a
+    value-equal second view and refusing it. That check guarded a field the future no longer reads, so
+    it proved nothing about the real path. What is asserted now is the identity of the object each
+    consumer actually receives: eligibility, the collateral maps and the training instrument must all be
+    handed `self._q_reference` itself.
     """
-    same_content_other_object = reference_view_from(solve_reference())
-    assert same_content_other_object is not REFERENCE_VIEW
-    with pytest.raises(ProtocolError) as ei:
-        runner().run(LearnerPersistentState(), arms=arm_defs(),
-                     evidence={"units": UNITS, "assisted": AssistedInput(1)},
-                     exogenous=exogenous(q_reference=same_content_other_object),
-                     credited_site=CREDIT)
-    assert "different reference artifact" in str(ei.value)
+    seen = {}
+    original = {
+        "pre_update_traces": runner_module.pre_update_traces,
+        "measure_scene_map": runner_module.measure_scene_map,
+        "train_curve": runner_module.train_curve,
+    }
+
+    def spy(name, inner):
+        def wrapper(*args, **kwargs):
+            seen.setdefault(name, set()).add(id(kwargs.get("q_reference")))
+            return inner(*args, **kwargs)
+        return wrapper
+
+    try:
+        for name, inner in original.items():
+            setattr(runner_module, name, spy(name, inner))
+        run()
+    finally:
+        for name, inner in original.items():
+            setattr(runner_module, name, inner)
+
+    assert set(seen) == set(original), f"a consumer was never reached: {sorted(seen)}"
+    for name, ids in seen.items():
+        assert ids == {id(REFERENCE_VIEW)}, (
+            f"{name} was handed {ids}, not the runner's one reference artifact "
+            f"({id(REFERENCE_VIEW)})")
 
 
 def test_11_the_runner_is_in_the_audited_production_chain():
