@@ -7327,6 +7327,106 @@ $\boxed{\text{A89 seedless compatibility + calibration implementation = CLOSED a
 
 No scientific seed is authorised by this bookkeeping closure.
 
+## 78. A90 — the development-stage authorisation ladder and the design freeze
+
+**Status: draft -- awaiting review; not yet frozen.** A90 authorises no seed. It does not reopen A89's
+ontology, its eighteen-cell calibration or its compatibility closure, and it cannot retroactively
+legitimise a run that already happened.
+
+### 78.1 The distinction this amendment exists for
+
+$$\boxed{\text{instrument closure} \;\neq\; \text{scientific-seed authorisation}}$$
+
+A89 closed the instrument: $U_2$ is the sole surviving preregistered unified candidate, the eighteen
+calibration cells agree with their aggregate predictions, and the production runner binds its credited
+unit, its reference artifact and its $D_Q$ dispatch. None of that licenses a seed. What is still open is
+exactly the set A79 §67.4 and A83 §71.4 kept for the development stage:
+
+| quantity | state before A90 |
+|---|---|
+| the refinement | six **admissible calibrated** candidates, none selected |
+| the Retention form | registered candidates, none selected |
+| $T$, $N_{\text{eval}}$, $\mathcal G_{\text{ckpt}}$, $\Delta_{\min}$ | undeclared |
+| $N_{\text{train}}$ | does not exist |
+| the architecture-specific branch ($U_3$) | enterable, not entered |
+
+### 78.2 A ladder, not a set of values
+
+The discipline that has governed this rebuild is that a choice made after seeing data must have had its
+**rule** frozen before the data existed. A90 therefore freezes a partition of every open quantity into
+
+$$\boxed{\text{pre-data obligation: the rule}} \qquad \text{and} \qquad
+\boxed{\text{post-data outcome: the value}}$$
+
+**Pre-data, and fingerprinted before the first development seed:**
+
+1. the **candidate set** the selection ranges over, named exhaustively (for the refinement: the six
+   `eligible_*` names; for the Retention form: the registered forms, with the diagnostic forms excluded
+   by role rather than by result);
+2. the **measurement properties** the selection uses, from A79 §67.4's list -- coverage, baseline
+   stability, interpretability, sensitivity to synthetic spillover -- each with the instrument that
+   measures it and the direction that is better;
+3. the **aggregation and tie-break rule**, deterministic: no judgement may enter after the numbers are
+   seen, so a tie is broken by a declared order, not by preference;
+4. the **development seed set**, declared as a set rather than as a stopping rule;
+5. the **run command and the artifact path**, so that the run is reproducible from the freeze alone.
+
+**Post-data, and legitimate precisely because it is not a choice:** which candidate the frozen rule
+selects. It is the evaluation of a function that was fingerprinted before the first seed, and the freeze
+commit records the outcome as a *reported* consequence, not as a decision.
+
+### 78.3 The first-seed authorisation gate
+
+$$\boxed{\text{a development seed may be drawn only when A90 is frozen and the ladder's pre-data items
+are recorded}}$$
+
+Concretely, before the first development seed: A89 is closed at a pinned revision; the candidate sets of
+§78.2.1 are named; the properties, instruments and tie-break of §78.2.2--§78.2.3 are recorded; the seed
+set of §78.2.4 is declared; the run command and artifact path are recorded; and the **instrument
+fingerprint** is pinned -- the reference artifact's digest, the calibration artifact and the mutation
+table's summary -- so that a later reader can tell whether the instrument that produced a number is the
+one that was frozen.
+
+### 78.4 What development data may and may not become
+
+Development results may inform the **selection outcome** of §78.2. They may not be reported as
+scientific evidence, and they may not be aggregated with confirmatory results:
+
+$$\boxed{\text{development data} \to \text{a selection outcome, never a claim}}$$
+
+The confirmatory stage is separately authorised, uses **fresh** seeds, and is the only stage whose numbers
+may travel as evidence. A stopping rule expressed in terms of what the development numbers look like --
+"continue until the effect is clear", "add seeds until the interval excludes zero" -- is not a seed set
+and is not admissible under §78.2.4.
+
+### 78.5 The concrete values, and why this draft does not invent them
+
+$T$, $N_{\text{eval}}$, $\mathcal G_{\text{ckpt}}$, $\Delta_{\min}$ and $N_{\text{train}}$ are values, and
+A90's freeze commit must declare each with its provenance marked as one of
+
+* **derived** from a frozen constant or a frozen contract -- in which case the derivation is recorded, so
+  the value is checkable rather than asserted; or
+* **a designer judgement** -- in which case it is declared as such, before data, with its rationale.
+
+Writing a number here that the designer has not ratified would be exactly the failure this rebuild keeps
+rejecting: a quantity becoming fixed by the inaction of whoever wrote the draft. The draft therefore
+freezes the *form* of each declaration and leaves the values to the freeze.
+
+### 78.6 Scope of the freeze, and what remains open afterwards
+
+The design freeze closes: the refinement, the Retention form, and the declared values of §78.5. It leaves
+open, by construction: the confirmatory stage's authorisation, the architecture-specific branch, and any
+change to a frozen quantity -- which requires a further amendment rather than a later commit, because a
+quantity selected on development data and then changed after confirmatory data is not a preregistered
+quantity at all.
+
+### 78.7 Boundary
+
+A90 authorises nothing by itself, and its freeze authorises development seeds only. Not authorised by it,
+now or later: confirmatory seeds, V0.4R, any aggregation across stages, and any reporting of a development
+number as evidence.
+
+
 ## 64. Summary and what remains open
 
 | # | what | severity | status |
@@ -7384,6 +7484,8 @@ section above; the most recent is:
 | **A87** | **the concrete injection fixtures, the six projection images, the scalar functional, the $U_1$ continuation contract, and the declared directions**: $\xi_A^*$ is the candidate-independent **semantic witness**, which **induces two cells per architecture**, $(U_1,A)$ and $(U_2,A)$, whose content is $g_U(\xi_A^*)$ -- keeping the witness candidate-independent is what makes one canary screen every candidate. Canaries: $D_Q$ takes the canonical multi-action context $(\texttt{State}(0,2,0,0,0), z{=}1, m{=}0)$ with row $\{3{:}0.88, 4{:}0.86\}$ and lowers the argmax to $\min_a Q^{*}-1 = -0.14 < 0.86$; $X$ takes the healthy path's first multi-action site with the command the learner **actually sends**, $\texttt{ControllerSite}(s^*,3) \leftarrow 4$; $P$ keeps $C_P^{L}(0) \leftarrow 1$ with base option $z_0 = 0$ and $z_1 = 1$. Freezes all **six projection images**, with $g_{U_1}(\xi_P^*) = (\texttt{START}, z{=}z_0{=}0, m{=}0)$ taken **pre-update** so the $z$ sealed into $U_1$'s identity is the scene's proposal, not the arm's post-write output. Freezes $V_W(u) = \sum_{j=t(u)}^{T_F-1} r_j$ (undiscounted return-to-go, reward mode A, to termination or $H=12$) and the protocol as **one rollout or continuation, no checkpoint grid**. Freezes the $U_1$ continuation contract -- entry satisfying the executable `env/domain.py` $\texttt{is\_decision\_context}$, exogenous consistency $\texttt{tape.phase} = s.\phi$ and $\kappa = s.\kappa$, one shared continuation core, no re-execution of $C_P^{L}$, one complete tape assignment shared by pre and post, and a frozen exogenous lift $\lambda_{U_1}(s,z,m) = \texttt{SemanticTape}(s.\phi, 0, 0)$ that is a protocol input rather than unit identity, so $u \mapsto V$ is a function -- and replaces its false single equality with G1/G2/G3 run over the frozen witness set $\mathcal W_{\text{gate}} = \{W_{\text{pre}}, W^{cal}_{D_Q}, W^{cal}_X, W^{cal}_P\}$ -- G1 bound to the frozen images -- $\forall A \in \{D_Q, X\}$, $\forall W \in \{W_{\text{pre}}, W^{cal}_A\}$, comparing $\texttt{continuation}_W(g_{U_1}(\xi_A^*), \lambda_{U_1}(g_{U_1}(\xi_A^*)))$ with $\texttt{ordinary\_rollout}_W(g_{U_2}(\xi_A^*))$, so the edited $Q_D^L$ row and the legal $\texttt{ControllerSite}(\texttt{START},3)$ are on the executed path instead of a bare $z_0$ scene that would miss them -- which makes the post-update $Q_D^L$ and $C_X^L$ channels a precondition of closure instead of something inferred from a screening verdict, and G2 bound to $g_{U_2}(\xi_P^*) = (0, (0,0,0), 0)$ on $W^{cal}_P$ -- whose frozen comparison object is the behaviour-bearing suffix signature $\Sigma_{\text{suffix}} = (\texttt{steps}, \texttt{outcome}, \texttt{final control})$ compared field by field, $V_W$ being derived from it; G3's liveness half is witnessed by the option in force, not by a return, G4 extends the suffix equality to every pre-action context with $t > 0$ on the frozen canary healthy traces, and G5 checks $V^{cont}_{W_{\text{pre}}}(s,z,m; \lambda_{U_1}(s,z,m)) = V^{*}(s,z,m)$ on all of $\mathcal X_D$ -- stated against the lift the screening actually uses -- against the frozen exact solve, using the existing DP gate's tolerance, so the contract's arbitrary-$\mathcal X_D$ claim is backed on the whole domain. Declares $d_{D_Q} = d_X = d_P = +1$ by **preregistered reference prediction** $d_A = \operatorname{sign}(\Delta V_A^{ref})$, discharged against the frozen solver at $\texttt{State}(0,2,0,0,0)$ -- $Q^{*}(z{=}0) = 0.92$, $Q^{*}(z{=}1) = 0.88$, $Q^{*}(x^{*},3) = 0.88$, $Q^{*}(x^{*},4) = 0.86$ -- giving losses $+0.02$, $+0.02$, $+0.04$ under A86's sign convention $\operatorname{sign}[V_W - V_{W+\Delta W}] = d_A$, $\Delta V_A^{ref}$ being kept distinct from the measured $\Delta V^{meas}_{A,U}(u)$ the screening forms, so detection is not decided here; detection is restored to A86's **domain-quantified** form $D_{A,U} = [\exists u \in U: \Delta V^{meas}_{A,U}(u) \neq 0]$ with direction kept separate as $S_{A,U}$ at the witness, and the screening domains are frozen and finite -- $U_1 = \mathcal X_D$ with $\lvert U_1 \rvert = 13824$ and $U_2 = \mathcal K \times \mathcal T \times \mathcal Z$ with $\lvert U_2 \rvert = 5760$ -- measured as the closed nominal map $V_W^{meas}: U \to \mathbb{R}_{\text{finite}}$ with missing and extra units rejected and no short-circuit on positives; with coverage PASS and all three directions numeric, this instance excludes `DIRECTION_UNRESOLVED` and its aggregate space is the **two states** $\{\texttt{UNIFIED\_SURVIVES}, \texttt{ALL\_PREREG\_UNIFIED\_REJECTED}\}$, reachable through $U_2$, while $U_1$ cannot survive because $P \times U_1$ is `BLIND`. Coverage frozen PASS $\times 6$ against the frozen candidate-domain contracts, not from scene reachability; **detection not frozen and not inherited from B1** (B1 licenses $\Delta W^{\text{cal}}_A$ as a persistent edit, not A86's behavioural proposition). Records the authorisation chain: A87 frozen permits the $U_1$ continuation instrument to be implemented, and only $\text{CLOSED} := \text{G1} \land \text{G2} \land \text{G3} \land \text{G4} \land \text{G5} \land$ a clean existing kernel/B1 regression suite authorises the screening. | **P0 (interface)** | **FROZEN at `rebuild@b4b0bba` -- content approved at draft `3ec3b0f`, clean promotion verified (single changed file, $\S$75 preserved exactly, no draft artifacts carried); the $U_1$ continuation implementation is authorised, and the structural screening stays gated on continuation CLOSED** |
 | **A88** | **X-canary domain legality, and the record of the first screening attempt**: the A87 X fixture was witness-local legal only -- `ControllerSite(START,3) <- 4` is admissible at $(z,m)=(1,0)$ where $A_z=\{3,4\}$, but the site key is $(s,a^{\text{cmd}})$ with no option in it, so at $t\texttt{=}0$ the edit is not legal for `rush` under any target and the kernel raises `LearnerContractViolation` (A75 §62.3) on $2/13824$ $U_1$ units and $120/5760$ $U_2$ scenes. The **rule** is strengthened rather than the answer chosen: $\mathcal S_X^{\text{valid}}$ now requires $a' \in \bigcap_{z,m} A_z(m,s)$, and under A87's unchanged canonical rule the least valid element is $s_X^* = \texttt{State}(1,1,2,0,0)$ with the unique target $1$; the direction is re-derived from the frozen solver's rows $Q^{*}(1)=0.88$, $Q^{*}(3)=0.92$, $Q^{*}(4)=0.90$, giving $\Delta V^{ref}_X = +0.04$ and $d_X = +1$ (unchanged direction, new magnitude). G1 is rebound to a suffix comparison with $t_{D_Q}^* = 0$, $t_X^* = 2$, so the previous closure is valid only for the superseded fixture and must be re-earned. Also records that the first authorised attempt produced no cell status, no verdict and no artifact, that its partial measurements are not reusable, and that the corrected run is from scratch; and completes two frozen contracts in the harness -- the zero measured sign is `DIRECTION_FAIL` rather than an error, and the closed map refuses non-finite values. | **P0 (interface)** | **FROZEN at `rebuild@3f1f4e1` -- scientific content approved at `fc0b494`; canonical/aggregate/domain-legality gates closed at `3f1f4e1`; Continuation reclosed under A87+A88; corrected structural screening authorised from scratch only** |
 | **A89** | **$U_2$ qualification and the B2-3 compatibility contract**: records the screening result ($\texttt{UNIFIED\_SURVIVES}$ at `4472ec4`, five cells `STRUCTURAL_PASS` and $U_1 \times P$ `BLIND`) and fixes its meaning -- $U_2$ is the **sole surviving** preregistered unified candidate and **not selected**. Specifies the $U_2$-native ontology (an evaluation scene is $(\kappa, \text{full tape}, z_{\text{base}})$; one object is the set, $\texttt{UnaffectedSet} = (\texttt{units}, \texttt{construction})$, with `construction` written as `<eligibility>@<refinement>`), and records why B2-3's current objects cannot be pointed at it. Keeps two layers apart, which the first draft merged, with **exactly one** eligibility construction: $E(c) = \{u \in U_2:\ \neg\textit{Consult}(u,c)\ \land\ H_{\text{pre}}(u)\}$, whose two conjuncts are A79 §67.4's *unrelated to the credited site* and *correct beforehand* -- both scene-level, because a scene that never consults $c$ has no behaviour "at $c$" to judge, and registering a second variant would have made the refined set $2 \times 6 = 12$ and the obligations $36$ -- reading only the credited unit in the learner's address vocabulary, the unit's own fields, the unedited trajectory and the frozen solve; and **refinements** $C_i = E(c) \cap S_i$ with the frozen names `eligible_all`, `eligible_phase_even`, `eligible_phase_odd`, `eligible_cause_rank_lower`, `eligible_error_absent`, `eligible_base_option_nonzero`. A slice answers *which part* of a legitimate universe is reported, not *why* it is unaffected; `witness_unvisited` is withdrawn for reading a canary identity; and the registered set is six constructions with $6 \times 3 = 18$ calibration obligations. Interpretability is split into two classes -- eligibility may interpretably read the frozen admissible surface, only a refinement must be a pure field-semantic predicate of the unit -- and both are gated (`hash`/modulo, index windows and outcome-derived masks refused). Calibration is a deterministic **chain** frozen at every arrow: the credited sites are fixed at credited-site granularity ($c^{\text{cal}}_{D_Q} = \texttt{DecisionAddress}(\texttt{State}(0,2,0,0,0),1,0)$, a $\texttt{DecisionAddress}$ and not a $\texttt{QAddress}$ because `owner_Q(QAddress) = DecisionAddress`, $c^{\text{cal}}_X = \texttt{ControllerSite}(\texttt{State}(1,1,2,0,0),3)$, $c^{\text{cal}}_P = 0$), so the eighteen cells cannot be reshaped by choosing a credited site; the fixture is the lexicographically least eligible unit of $C$ whose unedited trajectory consults a channel address $q$ with $\text{owner}_A(q) \neq c^{\text{cal}}_A$ and a defined edit, and the synthetic site is $s^{\text{spill}}_{C,A} = \text{owner}_A(q^{\text{spill}})$, so $\text{owner}_A(\Delta W^{\text{spill}}_A) = s^{\text{spill}}_{C,A} \neq c^{\text{cal}}_A$ is a theorem at the credited granularity rather than a type accident; the edit is the function $\mathcal I_A$ -- lower the taken action's row where $\lvert A_z \rvert \ge 2$, remap the controller to $\min(\bigcap_{z,m} A_z \setminus \{a^{\text{cmd}}\})$ per A88's contract-preservation rule, or map the proposal to $\min(\mathcal Z \setminus \{z^{\text{proposal}}\})$ -- returning a unique legal edit or `None`, with no target chosen at implementation time; and the calibration reference is the **aggregate functional itself**, a mean over the candidate rather than a sign at one unit -- $B^{\text{ref}}_{C,A} = \frac{1}{\lvert C\rvert}\sum_{u \in C}[V^{\text{ref}}_{\text{pre}}(u) - V^{\text{ref}}_{\text{spill}}(u)]$ with $d^{\text{ref}}_{C,A} = \operatorname{sign} B^{\text{ref}}_{C,A}$, because one persistent edit moves many units and a unit-level sign does not determine the mean's sign -- $6 \times 3 = 18$ obligations, injected upstream through the substrate, $\texttt{BehavioralCollateral}^{meas}_{C,A} = B^{\text{ref}}_{C,A}$ within G5's tolerance, `CALIBRATION_FAIL` when no unit qualifies or $B^{\text{ref}}_{C,A} = 0$ (no relocated site, no alternative target, no narrowed domain), no post-hoc map editing, no ranking by magnitude, and the canary's $+1$ never inherited; $B^{\text{ref}}$ is provenance-restricted to the frozen reference, $C$ and $\Delta W^{\text{spill}}_A$ (never the measured maps, the measured collateral, an arm's output or the calibration result), with `expected := measured` as a mutation that must redden. The construction contract is also quantified over production credited units -- $\forall c \in \mathcal D^{\text{credit}}_A: E(c) \neq \varnothing$ and $E(c) \subsetneq U_2$ with definite membership, a legitimate credited unit failing the gate rather than being skipped, and per-refinement totality $\forall c, i: C_i(c) \neq \varnothing$ as seedless admissibility before any coverage judgement. Coverage stays enumerated; the choice among **refinements** is A79 §67.4's development-seed decision (eligibility itself is frozen) and is not authorised. Carries A85's six-property table at its true state -- five PASS **at the $U_2$ measurement-interface level**, the unaffected region still OPEN. | **P0 (interface)** | **FROZEN at `rebuild@6c28fbc`; seedless compatibility/calibration implementation CLOSED at `a4451cc` (694 tests exit 0, 45/45 mutation gates, 18/18 calibration); refinement selection and all B2 scientific seeds remain NOT AUTHORISED** |
+| **A90** | **the development-stage authorisation ladder and the design freeze**: freezes the distinction $\text{instrument closure} \neq \text{scientific-seed authorisation}$ and, because A89's closure licenses no seed, partitions every quantity A79 §67.4/A83 §71.4 left open -- the refinement, the Retention form, $T$, $N_{\text{eval}}$, $\mathcal G_{\text{ckpt}}$, $\Delta_{\min}$, $N_{\text{train}}$ -- into a **pre-data obligation** (the candidate set named exhaustively, the measurement properties with their instruments and better-directions, a deterministic aggregation and tie-break rule, a declared seed *set* rather than a stopping rule, and the run command and artifact path, all fingerprinted with the instrument before the first seed) and a **post-data outcome** (which candidate the frozen rule selects, reported as a consequence rather than chosen). States the first-seed gate, requires development data to inform a selection outcome and never a claim, requires confirmatory seeds to be fresh and separately authorised, and refuses to invent $T$, $N_{\text{eval}}$, the grid or $\Delta_{\min}$: each must be declared in the freeze with its provenance marked as derived from a frozen constant or as a designer judgement, since a number fixed by the draft's inaction is the failure this rebuild keeps rejecting. | **P0 (design)** | **draft -- awaiting review; not yet frozen** |
+
 
 
 ---
