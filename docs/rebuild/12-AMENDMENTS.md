@@ -7410,7 +7410,9 @@ Recorded, hashed, and complete before the first seed of either stage:
    \{\texttt{NO\_ADMISSIBLE\_GRID}\}$ included, and each declares its metric, its admissibility
    threshold, its ranking rule, its tie-break, its missing-value behaviour and its exact-equality
    behaviour -- frozen here rather than inherited from a library default. $f_T$ is the already-frozen
-   $T = Q_{0.9}(T_{\text{conv}})(1 + h)$ together with its finite-sample quantile convention;
+   $T = Q_{0.9}(T_{\text{conv}})(1 + h)$ together with its finite-sample quantile convention. $F_0$ also
+   records the **acyclic dependency graph** $\mathcal D_{F_1}$ of §78.6, since a derived threshold reads
+   other rules' outputs and the evaluation order is part of the rules rather than of the implementation;
 5. the **property instruments and their allowed input surfaces** (§78.6), including which properties are
    gates, which are static descriptors and which may enter a ranking functional, and -- for the Retention
    selector -- the metrics §78.10 requires rather than the property names;
@@ -7530,7 +7532,27 @@ $$\boxed{F_1 \;=\; \operatorname{Eval}\bigl(f_T,\ f_N,\ f_G,\ f_C,\ f_R,\
 \{f_{\Delta,e}\};\ D^{\text{master}}_{\text{dev,baseline}}\bigr)}$$
 
 The lock is the **evaluation of declared functions**, not a person completing the remaining values at
-commit time. $f_N$ and $f_G$ are rules over the envelope of §78.5 rather than selectors over arms: they
+commit time.
+
+**The evaluation has a frozen dependency order.** A derived threshold reads the *outputs* of the other
+rules, so the six families are not evaluated in parallel, and an unfrozen order would leave the
+implementation to decide what is computed first and what is fed to what. $F_0$ therefore freezes an
+acyclic dependency graph $\mathcal D_{F_1}$, written here as two stages inside **one** $F_1$ commit so
+that A83 §71.4's *frozen together* still holds:
+
+$$\boxed{F_1^{\text{design}} = \operatorname{Eval}\bigl(f_T,\ f_N,\ f_G,\ f_C,\ f_R;\
+D^{\text{master}}_{\text{dev,baseline}}\bigr)}$$
+
+$$\boxed{F_1^{\text{threshold}} = \operatorname{Eval}\bigl(\{f_{\Delta,e}\}_{e \in \mathcal E_\Delta};\
+F_1^{\text{design}}\bigr)}$$
+
+with
+
+$$\boxed{\mathcal D_{F_1}\ \text{is acyclic}}$$
+
+and a designer-constant threshold simply having no upstream dependency. $\mathcal D_{F_1}$ is part of what
+$F_0$ records, and the two stages are the same lock rather than two locks: nothing between them may read
+an arm, be revised by hand, or differ from the single commit that carries both. $f_N$ and $f_G$ are rules over the envelope of §78.5 rather than selectors over arms: they
 read the same single baseline acquisition, and the envelope's ordered sample is what gives "prefix" and
 "projection" one meaning each.
 
@@ -7584,14 +7606,45 @@ the design lock and before any treatment output exists -- not later. A minimum m
 after the treatment curve was exposed would be an observed effect size choosing its own threshold, which
 is the tuning A79 §67.9's *and nothing else* excludes.
 
-**The universe is named, and so is each threshold's provenance.** $F_1$ may not decide that a further
-endpoint needs a threshold, so $\mathcal E_\Delta$ is declared in $F_0$:
+**The universe is a registry of endpoints, and A90 freezes its generation rule rather than the registry
+itself.** An earlier revision of this section wrote
 
-$$\boxed{\mathcal E_\Delta = \{\texttt{FutureUtility},\ \texttt{Collateral},\ \texttt{Retention}\}}$$
+$$\mathcal E_\Delta = \{\texttt{FutureUtility},\ \texttt{Collateral},\ \texttt{Retention}\}$$
 
-the three dimensions the instrument already reports; a design needing a different universe says so before
-the freeze, since adding one afterwards is an amendment rather than a lock. For each $e \in
-\mathcal E_\Delta$, $F_0$ declares exactly one of two provenances:
+which mistook a **dimension** for an **endpoint**: A79 §67.3 already freezes $\mathrm{RMST}(T_{\max})$ as
+the primary endpoint and $\mathrm{DeficitAUC}$ as the mandatory co-primary, and those are two statistical
+endpoints of different units -- a restricted recovery-time summary and a normalised deficit integral --
+with no reason to share one threshold slot. A dimension that contains several confirmatory endpoints may
+therefore not stand in for them. That nomination is withdrawn.
+
+A90 freezes what it can freeze without inventing the designer's endpoint list:
+
+$$\boxed{\mathcal E_\Delta = \text{the exhaustively named set of threshold-bearing confirmatory
+endpoints}}$$
+
+and $F_0$ carries the registry, subject to three requirements:
+
+$$\boxed{\forall e:\ e\ \text{enters a confirmatory four-way verdict or bound using } \Delta_{\min}
+\;\Rightarrow\; e \in \mathcal E_\Delta}$$
+
+$$\boxed{\forall e \in \mathcal E_\Delta:\ \text{exactly one threshold provenance is declared}}$$
+
+$$\boxed{\text{a dimension containing several confirmatory endpoints may not stand in for them}}$$
+
+with one **minimum known constraint** that A79 already fixes:
+
+$$\boxed{\{\mathrm{RMST},\ \mathrm{DeficitAUC}\} \subseteq \mathcal E_\Delta}$$
+
+so the registry can never be shorter than the two endpoints the frozen record names, while its exact
+membership is $F_0$'s obligation. In particular $\texttt{BehavioralCollateral}$ and the selected Retention
+form must appear under their own endpoint names, not as dimension labels, and whether the T-regime harm
+constraint reuses one of these frozen endpoints and bounds or carries an independent threshold identity is
+decided in the registry -- a question $F_0$ answers and A90 does not pre-empt.
+
+The endpoint universe of a dimension is therefore not inherited by the next stage as a label; it is
+enumerated where the verdicts are defined.
+
+For each $e \in \mathcal E_\Delta$, $F_0$ declares exactly one of two provenances:
 
 $$\boxed{\Delta_{\min,e} = d_e \ \text{[designer judgement, with its rationale]}} \qquad\text{or}\qquad
 \boxed{\Delta_{\min,e} = g_e\bigl(T^*, N_{\text{eval}}^*, \mathcal G^*, \ldots\bigr)
@@ -7653,6 +7706,15 @@ contracts, writes the lock as an evaluation of those rules, names the threshold 
 $\mathcal E_\Delta$ and requires each threshold's provenance to be either a constant declared in $F_0$ or
 a function declared in $F_0$. A stale section heading, which still said A90 *flags* the retention
 inheritance after the text had decided it, is corrected.
+
+**Round 4 (`6fc5f1a`).** The complete design-rule family and the designer-versus-derived threshold
+provenance were accepted. Two things remained. $\mathcal E_\Delta$ had been nominated as three
+*dimensions*, which would have pressed RMST and DeficitAUC -- A79 §67.3's primary and mandatory
+co-primary, of different units -- into one threshold slot; A90 now freezes the registry's generation rule
+and its completeness requirements, with $\{\mathrm{RMST}, \mathrm{DeficitAUC}\} \subseteq \mathcal E_\Delta$
+as the minimum A79 already fixes and the exact membership left to $F_0$. And the six rule families were
+written as a parallel evaluation although a derived threshold reads other rules' outputs, so $F_0$ now
+records an acyclic dependency graph and the lock is two stages inside one commit.
 
 ### 78.12 Boundary
 
