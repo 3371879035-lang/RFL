@@ -77,6 +77,14 @@ MUTATIONS = [
      "src/rfl_rebuild/b2/unaffected.py", "key=lambda scene: scene.key",
      "key=lambda scene: (scene.base_option, scene.kappa, scene.phase, scene.error_flag, scene.cause_rank)",
      "disagree element-wise", "manifest::eval_sample_order", "text"),
+    ("porcelain_first_line_decapitated",
+     "the status parser strips the whole output before splitting, so the first line's leading status "
+     "space is eaten and a path loses its first character -- the defect that shipped in revision 1's "
+     "manifest, where `experiments/...` was recorded as `xperiments/...` and misread as code",
+     "scripts/f0_manifest.py", "    for raw in text.splitlines():",
+     "    for raw in text.strip().splitlines():  # MUTATED",
+     "tests/rebuild/test_f0_manifest.py::test_1_a_leading_status_space_does_not_eat_a_character",
+     "xperiments"),
     ("dirty_code_tree",
      "the manifest could be generated from an uncommitted instrument, so it would pin a working tree "
      "rather than a revision -- the defect the review of revision 1 found in the shipped manifest",

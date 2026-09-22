@@ -194,6 +194,40 @@ def gate_summaries() -> dict:
     return out
 
 
+def parse_porcelain(text: str) -> list:
+    r"""Parse `git status --porcelain` into paths, **without** eating a leading status space.
+
+    $$\boxed{\text{a status line is } \texttt{XY PATH}\text{, and } X \text{ may be a space}}$$
+
+    This exists because the obvious version was wrong and shipped. `git(...)` ends in `.strip()`, which
+    strips the *whole* output; for the first line -- where a modified-but-unstaged file reports
+    ` M path` -- that removes the status space, and slicing three characters then decapitates the path
+    (`experiments/...` -> `xperiments/...`). The corrupted name was also misclassified as code rather
+    than evidence, and it appeared in a shipped manifest. The reviewer of revision 1 read it back
+    verbatim, and this file's author explained it away as a transcription slip. It was not a slip.
+    Parsing is therefore its own function, exercised against a leading-space line.
+    """
+    paths = []
+    for raw in text.splitlines():
+        if not raw.strip():
+            continue
+        if len(raw) < 4:
+            raise AssertionError(f"unparsable porcelain line: {raw!r}")
+        path = raw[3:]
+        if " -> " in path:  # a rename reports both sides; the new name is the path
+            path = path.split(" -> ", 1)[1]
+        paths.append(path.strip().strip('"'))
+    return paths
+
+
+def status_lines() -> list:
+    """`git status --porcelain`, parsed. The output is never stripped before it is parsed."""
+    proc = subprocess.run(["git", "status", "--porcelain"], cwd=ROOT,
+                          capture_output=True, text=True)
+    assert proc.returncode == 0, f"git status failed: {proc.stderr.strip()}"
+    return parse_porcelain(proc.stdout)
+
+
 def dirty_split(out_rel: str, allow_dirty: bool) -> tuple[list, list]:
     """Split the dirty paths into code and evidence, and require the code side to be clean.
 
@@ -207,7 +241,7 @@ def dirty_split(out_rel: str, allow_dirty: bool) -> tuple[list, list]:
     manifest produced that way is not evidence and says so: it is stamped ``MUTATION-PROBE``, its
     ``execution_revision`` is nulled, and it authorises nothing.
     """
-    dirty = sorted(line[3:] for line in git("status", "--porcelain").splitlines() if line.strip())
+    dirty = sorted(status_lines())
     code = [p for p in dirty if not p.startswith("experiments/") and p != out_rel]
     evidence = [p for p in dirty if p.startswith("experiments/")]
     if not allow_dirty:

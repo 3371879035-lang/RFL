@@ -615,10 +615,17 @@ findings. Dispositions:
 | 11 | the three run commands did not exist, so the frozen command list was not runnable; the manifest evidenced a dirty working tree | **fixed**: the harness is implemented and gated, the manifest asserts a clean code tree and pins the execution revision, and authorisation is split into `currently_authorises` / `authorises_on_validity` |
 | 12 | candidate status removed from the frozen default $N_{\text{eval}} = 100$ | **fixed**: §2 restores it to $\mathcal C_{N_{\text{eval}}}$ |
 
-One reviewer observation is corrected rather than adopted: the quoted `dirty_paths` entry
-`xperiments/v03r/f0_manifest.json` is a transcription of `experiments/...` -- the artifact's own text is
-correct, and `git status --porcelain`'s three-character prefix is stripped as designed. The substantive
-half of finding 11 stands regardless, and is fixed above.
+**A correction of this document's own correction.** Revision 1's reply dismissed the reviewer's reading of
+`xperiments/v03r/f0_manifest.json` as a transcription slip, arguing that `git status --porcelain`'s
+three-character prefix is stripped as designed. **That dismissal was wrong and is withdrawn.** The parser
+called `git(...)`, whose final `.strip()` removes leading whitespace from the *whole* output; for the first
+line -- where a modified-but-unstaged file reports ` M path` -- that eats the status space, and slicing
+three characters then removes the path's first character. The mangled name was also classified as code
+rather than evidence, so a dirty evidence artifact was reported as a dirty instrument. The review's finding
+was therefore stronger than it stated, and its transcription was faithful. Parsing is now a pure function,
+`parse_porcelain`, with its own tests (`tests/rebuild/test_f0_manifest.py`) and its own mutation in the
+manifest self-check. Recording it here rather than quietly fixing it, because the failure mode was not the
+bug: it was explaining away a reviewer's correct observation.
 
 **The harness, and the one thing implementing it exposed.** Finding 11 was closed by writing the three
 commands rather than by describing them: `src/rfl_rebuild/b2/devstage.py` plus the three thin CLIs, gated
