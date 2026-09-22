@@ -7397,11 +7397,20 @@ Recorded, hashed, and complete before the first seed of either stage:
 3. the **master evaluation sample ordering**, so that "the first $N$" has one meaning: the envelope of
    §78.5 is an ordered sample, each $\mathcal C_{N_{\text{eval}}}$ member a prefix of that order, and
    each $\mathcal C_{\mathcal G}$ member a declared projection of the master grid;
-4. the **two selector functions** of §78.6, each with its codomain including its fail-closed outcome,
-   and each with its numerical conventions frozen rather than inherited from a library: the
-   finite-sample quantile convention of $T = Q_{0.9}(T_{\text{conv}})(1 + h)$, the treatment of missing
-   values, the rule for exact ties, rounding, and equality-to-threshold. These are part of a selector's
-   definition; leaving them to a default is leaving the selector to the implementation;
+4. the **complete design-rule family** of §78.6 -- every quantity $F_1$ will produce has exactly one
+   generating rule declared here, because a candidate universe without a rule that ranges over it would
+   leave the choice to whoever writes the lock commit:
+
+   $$\boxed{\{f_T,\ f_N,\ f_G,\ f_C,\ f_R,\ \{f_{\Delta,e}\}_{e \in \mathcal E_\Delta}\}}$$
+
+   Each rule is total on its input surface with a **fail-closed** codomain,
+   $f_N: D^{\text{master}}_{\text{dev,baseline}} \to \mathcal C_{N_{\text{eval}}} \cup
+   \{\texttt{NO\_ADMISSIBLE\_N\_EVAL}\}$ and
+   $f_G: D^{\text{master}}_{\text{dev,baseline}} \to \mathcal C_{\mathcal G} \cup
+   \{\texttt{NO\_ADMISSIBLE\_GRID}\}$ included, and each declares its metric, its admissibility
+   threshold, its ranking rule, its tie-break, its missing-value behaviour and its exact-equality
+   behaviour -- frozen here rather than inherited from a library default. $f_T$ is the already-frozen
+   $T = Q_{0.9}(T_{\text{conv}})(1 + h)$ together with its finite-sample quantile convention;
 5. the **property instruments and their allowed input surfaces** (§78.6), including which properties are
    gates, which are static descriptors and which may enter a ranking functional, and -- for the Retention
    selector -- the metrics §78.10 requires rather than the property names;
@@ -7472,10 +7481,10 @@ This is also what A79 §67.10 requires: before $T$ is locked, no treatment-arm c
 printed or summarised.
 
 $F_1$ locks, **together, in one commit** -- as A83 §71.4 writes it -- $T$ from its frozen formula on the
-development baseline seeds; $N_{\text{eval}}$ and $\mathcal G_{\text{ckpt}}$ as the selectors' outcome
-over the envelope; the refinement; the Retention form; and the **per-endpoint thresholds**
-$\{\Delta_{\min,e}\}_{e \in \text{endpoints}}$. Each is recorded as what the frozen rules computed, not as
-a decision.
+development baseline seeds; $N_{\text{eval}}$ and $\mathcal G_{\text{ckpt}}$ from $f_N$ and $f_G$ over the
+envelope; the refinement from $f_C$; the Retention form from $f_R$; and the **per-endpoint thresholds**
+$\{\Delta_{\min,e}\}_{e \in \mathcal E_\Delta}$ from §78.10's frozen provenance. Each is recorded as what
+the frozen rules computed, not as a decision.
 
 **Why $\Delta_{\min}$ belongs here and not later.** A79 §67.9 lists what development may inform --
 benchmark headroom, baseline convergence, $T$, the grid, $N_{\text{eval}}$ stability, the Retention form,
@@ -7500,6 +7509,30 @@ $$f_R:\ \text{Retention form} \;\longrightarrow\; \text{one registered form, or 
 
 from A79 §67.5's properties -- stability, interpretability, redundancy with RMST and DeficitAUC. Using
 §67.4's list for the Retention form would be a different selector wearing the same name.
+
+**The design rules are part of the same family.** $N_{\text{eval}}$ and the checkpoint grid are
+produced by rules, not by judgement:
+
+$$f_N:\ D^{\text{master}}_{\text{dev,baseline}} \longrightarrow \mathcal C_{N_{\text{eval}}} \cup
+\{\texttt{NO\_ADMISSIBLE\_N\_EVAL}\}$$
+
+$$f_G:\ D^{\text{master}}_{\text{dev,baseline}} \longrightarrow \mathcal C_{\mathcal G} \cup
+\{\texttt{NO\_ADMISSIBLE\_GRID}\}$$
+
+$$f_T:\ \text{the baseline convergence sample} \longrightarrow T = Q_{0.9}(T_{\text{conv}})(1 + h)$$
+
+$$f_{\Delta,e}:\ \text{either the frozen constant } d_e,\ \text{or } g_e\bigl(T^*, N_{\text{eval}}^*,
+\mathcal G^*, \ldots\bigr)$$
+
+so that
+
+$$\boxed{F_1 \;=\; \operatorname{Eval}\bigl(f_T,\ f_N,\ f_G,\ f_C,\ f_R,\
+\{f_{\Delta,e}\};\ D^{\text{master}}_{\text{dev,baseline}}\bigr)}$$
+
+The lock is the **evaluation of declared functions**, not a person completing the remaining values at
+commit time. $f_N$ and $f_G$ are rules over the envelope of §78.5 rather than selectors over arms: they
+read the same single baseline acquisition, and the envelope's ordered sample is what gives "prefix" and
+"projection" one meaning each.
 
 A property enters a selector in exactly one of three roles:
 
@@ -7544,12 +7577,33 @@ freeze declares no value for it, and a future training protocol would need its o
 draft of this section listed it among the quantities the freeze must declare, which contradicted the
 frozen text; that is withdrawn.
 
-### 78.10 $\Delta_{\min}$, and the one inheritance question A90 flags rather than decides
+### 78.10 $\Delta_{\min}$, the threshold universe, and the Retention-selector inheritance ruling
 
 $\Delta_{\min}$ is the endpoint threshold, and it is frozen **at $F_1$**, per endpoint, with the rest of
 the design lock and before any treatment output exists -- not later. A minimum meaningful effect settled
 after the treatment curve was exposed would be an observed effect size choosing its own threshold, which
 is the tuning A79 §67.9's *and nothing else* excludes.
+
+**The universe is named, and so is each threshold's provenance.** $F_1$ may not decide that a further
+endpoint needs a threshold, so $\mathcal E_\Delta$ is declared in $F_0$:
+
+$$\boxed{\mathcal E_\Delta = \{\texttt{FutureUtility},\ \texttt{Collateral},\ \texttt{Retention}\}}$$
+
+the three dimensions the instrument already reports; a design needing a different universe says so before
+the freeze, since adding one afterwards is an amendment rather than a lock. For each $e \in
+\mathcal E_\Delta$, $F_0$ declares exactly one of two provenances:
+
+$$\boxed{\Delta_{\min,e} = d_e \ \text{[designer judgement, with its rationale]}} \qquad\text{or}\qquad
+\boxed{\Delta_{\min,e} = g_e\bigl(T^*, N_{\text{eval}}^*, \mathcal G^*, \ldots\bigr)
+\ \text{[derived by a frozen function } g_e\text{]}}$$
+
+A judgement threshold's **value** is written in $F_0$; $F_1$ locks it and may not change it. A derived
+threshold's **function** $g_e$ is written in $F_0$; $F_1$ instantiates it on the locked design values.
+Either way
+
+$$\boxed{F_1\ \text{may instantiate a frozen rule; } F_1\ \text{may not invent a threshold}}$$
+
+and no new judgement may appear at the lock.
 
 $$\boxed{\text{A90 amends A79 §67.5: } f_R\ \text{may read baseline and static diagnostics only}}$$
 
@@ -7588,6 +7642,17 @@ master envelope fixed only the *shape* of a candidate while the universes stayed
 $\mathcal C_{N_{\text{eval}}}$ and $\mathcal C_{\mathcal G}$ are named in $F_0$, the master evaluation
 sample is ordered, and the selectors' numerical conventions -- quantile definition, missing values, ties,
 rounding, equality-to-threshold -- are frozen rather than inherited.
+
+**Round 3 (`eea2c6d`).** The state machine's authorisation arrows, the threshold timing, the pre-lock
+information boundary, the Retention ruling, the master universes, disjoint seeds and the frozen numerical
+conventions were accepted. Two executable gaps remained: $F_1$ was said to produce $N_{\text{eval}}$ and
+the grid while only $f_C$ and $f_R$ existed, so the choice among the enumerated candidates was still left
+to whoever wrote the lock; and the thresholds had a place in time but no source. This revision freezes the
+complete design-rule family $\{f_T, f_N, f_G, f_C, f_R, \{f_{\Delta,e}\}\}$ with total, fail-closed
+contracts, writes the lock as an evaluation of those rules, names the threshold universe
+$\mathcal E_\Delta$ and requires each threshold's provenance to be either a constant declared in $F_0$ or
+a function declared in $F_0$. A stale section heading, which still said A90 *flags* the retention
+inheritance after the text had decided it, is corrected.
 
 ### 78.12 Boundary
 
