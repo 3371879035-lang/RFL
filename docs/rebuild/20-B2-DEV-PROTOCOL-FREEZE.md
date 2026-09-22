@@ -1,9 +1,15 @@
 # 20 — $F_0$: the development protocol freeze (revision 2, draft for review)
 
-**Status: `DRAFT FOR REVIEW (rev 2)`. Not valid, so nothing downstream of it is authorised.**
+**Status: `DRAFT FOR REVIEW (rev 2)` — REVIEW FAIL at `c643b73`. Not valid; rev 3 waits on A91.**
 
-$$\boxed{F_0@\texttt{698eca2}:\ \textbf{REVIEW FAIL}} \qquad \boxed{F_0 = \text{NOT VALID}} \qquad
+$$\boxed{F_0@\texttt{698eca2}:\ \textbf{REVIEW FAIL}} \qquad
+\boxed{F_0@\texttt{c643b73}:\ \textbf{REVIEW FAIL (science layer; execution layer PASS)}}$$
+
+$$\boxed{F_0 = \text{NOT VALID}} \qquad
 \boxed{\texttt{smoke5} = \texttt{dev32} = \text{confirmatory} = \text{V0.4R} = \textbf{NOT AUTHORISED}}$$
+
+$$\boxed{\text{next: A91 (training episode/time axis) frozen} \Rightarrow \text{instrument} \Rightarrow
+F_0\ \text{rev 3} \Rightarrow \text{VALID review} \Rightarrow \texttt{smoke5}}$$
 
 $$\boxed{\text{A90 FROZEN} \;\Longrightarrow\; F_0\ \text{may be constructed and reviewed}}$$
 
@@ -639,3 +645,60 @@ message. Writing it also exposed an open definition that rev 1 had glossed: the 
 That is now checklist item 21, the harness records `convergence_sample: null` with the reason, and the lock
 refuses instead of inventing the axis. An implementation is allowed to find a hole in the design; it is not
 allowed to fill it silently.
+
+## 13. Review of rev 2, and what waits on A91
+
+**rev 2 (`c643b73`) --- REVIEW FAIL, with the execution and evidence layer passing.**
+
+$$\boxed{F_0@\texttt{c643b73} = \text{DRAFT, REVIEW FAIL}} \qquad \boxed{F_0 = \text{NOT VALID}}$$
+
+**Accepted, and not to be re-litigated:** the manifest now pins `execution_revision = 9820209` with
+`code_tree_clean = true` instead of revision 1's dirty working tree; the authorisation split
+(`currently_authorises = []` / `authorises_on_validity = ["smoke5"]`) is correct; both mutation self-checks
+are 10/10 with no `NOT_A_GATE`, harness error or leftover temporary file; the history
+`58c66e9 -> c643b73` is linear with nothing behind; the withdrawal of this document's dismissal of the
+reviewer's `xperiments/...` observation is correct and that defect is now a gate with real power; and the
+historical-CRLF treatment (register, do not rewrite) stands.
+
+**The deciding ruling.** Checklist item 21 cannot be ratified inside $F_0$. The reviewer's ground is that
+`05` already fixes the axis this document was trying to parameterise --- `N_{\text{train}}$ is *training
+episodes per run* (`05` §2), convergence is read per development seed off the `NoCorrection` arm
+(`05` §6.1), the grid is dense early and the endpoints integrate over the **real episode index**
+(`05` §6.2), and A84 §72 froze trapezoidal quadrature with `episodes[0] = 0`, `episodes[-1] = T_max` ---
+while B2's production path reads the axis off an array (`runner.py`'s
+`_episode_grid(levels) = tuple(range(len(levels)))`), so "episode $t$" is a position inside one kernel
+rollout. `A90` §78.9 left this open on purpose. The axis is therefore **a missing layer, not a free
+parameter**, and it is being constructed as
+
+$$\boxed{\text{A91 --- the B2 training-time and episode-axis contract, drafted as §79 of the amendments}}$$
+
+**rev 3 is deliberately not written before A91 is frozen.** The order the reviewer fixed, and which this
+document now records as its own plan, is
+
+$$\boxed{\text{A91 frozen} \Rightarrow \text{correct the future-curve instrument} \Rightarrow
+\text{re-gate} \Rightarrow F_0\ \text{finalisation} \Rightarrow \text{clean execution manifest}
+\Rightarrow F_0\ \text{VALID review} \Rightarrow \texttt{smoke5}}$$
+
+**The remaining findings, carried as deferred rather than patched.** Each is recorded with the ruling it
+received, so that rev 3 is written against a frozen axis instead of around it:
+
+| item | ruling | why it waits |
+|---|---|---|
+| 3 $\mathcal C_{N_{\text{eval}}}$ | membership **approved**; the A88 lexicographic-prefix ordering **rejected** | the first 1024 scenes are all $\kappa = 0$ (the first 240 also $\phi = 0$), so an "evaluation sample" would confound sample size with stratum composition; a pre-frozen **balanced** ordering over $(\kappa, \phi, \texttt{error}, z_{\text{base}})$ with cause-rank rotation is required, and $f_N$'s metric must be read on it |
+| 4 grid templates | **rejected** | $G_2(2) = (0,1,2,2)$ is not strictly increasing, and $T/2, T/3, T/4$ spacing is sparse exactly where `05` §6.2 requires density; the family must be a coarsening of the frozen dense-early skeleton $\{0,1,2,5,10,20,50,100,\ldots,T\}$ with $0$ and $T$ |
+| 5 `ENVELOPE_CAP` | **deferred** | a cap on a training axis is only meaningful once that axis exists |
+| 7 $f_N$ | **deferred** | depends on the balanced ordering and the training curve |
+| 8 $f_G$ | **rejected as written** | step-hold projection contradicts A84 §72's trapezoidal reading; the candidate grid must be read by the frozen endpoint implementation |
+| 9 $f_C$ | $U_2$ ontology and smaller-first **approved**; metric and floors **not approved** | "relative spread of the level curve" is a property name, not a formula, and A90 requires a deterministic selector; the aggregate floor $\lvert C(c)\rvert \ge N^{*}_{\text{eval}}$ must be **withdrawn** because it binds the collateral set to the FutureUtility sample size, and the per-site ratio $\lvert C_i(c)\rvert / \lvert E(c)\rvert \ge \rho_C$ is discussable but `0.25` is not ratified |
+| 11 $f_R$ redundancy | **not approved** | a type error: RMST is $\mathbb{E}[\texttt{restricted\_time}]$ across seeds (A84 §72), so no per-scene RMST series exists; the input must be the per-seed triple over the development seeds, which needs A91's curve |
+| 14 $d_{\mathrm{RMST}} = 1.5$ | **not approved with the $K/2$ rationale** | $K = 3$ counts *checkpoints*, not episodes, and the grid is non-uniform, so $K/2 = 1.5$ has no automatic "1.5 episodes" meaning; the value may stand only with an independent practical-meaning rationale |
+| 16 derived bounds | **not approved as written** | the collateral bound's "spread" and the Retention bound's own-units derivation both need the axis and a declared estimator |
+| 17 runtime bounds | **rejected** | the smoke bound of $30$ s contradicts the mandatory full-suite criterion (measured $97$ s and $110.21$ s), so a passing smoke could not fit inside its own bound; and `run_smoke.py` writes `gate_exit_codes = {}` / `artifact_digests = {}`, so it cannot produce the PASS evidence §9 criteria 1 and 5 require --- either the command executes and reads the frozen gates itself, or a separate frozen gate evaluator does, but an empty dict is not a decision left to a future reviewer |
+| 13 `(T, DeficitAUC)` | **approved** with $\Delta_{\min,(T,\cdot)} = \Delta_{\min,(P,\cdot)} = 0.01$ and a **separate identity** | A79 §67.3 makes DeficitAUC a mandatory companion of the primary endpoint, and the two regimes are separate populations |
+| 12 registry keys | **approved** | $(\text{regime}, \text{statistic})$ stands; `(T, RMST)` keeps its own identity |
+| 15 $d_{\text{DeficitAUC}} = 0.01$ | **approved** | inherited frozen default from `11-ENVIRONMENT` §10 |
+| 6, 18, 19, 20 | **approved** | nearest-rank and ceiling conventions; numerical conventions and the smoke surface; the clean execution revision and the authorisation fields; the historical-CRLF ledger treatment |
+
+Nothing in this section changes a frozen amendment: A91 is a draft, and every item above is a finding
+about *this* draft document rather than about A85--A90.
+
