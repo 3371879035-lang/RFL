@@ -1,7 +1,54 @@
 {
-  "authorises": [
+  "authorises_on_validity": [
     "smoke5"
   ],
+  "currently_authorises": [],
+  "eval_sample": {
+    "candidates": [
+      100,
+      256,
+      512,
+      1024
+    ],
+    "definition": "F0 section 3: the master evaluation sample is the first N_max elements of the frozen U2 enumeration; seeds are sample-generation provenance, not unit identity",
+    "domain_size": 5760,
+    "monotone_in_frozen_order": true,
+    "n_max": 1024,
+    "order": "A88 section 76.2 lexicographic on (kappa, phase, error_flag, cause_rank, z_base)",
+    "prefix_boundary_keys": {
+      "100": [
+        0,
+        0,
+        0,
+        24,
+        3
+      ],
+      "1024": [
+        0,
+        2,
+        0,
+        15,
+        3
+      ],
+      "256": [
+        0,
+        0,
+        1,
+        3,
+        3
+      ],
+      "512": [
+        0,
+        1,
+        0,
+        7,
+        3
+      ]
+    },
+    "representations_agree_elementwise": true,
+    "sample_digest_first_n_max": "43c4a6011cf8b71c3efb216c84d657b156ada3e0687270bda95a05084576a30f",
+    "seed_free": true
+  },
   "gates": {
     "experiments/v03r/b2_view_gate_selfcheck.json": {
       "file_digest": "671fa421a139ebce2e44b4426af83b38aab73d61c1407bab5ba1c10b4742705b",
@@ -40,7 +87,30 @@
     "platform": "Windows-11-10.0.26200-SP0",
     "python": "3.14.3",
     "script": "scripts/f0_manifest.py",
-    "script_digest": "81b3a81c0452118b8841d5874d2a6a4d436ee775cc6e2c0cb7348a76f3c0fbe6"
+    "script_digest": "b4f8055477d8b806a2fc810c1cc194e2e186af721f1295b3a4affc8f166daa05"
+  },
+  "harness": {
+    "run_scripts": {
+      "digest_scope": "sorted (path, sha256) pairs, so the value is stable across checkouts",
+      "files": {
+        "scripts/run_calibration.py": "8006e02c98aff0daf699febfc2c1bdb49d2f59486d757738d449bfabe081d05b",
+        "scripts/run_dev_baseline.py": "a2370d90a6f69c2aad2e59486f1e323f69fc2c0f6f53e3398decc0d340fdaec4",
+        "scripts/run_dev_lock.py": "3680e1410083d6515ea388d29421e83e3c64c1f68cc062d12c2777a7f7578ddd",
+        "scripts/run_smoke.py": "747f550bdc4d1a649ba5c68e4d6d83a88ba76e788cf99b92d5635704aea67b43",
+        "scripts/run_structural_screening.py": "9505269034342a6c8a56a08e436b597bf7477dd1551da824bd1c0cf5f8e16eb4"
+      },
+      "n_files": 5,
+      "tree_digest": "2c3bb7b9d2141b930a5e480eeffc08e4d49f08b94e157892a7694d6ff157c457"
+    },
+    "seed_files": {
+      "digest_scope": "sorted (path, sha256) pairs, so the value is stable across checkouts",
+      "files": {
+        "experiments/v03r/dev_seeds.txt": "385c78908246bd23a5e10c469eb396d2cd06e3fcd18de89eebcecae085f1eca1",
+        "experiments/v03r/smoke_seeds.txt": "2321ad90618d0ce22bce09f9f0640db91dd617f28f3185db80ffe3e218789171"
+      },
+      "n_files": 2,
+      "tree_digest": "4d07ee5f289878c054269072c8782555c93c6e9df30d76c396e36166242d1180"
+    }
   },
   "instrument": {
     "files": {
@@ -62,6 +132,7 @@
       "src/rfl_rebuild/b2/calibration.py": "ad0c3ed8f640e6ca448a09bae7dc3f86d59260ce90205fd18490a318a9ac38b4",
       "src/rfl_rebuild/b2/collateral.py": "6a96a7f9bc490a7f87e648e92fea69a7932bddcbd0327775c19e5f0352a9e6b2",
       "src/rfl_rebuild/b2/continuation.py": "c901755b6c251b3357bf3e197947a653f61e7603a146a2d957da71d750b0ed88",
+      "src/rfl_rebuild/b2/devstage.py": "e10edc61359581c362f2b2821aa8c0f45113779e2c21d521265bd003fdf3ff37",
       "src/rfl_rebuild/b2/environment.py": "0854e3c5c746771e78128119a2fd7fac5c7ec279288686058f9ad438efcbbb5f",
       "src/rfl_rebuild/b2/producer.py": "689335b7609ccfc8f7007a73ca142bd36a31fabea610f85b1864a99ebe939237",
       "src/rfl_rebuild/b2/retention.py": "cf33c52b9517381b0f6158aeb92184ab52c86d63d93d01a5aeb833172d2a072a",
@@ -98,11 +169,12 @@
       "src/rfl_rebuild/solve/__init__.py": "98c2de16d42f6c0ee68bddaf473e89ca28693e84ef2912c11483cca0b2e8ae22",
       "src/rfl_rebuild/solve/dp.py": "3854f6986ef421ef17858a64f90f773de601ddc592e9d58d03ace23342e44237"
     },
-    "n_files": 53,
-    "tree_digest": "7a81be36876c509c0a05db22501d87fe9075936627bae9dc03fb529ff769d83c"
+    "n_files": 54,
+    "tree_digest": "196a06b206cf1cf7260c196667eb4ba5aaae1051f190b0e3aa1eac430cf97469"
   },
   "not_authorised": [
-    "dev32 treatment arms",
+    "smoke5 (until a reviewer marks F0 VALID)",
+    "dev32",
     "F1 DEV_DESIGN_LOCK",
     "confirmatory stage",
     "V0.4R seed",
@@ -113,9 +185,11 @@
     "branch": "f0-dev-protocol-freeze",
     "closure_commit": "a4451cc",
     "closure_is_ancestor": true,
+    "code_tree_clean": true,
     "crlf_artifacts_on_disk": [
       "experiments/v03r/address_domain_gate_selfcheck.json",
       "experiments/v03r/b1_interface_gate_selfcheck.json",
+      "experiments/v03r/b2_run_gate_selfcheck.json",
       "experiments/v03r/dpatch_ledger_baseline.json",
       "experiments/v03r/dq_return_fold.json",
       "experiments/v03r/l0_factual_gate_selfcheck.json",
@@ -125,25 +199,50 @@
       "experiments/v03r/q_substrate_gate_selfcheck.json",
       "experiments/v03r/x_controller_gate_selfcheck.json"
     ],
-    "dirty_paths": [
-      "experiments/v03r/f0_manifest_selfcheck.json",
-      "scripts/f0_manifest.py",
-      "scripts/f0_manifest_selfcheck.py",
-      "xperiments/v03r/f0_manifest.json"
+    "dirty_code_paths": [],
+    "dirty_evidence_artifacts": [
+      "experiments/v03r/b2_run_gate_selfcheck.json"
     ],
-    "head": "507bc9029f504f459d48d6d5de53e7b2df77f47e"
+    "execution_revision": "3156e17a5af347032649ae6fec1c01a897b2d56f",
+    "head_at_generation": "3156e17a5af347032649ae6fec1c01a897b2d56f"
+  },
+  "runtime_benchmark": {
+    "bounds_seconds": {
+      "dev_baseline": 300.0,
+      "smoke": 30.0
+    },
+    "caveat": "the bound is a smoke criterion, not a target: exceeding it fails smoke, and a stage may not meet it by shrinking the work",
+    "floors_seconds": {
+      "dev_baseline": 300.0,
+      "smoke": 30.0
+    },
+    "measurement": {
+      "deterministic": true,
+      "draws_no_seed": true,
+      "n_scenes": 1024,
+      "outcomes": {
+        "COLLISION": 16,
+        "SUCCESS": 1008
+      },
+      "per_scene_s": 6.0675e-05,
+      "runtime_s": 0.062132,
+      "seedless": true,
+      "writes_artifact": false
+    },
+    "multiple": 100,
+    "rule": "bound = max(floor_seconds, multiple * seedless_benchmark_runtime_s)"
   },
   "runtime_reference_seconds": {
     "calibration": 92.42,
-    "full_suite": 223.15
+    "full_suite": 94.25
   },
   "status": "PROPOSED -- F0 is a draft; nothing downstream is authorised",
   "tests": {
     "available": true,
-    "count": 694,
+    "count": 716,
     "format": "node_ids",
-    "node_id_digest": "ed66e1ea03bf075a361d171e1eb22e91f69a698dd3521f5cf3494c6e6dfa7605",
-    "test_list": "f0_testlist.txt"
+    "node_id_digest": "5cdb4346e5ede62ad068b1ebd207bbbf2cc640d05a0b8966a5da3c74b83e967e",
+    "test_list": "f0_testlist2.txt"
   },
   "what": "F0 DEV_PROTOCOL_FREEZE instrument manifest"
 }

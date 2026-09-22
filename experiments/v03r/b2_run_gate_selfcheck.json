@@ -1,0 +1,124 @@
+{
+  "check": "F0 section 7 harness: authorisation, seed sets, smoke surface",
+  "n_mutations": 10,
+  "n_gate_is_real": 10,
+  "n_not_a_gate": 0,
+  "n_node_not_found": 0,
+  "n_harness_error": 0,
+  "n_mutation_not_applied": 0,
+  "n_wrong_failure_reason": 0,
+  "tree_restored_byte_identical": true,
+  "stale_node_ids": [],
+  "results": [
+    {
+      "mutation": "authorisation_token_ignored",
+      "hole": "the token comparison is disabled, so every stage runs whatever the manifest says -- the boundary becomes a comment",
+      "gate": "test_8_a_manifest_naming_the_stage_lets_it_through",
+      "site": "src\\rfl_rebuild\\b2\\devstage.py",
+      "matched": 1,
+      "expected_failure_text": "DID NOT RAISE",
+      "exit_code": 1,
+      "tail": "tmp_path = WindowsPath('C:/Users/huani/AppData/Local/Temp/pytest-of-huani/pytest-441/test_8_a_manifest_naming_the_s0')\n    def test_8_a_manifest_naming_the_stage_lets_it_through(tmp_path):\n        path = _write_manifest(tmp_path, currently_authorises=[\"smoke5\"])\n        state = devstage.require_authorised(\"smoke\", path)\n        assert state[\"currently_authorises\"] == [\"smoke5\"]\n>       with pytest.raises(ProtocolError, match=\"is not authorised\"):\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.b1.errors.ProtocolError'>\ntests\\rebuild\\test_b2_devstage.py:102: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_devstage.py::test_8_a_manifest_naming_the_stage_lets_it_through\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "probe_manifest_accepted_as_evidence",
+      "hole": "a manifest stamped MUTATION-PROBE is read as evidence, so a self-check's throwaway output could authorise a stage",
+      "gate": "test_9_a_mutation_probe_manifest_authorises_nothing",
+      "site": "src\\rfl_rebuild\\b2\\devstage.py",
+      "matched": 1,
+      "expected_failure_text": "DID NOT RAISE",
+      "exit_code": 1,
+      "tail": "_____________ test_9_a_mutation_probe_manifest_authorises_nothing _____________\ntmp_path = WindowsPath('C:/Users/huani/AppData/Local/Temp/pytest-of-huani/pytest-442/test_9_a_mutation_probe_manife0')\n    def test_9_a_mutation_probe_manifest_authorises_nothing(tmp_path):\n        path = _write_manifest(tmp_path, status=\"MUTATION-PROBE -- not evidence\",\n                               currently_authorises=[\"smoke5\"])\n>       with pytest.raises(ProtocolError, match=\"mutation probe\"):\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.b1.errors.ProtocolError'>\ntests\\rebuild\\test_b2_devstage.py:109: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_devstage.py::test_9_a_mutation_probe_manifest_authorises_nothing\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "authorises_more_than_validity_grants",
+      "hole": "the subset check is dropped, so a manifest may authorise a stage its own validity grant never covered",
+      "gate": "test_10_a_manifest_may_not_authorise_beyond_its_validity_grant",
+      "site": "src\\rfl_rebuild\\b2\\devstage.py",
+      "matched": 1,
+      "expected_failure_text": "DID NOT RAISE",
+      "exit_code": 1,
+      "tail": "_______ test_10_a_manifest_may_not_authorise_beyond_its_validity_grant ________\ntmp_path = WindowsPath('C:/Users/huani/AppData/Local/Temp/pytest-of-huani/pytest-443/test_10_a_manifest_may_not_aut0')\n    def test_10_a_manifest_may_not_authorise_beyond_its_validity_grant(tmp_path):\n        path = _write_manifest(tmp_path, currently_authorises=[\"dev32\"],\n                               authorises_on_validity=[\"smoke5\"])\n>       with pytest.raises(ProtocolError, match=\"may not authorise more\"):\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.b1.errors.ProtocolError'>\ntests\\rebuild\\test_b2_devstage.py:116: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_devstage.py::test_10_a_manifest_may_not_authorise_beyond_its_validity_grant\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "seed_set_size_unchecked",
+      "hole": "a seed set of the wrong size is accepted, so a truncated file would silently run a different stage while every other check still passed",
+      "gate": "test_5_a_set_of_the_wrong_size_is_refused_rather_than_truncated",
+      "site": "src\\rfl_rebuild\\b2\\devstage.py",
+      "matched": 1,
+      "expected_failure_text": "DID NOT RAISE",
+      "exit_code": 1,
+      "tail": "================================== FAILURES ===================================\n_______ test_5_a_set_of_the_wrong_size_is_refused_rather_than_truncated _______\ntmp_path = WindowsPath('C:/Users/huani/AppData/Local/Temp/pytest-of-huani/pytest-444/test_5_a_set_of_the_wrong_size0')\n    def test_5_a_set_of_the_wrong_size_is_refused_rather_than_truncated(tmp_path):\n        path = _seed_file(tmp_path, \"smoke.txt\", [0, 1, 2, 3])  # four, not five\n>       with pytest.raises(ProtocolError, match=\"declares 4 seeds\"):\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.b1.errors.ProtocolError'>\ntests\\rebuild\\test_b2_devstage.py:78: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_devstage.py::test_5_a_set_of_the_wrong_size_is_refused_rather_than_truncated\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "seed_sets_may_overlap",
+      "hole": "the disjointness check is dropped, so smoke could burn development streams",
+      "gate": "test_6_overlapping_sets_are_refused",
+      "site": "src\\rfl_rebuild\\b2\\devstage.py",
+      "matched": 1,
+      "expected_failure_text": "DID NOT RAISE",
+      "exit_code": 1,
+      "tail": "tmp_path = WindowsPath('C:/Users/huani/AppData/Local/Temp/pytest-of-huani/pytest-445/test_6_overlapping_sets_are_re0')\n    def test_6_overlapping_sets_are_refused(tmp_path):\n        # Five seeds, so the size check passes and the overlap check is what fires: a \"smoke\" set drawn from\n        # the development range would let smoke burn streams that the development stage must see fresh.\n        path = _seed_file(tmp_path, \"smoke.txt\", [1000, 1001, 1002, 1003, 1004])\n>       with pytest.raises(ProtocolError, match=\"overlap\"):\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.b1.errors.ProtocolError'>\ntests\\rebuild\\test_b2_devstage.py:86: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_devstage.py::test_6_overlapping_sets_are_refused\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "duplicate_seed_accepted",
+      "hole": "a duplicated seed is accepted, so one stream would be counted twice as two statistical units",
+      "gate": "test_2_a_duplicate_seed_is_refused",
+      "site": "src\\rfl_rebuild\\b2\\devstage.py",
+      "matched": 1,
+      "expected_failure_text": "DID NOT RAISE",
+      "exit_code": 1,
+      "tail": "================================== FAILURES ===================================\n_____________________ test_2_a_duplicate_seed_is_refused ______________________\ntmp_path = WindowsPath('C:/Users/huani/AppData/Local/Temp/pytest-of-huani/pytest-446/test_2_a_duplicate_seed_is_ref0')\n    def test_2_a_duplicate_seed_is_refused(tmp_path):\n        path = _seed_file(tmp_path, \"dup.txt\", [1, 1, 2])\n>       with pytest.raises(ProtocolError, match=\"duplicate\"):\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.b1.errors.ProtocolError'>\ntests\\rebuild\\test_b2_devstage.py:60: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_devstage.py::test_2_a_duplicate_seed_is_refused\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "smoke_surface_guard_dropped",
+      "hole": "the smoke surface assertion is removed, so an efficacy field could be added to the artifact without any gate noticing",
+      "gate": "test_16_the_surface_guard_goes_red_when_the_field_set_drifts",
+      "site": "src\\rfl_rebuild\\b2\\devstage.py",
+      "matched": 1,
+      "expected_failure_text": "DID NOT RAISE",
+      "exit_code": 1,
+      "tail": "================================== FAILURES ===================================\n________ test_16_the_surface_guard_goes_red_when_the_field_set_drifts _________\nmonkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x<ADDR>>\n    def test_16_the_surface_guard_goes_red_when_the_field_set_drifts(monkeypatch):\n        monkeypatch.setattr(devstage, \"SMOKE_REPORT_FIELDS\", frozenset({\"stage\"}))\n>       with pytest.raises(ProtocolError, match=\"surface drifted\"):\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'rfl_rebuild.b1.errors.ProtocolError'>\ntests\\rebuild\\test_b2_devstage.py:176: Failed\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_devstage.py::test_16_the_surface_guard_goes_red_when_the_field_set_drifts\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "benchmark_reads_a_seed_set",
+      "hole": "the benchmark claims to be seedless while reading a seed set, which would make 'the bound was measured without drawing a seed' false",
+      "gate": "test_17_the_benchmark_draws_no_seed",
+      "site": "src\\rfl_rebuild\\b2\\devstage.py",
+      "matched": 1,
+      "expected_failure_text": "the benchmark read a seed set",
+      "exit_code": 1,
+      "tail": "    load_seed_set(smoke_seeds_file())  # MUTATED\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n_args = (WindowsPath('D:/\u5f3a\u5316\u53cd\u9988\u5b66\u4e60/RFL-CausalChase-v0.3/experiments/v03r/smoke_seeds.txt'),)\n_kwargs = {}\n    def explode(*_args, **_kwargs):  # pragma: no cover - only reached if the benchmark reads seeds\n>       raise AssertionError(\"the benchmark read a seed set\")\nE       AssertionError: the benchmark read a seed set\ntests\\rebuild\\test_b2_devstage.py:185: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_devstage.py::test_17_the_benchmark_draws_no_seed\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "plan_claims_to_have_run",
+      "hole": "the plan reports that it ran episodes, which is the report a reviewer reads when deciding whether a stage touched a seed",
+      "gate": "test_20_the_plan_never_claims_to_have_run_anything",
+      "site": "src\\rfl_rebuild\\b2\\devstage.py",
+      "matched": 1,
+      "expected_failure_text": "assert (True is False)",
+      "exit_code": 1,
+      "tail": "F\n================================== FAILURES ===================================\n_____________ test_20_the_plan_never_claims_to_have_run_anything ______________\n    def test_20_the_plan_never_claims_to_have_run_anything():\n        payload = devstage.plan(\"smoke\")\n>       assert payload[\"runs_episodes\"] is False and payload[\"writes_artifact\"] is False\nE       assert (True is False)\ntests\\rebuild\\test_b2_devstage.py:219: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_devstage.py::test_20_the_plan_never_claims_to_have_run_anything\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "cli_swallows_its_refusal",
+      "hole": "the smoke CLI exits 0 after refusing, so a refused run would look like a successful one to any caller that only checks the exit code",
+      "gate": "test_14_every_cli_refuses_to_run_but_exits_zero_for_plan",
+      "site": "scripts\\run_smoke.py",
+      "matched": 1,
+      "expected_failure_text": "run_smoke.py",
+      "exit_code": 1,
+      "tail": "        for script, extra in ((\"run_smoke.py\", ()), (\"run_dev_baseline.py\", ()),\n                              (\"run_dev_lock.py\", (\"--design\", str(ROOT / devstage.ARTIFACTS[\"dev_baseline\"])))):\n            run = subprocess.run([sys.executable, str(ROOT / \"scripts\" / script), *extra],\n                                 cwd=ROOT, capture_output=True, text=True)\n>           assert run.returncode == 2 and \"REFUSED\" in run.stderr, script\nE           AssertionError: run_smoke.py\nE           assert (0 == 2)\nE            +  where 0 = CompletedProcess(args=['D:\\\\python\\\\python.exe', 'D:\\\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\\\RFL-CausalChase-v0.3\\\\scripts\\\\run_smoke.py'], returncod...e5'. Stage bodies run only after a reviewer marks F0 VALID and the manifest says so; --plan needs no authorisation.\\n\").returncode\ntests\\rebuild\\test_b2_devstage.py:157: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_devstage.py::test_14_every_cli_refuses_to_run_but_exits_zero_for_plan\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    }
+  ]
+}
