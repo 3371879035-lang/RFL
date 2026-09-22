@@ -36,6 +36,7 @@ import _mutation_harness as harness  # noqa: E402
 MANIFEST = ROOT / "scripts" / "f0_manifest.py"
 TMP_OUT = "experiments/v03r/_f0_manifest_selfcheck_tmp.json"
 BAD_LIST_NAME = "_f0_selfcheck_bad_testlist.txt"
+DIRTY_EVIDENCE_NAME = "_f0_selfcheck_dirty_evidence.json"
 
 #: (key, hole the check closes, file to corrupt, old text, new text, expected failure text, gate label,
 #:  kind) where kind is "text", "crlf", "bad_test_list" or "no_partial".
@@ -80,11 +81,12 @@ MUTATIONS = [
     ("porcelain_first_line_decapitated",
      "the status parser strips the whole output before splitting, so the first line's leading status "
      "space is eaten and a path loses its first character -- the defect that shipped in revision 1's "
-     "manifest, where `experiments/...` was recorded as `xperiments/...` and misread as code",
+     "manifest, where `experiments/...` was recorded as `xperiments/...` and misread as code. The "
+     "dirty evidence file this mutation creates makes the consequence deterministic: a correct parser "
+     "treats it as evidence and lets the run through, the shipped parser decapitates it into code",
      "scripts/f0_manifest.py", "    for raw in text.splitlines():",
      "    for raw in text.strip().splitlines():  # MUTATED",
-     "tests/rebuild/test_f0_manifest.py::test_1_a_leading_status_space_does_not_eat_a_character",
-     "xperiments"),
+     "xperiments", "manifest::porcelain_parse", "dirty_evidence"),
     ("dirty_code_tree",
      "the manifest could be generated from an uncommitted instrument, so it would pin a working tree "
      "rather than a revision -- the defect the review of revision 1 found in the shipped manifest",
@@ -122,6 +124,19 @@ def bad_listing_path() -> pathlib.Path:
         encoding="utf-8",
         newline="\n",
     )
+    return path
+
+
+def dirty_evidence_path() -> pathlib.Path:
+    """A fresh evidence artifact, so the parser's treatment of an evidence path is deterministic.
+
+    Without a file that is *certainly* dirty, a mutation of the status parser could pass simply because
+    the tree happened to be clean at that moment -- which is exactly the kind of accidental pass this
+    self-check exists to refuse.
+    """
+    path = ROOT / "experiments" / "v03r" / DIRTY_EVIDENCE_NAME
+    path.write_text('{"probe": "dirty evidence for the status parser"}\n',
+                    encoding="utf-8", newline="\n")
     return path
 
 
@@ -179,7 +194,10 @@ def main(argv=None) -> int:
             if kind == "bad_test_list":
                 temporary = bad_listing_path()
                 extra_argv = ("--test-list", str(temporary))
-            code, tail, out = run_manifest(extra_argv, allow_dirty=(kind != "dirty"))
+            elif kind == "dirty_evidence":
+                temporary = dirty_evidence_path()
+            code, tail, out = run_manifest(extra_argv,
+                                           allow_dirty=(kind not in ("dirty", "dirty_evidence")))
         finally:
             if path is not None:
                 path.write_bytes(original_bytes)
