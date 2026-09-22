@@ -5,6 +5,7 @@
   "gates": {
     "experiments/v03r/b2_view_gate_selfcheck.json": {
       "file_digest": "671fa421a139ebce2e44b4426af83b38aab73d61c1407bab5ba1c10b4742705b",
+      "line_endings": "lf",
       "summary": {
         "distinct_gates": 31,
         "gate_is_real": 45,
@@ -15,6 +16,7 @@
     },
     "experiments/v03r/calibration_report.json": {
       "file_digest": "c3a58df5294370ffa8eb2e5bec40a8ea6894ca4f20177a2524d8a6aa03868d7e",
+      "line_endings": "lf",
       "reference_artifact_digest": "01bb5c97d2c9bbf6552dbe4d3017e17162bddd7ac5344583d169da2f573061ae",
       "summary": {
         "calibrated": 18,
@@ -25,6 +27,7 @@
     },
     "experiments/v03r/structural_screening.json": {
       "file_digest": "1d493488d9159a77c78e2f1162de7ec0efd9e4e094a855726b5f911b51e7f9ea",
+      "line_endings": "lf",
       "summary": {
         "cells": 6,
         "non_rejected": 5,
@@ -37,7 +40,7 @@
     "platform": "Windows-11-10.0.26200-SP0",
     "python": "3.14.3",
     "script": "scripts/f0_manifest.py",
-    "script_digest": "f1d15f170b66bc7d1be84ca829fac17c1f6cc4ada16b7e01b12d14b803689026"
+    "script_digest": "81b3a81c0452118b8841d5874d2a6a4d436ee775cc6e2c0cb7348a76f3c0fbe6"
   },
   "instrument": {
     "files": {
@@ -110,11 +113,25 @@
     "branch": "f0-dev-protocol-freeze",
     "closure_commit": "a4451cc",
     "closure_is_ancestor": true,
-    "dirty_paths": [
-      "docs/rebuild/20-B2-DEV-PROTOCOL-FREEZE.md",
-      "scripts/f0_manifest.py"
+    "crlf_artifacts_on_disk": [
+      "experiments/v03r/address_domain_gate_selfcheck.json",
+      "experiments/v03r/b1_interface_gate_selfcheck.json",
+      "experiments/v03r/dpatch_ledger_baseline.json",
+      "experiments/v03r/dq_return_fold.json",
+      "experiments/v03r/l0_factual_gate_selfcheck.json",
+      "experiments/v03r/l2_counterfactual_gate_selfcheck.json",
+      "experiments/v03r/l3_row_restore_gate_selfcheck.json",
+      "experiments/v03r/p_gate_selfcheck.json",
+      "experiments/v03r/q_substrate_gate_selfcheck.json",
+      "experiments/v03r/x_controller_gate_selfcheck.json"
     ],
-    "head": "58c66e939ed13d9d4c2af39dc9d4b07c0b05b89e"
+    "dirty_paths": [
+      "experiments/v03r/f0_manifest_selfcheck.json",
+      "scripts/f0_manifest.py",
+      "scripts/f0_manifest_selfcheck.py",
+      "xperiments/v03r/f0_manifest.json"
+    ],
+    "head": "507bc9029f504f459d48d6d5de53e7b2df77f47e"
   },
   "runtime_reference_seconds": {
     "calibration": 92.42,

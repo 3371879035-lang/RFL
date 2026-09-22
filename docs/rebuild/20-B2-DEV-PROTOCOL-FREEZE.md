@@ -36,7 +36,9 @@ S_dev = {1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007,
 ```
 
 Both are **sets**, written element by element: neither is a range and neither is a stopping rule. A
-seed that smoke drew may not later serve as a development input.
+seed that smoke drew may not later serve as a development input. The two sets are also written to
+`experiments/v03r/smoke_seeds.txt` and `experiments/v03r/dev_seeds.txt`, which the run commands of §7
+consume, so the drawn set and the declared set are the same bytes.
 
 $$\boxed{\mathcal S_{\text{smoke}} \cap \mathcal S_{\text{dev}} = \varnothing}$$
 
@@ -222,9 +224,13 @@ commit.
 
 | what | command | artifact |
 |---|---|---|
-| smoke | `python scripts/run_smoke.py --seeds 0,1,2,3,4` | `experiments/v03r/smoke_report.json` `[PROPOSED path]` |
-| development baseline | `python scripts/run_dev_baseline.py --seeds 1000-1031` | `experiments/v03r/dev_baseline.json` `[PROPOSED path]` |
+| smoke | `python scripts/run_smoke.py --seeds-file experiments/v03r/smoke_seeds.txt` | `experiments/v03r/smoke_report.json` `[PROPOSED path]` |
+| development baseline | `python scripts/run_dev_baseline.py --seeds-file experiments/v03r/dev_seeds.txt` | `experiments/v03r/dev_baseline.json` `[PROPOSED path]` |
 | the lock | `python scripts/run_dev_lock.py --design experiments/v03r/dev_baseline.json` | `experiments/v03r/dev_lock.json` `[PROPOSED path]` |
+
+The seed sets of §1 are written to `experiments/v03r/smoke_seeds.txt` and `experiments/v03r/dev_seeds.txt`,
+and the commands consume those files rather than a re-typed range: `1000-1031` in a command line would be a
+range again, and §1's point is that the sets are sets.
 
 Neither `run_smoke.py`, `run_dev_baseline.py` nor `run_dev_lock.py` exists yet: writing them is
 implementation work that A90's freeze does not authorise by itself, and this document therefore records
@@ -235,8 +241,8 @@ so a wrong tree cannot produce a well-formed manifest. As of this draft:
 
 | recorded quantity | value |
 |---|---|
-| tree | `head = 58c66e9` on branch `f0-dev-protocol-freeze`, with closure `a4451cc` an asserted ancestor |
-| generator | `scripts/f0_manifest.py`, digest `f1d15f17…`; Python 3.14.3, Windows 11 |
+| tree | `head = 507bc90` — the draft commit `f0_manifest.py` was last run on — on branch `f0-dev-protocol-freeze`, with closure `a4451cc` an asserted ancestor |
+| generator | `scripts/f0_manifest.py`, digest `81b3a81c04…`; Python 3.14.3, Windows 11 |
 | instrument sources | 53 files, tree digest `7a81be3687…` |
 | test inventory | 694 collected node ids, digest `ed66e1ea03…` |
 | reference artifact | digest `01bb5c97d2c9bbf6552dbe4d3017e17162bddd7ac5344583d169da2f573061ae` |
@@ -251,10 +257,24 @@ rather than of one lucky execution.
 
 The generator's own assertions are mutation-verified rather than asserted to be strong:
 `scripts/f0_manifest_selfcheck.py` corrupts one input at a time -- the closure commit, the calibration
-counter, the mutation-power counter, the screening verdict's key, the test listing, and the fail-closed
-write -- and requires the generator to exit non-zero **with the expected message**, while a mutation-free
-run must stay green and the tree must come back byte-identical. It reports `6/6` gates red, control run
-ok, tree restored, in `experiments/v03r/f0_manifest_selfcheck.json`.
+counter, the mutation-power counter, the screening verdict's key, the line endings of a hashed artifact,
+the test listing, and the fail-closed write -- and requires the generator to exit non-zero **with the
+expected message**, while a mutation-free run must stay green and the tree must come back byte-identical.
+It reports `7/7` gates red, control run ok, tree restored, in
+`experiments/v03r/f0_manifest_selfcheck.json`.
+
+**Line endings are part of a fingerprint.** `.gitattributes` declares `* text=auto eol=lf`, so a committed
+blob is LF whatever a working tree materialises; a digest taken from a CRLF working-tree file is therefore
+a digest of one machine rather than of the revision. The manifest asserts that each artifact it hashes is
+CRLF-free, and the self-check mutation `artifact_not_lf` proves that assertion goes red. Recording this
+found a defect in this very draft: the first generation wrote its artifacts through Python's default
+newline translation, so `f0_manifest.json` and `f0_manifest_selfcheck.json` were CRLF on disk while their
+blobs were LF. Both are now written with `newline="\n"`, and the manifest reports the ten *pre-existing*
+artifacts still carrying CRLF on disk in `repo.crlf_artifacts_on_disk`. Those ten belong to earlier arrows;
+they are listed rather than rewritten, because rewriting them would change working-tree bytes that those
+arrows produced, and because any digest previously quoted from one of them is a working-tree digest. No
+frozen text cites one today -- the three artifacts this protocol hashes are all LF -- but the ledger should
+carry the finding.
 
 ## 8. Runtime bound
 
@@ -320,4 +340,5 @@ For $F_0$ to become VALID a reviewer confirms, and may correct:
 | 10 | runtime bound | `[PROPOSED]` |
 | 11 | smoke PASS criteria and artifact surface | form frozen; set checkable |
 | 12 | the instrument hashes in `f0_manifest.json` | computed; reviewer verifies |
-| 13 | the generator's mutation self-check (`6/6` red, control green, tree restored) | recorded; reviewer verifies |
+| 13 | the generator's mutation self-check (`7/7` red, control green, tree restored) | recorded; reviewer verifies |
+| 14 | the ten pre-existing CRLF artifacts listed in `repo.crlf_artifacts_on_disk` | flagged, not rewritten |

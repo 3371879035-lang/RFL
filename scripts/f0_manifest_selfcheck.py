@@ -37,31 +37,38 @@ MANIFEST = ROOT / "scripts" / "f0_manifest.py"
 TMP_OUT = "experiments/v03r/_f0_manifest_selfcheck_tmp.json"
 BAD_LIST_NAME = "_f0_selfcheck_bad_testlist.txt"
 
-#: (key, hole the check closes, file to corrupt, old text, new text, expected failure text, gate label)
+#: (key, hole the check closes, file to corrupt, old text, new text, expected failure text, gate label,
+#:  kind) where kind is "text", "crlf", "bad_test_list" or "no_partial".
 MUTATIONS = [
     ("closure_commit_not_ancestor",
      "the manifest could be generated from a tree that does not contain the A89 closure at all",
      "scripts/f0_manifest.py", 'CLOSURE_COMMIT = "a4451cc"', 'CLOSURE_COMMIT = "deadbeef"',
-     "is not an ancestor", "manifest::closure_ancestry"),
+     "is not an ancestor", "manifest::closure_ancestry", "text"),
     ("calibration_counter_changed",
      "a calibration artifact that silently lost a cell would still be fingerprinted as 18/18 evidence",
      "experiments/v03r/calibration_report.json", '"calibrated": 18', '"calibrated": 17',
-     "no longer 18/18", "manifest::calibration_summary"),
+     "no longer 18/18", "manifest::calibration_summary", "text"),
     ("mutation_power_lost",
      "a mutation self-check that no longer fails its gate would be recorded as gate evidence",
      "experiments/v03r/b2_view_gate_selfcheck.json", '"n_gate_is_real": 45', '"n_gate_is_real": 44',
-     "no longer fails its gate", "manifest::mutation_power"),
+     "no longer fails its gate", "manifest::mutation_power", "text"),
     ("screening_verdict_renamed",
      "the screening artifact's aggregate verdict could go unread while the manifest still looks complete",
      "experiments/v03r/structural_screening.json", '"verdict":', '"verdict_renamed":',
-     "no aggregate verdict field found", "manifest::screening_verdict"),
+     "no aggregate verdict field found", "manifest::screening_verdict", "text"),
+    ("artifact_not_lf",
+     "an artifact stored with CRLF would be digested from bytes that no checkout of this revision "
+     "reproduces, so the fingerprint would be of one machine rather than of the revision",
+     "experiments/v03r/structural_screening.json", None, None,
+     "would not survive a checkout", "manifest::line_endings", "crlf"),
     ("test_list_from_another_tree",
      "a collected-test listing naming files that do not exist here would be fingerprinted as this tree's",
-     None, None, None, "test listing names files that do not exist", "manifest::test_inventory"),
+     None, None, None, "test listing names files that do not exist", "manifest::test_inventory",
+     "bad_test_list"),
     ("no_partial_manifest",
      "a failed run could leave a well-formed-looking artifact behind, which would be read as the manifest",
      "experiments/v03r/calibration_report.json", '"calibrated": 18', '"calibrated": 17',
-     "no longer 18/18", "manifest::fail_closed_write"),
+     "no longer 18/18", "manifest::fail_closed_write", "no_partial"),
 ]
 
 
@@ -83,6 +90,7 @@ def bad_listing_path() -> pathlib.Path:
     path.write_text(
         "tests/rebuild/test_that_does_not_exist.py::test_absent\n",
         encoding="utf-8",
+        newline="\n",
     )
     return path
 
@@ -103,13 +111,14 @@ def main(argv=None) -> int:
     if out.exists():
         out.unlink()
 
-    for key, hole, rel, old, new, expect, gate in MUTATIONS:
+    for key, hole, rel, old, new, expect, gate, kind in MUTATIONS:
         record = {"mutation": key, "hole": hole, "gate": gate, "site": rel,
                   "expected_failure_text": expect}
         extra_argv = ()
         temporary = None
         path = ROOT / rel if rel else None
-        original = harness.read(path) if path else None
+        original_bytes = path.read_bytes() if path else None
+        original = harness.read(path) if (path is not None and old is not None) else None
         if old is not None:
             count = original.count(old)
             if count != 1:
@@ -119,19 +128,21 @@ def main(argv=None) -> int:
                 print(f"[{record['verdict']:20}] {key}")
                 continue
         try:
-            if path is not None:
+            if kind == "crlf":
+                path.write_bytes(original_bytes.replace(b"\n", b"\r\n"))
+            elif old is not None:
                 harness.write(path, original.replace(old, new))
-            if key == "test_list_from_another_tree":
+            if kind == "bad_test_list":
                 temporary = bad_listing_path()
                 extra_argv = ("--test-list", str(temporary))
             code, tail, out = run_manifest(extra_argv)
         finally:
             if path is not None:
-                harness.write(path, original)
+                path.write_bytes(original_bytes)
             if temporary is not None and temporary.exists():
                 temporary.unlink()
         verdict = harness.verdict_for(code, tail, expect)
-        if key == "no_partial_manifest" and out.exists():
+        if kind == "no_partial" and out.exists():
             verdict = "WRONG_FAILURE_REASON"
             record["detail"] = "the generator failed but still wrote its artifact"
         if out.exists():
@@ -163,7 +174,7 @@ def main(argv=None) -> int:
         "results": results,
     }
     out_path = ROOT / args.json
-    out_path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+    out_path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8", newline="\n")
     ok = control_ok and restored and real == len(MUTATIONS)
     print(f"\n  mutations            : {len(MUTATIONS)}")
     print(f"  gates that went red  : {real}/{len(MUTATIONS)}")

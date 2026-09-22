@@ -116,6 +116,20 @@ def test_inventory(test_list: Path | None) -> dict:
     }
 
 
+def crlf_artifacts() -> list:
+    """Artifacts whose working-tree bytes carry CRLF although `.gitattributes` declares `eol=lf`.
+
+    Recorded, not asserted: these predate this manifest and rewriting them would change working-tree
+    bytes that earlier arrows produced. The point of listing them is that a digest taken from such a file
+    is a digest of *this checkout* rather than of the committed blob, so nobody quotes one as portable.
+    """
+    out = []
+    for path in sorted((ROOT / "experiments" / "v03r").glob("*.json")):
+        if b"\r\n" in path.read_bytes():
+            out.append(path.relative_to(ROOT).as_posix())
+    return out
+
+
 def gate_summaries() -> dict:
     """Read back the frozen gate artifacts and assert the invariants this protocol cites."""
     out = {}
@@ -123,9 +137,14 @@ def gate_summaries() -> dict:
         path = ROOT / rel
         assert path.is_file(), f"frozen gate artifact missing: {rel}"
         digest = sha256_file(path)
-        data = json.loads(path.read_text(encoding="utf-8"))
+        raw = path.read_bytes()
+        assert b"\r\n" not in raw, (
+            f"{rel}: the working tree carries CRLF while .gitattributes declares eol=lf, so this digest "
+            "would not survive a checkout of the same revision"
+        )
+        data = json.loads(raw.decode("utf-8"))
         assert isinstance(data, dict), f"{rel}: expected a JSON object"
-        entry = {"what": what, "file_digest": digest}
+        entry = {"what": what, "file_digest": digest, "line_endings": "lf"}
         if rel.endswith("calibration_report.json"):
             summary = data["summary"]
             assert summary["cells"] == 18, f"calibration cell count changed: {summary['cells']}"
@@ -212,6 +231,7 @@ def main(argv: list[str] | None = None) -> int:
             "dirty_paths": sorted(
                 line[3:] for line in git("status", "--porcelain").splitlines() if line.strip()
             ),
+            "crlf_artifacts_on_disk": crlf_artifacts(),
         },
         "instrument": source_digests(),
         "gates": gate_summaries(),
@@ -235,6 +255,7 @@ def main(argv: list[str] | None = None) -> int:
     out_path.write_text(
         json.dumps(manifest, indent=2, sort_keys=True, ensure_ascii=False) + "\n",
         encoding="utf-8",
+        newline="\n",
     )
     print(f"wrote {args.out}")
     print(f"  head            {head} ({branch})")
