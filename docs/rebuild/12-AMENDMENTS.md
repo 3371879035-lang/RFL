@@ -7358,10 +7358,10 @@ S_0 &: \text{A89 instrument CLOSED; no seed drawn}\\
 F_0 &: \texttt{DEV\_PROTOCOL\_FREEZE}\\
 S_1 &: \texttt{smoke5}\\
 G_S &: \text{smoke operational PASS}\\
-S_2 &: \texttt{dev32}, \text{ baseline and static design diagnostics only}\\
-F_1 &: \texttt{DEV\_DESIGN\_LOCK}\\
-S_3 &: \texttt{dev32}, \text{ treatment-arm outputs exposed}\\
-F_2 &: \text{final development lock (} \Delta_{\min} \text{)}\\
+S_2 &: \texttt{dev32}, \text{ baseline/static master acquisition only}\\
+F_1 &: \texttt{DEV\_DESIGN\_LOCK}\ :\ T,\ N_{\text{eval}},\ \mathcal G_{\text{ckpt}},\
+\text{refinement},\ \text{Retention},\ \{\Delta_{\min,e}\}_{e \in \text{endpoints}}\\
+S_3 &: \texttt{dev32}, \text{ treatment diagnostics may run and be exposed}\\
 G_C &: \text{separate confirmatory authorisation}\\
 S_4 &: \text{fresh confirmatory seeds}
 \end{aligned}}$$
@@ -7377,26 +7377,53 @@ because $F_0$ freezes rules and $F_1$ records what those rules compute.
 Recorded, hashed, and complete before the first seed of either stage:
 
 1. the **exact seed sets**: $\mathcal S_{\text{smoke}}$ (five seeds) and $\mathcal S_{\text{dev}}$
-   (thirty-two seeds), as sets -- not a stopping rule, and not a range;
-2. the **candidate sets**, exhaustively named: the six `eligible_*` refinements and the registered
-   Retention forms, with diagnostic forms excluded by role;
-3. the **two selector functions** of §78.6, each with its codomain including its fail-closed outcome;
-4. the **master acquisition envelope** of §78.5: the largest evaluation sample and the master checkpoint
-   grid, with every candidate $N_{\text{eval}}$ a nested prefix of the former and every candidate grid a
-   deterministic projection of the latter;
+   (thirty-two seeds), as sets -- not a stopping rule, and not a range -- and **disjoint**:
+
+   $$\boxed{\mathcal S_{\text{smoke}} \cap \mathcal S_{\text{dev}} = \varnothing}, \qquad
+   \boxed{\mathcal S_{\text{confirm}} \cap (\mathcal S_{\text{smoke}} \cup \mathcal S_{\text{dev}}) =
+   \varnothing}$$
+
+   A seed smoke has already drawn may not later serve as a fresh development input, even though smoke's
+   PASS criteria never look at an effect;
+2. the **candidate universes, exhaustively named** -- four of them, because a *shape* is not a universe:
+
+   $$\boxed{\mathcal C_C\ (\text{refinements}),\quad \mathcal C_R\ (\text{Retention forms}),\quad
+   \mathcal C_{N_{\text{eval}}},\quad \mathcal C_{\mathcal G}}$$
+
+   with the refinement and Retention sets as §78.6 describes, and $\mathcal C_{N_{\text{eval}}}$ and
+   $\mathcal C_{\mathcal G}$ named element by element. "Every candidate is a deterministic projection of
+   the master" fixes the *form* of a candidate and would still let a projection be invented after the
+   data was seen; naming the universes is what removes that;
+3. the **master evaluation sample ordering**, so that "the first $N$" has one meaning: the envelope of
+   §78.5 is an ordered sample, each $\mathcal C_{N_{\text{eval}}}$ member a prefix of that order, and
+   each $\mathcal C_{\mathcal G}$ member a declared projection of the master grid;
+4. the **two selector functions** of §78.6, each with its codomain including its fail-closed outcome,
+   and each with its numerical conventions frozen rather than inherited from a library: the
+   finite-sample quantile convention of $T = Q_{0.9}(T_{\text{conv}})(1 + h)$, the treatment of missing
+   values, the rule for exact ties, rounding, and equality-to-threshold. These are part of a selector's
+   definition; leaving them to a default is leaving the selector to the implementation;
 5. the **property instruments and their allowed input surfaces** (§78.6), including which properties are
-   gates, which are static descriptors and which may enter a ranking functional;
-6. the **run commands and artifact paths** for $S_1$ and $S_2$, and the **hashes** of the instrument:
-   the closure commit `a4451cc`, the reference artifact's digest, and the calibration and mutation
-   artifacts;
+   gates, which are static descriptors and which may enter a ranking functional, and -- for the Retention
+   selector -- the metrics §78.10 requires rather than the property names;
+6. the **run commands and artifact paths** for $S_1$ and $S_2$, the **artifact surface** of smoke
+   (operational fields only, no efficacy summary of any kind), and the **hashes** of the instrument: the
+   closure commit `a4451cc`, the reference artifact's digest, and the calibration and mutation artifacts;
 7. the **smoke PASS criteria** of §78.4, frozen before smoke runs.
 
 ### 78.4 $S_1$: smoke, and $G_S$
 
-$$\boxed{\text{A90 frozen} \;\Longrightarrow\; \texttt{smoke5}\text{ authorised}}$$
+$$\boxed{\text{A90 FROZEN} \;\Longrightarrow\; \text{an } F_0 \text{ may be constructed and reviewed}}$$
+
+$$\boxed{\text{A90 FROZEN} \;\land\; F_0\ \text{VALID} \;\Longrightarrow\; \texttt{smoke5}\text{
+authorised}}$$
 
 $$\boxed{\texttt{smoke5 PASS} \;\land\; \text{instrument and configuration unchanged}
 \;\Longrightarrow\; \texttt{dev32}\text{ authorised}}$$
+
+A90's freeze is **not** $F_0$: it does not name the five smoke seeds, the thirty-two development seeds,
+the master grid or its ordering, the $N_{\text{eval}}$ candidates, the selectors' deterministic
+functions, the runtime bound, or the commands and artifact paths. A90 freezes the *form* of those
+declarations; $F_0$ makes them, and smoke waits on $F_0$.
 
 Smoke's criteria are **operational and instrumental only**, frozen in $F_0$: every gate green, every
 artifact written at its declared path, no exception or fallback taken, runtime inside a declared bound,
@@ -7414,27 +7441,48 @@ A repaired instrument may not inherit the old smoke PASS.
 
 **The acquisition cycle is broken by the master envelope.** $N_{\text{eval}}$ and
 $\mathcal G_{\text{ckpt}}$ are selected *from* development data while also determining how that data is
-acquired. $F_0$ therefore freezes an envelope and the development data is acquired **once**:
+acquired. $F_0$ therefore freezes an envelope, and the development data before the lock is acquired
+**once**:
 
-$$\boxed{D^{\text{master}}_{\text{dev}}\ \text{is acquired once, on the envelope}} \qquad
-f_C, f_R, T \;\text{are evaluated on } D^{\text{master}}_{\text{dev}}$$
+$$\boxed{D^{\text{master}}_{\text{dev,baseline}}\ \text{is the only acquisition before } F_1} \qquad
+f_C, f_R, T \;\text{are evaluated on it}$$
 
 so the lock is a function of one acquisition rather than a sequence of top-ups. "This grid looks thin,
 add checkpoints" is adaptive acquisition and is not available.
 
-**What $S_2$ may read.** Development proceeds in the order A79 §67.10 fixes:
+**What $S_2$ runs, and what it does not.** $S_2$ acquires **baseline and static** material only: the
+baseline convergence distribution of the development seed set, the static candidate properties, and the
+calibration evidence A89 already froze. The **treatment arms of that seed set are not run before
+$F_1$** -- they run in $S_3$.
 
-$$\boxed{\text{baseline and static design diagnostics} \;\to\; F_1\ \text{joint lock}
-\;\to\; \text{treatment-arm outputs may be exposed}}$$
+$$\boxed{\text{before } F_1:\ \text{baseline and static diagnostics only, no treatment run}} \qquad
+\boxed{\text{after } F_1:\ \text{the same seed set's treatment arms may run and be exposed}}$$
 
-Before $F_1$ locks $T$, no treatment-arm curve may be plotted, printed or summarised. $S_2$'s diagnostics
-are the baseline convergence distribution, the static design properties and the calibration evidence
-already frozen by A89 -- no arm contrast.
+The stronger reading is deliberate. A treatment artifact that already existed and was merely "not
+printed" would still be reachable -- by a selector that read the wrong file, by a debug log, by whoever
+ran it -- and this rebuild has held throughout that
 
-$F_1$ locks, together, in one commit: $T$ from its frozen formula on the development **baseline** seeds;
-$N_{\text{eval}}$ and $\mathcal G_{\text{ckpt}}$ as the selectors' outcome over the envelope; the
-refinement; and the Retention form. Each is recorded as what the frozen rules computed, not as a
-decision.
+$$\boxed{\text{not shown} \;\neq\; \text{not reachable}}$$
+
+so the boundary is drawn at *running* rather than at *showing*. A design that pre-runs the treatment arms
+would have to freeze a real information boundary (a selector process that cannot address the artifact),
+not a convention.
+
+This is also what A79 §67.10 requires: before $T$ is locked, no treatment-arm curve may be plotted,
+printed or summarised.
+
+$F_1$ locks, **together, in one commit** -- as A83 §71.4 writes it -- $T$ from its frozen formula on the
+development baseline seeds; $N_{\text{eval}}$ and $\mathcal G_{\text{ckpt}}$ as the selectors' outcome
+over the envelope; the refinement; the Retention form; and the **per-endpoint thresholds**
+$\{\Delta_{\min,e}\}_{e \in \text{endpoints}}$. Each is recorded as what the frozen rules computed, not as
+a decision.
+
+**Why $\Delta_{\min}$ belongs here and not later.** A79 §67.9 lists what development may inform --
+benchmark headroom, baseline convergence, $T$, the grid, $N_{\text{eval}}$ stability, the Retention form,
+runtime -- *and nothing else*, so a treatment effect is not among the inputs to a threshold. A threshold
+fixed after the treatment curve was exposed would be an observed effect size choosing a minimum
+meaningful effect, which is threshold tuning. There is therefore no $F_2$ in this amendment: the
+thresholds lock with everything else at $F_1$, before any treatment output exists.
 
 ### 78.6 Two selectors, and three roles a property may play
 
@@ -7498,22 +7546,54 @@ frozen text; that is withdrawn.
 
 ### 78.10 $\Delta_{\min}$, and the one inheritance question A90 flags rather than decides
 
-$\Delta_{\min}$ is the endpoint threshold: it is **not** available at $F_0$ or $F_1$, because a minimum
-meaningful effect is a statement about the design the development stage produced. It is frozen at $F_2$,
-after the design lock and before any confirmatory authorisation.
+$\Delta_{\min}$ is the endpoint threshold, and it is frozen **at $F_1$**, per endpoint, with the rest of
+the design lock and before any treatment output exists -- not later. A minimum meaningful effect settled
+after the treatment curve was exposed would be an observed effect size choosing its own threshold, which
+is the tuning A79 §67.9's *and nothing else* excludes.
 
-$F_1$'s selectors are declared in $F_0$ to read **baseline and static diagnostics only**. That is the
-reading under which A79 §67.5 and §67.10 are consistent: the Retention form's properties -- stability,
-interpretability, redundancy with RMST and DeficitAUC -- are properties of the instrument and of the
-baseline, not of an arm contrast. If the designer instead requires a Retention selector that reads
-treatment-arm curves, then §67.5 and §67.10 conflict and A90 must **explicitly amend** §67.10 rather than
-leave the choice to whoever implements it. This amendment does not take that step; it records the
-question as open and adopts the baseline-only reading as its default.
+$$\boxed{\text{A90 amends A79 §67.5: } f_R\ \text{may read baseline and static diagnostics only}}$$
 
-### 78.11 Boundary
+A90 takes this step explicitly rather than leaving it to a default, because "an open question with an
+executable default" is not open -- once A90 is frozen the default *is* the rule. The reading is also the
+one under which §67.5 and §67.10 are consistent: the Retention form's properties are properties of the
+instrument and of the baseline rather than of an arm contrast.
 
-A90 authorises nothing by itself. Its freeze authorises smoke only; development follows smoke's
-operational PASS; the confirmatory stage needs its own authorisation with fresh seeds. Not authorised,
+That places a burden on $F_0$, which must define, for each Retention property, the **metric** and not
+merely the name: how stability of a form is computed from baseline material, how its redundancy with RMST
+and with DeficitAUC is computed from baseline and static material, the exact comparison, the threshold,
+and the failure condition. A property name with no metric is not a selector input, and a metric that
+needs a treatment curve is not available at $F_1$.
+
+A designer who instead requires a treatment-curve-reading Retention selector must say so before A90
+freezes, in which case §67.5 and §67.10 conflict, and resolving that conflict is a further amendment --
+not a runtime choice.
+
+### 78.11 Review record
+
+**Round 1 (`c6285c4`).** The first draft pressed the development stage into a single `rule -> value`
+ladder, which A79's own timeline forbids: $T$ is computed from development baseline seeds, so its value
+cannot exist before the first development seed while its rule must. The ladder became a state machine,
+smoke entered it, candidate expansion after the first seed was superseded, and $N_{\text{train}}$ was
+withdrawn from the design freeze.
+
+**Round 2 (`10a62f0`).** Five findings. A90's freeze was said to authorise smoke while $F_0$ was still
+only a promise, so the arrows now read $A90 \Rightarrow F_0$ and $A90 \land F_0 \Rightarrow \text{smoke}$.
+$\Delta_{\min}$ had been placed after the treatment outputs, which would have let an observed effect size
+choose a threshold; it locks at $F_1$ with everything else, per endpoint, and there is no $F_2$.
+Pre-lock acquisition was ambiguous between "run the treatment arms and do not show them" and "do not run
+them", and the weaker reading leaves a reachable artifact; $S_2$ now acquires baseline and static material
+only. The Retention selector's inheritance question was recorded as open *and* given a default, which
+cannot both hold, and A90 now amends §67.5 explicitly, with $F_0$ required to define the metrics. And the
+master envelope fixed only the *shape* of a candidate while the universes stayed open, so
+$\mathcal C_{N_{\text{eval}}}$ and $\mathcal C_{\mathcal G}$ are named in $F_0$, the master evaluation
+sample is ordered, and the selectors' numerical conventions -- quantile definition, missing values, ties,
+rounding, equality-to-threshold -- are frozen rather than inherited.
+
+### 78.12 Boundary
+
+A90 authorises nothing by itself, and its freeze authorises **no seed at all**: it authorises an $F_0$
+to be constructed and reviewed. Smoke follows a valid $F_0$; development follows smoke's operational
+PASS; the confirmatory stage needs its own authorisation with fresh seeds. Not authorised,
 now or by that freeze: the confirmatory stage, V0.4R, any pooling across stages, and any reporting of a
 development number as evidence.
 
@@ -7575,7 +7655,7 @@ section above; the most recent is:
 | **A87** | **the concrete injection fixtures, the six projection images, the scalar functional, the $U_1$ continuation contract, and the declared directions**: $\xi_A^*$ is the candidate-independent **semantic witness**, which **induces two cells per architecture**, $(U_1,A)$ and $(U_2,A)$, whose content is $g_U(\xi_A^*)$ -- keeping the witness candidate-independent is what makes one canary screen every candidate. Canaries: $D_Q$ takes the canonical multi-action context $(\texttt{State}(0,2,0,0,0), z{=}1, m{=}0)$ with row $\{3{:}0.88, 4{:}0.86\}$ and lowers the argmax to $\min_a Q^{*}-1 = -0.14 < 0.86$; $X$ takes the healthy path's first multi-action site with the command the learner **actually sends**, $\texttt{ControllerSite}(s^*,3) \leftarrow 4$; $P$ keeps $C_P^{L}(0) \leftarrow 1$ with base option $z_0 = 0$ and $z_1 = 1$. Freezes all **six projection images**, with $g_{U_1}(\xi_P^*) = (\texttt{START}, z{=}z_0{=}0, m{=}0)$ taken **pre-update** so the $z$ sealed into $U_1$'s identity is the scene's proposal, not the arm's post-write output. Freezes $V_W(u) = \sum_{j=t(u)}^{T_F-1} r_j$ (undiscounted return-to-go, reward mode A, to termination or $H=12$) and the protocol as **one rollout or continuation, no checkpoint grid**. Freezes the $U_1$ continuation contract -- entry satisfying the executable `env/domain.py` $\texttt{is\_decision\_context}$, exogenous consistency $\texttt{tape.phase} = s.\phi$ and $\kappa = s.\kappa$, one shared continuation core, no re-execution of $C_P^{L}$, one complete tape assignment shared by pre and post, and a frozen exogenous lift $\lambda_{U_1}(s,z,m) = \texttt{SemanticTape}(s.\phi, 0, 0)$ that is a protocol input rather than unit identity, so $u \mapsto V$ is a function -- and replaces its false single equality with G1/G2/G3 run over the frozen witness set $\mathcal W_{\text{gate}} = \{W_{\text{pre}}, W^{cal}_{D_Q}, W^{cal}_X, W^{cal}_P\}$ -- G1 bound to the frozen images -- $\forall A \in \{D_Q, X\}$, $\forall W \in \{W_{\text{pre}}, W^{cal}_A\}$, comparing $\texttt{continuation}_W(g_{U_1}(\xi_A^*), \lambda_{U_1}(g_{U_1}(\xi_A^*)))$ with $\texttt{ordinary\_rollout}_W(g_{U_2}(\xi_A^*))$, so the edited $Q_D^L$ row and the legal $\texttt{ControllerSite}(\texttt{START},3)$ are on the executed path instead of a bare $z_0$ scene that would miss them -- which makes the post-update $Q_D^L$ and $C_X^L$ channels a precondition of closure instead of something inferred from a screening verdict, and G2 bound to $g_{U_2}(\xi_P^*) = (0, (0,0,0), 0)$ on $W^{cal}_P$ -- whose frozen comparison object is the behaviour-bearing suffix signature $\Sigma_{\text{suffix}} = (\texttt{steps}, \texttt{outcome}, \texttt{final control})$ compared field by field, $V_W$ being derived from it; G3's liveness half is witnessed by the option in force, not by a return, G4 extends the suffix equality to every pre-action context with $t > 0$ on the frozen canary healthy traces, and G5 checks $V^{cont}_{W_{\text{pre}}}(s,z,m; \lambda_{U_1}(s,z,m)) = V^{*}(s,z,m)$ on all of $\mathcal X_D$ -- stated against the lift the screening actually uses -- against the frozen exact solve, using the existing DP gate's tolerance, so the contract's arbitrary-$\mathcal X_D$ claim is backed on the whole domain. Declares $d_{D_Q} = d_X = d_P = +1$ by **preregistered reference prediction** $d_A = \operatorname{sign}(\Delta V_A^{ref})$, discharged against the frozen solver at $\texttt{State}(0,2,0,0,0)$ -- $Q^{*}(z{=}0) = 0.92$, $Q^{*}(z{=}1) = 0.88$, $Q^{*}(x^{*},3) = 0.88$, $Q^{*}(x^{*},4) = 0.86$ -- giving losses $+0.02$, $+0.02$, $+0.04$ under A86's sign convention $\operatorname{sign}[V_W - V_{W+\Delta W}] = d_A$, $\Delta V_A^{ref}$ being kept distinct from the measured $\Delta V^{meas}_{A,U}(u)$ the screening forms, so detection is not decided here; detection is restored to A86's **domain-quantified** form $D_{A,U} = [\exists u \in U: \Delta V^{meas}_{A,U}(u) \neq 0]$ with direction kept separate as $S_{A,U}$ at the witness, and the screening domains are frozen and finite -- $U_1 = \mathcal X_D$ with $\lvert U_1 \rvert = 13824$ and $U_2 = \mathcal K \times \mathcal T \times \mathcal Z$ with $\lvert U_2 \rvert = 5760$ -- measured as the closed nominal map $V_W^{meas}: U \to \mathbb{R}_{\text{finite}}$ with missing and extra units rejected and no short-circuit on positives; with coverage PASS and all three directions numeric, this instance excludes `DIRECTION_UNRESOLVED` and its aggregate space is the **two states** $\{\texttt{UNIFIED\_SURVIVES}, \texttt{ALL\_PREREG\_UNIFIED\_REJECTED}\}$, reachable through $U_2$, while $U_1$ cannot survive because $P \times U_1$ is `BLIND`. Coverage frozen PASS $\times 6$ against the frozen candidate-domain contracts, not from scene reachability; **detection not frozen and not inherited from B1** (B1 licenses $\Delta W^{\text{cal}}_A$ as a persistent edit, not A86's behavioural proposition). Records the authorisation chain: A87 frozen permits the $U_1$ continuation instrument to be implemented, and only $\text{CLOSED} := \text{G1} \land \text{G2} \land \text{G3} \land \text{G4} \land \text{G5} \land$ a clean existing kernel/B1 regression suite authorises the screening. | **P0 (interface)** | **FROZEN at `rebuild@b4b0bba` -- content approved at draft `3ec3b0f`, clean promotion verified (single changed file, $\S$75 preserved exactly, no draft artifacts carried); the $U_1$ continuation implementation is authorised, and the structural screening stays gated on continuation CLOSED** |
 | **A88** | **X-canary domain legality, and the record of the first screening attempt**: the A87 X fixture was witness-local legal only -- `ControllerSite(START,3) <- 4` is admissible at $(z,m)=(1,0)$ where $A_z=\{3,4\}$, but the site key is $(s,a^{\text{cmd}})$ with no option in it, so at $t\texttt{=}0$ the edit is not legal for `rush` under any target and the kernel raises `LearnerContractViolation` (A75 §62.3) on $2/13824$ $U_1$ units and $120/5760$ $U_2$ scenes. The **rule** is strengthened rather than the answer chosen: $\mathcal S_X^{\text{valid}}$ now requires $a' \in \bigcap_{z,m} A_z(m,s)$, and under A87's unchanged canonical rule the least valid element is $s_X^* = \texttt{State}(1,1,2,0,0)$ with the unique target $1$; the direction is re-derived from the frozen solver's rows $Q^{*}(1)=0.88$, $Q^{*}(3)=0.92$, $Q^{*}(4)=0.90$, giving $\Delta V^{ref}_X = +0.04$ and $d_X = +1$ (unchanged direction, new magnitude). G1 is rebound to a suffix comparison with $t_{D_Q}^* = 0$, $t_X^* = 2$, so the previous closure is valid only for the superseded fixture and must be re-earned. Also records that the first authorised attempt produced no cell status, no verdict and no artifact, that its partial measurements are not reusable, and that the corrected run is from scratch; and completes two frozen contracts in the harness -- the zero measured sign is `DIRECTION_FAIL` rather than an error, and the closed map refuses non-finite values. | **P0 (interface)** | **FROZEN at `rebuild@3f1f4e1` -- scientific content approved at `fc0b494`; canonical/aggregate/domain-legality gates closed at `3f1f4e1`; Continuation reclosed under A87+A88; corrected structural screening authorised from scratch only** |
 | **A89** | **$U_2$ qualification and the B2-3 compatibility contract**: records the screening result ($\texttt{UNIFIED\_SURVIVES}$ at `4472ec4`, five cells `STRUCTURAL_PASS` and $U_1 \times P$ `BLIND`) and fixes its meaning -- $U_2$ is the **sole surviving** preregistered unified candidate and **not selected**. Specifies the $U_2$-native ontology (an evaluation scene is $(\kappa, \text{full tape}, z_{\text{base}})$; one object is the set, $\texttt{UnaffectedSet} = (\texttt{units}, \texttt{construction})$, with `construction` written as `<eligibility>@<refinement>`), and records why B2-3's current objects cannot be pointed at it. Keeps two layers apart, which the first draft merged, with **exactly one** eligibility construction: $E(c) = \{u \in U_2:\ \neg\textit{Consult}(u,c)\ \land\ H_{\text{pre}}(u)\}$, whose two conjuncts are A79 §67.4's *unrelated to the credited site* and *correct beforehand* -- both scene-level, because a scene that never consults $c$ has no behaviour "at $c$" to judge, and registering a second variant would have made the refined set $2 \times 6 = 12$ and the obligations $36$ -- reading only the credited unit in the learner's address vocabulary, the unit's own fields, the unedited trajectory and the frozen solve; and **refinements** $C_i = E(c) \cap S_i$ with the frozen names `eligible_all`, `eligible_phase_even`, `eligible_phase_odd`, `eligible_cause_rank_lower`, `eligible_error_absent`, `eligible_base_option_nonzero`. A slice answers *which part* of a legitimate universe is reported, not *why* it is unaffected; `witness_unvisited` is withdrawn for reading a canary identity; and the registered set is six constructions with $6 \times 3 = 18$ calibration obligations. Interpretability is split into two classes -- eligibility may interpretably read the frozen admissible surface, only a refinement must be a pure field-semantic predicate of the unit -- and both are gated (`hash`/modulo, index windows and outcome-derived masks refused). Calibration is a deterministic **chain** frozen at every arrow: the credited sites are fixed at credited-site granularity ($c^{\text{cal}}_{D_Q} = \texttt{DecisionAddress}(\texttt{State}(0,2,0,0,0),1,0)$, a $\texttt{DecisionAddress}$ and not a $\texttt{QAddress}$ because `owner_Q(QAddress) = DecisionAddress`, $c^{\text{cal}}_X = \texttt{ControllerSite}(\texttt{State}(1,1,2,0,0),3)$, $c^{\text{cal}}_P = 0$), so the eighteen cells cannot be reshaped by choosing a credited site; the fixture is the lexicographically least eligible unit of $C$ whose unedited trajectory consults a channel address $q$ with $\text{owner}_A(q) \neq c^{\text{cal}}_A$ and a defined edit, and the synthetic site is $s^{\text{spill}}_{C,A} = \text{owner}_A(q^{\text{spill}})$, so $\text{owner}_A(\Delta W^{\text{spill}}_A) = s^{\text{spill}}_{C,A} \neq c^{\text{cal}}_A$ is a theorem at the credited granularity rather than a type accident; the edit is the function $\mathcal I_A$ -- lower the taken action's row where $\lvert A_z \rvert \ge 2$, remap the controller to $\min(\bigcap_{z,m} A_z \setminus \{a^{\text{cmd}}\})$ per A88's contract-preservation rule, or map the proposal to $\min(\mathcal Z \setminus \{z^{\text{proposal}}\})$ -- returning a unique legal edit or `None`, with no target chosen at implementation time; and the calibration reference is the **aggregate functional itself**, a mean over the candidate rather than a sign at one unit -- $B^{\text{ref}}_{C,A} = \frac{1}{\lvert C\rvert}\sum_{u \in C}[V^{\text{ref}}_{\text{pre}}(u) - V^{\text{ref}}_{\text{spill}}(u)]$ with $d^{\text{ref}}_{C,A} = \operatorname{sign} B^{\text{ref}}_{C,A}$, because one persistent edit moves many units and a unit-level sign does not determine the mean's sign -- $6 \times 3 = 18$ obligations, injected upstream through the substrate, $\texttt{BehavioralCollateral}^{meas}_{C,A} = B^{\text{ref}}_{C,A}$ within G5's tolerance, `CALIBRATION_FAIL` when no unit qualifies or $B^{\text{ref}}_{C,A} = 0$ (no relocated site, no alternative target, no narrowed domain), no post-hoc map editing, no ranking by magnitude, and the canary's $+1$ never inherited; $B^{\text{ref}}$ is provenance-restricted to the frozen reference, $C$ and $\Delta W^{\text{spill}}_A$ (never the measured maps, the measured collateral, an arm's output or the calibration result), with `expected := measured` as a mutation that must redden. The construction contract is also quantified over production credited units -- $\forall c \in \mathcal D^{\text{credit}}_A: E(c) \neq \varnothing$ and $E(c) \subsetneq U_2$ with definite membership, a legitimate credited unit failing the gate rather than being skipped, and per-refinement totality $\forall c, i: C_i(c) \neq \varnothing$ as seedless admissibility before any coverage judgement. Coverage stays enumerated; the choice among **refinements** is A79 §67.4's development-seed decision (eligibility itself is frozen) and is not authorised. Carries A85's six-property table at its true state -- five PASS **at the $U_2$ measurement-interface level**, the unaffected region still OPEN. | **P0 (interface)** | **FROZEN at `rebuild@6c28fbc`; seedless compatibility/calibration implementation CLOSED at `a4451cc` (694 tests exit 0, 45/45 mutation gates, 18/18 calibration); refinement selection and all B2 scientific seeds remain NOT AUTHORISED** |
-| **A90** | **the development time axis**: freezes $\text{instrument closure} \neq \text{scientific-seed authorisation}$ as a **state machine** rather than one gate -- $S_0$ (A89 closed, no seed) $\to F_0$ `DEV_PROTOCOL_FREEZE` $\to S_1$ smoke5 $\to G_S$ operational PASS $\to S_2$ dev32 baseline/static diagnostics $\to F_1$ joint design lock $\to S_3$ treatment outputs exposed $\to F_2$ $\Delta_{\min}$ $\to G_C$ separate confirmatory authorisation $\to S_4$ fresh seeds -- because A79 §67.9 lets development data inform $T$, $\mathcal G_{\text{ckpt}}$, $N_{\text{eval}}$ and the Retention form, so $F_0 \neq F_1$: $F_0$ freezes the exact smoke/dev seed **sets**, the exhaustively named candidate sets, the two selector functions, the master acquisition envelope (one acquisition, nested prefixes and deterministic grid projections, so no adaptive top-ups), the property roles and instruments, the run commands and artifact paths, the instrument hashes and the smoke PASS criteria; $F_1$ records what those rules compute. Smoke is authorised by A90's freeze and judged on **operational criteria only**, and any instrument change invalidates its fingerprint and forces re-closure, re-freeze and a fresh smoke. No treatment-arm curve may be exposed before $T$ is locked (A79 §67.10), $\Delta_{\min}$ waits for $F_2$, the refinement and the Retention form are chosen by **two different selectors** ($f_C$ from §67.4's properties, $f_R$ from §67.5's), synthetic spillover sensitivity is an **admissibility gate and never a ranking metric** (A89), both selectors are fail-closed so that no admissible refinement means no confirmatory stage rather than a tie-break among failures, A90 supersedes A79 §67.5 on post-first-seed candidate expansion, and $N_{\text{train}}$ is not named here because A79 §67.10/§67.12 freeze that it does not exist yet. | **P0 (design)** | **draft -- awaiting review; not yet frozen** |
+| **A90** | **the development time axis**: freezes $	ext{instrument closure} \neq 	ext{scientific-seed authorisation}$ as a **state machine** -- $S_0 	o F_0$ `DEV_PROTOCOL_FREEZE` $	o S_1$ smoke5 $	o G_S 	o S_2$ dev32 baseline/static **master acquisition only** $	o F_1$ joint design lock $	o S_3$ treatment diagnostics $	o G_C 	o S_4$ -- whose authorisation arrows are $\text{A90 FROZEN} \Rightarrow$ an $F_0$ may be constructed, and $\text{A90 FROZEN} \land F_0\ \text{VALID} \Rightarrow$ smoke5, because A90 names no seed, no grid, no candidate and no command and therefore is not $F_0$. $F_0$ records the exact **disjoint** smoke and development seed sets (and confirmatory disjoint from their union), the four candidate universes $\mathcal C_C, \mathcal C_R, \mathcal C_{N_{\text{eval}}}, \mathcal C_{\mathcal G}$ **named element by element** rather than merely shaped, the ordered master evaluation sample that gives ``the first $N$'' one meaning, the two selectors with their fail-closed codomains and their frozen numerical conventions (finite-sample quantile, missing values, ties, rounding, equality-to-threshold), the property roles and metrics, the smoke artifact surface (operational fields only) and the instrument hashes. $F_1$ locks $T$, $N_{\text{eval}}$, $\mathcal G_{\text{ckpt}}$, the refinement, the Retention form and the per-endpoint $\{\Delta_{\min,e}\}$ **together and before any treatment output** -- there is no $F_2$, because A79 §67.9 permits development to inform a listed set and nothing else, and a threshold fixed after the treatment curve was exposed would be threshold tuning. $S_2$ runs baseline and static material only: the treatment arms are not run as well as not shown, since not shown is not not reachable. A90 **amends A79 §67.5** so that $f_R$ reads baseline and static diagnostics only, and requires $F_0$ to define each Retention metric rather than its name; it also supersedes §67.5 on post-first-seed candidate expansion, keeps synthetic calibration an admissibility **gate** and never a ranking metric (A89), and records $N_{\text{train}}$ as NONEXISTENT/OPEN because A79 §67.10/§67.12 freeze that it may not be named. | **P0 (design)** | **draft -- awaiting review; not yet frozen** |
 
 
 
