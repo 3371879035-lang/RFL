@@ -69,16 +69,38 @@ MUTATIONS = [
      "a failed run could leave a well-formed-looking artifact behind, which would be read as the manifest",
      "experiments/v03r/calibration_report.json", '"calibrated": 18', '"calibrated": 17',
      "no longer 18/18", "manifest::fail_closed_write", "no_partial"),
+    ("u2_enumeration_reordered",
+     "the master evaluation sample's order is F0's definition of which scenes 'the first N' names, so a "
+     "re-ordered enumerator would silently redefine every N_eval candidate while every count still "
+     "matched -- the check keeps two ordered defences (agreement of the two representations, then "
+     "monotonicity in A88's order) and this mutation trips the first",
+     "src/rfl_rebuild/b2/unaffected.py", "key=lambda scene: scene.key",
+     "key=lambda scene: (scene.base_option, scene.kappa, scene.phase, scene.error_flag, scene.cause_rank)",
+     "disagree element-wise", "manifest::eval_sample_order", "text"),
+    ("dirty_code_tree",
+     "the manifest could be generated from an uncommitted instrument, so it would pin a working tree "
+     "rather than a revision -- the defect the review of revision 1 found in the shipped manifest",
+     "scripts/f0_manifest.py", 'CLOSURE_COMMIT = "a4451cc"',
+     'CLOSURE_COMMIT = "a4451cc"  # uncommitted probe edit',
+     "the instrument is dirty", "manifest::clean_execution_revision", "dirty"),
 ]
 
+def run_manifest(extra_argv=(), *, allow_dirty: bool = True):
+    """Run the generator into a throwaway path; return (exit code, diagnostic tail, output path).
 
-def run_manifest(extra_argv=()):
-    """Run the generator into a throwaway path; return (exit code, diagnostic tail, output path)."""
+    Mutation runs pass ``--allow-dirty`` because they corrupt an input on purpose; the generator then
+    stamps its output ``MUTATION-PROBE`` so it can never be mistaken for evidence. The dirty-tree
+    mutation is the one case that runs *without* the flag, because refusing a dirty instrument is
+    exactly what it tests.
+    """
     out = ROOT / TMP_OUT
     if out.exists():
         out.unlink()
+    argv = ["--out", TMP_OUT]
+    if allow_dirty:
+        argv.append("--allow-dirty")
     proc = subprocess.run(
-        [sys.executable, str(MANIFEST), "--out", TMP_OUT, *extra_argv],
+        [sys.executable, str(MANIFEST), *argv, *extra_argv],
         cwd=ROOT, capture_output=True, text=True,
     )
     lines = [ln for ln in (proc.stdout + proc.stderr).strip().splitlines() if ln.strip()]
@@ -104,10 +126,24 @@ def main(argv=None) -> int:
     before = {p: harness.digest(p) for p in files}
     results = []
 
-    # Control: with nothing corrupted, the generator must succeed and write its artifact.
+    # Control: with nothing corrupted, the probe path must succeed, write its artifact, and label itself
+    # as a probe rather than as evidence.
     code, tail, out = run_manifest()
-    control_ok = code == 0 and out.is_file()
-    print(f"[{'CONTROL_OK' if control_ok else 'CONTROL_FAILED':20}] mutation-free run")
+    control_detail = ""
+    control_ok = False
+    if code == 0 and out.is_file():
+        probe = json.loads(out.read_text(encoding="utf-8"))
+        control_ok = (
+            probe["status"].startswith("MUTATION-PROBE")
+            and probe["repo"]["execution_revision"] is None
+            and probe["repo"]["code_tree_clean"] is False
+            and probe["currently_authorises"] == []
+        )
+        control_detail = "probe labelled, execution_revision nulled, authorises nothing" if control_ok \
+            else f"probe self-labelling wrong: {probe['status']!r}"
+    else:
+        control_detail = f"exit {code}: {tail.splitlines()[-1] if tail else 'no output'}"
+    print(f"[{'CONTROL_OK' if control_ok else 'CONTROL_FAILED':20}] mutation-free run -- {control_detail}")
     if out.exists():
         out.unlink()
 
@@ -135,7 +171,7 @@ def main(argv=None) -> int:
             if kind == "bad_test_list":
                 temporary = bad_listing_path()
                 extra_argv = ("--test-list", str(temporary))
-            code, tail, out = run_manifest(extra_argv)
+            code, tail, out = run_manifest(extra_argv, allow_dirty=(kind != "dirty"))
         finally:
             if path is not None:
                 path.write_bytes(original_bytes)
