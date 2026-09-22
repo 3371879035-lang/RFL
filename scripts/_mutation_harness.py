@@ -224,7 +224,11 @@ def summarise(name: str, mutations, results, restored: bool, stale: list,
     }
     out = out_path if out_path.is_absolute() else root / out_path
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+    # newline="\n" is not cosmetic: `.gitattributes` declares `* text=auto eol=lf`, so an artifact written
+    # through the default translation is CRLF on disk while its blob is LF -- a digest taken from it is a
+    # digest of this machine rather than of the revision, and it shows up as a spurious working-tree
+    # modification of an otherwise unchanged artifact.
+    out.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8", newline="\n")
     print(f"\n  mutations            : {len(mutations)}")
     print(f"  gates that went red  : {real}/{len(mutations)}")
     print(f"  tree restored        : {restored}")
