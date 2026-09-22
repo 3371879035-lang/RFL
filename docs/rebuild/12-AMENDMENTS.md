@@ -7804,7 +7804,7 @@ section above; the most recent is:
 | **A88** | **X-canary domain legality, and the record of the first screening attempt**: the A87 X fixture was witness-local legal only -- `ControllerSite(START,3) <- 4` is admissible at $(z,m)=(1,0)$ where $A_z=\{3,4\}$, but the site key is $(s,a^{\text{cmd}})$ with no option in it, so at $t\texttt{=}0$ the edit is not legal for `rush` under any target and the kernel raises `LearnerContractViolation` (A75 §62.3) on $2/13824$ $U_1$ units and $120/5760$ $U_2$ scenes. The **rule** is strengthened rather than the answer chosen: $\mathcal S_X^{\text{valid}}$ now requires $a' \in \bigcap_{z,m} A_z(m,s)$, and under A87's unchanged canonical rule the least valid element is $s_X^* = \texttt{State}(1,1,2,0,0)$ with the unique target $1$; the direction is re-derived from the frozen solver's rows $Q^{*}(1)=0.88$, $Q^{*}(3)=0.92$, $Q^{*}(4)=0.90$, giving $\Delta V^{ref}_X = +0.04$ and $d_X = +1$ (unchanged direction, new magnitude). G1 is rebound to a suffix comparison with $t_{D_Q}^* = 0$, $t_X^* = 2$, so the previous closure is valid only for the superseded fixture and must be re-earned. Also records that the first authorised attempt produced no cell status, no verdict and no artifact, that its partial measurements are not reusable, and that the corrected run is from scratch; and completes two frozen contracts in the harness -- the zero measured sign is `DIRECTION_FAIL` rather than an error, and the closed map refuses non-finite values. | **P0 (interface)** | **FROZEN at `rebuild@3f1f4e1` -- scientific content approved at `fc0b494`; canonical/aggregate/domain-legality gates closed at `3f1f4e1`; Continuation reclosed under A87+A88; corrected structural screening authorised from scratch only** |
 | **A89** | **$U_2$ qualification and the B2-3 compatibility contract**: records the screening result ($\texttt{UNIFIED\_SURVIVES}$ at `4472ec4`, five cells `STRUCTURAL_PASS` and $U_1 \times P$ `BLIND`) and fixes its meaning -- $U_2$ is the **sole surviving** preregistered unified candidate and **not selected**. Specifies the $U_2$-native ontology (an evaluation scene is $(\kappa, \text{full tape}, z_{\text{base}})$; one object is the set, $\texttt{UnaffectedSet} = (\texttt{units}, \texttt{construction})$, with `construction` written as `<eligibility>@<refinement>`), and records why B2-3's current objects cannot be pointed at it. Keeps two layers apart, which the first draft merged, with **exactly one** eligibility construction: $E(c) = \{u \in U_2:\ \neg\textit{Consult}(u,c)\ \land\ H_{\text{pre}}(u)\}$, whose two conjuncts are A79 §67.4's *unrelated to the credited site* and *correct beforehand* -- both scene-level, because a scene that never consults $c$ has no behaviour "at $c$" to judge, and registering a second variant would have made the refined set $2 \times 6 = 12$ and the obligations $36$ -- reading only the credited unit in the learner's address vocabulary, the unit's own fields, the unedited trajectory and the frozen solve; and **refinements** $C_i = E(c) \cap S_i$ with the frozen names `eligible_all`, `eligible_phase_even`, `eligible_phase_odd`, `eligible_cause_rank_lower`, `eligible_error_absent`, `eligible_base_option_nonzero`. A slice answers *which part* of a legitimate universe is reported, not *why* it is unaffected; `witness_unvisited` is withdrawn for reading a canary identity; and the registered set is six constructions with $6 \times 3 = 18$ calibration obligations. Interpretability is split into two classes -- eligibility may interpretably read the frozen admissible surface, only a refinement must be a pure field-semantic predicate of the unit -- and both are gated (`hash`/modulo, index windows and outcome-derived masks refused). Calibration is a deterministic **chain** frozen at every arrow: the credited sites are fixed at credited-site granularity ($c^{\text{cal}}_{D_Q} = \texttt{DecisionAddress}(\texttt{State}(0,2,0,0,0),1,0)$, a $\texttt{DecisionAddress}$ and not a $\texttt{QAddress}$ because `owner_Q(QAddress) = DecisionAddress`, $c^{\text{cal}}_X = \texttt{ControllerSite}(\texttt{State}(1,1,2,0,0),3)$, $c^{\text{cal}}_P = 0$), so the eighteen cells cannot be reshaped by choosing a credited site; the fixture is the lexicographically least eligible unit of $C$ whose unedited trajectory consults a channel address $q$ with $\text{owner}_A(q) \neq c^{\text{cal}}_A$ and a defined edit, and the synthetic site is $s^{\text{spill}}_{C,A} = \text{owner}_A(q^{\text{spill}})$, so $\text{owner}_A(\Delta W^{\text{spill}}_A) = s^{\text{spill}}_{C,A} \neq c^{\text{cal}}_A$ is a theorem at the credited granularity rather than a type accident; the edit is the function $\mathcal I_A$ -- lower the taken action's row where $\lvert A_z \rvert \ge 2$, remap the controller to $\min(\bigcap_{z,m} A_z \setminus \{a^{\text{cmd}}\})$ per A88's contract-preservation rule, or map the proposal to $\min(\mathcal Z \setminus \{z^{\text{proposal}}\})$ -- returning a unique legal edit or `None`, with no target chosen at implementation time; and the calibration reference is the **aggregate functional itself**, a mean over the candidate rather than a sign at one unit -- $B^{\text{ref}}_{C,A} = \frac{1}{\lvert C\rvert}\sum_{u \in C}[V^{\text{ref}}_{\text{pre}}(u) - V^{\text{ref}}_{\text{spill}}(u)]$ with $d^{\text{ref}}_{C,A} = \operatorname{sign} B^{\text{ref}}_{C,A}$, because one persistent edit moves many units and a unit-level sign does not determine the mean's sign -- $6 \times 3 = 18$ obligations, injected upstream through the substrate, $\texttt{BehavioralCollateral}^{meas}_{C,A} = B^{\text{ref}}_{C,A}$ within G5's tolerance, `CALIBRATION_FAIL` when no unit qualifies or $B^{\text{ref}}_{C,A} = 0$ (no relocated site, no alternative target, no narrowed domain), no post-hoc map editing, no ranking by magnitude, and the canary's $+1$ never inherited; $B^{\text{ref}}$ is provenance-restricted to the frozen reference, $C$ and $\Delta W^{\text{spill}}_A$ (never the measured maps, the measured collateral, an arm's output or the calibration result), with `expected := measured` as a mutation that must redden. The construction contract is also quantified over production credited units -- $\forall c \in \mathcal D^{\text{credit}}_A: E(c) \neq \varnothing$ and $E(c) \subsetneq U_2$ with definite membership, a legitimate credited unit failing the gate rather than being skipped, and per-refinement totality $\forall c, i: C_i(c) \neq \varnothing$ as seedless admissibility before any coverage judgement. Coverage stays enumerated; the choice among **refinements** is A79 §67.4's development-seed decision (eligibility itself is frozen) and is not authorised. Carries A85's six-property table at its true state -- five PASS **at the $U_2$ measurement-interface level**, the unaffected region still OPEN. | **P0 (interface)** | **FROZEN at `rebuild@6c28fbc`; seedless compatibility/calibration implementation CLOSED at `a4451cc` (694 tests exit 0, 45/45 mutation gates, 18/18 calibration); refinement selection and all B2 scientific seeds remain NOT AUTHORISED** |
 | **A90** | **the development time axis**: freezes $	ext{instrument closure} \neq 	ext{scientific-seed authorisation}$ as a **state machine** -- $S_0 	o F_0$ `DEV_PROTOCOL_FREEZE` $	o S_1$ smoke5 $	o G_S 	o S_2$ dev32 baseline/static **master acquisition only** $	o F_1$ joint design lock $	o S_3$ treatment diagnostics $	o G_C 	o S_4$ -- whose authorisation arrows are $\text{A90 FROZEN} \Rightarrow$ an $F_0$ may be constructed, and $\text{A90 FROZEN} \land F_0\ \text{VALID} \Rightarrow$ smoke5, because A90 names no seed, no grid, no candidate and no command and therefore is not $F_0$. $F_0$ records the exact **disjoint** smoke and development seed sets (and confirmatory disjoint from their union), the four candidate universes $\mathcal C_C, \mathcal C_R, \mathcal C_{N_{\text{eval}}}, \mathcal C_{\mathcal G}$ **named element by element** rather than merely shaped, the ordered master evaluation sample that gives ``the first $N$'' one meaning, the complete design-rule family $\{f_T,f_N,f_G,f_C,f_R,\{f_{\Delta,e}\}\}$ with fail-closed codomains, frozen numerical conventions and acyclic dependency graph $\mathcal D_{F_1}$, the property roles and metrics, the smoke artifact surface (operational fields only) and the instrument hashes. $F_1$ locks $T$, $N_{\text{eval}}$, $\mathcal G_{\text{ckpt}}$, the refinement, the Retention form and the per-endpoint $\{\Delta_{\min,e}\}_{e\in\mathcal E_\Delta}$ **together and before any treatment output**, with $\mathcal E_\Delta$ an exhaustively named statistical-endpoint registry (at minimum distinct RMST and DeficitAUC members) and exactly one frozen threshold provenance per member -- there is no $F_2$, because A79 §67.9 permits development to inform a listed set and nothing else, and a threshold fixed after the treatment curve was exposed would be threshold tuning. $S_2$ runs baseline and static material only: the treatment arms are not run as well as not shown, since not shown is not not reachable. A90 **amends A79 §67.5** so that $f_R$ reads baseline and static diagnostics only, and requires $F_0$ to define each Retention metric rather than its name; it also supersedes §67.5 on post-first-seed candidate expansion, keeps synthetic calibration an admissibility **gate** and never a ranking metric (A89), and records $N_{\text{train}}$ as NONEXISTENT/OPEN because A79 §67.10/§67.12 freeze that it may not be named. | **P0 (design)** | **FROZEN at `rebuild@b6ee60e` -- formal content approved; freeze authorises construction/review of $F_0$ only, and no seed is authorised until a valid $F_0$ exists** |
-| **A91** | **the B2 training-time and episode-axis contract (revision 3, DRAFT FOR REVIEW)**: drafted because the review of $F_0$ rev 2 ruled that its twenty-first item cannot be ratified inside a protocol freeze --- the axis is not a parameter but the layer `05` §2 ($N_{\text{train}}$ = training episodes **per run**), §6.1 (convergence per development seed on the `NoCorrection` arm), §6.2 (dense-early grid, integration over the real episode index) and A84 §72 (trapezoidal quadrature, $episodes[0]=0$, $episodes[-1]=T_{\max}$) all presuppose, while the production path reads it off an array (`_levels` = a rollout's `future_rewards`, `_episode_grid` = `range(len(levels))`), so $T_{\max}$ could never exceed `HORIZON`$=12$. Round 1 (`7c457b6`) failed on eight findings and round 2 (`9c27a77`) on six closure points plus two factual corrections; revision 3 closes both rounds. The transition system: a training episode as $W_e \to$ rollout under $\Xi_e \to$ update $\to W_{e+1}$; $W^{L} = (P_D^{L}, C_P^{L}, C_X^{L}, Q_D^{L})$ persisting, with the `UpdateLedger` outside $W_e$ and unable to affect policy or update; a frozen-$W_e$ rollout, then a chronological sweep on a local **override** table with an **effective** read $Q^{\text{work}}_{\text{eff}}(q) = Q^{\text{work}}_{\text{override}}\texttt{.get}(q, Q^{*}(q))$ for both the current value and the bootstrap, keyed by `QAddress(s_t, z^{in-force}_t, m_t, a^{cmd}_t)`, bootstrapping over the admissible set with the reference's smallest-action-id tie-break, a terminal target that is the reward alone, and one edit per visited address carrying the final effective value (which the store canonicalises to a deletion when it equals $Q^{*}$); ordinary training writing $Q_D^{L}$ only; $\gamma = 1$ by inheritance from `dp.py`'s undiscounted backward induction, with $\alpha, \varepsilon_{\text{explore}}, \epsilon_s, \epsilon_f$ frozen as **pre-data $F_0$ constants** inside declared domains ($0<\alpha\le1$, $0<\varepsilon_{\text{explore}}\le1$, $\epsilon_s>0$, $0<\epsilon_f\le1$); a complete keyed exogenous tuple $\Xi_e = (\kappa_e, \zeta_e, \text{Tape}_e, \chi_e)$ from an explicit u64 SplitMix64 derivation with one tag per purpose and an exploration mapping frozen down to its comparison and index, shared by paired arms; greedy read-only checkpoint evaluation gated by zero calls to the training draw generator plus an unchanged learner fingerprint, so $V(W^{\varnothing}; Q^{*}) = V_{\text{pre}} = \texttt{trace.return\_value}$ stays one operator; and a convergence contract with the window $\mathcal W_j$ defined first, $\mathrm{slope}_K$ over its endpoints, $\mathrm{FlipRate}_K = 0$ on a constant window, A91's explicit **clarification** of `05` §6.1's $K$, and censoring decided mechanically by $N_{\text{uncensored}} \ge r = \lceil 0.9n \rceil$. Names no seed, no $N_{\text{train}}$, no $T$, no constant value, no grid value and no $\Delta_{\min}$; authorises no code and no seed until frozen. | **P0 (time axis)** | **DRAFT FOR REVIEW (revision 3) --- round 1 failed at `7c457b6`, round 2 at `9c27a77`; not frozen, authorises nothing** |
+| **A91** | **the B2 training-time and episode-axis contract (revision 4, DRAFT FOR REVIEW)**: drafted because the review of $F_0$ rev 2 ruled that its twenty-first item cannot be ratified inside a protocol freeze --- the axis is not a parameter but the layer `05` §2 ($N_{\text{train}}$ = training episodes **per run**), §6.1 (convergence per development seed on the `NoCorrection` arm), §6.2 (dense-early grid, integration over the real episode index) and A84 §72 (trapezoidal quadrature, $episodes[0]=0$, $episodes[-1]=T_{\max}$) all presuppose, while the production path reads it off an array (`_levels` = a rollout's `future_rewards`, `_episode_grid` = `range(len(levels))`), so $T_{\max}$ could never exceed `HORIZON`$=12$. Three review rounds failed drafts `7c457b6`, `9c27a77` and `975590d`; revision 4 closes all of them. The transition system: a training episode as $W_e \to$ rollout under $\Xi_e \to$ update $\to W_{e+1}$; $W^{L} = (P_D^{L}, C_P^{L}, C_X^{L}, Q_D^{L})$ persisting, with the `UpdateLedger` outside $W_e$ and unable to affect policy or update; a frozen-$W_e$ rollout, then a chronological sweep over the same step indices on a local **override** table with the **effective** read $Q^{\text{work}}_{\text{eff}}(q) = Q^{\text{work}}_{\text{override}}\texttt{.get}(q, Q^{*}(q))$ used for the current value and the bootstrap alike, with the pre-step context **reconstructed** from a trace whose `StepResult` stores post-step state and control, keyed by `QAddress(s_j, c_j.z, c_j.m, steps[j].a_cmd)`, bootstrapping over the admissible set with the reference's smallest-action-id tie-break, a terminal target that is the reward alone, and one edit per visited address carrying the final effective value (canonicalised to a deletion when it equals $Q^{*}$); ordinary training writing $Q_D^{L}$ only; $\gamma = 1$ inherited from `dp.py`'s undiscounted backward induction, with $\alpha, \varepsilon_{\text{explore}}, \epsilon_s, \epsilon_f$ frozen as **pre-data $F_0$ constants** inside declared domains ($0<\alpha\le1$, $0<\varepsilon_{\text{explore}}\le1$ declared as a **rational**, $\epsilon_s>0$, $0<\epsilon_f\le1$); a complete keyed exogenous tuple $\Xi_e = (\kappa_e, \zeta_e, \text{Tape}_e, \chi_e)$ from an explicit u64 SplitMix64 derivation with domain-separated tags (inputs separated, collision-freeness **not** claimed) and integer-only exploration rules --- exact rational coin and stateless keyed rejection for an exactly uniform action index, shared by paired arms; greedy read-only checkpoint evaluation gated by zero calls to the training draw generator plus an unchanged learner fingerprint, so $V(W^{\varnothing}; Q^{*}) = V_{\text{pre}} = \texttt{trace.return\_value}$ stays one operator; and a convergence contract with the window $\mathcal W_j$ defined first, $\mathrm{slope}_K$ over its endpoints, $\mathrm{FlipRate}_K = 0$ on a constant window, A91's explicit **clarification** of `05` §6.1's $K$, and censoring decided mechanically by $N_{\text{uncensored}} \ge r = \lceil 0.9n \rceil$. Names no seed, no $N_{\text{train}}$, no $T$, no **$F_0$-selected** pre-data constant value ($\gamma = 1$ is inherited and frozen by A91 itself), no grid value and no $\Delta_{\min}$; authorises no code and no seed until frozen. | **P0 (time axis)** | **DRAFT FOR REVIEW (revision 4) --- rounds 1--3 failed at `7c457b6`, `9c27a77`, `975590d`; not frozen, authorises nothing** |
 
 
 
@@ -7898,19 +7898,22 @@ separately once the kernel is complete.
 
 ---
 
-## 79. A91 --- the B2 training-time and episode-axis contract (revision 3, DRAFT FOR REVIEW)
+## 79. A91 --- the B2 training-time and episode-axis contract (revision 4, DRAFT FOR REVIEW)
 
 $$\boxed{\textbf{DRAFT FOR REVIEW --- not frozen, authorises nothing, draws no seed}}$$
 
 $$\boxed{\text{kernel step index} \;\neq\; \text{training episode index}}$$
 
-**Revision 2** answers the review of `7c457b6`, which accepted this amendment's reason for existing and its
-skeleton --- kernel step $\neq$ training episode, $W_e$ persisting across episodes, read-only checkpoint
-evaluation, paired arms sharing one stream, A84's real episode indices, `restricted_time` per seed versus
-RMST across seeds, and the retirement of `_episode_grid(range(len(levels)))` --- and failed it on eight
-points, all of which asked for the same thing: an ordinary-learning **transition system precise enough to
-implement without a judgement call**. §79.11 records each finding and its disposition. Nothing here is
-added scope.
+**Revision 4** closes the third review round. Round 1 (`7c457b6`) accepted this amendment's reason for
+existing and its skeleton --- kernel step $\neq$ training episode, $W_e$ persisting across episodes,
+read-only checkpoint evaluation, paired arms sharing one stream, A84's real episode indices,
+`restricted_time` per seed versus RMST across seeds, and the retirement of
+`_episode_grid(range(len(levels)))` --- and failed it on eight points; round 2 (`9c27a77`) accepted those
+eight fixes in substance and failed six closure points plus two factual corrections; round 3 (`975590d`)
+accepted the closed effective-$Q$ read, the u64 derivation, the constant-plateau rule, the `05` §6.1
+clarification, mechanical censoring, the `return_value` correction, the stateless evaluation gate and the
+constant domains, and failed on two remaining implementation-determining points plus one false claim in
+frozen text. §79.11 records every round and its dispositions.
 
 ### 79.1 The gap is a type error, not a missing constant
 
@@ -8017,8 +8020,8 @@ $$\boxed{\text{ledger} \notin W_e, \qquad \text{and the ledger may not affect po
 `11-ENVIRONMENT` §12.1 already states that *"the learner still uses tabular Q-learning"*, so A91 is
 completing online semantics that were presupposed, not introducing an algorithm. Revision 1 stopped at the
 phrase "in-place tabular off-policy $Q$-learning", which is not a specification: the store refuses two
-writes to one address in a single transaction, a rollout may revisit an address, and the frozen behaviour
-chain is greedy. Each is now closed.
+writes to one address in a single transaction, the episode's pre-step context has to be reconstructed from
+a trace that stores post-step state, and the frozen behaviour chain is greedy. Each is now closed.
 
 **(a) Two policies, and only one of them is new.**
 
@@ -8055,28 +8058,51 @@ scientific objects from one formula. The read path is not new either: `store.py`
 already written as $a^{L}(x) = \arg\max_{a \in A_z(m,s)} Q^{\text{eff}}(x,a)$ with the reference supplying
 the healthy referent.
 
-Then, in **trace chronological order** $t = 0, 1, \ldots$ over the episode's steps:
+Then, in **trace chronological order** $j = 0, 1, \ldots$ over the episode's steps, the pre-step context
+must be **reconstructed**, because a `StepResult` carries the *post*-step state and control
+(`kernel.py`: `state=nxt_state, control=nxt_control`, with `nxt_t = state.t + 1`) and `continue_rollout`
+advances `state, control = res.state, res.control` after appending. Writing
+`QAddress(step.state, step.control.z, step.control.m, step.a_cmd)` therefore shifts every update one step
+to the right --- legal code, wrong scientific object. The reconstruction is frozen as
 
-$$q_t = \texttt{QAddress}\bigl(s_t,\ z^{\text{in-force}}_t,\ m_t,\ a^{cmd}_t\bigr)$$
+$$(s_0, c_0) = \bigl(\texttt{State}(x,y,t{=}0,\kappa_e,\phi),\ \texttt{initial\_control}(\zeta_e)\bigr)$$
 
-$$\boxed{Q^{\text{work}}_{\text{override}}(q_t) \;\leftarrow\;
-Q^{\text{work}}_{\text{eff}}(q_t) \;+\; \alpha\Bigl[
-\underbrace{r_t}_{\text{reward}} \;+\; \underbrace{\bigl(1 - \mathbb{1}[\text{terminal}_t]\bigr)
+$$(s_j, c_j) = \begin{cases} (s_0, c_0), & j = 0 \\ (\texttt{steps}[j-1].\texttt{state},\
+\texttt{steps}[j-1].\texttt{control}), & j > 0 \end{cases} \qquad
+(s_{j+1}, c_{j+1}) = (\texttt{steps}[j].\texttt{state},\ \texttt{steps}[j].\texttt{control})$$
+
+$$q_j = \texttt{QAddress}\bigl(s_j,\ c_j.z,\ c_j.m,\ \texttt{steps}[j].a^{cmd}\bigr),
+\qquad q' = \texttt{QAddress}\bigl(s_{j+1},\ c_{j+1}.z,\ c_{j+1}.m,\ a'\bigr)$$
+
+This is not a new walk: `unaffected.py`'s `_episode_walk` already yields exactly
+`(pre_state, pre_control, step)` and carries the warning that `step.state` is the post-action state, so the
+amendment adopts the audited reconstruction rather than inventing a second one. The implementation step
+owes the gate that kills the natural mistake:
+
+$$\boxed{\texttt{use\_post\_state\_as\_current\_q\_address} \text{ must be a red-going mutation}}$$
+
+Then, with the pre-step context reconstructed as above, the sweep runs over the same step indices $j$:
+
+$$q_j = \texttt{QAddress}\bigl(s_j,\ z^{\text{in-force}}_j,\ m_j,\ a^{cmd}_j\bigr)$$
+
+$$\boxed{Q^{\text{work}}_{\text{override}}(q_j) \;\leftarrow\;
+Q^{\text{work}}_{\text{eff}}(q_j) \;+\; \alpha\Bigl[
+\underbrace{r_j}_{\text{reward}} \;+\; \underbrace{\bigl(1 - \mathbb{1}[\text{terminal}_j]\bigr)
 \max_{a' \in A_{z'}(m', s')} Q^{\text{work}}_{\text{eff}}\bigl(q'\bigr)}_{\text{bootstrap}} \;-\;
-Q^{\text{work}}_{\text{eff}}(q_t)\Bigr]}$$
+Q^{\text{work}}_{\text{eff}}(q_j)\Bigr]}$$
 
-$$q' = \texttt{QAddress}\bigl(s_{t+1},\ z^{\text{in-force}}_{t+1},\ m_{t+1},\ a'\bigr)$$
+$$q' = \texttt{QAddress}\bigl(s_{j+1},\ z^{\text{in-force}}_{j+1},\ m_{j+1},\ a'\bigr)$$
 
 * **the key is the lookup key**: the address is the one the learner actually decided from ---
-  $z^{\text{in-force}}$ and $m$ from the pre-step control, and $a^{cmd}_t$ as the decision key (the
-  distinction A79/A87 already fixed for the $X$ site). *Not* the proposal option, *not* the realised
-  action, and *not* a next-state row;
+  $z^{\text{in-force}}$ and $m$ from the **pre-step** control reconstructed above, and $a^{cmd}_j$ as the
+  decision key (the distinction A79/A87 already fixed for the $X$ site). *Not* the proposal option, *not*
+  the realised action, and *not* a next-state row;
 * **the bootstrap is over the admissible set**, so an illegal target can never be written, and the
   tie-break is the frozen smallest-action-id rule;
-* **terminal target**: $\mathbb{1}[\text{terminal}_t]$ is one when the transition ends the episode --- a
-  terminal kernel outcome, or the horizon end where $t = \text{HORIZON}$ is not a decision point (the
-  reference solver's own boundary: `t = horizon` is terminal and needs no row). At a terminal step the
-  target is $r_t$ alone, with no continuation, mirroring `dp.py`'s `if res.terminal:` guard;
+* **terminal target**: $\mathbb{1}[\text{terminal}_j]$ is one when the transition ends the episode --- a
+  terminal kernel outcome, or the horizon end where the step index reaches `HORIZON` and is not a decision
+  point (the reference solver's own boundary: `t = horizon` is terminal and needs no row). At a terminal
+  step the target is $r_j$ alone, with no continuation, mirroring `dp.py`'s `if res.terminal:` guard;
 * **$\gamma = 1$, by inheritance, not by choice**: the frozen reference is a finite-horizon backward
   induction with **no discount factor** --- $Q^{*} = r + V^{*}$ --- so a discount $\gamma < 1$ would give
   the ordinary learner a *different fixed point* from the reference it is measured against. Revision 1's
@@ -8091,14 +8117,23 @@ updated in **one** transaction carrying **one edit per visited address**, whose 
 $$\boxed{\text{one edit per visited address, carrying the final effective value --- never one transaction
 per transition}}$$
 
-This is forced rather than stylistic: `apply_transaction` is atomic across all four stores and **refuses
-the same address twice in one transaction**, so a per-transition write-back would raise on the first
-revisited address, while a per-transition *transaction* would make the run's result depend on an
-unspecified interleaving. The chronological order in (c) is what makes "final value" well-defined, and
-writing the **effective** value is what makes the write-back compatible with the store's own canonical
-form: a final value equal to $Q^{*}$ is the identity assignment, and the store **canonicalises it to a
-deletion** (`store.py`: *"writing the reference value IS the identity assignment"*), so an address the
-episode merely re-derived from the reference does not accumulate a redundant override entry.
+This is forced rather than stylistic, and the reason is stated precisely: `apply_transaction` is atomic
+across all four stores and **refuses the same address twice in one transaction**, so the protocol has to
+define duplicate-address semantics explicitly rather than relying on the current time-indexed state space
+to make repeats impossible. In today's kernel an exact repeat cannot in fact occur --- `QAddress` contains
+the whole `State`, whose `t` strictly increases (`nxt_t = state.t + 1`), so revisiting a position at a
+different timestep is a different address --- but the rule is written for the general case, because a
+protocol whose correctness depends on an accident of the current state encoding would break silently the
+first time that encoding changed. A per-transition write-back would also make the run's result depend on an
+unspecified interleaving, which no state space prevents. The chronological order in (c) is what makes
+"final value" well-defined, and writing the **effective** value is what makes the write-back compatible
+with the store's own canonical form: a final value equal to $Q^{*}$ is the identity assignment, and the
+store **canonicalises it to a deletion** (`store.py`: *"writing the reference value IS the identity
+assignment"*), so an address the episode merely re-derived from the reference does not accumulate a
+redundant override entry.
+
+Revision 3 justified the rule by saying "a rollout may revisit an address", which is **not true of the
+current kernel**; the rule stands on the general ground above instead.
 
 **(e) The write space is exactly one store.**
 
@@ -8128,7 +8163,6 @@ $$\boxed{0 < \alpha \le 1, \qquad 0 < \varepsilon_{\text{explore}} \le 1, \qquad
 $\varepsilon_{\text{explore}} = 0$ is excluded because §79.4(a) states that exploration exists during
 training: a zero exploration probability would make that sentence false and leave the behaviour policy
 greedy in a protocol that claims otherwise.
-the baseline curve is threshold tuning with a different name.
 
 ### 79.5 One seed, one complete episode draw generator
 
@@ -8162,30 +8196,50 @@ $$G = \texttt{0x9E3779B97F4A7C15}, \qquad P = \texttt{0xD1B54A32D192ED03}$$
 and the affine arithmetic is wrapped too, so the whole derivation is exact integer arithmetic with no
 implementation freedom.
 
-The tags are frozen, one per purpose, and no two purposes share a key space:
+The tags are frozen, one per purpose: each purpose gets a **distinct domain tag**, so no purpose
+intentionally reuses another's input namespace. That is domain separation of *inputs*, and it is **not** a
+claim that the output spaces are disjoint --- $2^{64}$ outputs cannot be collision-free over all inputs,
+and no hash or tag can make them so. Revision 3 wrote "no two purposes share a key space", which asserted
+exactly the thing that cannot hold:
 
 | purpose | tag | drawn as |
 |---|---|---|
 | $\kappa_e$ | `1` | $\mathsf{h}(\sigma, e, 1) \bmod 2$ (the frozen $\kappa$ domain) |
 | $\zeta_e$ | `2` | $\mathsf{h}(\sigma, e, 2) \bmod \lvert \texttt{option\_ids}() \rvert$ |
 | $\text{Tape}_e$ | `3` | $\texttt{SemanticTape.sample}\bigl(\mathsf{h}(\sigma, e, 3)\bigr)$ (the frozen sampler) |
-| $\chi_e(i, j)$ | `4` | $\operatorname{mix}\bigl(\operatorname{u64}\bigl(\mathsf{h}(\sigma, e, 4) \oplus
-\operatorname{mix}(\operatorname{u64}(2i + j))\bigr)\bigr) \big/ 2^{64}$ |
+| $\chi_e(i, j, c)$ | `4` | $\operatorname{mix}\Bigl(\operatorname{u64}\bigl(\mathsf{h}(\sigma, e, 4) \oplus
+\operatorname{mix}\bigl(\operatorname{u64}\bigl(\operatorname{u64}(2i + j) \cdot 2^{32}\bigr) +
+\operatorname{u64}(c)\bigr)\bigr)\Bigr)$ |
 
-* $\chi_e(i, \cdot)$ supplies the episode's exploration variates **keyed by coordinate**, and the mapping
-  from the two reals to an action is frozen rather than left to a comparison convention:
+* $\chi_e(i, \cdot, \cdot)$ supplies the exploration variates **keyed by coordinate**, and the whole
+  mapping is **integer-only --- no float appears in it**. Revision 2 divided by $2^{64}$ and took a floor,
+  which is not exactly uniform when $n = \lvert A_{\text{sorted}} \rvert$ does not divide $2^{64}$ (the
+  action counts differ by one pre-image), and whose largest draws can round to $1.0$ in binary64 and index
+  past the end of the set. The frozen mapping instead is
 
-$$u_0 = \chi_e(i, 0), \qquad u_1 = \chi_e(i, 1), \qquad
-\text{explore} \iff u_0 < \varepsilon_{\text{explore}}$$
+$$R_0 = \chi_e(i, 0, 0), \qquad R_c = \chi_e(i, 1, c), \qquad
+L = 2^{64} - \bigl(2^{64} \bmod n\bigr)$$
 
-$$a = A_{\text{sorted}}\Bigl[\bigl\lfloor u_1 \, \lvert A_{\text{sorted}} \rvert \bigr\rfloor\Bigr],
-\qquad A_{\text{sorted}} = \text{the admissible set sorted by frozen integer action id}$$
+$$\boxed{\text{explore} \iff R_0 \, q < p \, 2^{64}} \qquad\text{where } \varepsilon_{\text{explore}} =
+\frac{p}{q} \text{ is an exact rational declared by } F_0$$
 
-  so $j = 0$ is the coin, $j = 1$ the uniform index, the comparison is **strict**, the ordering is the
-  frozen id order, and the index is a floor --- three places where `<` versus $\le$, a set iteration order
-  or a rounding choice would otherwise have been decided by whoever implemented it. Keying by $(i, j)$
-  rather than by consumption order is what keeps two arms whose policies have diverged aligned: common
-  random numbers by coordinate, not common prefixes;
+$$\boxed{\text{let } c \ge 0 \text{ be the smallest index with } R_c < L, \qquad
+a = A_{\text{sorted}}\bigl[R_c \bmod n\bigr], \qquad A_{\text{sorted}} = \text{the admissible set sorted
+by frozen integer action id}}$$
+
+  and if no $c < 2^{32}$ satisfies $R_c < L$ the episode **fails closed** rather than looping without a
+  bound --- a case with probability below $2^{-32}$ per draw for $n \le 4$, but declared rather than assumed
+  away. The coordinate packing is well-defined because $i \le \texttt{HORIZON} = 12$, $j \in \{0, 1\}$ and
+  $c < 2^{32}$, so $(2i + j) \cdot 2^{32} + c$ is injective in $(i, j, c)$;
+* **why integers and not a real.** The coin is exact because $\varepsilon_{\text{explore}}$ is frozen as a
+  rational $p/q$: $\varepsilon = 1$ is then genuinely always-explore, with no float boundary and no
+  `<`-versus-$\le$ question left over. The index is **exactly uniform** because rejection onto $[0, L)$
+  followed by $\bmod\, n$ gives every action exactly $L/n$ pre-images --- which is what "uniformly from the
+  admissible set" means, and what the floor of a real does not deliver. This is a second reason §79.4(f)
+  freezes the constant's domain: $F_0$ must declare $\varepsilon_{\text{explore}}$ **as a rational**, not as
+  a float;
+* keying by $(i, j, c)$ rather than by consumption order is what keeps two arms whose policies have
+  diverged aligned: common random numbers by coordinate, not common prefixes;
 * **paired arms share $\Xi_e$** for the same $(\sigma, e)$ --- the training-time analogue of A85's shared
   measurement draw --- so a between-arm difference is attributable to the initial write;
 * a seed determines a **domain-separated pseudorandom exogenous stream**; that is the precise statement,
@@ -8379,4 +8433,21 @@ a reference-equal final value canonicalise to deletion. Dispositions in revision
 
 Together these were the last places where the transition system was still a description rather than a
 definition; with them closed there is no operator left in §§79.2--79.7 whose value an implementer chooses.
+
+**Round 3 (`975590d`).** The review accepted round 2's closures --- the effective-$Q$ read
+$Q^{\text{work}}_{\text{eff}}(q) = Q^{\text{work}}_{\text{override}}\texttt{.get}(q, Q^{*}(q))$ with the
+effective value written back and canonicalised to a deletion when it equals $Q^{*}$, $\gamma = 1$, the
+constant domains, $Q_D^{L}$-only ordinary learning, the terminal target $r$, the chronological local sweep
+with one final edit per address, the constant-plateau rule, the `05` §6.1 reading (i), mechanical
+censoring, the `return_value` correction and the stateless evaluation gate --- and failed revision 3 on two
+implementation-determining points plus one false claim, with three bookkeeping items and one factual
+cleanup. Dispositions in revision 4:
+
+| # | finding | disposition |
+|---|---|---|
+| 1 | the $Q$-update key was frozen as the pre-step address while **`StepResult` carries post-step state and control** (`kernel.py`: `state=nxt_state, control=nxt_control`, `nxt_t = state.t + 1`; `continue_rollout` advances `state, control = res.state, res.control`), so the natural implementation `QAddress(step.state, ...)` would shift every update one step right --- legal code, wrong object --- and revision 3 said "pre-step control" without freezing how to rebuild it | **fixed**: §79.4(c) freezes the reconstruction $(s_0, c_0) = (\texttt{State}(\cdot, t{=}0, \kappa_e, \phi), \texttt{initial\_control}(\zeta_e))$, $(s_j, c_j) = (s_0, c_0)$ at $j = 0$ else $(\texttt{steps}[j-1].\texttt{state}, \texttt{steps}[j-1].\texttt{control})$, and $(s_{j+1}, c_{j+1}) = (\texttt{steps}[j].\texttt{state}, \texttt{steps}[j].\texttt{control})$; it adopts `unaffected.py`'s audited `_episode_walk` rather than inventing a second walk, and requires the mutation `use_post_state_as_current_q_address` at implementation time |
+| 2 | the exploration mapping was not exactly uniform: $\lfloor R n / 2^{64} \rfloor$ has action pre-image counts differing by one when $n \nmid 2^{64}$, and the largest draws can round to $1.0$ in binary64 and index past the end of the admissible set | **fixed**: §79.5 replaces it with integer-only rules --- the coin by exact rational comparison $R_0 q < p\,2^{64}$ for $\varepsilon_{\text{explore}} = p/q$, and the index by stateless keyed rejection, $L = 2^{64} - (2^{64} \bmod n)$, the smallest $c$ with $R_c < L$, then $R_c \bmod n$, which is exactly uniform; $F_0$ must therefore declare $\varepsilon_{\text{explore}}$ as a rational, and an unbounded rejection loop fails closed |
+| 3 | §79.5 claimed "no two purposes share a key space", which cannot hold: $2^{64}$ outputs are not collision-free over all inputs, and tags separate *inputs* rather than *outputs* | **fixed as a false claim**: §79.5 now states domain separation of inputs and explicitly says the derivation is **not** claimed collision-free --- the same discipline that retired "distinct seeds are independent" |
+| 4 | bookkeeping: a duplicated sentence in §79.4(f), a summary row that said $\gamma = 1$ while also claiming no constant value is named, and an opening paragraph still describing revision 2 | **fixed**: the duplicate line is removed, the row distinguishes **$F_0$-selected** constant values from the inherited $\gamma = 1$, and the opening is synchronised to revision 4 with all three rounds named |
+| 5 | the duplicate-address rationale claimed "a rollout may revisit an address", which the current time-indexed state space makes impossible ($t$ strictly increases, so the same `State` never recurs) | **fixed**: §79.4(d) now grounds the rule in the store's refusal plus the requirement not to depend on an accident of the current encoding, and records that revision 3's justification was factually wrong |
 
