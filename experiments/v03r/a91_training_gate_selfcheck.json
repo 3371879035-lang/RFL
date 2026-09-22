@@ -1,7 +1,7 @@
 {
-  "check": "A91 training-time instrument: pre-step context, in-force option, uniform draw",
-  "n_mutations": 3,
-  "n_gate_is_real": 3,
+  "check": "A91 training-time instrument: pre-step context, in-force option, uniform draw, collateral state, locked V_pre, shared stream",
+  "n_mutations": 6,
+  "n_gate_is_real": 6,
   "n_not_a_gate": 0,
   "n_node_not_found": 0,
   "n_harness_error": 0,
@@ -18,7 +18,7 @@
       "matched": 1,
       "expected_failure_text": "the walk must start at the episode's initial context",
       "exit_code": 1,
-      "tail": ">       assert (state0.x, state0.y, state0.t, state0.kappa, state0.phi) == \\\n            (START[0], START[1], 0, episode.kappa, episode.tape.phase), \\\n            \"the walk must start at the episode's initial context\"\nE       AssertionError: the walk must start at the episode's initial context\nE       assert (1, 2, 1, 0, 0) == (0, 2, 0, 0, 0)\nE         \nE         At index 0 diff: 1 != 0\nE         Use -v to get more diff\ntests\\rebuild\\test_b2_training.py:235: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_training.py::test_11_the_walk_reconstructs_the_pre_step_context\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": ">       assert (state0.x, state0.y, state0.t, state0.kappa, state0.phi) == \\\n            (START[0], START[1], 0, episode.kappa, episode.tape.phase), \\\n            \"the walk must start at the episode's initial context\"\nE       AssertionError: the walk must start at the episode's initial context\nE       assert (1, 2, 1, 0, 0) == (0, 2, 0, 0, 0)\nE         \nE         At index 0 diff: 1 != 0\nE         Use -v to get more diff\ntests\\rebuild\\test_b2_training.py:237: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_training.py::test_11_the_walk_reconstructs_the_pre_step_context\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -29,7 +29,7 @@
       "matched": 1,
       "expected_failure_text": "the walk must start in the option in force",
       "exit_code": 1,
-      "tail": "        assert trace.base_option == 0 and trace.option_in_force == 1, \"the fixture did not fire\"\n        walk = visited_order(trace, kappa=episode.kappa, phi=episode.tape.phase)\n>       assert (walk[0][1].z, walk[0][1].m) == (1, 0), \"the walk must start in the option in force\"\nE       AssertionError: the walk must start in the option in force\nE       assert (0, 0) == (1, 0)\nE         \nE         At index 0 diff: 0 != 1\nE         Use -v to get more diff\ntests\\rebuild\\test_b2_training.py:260: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_training.py::test_12_the_fixture_really_fires_z_p_and_the_walk_follows_the_in_force_option\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "        assert trace.base_option == 0 and trace.option_in_force == 1, \"the fixture did not fire\"\n        walk = visited_order(trace, kappa=episode.kappa, phi=episode.tape.phase)\n>       assert (walk[0][1].z, walk[0][1].m) == (1, 0), \"the walk must start in the option in force\"\nE       AssertionError: the walk must start in the option in force\nE       assert (0, 0) == (1, 0)\nE         \nE         At index 0 diff: 0 != 1\nE         Use -v to get more diff\ntests\\rebuild\\test_b2_training.py:262: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_training.py::test_12_the_fixture_really_fires_z_p_and_the_walk_follows_the_in_force_option\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     },
     {
@@ -40,7 +40,40 @@
       "matched": 1,
       "expected_failure_text": "the index draw is not balanced",
       "exit_code": 1,
-      "tail": "E       AssertionError: the index draw is not balanced: {1: 30000, 2: 0, 3: 0}\nE       assert (30000 - 0) <= 1\nE        +  where 30000 = max(dict_values([30000, 0, 0]))\nE        +    where dict_values([30000, 0, 0]) = <built-in method values of dict object at 0x<ADDR>>()\nE        +      where <built-in method values of dict object at 0x<ADDR>> = {1: 30000, 2: 0, 3: 0}.values\nE        +  and   0 = min(dict_values([30000, 0, 0]))\nE        +    where dict_values([30000, 0, 0]) = <built-in method values of dict object at 0x<ADDR>>()\nE        +      where <built-in method values of dict object at 0x<ADDR>> = {1: 30000, 2: 0, 3: 0}.values\ntests\\rebuild\\test_b2_training.py:186: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_training.py::test_10_uniform_action_has_exact_pre_images_and_uses_rejection\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "tail": "E       AssertionError: the index draw is not balanced: {1: 30000, 2: 0, 3: 0}\nE       assert (30000 - 0) <= 1\nE        +  where 30000 = max(dict_values([30000, 0, 0]))\nE        +    where dict_values([30000, 0, 0]) = <built-in method values of dict object at 0x<ADDR>>()\nE        +      where <built-in method values of dict object at 0x<ADDR>> = {1: 30000, 2: 0, 3: 0}.values\nE        +  and   0 = min(dict_values([30000, 0, 0]))\nE        +    where dict_values([30000, 0, 0]) = <built-in method values of dict object at 0x<ADDR>>()\nE        +      where <built-in method values of dict object at 0x<ADDR>> = {1: 30000, 2: 0, 3: 0}.values\ntests\\rebuild\\test_b2_training.py:188: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_training.py::test_10_uniform_action_has_exact_pre_images_and_uses_rejection\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "future_training_mutates_collateral_state",
+      "hole": "the future trains the arm's own post-B1 state instead of a clone, so the collateral measures a trained learner while A85 73.2.2 fixes V_unaffected,post as the immediate post-update state -- and the defect is invisible in the future dimension itself",
+      "gate": "test_5b_the_collateral_measures_the_immediate_post_b1_state",
+      "site": "src\\rfl_rebuild\\b2\\runner.py",
+      "matched": 1,
+      "expected_failure_text": "measures $V_{unaffected,post}$ on the immediate post-B1 state",
+      "exit_code": 1,
+      "tail": "            # healthy fixture does.\n            future_state = post_states[arm.name]  # MUTATED\n            if future_state is post_states[arm.name]:\n>               raise ProtocolError(\n                    \"the future was handed the arm's own post-B1 state rather than a clone: A85 \u00a773.2.2 \"\n                    \"measures $V_{unaffected,post}$ on the immediate post-B1 state, so future training \"\n                    \"must not run on it\")\nE               rfl_rebuild.b1.errors.ProtocolError: the future was handed the arm's own post-B1 state rather than a clone: A85 \u00a773.2.2 measures $V_{unaffected,post}$ on the immediate post-B1 state, so future training must not run on it\nsrc\\rfl_rebuild\\b2\\runner.py:375: ProtocolError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_runner.py::test_5b_the_collateral_measures_the_immediate_post_b1_state\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "remeasure_v_pre_per_arm",
+      "hole": "the production curve re-measures V_pre instead of using the locked shared value, so two arms consume two measurements that happen to agree -- which A85 73.1 exists to forbid",
+      "gate": "test_23_the_curve_uses_the_locked_v_pre_and_never_re_measures_it",
+      "site": "src\\rfl_rebuild\\b2\\training.py",
+      "matched": 1,
+      "expected_failure_text": "re-measured V_pre",
+      "exit_code": 1,
+      "tail": "        assert measured != locked\n        curve = train_curve(LearnerPersistentState(),\n                            protocol=_protocol(v_pre=locked), q_reference=REFERENCE)\n>       assert curve.pre_level == locked, (\n            f\"the curve re-measured V_pre ({curve.pre_level!r}) instead of using the locked {locked!r}\")\nE       AssertionError: the curve re-measured V_pre (0.8849999999999999) instead of using the locked -1.0\nE       assert 0.8849999999999999 == -1.0\nE        +  where 0.8849999999999999 = Curve(values=(0.8849999999999999, 0.8849999999999999, 0.8849999999999999, 0.8849999999999999), episodes=(0, 1, 2, 3), pre_level=0.8849999999999999, t_max=3).pre_level\ntests\\rebuild\\test_b2_training.py:408: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_training.py::test_23_the_curve_uses_the_locked_v_pre_and_never_re_measures_it\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "verdict": "GATE_IS_REAL"
+    },
+    {
+      "mutation": "second_arm_uses_different_training_seed",
+      "hole": "the second arm is handed a training protocol with a different seed, so the arms no longer draw one keyed episode stream and the contrast stops being paired -- the real CRN boundary that the old single-episode exogenous setup no longer guarded",
+      "gate": "test_5_the_paired_futures_share_one_training_stream",
+      "site": "src\\rfl_rebuild\\b2\\runner.py",
+      "matched": 1,
+      "expected_failure_text": "did not consume one shared training protocol",
+      "exit_code": 1,
+      "tail": "            futures[arm.name] = FutureUtility.from_curve(\n                curve.values, curve.episodes, pre_level=curve.pre_level, t_max=curve.t_max)\n            self._recorder(\"future\", arm.name, (curve.values, curve.episodes))\n        if len(protocol_ids) != 1:\n>           raise ProtocolError(\n                \"the paired futures did not consume one shared training protocol: the arms would draw \"\n                \"different episode streams and the contrast would no longer be paired\")\nE           rfl_rebuild.b1.errors.ProtocolError: the paired futures did not consume one shared training protocol: the arms would draw different episode streams and the contrast would no longer be paired\nsrc\\rfl_rebuild\\b2\\runner.py:393: ProtocolError\n=========================== short test summary info ===========================\nFAILED tests/rebuild/test_b2_runner.py::test_5_the_paired_futures_share_one_training_stream\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!",
       "verdict": "GATE_IS_REAL"
     }
   ]

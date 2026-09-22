@@ -33,7 +33,8 @@ from rfl_rebuild.b2.training import (  # noqa: E402
     TAGS,
     Curve,
     ExogenousEpisode,
-    TrainingProtocol,
+    BaselineAcquisitionPlan,
+    FutureTrainingProtocol,
     effective_value,
     is_explore,
     key,
@@ -57,11 +58,12 @@ SAMPLE = scene_domain()[:4]
 SEED, EPISODE = 7, 3
 
 
-def _protocol(**overrides) -> TrainingProtocol:
-    fields = dict(seed=SEED, alpha=Fraction(1, 2), epsilon=Fraction(1, 4), cap=3,
-                  grid=(0, 1, 2, 3), evaluation_sample=SAMPLE)
+def _protocol(**overrides) -> FutureTrainingProtocol:
+    fields = dict(seed=SEED, alpha=Fraction(1, 2), epsilon=Fraction(1, 4), t_max=3,
+                  grid=(0, 1, 2, 3), evaluation_sample=SAMPLE,
+                  v_pre=pre_level(SAMPLE, q_reference=REFERENCE))
     fields.update(overrides)
-    return TrainingProtocol(**fields)
+    return FutureTrainingProtocol(**fields)
 
 
 def _p_override_learner() -> LearnerPersistentState:
@@ -304,7 +306,7 @@ def test_15_a_healthy_learner_neither_moves_nor_gains_overrides():
 def test_16_a_wrong_override_is_corrected_and_canonicalised_away():
     from rfl_rebuild.b2.training import episode_rollout
 
-    protocol = _protocol(alpha=Fraction(1, 1), epsilon=Fraction(1, 1), cap=3, grid=(0, 1, 2, 3))
+    protocol = _protocol(alpha=Fraction(1, 1), epsilon=Fraction(1, 1), t_max=3, grid=(0, 1, 2, 3))
     episode = ExogenousEpisode.derive(SEED, 0)
     healthy = LearnerPersistentState()
     trace = episode_rollout(healthy, episode, protocol=protocol, q_reference=REFERENCE)
@@ -364,23 +366,23 @@ def test_19_training_leaves_the_non_q_stores_alone():
 # --- the declared inputs ---------------------------------------------------------------------------
 
 def test_20_the_protocol_refuses_constants_outside_the_frozen_domains():
-    with pytest.raises(ProtocolError, match="0 < alpha"):
+    with pytest.raises(ProtocolError, match="alpha must be an exact rational in"):
         _protocol(alpha=Fraction(0, 1))
-    with pytest.raises(ProtocolError, match="exact rational"):
+    with pytest.raises(ProtocolError, match="eps_explore must be an exact rational in"):
         _protocol(epsilon=0.25)
-    with pytest.raises(ProtocolError, match="0 < eps"):
+    with pytest.raises(ProtocolError, match="eps_explore must be an exact rational in"):
         _protocol(epsilon=Fraction(0, 1))
 
 
 def test_21_the_protocol_enforces_the_a84_span_and_the_k_floor():
     with pytest.raises(ProtocolError, match="at least three"):
-        _protocol(cap=1, grid=(0, 1))
+        _protocol(t_max=1, grid=(0, 1))
     with pytest.raises(ProtocolError, match="span the horizon"):
-        _protocol(cap=4, grid=(0, 1, 2, 3))
+        _protocol(t_max=4, grid=(0, 1, 2, 3))
     with pytest.raises(ProtocolError, match="strictly increasing"):
-        _protocol(cap=3, grid=(0, 2, 2, 3))
+        _protocol(t_max=3, grid=(0, 2, 2, 3))
     with pytest.raises(ProtocolError, match="positive integer"):
-        _protocol(cap=0, grid=(0,))
+        _protocol(t_max=0, grid=(0, 1, 2))
     with pytest.raises(ProtocolError, match="evaluation sample is empty"):
         _protocol(evaluation_sample=())
 
@@ -390,3 +392,55 @@ def test_22_a_curve_must_carry_one_value_per_checkpoint_and_span_it():
         Curve(values=(1.0,), episodes=(0, 1), pre_level=0.0, t_max=1)
     with pytest.raises(ProtocolError, match="span contract"):
         Curve(values=(1.0, 2.0), episodes=(0, 2), pre_level=0.0, t_max=3)
+
+
+def test_23_the_curve_uses_the_locked_v_pre_and_never_re_measures_it():
+    r"""$$\boxed{\text{two equal measurements} \neq \text{one frozen measurement}}$$
+
+    The injected level is deliberately *different* from the one the seedless operator would compute, so a
+    production path that re-measured per arm cannot pass by agreeing by accident.
+    """
+    measured = pre_level(SAMPLE, q_reference=REFERENCE)
+    locked = -1.0
+    assert measured != locked
+    curve = train_curve(LearnerPersistentState(),
+                        protocol=_protocol(v_pre=locked), q_reference=REFERENCE)
+    assert curve.pre_level == locked, (
+        f"the curve re-measured V_pre ({curve.pre_level!r}) instead of using the locked {locked!r}")
+
+
+def test_24_the_evaluation_sample_is_nominal_and_duplicate_free():
+    class Duck:  # a stand-in that merely exposes the fields the measurement reads
+        kappa = 0
+        tape = SAMPLE[0].tape
+        base_option = 0
+
+    with pytest.raises(ProtocolError, match="not an EvaluationScene"):
+        _protocol(evaluation_sample=(Duck(),))
+    scene = SAMPLE[0]
+    with pytest.raises(ProtocolError, match="repeats a scene"):
+        _protocol(evaluation_sample=(scene, scene))
+
+
+def test_25_the_seed_must_be_a_true_integer():
+    for bad in (True, 1.0, "1"):
+        with pytest.raises(ProtocolError, match="true non-negative integer"):
+            _protocol(seed=bad)
+
+
+def test_26_the_pre_f1_acquisition_plan_has_no_grid_and_no_t_max():
+    r"""$$F_0\text{ acquisition envelope} \;\neq\; F_1\text{ locked horizon}$$
+
+    The envelope is what the baseline acquisition runs; the grid and $T^{*}$ are chosen *from* it, so
+    requiring them here would invert the order A90 §78.5 freezes.
+    """
+    plan = BaselineAcquisitionPlan(seed=SEED, alpha=Fraction(1, 2), epsilon=Fraction(1, 4),
+                                   acquisition_cap=40, evaluation_bank=SAMPLE)
+    assert plan.acquisition_cap == 40 and plan.evaluation_bank == SAMPLE
+    assert not hasattr(plan, "grid") and not hasattr(plan, "t_max")
+    with pytest.raises(ProtocolError, match="acquisition cap must be a true positive integer"):
+        BaselineAcquisitionPlan(seed=SEED, alpha=Fraction(1, 2), epsilon=Fraction(1, 4),
+                                acquisition_cap=0, evaluation_bank=SAMPLE)
+    with pytest.raises(ProtocolError, match="master evaluation bank holds"):
+        BaselineAcquisitionPlan(seed=SEED, alpha=Fraction(1, 2), epsilon=Fraction(1, 4),
+                                acquisition_cap=3, evaluation_bank=(object(),))

@@ -33,7 +33,7 @@ from rfl_rebuild.b2.environment import KernelLearnerEnvironment, audited_modules
 from rfl_rebuild.b2.runner import (  # noqa: E402
     ARCHITECTURES, EXOGENOUS_FIELDS, ArmSpec, ExogenousSetup, PairedRunner,
 )
-from rfl_rebuild.b2.training import TrainingProtocol  # noqa: E402
+from rfl_rebuild.b2.training import FutureTrainingProtocol, pre_level  # noqa: E402
 from rfl_rebuild.b2.unaffected import (  # noqa: E402
     REFINEMENTS,
     CreditedSite,
@@ -80,9 +80,13 @@ def runner(events=None, **overrides):
         retention_params={"H": 5},
         # A91: the future curve is indexed by TRAINING EPISODE, and the protocol carries the design
         # quantities. H = 5 must be a checkpoint of this grid, which is the F1 consistency the frozen
-        # retention estimator enforces by refusing a horizon the curve does not contain.
-        training=TrainingProtocol(seed=11, alpha=Fraction(1, 2), epsilon=Fraction(1, 4), cap=6,
-                                  grid=(0, 1, 2, 5, 6), evaluation_sample=scene_domain()[:2]),
+        # retention estimator enforces by refusing a horizon the curve does not contain. v_pre is the
+        # LOCKED shared measurement (A85 §73.1): the production path injects it rather than re-measuring
+        # it per arm, so it is built here through the seedless construction helper.
+        training=FutureTrainingProtocol(
+            seed=11, alpha=Fraction(1, 2), epsilon=Fraction(1, 4), t_max=6, grid=(0, 1, 2, 5, 6),
+            evaluation_sample=scene_domain()[:2],
+            v_pre=pre_level(scene_domain()[:2], q_reference=REFERENCE_VIEW)),
         recorder=(lambda *a: events.append(a)) if events is not None else None)
     kwargs.update(overrides)
     return PairedRunner(**kwargs)
@@ -236,22 +240,38 @@ def test_4_the_arms_fork_from_one_pre_update_state():
                               exogenous=exogenous(), credited_site=CREDIT)
     finally:
         LearnerPersistentState.clone = original
-    assert len(calls) == 2, f"expected one clone per arm, got {len(calls)}"
-    assert set(parents) == {fingerprint(state)}, (
-        "a clone was taken from a state that had already been updated: the arms are a serial chain, "
-        f"not a pair (parents {parents!r}, input {fingerprint(state)!r})")
+    assert len(calls) == 4, f"expected two arm clones and two future clones, got {len(calls)}"
+    pre = fingerprint(state)
+    from_pre = [parent for parent in parents if parent == pre]
+    assert len(from_pre) == 2, (
+        "the two ARM clones must be taken from the one pre-update state: a clone from an already "
+        f"updated state makes the arms a serial chain rather than a pair (parents {parents!r})")
     assert len(set(record.fingerprints_pre.values())) == 1
     assert record.fingerprints_pre["first"] == record.fingerprints_pre["second"]
+    # A91: the future runs on a CLONE of each arm's immediate post-B1 state, so the extra two clones
+    # parent on the post states -- never on the pre state, which would train the wrong object
+    post = set(record.fingerprints_post.values())
+    assert sorted(parents.count(p) for p in post) == [1, 1] or len(post) == 1, parents
+    assert all(parent in post or parent == pre for parent in parents), parents
 
 
-def test_5_the_paired_futures_share_one_exogenous_setup():
-    r"""$$\boxed{\text{the arms differ in } \Delta W \text{ and in nothing else}}$$"""
+def test_5_the_paired_futures_share_one_training_stream():
+    r"""$$\boxed{\text{the arms differ in } \Delta W \text{ and in nothing else}}$$
+
+    The shared object that matters is now A91's **training protocol**: both arms must consume the same
+    keyed episode stream, so the gate reads the protocol identity rather than the old single-episode
+    exogenous setup (which no longer feeds the future at all).
+    """
     events = []
     record = run(events)
     setup_ids = [e[2] for e in events if e[0] == "exogenous"]
     assert len(setup_ids) == 2 and len(set(setup_ids)) == 1, setup_ids
+    protocol_ids = [e[2] for e in events if e[0] == "training_protocol"]
+    assert len(protocol_ids) == 2 and len(set(protocol_ids)) == 1, (
+        f"the paired arms did not consume ONE training protocol: {protocol_ids}")
     assert record.observations[0][1:] == record.observations[1][1:], record.observations
     assert record.observations[0][0] != record.observations[1][0]
+    assert record.observations[0][6] == record.observations[1][6] == 11  # the shared seed
     assert set(EXOGENOUS_FIELDS) == set(ExogenousSetup.__dataclass_fields__)
     with pytest.raises(TypeError):
         ExogenousSetup(kappa=0, phi=0, tape=None, base_option=1, q_reference=None,
@@ -259,6 +279,24 @@ def test_5_the_paired_futures_share_one_exogenous_setup():
     with pytest.raises(ProtocolError) as ei:
         exogenous(checkpoints=())
     assert "no default schedule" in str(ei.value)
+
+
+def test_5b_the_collateral_measures_the_immediate_post_b1_state():
+    r"""$$\boxed{V_{\text{unaffected,post}} = \text{the arm's own immediate post-B1 state}}$$
+
+    A91's future training learns in place, so this is the integration bug the review found: if the
+    future consumed the arm's own post state instead of a clone, the collateral would measure a *trained*
+    learner and every collateral number would silently describe a different object.
+    """
+    events = []
+    record = run(events)
+    measured = {name: value for _, name, value in
+                [(e[0], e[1], e[2]) for e in events if e[0] == "collateral_state"]}
+    assert len(measured) == 2, events
+    for arm in record.arm_names:
+        assert measured[arm] == record.fingerprints_post[arm], (
+            f"arm {arm!r}: the collateral measured {measured[arm]!r} but the arm's immediate post-B1 "
+            f"state was {record.fingerprints_post[arm]!r}")
 
 
 def test_6_no_future_exists_before_the_updates_are_applied():
@@ -367,7 +405,8 @@ def test_10_the_record_keeps_three_dimensions_and_no_composite():
     record = run()
     assert set(record.__dataclass_fields__) == {
         "arm_names", "architecture", "unaffected_construction", "unaffected_size", "retention_form",
-        "future_utility", "collateral", "retention", "ledgers", "fingerprints_pre", "observations"}
+        "future_utility", "collateral", "retention", "ledgers", "fingerprints_pre",
+        "fingerprints_post", "observations"}
     assert record.unaffected_size > 0 and "@eligible_all" in record.unaffected_construction
     assert REFINEMENTS[0] == "eligible_all"
     forbidden = {"score", "weighted_score", "overall_utility", "composite", "primary", "verdict",

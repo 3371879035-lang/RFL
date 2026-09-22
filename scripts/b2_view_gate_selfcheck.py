@@ -435,7 +435,7 @@ MUTATIONS: tuple = (
         RUNNER,
         "    checkpoints: tuple\n",
         "    checkpoints: tuple\n    world_id: object = None                        # MUTATED\n",
-        f"{B2_RUN_TESTS}::test_5_the_paired_futures_share_one_exogenous_setup",
+        f"{B2_RUN_TESTS}::test_5_the_paired_futures_share_one_training_stream",
         # Measured: the widened surface is refused by ExogenousSetup.__post_init__ itself,
         # so the closed-surface check is load-bearing production code and the gate never
         # reaches its own assertion. The declaration records the mechanism that fires.
@@ -448,7 +448,9 @@ MUTATIONS: tuple = (
         "    observations: tuple\n",
         "    observations: tuple\n    score: float = 0.0                            # MUTATED\n",
         f"{B2_RUN_TESTS}::test_10_the_record_keeps_three_dimensions_and_no_composite",
-        "record.__dataclass_fields__",
+        # Measured: the record's field-set assertion reports the widened surface as an extra item,
+        # which is the failure text this mutation actually prints.
+        "Extra items in the left set",
     ),
     (
         "unaffected_constructed_after_treatment",
@@ -493,19 +495,27 @@ MUTATIONS: tuple = (
         "        clones = [state.clone() for _ in arms]\n        pre_fingerprints = {arm.name: fingerprint(clone) for arm, clone in zip(arms, clones)}\n        if len(set(pre_fingerprints.values())) != 1:\n            raise ProtocolError(\n                \"the two arms did not start from one pre-update state: fingerprints \"\n                f\"{pre_fingerprints!r}; a serial chain from one arm into the other is not a pair\")\n\n        # (3) the updates, each on its own clone, before any future exists\n        for arm, clone in zip(arms, clones):\n            self._apply(arm, clone, evidence, self._q_reference)\n            self._recorder(\"update_applied\", arm.name, id(clone))\n",
         "        clones = [state.clone()]\n        self._apply(arms[0], clones[0], evidence, self._q_reference)   # MUTATED: arm 1 runs first ...\n        self._recorder(\"update_applied\", arms[0].name, id(clones[0]))\n        clones.append(clones[0].clone())                               # ... arm 2 clones its post-state\n        self._apply(arms[1], clones[1], evidence, self._q_reference)\n        self._recorder(\"update_applied\", arms[1].name, id(clones[1]))\n        pre_fingerprints = {arm.name: fingerprint(clone) for arm, clone in zip(arms, clones)}\n        if len(set(pre_fingerprints.values())) != 1:\n            raise ProtocolError(\n                \"the two arms did not start from one pre-update state: fingerprints \"\n                f\"{pre_fingerprints!r}; a serial chain from one arm into the other is not a pair\")\n",
         f"{B2_RUN_TESTS}::test_4_the_arms_fork_from_one_pre_update_state",
-        # Measured: the gate now fails on its OWN parent check rather than on the runner's
+        # Measured: the gate now fails on its OWN clone-parent check rather than on the runner's
         # fingerprint guard, because the mutation changes the derivation while the resulting
-        # contents can still converge.
-        "a clone was taken from a state that had already been updated",
+        # contents can still converge (A91 added a second pair of clones for the future states,
+        # so the test distinguishes the two ARM clones from the two FUTURE clones by their parent).
+        "the two ARM clones must be taken from the one pre-update state",
     ),
     (
-        "paired_arms_use_different_future_noise",
-        "one arm is given a fresh, value-equal exogenous setup, so the arms no longer share noise and the difference between them is no longer attributable to Delta W",
+        "paired_arms_use_different_training_stream",
+        "one arm is handed a training protocol with a different seed, so the arms no longer draw one keyed episode stream and a between-arm difference is no longer attributable to Delta W. The boundary moved when A91 replaced the single-episode exogenous setup with the training instrument: the old mutation proved only that one unused setup object was shared, so it guarded an object that no longer feeds the future",
         RUNNER,
-        "            environment = self._environment_factory(exogenous)\n            self._recorder(\"exogenous\", arm.name, id(exogenous))",
-        "            _setup = exogenous if arm is arms[0] else ExogenousSetup(       # MUTATED\n                kappa=exogenous.kappa, phi=exogenous.phi, tape=exogenous.tape,\n                base_option=exogenous.base_option, q_reference=exogenous.q_reference,\n                checkpoints=exogenous.checkpoints)\n            environment = self._environment_factory(_setup)\n            self._recorder(\"exogenous\", arm.name, id(_setup))",
-        f"{B2_RUN_TESTS}::test_5_the_paired_futures_share_one_exogenous_setup",
-        "len(set(setup_ids)) == 1",
+        "            protocol = self._training\n",
+        "            protocol = (self._training if arm.name == arms[0].name else\n"
+        "                        FutureTrainingProtocol(seed=self._training.seed + 1,\n"
+        "                                               alpha=self._training.alpha,\n"
+        "                                               epsilon=self._training.epsilon,\n"
+        "                                               t_max=self._training.t_max,\n"
+        "                                               grid=self._training.grid,\n"
+        "                                               evaluation_sample=self._training.evaluation_sample,\n"
+        "                                               v_pre=self._training.v_pre))  # MUTATED\n",
+        f"{B2_RUN_TESTS}::test_5_the_paired_futures_share_one_training_stream",
+        "did not consume one shared training protocol",
     ),
     (
         "future_before_update",

@@ -27,19 +27,24 @@ transition system:
   $m(W; u) = \texttt{trace.return\_value}$ per scene with $V$ the evaluation-sample mean, so
   $V(W^{\varnothing}; Q^{*}) = V_{\text{pre}}$ is the same operator.
 
-What this module deliberately does not decide: the acquisition cap, the grid, the evaluation sample's
-ordering, $\alpha$ and $\varepsilon_{\text{explore}}$ --- those are $F_0$/$F_1$ quantities, and
-`TrainingProtocol` carries them as declared inputs rather than inventing them here.
+What this module deliberately does not decide: $\alpha$, $\varepsilon_{\text{explore}}$, $T^{*}$,
+$\mathcal G_{\text{ckpt}}$, the evaluation sample and $V_{\text{pre}}$ --- those are $F_0$/$F_1$
+quantities, carried here as declared inputs rather than invented. The pre-$F_1$ envelope and the
+post-$F_1$ production run are **different objects** (`BaselineAcquisitionPlan` versus
+`FutureTrainingProtocol`), because an acquisition cap is not a locked horizon.
 """
 
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass
 from fractions import Fraction
 
 from rfl_rebuild.b1.errors import ProtocolError
+from rfl_rebuild.b2.environment import learned_rollout
+from rfl_rebuild.b2.unaffected import EvaluationScene
+from rfl_rebuild.env.domain import is_true_int
 from rfl_rebuild.env.kernel import (
-    HORIZON,
     START,
     Action,
     ControlState,
@@ -50,15 +55,15 @@ from rfl_rebuild.env.kernel import (
     option_ids,
     rollout,
 )
-from rfl_rebuild.b2.environment import learned_rollout
 from rfl_rebuild.learner.store import Q, Edit, LearnerPersistentState, QAddress
 
 __all__ = [
     "M64",
     "TAGS",
+    "BaselineAcquisitionPlan",
     "Curve",
     "ExogenousEpisode",
-    "TrainingProtocol",
+    "FutureTrainingProtocol",
     "effective_value",
     "episode_rollout",
     "is_explore",
@@ -195,53 +200,124 @@ def effective_value(overrides, q_reference, address: QAddress) -> float:
     return q_reference.value(address) if stored is None else float(stored)
 
 
-@dataclass(frozen=True, slots=True)
-class TrainingProtocol:
-    r"""The declared inputs of a training run. Design quantities arrive here; none is chosen here.
+def _require_scene_sample(sample, *, what: str) -> tuple:
+    r"""The evaluation sample is a **nominal** input, not a duck-typed one.
 
-    * $\alpha$, $\varepsilon_{\text{explore}}$ --- pre-data $F_0$ constants, $\varepsilon$ as an exact
-      rational;
-    * `cap` --- the acquisition cap on the episode axis, which is also $T_{\max}$ for this run;
-    * `grid` --- $\mathcal G_{\text{ckpt}}$ on real episode indices; A84's span contract is enforced
-      ($grid[0] = 0$, $grid[-1] = cap$, strictly increasing, integers);
-    * `evaluation_sample` --- the measurement sample, read only.
+    $$\boxed{\forall u \in \mathcal S_{\text{eval}}:\ \operatorname{type}(u) = \texttt{EvaluationScene}}$$
+
+    A sample of objects that merely expose `.kappa/.tape/.base_option` would put an unaudited
+    representation on the measurement path. Duplicates are refused too: a repeated unit silently
+    reweights the mean.
+    """
+    sample = tuple(sample)
+    if not sample:
+        raise ProtocolError(f"{what} is empty; V would be a mean of nothing")
+    for unit in sample:
+        if type(unit) is not EvaluationScene:
+            raise ProtocolError(
+                f"{what} holds {type(unit).__name__}, not an EvaluationScene: the measurement sample is a "
+                "nominal input, and a duck-typed stand-in carries none of the U2 field guarantees")
+    if len(set(sample)) != len(sample):
+        raise ProtocolError(f"{what} repeats a scene, which would silently reweight the mean")
+    return sample
+
+
+def _require_learning_constants(alpha, epsilon) -> None:
+    if not isinstance(alpha, Fraction) or not 0 < alpha <= 1:
+        raise ProtocolError(f"alpha must be an exact rational in (0, 1], got {alpha!r}")
+    if not isinstance(epsilon, Fraction) or not 0 < epsilon <= 1:
+        raise ProtocolError(f"eps_explore must be an exact rational in (0, 1], got {epsilon!r}")
+
+
+def _require_seed(seed) -> None:
+    if not is_true_int(seed) or seed < 0:
+        raise ProtocolError(f"the seed must be a true non-negative integer, got {seed!r}")
+
+
+def _require_grid(grid, *, t_max: int) -> tuple:
+    r"""$\mathcal G_{\text{ckpt}}$ on real episode indices, with A84's span contract."""
+    grid = tuple(grid)
+    if len(grid) < 3:
+        raise ProtocolError(
+            f"the checkpoint grid carries {len(grid)} checkpoint(s); K = 3's maintained-recovery window "
+            "needs at least three")
+    for t in grid:
+        if not is_true_int(t):
+            raise ProtocolError(f"the checkpoint grid holds {t!r}, not an integer episode index")
+    if tuple(sorted(grid)) != grid or len(set(grid)) != len(grid):
+        raise ProtocolError(f"the checkpoint grid must be strictly increasing, got {grid}")
+    if grid[0] != 0 or grid[-1] != t_max:
+        raise ProtocolError(
+            f"the curve must span the horizon (A84): grid[0] = 0 and grid[-1] = t_max, got {grid} with "
+            f"t_max = {t_max}")
+    return grid
+
+
+@dataclass(frozen=True, slots=True)
+class FutureTrainingProtocol:
+    r"""The **post-$F_1$** production inputs of a training run.
+
+    $$\boxed{\left(\sigma,\ \alpha,\ \varepsilon,\ T^{*},\ \mathcal G^{*},\
+    \mathcal S_{\text{eval}}^{*},\ V_{\text{pre}}^{*}\right)}$$
+
+    * $\sigma$ --- from $F_0$'s exact seed set, a true integer;
+    * $\alpha$, $\varepsilon$ --- $F_0$ pre-data constants, $\varepsilon$ an exact rational;
+    * $T^{*}$ and $\mathcal G^{*}$ --- **$F_1$-locked** scientific quantities. `t_max` is the locked
+      horizon, *not* an acquisition cap: the pre-$F_1$ envelope is a different object
+      (`BaselineAcquisitionPlan`), precisely because $T$ may not exist before the baseline data does;
+    * $\mathcal S_{\text{eval}}^{*}$ --- the locked nominal evaluation sample;
+    * $V_{\text{pre}}^{*}$ --- the **locked, shared** pre-level. A85 §73.1 freezes that $V_{\text{pre}}$
+      is measured once and shared, so the production path injects it: two equal measurements are not one
+      frozen measurement. `pre_level()` remains for the seedless $F_1$ construction and its gates only.
     """
 
     seed: int
     alpha: Fraction
     epsilon: Fraction
-    cap: int
+    t_max: int
     grid: tuple
     evaluation_sample: tuple
-    horizon: int = HORIZON
+    v_pre: float
 
     def __post_init__(self) -> None:
-        if not 0 < self.alpha <= 1:
-            raise ProtocolError(f"alpha must satisfy 0 < alpha <= 1, got {self.alpha}")
-        if not isinstance(self.epsilon, Fraction):
-            raise ProtocolError("eps_explore must be an exact rational")
-        if not 0 < self.epsilon <= 1:
-            raise ProtocolError(f"eps_explore must satisfy 0 < eps <= 1, got {self.epsilon}")
-        if not isinstance(self.cap, int) or isinstance(self.cap, bool) or self.cap < 1:
-            raise ProtocolError(f"the acquisition cap must be a positive integer, got {self.cap!r}")
-        grid = tuple(self.grid)
-        if len(grid) < 3:
+        _require_seed(self.seed)
+        _require_learning_constants(self.alpha, self.epsilon)
+        if not is_true_int(self.t_max) or self.t_max < 1:
+            raise ProtocolError(f"t_max must be a true positive integer, got {self.t_max!r}")
+        grid = _require_grid(self.grid, t_max=self.t_max)
+        sample = _require_scene_sample(self.evaluation_sample, what="the evaluation sample")
+        if not isinstance(self.v_pre, float) or not math.isfinite(self.v_pre):
             raise ProtocolError(
-                f"the checkpoint grid carries {len(grid)} checkpoint(s); K = 3's maintained-recovery "
-                "window needs at least three")
-        for t in grid:
-            if not isinstance(t, int) or isinstance(t, bool):
-                raise ProtocolError(f"the checkpoint grid holds {t!r}, not an integer episode index")
-        if tuple(sorted(grid)) != grid or len(set(grid)) != len(grid):
-            raise ProtocolError(f"the checkpoint grid must be strictly increasing, got {grid}")
-        if grid[0] != 0 or grid[-1] != self.cap:
-            raise ProtocolError(
-                f"the curve must span the horizon (A84): grid[0] = 0 and grid[-1] = cap, got {grid} with "
-                f"cap = {self.cap}")
-        if not self.evaluation_sample:
-            raise ProtocolError("the evaluation sample is empty; V would be a mean of nothing")
+                f"v_pre must be a finite locked level (the shared frozen measurement), got {self.v_pre!r}")
         object.__setattr__(self, "grid", grid)
-        object.__setattr__(self, "evaluation_sample", tuple(self.evaluation_sample))
+        object.__setattr__(self, "evaluation_sample", sample)
+
+
+@dataclass(frozen=True, slots=True)
+class BaselineAcquisitionPlan:
+    r"""The **pre-$F_1$** $S_2$ master acquisition: an envelope, not a locked design.
+
+    $$\boxed{\left(\sigma,\ \alpha,\ \varepsilon,\ \text{acquisition cap},\
+    \text{master evaluation bank}\right)}$$
+
+    It deliberately carries **no** $\mathcal G_{\text{ckpt}}$: the grid and $T$ are chosen by the design
+    lock *from* this acquisition, so requiring them here would invert the order A90 §78.5 freezes.
+    """
+
+    seed: int
+    alpha: Fraction
+    epsilon: Fraction
+    acquisition_cap: int
+    evaluation_bank: tuple
+
+    def __post_init__(self) -> None:
+        _require_seed(self.seed)
+        _require_learning_constants(self.alpha, self.epsilon)
+        if not is_true_int(self.acquisition_cap) or self.acquisition_cap < 1:
+            raise ProtocolError(
+                f"the acquisition cap must be a true positive integer, got {self.acquisition_cap!r}")
+        sample = _require_scene_sample(self.evaluation_bank, what="the master evaluation bank")
+        object.__setattr__(self, "evaluation_bank", sample)
 
 
 @dataclass(frozen=True, slots=True)
@@ -358,7 +434,12 @@ def sweep_edits(learner, trace, episode: ExogenousEpisode, *, protocol: Training
 
 
 def pre_level(sample, *, q_reference) -> float:
-    r"""$$V(W^{\varnothing}; Q^{*}) = V_{\text{pre}}: \text{ the frozen operator at the healthy state}$$"""
+    r"""$$V(W^{\varnothing}; Q^{*}) = V_{\text{pre}}: \text{ the frozen operator at the healthy state}$$
+
+    **This is the seedless construction and gate path, not the production path.** A85 §73.1 freezes
+    $V_{\text{pre}}$ as one measurement, computed once and shared; the production run injects it through
+    `FutureTrainingProtocol.v_pre` rather than calling this per arm.
+    """
     healthy = LearnerPersistentState()
     return _mean_return(healthy, sample, q_reference=q_reference)
 
@@ -372,20 +453,27 @@ def _mean_return(learner, sample, *, q_reference) -> float:
     return total / len(sample)
 
 
-def train_curve(learner, *, protocol: TrainingProtocol, q_reference) -> Curve:
-    r"""Run $e = 0 \ldots \text{cap}$, evaluating $V(e)$ at the grid's checkpoints.
+def train_curve(learner, *, protocol: FutureTrainingProtocol, q_reference) -> Curve:
+    r"""Run $e = 0 \ldots T^{*}$, evaluating $V(e)$ at the grid's checkpoints.
 
     $V(e)$ is the level of $W_e$ --- the state the learner **enters** episode $e$ with --- so the curve is
     a function of the training path and not of the measurement schedule. Evaluation is greedy and
     read-only: it never draws from the episode generator and never writes to the learner.
+
+    $$\boxed{\text{the curve's } pre\_level \text{ is } protocol.v\_pre, \text{ injected --- never
+    re-measured here}}$$
+
+    The training itself is **in place** on the learner handed in, which is why the caller must pass a
+    clone: the production runner keeps the arm's immediate post-B1 state as the collateral's measurement
+    target, and A85 §73.2.2 measures that state, not a state that has since been trained.
     """
     working = learner
     values = []
     grid = set(protocol.grid)
-    for e in range(protocol.cap + 1):
+    for e in range(protocol.t_max + 1):
         if e in grid:
             values.append(_mean_return(working, protocol.evaluation_sample, q_reference=q_reference))
-        if e == protocol.cap:
+        if e == protocol.t_max:
             break
         episode = ExogenousEpisode.derive(protocol.seed, e)
         trace = episode_rollout(working, episode, protocol=protocol, q_reference=q_reference)
@@ -393,5 +481,4 @@ def train_curve(learner, *, protocol: TrainingProtocol, q_reference) -> Curve:
         if edits:
             working.apply_transaction(edits, q_reference=q_reference)
     return Curve(values=tuple(values), episodes=tuple(protocol.grid),
-                 pre_level=pre_level(protocol.evaluation_sample, q_reference=q_reference),
-                 t_max=protocol.cap)
+                 pre_level=protocol.v_pre, t_max=protocol.t_max)

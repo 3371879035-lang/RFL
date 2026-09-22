@@ -31,7 +31,9 @@ sys.path.insert(0, str(ROOT / "scripts"))
 import _mutation_harness as harness  # noqa: E402
 
 TRAINING = ROOT / "src" / "rfl_rebuild" / "b2" / "training.py"
+RUNNER = ROOT / "src" / "rfl_rebuild" / "b2" / "runner.py"
 TESTS = "tests/rebuild/test_b2_training.py"
+RUNNER_TESTS = "tests/rebuild/test_b2_runner.py"
 
 MUTATIONS = (
     (
@@ -66,6 +68,46 @@ MUTATIONS = (
         f"{TESTS}::test_10_uniform_action_has_exact_pre_images_and_uses_rejection",
         "the index draw is not balanced",
     ),
+    (
+        "future_training_mutates_collateral_state",
+        "the future trains the arm's own post-B1 state instead of a clone, so the collateral measures a "
+        "trained learner while A85 73.2.2 fixes V_unaffected,post as the immediate post-update state -- "
+        "and the defect is invisible in the future dimension itself",
+        RUNNER,
+        "            future_state = post_states[arm.name].clone()",
+        "            future_state = post_states[arm.name]  # MUTATED",
+        f"{RUNNER_TESTS}::test_5b_the_collateral_measures_the_immediate_post_b1_state",
+        "measures $V_{unaffected,post}$ on the immediate post-B1 state",
+    ),
+    (
+        "remeasure_v_pre_per_arm",
+        "the production curve re-measures V_pre instead of using the locked shared value, so two arms "
+        "consume two measurements that happen to agree -- which A85 73.1 exists to forbid",
+        TRAINING,
+        "                 pre_level=protocol.v_pre, t_max=protocol.t_max)",
+        "                 pre_level=pre_level(protocol.evaluation_sample, q_reference=q_reference),\n"
+        "                 t_max=protocol.t_max)  # MUTATED",
+        f"{TESTS}::test_23_the_curve_uses_the_locked_v_pre_and_never_re_measures_it",
+        "re-measured V_pre",
+    ),
+    (
+        "second_arm_uses_different_training_seed",
+        "the second arm is handed a training protocol with a different seed, so the arms no longer draw "
+        "one keyed episode stream and the contrast stops being paired -- the real CRN boundary that the "
+        "old single-episode exogenous setup no longer guarded",
+        RUNNER,
+        "            protocol = self._training\n",
+        "            protocol = (self._training if arm.name == arms[0].name else\n"
+        "                        FutureTrainingProtocol(seed=self._training.seed + 1,\n"
+        "                                               alpha=self._training.alpha,\n"
+        "                                               epsilon=self._training.epsilon,\n"
+        "                                               t_max=self._training.t_max,\n"
+        "                                               grid=self._training.grid,\n"
+        "                                               evaluation_sample=self._training.evaluation_sample,\n"
+        "                                               v_pre=self._training.v_pre))  # MUTATED\n",
+        f"{RUNNER_TESTS}::test_5_the_paired_futures_share_one_training_stream",
+        "did not consume one shared training protocol",
+    ),
 )
 
 
@@ -79,8 +121,9 @@ def main() -> int:
     for key, node, why in stale:
         print(f"[STALE_NODE_ID       ] {key:34} -> {node} ({why})")
 
-    results, restored = harness.run_mutations(MUTATIONS, ROOT, (TRAINING,))
-    return harness.summarise("A91 training-time instrument: pre-step context, in-force option, uniform draw",
+    results, restored = harness.run_mutations(MUTATIONS, ROOT, (TRAINING, RUNNER))
+    return harness.summarise("A91 training-time instrument: pre-step context, in-force option, uniform draw, "
+                             "collateral state, locked V_pre, shared stream",
                              MUTATIONS, results, restored, stale, ROOT, pathlib.Path(args.json))
 
 

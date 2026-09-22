@@ -38,7 +38,7 @@ from rfl_rebuild.b1.runner import run_controller_law, run_dq_law, run_process_la
 from rfl_rebuild.b1.tier import Tier
 from rfl_rebuild.b2.collateral import behavioral_collateral_scenes, measure_scene_map
 from rfl_rebuild.b2.retention import select_form
-from rfl_rebuild.b2.training import TrainingProtocol, train_curve
+from rfl_rebuild.b2.training import FutureTrainingProtocol, train_curve
 from rfl_rebuild.b2.unaffected import (
     REFINEMENTS,
     CreditedSite,
@@ -175,6 +175,7 @@ class PairedSceneRecord:
     retention: Mapping
     ledgers: Mapping
     fingerprints_pre: Mapping
+    fingerprints_post: Mapping
     observations: tuple
 
 
@@ -202,7 +203,7 @@ class PairedRunner:
         """
         if not callable(environment_factory):
             raise ProtocolError("the environment factory is not callable")
-        if not isinstance(training, TrainingProtocol):
+        if not isinstance(training, FutureTrainingProtocol):
             raise ProtocolError(
                 "the runner needs A91's training protocol: the future curve is indexed by training "
                 "episode, and a step-indexed curve is refused rather than reinterpreted")
@@ -340,28 +341,66 @@ class PairedRunner:
             self._apply(arm, clone, evidence, self._q_reference)
             self._recorder("update_applied", arm.name, id(clone))
 
-        # (4) the paired futures on ONE shared exogenous setup. The curve's index is the TRAINING EPISODE
-        #     (A91): each arm's post-write learner is trained under the same protocol, and both arms share
-        #     the keyed episode stream, so a between-arm difference can only come from the initial write.
+        # (3b) the IMMEDIATE post-B1 states, captured before any future training runs.
+        #      A85 §73.2.2 freezes $V_{\text{unaffected,post}}$ as **that arm's own post-update state**,
+        #      and A91's training learns in place, so the future must consume a clone while the collateral
+        #      keeps measuring this state. Before A91 the future producer was read-only, which is why the
+        #      old order was safe; it no longer is, and the order is now asserted rather than assumed.
+        post_states = {arm.name: clone for arm, clone in zip(arms, clones)}
+        post_fingerprints = {arm.name: fingerprint(post_states[arm.name]) for arm in arms}
+
+        # (4) the paired futures on ONE shared training protocol: the same keyed episode stream for both
+        #     arms (A91 §79.5/§79.8), so a between-arm difference can only come from the initial write.
         futures, curves, observations = {}, {}, []
+        protocol_ids = set()
         for arm, clone in zip(arms, clones):
             environment = self._environment_factory(exogenous)
             self._recorder("exogenous", arm.name, id(exogenous))
             self._recorder("environment", arm.name, id(environment))
+            # ONE protocol object for both arms: this is the binding the CRN gate reads, and the
+            # assertion below is what makes "the arms share one episode stream" mechanical
+            protocol = self._training
+            protocol_ids.add(id(protocol))
+            self._recorder("training_protocol", arm.name, id(protocol))
             observations.append((arm.name, exogenous.kappa, exogenous.phi, exogenous.base_option,
-                                 exogenous.tape, exogenous.checkpoints))
-            curve = train_curve(clone, protocol=self._training, q_reference=self._q_reference)
+                                 exogenous.tape, exogenous.checkpoints,
+                                 protocol.seed, protocol.t_max, protocol.grid))
+            # the future learns on a CLONE of the post-B1 state; the post state itself is the
+            # collateral's measurement target and must come out of this loop untouched. The identity
+            # check comes first because it is decisive on its own: a value-level check passes vacuously
+            # whenever training happens to leave the learner where it was, which is exactly what a
+            # healthy fixture does.
+            future_state = post_states[arm.name].clone()
+            if future_state is post_states[arm.name]:
+                raise ProtocolError(
+                    "the future was handed the arm's own post-B1 state rather than a clone: A85 §73.2.2 "
+                    "measures $V_{unaffected,post}$ on the immediate post-B1 state, so future training "
+                    "must not run on it")
+            curve = train_curve(future_state, protocol=protocol, q_reference=self._q_reference)
             curves[arm.name] = curve
             futures[arm.name] = FutureUtility.from_curve(
                 curve.values, curve.episodes, pre_level=curve.pre_level, t_max=curve.t_max)
             self._recorder("future", arm.name, (curve.values, curve.episodes))
 
+        if len(protocol_ids) != 1:
+            raise ProtocolError(
+                "the paired futures did not consume one shared training protocol: the arms would draw "
+                "different episode streams and the contrast would no longer be paired")
+        for arm in arms:
+            if fingerprint(post_states[arm.name]) != post_fingerprints[arm.name]:
+                raise ProtocolError(
+                    f"arm {arm.name!r}'s post-update state moved during the future computation: A85 "
+                    "§73.2.2 measures $V_{unaffected,post}$ on the immediate post-B1 state, so future "
+                    "training must run on a clone")
+
         # (5) the three dimensions, separately. Collateral is V_unaffected,pre - V_unaffected,post(a)
         #     **per arm**, over the unit set, against the one shared pre map -- not a difference
         #     between the two arms, which is the paired contrast this dimension is not
         collateral, post_maps = {}, {}
-        for arm, clone in zip(arms, clones):
-            post_maps[arm.name] = measure_scene_map(clone, unaffected.units,
+        for arm in arms:
+            measured = post_states[arm.name]
+            self._recorder("collateral_state", arm.name, fingerprint(measured))
+            post_maps[arm.name] = measure_scene_map(measured, unaffected.units,
                                                     q_reference=self._q_reference)
             collateral[arm.name] = behavioral_collateral_scenes(
                 unaffected, values_pre=pre_map, values_post=post_maps[arm.name])
@@ -381,6 +420,7 @@ class PairedRunner:
             ledgers=MappingProxyType({arm.name: _ledger_of(clone)
                                       for arm, clone in zip(arms, clones)}),
             fingerprints_pre=MappingProxyType(pre_fingerprints),
+            fingerprints_post=MappingProxyType(post_fingerprints),
             observations=tuple(observations),
         )
 
