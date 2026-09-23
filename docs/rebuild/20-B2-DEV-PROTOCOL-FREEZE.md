@@ -491,21 +491,22 @@ $$\boxed{m_C(c) = \max_{A,\ i,\ \sigma,\ e}\ r_{A,i,\sigma,e}(c)}$$
   refinement. This uses the matrix §3 already freezes and introduces no new acquisition. The metric is that standard error **relative to the unrefined
   pool**, so it is dimensionless and compares candidates rather than sites:
 
-$$\boxed{m_C(c) = \max_{i}\
-\frac{\mathrm{se}_i(c)}{\mathrm{se}_i(\texttt{eligible\_all})},
-\qquad \text{with the zero cases decided directly}}$$
+**The zero cases, on the same objects.** There is one $m_C$, defined above over
+$(A, i, \sigma, e)$; the ratio it maximises decides its own zero cases directly, with no epsilon in the
+argument:
 
-$$\boxed{\mathrm{se}_i(\texttt{all}) = 0 \ \land\ \mathrm{se}_i(c) = 0 \;\Rightarrow\; \text{ratio} = 1}
+$$\boxed{SE_{A,i,\sigma,e}(\texttt{all}) = 0 \ \land\ SE_{A,i,\sigma,e}(c) = 0
+\;\Rightarrow\; r_{A,i,\sigma,e}(c) = 1}
 \qquad
-\boxed{\mathrm{se}_i(\texttt{all}) = 0 \ \land\ \mathrm{se}_i(c) > 0 \;\Rightarrow\; \text{inadmissible}}$$
+\boxed{SE_{A,i,\sigma,e}(\texttt{all}) = 0 \ \land\ SE_{A,i,\sigma,e}(c) > 0
+\;\Rightarrow\; c\ \text{inadmissible}}$$
 
-A $0/0$ means "this site's whole pool is exactly stable and so is the slice", which is *equal* stability
-rather than an undefined comparison; a slice that moves where its pool does not is one the pool's own
-stability cannot excuse, and it is refused rather than credited. The index $i$ ranges over the **credited
-sites of the frozen credited domains of every architecture** $\{D_Q, X, P\}$: $f_C$ is evaluated at $F_1$
-before any pair exists, and A85 §73.4 requires the construction to be behaviourally load-bearing for every
-architecture rather than only for the one that happens to be run. An architecture-free maximum is the
-fail-closed reading, and it needs nothing beyond the baseline traces.
+A $0/0$ means "this site's pool is exactly stable for that seed and episode, and so is the slice", which is
+*equal* stability rather than an undefined comparison; a slice that moves where its pool does not is one the
+pool's own stability cannot excuse, and it is refused rather than credited. Revision 3's earlier draft left
+these rules written on the superseded single-index $\mathrm{se}_i$ objects --- a second, contradictory
+definition of $m_C$ in the same section --- which the construction review caught; what remains here is the
+zero rule in the $(A, i, \sigma, e)$ vocabulary and nothing else.
 
   A slice can be more or less stable than the full pool --- dropping atypical units lowers the numerator,
   dropping units lowers the denominator's own $n$ --- which is exactly the trade a refinement makes, and
@@ -751,22 +752,36 @@ here instead of being inferred from the old artifact.
 line and *not* evidence about this revision: the scripts, the seed files and the manifest do not exist on
 this branch, and the digests are rev 2's.
 
-* **asserts that the code tree is clean** -- only the manifest output file itself may be dirty -- so a
-  manifest cannot be produced from an uncommitted instrument;
-* records the **execution revision**: the commit whose tree the scripts of §7 will actually run from;
-* fingerprints the **harness** itself -- every `scripts/run_*.py` (the three commands of §7 plus the two
-  seedless gate drivers) and the two declared seed files, by content digest -- so the frozen command
-  surface is pinned and not merely named;
-* asserts and records the **evaluation sample** of §3: that `scene_domain()` and `u2_domain()` agree
-  element-wise on all $5760$ units, that the order is A88 §76.2's lexicographic one, the prefix boundary
-  of each $\mathcal C_{N_{\text{eval}}}$ candidate, and a digest of the first $N_{\max}$ scenes. Without
-  that assertion a re-ordering of either enumerator would silently redefine every candidate;
-* separates authorisation by validity:
+**HISTORICAL REV2 CONTRACT --- NOT A REV3 REQUIREMENT.** The bullets that follow described revision 2's
+generator, and one of them required the evaluation sample to be "A88 §76.2's lexicographic order", which
+rev 3 replaced with the balanced ordering. They are kept, verbatim, as history rather than as instructions:
 
-```
-"currently_authorises":    []
-"authorises_on_validity":  ["smoke5"]
-```
+* *(rev 2)* asserts that the code tree is clean --- only the manifest output file itself may be dirty --- so a
+  manifest cannot be produced from an uncommitted instrument;
+* *(rev 2)* records the execution revision: the commit whose tree the scripts of §7 run from;
+* *(rev 2)* fingerprints the harness --- every `scripts/run_*.py` and the two declared seed files, by content
+  digest;
+* *(rev 2)* asserts and records the evaluation sample of §3 as **A88 §76.2's lexicographic order** ---
+  **superseded**: rev 3's manifest records the balanced ordering algorithm, its digest and the candidate
+  prefix summaries instead;
+* *(rev 2)* separates authorisation by validity: `"currently_authorises": []` /
+  `"authorises_on_validity": ["smoke5"]` --- **still current**, and restated in the rev 3 contract above.
+
+**The manifest and smoke report store different halves of the gate evidence.** The manifest cannot know a
+future smoke run's exit codes, so the split is frozen rather than left to the harness:
+
+$$\boxed{\text{the manifest stores } \mathcal G_{\text{smoke}}, \text{ the command-list digest, and the
+}\textbf{ expected}\text{ artifact digests}}$$
+
+$$\boxed{\text{the smoke report stores the }\textbf{ actual}\text{ exit codes and the }\textbf{ actual}
+\text{ artifact digests}}$$
+
+and `evaluate_smoke_gate.py` checks exactly three things: the command lists are equal, every actual exit
+code is $0$, and every gate with an artifact has `actual digest == manifest's expected digest`. That is why
+$\S$7 excludes manifest *generation* from the suite: the manifest is the expectation, the smoke report is
+the observation, and neither has to predict the other. If a future revision wants the manifest to carry
+preflight exit codes as well, they must be labelled as construction-time results of a non-scientific
+benchmark run, never as a smoke invocation's.
 
 As generated on this revision's execution commit:
 
@@ -803,8 +818,11 @@ that earlier arrows produced (**ACCEPTED** as ledger treatment).
 
 ## 8. Runtime bound, derived from two measurements
 
-$$\boxed{\text{bound} = \left(\text{gate suite} + 10 \times \text{seedless benchmark}\right) \times 2
+$$\boxed{B_{\text{stage}} = 2\left(T_{\text{suite}} + 10\,T^{\text{op}}_{\text{bench}}\right)
 \qquad \texttt{[PROPOSED, derived from two measurements]}}$$
+
+$$\boxed{T^{\text{op}}_{\text{bench}} = \text{the deterministic non-scientific benchmark of §1, run with }
+\mathcal B_{\text{bench}}}$$
 
 | stage | bound |
 |---|---|
@@ -825,11 +843,13 @@ The old rule and its floors are kept **only as history**: it was computed from a
 single $1024$-scene rollout pass, and its $30$ s smoke bound could not contain the mandatory gate suite, so
 it cannot be the rev 3 rule. It is recorded rather than silently deleted because §12's log refers to it.
 
-**What $T_{\text{bench}}$ must measure, per stage.** For smoke it is the smoke workload's own
-seedless pass; for the development baseline it must represent **A91's master acquisition**
+**What $T^{\text{op}}_{\text{bench}}$ must measure, per stage.** For smoke it is the smoke workload's
+own pass; for the development baseline it must represent **A91's master acquisition**
 (`acquire_master_baseline`: one training run per development seed to `ACQUISITION_CAP`, evaluated on the
 master bank), not the retired $1024$-scene single-rollout probe. Both are `[PROPOSED]` until measured on
-this line's execution revision, and neither may be inferred from rev 2's numbers.
+this line's execution revision, neither may be inferred from rev 2's numbers, and both draw their keys from
+$\mathcal B_{\text{bench}}$ --- so "must represent the real keyed acquisition" and "must not touch a
+scientific seed" hold together instead of contradicting each other.
 
 The benchmark is **deterministic and non-scientific**, not "seedless": it draws its keys from
 $\mathcal B_{\text{bench}}$ of §1, so it exercises the real keyed acquisition while touching no scientific
