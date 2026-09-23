@@ -376,6 +376,7 @@ IMPORT_ALLOWLIST = (
     # standard-library data plumbing on the path from a declared bank to the artifact the lock reads.
     "hashlib", "itertools",
     "rfl_rebuild.b2.evalorder", "rfl_rebuild.b2.acquisition",
+    "rfl_rebuild.b2.numerics", "rfl_rebuild.b2.initializer",
     "rfl_rebuild.b1.contract", "rfl_rebuild.b1.laws", "rfl_rebuild.b1.runner",
     "rfl_rebuild.b1.tier", "rfl_rebuild.env.domain",
 )

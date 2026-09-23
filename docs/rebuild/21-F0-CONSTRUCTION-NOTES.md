@@ -209,11 +209,57 @@ raised here rather than settled by `run_dev_baseline.py`. One measured input to 
 unit costs $0.486$ s at the healthy state and the envelope holds $1312$ of them, so the development
 acquisition is $\approx 11$ min of the *same* work the benchmark of §8 must time.
 
-## 4. What remains in construction
+## 4. The approved initializer's gate, and its verdict
+
+$I_{D_Q} = W^{\varnothing} + \Delta W^{\text{cal}}_{D_Q}$ was approved as the $F_0$ choice and implemented in
+`src/rfl_rebuild/b2/initializer.py`; its pre-specified gate ran on the frozen workload (all $32$
+$\mathcal B^{\text{op}}_{\text{dev}}$ keys, `ACQUISITION_CAP = 40`, the balanced master bank) and returned
+
+$$\boxed{\texttt{experiments/v03r/f0\_initializer\_gate.json}:\ \textbf{INADMISSIBLE}}$$
+
+| proposition | verdict | measurement |
+|---|---|---|
+| (a) canary present at $e = 0$ | **true** | exactly one override, at A87 §75.2's address, value $-0.14$ |
+| (a$'$) left the fixed point | **false** | no episode changed $Q_D^{L}$ at all: 32 constant override traces |
+| (b1) curve moves | **false** | every key's bank curve is constant in $e$ |
+| (b2) curves separate | **false** | all $32$ curves are the *same* constant curve |
+| (c) repaired within the cap | **false** | 0 repairs |
+| diagnostic (non-deciding) | --- | the canary address was written by **0 of 1280** training episodes |
+
+**Two mechanisms, both structural, neither about the run's luck.** `scripts/f0_initializer_diagnostic.py`
+re-derives them:
+
+* **the defect is off the training stream's support.** The stream writes $1330$ distinct $Q$ addresses over
+  $1312$ episodes, and $99$ of those episodes do write the canary's *state* --- but the canary's **address**
+  is the conjunction $(\kappa = 0 \land \phi = 0 \land \zeta = 1 \land a^{\text{cmd}} = 3)$ at the entry
+  context, and that conjunction never occurs. The $27$ episodes in the canary's own cell
+  $(\kappa, \phi, \zeta) = (0, 0, 1)$ would need the exploration coin to pick $a = 3$ at that step --- and
+  the greedy action can never be $3$ there, because the canary is what lowered its value. An A87 canary is a
+  **fixed-scene measurement fixture**: A88's screening guarantees reachability by choosing the witness scene,
+  and the ordinary training stream makes no such promise;
+* **repair needs 54 visits, not one.** The store canonicalises an override only on **bit-exact** equality with
+  the reference, and the sweep is $v \leftarrow v + \alpha\,(Q^{*} - v)$. At the frozen $\alpha = 1/2$ that is
+  a geometric contraction, so $-0.14$ reaches $0.8799999999999999$ only after **54** visits --- measured, and
+  pinned as a test. Even the expected $0.9$ visits per key ($27/32$ of episodes in the cell, times a $\sim
+  1/40$ exploration chance at that step) would leave the value at $0.37$, still an override.
+
+$$\boxed{\text{the failure is a property of the \emph{form} (one frozen address, exploration-only
+reachability, } \alpha = 1/2 \text{, bit-exact canonicalisation) --- not of the } D_Q \text{ choice}}$$
+
+**What was not done, because the frozen text forbids it.** No cap was enlarged, no other corruption was
+substituted, the acquisition path was **not** switched to the failed initializer (it still starts healthy and
+is still marked provisional), and no selector was read from benchmark material. The gate artifact is
+committed as the evidence, and the options belong to the reviewer: an initializer class whose defect lies on
+the *training stream's* support (the `08-V03R.md` §2.1 corruption-*mask* form, which no frozen source
+concretises), a stage-level redefinition of the training stream, or a repair criterion that is not bit-exact
+canonicalisation --- each of which is a design change, not a construction fix.
+
+## 5. What remains in construction
 
 | object | state |
 |---|---|
-| `evalorder.py`, `acquisition.py` | **landed**, gated; the acquisition's healthy start is now a **construction provisional implementation**, to be replaced by the ratified $I_{\text{baseline}}$ (CF-2) |
+| `evalorder.py`, `acquisition.py` | **landed**, gated; the acquisition still starts healthy and is a **provisional implementation**: the approved $I_{D_Q}$ **failed its gate** (§4 above), so the path is not switched to it |
+| `numerics.py` (CF-1's authoritative $\mathrm{sd}$), `initializer.py` + `scripts/f0_initializer_gate.py` + `scripts/f0_initializer_diagnostic.py`, their tests | **landed**; the gate's verdict is INADMISSIBLE and is with the reviewer |
 | `experiments/v03r/smoke_seeds.txt`, `dev_seeds.txt` | **landed** (transcription of §1's declared sets; LF, element by element) |
 | `scripts/run_smoke.py` (with `--plan`, the frozen $\mathcal G_{\text{smoke}}$ and the smoke-report field set of §9) | not written; `--plan` and the gate orchestration are unblocked, the real acquisition execution waits on CF-2 |
 | `scripts/run_dev_baseline.py` | not written; blocked on CF-2 and CF-5 |

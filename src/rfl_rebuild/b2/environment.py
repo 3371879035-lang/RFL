@@ -58,6 +58,10 @@ PRODUCTION_MODULES = (
     # development seed to the artifact every dev rule reads, so both are audited with the rest.
     "rfl_rebuild/b2/evalorder.py",
     "rfl_rebuild/b2/acquisition.py",
+    # F0 rev 4: the authoritative spread of §4.0 and the approved baseline initializer with its gate.
+    # Both are on the path from a development seed to the artifact every dev rule reads.
+    "rfl_rebuild/b2/numerics.py",
+    "rfl_rebuild/b2/initializer.py",
 )
 
 
