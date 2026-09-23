@@ -339,6 +339,18 @@ exact-equality behaviour.
 * **declared scales and epsilons**: every denominator below is either a frozen constant, a frozen
   quantity, or a spread with an explicit floor; the floor constants are declarations of this document, not
   library defaults;
+* **one definition of `sd`, and it is the population form.** Every `sd` in this document --- $f_N$'s
+  cross-scene scale, $f_C$'s standard error, the collateral bound's spread family and the Retention
+  threshold's per-run spread --- is
+
+$$\boxed{\mathrm{sd}(x_1, \ldots, x_n) = \sqrt{\frac{1}{n}\sum_{j=1}^{n}\left(x_j - \bar x\right)^2},
+\qquad \bar x = \frac{1}{n}\sum_j x_j}$$
+
+  i.e. the divisor is $n$, not $n-1$. The choice is frozen here rather than inherited, because Python and
+  NumPy disagree by default and the difference moves $m_N$, $m_C$ and both derived $\Delta_{\min}$. Two
+  consequences follow and are part of the definition: $n = 1$ gives $\mathrm{sd} = 0$ rather than an
+  undefined value, and the frozen per-set sufficient statistics of §3 --- count, sum, sum of squares ---
+  recover this form exactly, which is why they are the declared minimum;
 * **one acquisition**: every ranking metric reads $D^{\text{master}}_{\text{dev,baseline}}$ or the frozen
   static artifacts, never an arm.
 
@@ -372,12 +384,19 @@ different question: $N_{\text{eval}}$ is about **how many scenes the estimate st
 about **when it is read**. $f_N$ now measures sampling stability directly, against the largest sample as
 the reference:
 
-$$m_N(N) = \max_{t}\ \frac{\left|\hat V_N(t) - \hat V_{N_{\max}}(t)\right|}
-{\text{scale}(t)}, \qquad \text{scale}(t) = \max\left(\mathrm{sd}_{\text{scenes}}(t),\ \epsilon_N\right)$$
+$$m_N(N) = \max_{e = 0}^{\texttt{ACQUISITION\_CAP}}\
+\frac{\left|\hat V_N(e) - \hat V_{N_{\max}}(e)\right|}
+{\text{scale}(e)}, \qquad \text{scale}(e) = \max\left(\mathrm{sd}_{\text{scenes}}(e),\ \epsilon_N\right)$$
 
-where $\hat V_N(t)$ is the baseline level at episode $t$ computed over $\mathcal S_{\text{eval}}(N)$,
-$\mathrm{sd}_{\text{scenes}}(t)$ is the cross-scene standard deviation of the per-scene level at $t$ over
-$\mathcal S_{\text{eval}}(N_{\max})$, and $\epsilon_N = 10^{-9}$ is declared. The scale is the
+where $\hat V_N(e)$ is the mean over $\mathcal S_{\text{eval}}(N)$ of the level at training episode $e$,
+$\mathrm{sd}_{\text{scenes}}(e)$ is the cross-scene standard deviation (the population form of §4.0) of the
+per-scene levels at $e$ over $\mathcal S_{\text{eval}}(N_{\max})$ --- both read from the master matrix of
+§3 --- and $\epsilon_N = 10^{-9}$ is declared. **The quantifier's domain is the acquisition axis, $e = 0,
+\ldots, \texttt{ACQUISITION\_CAP}$, and not $0 \ldots T^{*}$**: $f_N$ deliberately does not depend on $f_T$
+in §6's graph, so its domain cannot be a horizon that does not exist when it runs. Revision 4's draft wrote
+$\max_t$ without naming the domain, which would have let an implementer choose the full acquisition axis,
+the locked horizon, the grid's checkpoints, or another subset --- four different selectors from one
+formula. The scale is the
 Monte-Carlo scale of the quantity being estimated, so $m_N$ is measured in units of cross-scene variation
 rather than in units of the curve's own drift -- which is what the reviewer's finding asked for, and what
 stops a healthy baseline that genuinely changes over time from being read as sample instability.
@@ -488,10 +507,10 @@ which is the same object `EvaluationScene` carries and the same field set A86 §
   separates. A79 lists coverage as a property, and A90 §78.6 requires each property's **role** to be
   declared: coverage is therefore a **static descriptor**, reported for every candidate and for every
   credited site, and it decides nothing. A89's totality already guarantees non-emptiness;
-* **the stability metric, as a formula.** For candidate $c$ and credited site $i$, on the baseline
-  envelope (no arm is involved), let $v_u$ be the scene's baseline level for $u \in C_i(c)$, and let
-  $\mathrm{se}_i(c) = \mathrm{sd}\{v_u\} / \sqrt{\lvert C_i(c)\rvert}$ be the standard error of the
-  refined collateral mean at that site.
+* **the stability metric, as a formula.** It is stated on the objects below --- the refinement $r$, the
+  credited site $c$, the seed $\sigma$ and the episode $e$ --- and the standard error it compares is the one
+  defined there; the superseded single-index notation of revision 3's draft ($\mathrm{se}_i(c)$ over a
+  candidate $c$ and a site $i$, with no run index) is withdrawn.
 
   **$v_u$ is the pre-update value from the master matrix, and A79 §67.4 fixes which quantity that is.**
   Revision 3's earlier draft read $v_u = V_{Q^{*}}(u)$, the *health reference's* own level, and called $f_C$ a
@@ -527,7 +546,7 @@ a static proxy for it, and it introduces no new acquisition. The metric is that 
   pool**, so it is dimensionless and compares candidates rather than sites:
 
 **The zero cases, on the same objects.** There is one $m_C$, defined above over
-$(A, i, \sigma, e)$; the ratio it maximises decides its own zero cases directly, with no epsilon in the
+$(A, c, \sigma, e)$; the ratio it maximises decides its own zero cases directly, with no epsilon in the
 argument:
 
 $$\boxed{SE_{A,c,\sigma,e}(\texttt{all}) = 0 \ \land\ SE_{A,c,\sigma,e}(r) = 0
@@ -546,8 +565,8 @@ zero rule in the $(A, i, \sigma, e)$ vocabulary and nothing else.
   A slice can be more or less stable than the full pool --- dropping atypical units lowers the numerator,
   dropping units lowers the denominator's own $n$ --- which is exactly the trade a refinement makes, and
   the definition needs nothing that $F_1$ does not already have;
-* **admissibility and ranking**: $m_C(c) \le \theta_C$ with $\theta_C = 1.0$ `[PROPOSED]` --- a slice may
-  not be *less* stable than the pool it was cut from --- and **smaller $m_C$ first**, because a smaller
+* **admissibility and ranking**: $m_C(r) \le \theta_C$ with $\theta_C = 1.0$ `[PROPOSED]` --- a refinement
+  may not be *less* stable than the pool it was cut from --- and **smaller $m_C$ first**, because a smaller
   standard error *is* more stable. Tie-break: `eligible_all` before any slice, then the order of
   $\mathcal C_C$ as written;
 * **dependency**: none on $f_N$ --- the metric reads the baseline envelope only, which is the correction
@@ -634,7 +653,7 @@ $$\boxed{\text{a shared numeric bound is a declared alias, not a shared identity
 |---|---|---|
 | `(P, RMST)` | primary endpoint of regime P | $\Delta_{\min} = 1.5$ episodes `[PROPOSED]`, **designer judgement** with its **$K/2$ rationale withdrawn**: $K = 3$ counts *checkpoints*, not episodes, and the grid is non-uniform, so $K/2 = 1.5$ has no automatic "1.5 episodes" meaning. The value stands as a proposal and **needs an independent practical-meaning rationale** before $F_0$ can be VALID |
 | `(P, DeficitAUC)` | mandatory co-primary of regime P (A79 §67.3) | $\Delta_{\min} = 0.01$ -- **inherited frozen default** from `11-ENVIRONMENT` §10's AUC-like row, which itself inherits the legacy `noninferiority_margin`; **not** a designer judgement |
-| `(P, BehavioralCollateral)` | collateral bound of regime P, over the refinement $f_C$ selects | **derived, with its aggregation surface frozen**: with $c^{*}$ the refinement $f_C$ produced, the spread family is $\bigl\{\mathrm{sd}_{u \in C_{r^{*}}^{A,\sigma,e}(c)} V_{\sigma,e,u}\bigr\}$ over the same $(A, \sigma, e, c)$ indices as $f_C$'s metric, with $r^{*}$ the refinement it selected, and the bound is the **nearest-rank $Q_{0.95}$ of that family** (§4.1's quantile convention, so no library interpolation enters). A family that is identically zero makes the endpoint inadmissible rather than assigning it a zero bound. Revision 3's draft named a per-site spread "across $\mathcal S_{\text{eval}}(N_{\max})$" with no seed or episode index, leaving `run_dev_lock.py` to choose the aggregation |
+| `(P, BehavioralCollateral)` | collateral bound of regime P, over the refinement $f_C$ selects | **derived, with its aggregation surface frozen**: with $r^{*}$ the refinement $f_C$ produced (and $c$ a credited site, as in §4.4), the spread family is $\bigl\{\mathrm{sd}_{u \in C_{r^{*}}^{A,\sigma,e}(c)} V_{\sigma,e,u}\bigr\}$ over the same $(A, \sigma, e, c)$ indices as $f_C$'s metric, with $r^{*}$ the refinement it selected, and the bound is the **nearest-rank $Q_{0.95}$ of that family** (§4.1's quantile convention, so no library interpolation enters). A family that is identically zero makes the endpoint inadmissible rather than assigning it a zero bound. Revision 3's draft named a per-site spread "across $\mathcal S_{\text{eval}}(N_{\max})$" with no seed or episode index, leaving `run_dev_lock.py` to choose the aggregation |
 | `(P, Retention)` | the $f_R$-configured endpoint -- `RetentionAtH(H*)` or `LateWindowRetention(H1*,H2*)`, under that form's own name and parameters | **derived in the endpoint's own units from its own per-run spread**: $\Delta_{\min} = \kappa_R \cdot \mathrm{sd}_i\bigl(R_i\bigr)$ over the $32$ baseline runs of §4.5, $\kappa_R = 0.25$ `[PROPOSED]`; an identically zero spread makes the form inadmissible. (Revision 3's draft wrote $\rho_R$ for this and $\rho_R$ for $f_R$'s Spearman redundancy, and read a *scene-level* spread for an endpoint that is a per-run scalar; the construction review caught both.) |
 | `(T, RMST)` | regime T's harm bound | $\Delta_{\min} := \Delta_{\min}\texttt{(P, RMST)}$ as a **declared alias** -- the same number, a separate identity, because the populations and the claims are separate |
 | `(T, DeficitAUC)` | regime T's mandatory companion, approved by review | $\Delta_{\min} := \Delta_{\min}\texttt{(P, DeficitAUC)} = 0.01$ -- the inherited frozen default, shared by value and **separate by identity**. A79 §67.3 makes DeficitAUC a mandatory companion of the primary endpoint, and A79 §62.5 keeps the two regimes' populations and claims apart, so this row exists rather than the statistic being reused across regimes |
@@ -651,10 +670,13 @@ dimensional error: RMST is measured in episodes and `RetentionAtH`/`LateWindowRe
 performance level. The replacement above is in the endpoint's own units, derived from its own sampling
 variability, and has no free dimension.
 
-**BehaviouralCollateral is defined precisely** rather than by the word "spread": the endpoint's baseline
-sampling spread is the per-credited-site standard deviation of $V_{\text{unaffected,pre}}$ across the
-evaluation-scene sample, taken site by site, and the bound is its nearest-rank $Q_{0.95}$ -- the same
-quantile convention §4.1 freezes, so no library's interpolation enters.
+**BehaviouralCollateral is defined precisely** rather than by the word "spread": its baseline spread
+family is $\bigl\{\mathrm{sd}_{u \in C_{r^{*}}^{A,\sigma,e}(c)} V_{\sigma,e,u}\bigr\}$ over the
+$(A, \sigma, e, c)$ indices of §4.4's metric, with the refinement $r^{*}$ that $f_C$ selected, and the bound
+is the nearest-rank $Q_{0.95}$ of that family --- the same quantile convention §4.1 freezes, so no library's
+interpolation enters. Revision 4's draft described "the per-site standard deviation of
+$V_{\text{unaffected,pre}}$ across the evaluation-scene sample" with no seed, episode or refinement index,
+which is the same defect §4.4 has since had corrected.
 
 **The T-regime rows are settled, and their provenance is per row.** The review ruled that the T regime
 carries DeficitAUC as a mandatory companion (so `(T, DeficitAUC)` exists with $\Delta_{\min} = 0.01$ and its
@@ -984,10 +1006,12 @@ here rather than re-specified. This revision applies the review's remaining ruli
   checklist item 21 is closed by A91.
 
 The remaining work before this document can be VALID is stated where it belongs rather than implied:
-$f_R$'s per-seed redundancy and $f_N$'s metric are executable only through the frozen instrument's
-`train_curve`, so §7's command surface must be brought onto A91 (the smoke path must execute and record the
-gate suite, and `run_dev_baseline.py` must acquire through `BaselineAcquisitionPlan`), and the bound of §8
-must be re-derived from that harness's own measurements. That is implementation work of $F_0$'s
+the design stage is executable only through the frozen instrument, and the construction path is
+`BaselineAcquisitionPlan` $\to$ `acquire_master_baseline` --- **not** `train_curve`, which takes the
+post-$F_1$ `FutureTrainingProtocol` that does not exist before the lock (§7). So §7's command surface must be
+brought onto A91 (the smoke path must execute and record the gate suite, and `run_dev_baseline.py` must
+acquire the master matrix plus the eligibility material), and the bound of §8 must be re-derived from that
+harness's own measurements. That is implementation work of $F_0$'s
 *construction*, not a further design choice.
 
 **rev 1 (`698eca2`) — REVIEW FAIL.** The review accepted the skeleton (seed sets and their form, the four
