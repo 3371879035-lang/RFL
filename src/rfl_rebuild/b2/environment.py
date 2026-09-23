@@ -54,6 +54,10 @@ PRODUCTION_MODULES = (
     # from a learner state to a measurement rather than beside it.
     "rfl_rebuild/b2/training.py",
     "rfl_rebuild/b2/runner.py",
+    # F0 §3: the master acquisition and the balanced evaluation ordering. Both are on the path from a
+    # development seed to the artifact every dev rule reads, so both are audited with the rest.
+    "rfl_rebuild/b2/evalorder.py",
+    "rfl_rebuild/b2/acquisition.py",
 )
 
 

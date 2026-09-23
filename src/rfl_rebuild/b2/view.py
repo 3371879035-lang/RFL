@@ -371,6 +371,11 @@ IMPORT_ALLOWLIST = (
     # produced by it -- the runner trains each arm's post-write learner under one shared protocol and the
     # curve's index is the training episode, so this module is on the path from a state to a measurement.
     "rfl_rebuild.b2.training",
+    # F0 §3: the balanced master evaluation ordering and the pre-F1 acquisition. The ordering digests the
+    # permutation it builds (`hashlib`) and enumerates the frozen cells (`itertools`); both are pure
+    # standard-library data plumbing on the path from a declared bank to the artifact the lock reads.
+    "hashlib", "itertools",
+    "rfl_rebuild.b2.evalorder", "rfl_rebuild.b2.acquisition",
     "rfl_rebuild.b1.contract", "rfl_rebuild.b1.laws", "rfl_rebuild.b1.runner",
     "rfl_rebuild.b1.tier", "rfl_rebuild.env.domain",
 )
