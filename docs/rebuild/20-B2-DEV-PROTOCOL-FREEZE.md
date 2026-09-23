@@ -384,19 +384,25 @@ different question: $N_{\text{eval}}$ is about **how many scenes the estimate st
 about **when it is read**. $f_N$ now measures sampling stability directly, against the largest sample as
 the reference:
 
-$$m_N(N) = \max_{e = 0}^{\texttt{ACQUISITION\_CAP}}\
-\frac{\left|\hat V_N(e) - \hat V_{N_{\max}}(e)\right|}
-{\text{scale}(e)}, \qquad \text{scale}(e) = \max\left(\mathrm{sd}_{\text{scenes}}(e),\ \epsilon_N\right)$$
+$$\hat V_{\sigma,N}(e) = \frac{1}{N}\sum_{u \in \mathcal S_{\text{eval}}(N)} V_{\sigma,e,u},
+\qquad
+\mathrm{sd}_{\sigma,\text{scenes}}(e) = \mathrm{sd}_{u \in \mathcal S_{\text{eval}}(N_{\max})}
+V_{\sigma,e,u}$$
 
-where $\hat V_N(e)$ is the mean over $\mathcal S_{\text{eval}}(N)$ of the level at training episode $e$,
-$\mathrm{sd}_{\text{scenes}}(e)$ is the cross-scene standard deviation (the population form of §4.0) of the
-per-scene levels at $e$ over $\mathcal S_{\text{eval}}(N_{\max})$ --- both read from the master matrix of
-§3 --- and $\epsilon_N = 10^{-9}$ is declared. **The quantifier's domain is the acquisition axis, $e = 0,
-\ldots, \texttt{ACQUISITION\_CAP}$, and not $0 \ldots T^{*}$**: $f_N$ deliberately does not depend on $f_T$
-in §6's graph, so its domain cannot be a horizon that does not exist when it runs. Revision 4's draft wrote
-$\max_t$ without naming the domain, which would have let an implementer choose the full acquisition axis,
-the locked horizon, the grid's checkpoints, or another subset --- four different selectors from one
-formula. The scale is the
+$$\boxed{m_N(N) = \max_{\sigma \in \mathcal S_{\text{dev}}}\
+\max_{e = 0}^{\texttt{ACQUISITION\_CAP}}\
+\frac{\left|\hat V_{\sigma,N}(e) - \hat V_{\sigma,N_{\max}}(e)\right|}
+{\max\left(\mathrm{sd}_{\sigma,\text{scenes}}(e),\ \epsilon_N\right)}}$$
+
+with $\epsilon_N = 10^{-9}$ declared and every quantity read from the master matrix of §3. **Two quantifier
+domains are frozen here, and revision 4's draft named only one of them.** The episode domain is the
+acquisition axis $e = 0, \ldots, \texttt{ACQUISITION\_CAP}$, not $0 \ldots T^{*}$: $f_N$ deliberately does
+not depend on $f_T$ in §6's graph, so its domain cannot be a horizon that does not exist when it runs. The
+**seed** domain is the same **worst case over $\mathcal S_{\text{dev}}$** that $f_G$ and $f_C$ use, so an
+evaluation sample that is unstable for one development seed is not averaged away by the other thirty-one;
+the alternatives --- a per-seed-then-mean reading, or pooling seed and scene into one sample --- are
+different selectors, and freezing the maximum is what stops `run_dev_lock.py` from choosing among them. The
+zero-spread rules of the next bullets apply per $(\sigma, e)$. The scale is the
 Monte-Carlo scale of the quantity being estimated, so $m_N$ is measured in units of cross-scene variation
 rather than in units of the curve's own drift -- which is what the reviewer's finding asked for, and what
 stops a healthy baseline that genuinely changes over time from being read as sample instability.
@@ -559,8 +565,9 @@ A $0/0$ means "this site's pool is exactly stable for that seed and episode, and
 *equal* stability rather than an undefined comparison; a slice that moves where its pool does not is one the
 pool's own stability cannot excuse, and it is refused rather than credited. Revision 3's earlier draft left
 these rules written on the superseded single-index $\mathrm{se}_i$ objects --- a second, contradictory
-definition of $m_C$ in the same section --- which the construction review caught; what remains here is the
-zero rule in the $(A, i, \sigma, e)$ vocabulary and nothing else.
+definition of $m_C$ in the same section --- which the construction review caught. (The
+$(A, i, \sigma, e)$ spelling survives only inside that quotation of the withdrawn draft; the frozen
+vocabulary is $(A, c, \sigma, e)$.)
 
   A slice can be more or less stable than the full pool --- dropping atypical units lowers the numerator,
   dropping units lowers the denominator's own $n$ --- which is exactly the trade a refinement makes, and
@@ -725,6 +732,20 @@ arm, be revised by hand, or differ from the single commit that carries both.
 | what | command | artifact |
 |---|---|---|
 | smoke | `python scripts/run_smoke.py --seeds-file experiments/v03r/smoke_seeds.txt` | `experiments/v03r/smoke_report.json` |
+
+**What the five smoke seeds execute.** `--seeds-file` is not decoration: smoke runs the **real $S_2$
+acquisition path** on $\mathcal S_{\text{smoke}}$, with the same `BaselineAcquisitionPlan` constants, the
+same `ACQUISITION_CAP = 40`, the same balanced master bank of §3, the same A91 keyed training machinery and
+the same eligibility sufficient-statistic path --- and then keeps **none** of the scientific content:
+
+$$\boxed{\text{smoke exercises the real path} \;\;\neq\;\; \text{smoke becomes development data}}$$
+
+so the smoke report carries only §9's operational fields --- runtime, errors, fallbacks, paths, digests and
+gate exit codes --- and **no** $V_{\sigma,e,u}$, no selector metric, no candidate ranking and no effect of
+any kind. A90 §78.3's rule that a smoke-drawn seed may never later serve as a fresh development input is
+exactly why this is safe to freeze: the seeds are spent either way, and the instrument is what smoke buys.
+This is also what makes $\mathcal B^{\text{op}}_{\text{smoke}}$ --- the first five benchmark keys ---
+*shape-match* the workload it times; without it, "the smoke workload's own pass" would have named nothing.
 | development baseline | `python scripts/run_dev_baseline.py --seeds-file experiments/v03r/dev_seeds.txt` | `experiments/v03r/dev_baseline.json` |
 | the lock | `python scripts/run_dev_lock.py --design experiments/v03r/dev_baseline.json` | `experiments/v03r/dev_lock.json` |
 
@@ -883,7 +904,7 @@ $$\boxed{T^{\text{op}}_{\text{bench}} = \text{the deterministic non-scientific b
 
 | stage | bound |
 |---|---|
-| smoke (five seeds) | `[PROPOSED]` $\left(T_{\text{suite}} + 10\,T_{\text{bench}}\right) \times 2$ --- about $220$ s at the rev-2 measurements $T_{\text{suite}} \approx 110$ s, $T_{\text{bench}} \approx 0.064$ s |
+| smoke (five seeds) | `[PROPOSED]` $2\left(T_{\text{suite}} + 10\,T^{\text{op}}_{\text{bench}}\right)$ --- about $220$ s at the rev-2 measurements $T_{\text{suite}} \approx 110$ s, $T^{\text{op}}_{\text{bench}} \approx 0.064$ s |
 | development baseline acquisition | `[PROPOSED]` the same rule with the acquisition's own measured benchmark |
 
 Revision 2's $30$ s bound could not contain the **mandatory** full-suite criterion of §9 --- a passing smoke
