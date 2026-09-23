@@ -76,6 +76,21 @@ the shared value is **not** attained there, and a metric that added it would ove
 
 ## 3. Findings for the reviewer
 
+**Dispositions, after the review of `63c5caf` (recorded here as the findings' outcome, not as new text).**
+The reviewer ruled CF-1/CF-2/CF-5 **MUST AMEND**, CF-3 a **DOC ERRATUM** and CF-4 **APPROVED as implemented**,
+reopened the rev-3 design text for a *targeted* amendment, and marked $d_{(P,\mathrm{RMST})}=1.5$
+**NOT RATIFIED**. The amendment is `20-B2-DEV-PROTOCOL-FREEZE.md` rev 4, §1, §3, §4.0, §4.3, §4.5, §7, §11 and
+§12. The findings below are left as written --- they are the record of what the construction found, and rev 4
+is the record of what was done about it.
+
+| finding | disposition | where it landed |
+|---|---|---|
+| CF-1 | **MUST AMEND**; reading (a) adopted, (b) and (c) rejected | §4.0's `sd` authority + §3's stored material |
+| CF-2 | **MUST AMEND (P0)**; $I_{\text{baseline}}$ `[PROPOSED]`, reviewer ratification required | §1, §3's baseline block, §4.5's cross-reference |
+| CF-3 | **DOC ERRATUM** | §4.3, §7, header |
+| CF-4 | **APPROVED, no action** | --- |
+| CF-5 | **MUST AMEND**; index + $32$ deterministic shards + three-layer provenance | §7 |
+
 ### CF-1 --- the triple does not recover the population `sd` exactly, and §4.4's zero cases are exact comparisons
 
 §4.0 says the frozen sufficient statistics "recover this form exactly, which is why they are the declared
@@ -130,6 +145,22 @@ say and which would make the curve informative --- but A90 §78.5 forbids treatm
 is this, the initial write has to be named in the frozen text. Not decided here; the construction implements
 (a), because §3 says "the run's learner" and nothing else.
 
+**Disposition (rev 4): reading (a) was rejected; (b) is the ruling.** The reviewer's chain is verified in the
+amendment: on constant curves all three per-seed series of §4.5 are constant, so both Retention forms are
+inadmissible and `NO_ADMISSIBLE_RETENTION` follows deterministically --- F0 would self-destruct after the
+first development seed, not merely produce an uninteresting $T$. A read-only search of the corpus (frozen and
+live) then established the part that matters for how the fix must be scoped: **A87 §75.1 defines
+$W_{\text{pre}}$ as "the learner state with no overrides", and A91 §79.3 assigns it to a pair's reference arm
+at episode $0$** --- so the fixed point is *mandated* by frozen text for a pair's arm, not merely omitted by
+F0. The corpus contains no initializer, no address set, no magnitude, no mask and no statement about
+$\sigma$-dependence; the only concrete non-reference $W_0$ objects are A87 §75.2's canaries. Rev 4 therefore
+scopes the fix rather than editing a closed amendment --- A91 §79.3 governs a *pair's* arms, F0 §3 governs
+what the $S_2$ *stage* acquires --- and proposes $I_{\text{baseline}} = W_{\text{pre}} +
+\Delta W^{\text{cal}}_{D_Q}$, with the derivation that the $D_Q$ canary is the only family member ordinary
+training can repair (A91 §79.4 makes the sweep write $Q_D^{L}$ only, while the $X$ and $P$ canaries write
+`CONTROLLER` and `PROCESS` and would leave a curve flat *at the defective level*). That proposal is
+`[PROPOSED]` in rev 4 §3 and needs the reviewer.
+
 What is *not* affected, stated so the finding is not overread: the matrix is constant across seeds and
 episodes, so every per-run curve statistic reduces to a property of the **scene set**. $f_N$'s quantity is
 exactly that --- how far a prefix's scene-mean sits from the full bank's, in cross-scene spread units --- so it
@@ -171,15 +202,15 @@ acquisition is $\approx 11$ min of the *same* work the benchmark of §8 must tim
 
 | object | state |
 |---|---|
-| `evalorder.py`, `acquisition.py` | **landed**, gated |
-| `scripts/run_smoke.py` (with `--plan`, the frozen $\mathcal G_{\text{smoke}}$ and the smoke-report field set of §9) | not written |
-| `scripts/run_dev_baseline.py` | not written; blocked in part on CF-5 |
-| `scripts/run_dev_lock.py` | not written; blocked in part on CF-1 and CF-4 |
-| `experiments/v03r/evaluate_smoke_gate.py` | not written |
-| rev 3 `scripts/f0_manifest.py` + `f0_manifest_selfcheck.py` | not written; the manifest contract is §7's, including the ordering digest and the prefix summaries this note records |
-| the deterministic non-scientific benchmark of §8 ($\mathcal B^{\text{op}}_{\text{smoke}}$, $\mathcal B^{\text{op}}_{\text{dev}}$) | not written; it must represent `acquire_master_baseline`, and §8 requires the bound to be re-derived from this line's own measurements |
-| `experiments/v03r/smoke_seeds.txt`, `dev_seeds.txt` | not written on this line (rev 2's live on the retired line) |
-| $d_{(P, \mathrm{RMST})} = 1.5$'s independent rationale | open, as the freeze's checklist item 14 records; a reviewer judgement, not a harness blocker |
+| `evalorder.py`, `acquisition.py` | **landed**, gated; the acquisition's healthy start is now a **construction provisional implementation**, to be replaced by the ratified $I_{\text{baseline}}$ (CF-2) |
+| `experiments/v03r/smoke_seeds.txt`, `dev_seeds.txt` | **landed** (transcription of §1's declared sets; LF, element by element) |
+| `scripts/run_smoke.py` (with `--plan`, the frozen $\mathcal G_{\text{smoke}}$ and the smoke-report field set of §9) | not written; `--plan` and the gate orchestration are unblocked, the real acquisition execution waits on CF-2 |
+| `scripts/run_dev_baseline.py` | not written; blocked on CF-2 and CF-5 |
+| `scripts/run_dev_lock.py` | not written; blocked on CF-1's authoritative $SE$ path (implemented in this line's next increment) and CF-2 |
+| `experiments/v03r/evaluate_smoke_gate.py` | not written; unblocked |
+| rev 3 `scripts/f0_manifest.py` + `f0_manifest_selfcheck.py` | not written; the rev-4 contract makes the manifest instrument/config/schema-only, which is unblocked, but its schema is declared final only after CF-2 |
+| the deterministic non-scientific benchmark of §8 ($\mathcal B^{\text{op}}_{\text{smoke}}$, $\mathcal B^{\text{op}}_{\text{dev}}$) | not written; blocked on CF-2 (its workload is the initializer's workload) |
+| $d_{(P, \mathrm{RMST})} = 1.5$'s independent rationale | **NOT RATIFIED** by the rev-4 review (checklist item 14); an $F_0$ VALID blocker, and a reviewer judgement rather than a harness blocker |
 
 **Boundaries, restated because this document is close to them.** No smoke has been run; the official smoke on
 $\mathcal S_{\text{smoke}}$ waits for $F_0 = \texttt{VALID}$. No seed of $\mathcal S_{\text{smoke}}$ or

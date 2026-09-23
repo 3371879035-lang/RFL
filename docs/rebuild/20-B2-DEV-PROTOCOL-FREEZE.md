@@ -1,10 +1,25 @@
-# 20 --- $F_0$: the development protocol freeze (revision 3, construction in progress)
+# 20 --- $F_0$: the development protocol freeze (revision 4, targeted construction amendment)
 
-**Status: `CONSTRUCTION IN PROGRESS (rev 3)`, on branch `f0-rev3` based on the frozen `rebuild@b5c5762`. Not valid, so nothing downstream of it is authorised.**
+**Status: `CONSTRUCTION IN PROGRESS (rev 4)`, on branch `f0-rev3`. Rev 3's design text was
+`CLOSED@b923a0b` and the construction review of `63c5caf` **reopened it for targeted amendment**, so this
+revision changes four local rules and nothing else. Not valid, so nothing downstream of it is authorised.**
 
 $$\boxed{F_0@\texttt{698eca2}:\ \textbf{REVIEW FAIL}} \qquad
 \boxed{F_0@\texttt{c643b73}:\ \textbf{REVIEW FAIL (science layer; execution layer PASS)}} \qquad
 \boxed{F_0 = \text{NOT VALID}}$$
+
+$$\boxed{F_0\ \text{rev 3 design text}@\texttt{b923a0b}:\ \textbf{CLOSED} \;\longrightarrow\;
+\textbf{REOPENED FOR TARGETED CONSTRUCTION AMENDMENT}@\texttt{63c5caf}}$$
+
+$$\boxed{\text{CF-1} = \text{MUST AMEND},\qquad \text{CF-2} = \textbf{MUST AMEND (P0)},\qquad
+\text{CF-3} = \text{DOC ERRATUM},\qquad \text{CF-4} = \text{APPROVED},\qquad
+\text{CF-5} = \text{MUST AMEND}}$$
+
+**What reopened the text, and what did not.** The construction of §7's command surface produced five
+findings, recorded with their measurements in `21-F0-CONSTRUCTION-NOTES.md`; the review ruled on each, and
+this revision applies the four rulings. A89 and A91 are **not** reopened, rev 3 is **not** withdrawn, and the
+rules this revision does not name are unchanged: the amendment is local to §1, §3, §4.0, §4.3, §7, §9 and
+§11. §12 records the rev-4 entry and §13 keeps rev 2's review.
 
 $$\boxed{A91:\ \textbf{FROZEN}@\texttt{3f02724}, \qquad \textbf{instrument and integration CLOSED}
 @\texttt{b35f649}, \qquad \text{promoted as } \texttt{rebuild@b5c5762}}$$
@@ -25,10 +40,6 @@ and dispositions, and §13 records the review of rev 2 in full.
 a reviewer works through. Everything not marked `[PROPOSED]` is either derived from a frozen constant (and
 says which) or is the *form* of a declaration. Where this revision says a construction was **verified**, the
 verification was run before the text was written, and the check is named.
-
-**Values marked `[PROPOSED]` are proposals for ratification, not frozen numbers**, and §11 is the checklist
-a reviewer works through. Everything not marked `[PROPOSED]` is either derived from a frozen constant
-(and says which) or is the *form* of a declaration.
 
 ---
 
@@ -87,6 +98,11 @@ Every one of them is a constant of the **experiment**, so none may be set after 
 fixes the domains and this block fixes the values, which is what makes "pre-data" checkable rather than
 merely stated. The seed **sets** above are the sixth pre-data declaration; unlike the five constants they
 are sets rather than numbers, and they are already written element by element.
+
+**The seventh pre-data declaration (rev 4, CF-2).** The baseline initializer $I_{\text{baseline}}$ of §3 is
+pre-data on the same ground and is declared there, with its constraints and its construction gate: it is an
+object of the experiment, so it too may not be set after the first seed, and the healthy state that rev 3
+left implicit is **disqualified** as a fixed point of the frozen update.
 
 **The benchmark keys, and what they are not.** A91's training stream needs a key even to be *measured*, so a
 runtime benchmark of the acquisition cannot be keyless; revision 3 said both "the benchmark must represent
@@ -274,12 +290,25 @@ $$\boxed{D^{\text{master}}_{\text{dev,baseline}} = \left\{V_{\sigma,e,u}\right\}
 \text{sufficient A89 pre-update eligibility material}}$$
 
   where "sufficient" is frozen to mean: enough to recover $SE_{A,c,\sigma,e}(r)$ **mechanically at $F_1$**,
-  without re-running a scientific stream and without inventing a static eligibility. The per-$(A, \sigma, e,
-  c, r)$ sufficient statistics --- $\lvert C_r^{A,\sigma,e}(c)\rvert$,
-  $\sum_{u \in C} V_{\sigma,e,u}$ and $\sum_{u \in C} V_{\sigma,e,u}^2$ --- are the minimum, and the full
-  incidence form ($Consult$ and $H_{\text{pre}}$ per unit) is equally acceptable. A levels-only artifact is
-  **not**: it would leave `run_dev_lock.py` to choose between re-running the development stream, inventing an
-  eligibility, or failing.
+  without re-running a scientific stream and without inventing a static eligibility. **Rev 4 (CF-1) fixes
+  what the artifact stores, and demotes what rev 3 called the minimum.** The recoverable $SE$ is §4.0's, and
+  §4.0 now makes the set's own values the authoritative object, so the material that has to be stored is the
+  **values together with the incidence** that says which values fall in $C_r^{A,\sigma,e}(c)$:
+
+$$\boxed{D^{\text{master}}_{\text{dev,baseline}} \;\supseteq\; \left\{V_{\sigma,e,u}\right\} \cup
+\left\{\textit{Consult}_{W_{\sigma,e}}(u, c)\right\} \cup \left\{H_{\text{pre}}(u)\right\} \cup
+\left\{\mathcal D^{\text{credit}}_A(W_{\sigma,e})\right\}_{A}}$$
+
+  The per-$(A, \sigma, e, c, r)$ statistics --- $\lvert C_r^{A,\sigma,e}(c)\rvert$,
+  $\sum_{u \in C} V_{\sigma,e,u}$ and $\sum_{u \in C} V_{\sigma,e,u}^2$ --- are **derived from that material
+  and are admissible as a cache and as a cross-check**, not as the authoritative numerical object: computed
+  from the triple they carry the `binary64` cancellation §4.0 now forbids relying on. Rev 3's sentence that
+  they "are the minimum" is withdrawn, and the withdrawal is measured rather than asserted: on the frozen
+  envelope $c$ ranges over A89 §77.4's production credited domains, $13824 + 229 + 4$ units, so the finished
+  statistics are $1.1 \times 10^8$ triples while the incidence that generates them is $1.7 \times 10^7$ pairs
+  --- the "minimum" is $6.5\times$ the "alternative", and the derivation is the smaller object. A levels-only
+  artifact is **not** sufficient: it would leave `run_dev_lock.py` to choose between re-running the
+  development stream, inventing an eligibility, or failing.
   `acquire_master_baseline` **reuses A91's frozen machinery** --- the keyed episode generator
   `ExogenousEpisode`, the training behaviour policy, and `sweep_edits`' chronological $Q$ sweep --- while
   doing its own evaluation gathering, because `train_curve` returns the evaluation-sample *mean* and takes a
@@ -318,6 +347,114 @@ $$\boxed{\texttt{ACQUISITION\_CAP} = 40 \quad \texttt{[PROPOSED, pre-data ]}F_0\
 The cap is the envelope's episode budget, not $T^{*}$: $T^{*}=\lceil 1.2\,x_{(29)}\rceil$ is computed *from*
 the acquisition at $F_1$. A horizon the envelope cannot reach fails closed rather than extending itself:
 
+**What the baseline run starts from (rev 4, CF-2 --- the P0 finding).** Rev 3 never says what $W_0$ is for
+the baseline acquisition, and the construction filled that silence with the healthy state. The review ruled
+this a **P0 design gap**, because the healthy state is a *fixed point* of the frozen update and the
+consequence is deterministic rather than cosmetic:
+
+$$\boxed{W_0 = \text{healthy} \;\Longrightarrow\; W_e = W_0\ \ \forall e \;\Longrightarrow\;
+V_\sigma(e) \text{ constant in } e \;\Longrightarrow\; \texttt{NO\_ADMISSIBLE\_RETENTION}}$$
+
+  **The mechanism is A91's own.** The healthy state's effective table **is** $Q^{*}$ (A91 §79.4(c): a sparse
+  override table read over the reference), and for every visited address
+  $r_j + \max_{a'} Q^{*}(s'_j, a') = Q^{*}(s_j, a^{\text{cmd}}_j)$ --- the Bellman equation, satisfied at
+  *every* action and not only at the greedy one --- so every edit the chronological sweep computes equals the
+  reference value and `apply_transaction` canonicalises it away as an identity write. Measured, on
+  $\mathcal B_{\text{bench}}$ keys over an eleven-episode envelope: **zero** persisting edits and
+  $\lvert Q_D^{L}\rvert = 0$, including for episodes whose tape carries $\texttt{error\_flag} = 1$. A91's own
+  `test_15` asserts the property, so this is frozen behaviour and not an implementation slip.
+
+  **The consequence is a self-destruct, not a nuisance.** On constant curves all three per-seed series of
+  §4.5 --- the form's value $R_i$, `restricted_time`$_i$ and `DeficitAUC`$_i$ --- are constant across the
+  $32$ seeds, so §4.5's zero-variance rule makes $\rho_S$ undefined, makes **both** registered Retention
+  forms **inadmissible**, and returns `NO_ADMISSIBLE_RETENTION`; its fail-closed consequence is no design
+  lock and therefore no confirmatory stage. $f_T$'s windows are likewise all exactly flat, so every seed
+  qualifies at its first window and $T_{\text{conv}}$ is a point mass rather than a distribution. (Two rules
+  survive undisturbed, which is why the failure is specifically $f_R$'s: $f_N$'s quantity is a property of
+  the *scene set*, and $f_C$'s $SE$ is taken *across scenes*.)
+
+  **The pre-state is not free, and the frozen corpus does not already contain one.** A search of the frozen
+  and live sources (`21-F0-CONSTRUCTION-NOTES.md` §3) found no $I_{\text{baseline}}$, no address set, no
+  magnitude, no mask, no statement whether $W_0$ may depend on $\sigma$, and no item in §11's checklist.
+  What the corpus does contain is $W_{\text{pre}}$ = "the learner state with **no overrides**" (A87 §75.1),
+  which A91 §79.3 assigns to a pair's reference arm at episode $0$ --- the fixed point, mandated. So the
+  blocking question is upstream and is answered here by scope rather than by editing a closed amendment:
+
+$$\boxed{\text{A91 §79.3 governs a \emph{pair's} arms;} \qquad \text{F0 §3 governs what the } S_2
+\text{ stage acquires, and must therefore name that stage's pre-state}}$$
+
+  This revision adopts the first reading explicitly, because the alternative reading leaves CF-2 unfixable
+  inside F0 and would need an A91 addendum instead. What the review required of the initializer is frozen
+  here as a constraint list, and none of it is negotiable:
+
+$$\boxed{I_{\text{baseline}}:\ \text{pre-data},\ \text{arm-blind},\ \text{treatment-independent},\
+\text{frozen before the first scientific seed}}$$
+
+$$\boxed{I_{\text{baseline}} \neq \text{the healthy } Q^{*} \text{ fixed point},\qquad
+I_{\text{baseline}} = \text{the ordinary / NoCorrection learner, not a treatment arm}}$$
+
+  and the **same** $I_{\text{baseline}}$ family serves smoke, the development baseline and the operational
+  benchmark, so no stage measures a different learner from the others.
+
+$$\boxed{I_{\text{baseline}} = \text{the healthy state} + \Delta W^{\text{cal}}_{D_Q}
+\quad \texttt{[PROPOSED --- reviewer ratification required]}}$$
+
+  with $\Delta W^{\text{cal}}_{D_Q}$ the **frozen** A87 §75.2 canary, in the substrate's own vocabulary
+  `Edit(Q, QAddress(state=WITNESS_STATE, z=1, m=0, a=3), -0.14)` (A87 §75.2: $Q^{\text{eff}}(x^{*}, 3)
+  \leftarrow \min_a Q^{*}(x^{*}, a) - 1 = -0.14$, "**No measurement was consulted to choose anything
+  below**"). The grounds, in order of weight:
+
+* **it is repairable, and that is a derivation rather than a preference.** A91 §79.4 freezes that ordinary
+  training writes $Q_D^{L}$ **only** (`sweep_edits` emits $Q$ edits and nothing else). The $D_Q$ canary is a
+  $Q$-store write and is therefore the only member of A87 §75.2's canary family that the ordinary learner
+  can *repair*; the $X$ canary writes `CONTROLLER` and the $P$ canary writes `PROCESS`, so a run starting
+  from either would carry a defect no episode can touch --- a curve that is flat *at the defective level*,
+  which is still a constant curve and still `NO_ADMISSIBLE_RETENTION`. The initializer must live in the store
+  the learner writes, and exactly one frozen canary does;
+* **it is already frozen, canonically selected and pre-data.** Freezing a *new* corruption mask would be new
+  scientific design with no grounding in the corpus --- the `08-V03R.md` §2.1 "known corruption $M$" has no
+  address set, no cardinality and no magnitude anywhere, and A79 records that it does not address it either
+  way. Reusing a frozen canary adds no new scientific object;
+* **it makes the stage's subject the one `05` §6.1 names.** The baseline curve becomes the *uncorrected*
+  learner's ordinary-learning recovery toward $V_{\text{pre}}$ --- "how long does the ordinary learner take
+  to stabilise on this benchmark" --- which is also what the Retention endpoints of §4.5 measure (recovery
+  time, RMST, DeficitAUC). On the healthy start those endpoints had no recovery to time;
+* it satisfies every constraint above by construction: the canary value is a pre-data constant of A87, it
+  names no arm, it is not read from any treatment output, and one object serves all three stages.
+
+  **Two honest caveats, both for the reviewer.** First, *whether the repair actually happens inside
+  `ACQUISITION_CAP` = 40 episodes* is an empirical property of the frozen instrument, not something this
+  text can assert; the construction gate below checks it on $\mathcal B_{\text{bench}}$ keys, and if it fails
+  the correct outcome is that this amendment is **not valid** and the question returns here --- **not** a
+  stronger corruption chosen after seeing the result, which would be acquisition-time design. Second, using
+  a *calibration* canary as the stage's pre-state is a new declaration about a frozen object (the corpus uses
+  the canaries for screening and calibration), which is precisely why the box above is marked `[PROPOSED]`
+  rather than stated: it is the one place in this revision that cannot be frozen without the reviewer.
+
+  **The construction gate, and its boundary.** The initializer is admitted only if the gate shows, with
+  $\mathcal B_{\text{bench}}$ keys and no scientific seed, that
+
+* **(a) the run is not a fixed point:** at least one episode's sweep yields an edit that is **not** reference-equal,
+  so that $Q_D^{L}$ is non-empty from $e = 1$ onward --- the direct falsification of the healthy-start
+  mechanism above;
+* **(b) the resulting bank curves are not constant**, across keys and across $e$, as a **fail-closed
+  diagnostic**: if they are constant the amendment is not valid. It may never be used to *pick* a different
+  initializer --- that would make a benchmark a design input, which §1 forbids the keys from being.
+
+  Both are construction checks on the instrument, in the same family as A89 §77.7's calibration obligation
+  ("a known injected behavioural change must be **detected**"), and neither reads $f_T$, $f_N$, $f_G$, $f_C$,
+  $f_R$ or any threshold. If the review reads the $\mathcal B_{\text{bench}}$ boundary more narrowly ---
+  timing only --- then diagnostics may still be *reported* but not decide, and (b) becomes a design claim
+  this text must assert outright. That boundary is the reviewer's to draw, and it is drawn here as
+  "fail-closed only, never selective".
+
+  **What this blocks until it is ratified.** `run_dev_baseline.py`, `run_dev_lock.py`, the smoke path's real
+  acquisition execution, both acquisition runtime benchmarks and the manifest's schema are **not** finalised
+  under this revision until $I_{\text{baseline}}$ is ratified: their workloads, their artifact and the
+  manifest's pinned expectations are all functions of what $W_0$ is. The current
+  `acquire_master_baseline`'s healthy start is a **construction provisional implementation**, to be replaced
+  by the ratified initializer, and the smoke path must exercise that same initializer.
+
 ## 4. The design-rule family
 
 Every rule is total on its input surface with a fail-closed codomain, and declares its metric, its
@@ -347,10 +484,50 @@ $$\boxed{\mathrm{sd}(x_1, \ldots, x_n) = \sqrt{\frac{1}{n}\sum_{j=1}^{n}\left(x_
 \qquad \bar x = \frac{1}{n}\sum_j x_j}$$
 
   i.e. the divisor is $n$, not $n-1$. The choice is frozen here rather than inherited, because Python and
-  NumPy disagree by default and the difference moves $m_N$, $m_C$ and both derived $\Delta_{\min}$. Two
-  consequences follow and are part of the definition: $n = 1$ gives $\mathrm{sd} = 0$ rather than an
-  undefined value, and the frozen per-set sufficient statistics of §3 --- count, sum, sum of squares ---
-  recover this form exactly, which is why they are the declared minimum;
+  NumPy disagree by default and the difference moves $m_N$, $m_C$ and both derived $\Delta_{\min}$.
+
+**The authority is the sample, not an expansion of it (rev 4, CF-1).** Rev 3 wrote that "the frozen per-set
+sufficient statistics of §3 --- count, sum, sum of squares --- recover this form exactly, which is why they
+are the declared minimum", and the construction **falsified that sentence**:
+$\sum V^2/n - (\sum V/n)^2$ is a difference of two nearly equal `binary64` numbers, so a set whose values are
+equal but not exactly representable comes back with a positive residue instead of $0$ --- measured at
+$\mathrm{se}(1,\, 0.7,\, 0.49) = 7.45 \times 10^{-9}$, a set of one value whose population spread is exactly
+zero. §4.4's zero cases are **exact comparisons** on this quantity, so a residue decides the branch, and
+"the error is small" is not an answer to a rule that reads $SE(\texttt{all}) = 0$. The frozen rule is
+therefore
+
+$$\boxed{\text{the authoritative object of } \mathrm{sd} \text{ is the set's own values } x_1, \ldots, x_n
+\text{, never an algebraic rearrangement of their summary}}$$
+
+  computed by one deterministic `binary64` algorithm, so that two implementations of the same rule agree bit
+  for bit and no tolerance is needed anywhere:
+
+$$\boxed{\bar x = \frac{\text{left-to-right sum}(x_j)}{n}}, \qquad
+\boxed{x_1 = \cdots = x_n \;\Longrightarrow\; \mathrm{sd} = 0}$$
+
+$$\boxed{\mathrm{sd} = \sqrt{\frac{1}{n}\,\text{left-to-right sum}\bigl((x_j - \bar x)^2\bigr)}
+\quad \text{otherwise}}$$
+
+  The constancy test reads the values themselves (`x_j == x_1`, in the artifact's own type), it is evaluated
+  **first**, and it is what closes the constant case exactly --- which is what makes the zero cases of §4.2,
+  §4.4 and §4.5 reachable rather than round-off-dependent. "Left-to-right sum" is the plain accumulation
+  `t = 0.0; for v in values: t += v`, named in the text because `sum()` is Neumaier-compensated in CPython
+  and is therefore a *different* algorithm. §4.1's mean curve uses that same accumulation order, and the
+  acquisition reproduces A91's `_mean_return`, which is why the two agree on the ulp rather than only to
+  within one.
+
+  Two consequences are part of the definition. $n = 1$ gives $\mathrm{sd} = 0$ rather than an undefined
+  value; and the per-set statistics of §3 are demoted to **derived/cache** material:
+
+$$\boxed{\bigl(\lvert C\rvert,\ \textstyle\sum V,\ \sum V^2\bigr) \text{ is a derived cache};
+\qquad \text{no } SE \text{ may be computed from it as the authoritative path}}$$
+
+  This costs the acquisition nothing: §3's material already stores the values $V_{\sigma,e,u}$ **and** the
+  incidence that says which values are in the set, so $SE$ is computable from the material under the boxed
+  rule, with no new acquisition and no new artifact content. The statistics stay admissible as a cache and as
+  a cross-check, and the acquisition's triple-entry helper is a **construction probe**: the authoritative
+  $SE$ path --- the one `run_dev_lock.py` must use --- computes $\mathrm{sd}$ from the set's values under the
+  boxed rule;
 * **one acquisition**: every ranking metric reads $D^{\text{master}}_{\text{dev,baseline}}$ or the frozen
   static artifacts, never an arm.
 
@@ -473,10 +650,11 @@ recovers on either reading is right-censored at $T^{*}$ in both, so its term is 
   $\mathrm{DeficitAUC} = \frac{1}{T_{\max}}\sum_i \frac{d_i + d_{i+1}}{2}(t_{i+1} - t_i)$ and
   `utility.recovery_time` for $\tau$; there is no interpolation rule to choose at lock time because the
   frozen one already exists;
-* **the scales are frozen**, one per term: $K$ episodes for $\tau$ (the width of the maintained-recovery
-  window, so the term is "how many recovery windows of error the grid introduces"), $T^{*}$ for RMST
-  (episodes), and $1$ for DeficitAUC, which `05` defines as $\frac{1}{T_{\max}}\int [V_{\text{pre}} -
-  V(t)]_+ dt$ and is therefore already a fraction;
+* **the scales are frozen**, one per **surviving** term: $T^{*}$ for `restricted_time` (episodes) and $1$ for
+  DeficitAUC, which `05` defines as $\frac{1}{T_{\max}}\int [V_{\text{pre}} - V(t)]_+ dt$ and is therefore
+  already a fraction. *(Rev 4, CF-3: rev 3's bullet still listed "K episodes for $\tau$" after withdrawing
+  that term two bullets earlier. $K$ counts **checkpoints**, so it is not a scale of episodes at all, and the
+  surviving metric $\delta_i(G)$ above never used it. Erratum only: no rule changed.)*
 * **the reference level of both $V_{\text{pre}}$-relative terms is the frozen $V_{\text{pre}}$ of the
   reference artifact** (A85 §73.1), not a per-scene quantity: it is a static constant available before any
   arm runs, so the two terms measure the grid's distortion of the *endpoint's own integrand* rather than a
@@ -636,7 +814,9 @@ $$\boxed{\rho_R = \max\Bigl(\bigl\lvert\rho_S\bigl(\text{form}_i,\ \texttt{restr
   **Zero-variance rule, closed**: if either series is constant the correlation is *undefined* and the form
   is **inadmissible** --- no imputation, no $\rho = 0$ default, and therefore no silent promotion of a form
   whose redundancy could not be measured. With $n = 32$ per seed, this is also the first place the
-  per-seed/per-population distinction becomes load-bearing rather than editorial;
+  per-seed/per-population distinction becomes load-bearing rather than editorial. *(Rev 4: this is the rule
+  that made CF-2 a P0 rather than a curiosity --- on constant baseline curves all three series are constant
+  and **both** forms are inadmissible. The rule is unchanged; §3's baseline initializer is what changed.)*
 * **ranking**: lower $\max\lvert\rho\rvert$ first; tie-break: the order of $\mathcal C_R$ as written;
 * **fail-closed**: `NO_ADMISSIBLE_RETENTION`, with the same consequence as $f_C$'s failure.
 
@@ -735,8 +915,9 @@ arm, be revised by hand, or differ from the single commit that carries both.
 
 **What the five smoke seeds execute.** `--seeds-file` is not decoration: smoke runs the **real $S_2$
 acquisition path** on $\mathcal S_{\text{smoke}}$, with the same `BaselineAcquisitionPlan` constants, the
-same `ACQUISITION_CAP = 40`, the same balanced master bank of §3, the same A91 keyed training machinery and
-the same eligibility sufficient-statistic path --- and then keeps **none** of the scientific content:
+same `ACQUISITION_CAP = 40`, the same balanced master bank of §3, the same A91 keyed training machinery, the
+same baseline initializer of §3 and the same eligibility material path --- and then keeps **none** of the
+scientific content:
 
 $$\boxed{\text{smoke exercises the real path} \;\;\neq\;\; \text{smoke becomes development data}}$$
 
@@ -746,7 +927,7 @@ any kind. A90 §78.3's rule that a smoke-drawn seed may never later serve as a f
 exactly why this is safe to freeze: the seeds are spent either way, and the instrument is what smoke buys.
 This is also what makes $\mathcal B^{\text{op}}_{\text{smoke}}$ --- the first five benchmark keys ---
 *shape-match* the workload it times; without it, "the smoke workload's own pass" would have named nothing.
-| development baseline | `python scripts/run_dev_baseline.py --seeds-file experiments/v03r/dev_seeds.txt` | `experiments/v03r/dev_baseline.json` |
+| development baseline | `python scripts/run_dev_baseline.py --seeds-file experiments/v03r/dev_seeds.txt` | index `experiments/v03r/dev_baseline.json` + $32$ shards `experiments/v03r/dev_baseline/seed-00XXXX.jsonl.gz` |
 | the lock | `python scripts/run_dev_lock.py --design experiments/v03r/dev_baseline.json` | `experiments/v03r/dev_lock.json` |
 
 The seed sets of §1 are written to `experiments/v03r/smoke_seeds.txt` and `experiments/v03r/dev_seeds.txt`,
@@ -781,50 +962,84 @@ manifest's *generation* does not, because the manifest must already exist and be
 
 Beyond the suite, this section specifies the three commands:
 
-* `run_dev_baseline.py` must acquire through `BaselineAcquisitionPlan` and the matrix contract of §3 --- the
-  envelope is `ACQUISITION_CAP` training episodes per development seed, evaluated on the master bank, with
-  `{V_{\sigma,e,u}}` stored --- not through a one-episode-per-seed probe;
-* `run_dev_lock.py` must evaluate §4's rules on that acquisition and refuse rather than invent: every
-  fail-closed outcome of §4 is a legal result of the lock, and none of them is an error;
-* `experiments/v03r/evaluate_smoke_gate.py`, frozen with the smoke command, reads the smoke report plus the
-  manifest and decides PASS or the first failed criterion mechanically.
-
-Neither the scripts nor the manifest exist on this branch; the manifest table below is **rev 2's evidence
-from a different line**, kept as history and to be regenerated on this line's own clean execution
-revision.
-
-* `run_smoke.py` must **execute and record the frozen gate suite** --- one exit code per gate command ---
-  and compute the artifact digests, because §9's PASS criteria include both, and an empty `gate_exit_codes`
-  would leave the decision to whoever read the file;
+* `run_smoke.py` must **execute and record the frozen gate suite** --- one exit code per gate command --- and
+  compute the artifact digests, because §9's PASS criteria include both, and an empty `gate_exit_codes` would
+  leave the decision to whoever read the file;
 * `experiments/v03r/evaluate_smoke_gate.py`, frozen with the smoke command, reads that report plus the
   manifest and decides PASS or the first failed criterion mechanically;
-* `run_dev_baseline.py` must acquire through `BaselineAcquisitionPlan` --- the envelope is
-  `ACQUISITION_CAP` training episodes per development seed, evaluated on the master bank --- not through a
-  one-episode-per-seed probe;
+* `run_dev_baseline.py` must acquire through `BaselineAcquisitionPlan` and the matrix contract of §3 --- the
+  envelope is `ACQUISITION_CAP` training episodes per development seed, evaluated on the master bank, with
+  `{V_{\sigma,e,u}}` and §3's eligibility material stored --- not through a one-episode-per-seed probe;
 * `run_dev_lock.py` must evaluate §4's rules on that acquisition and refuse rather than invent: every
-  fail-closed outcome of §4 is a legal result of the lock, and none of them is an error.
-
-Neither the scripts nor the manifest exist on this branch; the manifest table below is **rev 2's evidence
-from a different line**, kept as history and to be regenerated on this line's own clean execution
-revision.
-
+  fail-closed outcome of §4 is a legal result of the lock, and none of them is an error;
 * each stage refuses to execute unless the manifest's `currently_authorises` contains its own stage name,
   and the refusal is a `ProtocolError` that writes nothing;
 * every stage has a `--plan` mode that validates its inputs, prints the plan, runs no episode and writes no
   artifact -- which is what the gates exercise, so the gates themselves draw no seed;
 * the smoke report's key set is asserted to be exactly the operational field set of §9.
 
+*(Rev 4, CF-3 erratum: rev 3 carried this list twice, the first copy without the `run_smoke.py` bullet, and
+the sentence "Neither the scripts nor the manifest exist on this branch" three times. Collapsed here; no rule
+changed.)*
+
 $$\boxed{\texttt{currently\_authorises} = [\,] \quad \text{until a reviewer marks } F_0\ \text{VALID}}$$
 
-**The rev 3 manifest contract, which the generator must implement rather than inherit.** The manifest
-of this revision must record, at minimum: the **balanced ordering algorithm and its digest** (the cell
-order and the two strides, plus a digest of the resulting $5760$-unit permutation), the **prefix summaries**
-for $\mathcal C_{N_{\text{eval}}}$ (each candidate's size and its stratum-coverage counts), the pre-data
-constant block of §1 verbatim, the frozen grid templates' outputs at the locked $T^{*}$ once $F_1$ exists,
-the master-matrix digest of the acquisition, the gate artifacts' digests and the runtime measurements of
-§8. Revision 2's manifest recorded an **A88 lexicographic prefix** as the evaluation sample, which rev 3
+**The rev 4 provenance contract: three layers, one per stage that can know the value (CF-5).** Rev 3 asked
+the manifest to record two quantities that a pre-smoke manifest **cannot legally know**, and the construction
+review ruled that an error of *timing* rather than of size:
+
+* the manifest must already exist and be committed **before smoke runs** --- §7's own rule, four paragraphs
+  above;
+* the development baseline is acquired **after** smoke's operational PASS (A90 §78.5's order);
+* $T^{*}$ exists only at $F_1$, i.e. after the development acquisition.
+
+$$\boxed{\text{the manifest cannot know } \operatorname{digest}\bigl(D^{\text{master}}_{\text{dev,baseline}}
+\bigr) \text{ or } \mathcal G_j(T^{*}) \;\Longrightarrow\; \text{provenance is layered by stage}}$$
+
+| layer | artifact | what it records |
+|---|---|---|
+| $F_0$ (pre-smoke) | `experiments/v03r/f0_manifest.json` | **instrument, configuration and schema expectations only**: the balanced ordering algorithm and its digest (the cell order, the two strides, and a digest of the resulting $5760$-unit permutation), the prefix summaries of $\mathcal C_{N_{\text{eval}}}$ (each candidate's size and its stratum-coverage counts), §1's pre-data block verbatim, the frozen gate list $\mathcal G_{\text{smoke}}$ with a digest of the list, the **expected** digests of the gate artifacts, the digests of the run harness and of the two declared seed files, the dev-baseline **artifact schema and companion-shard path convention**, §8's measured benchmark results, and the authorisation fields. **No future dev-data digest, and no grid output at a $T^{*}$ that does not exist** |
+| $S_2$ (post-smoke) | `experiments/v03r/dev_baseline.json` and its shards | the acquisition's **actual** contents and digests, under the shard contract below |
+| $F_1$ | `experiments/v03r/dev_lock.json` | the input it read (`dev_baseline`'s aggregate digest) and every locked value: $T^{*}$, $N^{*}_{\text{eval}}$, $G^{*}$, the **actual** grid templates' outputs at $T^{*}$, the refinement $r^{*}$, the Retention form with its parameters, and the thresholds $\{\Delta_{\min,e}\}$ |
+
+**HISTORICAL REV 3 CONTRACT --- SUPERSEDED BY REV 4.** Kept verbatim because §12's log refers to it. *"The
+rev 3 manifest contract, which the generator must implement rather than inherit.* The manifest of this
+revision must record, at minimum: the **balanced ordering algorithm and its digest** (the cell order and the
+two strides, plus a digest of the resulting $5760$-unit permutation), the **prefix summaries** for
+$\mathcal C_{N_{\text{eval}}}$ (each candidate's size and its stratum-coverage counts), the pre-data constant
+block of §1 verbatim, the frozen grid templates' outputs at the locked $T^{*}$ once $F_1$ exists, the
+master-matrix digest of the acquisition, the gate artifacts' digests and the runtime measurements of §8.
+Revision 2's manifest recorded an **A88 lexicographic prefix** as the evaluation sample, which rev 3
 replaced; a generator copied from that line would re-freeze the retired ordering, so the contract is written
-here instead of being inferred from the old artifact.
+here instead of being inferred from the old artifact.* --- Two of those items moved to the layer that can
+know them: the grid outputs to $F_1$, and the acquisition's digest to $S_2$. The ordering digest, the prefix
+summaries, the constant block and the gate digests stay in the manifest, and the sentence that motivated the
+rewrite --- a generator copied from rev 2 would re-freeze the retired ordering --- still holds.
+
+**The $S_2$ artifact: an index plus deterministic shards (CF-5).** §3's material is $1.69 \times 10^7$
+(site, scene) pairs on the frozen envelope (measured by `scripts/f0_acquisition_size_probe.py`), so
+`dev_baseline.json` is here redefined as the **index/provenance** artifact and the scientific payload moves to
+one companion shard per development seed:
+
+```text
+experiments/v03r/dev_baseline.json
+experiments/v03r/dev_baseline/seed-001000.jsonl.gz
+...
+experiments/v03r/dev_baseline/seed-001031.jsonl.gz
+```
+
+* each shard carries **that** $\sigma$'s whole episode axis $e = 0, \ldots, \texttt{ACQUISITION\_CAP}$: the
+  levels $V_{\sigma,e,u}$ over the master bank, the material of §3 ($H_{\text{pre}}$ and the incidence), and
+  the run's credited-domain information;
+* the index records only: schema/version, the **ordered** seed set, the episode axis, the balanced bank's
+  digest, §1's constant block, the shard paths, **each shard's SHA-256**, the record and pair counts, the
+  aggregate ordered-shard digest, and the acquisition's execution revision;
+* `run_dev_lock.py` **reads the index and refuses before computing anything if one shard digest mismatches**;
+* serialization is frozen so that the bytes are a function of the acquisition alone: UTF-8 canonical JSONL, a
+  deterministic record order, compact JSON separators, LF line endings, and gzip written with `mtime = 0`.
+
+$$\boxed{\text{an artifact's size is a surface question} \;\Longrightarrow\; \text{the surface is amended
+explicitly, never exceeded quietly}}$$
 
 **What the table below is.** It is **HISTORICAL REV 2 EVIDENCE**, produced on the `f0-dev-protocol-freeze`
 line and *not* evidence about this revision: the scripts, the seed files and the manifest do not exist on
@@ -994,7 +1209,7 @@ development: development waits on smoke's operational PASS.
 | 11 | $f_R$'s metrics: closed relative range, **per-seed** redundancy over $\mathcal S_{\text{dev}}$, $\max\lvert\rho\rvert \le 0.9$, undefined $\Rightarrow$ inadmissible | `[PROPOSED]` |
 | 12 | registry keys $(\text{regime}, \text{statistic})$; the `(T, RMST)` alias | **APPROVED** |
 | 13 | the `(T, DeficitAUC)` role, sharing $0.01$ with its own identity | **APPROVED** |
-| 14 | $d_{(P,\mathrm{RMST})} = 1.5$ | `[PROPOSED — needs an independent rationale]`; the $K/2$ argument is withdrawn |
+| 14 | $d_{(P,\mathrm{RMST})} = 1.5$ | **NOT RATIFIED** by the rev-4 construction review: a legal *unit* with no independent practical rationale; the $K/2$ argument is withdrawn and "1.5 episodes means a 1.5-episode improvement" is circular. Remains an $F_0$ VALID blocker |
 | 15 | $d_{\text{DeficitAUC}} = 0.01$ as an inherited default | **APPROVED** |
 | 16 | `(P, BehavioralCollateral)` and `(P, Retention)` derived bounds | `[PROPOSED, derived]` |
 | 17 | the runtime bound of §8 and the smoke PASS **evidence path** of §9 | `[PROPOSED]`; the bound must contain the mandatory gate suite |
@@ -1003,13 +1218,65 @@ development: development waits on smoke's operational PASS.
 | 20 | the ten pre-existing CRLF artifacts | **APPROVED** as ledger treatment |
 | 21 | **the episode index of a baseline curve** (§3) | **RESOLVED by A91**, FROZEN at `3f02724`, instrument closed at `b35f649`; this document consumes `train_curve` / `FutureTrainingProtocol` |
 | 22 | the pre-data constant block of §1 ($\alpha$, $\varepsilon_{\text{explore}}$, $\epsilon_s$, $\epsilon_f$, `ACQUISITION_CAP`) with each value, type and provenance | `[PROPOSED]` values; A91 §79.4(f) fixes four of the domains ($\alpha$, $\varepsilon_{\text{explore}}$, $\epsilon_s$, $\epsilon_f$), while the cap's positive-integer domain comes from this document |
+| 23 | **rev 4, CF-1**: the authoritative object of $\mathrm{sd}$ is the set's values, computed by the frozen two-pass `binary64` algorithm; the per-set statistics are a derived cache | **APPROVED** by the rev-4 construction review; replaces rev 3's "recover this form exactly" |
+| 24 | **rev 4, CF-2**: $I_{\text{baseline}}$ of §3 --- the baseline run's pre-state, its constraint list, and the construction gate that admits it | `[PROPOSED]` $= W_{\text{pre}} + \Delta W^{\text{cal}}_{D_Q}$, **reviewer ratification required**; the healthy start is disqualified and the current implementation is provisional |
+| 25 | **rev 4, CF-5**: the $S_2$ artifact as an index plus $32$ deterministic shards, and the three-layer provenance split (manifest / baseline / lock) | **APPROVED** by the rev-4 construction review |
+| 26 | **rev 4, CF-3**: §4.3's withdrawn $\tau$ scale, the duplicated §7 list and the duplicated header paragraph | **APPROVED** as errata; no rule changed |
 
 ## 12. Revision log
 
-**rev 3 (this revision) — the design freeze on top of a closed instrument.** Written after A91 reached
+**rev 4 (this revision) — the targeted construction amendment.** Rev 3's design text was closed at
+`b923a0b`; the construction of §7's command surface (commits `4162b0d`, `5682daf`, `63c5caf`) produced five
+findings with their measurements in `21-F0-CONSTRUCTION-NOTES.md`, and the review of `63c5caf` reopened the
+text for a **local** amendment: CF-1, CF-2, CF-3 and CF-5 are applied here, CF-4's implementation is approved
+as it stands, and nothing else in the document is touched. A89 and A91 are not reopened, and the finding that
+motivated the reopening is not a wording problem:
+
+* **CF-1 (MUST AMEND, applied in §3 and §4.0).** The construction falsified rev 3's claim that the per-set
+  statistics "recover this form exactly": $\sum V^2/n - (\sum V/n)^2$ cancels in `binary64`, measured at
+  $\mathrm{se}(1, 0.7, 0.49) = 7.45 \times 10^{-9}$ for a set of one value. §4.4's zero cases are *exact*
+  comparisons on that quantity, so the round-off was deciding a branch. §4.0 now makes the **set's own
+  values** the authoritative object of $\mathrm{sd}$, computed by one deterministic two-pass `binary64`
+  algorithm with the constant case closed first, and demotes the statistics to a derived cache; §3 states
+  what the artifact must therefore store. Reading (a) of the finding was adopted; the reviewer rejected
+  (b) "keep the triple" and (c) "freeze a tolerance" explicitly;
+* **CF-2 (MUST AMEND --- the P0 --- applied in §1, §3 and §4.5).** Rev 3 never named the baseline run's initial
+  state, and the construction used the healthy state --- which is a **fixed point** of A91's frozen update, so
+  every baseline curve is exactly constant, $T_{\text{conv}}$ is a point mass, and §4.5's zero-variance rule
+  then makes both Retention forms inadmissible and returns `NO_ADMISSIBLE_RETENTION`, i.e. no design lock and
+  no confirmatory stage. The mechanism, the measurements and the reason the frozen corpus does not already
+  contain an initializer are in §3, together with the constraint list the review fixed, a `[PROPOSED]`
+  $I_{\text{baseline}} = W_{\text{pre}} + \Delta W^{\text{cal}}_{D_Q}$, the derivation that only the
+  $Q$-store canary is repairable by ordinary training, and the construction gate that admits it. **This is
+  the one item that cannot be frozen here**: it needs the reviewer's ratification, and until it has that,
+  `run_dev_baseline.py`, `run_dev_lock.py`, the smoke path's real acquisition execution, both acquisition
+  benchmarks and the manifest schema stay unfinalised;
+* **CF-3 (DOC ERRATUM, applied in §4.3, §7 and the header).** §4.3's scales bullet still listed "$K$ episodes
+  for $\tau$" after that term was withdrawn (and $K$ counts checkpoints, not episodes); §7 carried its
+  command list twice and the sentence "Neither the scripts nor the manifest exist on this branch" three
+  times; the header carried the `[PROPOSED]` paragraph twice. Collapsed. No rule changed;
+* **CF-5 (MUST AMEND, applied in §7).** Two of the rev-3 manifest contract's items are quantities a
+  **pre-smoke** manifest cannot legally know --- the acquisition's digest (acquired after smoke's PASS) and
+  the grid outputs at $T^{*}$ (which exists only at $F_1$) --- so provenance is now layered by stage:
+  instrument/config/schema expectations in the manifest, the acquisition in `dev_baseline.json` plus $32$
+  deterministic shards, and every locked value in `dev_lock.json`. The $S_2$ surface is amended explicitly
+  rather than exceeded quietly, and the shard serialization is frozen so the bytes are a function of the
+  acquisition alone;
+* **CF-4 (APPROVED as implemented).** The acquisition imports the instrument's `unaffected._slice` rather
+  than restating A89 §77.4's predicate, so there is one definition; the review declined to public-export it,
+  because that would reopen a closed instrument for no scientific gain;
+* **$d_{(P,\mathrm{RMST})} = 1.5$: NOT RATIFIED** (checklist item 14). It remains a legal unit with no
+  independent practical rationale, and it stays an $F_0$ VALID blocker.
+
+What rev 4 does **not** do: it does not touch A89, A91, the seed sets, the four candidate universes, the
+registry, the thresholds other than item 14's status, or any rule of §4 except §4.0's `sd` authority, §4.3's
+stale scale and §4.5's cross-reference. The construction that was already accepted is unaffected: the
+balanced ordering and the acquisition core stand, with the baseline initializer as the one provisional piece.
+
+**rev 3 — the design freeze on top of a closed instrument.** Written after A91 reached
 `CLOSED@b35f649` and was promoted to `rebuild@b5c5762`, which is the base of this branch: the episode axis,
 the ordinary-learning transition system and the runner integration are frozen elsewhere and are **consumed**
-here rather than re-specified. This revision applies the review's remaining rulings:
+here rather than re-specified. This revision applied the review's rulings:
 
 * the **balanced** master evaluation ordering replaces A88's lexicographic prefix, and its prefix-coverage
   claim was verified before it was written down (a permutation of all $5760$ units; every candidate prefix
@@ -1034,6 +1301,12 @@ brought onto A91 (the smoke path must execute and record the gate suite, and `ru
 acquire the master matrix plus the eligibility material), and the bound of §8 must be re-derived from that
 harness's own measurements. That is implementation work of $F_0$'s
 *construction*, not a further design choice.
+
+*(Rev 4 correction of rev 3's own closing claim.* "Not a further design choice" was **wrong**, and CF-2 is
+the counterexample: the construction of §7's surface surfaced a rule the document had never frozen --- what a
+baseline run starts from --- whose absence is fatal through §4.5 rather than merely untidy. The lesson is
+recorded here rather than smoothed over, because it is the reason a construction stage is a review gate and
+not a transcription step.*)*
 
 **rev 1 (`698eca2`) — REVIEW FAIL.** The review accepted the skeleton (seed sets and their form, the four
 universes' form, the complete rule family's form, the single-commit two-stage $\mathcal D_{F_1}$, the
