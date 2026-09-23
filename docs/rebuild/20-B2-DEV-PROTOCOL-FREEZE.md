@@ -15,6 +15,16 @@ $$\boxed{\text{CF-1} = \text{MUST AMEND},\qquad \text{CF-2} = \textbf{MUST AMEND
 \text{CF-3} = \text{DOC ERRATUM},\qquad \text{CF-4} = \text{APPROVED},\qquad
 \text{CF-5} = \text{MUST AMEND}}$$
 
+$$\boxed{F_0\ \text{rev 4}@\texttt{c27a098}:\ \textbf{TARGETED AMENDMENT REVIEWED}}$$
+
+$$\boxed{I_{\text{baseline}} = I_{D_Q} = W^{\varnothing} + \Delta W^{\text{cal}}_{D_Q}:\
+\textbf{APPROVED as the } F_0 \text{ choice},\ \text{operational gate pending}} \qquad
+\boxed{\text{A91 §79.3} = \textbf{PAIR-LOCAL},\ \text{no addendum}}$$
+
+$$\boxed{\mathcal B_{\text{bench}}\ \text{construction gate} = \textbf{APPROVED},\ \text{fail-closed
+only}} \qquad \boxed{\text{CF-1} = \text{APPROVED},\ \text{authoritative path pending}} \qquad
+\boxed{\text{CF-5} = \text{APPROVED},\ \text{shards pending}}$$
+
 **What reopened the text, and what did not.** The construction of §7's command surface produced five
 findings, recorded with their measurements in `21-F0-CONSTRUCTION-NOTES.md`; the review ruled on each, and
 this revision applies the four rulings. A89 and A91 are **not** reopened, rev 3 is **not** withdrawn, and the
@@ -124,11 +134,24 @@ $$\boxed{\mathcal B^{\text{op}}_{\text{smoke}} = \text{the first } 5 \text{ benc
 
 $$\boxed{\text{scientific seed} \;\neq\; \text{operational benchmark key}}$$
 
-  $\mathcal B_{\text{bench}}$ is **non-scientific**: it may be used only to time the instrument, it may not
-  enter any scientific artifact, it may not be read by $f_T, f_N, f_G, f_C, f_R$ or by any threshold, and a
-  number produced with it may never be promoted into a development or confirmatory observation. It is
-  reserved against $\mathcal S_{\text{confirm}}$ exactly as the other two sets are, so a future confirmatory
-  authorisation cannot reuse it by accident.
+  $\mathcal B_{\text{bench}}$ is **non-scientific**, and its permitted role was widened by the rev-4 review
+  from timing alone, because a construction gate is not a scientific use:
+
+$$\boxed{\mathcal B_{\text{bench}} = \text{deterministic non-scientific operational keys}}$$
+
+  with exactly two permitted uses --- (i) the **runtime benchmark** of §8, and (ii) **pre-specified binary
+  construction-validity gates**, of which §3's $I_{\text{baseline}}$ gate is the first. Still forbidden, and
+  unchanged by the widening: it may not enter any scientific artifact, it may not be read by $f_T, f_N, f_G,
+  f_C, f_R$ or by any threshold, it may not produce a ranking or an effect estimate, and a number produced
+  with it may never be promoted into a development or confirmatory observation. A construction gate is
+  fail-closed only and may never *select* among candidates. The discipline is A89's calibration discipline
+  exactly --- freeze the object, then check with a non-scientific fixture that the instrument does what it
+  claims:
+
+$$\boxed{\text{operational validity evidence} \;\neq\; \text{scientific development evidence}}$$
+
+  It is reserved against $\mathcal S_{\text{confirm}}$ exactly as the other two sets are, so a future
+  confirmatory authorisation cannot reuse it by accident.
 
 ## 2. Candidate universes, exhaustively named
 
@@ -376,16 +399,30 @@ V_\sigma(e) \text{ constant in } e \;\Longrightarrow\; \texttt{NO\_ADMISSIBLE\_R
   **The pre-state is not free, and the frozen corpus does not already contain one.** A search of the frozen
   and live sources (`21-F0-CONSTRUCTION-NOTES.md` §3) found no $I_{\text{baseline}}$, no address set, no
   magnitude, no mask, no statement whether $W_0$ may depend on $\sigma$, and no item in §11's checklist.
-  What the corpus does contain is $W_{\text{pre}}$ = "the learner state with **no overrides**" (A87 §75.1),
-  which A91 §79.3 assigns to a pair's reference arm at episode $0$ --- the fixed point, mandated. So the
-  blocking question is upstream and is answered here by scope rather than by editing a closed amendment:
+  What the corpus contains near the question is scoped to something else, and the attribution matters:
 
-$$\boxed{\text{A91 §79.3 governs a \emph{pair's} arms;} \qquad \text{F0 §3 governs what the } S_2
-\text{ stage acquires, and must therefore name that stage's pre-state}}$$
+* **A87 §75.1's healthy $W_{\text{pre}}$ belongs to its canary fixtures.** §75's structure is
+  $\mathcal C_A = (W_{\text{pre}}, \Delta W^{\text{cal}}_A, \xi^{*}_A, d_A)$ for the three
+  **screening/calibration** cells $D_Q, X, P$, and "common to all three: $W_{\text{pre}}$ is the learner
+  state with **no overrides**" therefore gives $W^{\text{A87 fixture}}_{\text{pre}} = W^{\varnothing}$ --- for
+  those fixtures. It does **not** generalise to every production pair, and the production contract is
+  explicit that it is not meant to:
+* **A91 §79.3 is pair-local.** It freezes how a pair's two arms start **from a $W_{\text{pre}}$ the caller
+  supplies** --- $W^{\text{ref}}_0 = W_{\text{pre}}$ and $W^{\text{treat}}_0 = W_{\text{pre}} + \Delta W_{B1}$
+  --- and the production runner it was written for takes that state as its argument
+  (`PairedRunner.run(state, ...)`), builds its design material from "**the pair's own pre-update learner
+  --- not a minted healthy state**", and starts both arms from a clone of it. A91 §79.2's $W^{\varnothing}$
+  exists to establish $V(W^{\varnothing}; Q^{*}) = V_{\text{pre}}$, not to fix every baseline run's initial
+  learner;
 
-  This revision adopts the first reading explicitly, because the alternative reading leaves CF-2 unfixable
-  inside F0 and would need an A91 addendum instead. What the review required of the initializer is frozen
-  here as a constraint list, and none of it is negotiable:
+$$\boxed{\text{A87 fixes a healthy } W_{\text{pre}} \text{ for its canary fixtures; A91 fixes
+pair-relative initialization}}$$
+
+$$\boxed{\text{neither freezes } S_2\text{'s stage-level baseline initializer} \;\Longrightarrow\;
+\text{rev 3 left that instance unspecified, and F0 may name it --- no A91 addendum}}$$
+
+  What the review required of that instance is frozen here as a constraint list, and none of it is
+  negotiable:
 
 $$\boxed{I_{\text{baseline}}:\ \text{pre-data},\ \text{arm-blind},\ \text{treatment-independent},\
 \text{frozen before the first scientific seed}}$$
@@ -396,13 +433,20 @@ I_{\text{baseline}} = \text{the ordinary / NoCorrection learner, not a treatment
   and the **same** $I_{\text{baseline}}$ family serves smoke, the development baseline and the operational
   benchmark, so no stage measures a different learner from the others.
 
-$$\boxed{I_{\text{baseline}} = \text{the healthy state} + \Delta W^{\text{cal}}_{D_Q}
-\quad \texttt{[PROPOSED --- reviewer ratification required]}}$$
+$$\boxed{I_{\text{baseline}} = I_{D_Q} = W^{\varnothing} + \Delta W^{\text{cal}}_{D_Q}
+\quad \texttt{APPROVED as the } F_0 \text{ choice}}$$
 
   with $\Delta W^{\text{cal}}_{D_Q}$ the **frozen** A87 §75.2 canary, in the substrate's own vocabulary
   `Edit(Q, QAddress(state=WITNESS_STATE, z=1, m=0, a=3), -0.14)` (A87 §75.2: $Q^{\text{eff}}(x^{*}, 3)
   \leftarrow \min_a Q^{*}(x^{*}, a) - 1 = -0.14$, "**No measurement was consulted to choose anything
-  below**"). The grounds, in order of weight:
+  below**"). Its semantics are exactly this and nothing more:
+
+$$\boxed{I_{D_Q} \text{ is a synthetic, pre-data defect used to define the development baseline's dynamics}}$$
+
+  It is **not** a B2 treatment, **not** a claim to represent any real distribution of persistent defects,
+  **not** A87's calibration result, and **not** a winner selected by benchmark performance; and $-0.14$ is
+  **not** claimed to be a practically meaningful defect magnitude --- its legitimacy comes from the frozen
+  canonical canary's provenance, not from natural realism. The grounds, in order of weight:
 
 * **it is repairable, and that is a derivation rather than a preference.** A91 §79.4 freezes that ordinary
   training writes $Q_D^{L}$ **only** (`sweep_edits` emits $Q$ edits and nothing else). The $D_Q$ canary is a
@@ -431,22 +475,44 @@ $$\boxed{I_{\text{baseline}} = \text{the healthy state} + \Delta W^{\text{cal}}_
   the canaries for screening and calibration), which is precisely why the box above is marked `[PROPOSED]`
   rather than stated: it is the one place in this revision that cannot be frozen without the reviewer.
 
-  **The construction gate, and its boundary.** The initializer is admitted only if the gate shows, with
-  $\mathcal B_{\text{bench}}$ keys and no scientific seed, that
+  **The construction gate, and its boundary.** $\mathcal B_{\text{bench}}$ may drive this gate, and §1's
+  role for those keys is widened accordingly: they may time the instrument **and** drive pre-specified
+  binary construction-validity checks, fail-closed only. The initializer is admitted only if, with
+  $\mathcal B^{\text{op}}_{\text{dev}}$'s keys and no scientific seed, all of the following hold:
 
-* **(a) the run is not a fixed point:** at least one episode's sweep yields an edit that is **not** reference-equal,
-  so that $Q_D^{L}$ is non-empty from $e = 1$ onward --- the direct falsification of the healthy-start
-  mechanism above;
-* **(b) the resulting bank curves are not constant**, across keys and across $e$, as a **fail-closed
-  diagnostic**: if they are constant the amendment is not valid. It may never be used to *pick* a different
-  initializer --- that would make a benchmark a design input, which §1 forbids the keys from being.
+$$\boxed{\text{(a) the canary override exists at } e = 0:\quad Q^{\text{eff}}_{D_Q}(W_{\beta,0})
+\neq Q^{*}\bigl(x^{*}, 3\bigr) \ \text{ at the canary address}}$$
 
-  Both are construction checks on the instrument, in the same family as A89 §77.7's calibration obligation
-  ("a known injected behavioural change must be **detected**"), and neither reads $f_T$, $f_N$, $f_G$, $f_C$,
-  $f_R$ or any threshold. If the review reads the $\mathcal B_{\text{bench}}$ boundary more narrowly ---
-  timing only --- then diagnostics may still be *reported* but not decide, and (b) becomes a design claim
-  this text must assert outright. That boundary is the reviewer's to draw, and it is drawn here as
-  "fail-closed only, never selective".
+$$\boxed{\text{(a$'$) the run is not a fixed point}:\quad \exists(\beta, e):\ Q_D^{L}(W_{\beta,e+1})
+\neq Q_D^{L}(W_{\beta,e})}$$
+
+$$\boxed{\text{(b$1$) the curve moves}:\quad \exists\beta,\ \exists e_1 \neq e_2:\ V_\beta(e_1)
+\neq V_\beta(e_2)}$$
+
+$$\boxed{\text{(b$2$) the design no longer forces the seeds together}:\quad \exists \beta_1 \neq \beta_2:\
+\bigl(V_{\beta_1}(0), \ldots, V_{\beta_1}(40)\bigr) \neq \bigl(V_{\beta_2}(0), \ldots, V_{\beta_2}(40)
+\bigr)}$$
+
+$$\boxed{\text{(c) the defect is repairable at all}:\quad \exists\beta,\ \exists e \le
+\texttt{ACQUISITION\_CAP}:\ \text{the canary address's override is canonicalised back to the reference}}$$
+
+  (a) and (a$'$) are read off the **frozen object** --- the override table itself --- rather than off a
+  recomputation. (b1) proves the curve is not constant; (b2) proves the stage is no longer *structurally*
+  forced to produce one identical per-seed series. **Neither promises that the scientific stage will
+  succeed**: a formal $\texttt{dev32}$ run may still return `NO_ADMISSIBLE_RETENTION`, and that would be a
+  **legal scientific failure**. The gate's claim is narrower and exact:
+
+$$\boxed{\text{the gate shows } \texttt{NO\_ADMISSIBLE\_RETENTION} \text{ is no longer guaranteed by the
+initializer's mathematics}}$$
+
+  and it must not be asked to show more. (c) is required because this initializer is *called* the ordinary
+  learner's recovery baseline: it asks only that the frozen learner can repair this defect **at all** within
+  the frozen cap --- one key is enough, and 32/32 is explicitly *not* required, since censoring is part of
+  the design. If **no** operational key repairs it, the pair (initializer, cap) is **invalid**; the response
+  is to return here, never to enlarge the cap or to substitute a different corruption after seeing the
+  result. All five checks are construction checks on the instrument, in the family of A89 §77.7's
+  calibration obligation ("a known injected behavioural change must be **detected**"), and none of them
+  reads $f_T$, $f_N$, $f_G$, $f_C$, $f_R$, any threshold, or any ranking or effect estimate.
 
   **What this blocks until it is ratified.** `run_dev_baseline.py`, `run_dev_lock.py`, the smoke path's real
   acquisition execution, both acquisition runtime benchmarks and the manifest's schema are **not** finalised
@@ -507,6 +573,15 @@ $$\boxed{\bar x = \frac{\text{left-to-right sum}(x_j)}{n}}, \qquad
 
 $$\boxed{\mathrm{sd} = \sqrt{\frac{1}{n}\,\text{left-to-right sum}\bigl((x_j - \bar x)^2\bigr)}
 \quad \text{otherwise}}$$
+
+  and the **iteration order is frozen with the algorithm**, because a `binary64` left-to-right sum is
+  order-sensitive:
+
+$$\boxed{x_1, \ldots, x_n \text{ enter the accumulation in ascending \emph{bank index} order of the
+balanced master bank}}$$
+
+  §3's incidence already stores bank indices, so this promotes the order the artifact already has into a
+  rule; it adds no storage and no acquisition.
 
   The constancy test reads the values themselves (`x_j == x_1`, in the artifact's own type), it is evaluated
   **first**, and it is what closes the constant case exactly --- which is what makes the zero cases of §4.2,
@@ -1037,6 +1112,11 @@ experiments/v03r/dev_baseline/seed-001031.jsonl.gz
 * `run_dev_lock.py` **reads the index and refuses before computing anything if one shard digest mismatches**;
 * serialization is frozen so that the bytes are a function of the acquisition alone: UTF-8 canonical JSONL, a
   deterministic record order, compact JSON separators, LF line endings, and gzip written with `mtime = 0`.
+  **The normative digest is taken over the *uncompressed* canonical JSONL bytes**, and the `.jsonl.gz` file
+  is a storage wrapper rather than the hashed object --- so no digest depends on a gzip library, on its
+  header fields, on a compression level or on an embedded filename:
+
+$$\boxed{\text{SHA-256 over canonical JSONL bytes} \;\neq\; \text{SHA-256 over a container of them}}$$
 
 $$\boxed{\text{an artifact's size is a surface question} \;\Longrightarrow\; \text{the surface is amended
 explicitly, never exceeded quietly}}$$
@@ -1218,10 +1298,11 @@ development: development waits on smoke's operational PASS.
 | 20 | the ten pre-existing CRLF artifacts | **APPROVED** as ledger treatment |
 | 21 | **the episode index of a baseline curve** (§3) | **RESOLVED by A91**, FROZEN at `3f02724`, instrument closed at `b35f649`; this document consumes `train_curve` / `FutureTrainingProtocol` |
 | 22 | the pre-data constant block of §1 ($\alpha$, $\varepsilon_{\text{explore}}$, $\epsilon_s$, $\epsilon_f$, `ACQUISITION_CAP`) with each value, type and provenance | `[PROPOSED]` values; A91 §79.4(f) fixes four of the domains ($\alpha$, $\varepsilon_{\text{explore}}$, $\epsilon_s$, $\epsilon_f$), while the cap's positive-integer domain comes from this document |
-| 23 | **rev 4, CF-1**: the authoritative object of $\mathrm{sd}$ is the set's values, computed by the frozen two-pass `binary64` algorithm; the per-set statistics are a derived cache | **APPROVED** by the rev-4 construction review; replaces rev 3's "recover this form exactly" |
-| 24 | **rev 4, CF-2**: $I_{\text{baseline}}$ of §3 --- the baseline run's pre-state, its constraint list, and the construction gate that admits it | `[PROPOSED]` $= W_{\text{pre}} + \Delta W^{\text{cal}}_{D_Q}$, **reviewer ratification required**; the healthy start is disqualified and the current implementation is provisional |
-| 25 | **rev 4, CF-5**: the $S_2$ artifact as an index plus $32$ deterministic shards, and the three-layer provenance split (manifest / baseline / lock) | **APPROVED** by the rev-4 construction review |
+| 23 | **rev 4, CF-1**: the authoritative object of $\mathrm{sd}$ is the set's values, computed by the frozen two-pass `binary64` algorithm in ascending bank-index order; the per-set statistics are a derived cache | **APPROVED** (CF-1 scientific ruling PASS); the authoritative implementation and its gate are pending, and the triple-entry helper stays a construction probe until they land |
+| 24 | **rev 4, CF-2**: $I_{\text{baseline}}$ of §3 --- the baseline run's pre-state, its constraint list, and the construction gate that admits it | **APPROVED** as the $F_0$ choice: $I_{D_Q} = W^{\varnothing} + \Delta W^{\text{cal}}_{D_Q}$; the scope is **pair-local** for A91 §79.3, so no A91 addendum is required. The operational gate (a), (a$'$), (b1), (b2), (c) is **pending**, and the current healthy-start implementation remains provisional until it passes |
+| 25 | **rev 4, CF-5**: the $S_2$ artifact as an index plus $32$ deterministic shards, the three-layer provenance split (manifest / baseline / lock), and the digest taken over uncompressed canonical JSONL | **APPROVED in structure**; the serialization detail is applied, the shard implementation is pending |
 | 26 | **rev 4, CF-3**: §4.3's withdrawn $\tau$ scale, the duplicated §7 list and the duplicated header paragraph | **APPROVED** as errata; no rule changed |
+| 27 | **rev 4**: the role of $\mathcal B_{\text{bench}}$ widened from timing alone to timing **plus pre-specified binary construction-validity gates**, fail-closed only, with the forbidden list unchanged | **APPROVED** by the rev-4 review; §1 carries the two permitted uses and the `operational validity evidence ≠ scientific development evidence` distinction |
 
 ## 12. Revision log
 
@@ -1272,6 +1353,27 @@ What rev 4 does **not** do: it does not touch A89, A91, the seed sets, the four 
 registry, the thresholds other than item 14's status, or any rule of §4 except §4.0's `sd` authority, §4.3's
 stale scale and §4.5's cross-reference. The construction that was already accepted is unaffected: the
 balanced ordering and the acquisition core stand, with the baseline initializer as the one provisional piece.
+
+**Rev 4's second review round, and what it corrected here.** The review of `c27a098` ruled on the three
+questions rev 4 had put to it --- $I_{\text{baseline}}$ **approved** as the $F_0$ choice, A91 §79.3
+**pair-local** so that no A91 addendum is required, and $\mathcal B_{\text{bench}}$ **approved** as a
+fail-closed construction-gate driver --- and it corrected one attribution and tightened one gate. Applied
+above:
+
+* the **attribution** was written too strongly in the first round of this revision. A87 §75.1's healthy
+  $W_{\text{pre}}$ is scoped to §75's three canary **fixtures**, and A91 §79.3 freezes **pair-relative**
+  initialization given a caller-supplied state --- the production runner takes that state as an argument and
+  builds its design material from "the pair's own pre-update learner, not a minted healthy state". Neither
+  text freezes $S_2$'s stage-level initializer, so rev 3 left the *instance* unspecified rather than being
+  forbidden to name it. §3 now says that, and the earlier "the fixed point is mandated" reading is withdrawn;
+* the **gate** was strengthened from two claims to five: the canary override's presence at $e = 0$ (a), a
+  non-fixed-point override transition (a$'$), a moving curve (b1), two keys whose curves differ (b2), and
+  repairability within the frozen cap (c). (b2) is deliberately weaker than "the scientific stage will
+  succeed": a formal $\texttt{dev32}$ outcome of `NO_ADMISSIBLE_RETENTION` stays a legal scientific failure,
+  and the gate claims only that it is no longer guaranteed by the initializer's mathematics. (c) requires one
+  repairing key and explicitly not 32, because censoring is part of the design;
+* the **serialization rule** now hashes the *uncompressed* canonical JSONL bytes, so no digest depends on a
+  gzip library, header, level or embedded filename.
 
 **rev 3 — the design freeze on top of a closed instrument.** Written after A91 reached
 `CLOSED@b35f649` and was promoted to `rebuild@b5c5762`, which is the base of this branch: the episode axis,

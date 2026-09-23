@@ -85,11 +85,22 @@ is the record of what was done about it.
 
 | finding | disposition | where it landed |
 |---|---|---|
-| CF-1 | **MUST AMEND**; reading (a) adopted, (b) and (c) rejected | §4.0's `sd` authority + §3's stored material |
-| CF-2 | **MUST AMEND (P0)**; $I_{\text{baseline}}$ `[PROPOSED]`, reviewer ratification required | §1, §3's baseline block, §4.5's cross-reference |
-| CF-3 | **DOC ERRATUM** | §4.3, §7, header |
-| CF-4 | **APPROVED, no action** | --- |
-| CF-5 | **MUST AMEND**; index + $32$ deterministic shards + three-layer provenance | §7 |
+| CF-1 | **MUST AMEND**; reading (a) adopted, (b) and (c) rejected. Second round: **APPROVED** (PASS), implementation pending | §4.0's `sd` authority + §3's stored material; iteration order frozen to ascending bank index |
+| CF-2 | **MUST AMEND (P0)**, then **APPROVED**: $I_{D_Q} = W^{\varnothing} + \Delta W^{\text{cal}}_{D_Q}$ as the $F_0$ choice, operational gate pending; A91 §79.3 ruled **pair-local**, no A91 addendum | §1, §3's baseline block, §4.5's cross-reference |
+| CF-3 | **DOC ERRATUM**, **CLOSED** | §4.3, §7, header |
+| CF-4 | **APPROVED, no action**, **CLOSED** | --- |
+| CF-5 | **MUST AMEND**; second round **APPROVED in structure**, shard implementation pending, digest now over uncompressed canonical JSONL | §7 |
+| $\mathcal B_{\text{bench}}$ role | **APPROVED** for pre-specified fail-closed construction gates as well as timing | §1's benchmark-keys block, §11 item 27 |
+| $d_{(P,\mathrm{RMST})}=1.5$ | **NOT RATIFIED**, $F_0$ VALID blocker | §11 item 14 |
+
+**What the second review round corrected in my own text.** Rev 4's first round attributed the fixed point to
+the frozen corpus ("A87 fixes $W_{\text{pre}} = $ no overrides, A91 assigns it to the reference arm, so the
+fixed point is mandated"). **That attribution was too strong and is withdrawn**: A87 §75.1's "common to all
+three" is scoped to §75's three canary *fixtures*, and A91 §79.3 freezes **pair-relative** initialization
+given a caller-supplied state --- the production runner takes `state` as an argument and builds its design
+material from "the pair's own pre-update learner, not a minted healthy state". Neither freezes $S_2$'s
+stage-level initializer, so rev 3 left the *instance* unspecified. What survives from the research is the
+part that decided the initializer: only the $D_Q$ canary lives in the store ordinary learning writes.
 
 ### CF-1 --- the triple does not recover the population `sd` exactly, and §4.4's zero cases are exact comparisons
 
