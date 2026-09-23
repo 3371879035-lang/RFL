@@ -80,7 +80,7 @@ than inside $f_T$'s mechanics, because they are constants of the experiment and 
 | $\alpha$ | $1/2$ `[PROPOSED]` | finite real, $0 < \alpha \le 1$ (A91 §79.4(f)) | designer judgement: the tabular $Q$-learning step size, declared before the first seed |
 | $\varepsilon_{\text{explore}}$ | $1/10$ `[PROPOSED]` | **exact rational** $p/q$ in $(0,1]$ (A91 §79.4(f)) | designer judgement: the training behaviour policy's exploration rate; rational because §79.5's coin compares integers |
 | $\epsilon_s$ | $10^{-3}$ `[PROPOSED]` | $\epsilon_s > 0$, in units of the level per episode | designer judgement: $\lvert\mathrm{slope}_K\rvert$ below this counts as flat |
-| $\epsilon_f$ | $1/10$ `[PROPOSED]` | $0 < \epsilon_f \le 1$, dimensionless | designer judgement: at most one reversal in ten adjacent non-zero increment pairs counts as stable |
+| $\epsilon_f$ | $1/10$ `[PROPOSED]` | $0 < \epsilon_f \le 1$, dimensionless | designer judgement: under $K = 3$ a window has $K - 2 = 1$ adjacent non-zero increment pair, so a defined FlipRate is $0$ or $1$ and **any** $\epsilon_f$ in the frozen domain implements the same rule --- a qualifying window must be reversal-free. The value is kept as a positive pre-data threshold; revision 3's rationale ("at most one reversal in ten pairs") described a window that cannot occur, and strictly it would even have failed on FlipRate $= 1/10$ |
 | $\texttt{ACQUISITION\_CAP}$ | $40$ `[PROPOSED]` | positive integer, episodes | designer judgement: the envelope's episode budget, and the number $T^{*}$ must not exceed (§4.1) |
 
 Every one of them is a constant of the **experiment**, so none may be set after the first seed: A91 §79.4(f)
@@ -93,9 +93,18 @@ runtime benchmark of the acquisition cannot be keyless; revision 3 said both "th
 `acquire_master_baseline`" and "no benchmark may draw a stream", which cannot both hold. The resolution is to
 separate the two kinds of key:
 
-$$\boxed{\mathcal B_{\text{bench}} = \{900001,\ 900002,\ 900003,\ 900004\} \quad \texttt{[PROPOSED]},
+$$\boxed{\mathcal B_{\text{bench}} = \{900001,\ 900002,\ \ldots,\ 900032\} \quad \texttt{[PROPOSED]},
 \qquad \mathcal B_{\text{bench}} \cap \left(\mathcal S_{\text{smoke}} \cup \mathcal S_{\text{dev}}\right)
 = \varnothing}$$
+
+$$\boxed{\mathcal B^{\text{op}}_{\text{smoke}} = \text{the first } 5 \text{ benchmark keys}, \qquad
+\mathcal B^{\text{op}}_{\text{dev}} = \text{all } 32 \text{ benchmark keys}}$$
+
+  so each stage's benchmark is the **shape of its own workload** --- five keyed runs for smoke, thirty-two
+  for the master acquisition --- with no scaling factor, no repetition rule and no mapping decision left to
+  the harness. Revision 3 declared four keys and then required the development benchmark to represent a
+  thirty-two-run acquisition, which the construction review caught: how four keys become thirty-two runs
+  (repeat, cycle, or scale by $8$) would have been four different benchmarks from one frozen text.
 
 $$\boxed{\text{scientific seed} \;\neq\; \text{operational benchmark key}}$$
 
@@ -252,9 +261,25 @@ e \le \texttt{ACQUISITION\_CAP},\ u \in \mathcal S_{\text{eval}}(N_{\max})}}$$
   one level per (development seed, episode, evaluation scene) --- A87 §75.3's reward-mode-A return of the
   run's learner at that scene --- plus the derived mean curve $V_\sigma(e) =
   \mathrm{mean}_u V_{\sigma,e,u}$ as a **view** of the matrix rather than the stored object. The matrix is
-  what $f_N$ and $f_C$ need (per-scene values) and what $f_T$, $f_G$ and $f_R$ summarise (per-seed curves);
-  a mean-only acquisition would have made $f_N$'s cross-scene scale and $f_C$'s per-site spread
-  uncomputable, and that is why the output contract is written here rather than left to the harness.
+  what $f_N$ needs (per-scene values) and what $f_T$, $f_G$ and $f_R$ summarise (per-seed curves), and a
+  mean-only acquisition would have made $f_N$'s cross-scene scale uncomputable.
+
+  **The matrix is necessary and not sufficient.** $f_C$'s metric of §4.4 needs
+  $C_r^{A,\sigma,e}(c) = E_{W_{\sigma,e}}(c) \cap S_r$, and A89's eligibility ---
+  $\neg Consult_{W_{\sigma,e}}(u,c) \wedge H_{\text{pre}}(u)$ --- is a function of the run's own learner
+  state, so it cannot be reconstructed from the levels alone; neither can $X$'s credited domain, which A89
+  derives from the same episodes. The acquisition artifact is therefore
+
+$$\boxed{D^{\text{master}}_{\text{dev,baseline}} = \left\{V_{\sigma,e,u}\right\} \cup
+\text{sufficient A89 pre-update eligibility material}}$$
+
+  where "sufficient" is frozen to mean: enough to recover $SE_{A,c,\sigma,e}(r)$ **mechanically at $F_1$**,
+  without re-running a scientific stream and without inventing a static eligibility. The per-$(A, \sigma, e,
+  c, r)$ sufficient statistics --- $\lvert C_r^{A,\sigma,e}(c)\rvert$,
+  $\sum_{u \in C} V_{\sigma,e,u}$ and $\sum_{u \in C} V_{\sigma,e,u}^2$ --- are the minimum, and the full
+  incidence form ($Consult$ and $H_{\text{pre}}$ per unit) is equally acceptable. A levels-only artifact is
+  **not**: it would leave `run_dev_lock.py` to choose between re-running the development stream, inventing an
+  eligibility, or failing.
   `acquire_master_baseline` **reuses A91's frozen machinery** --- the keyed episode generator
   `ExogenousEpisode`, the training behaviour policy, and `sweep_edits`' chronological $Q$ sweep --- while
   doing its own evaluation gathering, because `train_curve` returns the evaluation-sample *mean* and takes a
@@ -478,28 +503,38 @@ which is the same object `EvaluationScene` carries and the same field set A86 §
   therefore the development one, taken from the master matrix of §3, and its aggregation over the matrix's
   indices is frozen here rather than left to an implementer:
 
-$$SE_{A,i,\sigma,e}(c) = \frac{\mathrm{sd}_{u \in C_{A,i}(c)}\ V_{\sigma,e,u}}
-{\sqrt{\lvert C_{A,i}(c)\rvert}}, \qquad
-r_{A,i,\sigma,e}(c) = \frac{SE_{A,i,\sigma,e}(c)}{SE_{A,i,\sigma,e}(\texttt{eligible\_all})}$$
+**Two objects, two letters.** $r \in \mathcal C_C$ is the **refinement**; $c \in
+\mathcal D_A^{\text{credit}}(W_{\sigma,e})$ is a **credited site**. Revision 3's draft used $c$ for both,
+and --- more importantly --- wrote the candidate set without a run index. A89 §77.3 freezes eligibility as a
+function of the learner state,
+$E(c) = \{u : \neg Consult_{W_{\text{pre}}}(u, c) \wedge H_{\text{pre}}(u)\}$ with
+$H_{\text{pre}}(u) = [\text{outcome}(W_{\text{pre}}, u) = \texttt{SUCCESS}]$, and in the acquisition
+$W_{\text{pre}} = W_{\sigma,e}$; the frozen selector's input therefore carries that index:
 
-$$\boxed{m_C(c) = \max_{A,\ i,\ \sigma,\ e}\ r_{A,i,\sigma,e}(c)}$$
+$$C_r^{A,\sigma,e}(c) = E_{W_{\sigma,e}}(c) \cap S_r$$
 
-  with $A \in \{D_Q, X, P\}$, $i$ ranging over that architecture's production credited domains,
-  $\sigma \in \mathcal S_{\text{dev}}$ and $e = 0, \ldots, \texttt{ACQUISITION\_CAP}$. The **worst case over
-  the whole family** is deliberate and matches the $f_G$ ruling: a refinement that is stable on average but
-  unstable for one architecture, one site, one seed or one episode has not been shown to be a stable
-  refinement. This uses the matrix §3 already freezes and introduces no new acquisition. The metric is that standard error **relative to the unrefined
+$$SE_{A,c,\sigma,e}(r) = \frac{\mathrm{sd}_{u \in C_r^{A,\sigma,e}(c)}\ V_{\sigma,e,u}}
+{\sqrt{\lvert C_r^{A,\sigma,e}(c)\rvert}}, \qquad
+R_{A,c,\sigma,e}(r) = \frac{SE_{A,c,\sigma,e}(r)}{SE_{A,c,\sigma,e}(\texttt{eligible\_all})}$$
+
+$$\boxed{m_C(r) = \max_{A,\ \sigma,\ e,\ c}\ R_{A,c,\sigma,e}(r)}$$
+
+  with $A \in \{D_Q, X, P\}$, $c$ over that architecture's credited domain for that run, $\sigma \in
+\mathcal S_{\text{dev}}$ and $e = 0, \ldots, \texttt{ACQUISITION\_CAP}$. The **worst case over the whole
+family** is deliberate and matches the $f_G$ ruling: a refinement that is stable on average but unstable for
+one architecture, site, seed or episode has not been shown to be stable. This is A89's own object rather than
+a static proxy for it, and it introduces no new acquisition. The metric is that standard error **relative to the unrefined
   pool**, so it is dimensionless and compares candidates rather than sites:
 
 **The zero cases, on the same objects.** There is one $m_C$, defined above over
 $(A, i, \sigma, e)$; the ratio it maximises decides its own zero cases directly, with no epsilon in the
 argument:
 
-$$\boxed{SE_{A,i,\sigma,e}(\texttt{all}) = 0 \ \land\ SE_{A,i,\sigma,e}(c) = 0
-\;\Rightarrow\; r_{A,i,\sigma,e}(c) = 1}
+$$\boxed{SE_{A,c,\sigma,e}(\texttt{all}) = 0 \ \land\ SE_{A,c,\sigma,e}(r) = 0
+\;\Rightarrow\; R_{A,c,\sigma,e}(r) = 1}
 \qquad
-\boxed{SE_{A,i,\sigma,e}(\texttt{all}) = 0 \ \land\ SE_{A,i,\sigma,e}(c) > 0
-\;\Rightarrow\; c\ \text{inadmissible}}$$
+\boxed{SE_{A,c,\sigma,e}(\texttt{all}) = 0 \ \land\ SE_{A,c,\sigma,e}(r) > 0
+\;\Rightarrow\; r\ \text{inadmissible}}$$
 
 A $0/0$ means "this site's pool is exactly stable for that seed and episode, and so is the slice", which is
 *equal* stability rather than an undefined comparison; a slice that moves where its pool does not is one the
@@ -599,7 +634,7 @@ $$\boxed{\text{a shared numeric bound is a declared alias, not a shared identity
 |---|---|---|
 | `(P, RMST)` | primary endpoint of regime P | $\Delta_{\min} = 1.5$ episodes `[PROPOSED]`, **designer judgement** with its **$K/2$ rationale withdrawn**: $K = 3$ counts *checkpoints*, not episodes, and the grid is non-uniform, so $K/2 = 1.5$ has no automatic "1.5 episodes" meaning. The value stands as a proposal and **needs an independent practical-meaning rationale** before $F_0$ can be VALID |
 | `(P, DeficitAUC)` | mandatory co-primary of regime P (A79 §67.3) | $\Delta_{\min} = 0.01$ -- **inherited frozen default** from `11-ENVIRONMENT` §10's AUC-like row, which itself inherits the legacy `noninferiority_margin`; **not** a designer judgement |
-| `(P, BehavioralCollateral)` | collateral bound of regime P, over the refinement $f_C$ selects | **derived, with its aggregation surface frozen**: with $c^{*}$ the refinement $f_C$ produced, the spread family is $\bigl\{\mathrm{sd}_{u \in C_{A,i}(c^{*})} V_{\sigma,e,u}\bigr\}$ over the same $(A, i, \sigma, e)$ indices as $f_C$'s metric, and the bound is the **nearest-rank $Q_{0.95}$ of that family** (§4.1's quantile convention, so no library interpolation enters). A family that is identically zero makes the endpoint inadmissible rather than assigning it a zero bound. Revision 3's draft named a per-site spread "across $\mathcal S_{\text{eval}}(N_{\max})$" with no seed or episode index, leaving `run_dev_lock.py` to choose the aggregation |
+| `(P, BehavioralCollateral)` | collateral bound of regime P, over the refinement $f_C$ selects | **derived, with its aggregation surface frozen**: with $c^{*}$ the refinement $f_C$ produced, the spread family is $\bigl\{\mathrm{sd}_{u \in C_{r^{*}}^{A,\sigma,e}(c)} V_{\sigma,e,u}\bigr\}$ over the same $(A, \sigma, e, c)$ indices as $f_C$'s metric, with $r^{*}$ the refinement it selected, and the bound is the **nearest-rank $Q_{0.95}$ of that family** (§4.1's quantile convention, so no library interpolation enters). A family that is identically zero makes the endpoint inadmissible rather than assigning it a zero bound. Revision 3's draft named a per-site spread "across $\mathcal S_{\text{eval}}(N_{\max})$" with no seed or episode index, leaving `run_dev_lock.py` to choose the aggregation |
 | `(P, Retention)` | the $f_R$-configured endpoint -- `RetentionAtH(H*)` or `LateWindowRetention(H1*,H2*)`, under that form's own name and parameters | **derived in the endpoint's own units from its own per-run spread**: $\Delta_{\min} = \kappa_R \cdot \mathrm{sd}_i\bigl(R_i\bigr)$ over the $32$ baseline runs of §4.5, $\kappa_R = 0.25$ `[PROPOSED]`; an identically zero spread makes the form inadmissible. (Revision 3's draft wrote $\rho_R$ for this and $\rho_R$ for $f_R$'s Spearman redundancy, and read a *scene-level* spread for an endpoint that is a per-run scalar; the construction review caught both.) |
 | `(T, RMST)` | regime T's harm bound | $\Delta_{\min} := \Delta_{\min}\texttt{(P, RMST)}$ as a **declared alias** -- the same number, a separate identity, because the populations and the claims are separate |
 | `(T, DeficitAUC)` | regime T's mandatory companion, approved by review | $\Delta_{\min} := \Delta_{\min}\texttt{(P, DeficitAUC)} = 0.01$ -- the inherited frozen default, shared by value and **separate by identity**. A79 §67.3 makes DeficitAUC a mandatory companion of the primary endpoint, and A79 §62.5 keeps the two regimes' populations and claims apart, so this row exists rather than the statistic being reused across regimes |
