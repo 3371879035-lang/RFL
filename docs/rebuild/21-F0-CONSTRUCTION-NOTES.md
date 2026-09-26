@@ -274,3 +274,132 @@ $\mathcal S_{\text{smoke}}$ waits for $F_0 = \texttt{VALID}$. No seed of $\mathc
 $\mathcal S_{\text{dev}}$ has been drawn: the fixtures and the probe use $\mathcal B_{\text{bench}}$ keys and
 the healthy state. $N_{\text{train}}$ remains `NONEXISTENT/OPEN`; no confirmatory seed exists; `V0.4R` is
 untouched.
+
+## 6. Handoff audit: initializer gate implementation corrections (2026-09-26)
+
+Two predicates in `b2/initializer.py` did not implement the already-approved five-part
+gate. These are implementation corrections, not changes to the initializer, workload,
+thresholds or scientific protocol:
+
+* (a') compared only whether the canary override existed. It could not see a Q-value
+  change while the override remained present. The gate now records independent,
+  immutable snapshots of the complete sparse Q store at each episode boundary and
+  compares adjacent snapshots. `moved_at` uses those same snapshots.
+* (c) required every post-entry presence flag to be false, effectively requiring repair
+  in the first episode. It now accepts a repair at any episode through the cap, as the
+  existential proposition specifies. `repaired_at` remains the first such episode.
+
+Regression coverage includes partial Q-value recovery, writes elsewhere in the Q store,
+snapshot independence, repair at episodes 1, 2 and 40, and repair followed by recurrence.
+Restoring either old predicate in an isolated process makes its regression fail; no
+source file is mutated by that additional check.
+
+The frozen operational workload was rerun after the corrections. The new artifact is
+`experiments/v03r/handoff_20260926_initializer_gate.json`; the original artifact is
+preserved. Every report field except runtime is identical: **INADMISSIBLE**, (a) true,
+(a'), (b1), (b2), (c) false, and **0/1280** episodes writing the canary address. Thus the
+implementation defects were real but do not explain away this workload's failure.
+
+The arithmetic diagnostic (`handoff_20260926_cap_diagnostic.json`) also separates
+finite-sample non-visitation from the cap problem. The canary is at `t=0`, visited at
+most once per episode because kernel time strictly increases. Under the fixed-target
+recurrence, exact canonicalisation takes **54** hits at alpha=1/2. Even 40 consecutive
+hits leave a residual of approximately 9.28e-13. This is a constraint on this canary,
+update rule and exact-repair criterion, not proof that the address is unreachable or
+that all possible Q defects have the same problem.
+
+Validation: **774 passed, 1 skipped** (775 collected); A91 mutation self-check **6/6**;
+B2 view mutation self-check **45/45**; both self-checks restored the source tree;
+specification reference audit passed. The mutation self-checks must run serially:
+their harness temporarily edits shared source files. The final suite and operational
+rerun were started only after those self-checks finished. Windows runs used
+`PYTHONUTF8=1`, and self-check output paths were kept inside the checkout because the
+existing harness assumes that layout.
+
+**Status remains F0 NOT VALID.** The failed initializer/cap/repair-criterion combination
+needs a separately recorded design decision. The 1.5-episode Process RMST criterion
+also remains NOT RATIFIED. No official smoke5, dev32 or confirmatory collection was
+started, and no alternative initializer or enlarged budget was tried.
+
+## 7. Follow-up: C1 construction passes, recovery observability fails (2026-09-26)
+
+After the audit above, a separately declared alternative was implemented and tested;
+the preceding paragraph describes the earlier handoff stage. See
+`22-F0-INITIALIZER-CANDIDATE.md` for its predeclared design and
+`23-F0-RECOVERY-OBSERVABILITY.md` for the results and disposition.
+
+The unchanged-budget, fresh-key construction ran 32 by 40 episodes. All five
+candidate construction predicates passed, with 14 runs recovering behaviour and
+zero exact Q-override removals. It remains an isolated candidate, not the production
+initializer. Full regression: 779 passed, 1 skipped.
+
+The stronger seedless negative control rejects both the old and candidate initial
+states as baselines for the current recovery endpoint: **even no learning yields
+recovery time zero** on every registered bank size and on the full U2 support.
+Neither construction pass nor more evaluation scenes resolves that scale mismatch.
+F0 remains NOT VALID; no scientific seed was collected. The RMST threshold label
+in the handoff paragraph should read **persistent regime P**, not the Process
+architecture; those are different uses of the letter P.
+
+## 8. C2/C3 construction and CF-1 integration (2026-09-26)
+
+See `24-F0-ZERO-BASELINE-CANDIDATE.md`, `25-F0-TEMPORAL-BASELINE-CANDIDATE.md` and
+`26-F0-BASELINE-CONSTRUCTION-RESULTS.md` for the frozen candidate rules and results.
+
+The full-zero candidate C2 was observable but failed its fixed 6912-episode budget:
+0 of 32 operational runs recovered, with all 221184 episodes retained. The time-layer
+candidate C3 kept the existing endpoint, started below its threshold, and passed all
+construction predicates: 32 of 32 operational runs recovered between episodes 27 and
+372 and remained recovered through their 576-episode runs. No cap was enlarged after
+inspection, no key was replaced, and these are not scientific effect estimates.
+
+The acquisition artifact's authoritative standard-error API now consumes its actual
+slice values through the rev-4 two-pass implementation. Its statistic triples are
+derived caches only. This completes the CF-1 numerical wiring correction; broader
+F0 acquisition/serialization/lock construction is still incomplete.
+
+Full regression after all code changes: **790 passed, 1 skipped**. Source/data hash
+checks and exact reconstruction of all 239680 C2/C3 curve points passed. C3 is an
+evidenced amendment candidate; the production initializer is not silently changed.
+F0 remains NOT VALID and no formal smoke/dev/confirmatory seed has been collected.
+
+## 9. Master acquisition and shard integration (2026-09-26)
+
+See `27-F0-ACQUISITION-INTEGRATION.md` for the predeclared engineering profile and
+`28-F0-ACQUISITION-RESULTS.md` for its evidence. C3's fixed layer-1 initializer is
+now explicitly injectable into the master acquisition, with a fresh full learner
+per seed and all eligibility/domain information built from complete U2 traces.
+The old initializer and healthy generic fixture default were not silently replaced.
+
+CF-5 streaming serialization, complete-shard validation and read-only lock preflight
+are implemented. The cap-2 integration rehearsal used operational keys 940001 and
+940002: 6 records, 81032 incidence pairs, all saved means bit-equal to independent
+A91 replay. The 71-file pre-run archive and all data digests passed verification.
+This is not a full-cap runtime benchmark or a scientific baseline acquisition.
+
+The complete A91 convergence definition was found in `12` §79.7 and implemented,
+including zero/undefined windows and original-sample nearest-rank censoring.
+The short main/F0 prose now points to and clarifies that existing rule. No C3
+operational curve was used to select a horizon. The other selectors, combined
+design/threshold lock, stage manifest/smoke commands and independent P-regime RMST
+effect-threshold rationale remain open. F0 remains NOT VALID.
+
+Final full regression: **837 passed, 1 existing skip**. The integration result and
+the lack of formal-stage authorization are separate facts; no formal seed or
+treatment arm was acquired. All changes and evidence are local and unpushed.
+
+## 10. Selector implementation and GitHub publication preparation (2026-09-27)
+
+`29-F0-DESIGN-SELECTORS.md` supersedes the preceding implementation checklist:
+f_N/f_G/f_C/f_R and the combined design/threshold lock consumer are now implemented.
+Synthetic tests cover worst-case aggregation, bank dependencies, exact grouped
+incidence multiplicities, tied/undefined correlations, threshold identities,
+provenance refusal and atomic publication. The main protocol now states average
+ranks for Spearman ties explicitly. Full regression: **863 passed, 1 existing skip**.
+
+The current branch is f0-rev3. The user explicitly requested publication, so the
+previously local work and retained evidence are included in the publication set.
+The README no longer claims implementation has not begun. Frozen candidate archives
+remain the replay authority for their original runs. Stage manifest/smoke/baseline
+commands and the independent RMST threshold rationale remain open; no F0 approval,
+scientific design, formal seed collection or treatment arm is implied by publication.

@@ -32,7 +32,7 @@ from rfl_rebuild.b2.initializer import (  # noqa: E402
 )
 from rfl_rebuild.b2.training import BaselineAcquisitionPlan, FutureTrainingProtocol  # noqa: E402
 from rfl_rebuild.learner.reference import reference_view_from  # noqa: E402
-from rfl_rebuild.learner.store import Q, QAddress, LearnerPersistentState  # noqa: E402
+from rfl_rebuild.learner.store import Edit, Q, QAddress, LearnerPersistentState  # noqa: E402
 from rfl_rebuild.solve.dp import solve_reference  # noqa: E402
 
 REFERENCE = reference_view_from(solve_reference())
@@ -47,11 +47,15 @@ def _plan(**overrides) -> BaselineAcquisitionPlan:
     return BaselineAcquisitionPlan(**fields)
 
 
-def _evidence(flags, curves, visited=None) -> BaselineGateEvidence:
+def _evidence(flags, curves, visited=None, q_states=None) -> BaselineGateEvidence:
+    if q_states is None:
+        q_states = {k: tuple(MappingProxyType({canary_address(): -0.14} if present else {})
+                             for present in values) for k, values in flags.items()}
     return BaselineGateEvidence(
         keys=tuple(flags), cap=len(next(iter(flags.values()))) - 1, bank_size=1,
         overrides_by_episode=MappingProxyType(flags), curves=MappingProxyType(curves),
-        canary_visited=MappingProxyType(visited or {k: (False,) for k in flags}))
+        canary_visited=MappingProxyType(visited or {k: (False,) for k in flags}),
+        q_overrides_by_episode=MappingProxyType(q_states))
 
 
 # --- the initializer --------------------------------------------------------------------------------
@@ -168,3 +172,51 @@ def test_9_repair_arithmetic_the_frozen_alpha_implies_fifty_four_visits():
         exact = exact + 1.0 * (target - exact)
         steps += 1
     assert steps < visits, "a larger step size would need fewer visits; alpha is what sets the count"
+
+
+@pytest.mark.parametrize("repair_episode", [1, 2, 40])
+def test_repair_at_any_episode_including_the_cap_is_accepted(repair_episode):
+    flags = (True,) * repair_episode + (False,) * (41 - repair_episode)
+    evidence = _evidence({KEY: flags}, {KEY: (1.0,) * 41})
+    assert evidence.repaired_within_cap() is True
+    assert evidence.witnesses()["repaired_at"] == {KEY: repair_episode}
+
+
+def test_repair_is_existential_even_if_the_defect_returns():
+    evidence = _evidence({KEY: (True, True, False, True)}, {KEY: (1.0,) * 4})
+    assert evidence.repaired_within_cap() is True
+    assert evidence.witnesses()["repaired_at"] == {KEY: 2}
+
+
+def test_q_value_movement_is_not_override_removal():
+    address = canary_address()
+    evidence = _evidence({KEY: (True, True)}, {KEY: (1.0, 1.0)},
+                         q_states={KEY: ({address: -0.14}, {address: 0.37})})
+    assert evidence.left_the_fixed_point() is True
+    assert evidence.repaired_within_cap() is False
+    assert evidence.witnesses() == {"moved_at": {KEY: 1}, "repaired_at": {}}
+
+
+def test_gate_collects_independent_full_q_snapshots(monkeypatch):
+    from rfl_rebuild.b2 import initializer
+
+    # Controlled writes exercise collection through the real transaction boundary.
+    # The second write changes another Q address while the canary stays present.
+    from dataclasses import replace
+
+    address = canary_address()
+    other = next(replace(address, a=a)
+                 for a in REFERENCE.rows[(address.state, address.z, address.m)] if a != address.a)
+    edits = iter([(Edit(Q, address, 0.37),), (Edit(Q, other, -0.5),)])
+    monkeypatch.setattr(initializer, "sweep_edits", lambda *a, **kw: next(edits))
+    evidence = baseline_gate(_plan(), keys=(KEY,), q_reference=REFERENCE)
+    snapshots = evidence.q_overrides_by_episode[KEY]
+    assert evidence.overrides_by_episode[KEY] == (True, True, True)
+    assert snapshots[0] == {address: -0.14}
+    assert snapshots[1] == {address: 0.37}
+    assert snapshots[2] == {address: 0.37, other: -0.5}
+    assert evidence.left_the_fixed_point() is True
+    assert evidence.repaired_within_cap() is False
+    assert evidence.witnesses()["moved_at"] == {KEY: 1}
+    with pytest.raises(TypeError):
+        snapshots[0][address] = 0.0

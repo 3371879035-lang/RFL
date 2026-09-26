@@ -616,8 +616,14 @@ $$\boxed{Q_{0.9}(x) = x_{(\lceil 0.9\,n \rceil)} \quad \text{on the ascending or
 
 i.e. nearest rank; with $n = 32$ this is $x_{(29)}$ (**APPROVED**). **The integerisation is frozen here**
 as the ceiling: $1.2\,x_{(29)}$ need not be an integer while $T_{\max}$ is an integer episode index, and
-`11-ENVIRONMENT`'s episode indices are integers. A missing $T_{\text{conv}}$ makes $f_T$ return
-`NO_ADMISSIBLE_T` rather than a value from a smaller sample; ties at the rank are resolved by taking the
+`11-ENVIRONMENT`'s episode indices are integers. **A91 censoring clarification:** an observed
+run with no qualifying window is censored, not dropped. Keep the original $n$ and
+$r=\lceil0.9n\rceil$; fewer than $r$ uncensored runs gives `NO_ADMISSIBLE_T`, otherwise
+take the $r$-th uncensored order statistic, exactly as `12` §79.7 freezes. The earlier
+sentence "a missing T_conv makes f_T return NO_ADMISSIBLE_T" was ambiguous about
+censoring and must not be read as rejecting any one censored run or recomputing a
+rank on a smaller sample. Missing acquisition records remain protocol errors.
+Ties at the rank are resolved by taking the
 lower order statistic only when the tie spans the rank, so no tie-break rests on a sort's stability.
 
 **The acquisition cap fails here, not at the grid.** The envelope acquired episodes $0 \ldots
@@ -886,6 +892,9 @@ $$\boxed{\rho_R = \max\Bigl(\bigl\lvert\rho_S\bigl(\text{form}_i,\ \texttt{restr
 
   with $\rho_S$ the Spearman correlation over the $32$ baseline runs of the master acquisition -- the same
   material $f_T$ reads, no treatment data, no new synthetic object -- and $\rho_R \le 0.9$ `[PROPOSED]`.
+  The executable convention uses average ranks for ties, followed by Pearson
+  correlation of those ranks, with the authoritative left-to-right population
+  arithmetic of §4.0. It does not apply the no-ties shortcut formula to tied data.
   **Zero-variance rule, closed**: if either series is constant the correlation is *undefined* and the form
   is **inadmissible** --- no imputation, no $\rho = 0$ default, and therefore no silent promotion of a form
   whose redundancy could not be measured. With $n = 32$ per seed, this is also the first place the

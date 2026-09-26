@@ -35,6 +35,7 @@ from rfl_rebuild.b2.acquisition import (  # noqa: E402
     sufficient_error,
 )
 from rfl_rebuild.b2.evalorder import prefix  # noqa: E402
+from rfl_rebuild.b2.numerics import standard_error, sufficient_statistics  # noqa: E402
 from rfl_rebuild.b2.training import (  # noqa: E402
     BaselineAcquisitionPlan,
     FutureTrainingProtocol,
@@ -245,8 +246,8 @@ def test_11_the_material_reproduces_the_instrument_s_own_eligibility(master, arc
             assert mine == theirs, (arch, site.render(), name)
             triple = master.sufficient(arch, KEY, 0, site, name)
             direct = [master.levels(KEY, 0)[i] for i in mine]
-            assert triple == Sufficient(len(direct), sum(direct), sum(v * v for v in direct))
-            assert master.error(arch, KEY, 0, site, name) == sufficient_error(triple)
+            assert triple == Sufficient(*sufficient_statistics(direct))
+            assert master.error(arch, KEY, 0, site, name) == standard_error(direct)
 
 
 @pytest.mark.parametrize("arch", CHANNELS)
@@ -267,8 +268,35 @@ def test_12_a_site_no_episode_consults_shares_the_generic_value(master, arch):
                            if unit in refinement(site, traces, name, domain=master.sample))
             assert mine == theirs, (arch, site.render(), name)
             assert master.sufficient(arch, KEY, 0, site, name) == master.generic_sufficient(KEY, 0, name)
-        assert master.error(arch, KEY, 0, site, "eligible_all") == sufficient_error(
-            master.generic_sufficient(KEY, 0, "eligible_all"))
+        assert master.error(arch, KEY, 0, site, "eligible_all") == master.generic_error(KEY, 0, "eligible_all")
+
+
+def test_18_authoritative_error_never_uses_the_diagnostic_triple(master, monkeypatch):
+    import rfl_rebuild.b2.acquisition as acquisition
+    def forbidden(*args, **kwargs):
+        raise AssertionError("authoritative SE entered the cancellation-prone triple path")
+    monkeypatch.setattr(acquisition, "sufficient_error", forbidden)
+    for arch in CHANNELS:
+        site = master.domain(arch, KEY, 0)[0]
+        for name in REFINEMENTS:
+            indices = master.slice_indices(arch, KEY, 0, site, name)
+            values = tuple(master.levels(KEY, 0)[i] for i in indices)
+            assert master.error(arch, KEY, 0, site, name) == standard_error(values)
+    assert master.generic_error(KEY, 0, "eligible_all") is not None
+
+
+@pytest.mark.parametrize("value", [0.1, 0.7, 0.9])
+def test_19_constant_incidence_values_have_exactly_zero_error(master, value):
+    from dataclasses import replace
+    run = master.material(KEY, 0)
+    changed = replace(run, levels=(value,) * len(master.sample), success=(True,) * len(master.sample),
+                      consulted=MappingProxyType({arch: {} for arch in CHANNELS}), _memo={})
+    fixture = MasterBaseline(seeds=(KEY,), episodes=(0,), sample=master.sample,
+                             runs=MappingProxyType({(KEY, 0): changed}))
+    for arch in CHANNELS:
+        site = fixture.domain(arch, KEY, 0)[0]
+        assert fixture.error(arch, KEY, 0, site, "eligible_all") == 0.0
+    assert fixture.generic_error(KEY, 0, "eligible_all") == 0.0
 
 
 # --- refusals ---------------------------------------------------------------------------------------

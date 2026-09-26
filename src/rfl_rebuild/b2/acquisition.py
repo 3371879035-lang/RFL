@@ -35,6 +35,7 @@ from types import MappingProxyType
 from typing import NamedTuple
 
 from rfl_rebuild.b1.errors import ProtocolError
+from rfl_rebuild.b2.numerics import standard_error, sufficient_statistics
 from rfl_rebuild.b2.training import (
     BaselineAcquisitionPlan,
     ExogenousEpisode,
@@ -51,7 +52,8 @@ from rfl_rebuild.b2.unaffected import (
 )
 from rfl_rebuild.learner.store import LearnerPersistentState
 
-__all__ = ["MasterBaseline", "RunMaterial", "Sufficient", "acquire_master_baseline", "sufficient_error"]
+__all__ = ["MasterBaseline", "RunMaterial", "Sufficient", "acquire_master_baseline",
+           "iter_master_baseline", "sufficient_error"]
 
 
 class Sufficient(NamedTuple):
@@ -64,7 +66,7 @@ class Sufficient(NamedTuple):
 
 
 def sufficient_error(sufficient: Sufficient) -> float | None:
-    r"""$SE$ from §3's sufficient statistics, under §4.0's **population** `sd`.
+    r"""Diagnostic expansion only; forbidden as authoritative SE by rev-4 CF-1.
 
     $$\mathrm{se} = \sqrt{\frac{1}{n}\left(\frac{\sum V^2}{n} -
     \left(\frac{\sum V}{n}\right)^2\right)}$$
@@ -198,23 +200,29 @@ class MasterBaseline:
         run = self._checked_site(arch, seed, episode, site)
         indices = self.slice_indices(arch, seed, episode, site, name)
         levels = run.levels
-        return Sufficient(len(indices), sum(levels[i] for i in indices),
-                          sum(levels[i] * levels[i] for i in indices))
+        return Sufficient(*sufficient_statistics(levels[i] for i in indices))
 
     def error(self, arch: str, seed: int, episode: int, site, name: str) -> float | None:
-        r"""$SE_{A,c,\sigma,e}(r)$, i.e. §4.0's population-`sd` recovery from the triple above."""
-        return sufficient_error(self.sufficient(arch, seed, episode, site, name))
+        r"""Authoritative SE from the slice's values in ascending bank order (CF-1)."""
+        run = self._checked_site(arch, seed, episode, site)
+        indices = self.slice_indices(arch, seed, episode, site, name)
+        return standard_error(run.levels[i] for i in indices)
 
     def generic_sufficient(self, seed: int, episode: int, name: str) -> Sufficient:
         r"""The triple every **uncontacted** site of any domain shares, for one $(\sigma, e, r)$."""
+        return Sufficient(*sufficient_statistics(self._generic_values(seed, episode, name)))
+
+    def generic_error(self, seed: int, episode: int, name: str) -> float | None:
+        """Authoritative SE shared by uncontacted sites; no triple expansion."""
+        return standard_error(self._generic_values(seed, episode, name))
+
+    def _generic_values(self, seed: int, episode: int, name: str) -> tuple:
         run = self.runs[(seed, episode)]
         slices = self._slices()
         if name not in slices:
             raise ProtocolError(f"unknown refinement {name!r}; the six names are frozen")
         indices = tuple(i for i in slices[name] if run.success[i])
-        levels = run.levels
-        return Sufficient(len(indices), sum(levels[i] for i in indices),
-                          sum(levels[i] * levels[i] for i in indices))
+        return tuple(run.levels[i] for i in indices)
 
     # --- internals ----------------------------------------------------------------------------------
 
@@ -255,6 +263,8 @@ def _require_seeds(seeds) -> tuple:
         raise ProtocolError(f"the seed set must be true integers, got {seeds!r}")
     if len(set(seeds)) != len(seeds):
         raise ProtocolError(f"the seed set repeats a seed: {seeds!r}; a seed is one run")
+    if any(s < 0 for s in seeds):
+        raise ProtocolError("acquisition seeds must be non-negative")
     return seeds
 
 
@@ -294,7 +304,7 @@ def _run_material(learner, *, seed: int, episode: int, sample: tuple, q_referenc
     )
 
 
-def acquire_master_baseline(plan, *, seeds, q_reference) -> MasterBaseline:
+def iter_master_baseline(plan, *, seeds, q_reference, initializer=None):
     r"""Run the $S_2$ master acquisition: `ACQUISITION_CAP` episodes per seed, on the master bank.
 
     The plan is the **envelope** of §3 --- $\alpha$, $\varepsilon$, the cap and the bank. A run's key is not
@@ -310,13 +320,21 @@ def acquire_master_baseline(plan, *, seeds, q_reference) -> MasterBaseline:
             "FutureTrainingProtocol has no T* to give before the lock")
     seeds = _require_seeds(seeds)
     sample = plan.evaluation_bank
-    runs = {}
+    # The legacy API default is healthy for existing instrument fixtures. Stage runners
+    # must pass their named initializer explicitly. Keep each object alive until the
+    # end so accidental reuse by a caller's factory is detectable without id recycling.
+    learners = []
     for seed in seeds:
-        learner = LearnerPersistentState()
+        learner = LearnerPersistentState() if initializer is None else initializer(q_reference)
+        if type(learner) is not LearnerPersistentState:
+            raise ProtocolError("the acquisition initializer must return a full persistent learner")
+        if any(learner is previous for previous in learners):
+            raise ProtocolError("the initializer reused a learner across seeds")
+        learners.append(learner)
         protocol = replace(plan, seed=seed)
         for episode in range(plan.acquisition_cap + 1):
-            runs[(seed, episode)] = _run_material(learner, seed=seed, episode=episode, sample=sample,
-                                                  q_reference=q_reference)
+            yield _run_material(learner, seed=seed, episode=episode, sample=sample,
+                                q_reference=q_reference)
             if episode == plan.acquisition_cap:
                 break
             exogenous = ExogenousEpisode.derive(seed, episode)
@@ -325,5 +343,15 @@ def acquire_master_baseline(plan, *, seeds, q_reference) -> MasterBaseline:
             if edits:
                 learner.apply_transaction(edits, q_reference=q_reference)
 
-    return MasterBaseline(seeds=seeds, episodes=tuple(range(plan.acquisition_cap + 1)), sample=sample,
-                          runs=MappingProxyType(runs))
+
+def acquire_master_baseline(plan, *, seeds, q_reference, initializer=None) -> MasterBaseline:
+    """In-memory convenience view over the same streaming acquisition.
+
+    An omitted initializer retains the healthy instrument-fixture behaviour. The
+    C3 stage entry explicitly passes temporal_initializer; this API selects nothing.
+    """
+    seeds = _require_seeds(seeds)
+    runs = {(run.seed, run.episode): run for run in iter_master_baseline(
+        plan, seeds=seeds, q_reference=q_reference, initializer=initializer)}
+    return MasterBaseline(seeds=seeds, episodes=tuple(range(plan.acquisition_cap + 1)),
+                          sample=plan.evaluation_bank, runs=MappingProxyType(runs))

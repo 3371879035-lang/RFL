@@ -94,6 +94,7 @@ class BaselineGateEvidence:
     overrides_by_episode: object   # key -> tuple of bool, aligned with e = 0..cap
     curves: object                 # key -> tuple of per-episode bank means, aligned with e = 0..cap
     canary_visited: object         # key -> tuple of bool, aligned with e = 0..cap-1 (a DIAGNOSTIC)
+    q_overrides_by_episode: object  # key -> immutable Q-store snapshots, aligned with e = 0..cap
 
     # --- the five propositions ----------------------------------------------------------------------
 
@@ -104,7 +105,7 @@ class BaselineGateEvidence:
     def left_the_fixed_point(self) -> bool:
         r"""(a$'$) some episode moved $Q_D^{L}$ --- the direct falsification of the healthy-start mechanism."""
         return any(any(a != b for a, b in zip(flags, flags[1:]))
-                   for flags in self.overrides_by_episode.values())
+                   for flags in self.q_overrides_by_episode.values())
 
     def curve_moves(self) -> bool:
         r"""(b1) some key's bank curve is not constant in $e$."""
@@ -120,7 +121,8 @@ class BaselineGateEvidence:
 
         One key is enough: 32/32 is explicitly not required, because censoring is part of the design.
         """
-        return any(flags[0] and not any(flags[1:]) for flags in self.overrides_by_episode.values())
+        return any(flags[0] and any(not present for present in flags[1:])
+                   for flags in self.overrides_by_episode.values())
 
     # --- the verdict --------------------------------------------------------------------------------
 
@@ -148,7 +150,9 @@ class BaselineGateEvidence:
         r"""The evidence, as data --- episode indices, never a curve or a metric."""
         moved, repaired = {}, {}
         for key, flags in self.overrides_by_episode.items():
-            first = next((e for e in range(1, len(flags)) if flags[e] != flags[e - 1]), None)
+            snapshots = self.q_overrides_by_episode[key]
+            first = next((e for e in range(1, len(snapshots))
+                          if snapshots[e] != snapshots[e - 1]), None)
             if first is not None:
                 moved[key] = first
             back = next((e for e in range(1, len(flags)) if not flags[e]), None)
@@ -176,13 +180,14 @@ def baseline_gate(plan, *, keys, q_reference) -> BaselineGateEvidence:
         raise ProtocolError(f"the gate's keys must be true integers, got {keys!r}")
     bank = plan.evaluation_bank
 
-    overrides, curves, visited = {}, {}, {}
+    overrides, curves, visited, q_snapshots = {}, {}, {}, {}
     for key in keys:
         learner = baseline_initializer(q_reference=q_reference)
         protocol = replace(plan, seed=key)
-        flags, levels, hits = [], [], []
+        flags, levels, hits, snapshots = [], [], [], []
         for episode in range(plan.acquisition_cap + 1):
             flags.append(canary_override_present(learner))
+            snapshots.append(MappingProxyType(dict(learner.q_overrides)))
             levels.append(mean(tuple(learned_rollout(learner, kappa=unit.kappa, tape=unit.tape,
                                                      base_option=unit.base_option,
                                                      q_reference=q_reference).return_value
@@ -198,11 +203,13 @@ def baseline_gate(plan, *, keys, q_reference) -> BaselineGateEvidence:
         overrides[key] = tuple(flags)
         curves[key] = tuple(levels)
         visited[key] = tuple(hits)
+        q_snapshots[key] = tuple(snapshots)
 
     return BaselineGateEvidence(keys=keys, cap=plan.acquisition_cap, bank_size=len(bank),
                                 overrides_by_episode=MappingProxyType(overrides),
                                 curves=MappingProxyType(curves),
-                                canary_visited=MappingProxyType(visited))
+                                canary_visited=MappingProxyType(visited),
+                                q_overrides_by_episode=MappingProxyType(q_snapshots))
 
 
 def _writes_canary(trace, episode) -> bool:

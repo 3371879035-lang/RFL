@@ -1,12 +1,18 @@
-# RFL-Rebuild — frozen research specification
+# RFL-Rebuild — V0.3R implementation and experiment evidence
 
-本分支（`rebuild`）是**重构系列**。表格式（tabular）强化反馈学习实验系统，CPU-only，
-单进程，无神经网络，全部随机性由预采样 `NoiseTape` 固定。
+本分支（`f0-rev3`）是**重构系列**的 V0.3R 工作分支。实验系统是表格式
+（tabular）、CPU-only、单进程，无神经网络。B2 普通训练使用 A91 冻结的
+按 seed／episode／step 索引的随机性；评估不消耗训练随机流。
 
-> ## 🚧 规范已冻结，实现尚未开始
->
-> **本目录里没有任何结果，只有设计。** 实现顺序与门禁见
-> [`docs/rebuild/00-INDEX.md`](docs/rebuild/00-INDEX.md)。
+> **当前状态：实现和工程实验已有结果，F0 仍为 NOT VALID，正式 B2 尚未启动。**
+> B1 更新路径、B2 测量与 A91 普通训练已实现。C1、C2 的失败记录保留；C3
+> 工程构造的 32/32 条曲线在固定预算内恢复，随后通过完整 U2 采集与分片复读验证。
+> 这些结果不构成 RFL 优于基线的科学结论，也不能替代正式开发数据。
+
+最新进度见 [设计选择器与锁定入口](docs/rebuild/29-F0-DESIGN-SELECTORS.md)，
+上一轮采集验证见 [完整证据说明](docs/rebuild/28-F0-ACQUISITION-RESULTS.md)。
+实验候选的定义、失败及结果见 [构造结果](docs/rebuild/26-F0-BASELINE-CONSTRUCTION-RESULTS.md)。
+完整规范入口为 [`docs/rebuild/00-INDEX.md`](docs/rebuild/00-INDEX.md)。
 
 ## 为什么要重构
 
@@ -215,4 +221,3 @@ Gamma 三者否定的是**同一个东西**——诊断式更新本身。拿一�
 `08-V03R.md` §3.2 的 `CFTarget` 取代 —— 反事实回报只能写到真正产生它的动作上。
 
 </details>
-

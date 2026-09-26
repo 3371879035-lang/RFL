@@ -153,7 +153,13 @@ convergence at the first checkpoint after which, for $K$ consecutive checkpoints
 
 $$\bigl|\mathrm{slope}_{K}\bigr| < \epsilon_s \qquad\text{and}\qquad \mathrm{FlipRate}_{K} < \epsilon_f$$
 
-giving $T^{(i)}_{\mathrm{conv}}$ per seed. Freeze
+giving $T^{(i)}_{\mathrm{conv}}$ per seed.
+
+The executable interpretation is clarified by `12` §79.7 (A91): one window of
+$K$ checkpoints tested once; endpoint slope on the real episode axis; the declared
+constant/undefined FlipRate cases; the last checkpoint of the first qualifying
+window; and the original-sample nearest-rank censoring rule. This paragraph does
+not require $K$ consecutive qualifying windows. Freeze
 
 $$\boxed{T = Q_{0.9}\bigl(T_{\mathrm{conv}}\bigr) \times (1 + h)}$$
 
