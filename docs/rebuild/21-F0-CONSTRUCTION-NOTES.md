@@ -1,5 +1,11 @@
 # 21 --- $F_0$ construction notes (live, not a freeze)
 
+Latest implementation follow-up (2026-09-27):
+[`30-F0-STAGE-RUNNERS.md`](30-F0-STAGE-RUNNERS.md) records the manifest generator,
+seedless contract check, smoke/development runners, bound smoke receipt and
+operational runtime benchmark harness. F0 remains NOT VALID; runtime measurement
+and independent scientific review are still pending.
+
 $$\boxed{F_0\ \text{design text} = \text{CLOSED}@\texttt{b923a0b} \qquad F_0\ \text{construction} =
 \text{IN PROGRESS} \qquad F_0 = \texttt{NOT VALID}}$$
 

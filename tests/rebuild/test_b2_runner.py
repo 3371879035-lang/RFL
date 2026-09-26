@@ -177,7 +177,8 @@ def test_3_the_arms_are_handed_one_object_not_two_equal_ones():
     finally:
         R.behavioral_collateral_scenes = original
     assert len(seen) == 2, "the metric runs once per arm"
-    assert len(set(seen)) == 1, "the two arms' metrics saw different objects"
+    object_count = len(set(seen))
+    assert object_count == 1, "the two arms' metrics saw different objects"
     built = [e[2] for e in events if e[0] == "unaffected"]
     assert len(built) == 1, "the set was constructed more than once"
     assert seen[0] == built[0], "the metric was handed a different object than the one built"
@@ -437,7 +438,8 @@ def test_11b_the_two_arms_share_one_pre_measurement():
         record = run()
     finally:
         R.measure_scene_map, R.behavioral_collateral_scenes = original_map, original_bc
-    assert len(maps) == 3, f"expected one pre map and one per arm, got {len(maps)}"
+    map_count = len(maps)
+    assert map_count == 3, f"expected one pre map and one per arm, got {map_count}"
     assert len(set(pre_ids)) == 1 and pre_ids[0] == maps[0], (
         "both arms must be handed the same pre-map object that was measured first")
     assert set(record.collateral) == set(record.arm_names)

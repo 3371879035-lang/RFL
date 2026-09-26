@@ -288,7 +288,9 @@ def test_7_the_ast_allowlist_layer_covers_the_chain_and_is_not_vacuous(tmp_path)
     leak_fixture.write_text("from rfl_rebuild.b2 import testing\n", encoding="utf-8")
     with pytest.raises(ProtocolError) as ei:
         assert_modules_are_closed([leak_fixture])
-    assert "test-only fixture module" in str(ei.value)
+    # Only the diagnostic reason matters; tmp_path's counter is not gate evidence.
+    fixture_reason = str(ei.value).replace(str(leak_fixture), "<fixture>")
+    assert "test-only fixture module" in fixture_reason
     assert H_FORBIDDEN == ("Z_fire", "J_L", "Gamma_T_star", "Gamma_P_star", "R_mech",
                            "R_rescue", "pi_credit")
     assert SCENE_FORBIDDEN == ("S_T_plus", "S_T_minus", "S_P_plus", "S_P_minus", "world_id",

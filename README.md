@@ -9,7 +9,8 @@
 > 工程构造的 32/32 条曲线在固定预算内恢复，随后通过完整 U2 采集与分片复读验证。
 > 这些结果不构成 RFL 优于基线的科学结论，也不能替代正式开发数据。
 
-最新进度见 [设计选择器与锁定入口](docs/rebuild/29-F0-DESIGN-SELECTORS.md)，
+最新进度见 [F0 阶段运行器与清单](docs/rebuild/30-F0-STAGE-RUNNERS.md)，
+选择器见 [设计选择器与锁定入口](docs/rebuild/29-F0-DESIGN-SELECTORS.md)，
 上一轮采集验证见 [完整证据说明](docs/rebuild/28-F0-ACQUISITION-RESULTS.md)。
 实验候选的定义、失败及结果见 [构造结果](docs/rebuild/26-F0-BASELINE-CONSTRUCTION-RESULTS.md)。
 完整规范入口为 [`docs/rebuild/00-INDEX.md`](docs/rebuild/00-INDEX.md)。

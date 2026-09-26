@@ -1,0 +1,53 @@
+[GATE_IS_REAL        ] origin_check_removed               -> test_5_only_the_learners_own_future_rollout_may_feed_the_view
+[GATE_IS_REAL        ] origin_type_check_removed          -> test_5_only_the_learners_own_future_rollout_may_feed_the_view
+[GATE_IS_REAL        ] rollout_seal_check_removed         -> test_3_the_rollout_is_sealed_and_the_view_is_one_future
+[GATE_IS_REAL        ] raw_value_accepted                 -> test_6_the_fabricated_truth_feature_is_killed
+[GATE_IS_REAL        ] payload_not_rederived              -> test_6_the_fabricated_truth_feature_is_killed
+[GATE_IS_REAL        ] t_index_not_bound                  -> test_6_the_fabricated_truth_feature_is_killed
+[GATE_IS_REAL        ] mixed_rollouts_accepted            -> test_3_the_rollout_is_sealed_and_the_view_is_one_future
+[GATE_IS_REAL        ] closed_fields_widened              -> test_6_the_fabricated_truth_feature_is_killed
+[GATE_IS_REAL        ] builder_takes_any_callable         -> test_4_the_builder_consumes_the_audited_producer_not_a_callable
+[GATE_IS_REAL        ] environment_duck_typed             -> test_4_the_builder_consumes_the_audited_producer_not_a_callable
+[GATE_IS_REAL        ] arm_parameter_added                -> test_8_arm_blind_by_interface_and_pre_update_by_absence
+[GATE_IS_REAL        ] update_metadata_added              -> test_8_arm_blind_by_interface_and_pre_update_by_absence
+[GATE_IS_REAL        ] import_allowlist_widened           -> test_7_the_ast_allowlist_layer_covers_the_chain_and_is_not_vacuous
+[GATE_IS_REAL        ] producer_reads_forbidden_truth     -> test_7_the_ast_allowlist_layer_covers_the_chain_and_is_not_vacuous
+[GATE_IS_REAL        ] fixture_module_reachable           -> test_7_the_ast_allowlist_layer_covers_the_chain_and_is_not_vacuous
+[GATE_IS_REAL        ] capability_imported_outside_owner  -> test_10_the_mint_capability_has_exactly_one_holder_in_the_production_graph
+[GATE_IS_REAL        ] environment_ignores_the_state      -> test_2_each_persistent_channel_moves_the_future
+[GATE_IS_REAL        ] environment_drops_a_channel        -> test_2_each_persistent_channel_moves_the_future
+[GATE_IS_REAL        ] environment_not_audited            -> test_4_the_environment_is_in_the_audited_production_chain
+[GATE_IS_REAL        ] recovery_window_two                -> test_5_recovery_needs_k_consecutive_checkpoints
+[GATE_IS_REAL        ] rmst_returns_the_position          -> test_8_both_estimators_integrate_over_real_episode_indices
+[GATE_IS_REAL        ] environment_drops_decision_patch_channel -> test_2b_the_decision_patch_channel_moves_the_future
+[GATE_IS_REAL        ] deficit_not_normalised             -> test_8_both_estimators_integrate_over_real_episode_indices
+[GATE_IS_REAL        ] deficit_uses_left_hold             -> test_8_both_estimators_integrate_over_real_episode_indices
+[GATE_IS_REAL        ] curve_need_not_span_the_horizon    -> test_9_the_grid_contract_is_enforced
+[GATE_IS_REAL        ] unaffected_constructor_takes_an_arm -> test_1_the_constructors_are_blind_locally_and_the_rest_belongs_to_b2_4
+[GATE_IS_REAL        ] collateral_ignores_the_set         -> test_4_the_metric_is_defined_on_exactly_the_set_it_is_given
+[GATE_IS_REAL        ] retention_diagnostic_promoted      -> test_8_the_conditional_form_is_a_diagnostic_by_type_and_by_registry
+[GATE_IS_REAL        ] retention_needs_recovery           -> test_7_both_eligible_forms_are_defined_for_every_seed_including_never_recovered
+[GATE_IS_REAL        ] utility_reads_forbidden_truth      -> test_10_the_machinery_is_in_the_audited_production_chain
+[GATE_IS_REAL        ] retention_form_chosen_by_default   -> test_9_no_form_or_window_is_selected_or_defaulted
+[GATE_IS_REAL        ] collateral_construction_chosen_by_default -> test_2_no_construction_is_selected_by_default
+[GATE_IS_REAL        ] runner_defaults_the_form           -> test_7_the_candidate_names_and_horizons_are_required_and_never_defaulted
+[GATE_IS_REAL        ] runner_defaults_the_construction   -> test_7_the_candidate_names_and_horizons_are_required_and_never_defaulted
+[GATE_IS_REAL        ] arm_accepts_arbitrary_callable     -> test_8_the_arms_are_nominal_and_dispatch_to_the_frozen_entry_points
+[GATE_IS_REAL        ] arm_uses_wrong_architecture_registry -> test_9_a_law_from_another_architecture_is_refused
+[GATE_IS_REAL        ] runner_records_a_second_protocol_in_observations -> test_5_the_paired_futures_share_one_training_stream
+[GATE_IS_REAL        ] runner_adds_composite_score        -> test_10_the_record_keeps_three_dimensions_and_no_composite
+[GATE_IS_REAL        ] unaffected_constructed_after_treatment -> test_1_the_unaffected_set_is_built_before_the_first_arm_runs
+[GATE_IS_REAL        ] per_arm_construction               -> test_3_the_arms_are_handed_one_object_not_two_equal_ones
+[GATE_IS_REAL        ] per_arm_pre_measurement            -> test_11b_the_two_arms_share_one_pre_measurement
+[GATE_IS_REAL        ] dq_dispatch_removed                -> test_11c_a_dq_pair_runs_through_the_b1_entry_point
+[GATE_IS_REAL        ] serial_arm_chain                   -> test_4_the_arms_fork_from_one_pre_update_state
+[GATE_IS_REAL        ] paired_arms_use_different_training_stream -> test_5_the_paired_futures_share_one_training_stream
+[GATE_IS_REAL        ] future_before_update               -> test_6_no_future_exists_before_the_updates_are_applied
+
+  mutations            : 45
+  gates that went red  : 45/45
+  tree restored        : True
+  written              : experiments\v03r\b2_view_gate_selfcheck.json
+  SELF-CHECK PASS
+
+STDERR

@@ -85,6 +85,12 @@ def prepare_inputs(root, *, design_path, manifest_path):
         raise ProtocolError("calibration fingerprint differs from F0")
     calibration = json.loads(calibration_bytes)
     require_calibration(calibration)
+    # Shared stage contract also checks the committed instrument and smoke receipt.
+    from rfl_rebuild.b2.f0_stages import load_manifest, require_smoke
+    verified_manifest, manifest_identity = load_manifest(root, manifest_path, "design_lock")
+    smoke_identity = require_smoke(root, verified_manifest, manifest_identity)
+    if index["execution"].get("smoke_report_sha256") != smoke_identity:
+        raise ProtocolError("development provenance does not bind the passing smoke receipt")
     verify_acquisition(design_path)  # no design metric has been computed yet
     return {"manifest": manifest, "index": index, "calibration": calibration,
             "manifest_sha256": digest(manifest_bytes), "index_sha256": digest(design_path.read_bytes())}

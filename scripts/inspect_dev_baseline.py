@@ -25,7 +25,7 @@ def inspect(path):
     # Repository readiness, not findings inferred from these baseline values.
     blockers.extend([
         "F0_C3_AMENDMENT_AND_STAGE_MANIFEST_NOT_VALIDATED",
-        "F0_SMOKE_AND_BASELINE_STAGE_RUNNERS_NOT_COMPLETED",
+        "FULL_ENVELOPE_RUNTIME_AND_F0_REVIEW_PENDING",
         "P_RMST_PRACTICAL_THRESHOLD_NOT_RATIFIED",
     ])
     return {"artifact_valid": True, "schema": index["schema"], "role": index["role"],
