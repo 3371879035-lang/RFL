@@ -11,6 +11,7 @@ import pytest
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 from rfl_rebuild.b1.errors import ProtocolError
+from rfl_rebuild.b2.rmst_policy import benchmark_rmst_policy
 from rfl_rebuild.b2.acquisition import MasterBaseline, RunMaterial
 from rfl_rebuild.b2.design_selection import (
     PrefixSelector, CollateralSelector, grid_templates, select_grid, select_retention,
@@ -182,13 +183,17 @@ def admissible_design_fixture():
 def test_design_and_thresholds_are_indivisible_and_do_not_ratify_a_policy():
     design = admissible_design_fixture()
     assert combine_design_and_thresholds(design, rmst_policy={"value": 1.5})["lock"] is None
-    policy = {"ratified": True, "value": 1.5, "rationale": "Synthetic unit-test policy only"}
+    policy = benchmark_rmst_policy(ratified=True)  # synthetic fixture, not a review
     result = combine_design_and_thresholds(design, rmst_policy=policy)
     assert result["status"] == "LOCKABLE"
     registry = {(r["regime"], r["statistic"]): r for r in result["lock"]["thresholds"]}
     assert len(registry) == 6
     assert registry["T", "RMST"]["value"] == registry["P", "RMST"]["value"]
     assert registry["T", "RMST"]["provenance"] == "alias:P:RMST"
+    assert registry["P", "RMST"]["claim"] == "benchmark-quantitative-improvement"
+    assert registry["P", "RMST"]["equivalence_claimed"] is False
+    assert registry["T", "RMST"]["claim"] == "benchmark-quantitative-harm-bound"
+    assert registry["T", "RMST"]["zero_harm_claimed"] is False
     assert registry["P", "Retention"]["value"] == .25 * sd(design["f_R"]["endpoint"]["values"])
     design["f_C"]["collateral_bound"] = None
     assert combine_design_and_thresholds(design, rmst_policy=policy)["lock"] is None
@@ -299,8 +304,7 @@ def test_combined_publication_rechecks_provenance_before_commit(monkeypatch, tmp
     calls = []
     def inputs(*args, **kwargs):
         calls.append(True)
-        return {"manifest": {"rmst_policy": {"ratified": True, "value": 1.5,
-                  "rationale": "Synthetic test fixture; no experiment ratification"}},
+        return {"manifest": {"rmst_policy": benchmark_rmst_policy(ratified=True)},
                 "index": {"seeds": [123], "ordered_shard_digest": "fixture-shards"},
                 "index_sha256": "changed" if drift and len(calls) == 2 else "fixture-index",
                 "manifest_sha256": "fixture-f0", "calibration": CALIBRATION}
@@ -325,7 +329,7 @@ def test_uncommitted_valid_claim_is_refused_before_opening_data(tmp_path):
     path = tmp_path / "f0.json"
     path.write_text(json.dumps({"schema": "f0-c3-design-v1", "status": "VALID",
         "currently_authorises": ["design_lock"], "constants": CONSTANTS,
-        "rmst_policy": {"value": 1.5, "ratified": True, "rationale": "test fixture"}}))
+        "rmst_policy": benchmark_rmst_policy(ratified=True)}))
     with pytest.raises(ProtocolError, match="must be committed"):
         prepare_inputs(tmp_path, design_path=tmp_path / "missing-data", manifest_path=path)
 
@@ -335,7 +339,7 @@ def test_committed_manifest_with_incomplete_source_inventory_is_refused(monkeypa
     path = tmp_path / "f0.json"
     path.write_text(json.dumps({"schema": "f0-c3-design-v1", "status": "VALID",
         "currently_authorises": ["design_lock"], "constants": CONSTANTS,
-        "rmst_policy": {"value": 1.5, "ratified": True, "rationale": "test fixture"}, "sources": {}}))
+        "rmst_policy": benchmark_rmst_policy(ratified=True), "sources": {}}))
     monkeypatch.setattr(module.subprocess, "check_output", lambda *a, **k: path.read_bytes())
     with pytest.raises(ProtocolError, match="does not cover"):
         prepare_inputs(tmp_path, design_path=tmp_path / "missing-data", manifest_path=path)

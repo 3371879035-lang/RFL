@@ -1,7 +1,6 @@
 # 05 — Statistical protocol
 
-**Status:** FROZEN, with the scoped B2 RMST claim amendment in section 4.3 and
-`31-FAILURE-ONLY-AND-RMST-AMENDMENT.md`. Applies to every version in the rebuild.
+**Status:** FROZEN. Applies to every version in the rebuild.
 
 This document exists because the legacy project's rule — *"if the conclusion
 changed, run more seeds"* — is optional stopping, and it produced four recorded
@@ -112,26 +111,6 @@ is a statement about the decision boundary, not about the phenomenon, and is
 labelled as such.
 
 ---
-
-### 4.3 B2 RMST quantitative-margin exception (rev 5)
-
-For the B2 P/T RMST rows only, 1.5 episodes is a fixed quantitative benchmark
-margin, **not** an established smallest practically important effect. The former
-practical interpretation is withdrawn; it is not supplied by K/2, runtime, or an
-arbitrary rationale string. Document 31 fixes the policy and allowable claims.
-
-For d = RMST(reference) - RMST(treatment), replace the four generic labels for
-these rows with MARGIN_A (L>1.5), MARGIN_B (U<-1.5),
-WITHIN_BENCHMARK_MARGIN (interval contained in [-1.5,1.5]), and INCONCLUSIVE.
-Containment is not practical equivalence. T retains a separate numeric tolerance
-identity; it is not a proof of zero harm or practically acceptable harm.
-Its independent quantity constraint is L >= -1.5, inclusive, on that same
-reference-minus-treatment interval. An INCONCLUSIVE margin label may satisfy
-this one-sided constraint (for example [-1,3]); the two decisions are distinct.
-
-All companion endpoints, four-block schedule, paired-seed analysis, multiplicity
-and distribution/tail checks remain mandatory. A margin label alone is not a
-version-level finding. No other endpoint's threshold or historical result changes.
 
 ## 5. Mandatory companion statistics
 

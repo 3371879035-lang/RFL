@@ -72,6 +72,9 @@ every algorithmic choice below is a consequence of a design decision above it.
 
 ## 3. The gate chain
 
+Current scope amendment: [`31-FAILURE-ONLY-AND-RMST-AMENDMENT.md`](31-FAILURE-ONLY-AND-RMST-AMENDMENT.md) fixes failure-only diagnostic triggering, the C3 baseline profile, and the restricted quantitative RMST claim. It does not itself grant execution authorization.
+
+
 Nothing downstream runs until everything upstream has passed.
 
 ```

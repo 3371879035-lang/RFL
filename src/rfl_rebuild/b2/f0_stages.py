@@ -19,6 +19,7 @@ from rfl_rebuild.b2.acquisition import iter_master_baseline
 from rfl_rebuild.b2.baseline_artifact import SCHEMA, canonical_bytes, digest, write_acquisition
 from rfl_rebuild.b2.design_lock import CONSTANTS, publish_new
 from rfl_rebuild.b2.evalorder import coverage, prefix, prefix_digest
+from rfl_rebuild.b2.rmst_policy import benchmark_rmst_policy, validate_rmst_policy
 from rfl_rebuild.b2.temporal_initializer import temporal_initializer
 from rfl_rebuild.b2.training import BaselineAcquisitionPlan
 from rfl_rebuild.learner.reference import reference_view_from
@@ -150,10 +151,7 @@ def validate_contract(manifest, *, require_valid=True):
     require(manifest["calibration_sha256"] == artifacts["experiments/v03r/calibration_report.json"], "calibration alias mismatch")
     if require_valid:
         policy, review, runtime = manifest["rmst_policy"], manifest["review"], manifest["runtime"]
-        require(type(policy) is dict and policy.get("ratified") is True
-                and type(policy.get("value")) in (int, float) and 0 < policy["value"] < math.inf
-                and isinstance(policy.get("rationale"), str) and bool(policy["rationale"].strip()),
-                "RMST practical threshold not ratified")
+        validate_rmst_policy(policy)
         require(type(review) is dict and review.get("decision") == "VALID"
                 and review.get("sources_digest") == manifest["sources_digest"]
                 and review.get("rmst_policy") == policy, "review is absent or stale")
@@ -202,10 +200,15 @@ def build_manifest(root, *, runtime=None, review=None, finalize=False):
         validate_runtime(runtime, sources_digest)
     except ProtocolError:
         blockers.append("FULL_ENVELOPE_RUNTIME_EVIDENCE_MISSING_OR_STALE")
-    policy = review.get("rmst_policy") if type(review) is dict else {"value": 1.5, "ratified": False, "rationale": ""}
+    policy = review.get("rmst_policy") if type(review) is dict else benchmark_rmst_policy()
+    try:
+        validate_rmst_policy(policy)
+        policy_valid = True
+    except ProtocolError:
+        policy_valid = False
     if not (type(review) is dict and review.get("decision") == "VALID" and review.get("sources_digest") == sources_digest
-            and type(policy) is dict and policy.get("ratified") is True):
-        blockers.append("INDEPENDENT_RMST_POLICY_AND_F0_REVIEW_PENDING")
+            and policy_valid):
+        blockers.append("BENCHMARK_RMST_POLICY_AND_F0_REVIEW_PENDING")
     if not finalize:
         blockers.append("DRAFT_ONLY")
     manifest = {"schema": "f0-c3-design-v1", "status": "VALID" if finalize and not blockers else "NOT_VALID",

@@ -16,7 +16,7 @@ from rfl_rebuild.b2.f0_stages import (
     records_for, discard_complete, run_gate_suite, validate_runtime,
 )
 
-KEYS = {"smoke": tuple(range(950001, 950006)), "dev_baseline": tuple(range(950006, 950038))}
+KEYS = {"smoke": tuple(range(970001, 970006)), "dev_baseline": tuple(range(970006, 970038))}
 
 
 def benchmark(root, output, *, plan_only=False):
@@ -62,7 +62,7 @@ def benchmark(root, output, *, plan_only=False):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--output-dir", type=pathlib.Path, default=ROOT / "experiments/v03r/f0_runtime")
+    parser.add_argument("--output-dir", type=pathlib.Path, default=ROOT / "experiments/v03r/f0_runtime_rev5")
     parser.add_argument("--plan", action="store_true")
     args = parser.parse_args()
     try:

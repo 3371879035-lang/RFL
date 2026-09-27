@@ -12,6 +12,7 @@ from rfl_rebuild.b1.errors import ProtocolError
 from rfl_rebuild.b2.convergence import convergence_time, select_horizon
 from rfl_rebuild.b2.numerics import mean, sd, standard_error, left_to_right_sum
 from rfl_rebuild.b2.retention import RetentionAtH, LateWindowRetention
+from rfl_rebuild.b2.rmst_policy import validate_rmst_policy
 from rfl_rebuild.b2.unaffected import CHANNELS, REFINEMENTS, _slice
 from rfl_rebuild.b2.utility import FutureUtility
 
@@ -307,10 +308,8 @@ def combine_design_and_thresholds(design, *, rmst_policy):
         return {"status": design["status"], "lock": None}
     if not isinstance(rmst_policy, dict) or rmst_policy.get("ratified") is not True:
         return {"status": "UNRATIFIED_RMST_THRESHOLD", "lock": None}
-    value = rmst_policy.get("value")
-    _finite((value,))
-    if value <= 0 or not isinstance(rmst_policy.get("rationale"), str) or not rmst_policy["rationale"].strip():
-        raise ProtocolError("a ratified RMST policy needs a positive value and independent rationale")
+    policy = validate_rmst_policy(rmst_policy)
+    value = policy["value"]
     collateral = design["f_C"]["collateral_bound"]
     if collateral is None:
         return {"status": "NO_ADMISSIBLE_COLLATERAL_THRESHOLD", "lock": None}
@@ -320,13 +319,18 @@ def combine_design_and_thresholds(design, *, rmst_policy):
         return {"status": "NO_ADMISSIBLE_RETENTION_THRESHOLD", "lock": None}
     configured = {"form": retention["form"], "parameters": retention["parameters"]}
     thresholds = [
-        {"regime": "P", "statistic": "RMST", "value": value, "provenance": rmst_policy},
+        {"regime": "P", "statistic": "RMST", "value": value, "provenance": policy,
+         "claim": "benchmark-quantitative-improvement", "practical_meaning_claimed": False,
+         "equivalence_claimed": False, "decision_rule": "benchmark-margin-interval-v1"},
         {"regime": "P", "statistic": "DeficitAUC", "value": .01, "provenance": "inherited"},
         {"regime": "P", "statistic": "BehavioralCollateral", "value": collateral,
          "provenance": "nearest-rank-0.95-all-credited-sites"},
         {"regime": "P", "statistic": "Retention", "endpoint": configured, "value": delta,
          "provenance": "0.25-times-per-seed-population-sd"},
-        {"regime": "T", "statistic": "RMST", "value": value, "provenance": "alias:P:RMST"},
+        {"regime": "T", "statistic": "RMST", "value": value, "provenance": "alias:P:RMST",
+         "claim": "benchmark-quantitative-harm-bound", "practical_meaning_claimed": False,
+         "zero_harm_claimed": False, "decision_rule": "benchmark-harm-bound-v1",
+         "criterion": "lower-ci-bound>=-margin", "bound_inclusive": True},
         {"regime": "T", "statistic": "DeficitAUC", "value": .01, "provenance": "alias:P:DeficitAUC"},
     ]
     return {"status": "LOCKABLE", "lock": {

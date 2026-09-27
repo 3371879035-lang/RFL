@@ -42,7 +42,7 @@ from rfl_rebuild.b2.unaffected import (  # noqa: E402
     scene_domain,
 )
 from rfl_rebuild.b2.view import assert_modules_are_closed  # noqa: E402
-from rfl_rebuild.env.kernel import ControlState, SemanticTape, option_actions  # noqa: E402
+from rfl_rebuild.env.kernel import ControlState, Outcome, SemanticTape, option_actions  # noqa: E402
 from rfl_rebuild.learner.reference import reference_view_from  # noqa: E402
 from rfl_rebuild.learner.store import (  # noqa: E402
     PROCESS, Q, Edit, LearnerPersistentState,
@@ -90,7 +90,9 @@ CREDIT = CreditedSite("P", 1)
 
 
 def run(events=None, **overrides):
-    return runner(events, **overrides).run(
+    # Historical instrument fixtures do not assert a failure trigger. Exercise
+    # the raw controlled pipeline without inventing a factual failure label.
+    return runner(events, **overrides)._run_instrument(
         LearnerPersistentState(), arms=arm_defs(),
         evidence={"units": UNITS, "assisted": AssistedInput(1)},
         credited_site=CREDIT)
@@ -98,6 +100,100 @@ def run(events=None, **overrides):
 
 def names_of(events):
     return [e[0] for e in events]
+
+
+class _UnreadReflectionInput:
+    """Reading reflection inputs on SUCCESS is itself a forbidden call."""
+
+    def __getattribute__(self, name):
+        raise AssertionError("successful episode read reflection input")
+
+    def __iter__(self):
+        raise AssertionError("successful episode iterated reflection input")
+
+
+def test_failure_trigger_success_skips_every_reflection_stage(monkeypatch):
+    events = []
+    paired = runner(events)
+    state = observable_state()
+    before = fingerprint(state)
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError("successful episode entered the reflection pipeline")
+
+    for name in ("_resolved_credit", "pre_update_source", "_apply"):
+        monkeypatch.setattr(PairedRunner, name, forbidden)
+    for name in ("run_dq_law", "run_process_law", "run_controller_law",
+                 "measure_scene_map", "train_curve"):
+        monkeypatch.setattr(runner_module, name, forbidden)
+    unread = _UnreadReflectionInput()
+    result = paired.run(state, factual_outcome=Outcome.SUCCESS,
+                        arms=unread, evidence=unread, credited_site=unread)
+
+    assert result.status == "NO_REFLECTION"
+    assert result.reflected is False
+    assert not hasattr(result, "ledgers")
+    assert fingerprint(state) == before
+    assert events == []
+
+
+@pytest.mark.parametrize("outcome", [Outcome.COLLISION, Outcome.TRAP, Outcome.TIMEOUT])
+def test_failure_trigger_known_failures_reach_real_paired_updates(outcome):
+    events = []
+    state = observable_state()
+    before = fingerprint(state)
+    result = runner(events).run(
+        state, factual_outcome=outcome, arms=arm_defs(),
+        evidence={"units": UNITS, "assisted": AssistedInput(1)}, credited_site=CREDIT)
+
+    assert result.fingerprints_post["reference"] == before
+    assert result.fingerprints_post["treatment"] != before
+    assert fingerprint(state) == before
+    names = names_of(events)
+    assert names.count("update_applied") == 2
+    assert names.index("update_applied") < names.index("future")
+
+
+@pytest.mark.parametrize("outcome", [None, "RUNNING", "failure", "", True, 1, [], object()])
+def test_failure_trigger_refuses_unknown_or_nonterminal_outcome(outcome):
+    state = observable_state()
+    before = fingerprint(state)
+    unread = _UnreadReflectionInput()
+    with pytest.raises(ProtocolError, match="factual outcome"):
+        runner().run(state, factual_outcome=outcome,
+                     arms=unread, evidence=unread, credited_site=unread)
+    assert fingerprint(state) == before
+
+
+def test_failure_trigger_cannot_be_omitted():
+    with pytest.raises(TypeError, match="factual_outcome"):
+        runner().run(LearnerPersistentState(), arms=arm_defs(),
+                     evidence={"units": UNITS, "assisted": AssistedInput(1)},
+                     credited_site=CREDIT)
+
+
+def test_paired_record_retains_the_b1_returned_ledgers(monkeypatch):
+    """Dropping B1Result must not silently erase the reported intervention cost."""
+    returned = []
+    original = runner_module.run_process_law
+
+    def record_result(*args, **kwargs):
+        result = original(*args, **kwargs)
+        returned.append(result)
+        return result
+
+    monkeypatch.setattr(runner_module, "run_process_law", record_result)
+    result = runner().run(
+        observable_state(), factual_outcome=Outcome.COLLISION, arms=arm_defs(),
+        evidence={"units": UNITS, "assisted": AssistedInput(1)}, credited_site=CREDIT)
+
+    assert len(returned) == 2
+    for name, b1_result in zip(("reference", "treatment"), returned):
+        assert result.ledgers[name] is b1_result.ledger, "the returned B1 ledger was lost"
+        assert result.ledgers[name].fingerprint_pre == result.fingerprints_pre[name]
+        assert result.ledgers[name].fingerprint_post == result.fingerprints_post[name]
+    assert result.ledgers["reference"].n_changed_addresses == 0
+    assert result.ledgers["treatment"].n_changed_addresses == 1
 
 
 # --------------------------------------------------------------------------- #
@@ -121,7 +217,7 @@ def test_2_the_runner_owns_the_pre_update_material():
     The runner derives the material itself, from the learner state it was handed -- not from a minted
     healthy state, and not from the superseded decision-context ontology.
     """
-    params = tuple(inspect.signature(PairedRunner.run).parameters)
+    params = tuple(inspect.signature(PairedRunner._run_instrument).parameters)
     assert params == ("self", "state", "arms", "evidence", "credited_site"), params
     built = runner().pre_update_source(LearnerPersistentState(), CREDIT)
     assert type(built) is SceneUnaffectedSet
@@ -227,7 +323,7 @@ def test_4_the_arms_fork_from_one_pre_update_state():
     state = observable_state()
     LearnerPersistentState.clone = spy
     try:
-        record = runner().run(state, arms=writing_pair(),
+        record = runner()._run_instrument(state, arms=writing_pair(),
                               evidence={"units": UNITS, "assisted": AssistedInput(1)},
                               credited_site=CREDIT)
     finally:
@@ -378,7 +474,7 @@ def test_9_a_law_from_another_architecture_is_refused():
                           and x.tier is Tier.L1_CORRECTIVE)),
              ArmSpec("treatment", "X", Tier.L0_FACTUAL, x_law))
     with pytest.raises(ProtocolError) as ei:
-        runner().run(LearnerPersistentState(), arms=mixed,
+        runner()._run_instrument(LearnerPersistentState(), arms=mixed,
                      evidence={"units": UNITS, "assisted": AssistedInput(1)},
                      credited_site=CREDIT)
     assert "different architectures" in str(ei.value)
@@ -489,7 +585,7 @@ def test_11c_a_dq_pair_runs_through_the_b1_entry_point():
 
     R.measure_scene_map = spy
     try:
-        record = runner().run(state, arms=arms,
+        record = runner()._run_instrument(state, arms=arms,
                               evidence={"addresses": (address,), "rows": traces.rows(scene)},
                               credited_site=credit)
     finally:
@@ -517,7 +613,7 @@ def test_11d_a_legal_but_unrelated_credited_unit_is_refused():
     $P(1)$, so $P(0)$ must fail stop.
     """
     with pytest.raises(ProtocolError) as ei:
-        runner().run(LearnerPersistentState(), arms=arm_defs(),
+        runner()._run_instrument(LearnerPersistentState(), arms=arm_defs(),
                      evidence={"units": UNITS, "assisted": AssistedInput(1)},
                      credited_site=CreditedSite("P", 0))
     assert "resolves to (1,)" in str(ei.value)

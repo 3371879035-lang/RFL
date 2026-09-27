@@ -48,7 +48,7 @@ from rfl_rebuild.b2.training import (  # noqa: E402
     visited_order,
 )
 from rfl_rebuild.b2.unaffected import scene_domain  # noqa: E402
-from rfl_rebuild.env.kernel import START, State, initial_control, option_ids  # noqa: E402
+from rfl_rebuild.env.kernel import Outcome, START, State, initial_control, option_ids  # noqa: E402
 from rfl_rebuild.learner.reference import reference_view_from  # noqa: E402
 from rfl_rebuild.learner.store import PROCESS, Q, Edit, LearnerPersistentState, QAddress  # noqa: E402
 from rfl_rebuild.solve.dp import solve_reference  # noqa: E402
@@ -76,6 +76,26 @@ def _p_override_learner() -> LearnerPersistentState:
     learner = LearnerPersistentState()
     learner.apply_transaction((Edit(store=PROCESS, address=0, value=1),), q_reference=REFERENCE)
     return learner
+
+
+def test_successful_episode_still_receives_ordinary_q_learning():
+    """The failure-only reflection gate must not disable ordinary successful updates."""
+    protocol = _protocol()
+    episode = ExogenousEpisode.derive(SEED, EPISODE)
+    learner = LearnerPersistentState()
+    healthy_trace = episode_rollout(learner, episode, protocol=protocol, q_reference=REFERENCE)
+    assert healthy_trace.outcome == Outcome.SUCCESS
+    state, control, step = visited_order(
+        healthy_trace, kappa=episode.kappa, phi=episode.tape.phase)[0]
+    address = QAddress(state=state, z=control.z, m=control.m, a=step.a_cmd)
+    original_value = REFERENCE.value(address) + 0.25
+    learner.apply_transaction([Edit(Q, address, original_value)], q_reference=REFERENCE)
+
+    trace = episode_rollout(learner, episode, protocol=protocol, q_reference=REFERENCE)
+    assert trace.outcome == Outcome.SUCCESS
+    edits = sweep_edits(learner, trace, episode, protocol=protocol, q_reference=REFERENCE)
+    learner.apply_transaction(edits, q_reference=REFERENCE)
+    assert learner.q_overrides[address] == original_value - 0.125
 
 
 # --- the keyed generator ---------------------------------------------------------------------------

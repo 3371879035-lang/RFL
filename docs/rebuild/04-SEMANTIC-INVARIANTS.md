@@ -129,8 +129,19 @@ asserts on the **implementation's** outputs, not on the design.
 
 $$\text{successful episode},\quad C = (0,0,0,0,0)$$
 
-Must produce $U = (0,0,0,0,0)$ and **no write of any kind**. An arm that edits a
-clean episode is wrong even if its downstream AUC looks fine.
+Must produce $U = (0,0,0,0,0)$ and **no diagnostic write**. This restriction concerns
+the extra responsibility-based correction, not ordinary task learning: successful
+experience still receives the declared task reinforcement and ordinary TD update.
+An arm that adds a diagnostic edit to a clean successful episode is wrong even if
+its downstream AUC looks fine.
+
+The online trigger is stricter than this no-fault fixture. **Every observed task
+success bypasses diagnosis**, including a success with a hidden fired fault or
+an unexpected positive reward. Hidden $C$, $Z^{\text{fire}}$, repair truth and
+prediction surprise never turn success into a diagnostic trigger. Conversely,
+an observed failure opens the diagnostic path but does not require a write:
+insufficient evidence, external causes and the keep candidate remain legitimate
+no-correction outcomes. The end-to-end contract is in `09-V04R.md` §1.1.
 
 ### C1 — Decision correct, execution deviated
 

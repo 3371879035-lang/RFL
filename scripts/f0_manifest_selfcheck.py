@@ -10,13 +10,15 @@ from rfl_rebuild.b1.errors import ProtocolError
 from rfl_rebuild.b2.baseline_artifact import canonical_bytes, digest
 from rfl_rebuild.b2.design_lock import CONSTANTS
 from rfl_rebuild.b2.f0_stages import ARTIFACT_SCHEMA, GATES, GATE_PATHS, SEED_PATHS, STAGE_SEEDS, ordering, validate_contract
+from rfl_rebuild.b2.rmst_policy import benchmark_rmst_policy
 
 
 def fixture():
     """Synthetic schema fixture only. Its invented source cannot pass live validation."""
     sources = {"fixture-only.py": "a" * 64}
     identity = digest(canonical_bytes(sources))
-    policy = {"ratified": True, "value": 1.5, "rationale": "Synthetic test fixture; not a research ratification"}
+    # This invented-source manifest is a synthetic fixture, never a real review.
+    policy = benchmark_rmst_policy(ratified=True)
     runtime = {"schema": "f0-runtime-v1", "sources_digest": identity, "suite_s": 1., "gate_exit_codes": [0] * 6}
     for stage, keys in (("smoke", list(range(950001, 950006))), ("dev_baseline", list(range(950006, 950038)))):
         runtime[stage] = {"role": "OPERATIONAL_BENCHMARK", "seed_count": len(keys), "keys": keys,
@@ -51,6 +53,11 @@ CASES = [
     (("artifact_schema", "digest_surface"), "gzip-bytes", "shard schema"),
     (("rmst_policy", "ratified"), False, "not ratified"),
     (("rmst_policy", "rationale"), "", "not ratified"),
+    (("rmst_policy", "kind"), "practical-sesoi", "benchmark RMST policy"),
+    (("rmst_policy", "value"), 1.0, "benchmark RMST policy"),
+    (("rmst_policy", "practical_meaning_claimed"), True, "benchmark RMST policy"),
+    (("rmst_policy", "equivalence_claimed"), True, "benchmark RMST policy"),
+    (("rmst_policy", "zero_harm_claimed"), True, "benchmark RMST policy"),
     (("review", "sources_digest"), "0" * 64, "review"),
     (("runtime", "sources_digest"), "0" * 64, "runtime evidence"),
     (("runtime", "suite_s"), 0., "gate-suite runtime"),

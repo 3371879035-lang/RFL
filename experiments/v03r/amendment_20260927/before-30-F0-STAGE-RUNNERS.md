@@ -1,9 +1,8 @@
 # 30 — F0 stage runners and immutable authorization
 
 Status: **F0 NOT VALID. No formal smoke, development or confirmatory run.**
-The current C3 and failure-only amendment is document 31. Its 1.5 RMST policy is
-a quantitative benchmark margin with no practical-value/equivalence claim. This
-implementation record does not replace a source-bound F0 review or current timing.
+This records implementation, not approval of the C3 amendment, the runtime rule,
+or the independent persistent-regime RMST practical threshold.
 
 ## 1. Implemented command surface
 
@@ -24,12 +23,11 @@ The smoke evaluator is read-only and returns native 0/3/2 for PASS/FAIL/invalid
 inputs. Run commands also distinguish protocol refusal from a completed gate.
 
 `--finalize --runtime <runtime.json> --review <review.json> --output <new-path>`
-requires measured runtime evidence and an explicit, source-bound review with the
-exact typed RMST benchmark policy. A generic rationale string is insufficient. Review
+requires measured runtime evidence and an explicit, source-bound review with a
+ratified positive RMST threshold and independent practical rationale. Review
 fields are `decision: VALID`, `sources_digest`, and `rmst_policy` containing
-the full `benchmark-quantitative-margin-v1` policy, including `ratified`, `value`,
-and explicit claim limits. The generator cannot confer practical value on a
-number. A finalized manifest must be committed before execution. The draft
+`ratified`, `value`, and `rationale`. The generator cannot supply a scientific
+rationale. A finalized manifest must be committed before execution. The draft
 must not be overwritten; a subsequent reviewed manifest can use a new path,
 passed explicitly to all stages.
 
@@ -58,11 +56,10 @@ them **serially**: the two mutation harnesses temporarily edit and restore sourc
 The last gate tests a synthetic contract and never approves the actual manifest;
 its deterministic report avoids a self-referential manifest/artifact digest.
 
-## 3. Runtime evidence by instrument revision
+## 3. Runtime measurement remains outstanding
 
-The completed earlier benchmark reserved 950001..950037 and remains preserved
-at instrument `7da3830`. Rev 5 reserves 970001..970005 for the smoke
-shape and 970006..970037 for development. These keys must remain excluded from
+The executable operational benchmark reserves 950001..950005 for the smoke
+shape and 950006..950037 for development. These keys must remain excluded from
 scientific populations. It measures the serial gate suite, then the actual
 5-key discarded stream and 32-key serialized acquisition, each with cap 576 and
 master bank 1024: 21,312 training episodes and 21,349 checkpoints in total.
@@ -74,10 +71,9 @@ instrument before running and refuses source drift or reuse of its output dir.
 does not authorize F0. A short cap-2 integration run, synthetic fixture timings,
 or historical single-bank timings cannot substitute for this measurement.
 
-The earlier benchmark completed and its full data integrity check passed. Those
-measured durations are not relabeled for changed source bytes. Rev 5 uses the
-new `f0_runtime_rev5` output and fresh timing; authorization remains closed until
-that evidence and the full amended-source review are available.
+This publication implements and checks the benchmark plan; it does **not** report
+a completed full-envelope timing run. F0 still needs that measurement, independent
+RMST policy ratification, and review of the complete C3 instrument/amendment.
 
 ## 4. Verification boundary
 

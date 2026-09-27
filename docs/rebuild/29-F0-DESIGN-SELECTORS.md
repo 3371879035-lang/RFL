@@ -65,8 +65,9 @@ retains 0.01. P Retention uses 0.25 times the selected form's per-seed populatio
 standard deviation. All-zero collateral spread or zero retention spread blocks the
 corresponding threshold. A nonzero family whose 95th percentile is zero is not
 silently replaced with a positive floor. P RMST comes only from a prior, ratified
-F0 policy with its independent rationale; the tests' synthetic policies ratify no
-real experiment.
+F0 policy with the fixed quantitative benchmark scope in document 31; the tests'
+synthetic policies ratify no real experiment. The 1.5 margin carries no practical
+equivalence or net-benefit claim, and the T alias carries no zero-harm claim.
 
 ## 4. Development lock consumer and publication
 

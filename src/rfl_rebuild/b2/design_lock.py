@@ -17,6 +17,7 @@ from rfl_rebuild.b2.design_selection import derive_design, combine_design_and_th
 from rfl_rebuild.b2.environment import learned_rollout
 from rfl_rebuild.b2.evalorder import prefix
 from rfl_rebuild.b2.numerics import mean
+from rfl_rebuild.b2.rmst_policy import validate_rmst_policy
 from rfl_rebuild.b2.temporal_initializer import INITIALIZER_ID, ACQUISITION_CAP
 from rfl_rebuild.learner.reference import reference_view_from
 from rfl_rebuild.learner.store import LearnerPersistentState
@@ -44,10 +45,7 @@ def prepare_inputs(root, *, design_path, manifest_path):
     if manifest.get("constants") != CONSTANTS:
         raise ProtocolError("F0 constants do not match the implemented frozen selector profile")
     policy = manifest.get("rmst_policy", {})
-    if (not isinstance(policy, dict) or policy.get("ratified") is not True or type(policy.get("value")) not in (int, float)
-            or not 0 < policy["value"] < float("inf") or not isinstance(policy.get("rationale"), str)
-            or not policy["rationale"].strip()):
-        raise ProtocolError("independent P RMST threshold is not ratified in F0")
+    validate_rmst_policy(policy)
     rel_manifest = manifest_path.relative_to(root).as_posix()
     try:
         committed = subprocess.check_output(["git", "show", f"HEAD:{rel_manifest}"], cwd=root,

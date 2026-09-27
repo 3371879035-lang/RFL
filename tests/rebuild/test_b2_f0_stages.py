@@ -51,7 +51,7 @@ def test_smoke_closed_report(field, value, reason):
 
 
 def test_seedless_selfcheck_and_duplicate_json(tmp_path):
-    assert check.selfcheck()["n_rejected"] == 26
+    assert check.selfcheck()["n_rejected"] == 31
     path = tmp_path / "bad.json"
     path.write_text('{"status": "VALID", "status": "NOT_VALID"}')
     with pytest.raises(ProtocolError, match="duplicate JSON"):

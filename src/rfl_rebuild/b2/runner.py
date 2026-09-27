@@ -36,7 +36,7 @@ from rfl_rebuild.b1.contract import fingerprint
 from rfl_rebuild.b1.errors import ProtocolError
 from rfl_rebuild.b1.laws import DQ_LAWS, P_LAWS, X_LAWS
 from rfl_rebuild.b1.process import resolve_process_addresses
-from rfl_rebuild.b1.runner import run_controller_law, run_dq_law, run_process_law
+from rfl_rebuild.b1.runner import B1Result, run_controller_law, run_dq_law, run_process_law
 from rfl_rebuild.b1.tier import Tier
 from rfl_rebuild.b2.collateral import behavioral_collateral_scenes, measure_scene_map
 from rfl_rebuild.b2.retention import select_form
@@ -49,10 +49,11 @@ from rfl_rebuild.b2.unaffected import (
     pre_update_traces,
 )
 from rfl_rebuild.b2.utility import FutureUtility
+from rfl_rebuild.env.kernel import Outcome
 from rfl_rebuild.learner.store import LearnerPersistentState
 
 __all__ = ["ARCHITECTURES", "ArmSpec", "PairedRunner",
-           "PairedSceneRecord"]
+           "PairedSceneRecord", "NoReflectionResult"]
 
 ARCHITECTURES = ("D_Q", "X", "P")
 
@@ -138,6 +139,14 @@ class PairedSceneRecord:
     observations: tuple
 
 
+@dataclass(frozen=True, slots=True)
+class NoReflectionResult:
+    """A successful factual episode triggers no diagnosis, credit or repair."""
+
+    status: str = "NO_REFLECTION"
+    reflected: bool = False
+
+
 class PairedRunner:
     r"""Run one scene's paired arms, exposing the properties a gate has to be able to see."""
 
@@ -219,10 +228,37 @@ class PairedRunner:
                 "E(c) for a unit the runner was never entitled to credit")
         return build_unaffected(credited_site, traces, self._refinement)
 
-    def run(self, state: LearnerPersistentState, *, arms: Sequence[ArmSpec], evidence: Mapping,
-            credited_site: CreditedSite) -> PairedSceneRecord:
+    def run(self, state: LearnerPersistentState, *, factual_outcome: str,
+            arms: Sequence[ArmSpec], evidence: Mapping,
+            credited_site: CreditedSite) -> PairedSceneRecord | NoReflectionResult:
+        """Reflect only after an observed terminal failure.
+
+        The caller supplies the actual factual terminal outcome, not the feedback
+        claim or a counterfactual result. The kernel uses string constants rather
+        than an Enum: only its four native terminal values are accepted. Unknown
+        and nonterminal values cannot silently become failures.
+
+        This routing input is never delivered to a method or a law. SUCCESS
+        returns before reading reflection inputs, resolving credit, constructing
+        targets, changing learner state, or running the paired futures. Ordinary
+        training in ``training.py`` remains independent of this reflection gate.
+        """
+        if type(factual_outcome) is not str or factual_outcome not in (
+                Outcome.SUCCESS, Outcome.COLLISION, Outcome.TRAP, Outcome.TIMEOUT):
+            raise ProtocolError("the factual outcome must be a known terminal kernel outcome")
+        if factual_outcome == Outcome.SUCCESS:
+            return NoReflectionResult()
+        return self._run_instrument(state, arms=arms, evidence=evidence,
+                                    credited_site=credited_site)
+
+    def _run_instrument(self, state: LearnerPersistentState, *, arms: Sequence[ArmSpec],
+                        evidence: Mapping, credited_site: CreditedSite) -> PairedSceneRecord:
         r"""$$\boxed{\text{unaffected set} \to \text{clone per arm} \to \text{updates} \to
         \text{futures} \to \text{metrics}}$$
+
+        Raw controlled instrument for seedless calibration and invariant tests.
+        It does not decide whether an episode warrants reflection; production
+        reflection must enter through ``run`` and its required failure trigger.
 
         The order is the whole content: a set built after an arm ran, or a future that existed before
         an update was applied, makes the record uninterpretable in a way no downstream number can
@@ -298,8 +334,9 @@ class PairedRunner:
                 f"{pre_fingerprints!r}; a serial chain from one arm into the other is not a pair")
 
         # (3) the updates, each on its own clone, before any future exists
+        ledgers = {}
         for arm, clone in zip(arms, clones):
-            self._apply(arm, clone, evidence, self._q_reference)
+            ledgers[arm.name] = self._apply(arm, clone, evidence, self._q_reference).ledger
             self._recorder("update_applied", arm.name, id(clone))
 
         # (3b) the IMMEDIATE post-B1 states, captured before any future training runs.
@@ -377,8 +414,7 @@ class PairedRunner:
             future_utility=MappingProxyType(futures),
             collateral=MappingProxyType(collateral),
             retention=MappingProxyType(retention),
-            ledgers=MappingProxyType({arm.name: _ledger_of(clone)
-                                      for arm, clone in zip(arms, clones)}),
+            ledgers=MappingProxyType(ledgers),
             fingerprints_pre=MappingProxyType(pre_fingerprints),
             fingerprints_post=MappingProxyType(post_fingerprints),
             observations=tuple(observations),
@@ -407,26 +443,21 @@ class PairedRunner:
 
     @staticmethod
     def _apply(arm: ArmSpec, clone: LearnerPersistentState, evidence: Mapping,
-               q_reference=None) -> None:
+               q_reference=None) -> B1Result:
         """Dispatch to the architecture's **existing B1 entry point**. No new update path."""
         if arm.architecture == "D_Q":
             for key in ("addresses", "rows"):
                 if key not in evidence:
                     raise ProtocolError(f"the D_Q arm needs {key!r} in the evidence")
-            run_dq_law(arm.law, clone, evidence["addresses"], evidence["rows"], q_reference,
+            return run_dq_law(arm.law, clone, evidence["addresses"], evidence["rows"], q_reference,
                        sol=evidence.get("sol"), episode=evidence.get("episode"))
         elif arm.architecture == "P":
             for key in ("units", "assisted"):
                 if key not in evidence:
                     raise ProtocolError(f"the P arm needs {key!r} in the evidence")
-            run_process_law(arm.law, clone, evidence["units"], evidence["assisted"])
+            return run_process_law(arm.law, clone, evidence["units"], evidence["assisted"])
         else:
             for key in ("sites", "rows"):
                 if key not in evidence:
                     raise ProtocolError(f"the X arm needs {key!r} in the evidence")
-            run_controller_law(arm.law, clone, evidence["sites"], evidence["rows"])
-
-
-def _ledger_of(state) -> object:
-    """The intervention-cost view, kept **beside** the dimensions rather than inside them."""
-    return getattr(state, "_last_ledger", None)
+            return run_controller_law(arm.law, clone, evidence["sites"], evidence["rows"])

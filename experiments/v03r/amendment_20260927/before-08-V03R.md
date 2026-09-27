@@ -7,15 +7,6 @@ $$\boxed{\text{Knowing exactly what to change and where, \emph{how} should it be
 All attribution and all credit assignment are **Oracle truth** in this version.
 No learned component is allowed to influence a result.
 
-**Current scope correction:** diagnostic correction is triggered only by an
-observed terminal task failure; success permits ordinary task learning and
-measurement but no cause diagnosis or diagnostic edit. Low-level offline
-primitive controls are instrument tests, not online reflection on successes.
-`31-FAILURE-ONLY-AND-RMST-AMENDMENT.md` supplies this boundary and the restricted
-B2 RMST quantitative-margin claim. Its scoped wording supersedes the practical
-RMST reading of A79's verdict/claim clauses; it does not waive the joint endpoint
-or direction/tail gates and does not itself authorize B2 experiments.
-
 This is the load-bearing version of the whole programme. If the answer here is
 "even with perfect cause, perfect responsibility, perfect site and a verified
 alternative, the repair still does not improve learning", then the RFL chain
