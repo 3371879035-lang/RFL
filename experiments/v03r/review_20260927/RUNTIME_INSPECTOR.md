@@ -49,3 +49,18 @@ python -m pytest -q experiments/v03r/review_20260927/test_runtime_inspector.py
 分片正在增长。独立进程检查确认 PID 23956 仍存在，创建时间仍为 11:42:21，
 累计 CPU 时间约 6514 秒；冻结源码摘要不变。近期分片时间中位数约 629 秒，
 剩余约 4.7 小时仅为粗估。完整计时和最终分片核验均尚未完成。
+
+## 一次性结束核验
+
+13:44 已启动 `finish_runtime.ps1`（PID 16312），等待本次 benchmark PID 23956
+退出后运行 `--verify` 一次。启动记录 `runtime_completion_launch.json` 固定了
+目标进程创建时间和脚本摘要，避免 PID 复用误认。不是周期轮询或重新采集。
+进程身份不符、缺少结束产物或核验失败均停止，既有失败证据保留。
+
+成功后才写入新的 `runtime_completion_verified.json`；运行日志为
+`runtime_completion.stdout.log` / `.stderr.log`。等待、核验和完成会写入时间戳。
+创建这个等待进程不代表最终核验已通过；电脑关机或进程终止也不会自动重试。
+其权限范围仅为结束后的完整性核验，不会启动正式 smoke/dev 或发布 F0 授权。
+
+13:44 进度快照 `runtime_progress_1344.json` 已记录开发形状采集至少 6/32
+完成、第 7 个分片可见。进程检查确认采集与等待核验进程都存在，等待日志已写入。
