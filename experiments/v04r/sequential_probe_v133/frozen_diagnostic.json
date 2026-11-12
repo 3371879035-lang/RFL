@@ -1,0 +1,312 @@
+{
+  "schema": "V132_RECORDED_DIAGNOSTIC_MODEL_TRANSFER",
+  "source": {
+    "path": "experiments/v04r/learned_span_memory_v131/evidence/raw.jsonl",
+    "bytes": 28162461,
+    "sha256": "c15399044514ea8a3eb5810dc778f422f523ceb223cdf1e6cfdb4c876e6afb71",
+    "learner": "StumpHybrid",
+    "training_epochs": [
+      3,
+      17
+    ],
+    "model_lookup_seq": 1043
+  },
+  "recorded_practice_examples": [
+    {
+      "source_seq": 844,
+      "epoch": 3,
+      "key": [
+        "dq",
+        "TIMEOUT",
+        false,
+        "keep",
+        "run-span",
+        0
+      ],
+      "returns": [
+        {
+          "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+        },
+        {
+          "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+        }
+      ]
+    },
+    {
+      "source_seq": 844,
+      "epoch": 3,
+      "key": [
+        "dq",
+        "TIMEOUT",
+        false,
+        "single",
+        4,
+        false,
+        "stay",
+        "run-span",
+        1
+      ],
+      "returns": [
+        {
+          "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+        },
+        {
+          "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+        }
+      ]
+    },
+    {
+      "source_seq": 844,
+      "epoch": 3,
+      "key": [
+        "dq",
+        "TIMEOUT",
+        false,
+        "single",
+        4,
+        false,
+        "stay",
+        "run-span",
+        8
+      ],
+      "returns": [
+        {
+          "binary64_hex": "0x1.b851eb851eb85p-1"
+        },
+        {
+          "binary64_hex": "0x1.b851eb851eb85p-1"
+        }
+      ]
+    },
+    {
+      "source_seq": 979,
+      "epoch": 17,
+      "key": [
+        "dq",
+        "TIMEOUT",
+        false,
+        "keep",
+        "run-span",
+        0
+      ],
+      "returns": [
+        {
+          "binary64_hex": "0x1.851eb851eb852p-1"
+        },
+        {
+          "binary64_hex": "0x1.851eb851eb852p-1"
+        }
+      ]
+    },
+    {
+      "source_seq": 979,
+      "epoch": 17,
+      "key": [
+        "dq",
+        "TIMEOUT",
+        false,
+        "single",
+        4,
+        false,
+        "stay",
+        "run-span",
+        2
+      ],
+      "returns": [
+        {
+          "binary64_hex": "-0x1.051eb851eb852p+0"
+        },
+        {
+          "binary64_hex": "0x1.851eb851eb852p-1"
+        }
+      ]
+    },
+    {
+      "source_seq": 979,
+      "epoch": 17,
+      "key": [
+        "dq",
+        "TIMEOUT",
+        false,
+        "single",
+        4,
+        false,
+        "stay",
+        "run-span",
+        1
+      ],
+      "returns": [
+        {
+          "binary64_hex": "0x1.ae147ae147ae1p-1"
+        },
+        {
+          "binary64_hex": "0x1.ae147ae147ae1p-1"
+        }
+      ]
+    }
+  ],
+  "coarse_table": [
+    [
+      [
+        "dq",
+        "TIMEOUT",
+        false,
+        "keep",
+        "global"
+      ],
+      4,
+      {
+        "binary64_hex": "-0x1.eb851eb851eb8p-3"
+      }
+    ],
+    [
+      [
+        "dq",
+        "TIMEOUT",
+        false,
+        "single",
+        4,
+        false,
+        "stay",
+        "repeated-run"
+      ],
+      4,
+      {
+        "binary64_hex": "0x1.75c28f5c28f5cp-2"
+      }
+    ],
+    [
+      [
+        "dq",
+        "TIMEOUT",
+        false,
+        "single",
+        4,
+        false,
+        "stay",
+        "single-step"
+      ],
+      4,
+      {
+        "binary64_hex": "-0x1.999999999999ap-3"
+      }
+    ]
+  ],
+  "exact_table": [
+    [
+      [
+        "dq",
+        "TIMEOUT",
+        false,
+        "keep",
+        "run-span",
+        0
+      ],
+      4,
+      {
+        "binary64_hex": "-0x1.eb851eb851eb8p-3"
+      }
+    ],
+    [
+      [
+        "dq",
+        "TIMEOUT",
+        false,
+        "single",
+        4,
+        false,
+        "stay",
+        "run-span",
+        1
+      ],
+      4,
+      {
+        "binary64_hex": "-0x1.999999999999ap-3"
+      }
+    ],
+    [
+      [
+        "dq",
+        "TIMEOUT",
+        false,
+        "single",
+        4,
+        false,
+        "stay",
+        "run-span",
+        2
+      ],
+      2,
+      {
+        "binary64_hex": "-0x1.0a3d70a3d70a4p-3"
+      }
+    ],
+    [
+      [
+        "dq",
+        "TIMEOUT",
+        false,
+        "single",
+        4,
+        false,
+        "stay",
+        "run-span",
+        8
+      ],
+      2,
+      {
+        "binary64_hex": "0x1.b851eb851eb85p-1"
+      }
+    ]
+  ],
+  "models": [
+    {
+      "base_key": [
+        "dq",
+        "TIMEOUT",
+        false,
+        "keep"
+      ],
+      "model": {
+        "cut": null,
+        "left": {
+          "binary64_hex": "-0x1.eb851eb851eb8p-3"
+        },
+        "n": 4,
+        "right": {
+          "binary64_hex": "-0x1.eb851eb851eb8p-3"
+        },
+        "squared_error": {
+          "binary64_hex": "0x1.0000000000000p+2"
+        }
+      }
+    },
+    {
+      "base_key": [
+        "dq",
+        "TIMEOUT",
+        false,
+        "single",
+        4,
+        false,
+        "stay"
+      ],
+      "model": {
+        "cut": {
+          "binary64_hex": "0x1.4000000000000p+2"
+        },
+        "left": {
+          "binary64_hex": "-0x1.69d0369d0369dp-3"
+        },
+        "n": 8,
+        "right": {
+          "binary64_hex": "0x1.b851eb851eb85p-1"
+        },
+        "squared_error": {
+          "binary64_hex": "0x1.7ab250022f3d9p+2"
+        }
+      }
+    }
+  ],
+  "scope": "Recorded diagnostic samples and learned coefficients only; not restored oldR+L/source/pair/receipt/issuedidentity. Bothmodels use exactlysame12actualpractice returns. Modelparameters frozen before heldout native; newpractice labels loggedbutnottrained."
+}

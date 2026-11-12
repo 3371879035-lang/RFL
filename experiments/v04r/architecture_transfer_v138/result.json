@@ -1,0 +1,1324 @@
+{
+  "schema": "V138_ARCHITECTURE_TRANSFER_RESULT",
+  "date_asia_shanghai": "2026-11-07",
+  "parent_commit": "ebc8f2348120d0579ca2e91513800782f19a76ff",
+  "status": "EXTENSION_COMPLETE_DQ_GAIN_AND_PATCH_ZERO_INCREMENT_WITH_ACTIVE_ORDINARY_LEARNING",
+  "execution": {
+    "native_first_exit": 0,
+    "new_stored_review_first_exit": 0,
+    "rollout": 196,
+    "step": 1612,
+    "transaction": 322,
+    "records": 1141,
+    "declared_input_pins_unchanged": 341,
+    "main_tasks": 160,
+    "practice_tasks": 36,
+    "readonly_rollouts": 0,
+    "main_steps": 1412,
+    "practice_steps": 200,
+    "ordinary_full_R_L_updates_verified": 196,
+    "ordinary_numeric_transactions": 196,
+    "ordinary_policy_transactions": 92,
+    "source_install_transactions": 4,
+    "source_install_edits": 176,
+    "live_diagnostic_transactions": 6,
+    "practice_candidate_transactions": 24,
+    "Mtraining_events": 12,
+    "numeric_memory_initialization": "EMPTY_PER_ROLE_MODE",
+    "numeric_predictor_lookups": 0,
+    "success_diagnostics": 0,
+    "base_model_updates": 0,
+    "new_keys": 0,
+    "formal_collection": false,
+    "automatic_retry": false,
+    "old_checker_native_or_readonly_bank_reruns": 0,
+    "instrumented_wall_seconds": 18.68700000003446
+  },
+  "per_arm_summary": [
+    {
+      "mode": "dq",
+      "arm": "StableTaskTD",
+      "successes": 14,
+      "task_return_sum": 3.3600000000000003,
+      "task_return_mean": 0.168,
+      "practice_events": 0,
+      "practice_rollouts": 0,
+      "diagnostic_memory_updates": 0,
+      "diagnostic_calls": 0,
+      "diagnostic_transactions": 0,
+      "returns": [
+        -1.18,
+        -1.18,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        -1.22,
+        -1.22,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        -1.24,
+        -1.24,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        0.76
+      ],
+      "outcomes": [
+        "COLLISION",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "COLLISION",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TIMEOUT",
+        "TIMEOUT",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ]
+    },
+    {
+      "mode": "dq",
+      "arm": "StableFull",
+      "successes": 17,
+      "task_return_sum": 9.280000000000001,
+      "task_return_mean": 0.4640000000000001,
+      "practice_events": 3,
+      "practice_rollouts": 9,
+      "diagnostic_memory_updates": 3,
+      "diagnostic_calls": 3,
+      "diagnostic_transactions": 3,
+      "returns": [
+        -1.18,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        -1.22,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        -1.24,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        0.76
+      ],
+      "outcomes": [
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TIMEOUT",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ]
+    },
+    {
+      "mode": "dq",
+      "arm": "DriftTaskTD",
+      "successes": 14,
+      "task_return_sum": 3.3600000000000003,
+      "task_return_mean": 0.168,
+      "practice_events": 0,
+      "practice_rollouts": 0,
+      "diagnostic_memory_updates": 0,
+      "diagnostic_calls": 0,
+      "diagnostic_transactions": 0,
+      "returns": [
+        -1.18,
+        -1.18,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        -1.22,
+        -1.22,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        -1.24,
+        -1.24,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        0.76
+      ],
+      "outcomes": [
+        "COLLISION",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "COLLISION",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TIMEOUT",
+        "TIMEOUT",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ]
+    },
+    {
+      "mode": "dq",
+      "arm": "DriftFull",
+      "successes": 17,
+      "task_return_sum": 10.48,
+      "task_return_mean": 0.524,
+      "practice_events": 3,
+      "practice_rollouts": 9,
+      "diagnostic_memory_updates": 3,
+      "diagnostic_calls": 3,
+      "diagnostic_transactions": 3,
+      "returns": [
+        -1.18,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        -1.22,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        -1.24,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        0.76,
+        0.76
+      ],
+      "outcomes": [
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TIMEOUT",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ]
+    },
+    {
+      "mode": "patch-adaptive",
+      "arm": "StableTaskTD",
+      "successes": 14,
+      "task_return_sum": 5.34,
+      "task_return_mean": 0.267,
+      "practice_events": 0,
+      "practice_rollouts": 0,
+      "diagnostic_memory_updates": 0,
+      "diagnostic_calls": 0,
+      "diagnostic_transactions": 0,
+      "returns": [
+        -1.18,
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.22,
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.24,
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "outcomes": [
+        "COLLISION",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "COLLISION",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TIMEOUT",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ]
+    },
+    {
+      "mode": "patch-adaptive",
+      "arm": "StableFull",
+      "successes": 14,
+      "task_return_sum": 5.34,
+      "task_return_mean": 0.267,
+      "practice_events": 3,
+      "practice_rollouts": 9,
+      "diagnostic_memory_updates": 3,
+      "diagnostic_calls": 6,
+      "diagnostic_transactions": 0,
+      "returns": [
+        -1.18,
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.22,
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.24,
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "outcomes": [
+        "COLLISION",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "COLLISION",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TIMEOUT",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ]
+    },
+    {
+      "mode": "patch-adaptive",
+      "arm": "DriftTaskTD",
+      "successes": 16,
+      "task_return_sum": 9.3,
+      "task_return_mean": 0.465,
+      "practice_events": 0,
+      "practice_rollouts": 0,
+      "diagnostic_memory_updates": 0,
+      "diagnostic_calls": 0,
+      "diagnostic_transactions": 0,
+      "returns": [
+        -1.18,
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.22,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        -1.24,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        0.86,
+        0.86
+      ],
+      "outcomes": [
+        "COLLISION",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TIMEOUT",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ]
+    },
+    {
+      "mode": "patch-adaptive",
+      "arm": "DriftFull",
+      "successes": 16,
+      "task_return_sum": 9.3,
+      "task_return_mean": 0.465,
+      "practice_events": 3,
+      "practice_rollouts": 9,
+      "diagnostic_memory_updates": 3,
+      "diagnostic_calls": 4,
+      "diagnostic_transactions": 0,
+      "returns": [
+        -1.18,
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.22,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        -1.24,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        0.86,
+        0.86
+      ],
+      "outcomes": [
+        "COLLISION",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TIMEOUT",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ]
+    }
+  ],
+  "per_arm_native_work": [
+    {
+      "mode": "dq",
+      "arm": "StableTaskTD",
+      "stream_rollout": 20,
+      "stream_step": 232,
+      "ORDINARY_UPDATE": 20,
+      "main_numeric_content_changed_episodes": 20,
+      "main_D_content_changed_episodes": 0,
+      "total_K_steps": 232,
+      "total_rollouts": 20,
+      "transactions_excluding_source": 20
+    },
+    {
+      "mode": "dq",
+      "arm": "StableFull",
+      "stream_rollout": 20,
+      "stream_step": 236,
+      "ORDINARY_UPDATE": 29,
+      "practice_rollout": 9,
+      "practice_step": 71,
+      "PRACTICE_TX_END": 6,
+      "DIAGNOSTIC_TX_END": 3,
+      "main_numeric_content_changed_episodes": 20,
+      "main_D_content_changed_episodes": 0,
+      "total_K_steps": 307,
+      "total_rollouts": 29,
+      "transactions_excluding_source": 38
+    },
+    {
+      "mode": "dq",
+      "arm": "DriftTaskTD",
+      "stream_rollout": 20,
+      "stream_step": 232,
+      "ORDINARY_UPDATE": 20,
+      "main_numeric_content_changed_episodes": 20,
+      "main_D_content_changed_episodes": 0,
+      "total_K_steps": 232,
+      "total_rollouts": 20,
+      "transactions_excluding_source": 20
+    },
+    {
+      "mode": "dq",
+      "arm": "DriftFull",
+      "stream_rollout": 20,
+      "stream_step": 176,
+      "ORDINARY_UPDATE": 29,
+      "practice_rollout": 9,
+      "practice_step": 81,
+      "PRACTICE_TX_END": 6,
+      "DIAGNOSTIC_TX_END": 3,
+      "main_numeric_content_changed_episodes": 10,
+      "main_D_content_changed_episodes": 0,
+      "total_K_steps": 257,
+      "total_rollouts": 29,
+      "transactions_excluding_source": 38
+    },
+    {
+      "mode": "patch-adaptive",
+      "arm": "StableTaskTD",
+      "stream_rollout": 20,
+      "stream_step": 133,
+      "ORDINARY_UPDATE": 20,
+      "ordinary_policy_transactions": 20,
+      "main_D_content_changed_episodes": 6,
+      "main_numeric_content_changed_episodes": 3,
+      "total_K_steps": 133,
+      "total_rollouts": 20,
+      "transactions_excluding_source": 40
+    },
+    {
+      "mode": "patch-adaptive",
+      "arm": "StableFull",
+      "stream_rollout": 20,
+      "stream_step": 133,
+      "ORDINARY_UPDATE": 29,
+      "ordinary_policy_transactions": 26,
+      "practice_rollout": 9,
+      "practice_step": 9,
+      "PRACTICE_TX_END": 6,
+      "main_D_content_changed_episodes": 6,
+      "main_numeric_content_changed_episodes": 3,
+      "total_K_steps": 142,
+      "total_rollouts": 29,
+      "transactions_excluding_source": 61
+    },
+    {
+      "mode": "patch-adaptive",
+      "arm": "DriftTaskTD",
+      "stream_rollout": 20,
+      "stream_step": 135,
+      "ORDINARY_UPDATE": 20,
+      "ordinary_policy_transactions": 20,
+      "main_D_content_changed_episodes": 4,
+      "main_numeric_content_changed_episodes": 1,
+      "total_K_steps": 135,
+      "total_rollouts": 20,
+      "transactions_excluding_source": 40
+    },
+    {
+      "mode": "patch-adaptive",
+      "arm": "DriftFull",
+      "stream_rollout": 20,
+      "stream_step": 135,
+      "ORDINARY_UPDATE": 29,
+      "ordinary_policy_transactions": 26,
+      "practice_rollout": 9,
+      "practice_step": 39,
+      "PRACTICE_TX_END": 6,
+      "main_D_content_changed_episodes": 4,
+      "main_numeric_content_changed_episodes": 1,
+      "total_K_steps": 174,
+      "total_rollouts": 29,
+      "transactions_excluding_source": 61
+    }
+  ],
+  "paired_differences": [
+    {
+      "mode": "dq",
+      "case": "Stable",
+      "success_gain": 3,
+      "mean_return_gain": 0.29600000000000004,
+      "extra_practice_rollouts": 9,
+      "extra_total_K_steps": 75
+    },
+    {
+      "mode": "dq",
+      "case": "Drift",
+      "success_gain": 3,
+      "mean_return_gain": 0.356,
+      "extra_practice_rollouts": 9,
+      "extra_total_K_steps": 25
+    },
+    {
+      "mode": "patch-adaptive",
+      "case": "Stable",
+      "success_gain": 0,
+      "mean_return_gain": 0.0,
+      "extra_practice_rollouts": 9,
+      "extra_total_K_steps": 9
+    },
+    {
+      "mode": "patch-adaptive",
+      "case": "Drift",
+      "success_gain": 0,
+      "mean_return_gain": 0.0,
+      "extra_practice_rollouts": 9,
+      "extra_total_K_steps": 39
+    }
+  ],
+  "patch_exact_pair_and_DQ_pair_checks": [
+    {
+      "mode": "dq",
+      "case": "Stable",
+      "all20main_raw_identical": false,
+      "all20post_task_R_L_I_identical": false
+    },
+    {
+      "mode": "dq",
+      "case": "Drift",
+      "all20main_raw_identical": false,
+      "all20post_task_R_L_I_identical": false
+    },
+    {
+      "mode": "patch-adaptive",
+      "case": "Stable",
+      "all20main_raw_identical": true,
+      "all20post_task_R_L_I_identical": true
+    },
+    {
+      "mode": "patch-adaptive",
+      "case": "Drift",
+      "all20main_raw_identical": true,
+      "all20post_task_R_L_I_identical": true
+    }
+  ],
+  "initial_factual_raw_match_across_modes": {
+    "Stable": true,
+    "Drift": true
+  },
+  "patch_numeric_ordinary_deltas": [
+    {
+      "mode": "patch-adaptive",
+      "arm": "StableTaskTD",
+      "changes": [
+        {
+          "epoch": 1,
+          "terminal": "TRAP",
+          "L_before_Q": 0,
+          "L_after_Q": 1
+        },
+        {
+          "epoch": 7,
+          "terminal": "TRAP",
+          "L_before_Q": 1,
+          "L_after_Q": 2
+        },
+        {
+          "epoch": 13,
+          "terminal": "TRAP",
+          "L_before_Q": 2,
+          "L_after_Q": 3
+        }
+      ]
+    },
+    {
+      "mode": "patch-adaptive",
+      "arm": "StableFull",
+      "changes": [
+        {
+          "epoch": 1,
+          "terminal": "TRAP",
+          "L_before_Q": 0,
+          "L_after_Q": 1
+        },
+        {
+          "epoch": 7,
+          "terminal": "TRAP",
+          "L_before_Q": 1,
+          "L_after_Q": 2
+        },
+        {
+          "epoch": 13,
+          "terminal": "TRAP",
+          "L_before_Q": 2,
+          "L_after_Q": 3
+        }
+      ]
+    },
+    {
+      "mode": "patch-adaptive",
+      "arm": "DriftTaskTD",
+      "changes": [
+        {
+          "epoch": 1,
+          "terminal": "TRAP",
+          "L_before_Q": 0,
+          "L_after_Q": 1
+        }
+      ]
+    },
+    {
+      "mode": "patch-adaptive",
+      "arm": "DriftFull",
+      "changes": [
+        {
+          "epoch": 1,
+          "terminal": "TRAP",
+          "L_before_Q": 0,
+          "L_after_Q": 1
+        }
+      ]
+    }
+  ],
+  "failure_counts": [
+    {
+      "mode": "dq",
+      "arm": "StableTaskTD",
+      "stream_COLLISION": 4,
+      "stream_SUCCESS": 14,
+      "stream_TIMEOUT": 2
+    },
+    {
+      "mode": "dq",
+      "arm": "StableFull",
+      "stream_COLLISION": 2,
+      "practice_COLLISION": 2,
+      "practice_TRAP": 3,
+      "practice_SUCCESS": 3,
+      "stream_SUCCESS": 17,
+      "stream_TIMEOUT": 1,
+      "practice_TIMEOUT": 1
+    },
+    {
+      "mode": "dq",
+      "arm": "DriftTaskTD",
+      "stream_COLLISION": 4,
+      "stream_SUCCESS": 14,
+      "stream_TIMEOUT": 2
+    },
+    {
+      "mode": "dq",
+      "arm": "DriftFull",
+      "stream_COLLISION": 2,
+      "practice_COLLISION": 2,
+      "practice_TRAP": 1,
+      "practice_SUCCESS": 5,
+      "stream_SUCCESS": 17,
+      "stream_TIMEOUT": 1,
+      "practice_TIMEOUT": 1
+    },
+    {
+      "mode": "patch-adaptive",
+      "arm": "StableTaskTD",
+      "stream_COLLISION": 2,
+      "stream_TRAP": 3,
+      "stream_SUCCESS": 14,
+      "stream_TIMEOUT": 1
+    },
+    {
+      "mode": "patch-adaptive",
+      "arm": "StableFull",
+      "stream_COLLISION": 2,
+      "practice_TRAP": 9,
+      "stream_TRAP": 3,
+      "stream_SUCCESS": 14,
+      "stream_TIMEOUT": 1
+    },
+    {
+      "mode": "patch-adaptive",
+      "arm": "DriftTaskTD",
+      "stream_COLLISION": 2,
+      "stream_TRAP": 1,
+      "stream_SUCCESS": 16,
+      "stream_TIMEOUT": 1
+    },
+    {
+      "mode": "patch-adaptive",
+      "arm": "DriftFull",
+      "stream_COLLISION": 2,
+      "practice_TRAP": 3,
+      "stream_TRAP": 1,
+      "stream_SUCCESS": 16,
+      "practice_SUCCESS": 6,
+      "stream_TIMEOUT": 1
+    }
+  ],
+  "actual_practice_events": [
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "StableFull",
+      "comparison_candidate": null,
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:7": 1
+      },
+      "epoch": 0,
+      "means": {
+        "keep": -1.18,
+        "single:0": -1.02,
+        "single:7": 0.76
+      },
+      "menu": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.18
+        ],
+        "single:0": [
+          -1.02
+        ],
+        "single:7": [
+          0.76
+        ]
+      },
+      "selected": "single:7",
+      "strategy": "full-one",
+      "unprobed": []
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "StableFull",
+      "comparison_candidate": null,
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:7": 1
+      },
+      "epoch": 6,
+      "means": {
+        "keep": -1.22,
+        "single:0": -1.02,
+        "single:7": 0.76
+      },
+      "menu": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.22
+        ],
+        "single:0": [
+          -1.02
+        ],
+        "single:7": [
+          0.76
+        ]
+      },
+      "selected": "single:7",
+      "strategy": "full-one",
+      "unprobed": []
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "StableFull",
+      "comparison_candidate": null,
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:7": 1
+      },
+      "epoch": 12,
+      "means": {
+        "keep": -1.24,
+        "single:0": -1.02,
+        "single:7": 0.76
+      },
+      "menu": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.24
+        ],
+        "single:0": [
+          -1.02
+        ],
+        "single:7": [
+          0.76
+        ]
+      },
+      "selected": "single:7",
+      "strategy": "full-one",
+      "unprobed": []
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "DriftFull",
+      "comparison_candidate": null,
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:7": 1
+      },
+      "epoch": 0,
+      "means": {
+        "keep": -1.18,
+        "single:0": -1.02,
+        "single:7": 0.76
+      },
+      "menu": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.18
+        ],
+        "single:0": [
+          -1.02
+        ],
+        "single:7": [
+          0.76
+        ]
+      },
+      "selected": "single:7",
+      "strategy": "full-one",
+      "unprobed": []
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "DriftFull",
+      "comparison_candidate": null,
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:7": 1
+      },
+      "epoch": 6,
+      "means": {
+        "keep": -1.22,
+        "single:0": 0.88,
+        "single:7": 0.76
+      },
+      "menu": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.22
+        ],
+        "single:0": [
+          0.88
+        ],
+        "single:7": [
+          0.76
+        ]
+      },
+      "selected": "single:0",
+      "strategy": "full-one",
+      "unprobed": []
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "DriftFull",
+      "comparison_candidate": null,
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:7": 1
+      },
+      "epoch": 12,
+      "means": {
+        "keep": -1.24,
+        "single:0": 0.88,
+        "single:7": 0.76
+      },
+      "menu": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.24
+        ],
+        "single:0": [
+          0.88
+        ],
+        "single:7": [
+          0.76
+        ]
+      },
+      "selected": "single:0",
+      "strategy": "full-one",
+      "unprobed": []
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "StableFull",
+      "comparison_candidate": null,
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:7": 1
+      },
+      "epoch": 0,
+      "means": {
+        "keep": -1.02,
+        "single:0": -1.02,
+        "single:7": -1.02
+      },
+      "menu": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "mode": "patch-adaptive",
+      "returns": {
+        "keep": [
+          -1.02
+        ],
+        "single:0": [
+          -1.02
+        ],
+        "single:7": [
+          -1.02
+        ]
+      },
+      "selected": "keep",
+      "strategy": "full-one",
+      "unprobed": []
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "StableFull",
+      "comparison_candidate": null,
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:7": 1
+      },
+      "epoch": 6,
+      "means": {
+        "keep": -1.02,
+        "single:0": -1.02,
+        "single:7": -1.02
+      },
+      "menu": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "mode": "patch-adaptive",
+      "returns": {
+        "keep": [
+          -1.02
+        ],
+        "single:0": [
+          -1.02
+        ],
+        "single:7": [
+          -1.02
+        ]
+      },
+      "selected": "keep",
+      "strategy": "full-one",
+      "unprobed": []
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "StableFull",
+      "comparison_candidate": null,
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:7": 1
+      },
+      "epoch": 12,
+      "means": {
+        "keep": -1.02,
+        "single:0": -1.02,
+        "single:7": -1.02
+      },
+      "menu": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "mode": "patch-adaptive",
+      "returns": {
+        "keep": [
+          -1.02
+        ],
+        "single:0": [
+          -1.02
+        ],
+        "single:7": [
+          -1.02
+        ]
+      },
+      "selected": "keep",
+      "strategy": "full-one",
+      "unprobed": []
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "DriftFull",
+      "comparison_candidate": null,
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:7": 1
+      },
+      "epoch": 0,
+      "means": {
+        "keep": -1.02,
+        "single:0": -1.02,
+        "single:7": -1.02
+      },
+      "menu": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "mode": "patch-adaptive",
+      "returns": {
+        "keep": [
+          -1.02
+        ],
+        "single:0": [
+          -1.02
+        ],
+        "single:7": [
+          -1.02
+        ]
+      },
+      "selected": "keep",
+      "strategy": "full-one",
+      "unprobed": []
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "DriftFull",
+      "comparison_candidate": null,
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:7": 1
+      },
+      "epoch": 6,
+      "means": {
+        "keep": 0.88,
+        "single:0": 0.88,
+        "single:7": 0.88
+      },
+      "menu": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "mode": "patch-adaptive",
+      "returns": {
+        "keep": [
+          0.88
+        ],
+        "single:0": [
+          0.88
+        ],
+        "single:7": [
+          0.88
+        ]
+      },
+      "selected": "keep",
+      "strategy": "full-one",
+      "unprobed": []
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "DriftFull",
+      "comparison_candidate": null,
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:7": 1
+      },
+      "epoch": 12,
+      "means": {
+        "keep": 0.88,
+        "single:0": 0.88,
+        "single:7": 0.88
+      },
+      "menu": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "mode": "patch-adaptive",
+      "returns": {
+        "keep": [
+          0.88
+        ],
+        "single:0": [
+          0.88
+        ],
+        "single:7": [
+          0.88
+        ]
+      },
+      "selected": "keep",
+      "strategy": "full-one",
+      "unprobed": []
+    }
+  ],
+  "findings": [
+    "Freshphaseorder3->5->1->3, twoactualbackendseachwithindependent44addresssourcesandownTaskTD/Fullroles. Mode-neutralhistoricalfamilycatalogonlyproposesvisiblevisitedaddresscandidates; DQnumericalexperienceNOTtransferredtopatch. TrialMemoryemptyatstart/allactualnewmode-specific samplesonly. No numericalpredictorlookups, fullchoicesactualcurrentconditionreturns.",
+    "DQStable ordinary14/20mean.168 ->Full17/20mean.464; DQDrift14/20mean.168 ->17/20mean.524. Sixactualmaintransactions chooseactualwinner (stablelate3;driftlate1/prefix2). Gainnotuniversalcomputeimprovement: +75KstepsStable,+25Driftincluding9privateprobespercase.",
+    "PatchStableTaskTD/Fullboth14/20mean.267; PatchDriftboth16/20mean.465. All40main raw andafter-task fullR+L/protectedI exactlyidenticalperpair. Sixpatchpracticeevents allselectkeep, 0liverepairTX. Added18privateepisodes48Ksteps provide0measuredmainqualitygain.",
+    "PatchStableallthreebranchesTRAP-1.02ate0/6/12 (9actualprivateTRAP); PatchDriftallbranchesTRAP-1.02ate0, allSUCCESS.88ate6/12. Exactactualtiespreferkeep0edits, notforcedrewrite. No structuralpruningalreadyimplemented orscienceequivalenceclaim.",
+    "Patchordinarylearninggenuine: Stable numericL changesat e1/7/13 onactualTRAP, Qoverridecount0->1->2->3; Dcontentschange6main episodes. DriftLchangesate1only0->1,Dcontents4episodes. Full/baselineidentical. Unexpectedactualtrapdata yieldsnewnumericresponses, notonlyoldQ*policylookup; no extrareflectioncreditfortheseordinaryupdates.",
+    "Bothmodesinitialactualfactualrawexactlymatchpercase, butordinarylearning/postTDstate/proposalstore/channel differlegitimately. Sameextensionalinitialscene andcandidatebudget doesnotmeanequallearningability/CPUcost/architecturegeneralranking. PatchisexplicitrevisedL+visitedD, notA91unchanged.",
+    "PreviousDQbenefitdoesnotautomaticallytransporttopatch. Currentevidencerecommendssimplifycheapmenuevaluationnotinfinitegatechase, butremoveredundantcandidatesbyactualpolicyequivalence/coverageprooffirstratherthanassumealwaysreflectorhardcodeskiparchitecture. Suchpruningnotimplementedthisround.",
+    "Allsources/captures/failures/zeros preserved, bothTaskTDrolesnaturallylearn; no counterfreezing, role/ownerfilteronordinarylearning, fakeDQhandleoroldPASSmigration. Successmainzerodiagnosis; successfulprivatebranchesarepartofactualfailureinvestigation."
+  ],
+  "limits": [
+    "Two knownmechanism-inspired deterministiccases/newphaseorder, notblindpopulation/independentseed/heldoutarchitecturequalification. No pooledscientificeffectorfullfairfamilyclaim.",
+    "Candidatefamilycatalog is providedbyhistoricalDQpatterns; type/terminalneutralfamilytransfer is explicitnewproposalhypothesis, notautonomousfeaturediscovery ornumerictransfer. Only2supportedchronologicalsingles/cap3events, otheraddressfamiliesremainunprobed.",
+    "Fullsmallmenu islocalengineeringprocedure, notuniversaloptimalexperimentallocation. Mrecordsnewoutcomesbuttheirfuturepredictiveretrievalnotexercisedhere (lookups0).",
+    "No newRetention/Collateral/fullkeyed/dense/exception/partial qualification, no originalV04R/400seedPASS. Samecandidate/contextbudgetnotmatchedordinarylearningabilityortotalCPU.",
+    "Allprivatefailurescostrealresources; deterministicclonesnotfree/safephysicalworld. Instrumented18.687s notproductionCPU/RAM/IO/cloneprofile."
+  ],
+  "preservation": {
+    "old76_ledger_values": true,
+    "old266_provenance": true,
+    "original313_current_sha_match": 313,
+    "current_nonledger_input_pins_match": 340,
+    "old_checker_native_reruns": 0,
+    "automation_inspected_or_modified": false,
+    "whole_repository_audit_claimed": false,
+    "independent_expert_or_sciencegate": false
+  },
+  "next_actual_gap": "Proveandpruneimmediatepolicy-equivalentcandidates fromactualpostTDstate, notbyarchitecturelabel orobservedzeroreward; preserveunknown/currentconditionriskandordinarylearning. No suchproof/prunerclaimedimplementedhere."
+}

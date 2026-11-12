@@ -1,0 +1,74 @@
+{
+  "schema": "a95-f0-to-smoke-external-live-observation-v1",
+  "role": "EXTERNAL_READ_ONLY_AUDIT_NOT_NATIVE_EXECUTION_RECEIPT",
+  "observed_at_utc": "2026-10-08T20:29:17.4339251Z",
+  "root": "D:/强化反馈学习/RFL-CausalChase-v0.3-measurement-20261008",
+  "instrument_source_commit": "fd4d4f52eb49274174e02db548a6b64cbf0663ba",
+  "source_count": 309,
+  "sources_digest": "4d8a4bc3a0afc2c0335decafa559af44e2cd9028ccd3c4776189fc8c11dffd79",
+  "sources_exactly_equal_frozen_inventory": true,
+  "native_evidence": {
+    "runtime_receipt": "full_runtime.receipt.json",
+    "runtime_native_exit": 0,
+    "runtime_finished_at_local": "2026-10-09T04:18:35.739568+08:00",
+    "runtime_sha256": "202a37f3a7d6088d492f21f5a790b58399dda5907c2915273d373b4cc529a624",
+    "runtime_instrument_commit_preserved": "3b6194318bb0f4a20e91b9dcf80557d7648df256",
+    "engineering_keys_completed": 37,
+    "verification_receipt": "runtime_full_verification.receipt.json",
+    "verification_native_exit": 0,
+    "verification_finished_at_local": "2026-10-09T04:26:12.149496+08:00",
+    "verification_status": "ALL_SHARDS_VERIFIED",
+    "validation_reduced": false,
+    "shard_receipts": 32,
+    "records": 18464,
+    "records_per_shard": 577,
+    "incidence_pairs": 241257920,
+    "worker_receipts_exactly_equal_summary": true,
+    "all_compressed_shard_hashes_equal_summary": true,
+    "index_sha256": "b3d381f286610bd93d39c9557a785ca4bc087e958514527762287d9b270f9dd4",
+    "actual_index_hash_equal_summary": true,
+    "F0_commit": "e3da58a005878d5b84142227d82d9ccc286a803b",
+    "F0_sha256": "7050dedac3eb23ca1d6b84b2ddb63d510f5de54f4eff6c495845edac0601af1b",
+    "F0_worktree_bytes_equal_committed_file": true,
+    "native_receipt_origin": "native_subprocess_wait"
+  },
+  "authenticated_live_processes": [
+    {
+      "pid": 23516,
+      "parent_pid": 8032,
+      "start_utc_ticks": "639270752627165537",
+      "full_command": "\"C:\\Users\\huani\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe\" -NoProfile -NonInteractive -WindowStyle Hidden -File \"D:\\强化反馈学习\\RFL-CausalChase-v0.3-measurement-20261008\\scripts\\launch_a95_pipeline.ps1\""
+    },
+    {
+      "pid": 26732,
+      "parent_pid": 23516,
+      "start_utc_ticks": "639270752638521679",
+      "full_command": "\"D:\\python\\python.exe\" -u -B -X utf8 \"D:\\强化反馈学习\\RFL-CausalChase-v0.3-measurement-20261008\\scripts\\run_a95_pipeline.py\""
+    },
+    {
+      "pid": 32604,
+      "parent_pid": 26732,
+      "start_utc_ticks": "639270879770034904",
+      "full_command": "D:\\python\\python.exe -u -B -X utf8 scripts/run_smoke.py --seeds-file D:\\强化反馈学习\\RFL-CausalChase-v0.3-measurement-20261008\\experiments\\v03r\\a95_measurement\\smoke_seeds.txt"
+    },
+    {
+      "pid": 38192,
+      "parent_pid": 32604,
+      "start_utc_ticks": "639270879775875123",
+      "full_command": "D:\\python\\python.exe -m pytest -q --junitxml=D:\\强化反馈学习\\RFL-CausalChase-v0.3-measurement-20261008\\experiments\\v03r\\a95_measurement\\smoke_gates\\regression.xml",
+      "cpu_seconds": 169.4375
+    }
+  ],
+  "controller_sha256": "e7da5b957d5638ba9cf9dbb7f5f0e6ec5ce25e076ba949e1492926247266915e",
+  "launcher_sha256": "af45c8537d7d55ad394f29d6095834c92d86da503185e7a8970f7a42cb3992b0",
+  "current_stage": "FORMAL_SMOKE_PREACQUISITION_FULL_REGRESSION",
+  "formal_smoke_acquisition_started": false,
+  "formal_smoke_passed": false,
+  "fresh_development_collected": false,
+  "fresh_F1_completed": false,
+  "treatment_or_confirmatory_collected": false,
+  "research_complete": false,
+  "old_valid_rev5_stop_unchanged": true,
+  "external_observation_not_substituted_for_any_native_receipt": true,
+  "automatic_retry": false
+}

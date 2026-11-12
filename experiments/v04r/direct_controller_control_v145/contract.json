@@ -1,0 +1,104 @@
+{
+  "checkpoint": {
+    "raw": {
+      "path": "experiments/v04r/ordinary_extra_control_v142/evidence/raw.jsonl",
+      "bytes": 3225077,
+      "sha256": "d4ceca7cff8eb133f4c7779b7225cfa5f3212ef6828552161d2e94e2dffb1bec"
+    },
+    "stored_review": {
+      "path": "experiments/v04r/ordinary_extra_control_v142/stored_audit_v2_result.json",
+      "bytes": 70094,
+      "sha256": "59e37c01425a3c582237c367e9c5eb35642e97d82aa7ccb06bd15fde0d0db3ed"
+    },
+    "contract": {
+      "path": "experiments/v04r/ordinary_extra_control_v142/contract.json",
+      "bytes": 16085,
+      "sha256": "c0133a859f3aedd4e4a683b7de7b9cf6ffa54eafed5a2e0c355307d8c2eaeb8d"
+    },
+    "selector": {
+      "tag": "STREAM_ARM",
+      "arm": "DriftOrdinaryExtra",
+      "field": "final_state"
+    },
+    "recorded_completed_main_tasks": 20,
+    "recorded_external_updates": 4,
+    "restoration": "Explicit recorded ordinary model checkpoint, not source/pair/receipt/issued-observation identity. Rebuild complete I/R/L through original legal store transactions; full wire equality. Fresh task clocks 0..11, never pretend to resume original issued plan/counter/runtime."
+  },
+  "reference": {
+    "path": "experiments/v03r/a96_dense/b2_prepare/grammar_catalog_v31/evidence/stdout.log",
+    "sha256": "d0aafb6dc20b1cc0c872ac4c48497d94feb707ffe14448bd1c2f3ddd1bbb467b",
+    "q_digest": "d9078b5b5b823df56f998e8c28eb6a3e388bd3ae216f41a21acdb5202d2ec05a"
+  },
+  "cases": {
+    "controller": {
+      "install_controller": true,
+      "plant_fault": false
+    },
+    "plant": {
+      "install_controller": false,
+      "plant_fault": true
+    }
+  },
+  "schema": "V145_PROSPECTIVE_DIRECT_CONTROLLER_CONTROL",
+  "date_asia_shanghai": "2026-11-07",
+  "parent_commit": "bf60d82c401fb4d67ac74af6bec069871b5c1054",
+  "question": "Can direct observed-site correction reproduce v144 TwoStepValue without candidate trials, when matching the one real keep experience? Separate correction, ordinary experience, and fitted horizon-value necessity.",
+  "arms": [
+    "DirectSite",
+    "DirectSitePlusExperience"
+  ],
+  "tasks_each": 6,
+  "direct_policy": "First actual main visible failure with cmd!=realized proposes the same site deletion as v144. Read only the learner-owned controller mapping at that actual site: if present/nonidentity, delete; if absent, keep. This own-state read is not evaluator cause/mask or a generic proof the mapping is wrong. All initial physical case states match v144.",
+  "experience": "DirectSite has no private task/extra observation. PlusExperience pays one real diagnostic-disabled keep task from exact post-TD R+L, first native observation registered before K and consumed once after main complete/repair, same first keep experience as v144. No candidate trial or private X edit, no fitted M model.",
+  "safety_scope": "DirectFeedback is an explicitly unvalidated local-substrate baseline in isolated cloned engineering states, not an adoption of untested repairs as safe production behavior, not original whole-B1/law qualification. Failure/zero/adverse results retained. Same frozen v144 executor and ordinary learner for both arms.",
+  "ordinary": "Full ordinary TD/visited-D remains enabled for both strategies. Q*,alpha1/2,epsilon1/10 unchanged, manualMAX/noactualexplore. Success ordinary-only, no diagnosis, no keys/RNG/keyderive/DP/calibration/collector/automation.",
+  "inputs": "Unchanged v144 mechanism_loop, unchanged v143 recorded ordinary checkpoint loader; prospective same source/masks and main0..5 plan. No old native/checker/fixture/bank replay. Four new roles, old TwoStepValue only exact recorded comparator, never restored as runtime identity.",
+  "recorded_controls": {
+    "contract.json": {
+      "path": "experiments/v04r/controller_horizon_value_v144/contract.json",
+      "bytes": 5478,
+      "sha256": "aa1d2394ffcaca2aec4d2d5edf8f4c9a46573432b24766649a0920d4b9206b1b"
+    },
+    "workload.py": {
+      "path": "experiments/v04r/controller_horizon_value_v144/workload.py",
+      "bytes": 9255,
+      "sha256": "819767d6d549bc37de6318942b0280f48e155f8cc2fdd1cdfde479d57bb26352"
+    },
+    "evidence/claim.json": {
+      "path": "experiments/v04r/controller_horizon_value_v144/evidence/claim.json",
+      "bytes": 42797,
+      "sha256": "8b3647ff8720759bf38e6793476879f31ce536e5e71b013944ef30696a46d762"
+    },
+    "evidence/exit.json": {
+      "path": "experiments/v04r/controller_horizon_value_v144/evidence/exit.json",
+      "bytes": 42927,
+      "sha256": "592c27961b4cf2b4ecf9c6ee8ed5b03a17a8821805ac2c32765189392cc8bdaf"
+    },
+    "evidence/raw.jsonl": {
+      "path": "experiments/v04r/controller_horizon_value_v144/evidence/raw.jsonl",
+      "bytes": 4046821,
+      "sha256": "bfeea98c8d3b0d9eb91727eec0f183840167ab83227ab6f85d7f8615b1b9c8a2"
+    },
+    "stored_audit_result.json": {
+      "path": "experiments/v04r/controller_horizon_value_v144/stored_audit_result.json",
+      "bytes": 6784,
+      "sha256": "b0e25e5a1ca4d24da14c1849939776523e61c06da2215813cd6ca097da60894f"
+    }
+  },
+  "analysis": "Main fullraw/post-experience R+L/I and first keep raw exact comparison, actual total Kroll/step/allTX. Count2 source/bootstrap? actual3checkpointTX+1Xinstall; no benefit-conditioned resizing. CPU not matched; distinguish richer own-state policy input vs v144 evidence-only candidate generator.",
+  "budget": {
+    "rollout": 32,
+    "step": 384,
+    "transaction": 96,
+    "raw_bytes": 16777216,
+    "seconds": 90
+  },
+  "expected_extent_not_effect_gate": {
+    "main_tasks": 24,
+    "private_tasks": 2,
+    "extra_observation_updates": 2,
+    "checkpoint_TX": 3,
+    "extra_new_source_X_install_TX": 1
+  },
+  "capture": "First exclusive bounded new capture, preserve first error/timeout/partial/zero/adverse, no automatic retry. Original313/API/guard/law/registry and every old executed byte/evidence unchanged."
+}

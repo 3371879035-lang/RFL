@@ -1,0 +1,41 @@
+{
+  "schema": "V09_PAUSED_OFFLINE_CAUSE_PROBE_V181",
+  "utc": "2026-11-07T17:44:43.941795+00:00",
+  "authority": "Direct human pause training and investigate current feedback underperformance.",
+  "operation": "Offline frozen-model replay diagnostics only. No train, optimizer step, environment rollout, new evaluation episode or main process resume.",
+  "seeds": [
+    9001,
+    9002,
+    9003,
+    9004,
+    9005,
+    9006,
+    9007,
+    9008,
+    9009,
+    9010,
+    9011,
+    9012
+  ],
+  "checkpoints": "Only existing completed final262144 checkpoints, F0/F-RP/F-R. RL comparison from stored same128evaluation episodes.",
+  "fixed_sample": "64 evenly spaced 25-frame replay sequences from each final65536record buffer. 8burn-in,16scored positions each,1024positions/model. Not independent scienceN or heldout calibration.",
+  "probes": [
+    "V180 raw EOF/hash/physical action/cooldown/score/count/frozen-hash consistency, not full independent dynamics or neural replay",
+    "matched original j0..127 frozen episode means for all4arms",
+    "executed-action capture calibration vs constant prevalence; displacement/pickup error; 64latent MSE",
+    "hybrid H1 algebra with no retrieval/deep expansion: direct ownQ vs one-step-model ranking; learned successor vs actually observed next latent Bellman target",
+    "one fixed16sequence batch/model: separate Q/fact shared-encoder gradient norm and cosine, autograd only, no update"
+  ],
+  "budgets": {
+    "checkpoints": 36,
+    "offline_positions_each": 1024,
+    "new_environment_steps": 0,
+    "new_training_steps": 0,
+    "optimizer_steps": 0,
+    "workers": 4,
+    "wall_seconds": 600,
+    "output_mib": 8
+  },
+  "limits": "Replay sample is on own training distribution, not counterfactual ground truth. Gradient conflict is local descriptive evidence, not attribution of whole training deficit. Existing V180 intervention is frozen readout-only, not proof training is healthy.",
+  "failure": "Exclusive output; first error retained, no auto retry. Original source/weights immutable. Main stays suspended."
+}

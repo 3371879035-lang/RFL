@@ -1,0 +1,696 @@
+{
+  "schema": "a96-v61-early-native-source-invariant-exclusions",
+  "role": "STDLIB_SOURCE_AND_STORED_INPUT_AUDIT_NOT_NEW_NATIVE_CALIBRATION",
+  "parent_commit": "e2d70450bbb0531e97aa4cb551001ff83b2b2f16",
+  "parent_tree_paths": 2585,
+  "sources": {
+    "experiments/v03r/a96_dense/b2_prepare/factual_event_candidate.py": {
+      "sha256": "f4b8581ccc364a968e97aece7db2408740d79fd3a65b1b546384eb52b3b7d8cf",
+      "functions": {
+        "_trace_payload": [
+          "8d891ccf5f86962b469dfd8667b836ad38ae57546a80299ed38e6eb2533d7af6"
+        ],
+        "_persistent_truth": [
+          "d25af6dc84eee9dafa370314ce98822dc666589c360a7368874936177820473e"
+        ],
+        "prepare_factual_event": [
+          "7875b7a73cdefd963b1837aa27253a5cf2ad286d075b7ae17a098bcda3815879"
+        ]
+      }
+    },
+    "src/rfl_rebuild/b2/environment.py": {
+      "sha256": "c25ed7940489e341e781e47b8d98dd0e6d723985477b71a87611e2007c4a7087",
+      "functions": {
+        "learner_channels": [
+          "09877a31a9be1e3bc3ea4a751abeac28a8007cb5abfbe07e3a38db88bca5509e"
+        ],
+        "learned_rollout": [
+          "19eb3fd525b791ee14e9bcec473063dfdda5cd6cf15db42cd09b7ba0e8055e70"
+        ]
+      }
+    },
+    "src/rfl_rebuild/b2/unaffected.py": {
+      "sha256": "70fcc6188ef23039189cf7603eb8403585eb499c559efdb38310970a68675b9c",
+      "functions": {
+        "pre_update_traces": [
+          "59afc382d6d949496f3a2029f22b91e8434ad85826b4b87d74fc5715f2396a75"
+        ],
+        "__init__": [
+          "56f8c2948c4f7572add778d22ced98c8e6fee7e435e2fb1e1ebc3fb63b8e9081"
+        ]
+      }
+    },
+    "src/rfl_rebuild/b2/calibration.py": {
+      "sha256": "ad0c3ed8f640e6ca448a09bae7dc3f86d59260ce90205fd18490a318a9ac38b4",
+      "functions": {
+        "_p_edit": [
+          "c6fd81f6b197ea0db678ff3d4c10738b64b6f84fa3b7bae67408576cf0f3f1db"
+        ],
+        "_make_edit": [
+          "9e6321c46847248b705ec357ad5a7ec750b39c776e21c62af7cb2f180d2fc996"
+        ],
+        "spillover_edit": [
+          "132dae899dd1dc2ee63bb23c52d7cb73512555736a4b43bdcc9c733fd5a53fac"
+        ]
+      }
+    },
+    "src/rfl_rebuild/learner/store.py": {
+      "sha256": "2c41ce68994020cad87c6ccd6bba4fb6ca231a0cb1ef43ff0f3756b3dbf523c4",
+      "functions": {
+        "__init__": [
+          "1c45f13e4e60606443e2c05d443026234afdf7f73cad8cce0f1b9a8233876b0d",
+          "aeb7ac54e734112988bed5198bb206051ca08cc0a0ffab90d6c2402d9e5e247d"
+        ],
+        "decision_provider": [
+          "015cbdef55b609f01ce53b77e86778442873bb7d42add3005f0ba875718ad65f"
+        ],
+        "q_decision_provider": [
+          "b933dc3398fe5cdcd413021cfe0ad7969e1b0ca7db295651360b59210e362492"
+        ],
+        "process_commit_provider": [
+          "2a52cabce0ba7288112e67d18fa7364acf25aef580756e9d8110c1f9e1b3d643"
+        ],
+        "controller_mapping": [
+          "cbfd7087c0bec09fa5aa2cb67fe9235a063db8d12e5769fc6948a6ffa2f7a122"
+        ],
+        "snapshot": [
+          "0977214628456aa9520c7a454f9f40342fe0ea5a37263eb1e3be63aecdd7b677"
+        ],
+        "clone": [
+          "5e674feb24fb62e14e191d62323b7ceb70ada5db91e291691076d50e2b2efabe"
+        ],
+        "apply_transaction": [
+          "1af6ab5439d9b043f3217130cbc1490a845a9da86bb75881b3bee0b006c953bb"
+        ]
+      }
+    },
+    "src/rfl_rebuild/b1/runner.py": {
+      "sha256": "ab8c61835906e29f56b33fc54ca1a558ef37302037d66a39a307e5dbf93c8de3",
+      "functions": {
+        "_validate_plan": [
+          "7fa4568bc8c7db60fd4ff10056a89b2c4cbec309b5dbfe138517fdd6f9271cb9"
+        ],
+        "_run": [
+          "51df122c1cd5daa003e96ee139d9e8b3108a4a3cd1e5719e993d3813326c4981"
+        ],
+        "run_dq_law": [
+          "a0f1ec912f5a81748df809d34649747a4f6f0324a8e60beda31973d88bb442f4"
+        ],
+        "run_process_law": [
+          "e127992d0d3fdf963dac40c99e7708e707f86fc4a0770be37ab329592909d08f"
+        ],
+        "run_controller_law": [
+          "36e467867c6ffa273c84042561c3130a0829a368bc68a0b32a08983d0c1dcb05"
+        ],
+        "run_patch_law": [
+          "ab5b8089c1ddc7f917365df9996e64da7206953c85cf1db2171ec4c75ae453bd"
+        ]
+      }
+    },
+    "src/rfl_rebuild/b1/factual.py": {
+      "sha256": "438b33f91bd0c7bd3793bd859add8ab11186ec1ac57da2e73e61af5464a5170e",
+      "functions": {
+        "context_index": [
+          "0d859a06ff10b8f58352ff2db3ca2c09cb522f3ef4603a12da63f945f8e9abe7"
+        ],
+        "facts_for": [
+          "68ad6212cb855c99fef5743cf7fc14a013ccf0f1462a467aff2e361d379f637a"
+        ],
+        "build_factual_envelope": [
+          "2b640df2f49092b161fa5b402d06b6b55321157785fb0dd06732d45fdc722d09"
+        ],
+        "validate_factual_envelope": [
+          "877f1a9042f24ab6e9fcac891e102b3e814d43367a03e84ecf2227dfb9276e43"
+        ]
+      }
+    },
+    "src/rfl_rebuild/b1/laws.py": {
+      "sha256": "b62789d82032377cfe3e698839741ab748deae0245bae9c088f62e4d07e35940",
+      "functions": {
+        "plan": [
+          "845bba8961163f1b412b8572a1988a42de37e5f74a101d92800202623c96cfa9",
+          "98a0f11dcfb608a104464e4955c222be96a70427ca1a8788fa4d29910b9d7991",
+          "c3bc71f9ab4f1b3da5e27c41e3ae198b240b04d522591734ec376f8f8ed60ad5",
+          "461ec8bd9578ccfbf41b6a494369177ee7e611c91a8ee9380984382cc15f6d43",
+          "d08b5ecd303f55f8455f1ee2967a9dfa9ab3da5c1125b745a830d90bd1a4e3b5",
+          "9bd0c8a7c717fbe845d487cd56fccc1d877ceae77030bdfb7967cb21f6728d37",
+          "8e13f954d900b865f0454066cd13fc3866cb152ff949383110ccd662d7b27f66",
+          "623acff4ab2f1ba3dd16533335d634ba7c9939939474a3520ea028c71a2a2475",
+          "aecb6fa479fd4d357927026bdaa7bc8bb4a851706a48b0d9e227f3a08e22c809",
+          "9a87dd45e91e48989aacf5dc0faf574763cf476dd4216dde1c9071363f4f0eee"
+        ]
+      }
+    },
+    "src/rfl_rebuild/b1/tier.py": {
+      "sha256": "e43e6c445278ac5de98bb9197a1024418c418e8d44a21ff9e8836bab807770bb",
+      "functions": {}
+    },
+    "src/rfl_rebuild/env/kernel.py": {
+      "sha256": "2387e15a66beb2d13ebb5aad248c0f5672f49dfed11663419816eec36c571ab8",
+      "functions": {
+        "initial_control": [
+          "80101fbabf22fb0f094bfe4bb9a0135ecc79dca815415ae879d5c73971e2c9c2"
+        ],
+        "step": [
+          "7f8b2095b416f3fb28c516fc3bf6b67275be0eb1c1530ae894fafa257a6f5cfc"
+        ],
+        "rollout": [
+          "eeb8939c6d28de82dd071a3ad8dba5b47fd01aeb3d9d3866398de6928241ec6d"
+        ],
+        "continue_rollout": [
+          "930745a36408c087246cc1822216363a2ed3406954e266702e28413783244aac"
+        ]
+      }
+    },
+    "src/rfl_rebuild/learner/reference.py": {
+      "sha256": "c5ff468670ddb03da27b7742f1476cf4379a46f8d60ce3278c098c7c1d8a0f43",
+      "functions": {
+        "reference_view_from": [
+          "5788c73e9fd108a54fea24c3b73f0e09ed391196e580e8988842cf9e98c0f68a"
+        ],
+        "row": [
+          "c81f117fba7c768ea5b5507c29af546b5333419a47c2ff7eeac1ab0022780c0f"
+        ],
+        "canonical": [
+          "37c134789f45ce22321257131ed7f1f83665336b26e109d30c45e1401cb08b44"
+        ]
+      }
+    },
+    "experiments/v03r/a96_dense/b2_prepare/mechanism_v25/candidate.py": {
+      "sha256": "c450125487796f89424c2198181806e26be92a5653a4ca3bccb28fea739ac257",
+      "functions": {
+        "check": [
+          "7b4bec232948fc5047c6c993c4fc019d2ff7866faa7c2e1c699a96fbf1ebd432"
+        ],
+        "bound_inputs": [
+          "516a96a83527f2a57b1f6cd5309338278cafee5f75ffc39d5129fd3d9353bf0e"
+        ],
+        "main": [
+          "4e79ee722e5020578136128b5132ab6ff5d00614acaa8d212a011d1e3421b1a3"
+        ],
+        "apply": [
+          "1b63eec4d1d7492d82ded64cc4145a41f8f043b4c134ae0018ca510ab7673009"
+        ]
+      }
+    },
+    "experiments/v03r/a96_dense/b2_prepare/mechanism_v25/candidate_corrected.py": {
+      "sha256": "4470cfed599741a8488241d5336f2d9ac6426875db428a844b395dbcae314e81",
+      "functions": {
+        "check": [
+          "7b4bec232948fc5047c6c993c4fc019d2ff7866faa7c2e1c699a96fbf1ebd432"
+        ],
+        "bound_inputs": [
+          "73f8a7106b0ba6b4b6e0f1efc91e61f018dd332e9a9f42201fa989b7f96569db"
+        ],
+        "main": [
+          "4e79ee722e5020578136128b5132ab6ff5d00614acaa8d212a011d1e3421b1a3"
+        ],
+        "apply": [
+          "1b63eec4d1d7492d82ded64cc4145a41f8f043b4c134ae0018ca510ab7673009"
+        ]
+      }
+    },
+    "experiments/v03r/a96_dense/b2_prepare/mechanism_v26/candidate.py": {
+      "sha256": "a8115b6e3245cd074f5d497e939c44bad84d950f9c43d6997dded699c2ed9e78",
+      "functions": {
+        "check": [
+          "7b4bec232948fc5047c6c993c4fc019d2ff7866faa7c2e1c699a96fbf1ebd432"
+        ],
+        "bound_inputs": [
+          "b84b42747603c4cfa861716cebdde6422b9243f70f00a61c0270666b930c393e"
+        ],
+        "state_payload": [
+          "5a98fe4c63e5c57ae39240ab4d5e18130dbdf853307bfd3fc05b9489bc4326c7"
+        ],
+        "main": [
+          "ebe4f4e8932258da9bdb2c413ff8f3bff9cce45b8605cf90ef9139c67dd122cc"
+        ],
+        "apply": [
+          "bbea8badbe77116e43770bcc67366fa0cbdb073e0dc7db49bb24f3c36665ea64"
+        ]
+      }
+    },
+    "experiments/v03r/a96_dense/b2_prepare/feasibility_v28/candidate.py": {
+      "sha256": "636f4cce2e827606f77aa9df4ff9e6d33a7996d12e9f128b4a0792b881fa8375",
+      "functions": {
+        "require": [
+          "9a09a1aeeabc5845b18fd7f291239cb43438a6fd5a3c8e28faa4285aee4bdbbb"
+        ],
+        "emit": [
+          "cb9ac565c55d7e63c9a0525d3c3f54bee00eb3abcc9beeb2841023d543d6eecc"
+        ],
+        "bound_inputs": [
+          "cc52d6770168d9a6c83014d116570db8f325ec4d29de6a32c3f48693fc3ad98f"
+        ],
+        "state_payload": [
+          "e3fe14ae0e19f6263ceacf1248bad69d949749cae98416614ed3118ac5151c22"
+        ],
+        "raw_scene": [
+          "0c43841074a03f631f554ed17350a9bc6a9b54396906ab01f107dd4ba22675cd"
+        ],
+        "joint_units": [
+          "dc3d8594aa997371e7554ab863f86378c7331f23245130e74d0ffc45d3a85922"
+        ],
+        "main": [
+          "1cba1b03cac064a38bdb8e2ffeae104501a342b625ed3524f96f857eec5964f3"
+        ]
+      }
+    },
+    "experiments/v03r/a96_dense/b2_prepare/calibration_revision_v29/candidate.py": {
+      "sha256": "e0b2d8ca793e1827c1902e2f1f4449ab6d1b25460d61f46455c70a86f592ff56",
+      "functions": {
+        "require": [
+          "9a09a1aeeabc5845b18fd7f291239cb43438a6fd5a3c8e28faa4285aee4bdbbb"
+        ],
+        "canonical": [
+          "50e64ceff04d7ce95a7d8ea078f0c1fad13827bbc327a6e90af77a7c1b862298"
+        ],
+        "emit": [
+          "e4adc6d5b264801a3c8a7e3b3ac8c83b6dd88d509203b4591d283eb01fac05b1"
+        ],
+        "bindings": [
+          "de380755f3c8d095e7c0e867aa73763a4eb1701d06e8b9797b5a84be22187fe4"
+        ],
+        "state_payload": [
+          "bf45a6ef8cabd28ff3be8265fdff4a6d2c03b13032afc36e961667924bf0ca0f"
+        ],
+        "raw_scene": [
+          "fa21cb20080b1d29e53974360b89ddcb247b4fb3af97997b7d25845356978aa4"
+        ],
+        "source_proof": [
+          "4b454df7bf45e4e71e6295e1e70efd02eb2c875690b62dd7d15e2183a1d91219"
+        ],
+        "stored_pre": [
+          "9ff446378e7f8ff5ec64c4c2afd5e3f4424550fb0da8cd3bfca1c6ca301067b3"
+        ],
+        "finite_census": [
+          "bdd448fc23190f2a5e5f15e6f79822de42f3fbc8575f0b726a11f98ee8f16fbf"
+        ],
+        "main": [
+          "477b6b8721ecca9fadffc3e621e0f5c874f90127e248fda02eeb18e91c6bcbcb"
+        ]
+      }
+    },
+    "experiments/v03r/a96_dense/b2_prepare/process_mechanism_v30/candidate.py": {
+      "sha256": "0441d1177648709076f11789c8d3df3fe006bb87c3784bfe1cbcf2d32d02e61f",
+      "functions": {
+        "bindings": [
+          "e6bb3bfe01cf8898338bf86478576d3774cd43cc719eb9847620c252575b2193"
+        ],
+        "stored": [
+          "c5e77945d2e6bd88e4191aecf476e277750c99cb7c021d3b7e5fb8668a120384"
+        ],
+        "derive_pair": [
+          "adb5e23a0f2c8fcbb2eba52bf9c81dfb62ed50725568bb25da91cd70b2f55771"
+        ],
+        "audit_as_raw": [
+          "912e9dd94826ca8fa985ff0b5cc1ad6fe5a7f98e1ac9e82b18316f826e82ad29"
+        ],
+        "require_basis": [
+          "796d7021a809d470dd567c035010a9c217c692edc3aef096f2d8884836539353"
+        ],
+        "main": [
+          "9b445c4eb57159896e87ea9758f08bf83fd115d05a1ac12301b4079d17756eb2"
+        ],
+        "watched": [
+          "abc6a5dbae692e0313055bacc42ecc1c864d3408cae8d5a46a4b6734264711b1"
+        ]
+      }
+    },
+    "experiments/v03r/a96_dense/b2_prepare/process_mechanism_v30/candidate_corrected.py": {
+      "sha256": "7b2199e3bc9731fe995b1c6c43aad2c5aa1effad5b4027dd24a6067eae56a378",
+      "functions": {
+        "bindings": [
+          "e13e4091c296707a57c2579a08ea7d0e0f8c9ff34f1c2f6a3313bf5198dc00bb"
+        ],
+        "stored": [
+          "a66ca7e66c1de42514464a62cc4cb9b2898f46f04972b95a44f768fd2fc919c8"
+        ],
+        "derive_pair": [
+          "adb5e23a0f2c8fcbb2eba52bf9c81dfb62ed50725568bb25da91cd70b2f55771"
+        ],
+        "audit_as_raw": [
+          "912e9dd94826ca8fa985ff0b5cc1ad6fe5a7f98e1ac9e82b18316f826e82ad29"
+        ],
+        "require_basis": [
+          "796d7021a809d470dd567c035010a9c217c692edc3aef096f2d8884836539353"
+        ],
+        "main": [
+          "9b445c4eb57159896e87ea9758f08bf83fd115d05a1ac12301b4079d17756eb2"
+        ],
+        "watched": [
+          "abc6a5dbae692e0313055bacc42ecc1c864d3408cae8d5a46a4b6734264711b1"
+        ]
+      }
+    },
+    "experiments/v03r/a96_dense/b2_prepare/process_mechanism_v30/candidate_api_corrected.py": {
+      "sha256": "e5825e18727cca02ac594baf5bb4bf1f083432a6df930e787da97cbaad372067",
+      "functions": {
+        "bindings": [
+          "fc735ae3fb2a83b929f6a5d0a80fcdf1e706a20b5bcca23f7f2300c5228fbffe"
+        ],
+        "stored": [
+          "a66ca7e66c1de42514464a62cc4cb9b2898f46f04972b95a44f768fd2fc919c8"
+        ],
+        "derive_pair": [
+          "adb5e23a0f2c8fcbb2eba52bf9c81dfb62ed50725568bb25da91cd70b2f55771"
+        ],
+        "audit_as_raw": [
+          "912e9dd94826ca8fa985ff0b5cc1ad6fe5a7f98e1ac9e82b18316f826e82ad29"
+        ],
+        "require_basis": [
+          "796d7021a809d470dd567c035010a9c217c692edc3aef096f2d8884836539353"
+        ],
+        "main": [
+          "0ab30d94079b252fc43920470331524e86442ad2ab884358dd9e68b67179de81"
+        ],
+        "watched": [
+          "abc6a5dbae692e0313055bacc42ecc1c864d3408cae8d5a46a4b6734264711b1"
+        ]
+      }
+    },
+    "experiments/v03r/a96_dense/b2_prepare/controller_service_v34/candidate.py": {
+      "sha256": "30d0a7ab3a4aefddb33d33bf34a5f045b0ebc755681aabdbbc20fc474599ec85",
+      "functions": {
+        "canonical": [
+          "a974e44fad284b1119d874e41124058446ada012fbbaaa5636ca002255f1518c"
+        ],
+        "emit": [
+          "51bc5a7c83c28d7cc6db8c88504151d5327bbc72666f282470386b7e1fb4e105"
+        ],
+        "read": [
+          "b1cd5730b23aa064faa2ecb5e0ef75027e58a142af96f53bfea8e075fe50e51d"
+        ],
+        "require": [
+          "a0c1648fda8290eb6568e93efcc4d358e4f2541c4d6261c9508a7d25b243a2f9"
+        ],
+        "binding": [
+          "8a49cba8885c4d8e36afc3524b231e272477d29f7cb1006bb9e5b29701524136"
+        ],
+        "catalog": [
+          "bc02867b05f7b64388620a2f23c023a2040323fbe8cc8b292bae348a95b3a2ba"
+        ],
+        "result_payload": [
+          "26532114551d0de72d922b29cab6566f636e162b54e3b63944cdad1ef6f2494d"
+        ],
+        "main": [
+          "722cc596a047dd462a70794dc1cfc75ebae19349f5a97e877b9b5099d917409c"
+        ]
+      }
+    }
+  },
+  "scope": [
+    {
+      "folder": "mechanism_v25/evidence",
+      "source": "experiments/v03r/a96_dense/b2_prepare/mechanism_v25/candidate.py",
+      "exit": 1,
+      "format": "spaces",
+      "files": {
+        "stdout.log": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr.log": {
+          "bytes": 434,
+          "sha256": "683579d7176e123f9a9840b2d5bc9bfccac7932c577f61055dcffba42da6c6a7"
+        }
+      },
+      "tags": {},
+      "family": "PRE_MAIN_FAILURE_NO_ROOT",
+      "raw_missing": null
+    },
+    {
+      "folder": "mechanism_v25/evidence_corrected",
+      "source": "experiments/v03r/a96_dense/b2_prepare/mechanism_v25/candidate_corrected.py",
+      "exit": 0,
+      "format": "spaces",
+      "files": {
+        "stdout.log": {
+          "bytes": 108814,
+          "sha256": "4c63c3d6f5fa92b54e93c68dd42da6e5e0b2248010beba269cc164ffb8d972f2"
+        },
+        "stderr.log": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "tags": {
+        "INPUT_BINDING": 1,
+        "FIXTURE": 1,
+        "STAGE": 1,
+        "COMPLETE_ARCHITECTURES": 1,
+        "FINAL": 1
+      },
+      "family": "V25_FIXED_OWNER_D_OR_Q",
+      "raw_missing": null
+    },
+    {
+      "folder": "mechanism_v26/evidence",
+      "source": "experiments/v03r/a96_dense/b2_prepare/mechanism_v26/candidate.py",
+      "exit": 0,
+      "format": "spaces",
+      "files": {
+        "stdout.log": {
+          "bytes": 116922,
+          "sha256": "4979cb8b8770689d08a9c37d5ed0de7ac3820338c6fd1353bd27ceae9fdfc071"
+        },
+        "stderr.log": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "tags": {
+        "INPUT_BINDING": 1,
+        "FIXTURE": 1,
+        "OWNED_FAILURE": 2,
+        "COMPLETE_CHANNELS": 1,
+        "FINAL": 1
+      },
+      "family": "EMPTY_D_AND_Q",
+      "raw_missing": null
+    },
+    {
+      "folder": "feasibility_v28/evidence",
+      "source": "experiments/v03r/a96_dense/b2_prepare/feasibility_v28/candidate.py",
+      "exit": 0,
+      "format": "compact",
+      "files": {
+        "stdout.log": {
+          "bytes": 5468348,
+          "sha256": "46700d707ff172c5a41bb002ae3b56ddbdd660b2bc583d6c919cba59ae103d19"
+        },
+        "stderr.log": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "tags": {
+        "INPUT_BINDING": 1,
+        "FIXED_WORLD": 1,
+        "PRE_SCENE": 5760,
+        "FIXED_FACTUAL_EVENT": 1,
+        "REGION": 1,
+        "CALIBRATION_PREDICTION_BEFORE_POST": 1,
+        "POST_SCENE": 5760,
+        "FINAL": 1
+      },
+      "family": "EMPTY_D_AND_Q",
+      "raw_missing": null
+    },
+    {
+      "folder": "calibration_revision_v29/evidence",
+      "source": "experiments/v03r/a96_dense/b2_prepare/calibration_revision_v29/candidate.py",
+      "exit": 0,
+      "format": "compact",
+      "files": {
+        "stdout.log": {
+          "bytes": 9106465,
+          "sha256": "dd5cf38ed7536ad8743529369a92dca8d7a0ab147007e316b2ec411bad1ccb72"
+        },
+        "stderr.log": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "tags": {
+        "INPUT_BINDING_BEFORE": 1,
+        "SOURCE_REDUCTION": 1,
+        "STORED_PRE_ORIGIN": 1,
+        "BATTERY_SELECTED": 1,
+        "STORED_PRE_PREDICTION_CHECK": 1,
+        "PREDICTION_BEFORE_ANY_POST": 3,
+        "POST_STATE": 3,
+        "POST_SCENE": 17280,
+        "BATTERY_RESULT": 3,
+        "NATIVE_BASIS": 1,
+        "DERIVED_WORLD": 255,
+        "FINITE_PROCESS_CENSUS": 1,
+        "INPUT_BINDING_AFTER": 1,
+        "FINAL": 1
+      },
+      "family": "EMPTY_D_AND_Q",
+      "raw_missing": null
+    },
+    {
+      "folder": "process_mechanism_v30/evidence",
+      "source": "experiments/v03r/a96_dense/b2_prepare/process_mechanism_v30/candidate.py",
+      "exit": 1,
+      "format": "compact",
+      "files": {
+        "stdout.log": {
+          "bytes": 101490,
+          "sha256": "15a8ddaa8fa8307a6a7836d32118f5074a69d73746abf185b6d623cf19d813eb"
+        },
+        "stderr.log": {
+          "bytes": 1052,
+          "sha256": "a49af3e5b5799c5716e5b2d85513d18871e158414cfa004cb90af35da0f3ddd7"
+        }
+      },
+      "tags": {
+        "INPUT_BINDING_BEFORE": 1,
+        "SOURCE_REDUCTION": 1
+      },
+      "family": "EMPTY_D_AND_Q",
+      "raw_missing": null
+    },
+    {
+      "folder": "process_mechanism_v30/evidence_corrected",
+      "source": "experiments/v03r/a96_dense/b2_prepare/process_mechanism_v30/candidate_corrected.py",
+      "exit": 1,
+      "format": "compact",
+      "files": {
+        "stdout.log": {
+          "bytes": 358870,
+          "sha256": "0afa8e44bdd4ea2525cad205bfd29f57c9b1a16e3211263955b94bce5d484988"
+        },
+        "stderr.log": {
+          "bytes": 597,
+          "sha256": "a343df4a72f4a2a138c2892122ab12f030c5a871d8855c08eeb0e0873b4f607b"
+        }
+      },
+      "tags": {
+        "INPUT_BINDING_BEFORE": 1,
+        "SOURCE_REDUCTION": 1,
+        "STORED_DEPENDENCIES": 1,
+        "WORLD_MEMBERSHIP": 255,
+        "PAIR_PREDICTION_BEFORE_EXECUTION": 192,
+        "ALL_PREDICTIONS_CLOSED": 1
+      },
+      "family": "EMPTY_D_AND_Q",
+      "raw_missing": "ONE_ACTUAL_FACTUAL_EXECUTION_NO_PERSISTED_RAW"
+    },
+    {
+      "folder": "process_mechanism_v30/evidence_api_corrected",
+      "source": "experiments/v03r/a96_dense/b2_prepare/process_mechanism_v30/candidate_api_corrected.py",
+      "exit": 0,
+      "format": "compact",
+      "files": {
+        "stdout.log": {
+          "bytes": 1856639,
+          "sha256": "860eefd1ba481da60575626650021edf93f94a49227984d163bd62c9a2241737"
+        },
+        "stderr.log": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "tags": {
+        "INPUT_BINDING_BEFORE": 1,
+        "SOURCE_REDUCTION": 1,
+        "STORED_DEPENDENCIES": 1,
+        "WORLD_MEMBERSHIP": 255,
+        "PAIR_PREDICTION_BEFORE_EXECUTION": 192,
+        "ALL_PREDICTIONS_CLOSED": 1,
+        "OWNED_FACTUAL_BEFORE_ORACLE": 191,
+        "ACTUAL_PAIR": 192,
+        "INPUT_BINDING_AFTER": 1,
+        "FINAL": 1
+      },
+      "family": "EMPTY_D_AND_Q",
+      "raw_missing": null
+    },
+    {
+      "folder": "controller_service_v34/evidence",
+      "source": "experiments/v03r/a96_dense/b2_prepare/controller_service_v34/candidate.py",
+      "exit": 0,
+      "format": "compact",
+      "files": {
+        "stdout.log": {
+          "bytes": 6819839,
+          "sha256": "b1a95748344773a4d878ab19bd013867271d63b351ca007976b184ae9eb1501d"
+        },
+        "stderr.log": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "tags": {
+        "INPUT_BINDING_BEFORE": 1,
+        "ROOTS": 1,
+        "NATIVE_LEGAL_EDGE": 20588,
+        "ALL_REACHABLE_NODES": 1,
+        "COMPLETE_SITE_SERVICE": 5904,
+        "FIXED_ADMISSIBILITY_COUNTEREXAMPLE_BEFORE_NATIVE": 1,
+        "NATIVE_ADMISSIBILITY_REJECTION": 1,
+        "INPUT_BINDING_AFTER": 1,
+        "FINAL": 1
+      },
+      "family": "KERNEL_STEP_ONLY_NO_ROOT",
+      "raw_missing": null
+    }
+  ],
+  "plan": {
+    "folder": "native_alias_inventory_v55/evidence",
+    "sha256": "da63f0dde2e8918a23607af84e5195e81e50294183b79de1968394a587a1bd05",
+    "exit": 0,
+    "format": "compact"
+  },
+  "v25_owner": [
+    1,
+    2,
+    1,
+    0,
+    2,
+    1,
+    0
+  ],
+  "reference_sha256": "d9078b5b5b823df56f998e8c28eb6a3e388bd3ae216f41a21acdb5202d2ec05a",
+  "expected": {
+    "planned": 279158,
+    "old_v46_v47": 125366,
+    "pending": 153792
+  },
+  "guards": {
+    "max_planned": 300000,
+    "max_output_bytes": 750000000
+  },
+  "source_invariant_reasoning": [
+    "Every state constructor in the admitted mains starts empty and clone preserves all stores. Immutable original apply_transaction touches only the named store/address; original learned_rollout and prepare_factual_event take an immutable snapshot, construct original providers and do not write. PreUpdateTraces only repeats that read path.",
+    "v25 initial healthy and independent D_Q/D_patch states, owned factual/direct repeats and NoWrite/treatment clones are wholly contained in fixed-owner D-only or fixed-owner Q-only families with all other stores empty. FactualReturnWrite addresses only its credited owner, with action from actual captured factual row; allowing every action at this owner gives a safe necessary superset. Canonical deletion allowed. No old scalar recomputed or inferred from fingerprints. Original unprinted fullstore remains unprinted.",
+    "v26 both initial P and X states, factual/direct repeats and all clone arms have D and Q empty, including full retained P/X sentinel entries; every original complete state_payload confirms this.",
+    "v28 pre-census/fixed event/post-census and v29 all new post maps start only PROCESS edits; spillover_edit('P') dispatches _p_edit to PROCESS, all D/Q/X stay empty. v29 source-factorized 255 world predictions and stored native basis are not new actual world rollouts.",
+    "All three v30 versions only initialize PROCESS and use original PId or same-tier NoWrite on cloned state. Shared v29 state_payload refuses nonempty D/Q/X; original runner/tier/law validate same P store and all actual captured pre/post snapshots confirm it. First parser failure before factual; API failed prefix executes one P-only factual but persists no raw: source-invariant exclusion covers its input family, no payload/state/return invented.",
+    "v34 calls kernel.step from its full legal-history queue and one inadmissible controller step; its __main__ patches K.rollout to raise. There is no learned_rollout, full root rollout or learner state acquisition in this actual entry. Keep all 20588 native edges and one rejection; individual steps cannot be substituted for complete planned root rollouts.",
+    "Each full planned D/P/Q/X entry is read and duplicate address rejected. A concrete nonempty address outside every admitted family supplies input inequality regardless of scalar value, provider/scene/reference differences. This is a necessary-input exclusion, NOT a complete old raw/fullstore index, fingerprint-only match, response equivalence, store-count inference or same-behavior quotient."
+  ],
+  "scope_limits": "Only nine actual entry captures in v25/v26/v28/v29/v30/v34. Other files in these directories, v24, earlier tests/validation/acquisition/stored-only branches and v46/v47 failed prefixes remain PENDING. Source-family exclusion does not fake missing raw and does not certify ALL historical compatibility. No existing fixtures/index components rerun.",
+  "permissions": {
+    "new_RFL": 0,
+    "new_kernel": 0,
+    "B1": 0,
+    "reference_DP": 0,
+    "installation_scalar_arithmetic": 0,
+    "new_predictions": 0,
+    "new_ordered_aggregate": 0,
+    "keys": 0,
+    "RNG": 0,
+    "futuretraining": 0,
+    "collector": false,
+    "scientific_rules_adopted": false,
+    "native_launch_authorized": false,
+    "all_history_closed": false,
+    "scientific_PASS": false,
+    "collection_authorized": false,
+    "research_complete": false
+  }
+}

@@ -1,0 +1,122 @@
+RFL V0.3R A95 / rev6 冻结协议停止报告
+日期：2026-10-09（Asia/Shanghai）
+
+一、结论
+
+本轮 A95/rev6 已按冻结规则有效停止，原生结果为 NO_ADMISSIBLE_GRID。
+完整 F1 于北京时间 2026-10-09 08:06:22.705406 结束，原生退出码 3。
+启动器随后记录控制器真实退出码 3。不是程序崩溃、系统中断或门禁无效。
+没有生成 dev_lock.json，没有发布部分设计锁，没有采集 B2 治疗或确认数据。
+因此：本轮开发/设计资格协议已完成并关闭；V0.3R 的学习收益研究尚未完成。
+不能把这个结果解释为“RFL 有效”，也不能解释为“RFL 无效”。
+
+V0.3R 的研究问题是：失败后、学习者实际可获得的信息层级下，强化反馈能否
+改善后续学习，同时满足 Collateral、Retention 和独立 T 制式伤害约束。
+本轮只有基线开发数据，尚不存在能回答这个问题的治疗组对比。
+
+二、已真正完成的执行层级
+
+1. 当前源码完整验收：1120 项收集，1119 通过，1 项既有明确跳过；
+   无失败、错误或新增跳过。六项门禁均原生 0，按回执时间串行、不重叠。
+   工程计时与正式 smoke 的门禁/回归也完整结束；不是沿用旧版本 PASS。
+2. 新源码 37-key 工程计时原生 0；32 工程分片全量验证原生 0，
+   共 18464 记录、241257920 incidence pairs。工程 keys 不属于科学样本。
+3. 当前源绑定新 F0 已于 e3da58a005878d5b84142227d82d9ccc286a803b 本地提交。
+4. 新正式 smoke5 原生 0，独立 smoke evaluator 原生 0、结论 PASS。
+5. 新 development32 原生 0：种子 2026100910..2026100941，
+   每 seed 576 次训练、577 检查点（0..576），master bank 1024；
+   总计 18464 记录、240959684 incidence pairs。
+6. F1 --plan 原生 0、PLAN_VALID，并有一次完整 32 分片校验。
+   正式负结果 F1 有两次独立 fresh 全量校验；每次都有 32 完整 worker 回执，
+   逐条耗尽全部 18464 记录。没有缓存 PASS、继承部分校验或减少检查。
+7. 32 seed 的设计计算全完成，每个 seed 577 条，固定 seed 顺序 join。
+   最多 16 spawn workers 跨独立 seed；同 seed 回合/数值顺序串行。
+   最终整体设计结果摘要绑定原生 F1 diagnostics，未发布部分锁。
+   负结果不执行只在正结果发布整锁前要求的第三次 F1 复核；这是原停止路径。
+8. 原生 F1 证据已本地提交：2dd3afc5b10a8ffa30a9c122ca40502abbf2477a。
+   完成后的审计为只读外部证据核对，不是新的原生回执、独立代理审查或专家认可。
+
+三、为何停止：三个预注册观测网格均未合格
+
+A95 健康持续趋稳事件在全部 32 个基线 seed 上可识别：
+最近秩 90% 分位 q=387，rank=29，32 未删失、0 删失。
+诊断候选 T=max(ceil(6*q/5),q+2)=465，固定共享 late anchors=387,426,465。
+这些是整体失败结果中的诊断，不是已锁定或可供后续采集使用的参数。
+
+网格资格仍用批准前冻结的上限 0.05，且只评估原三种模板加共享 late anchors：
+
+模板    检查点数    原生最坏误差                 合格
+G1      9           0.3978494623655914           否
+G2      14          0.210752688172043            否
+G3      23          0.1032258064516129           否
+
+最坏误差的精确含义：在全部原始 32 seed 中取最大值；每个 seed 的误差是
+max(|restricted_time_sparse - restricted_time_dense|/T,
+    |DeficitAUC_sparse - DeficitAUC_dense|)。
+参照是 master bank 1024 上 episode 0..465 的密集轴，非选定 N=100 的重测。
+DeficitAUC 按真实 episode 间距积分；restricted_time 按冻结 K=3 恢复规则及
+min(tau,T) 定义处理删失。不能用平均 seed 的误差掩盖最坏 seed。
+
+机制解释（基于这些原生结果与冻结函数的推论）：新的观察时长可以被识别，
+但三种稀疏模板即使加入晚期锚点，仍不能在固定容差内保留密集曲线的效用端点。
+最细的注册模板也不合格。这说明当前注册的观测分辨率没有通过设计资格门。
+本报告不凭总体 max 指标断言特定 worst seed 或特定误差分量；没有额外扫描
+网格、窗口或数据来寻找 PASS，没有拟合参数、扩大 cap 或换初始化。
+
+四、其他诊断的正确解释
+
+f_T：ADMISSIBLE，候选 T=465（未发布锁）。
+f_N：ADMISSIBLE，候选 N_eval=100（未发布锁）；其最坏误差 0.009647894447614188。
+f_C：ADMISSIBLE，候选 eligible_all，bound=0.041447131280198696（未发布锁）。
+     spread_population=259561088 是冻结聚合表面的重复计数，不等于
+     原始 incidence pairs=240959684，二者不能混用。
+f_G：NO_ADMISSIBLE_GRID，grid=null。
+f_R：null，因 f_G 先失败而未评估。不是 Retention FAIL，也不是 Retention PASS。
+     Spearman 诊断也未评估，不能把 diagnostic-only 修订当成 Retention 已合格。
+F1 必须整体原子发布；前三项局部诊断合格不能授权部分锁或继续治疗采集。
+
+五、证据与版本边界
+
+执行根：D:\强化反馈学习\RFL-CausalChase-v0.3-measurement-20261008
+分支：study/v03r-measurement-revision-20261008
+源提交：fd4d4f52eb49274174e02db548a6b64cbf0663ba
+309 source/spec/test/control 文件摘要：
+4d8a4bc3a0afc2c0335decafa559af44e2cd9028ccd3c4776189fc8c11dffd79
+
+内部验收证据提交：3b6194318bb0f4a20e91b9dcf80557d7648df256。
+审查明确是内部源绑定验收，不是独立代理或外部专家认可。
+closure_audit.json 记录了 220 项只读断言通过、256 个已读取证据文件的摘要清单
+绑定，以及三次科学全量校验、全部设计 worker、原生退出和先决证据的交叉核对。
+审计不重跑门禁/采集/设计，不声称 fresh 重算 32 个内存 summary；保留原生
+worker summary SHA 与原生 parent 校验及 ordered result 的绑定。
+
+当前原生权威文件：
+experiments/v03r/a95_measurement/f1_result.json
+experiments/v03r/a95_measurement/pipeline/full_f1.receipt.json
+experiments/v03r/a95_measurement/pipeline/pipeline_result.json
+experiments/v03r/a95_measurement/pipeline/pipeline_exit.json
+experiments/v03r/a95_measurement/f1_execution/parallel_design/completed.json
+
+本报告旁的 audit_existing_evidence.py 可只读重复核对既有证据，不触发研究重跑。
+termination_observation.json 是外部进程快照，不是原生退出回执；完成结论依赖
+原生退出与完整结果链，而非 PID 消失或文件存在。历史 PID 可能被系统复用。
+
+原 rev5 的有效 NO_ADMISSIBLE_RETENTION 保持原含义、原路径和原字节。
+本轮 A95 是用户明确批准、披露旧结果动机后的前瞻测量修订，非旧结果重贴标签。
+审计再次核对了旧 4 项关键 native 证据、295 源文件、32 压缩数据分片均未变。
+当前唯一结果账本为 experiments/rebuild_status_current.json；修改前账本完整内容
+保存在 preclosure_ledger_snapshot.json，不抹去旧停止结果或 A95 进行中的历史快照。
+
+raw 压缩数据仍在原路径本地保留，不删预约、不覆盖、不重用已耗科学/工程种子。
+本地 Git 证据提交不等于所有 raw 压缩分片都进入 Git，更不是远端备份或外部发布。
+
+六、停止决定与研究边界
+
+依照 A95 冻结停止规则关闭本轮并删除 rfl-a95 自动续接；不自动进入 B2。
+不得为追 PASS 放宽 0.05、扩 cap576、换初始化、改模板或抽新 seed 重试。
+未来若人类决定研究新的测量设计，必须是单独批准、公开动机、独立冻结的新协议，
+并重新满足其测试/审查/采集门禁；这不是本次停止结果自动授权的续跑。
+
+目前没有学习收益、Retention 持续性、Collateral 治疗伤害或 T 制式治疗效应结论。
+T/P 必须分开，科学种子不复用；RMST 的 1.5 仍只是数量比较基准，不是实用价值、
+等效或零伤害证明。工程 PASS、F0、F1 计算结束均不能代替真实学习收益研究完成。

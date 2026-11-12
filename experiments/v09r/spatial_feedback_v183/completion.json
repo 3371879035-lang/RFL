@@ -1,0 +1,575 @@
+{
+  "status": "COMPLETE_SMALL_REPAIR_PILOT_NOT_FULL_V09",
+  "utc": "2026-11-08T06:06:07.665296+00:00",
+  "source_commit": "fc6d02a73830d53294974b6bcdeb75894008b2d5",
+  "first_native_exit": 0,
+  "first_stored_review_exit": 0,
+  "first_analysis_exit": 0,
+  "actual": {
+    "training_steps": 2097152,
+    "evaluation_episodes": 11264,
+    "evaluation_steps": 340610,
+    "all_environment_steps": 2437762,
+    "completed_training_episodes": 80973,
+    "optimizer_steps": 16144,
+    "wall_seconds": 993.4328708000003
+  },
+  "source_instances": 92253,
+  "four_groups": [
+    {
+      "arm": "RL-RP",
+      "trained_models": 4,
+      "final_episodes_each": 256,
+      "final_score": {
+        "mean": 163.9169921875,
+        "minimum": 146.84765625,
+        "maximum": 180.845703125,
+        "per_seed": [
+          146.84765625,
+          169.78125,
+          158.193359375,
+          180.845703125
+        ]
+      },
+      "final_survival": {
+        "mean": 86.361328125,
+        "minimum": 78.3671875,
+        "maximum": 95.04296875,
+        "per_seed": [
+          78.3671875,
+          88.96875,
+          83.06640625,
+          95.04296875
+        ]
+      },
+      "final_treasures": {
+        "mean": 0.34375,
+        "minimum": 0.29296875,
+        "maximum": 0.3828125,
+        "per_seed": [
+          0.29296875,
+          0.36328125,
+          0.3359375,
+          0.3828125
+        ]
+      },
+      "capture_rate": {
+        "mean": 0.9736328125,
+        "minimum": 0.953125,
+        "maximum": 0.98828125,
+        "per_seed": [
+          0.98828125,
+          0.9765625,
+          0.9765625,
+          0.953125
+        ]
+      },
+      "mixed_AUC": {
+        "mean": 0.06195831298828125,
+        "minimum": 0.05501878330473266,
+        "maximum": 0.06863667923591041,
+        "per_seed": [
+          0.0619894920746026,
+          0.06218829733787934,
+          0.05501878330473266,
+          0.06863667923591041
+        ]
+      },
+      "seen_duo_AUC": {
+        "mean": 0.061938335440751446,
+        "minimum": 0.05821624932261561,
+        "maximum": 0.0670328305635838,
+        "per_seed": [
+          0.06028932780888729,
+          0.05821624932261561,
+          0.06221493406791907,
+          0.0670328305635838
+        ]
+      },
+      "early_mixed_AUC": {
+        "mean": 0.03838520380802926,
+        "minimum": 0.03389885522037572,
+        "maximum": 0.04224408982117052,
+        "per_seed": [
+          0.041455219246748554,
+          0.035942650943822256,
+          0.03389885522037572,
+          0.04224408982117052
+        ]
+      },
+      "curves": [
+        {
+          "checkpoint": 0,
+          "mixed_score": 34.1474609375,
+          "seen_duo_score": 37.26953125
+        },
+        {
+          "checkpoint": 16384,
+          "mixed_score": 43.087890625,
+          "seen_duo_score": 41.734375
+        },
+        {
+          "checkpoint": 65536,
+          "mixed_score": 72.833984375,
+          "seen_duo_score": 73.19140625
+        },
+        {
+          "checkpoint": 131072,
+          "mixed_score": 163.9169921875,
+          "seen_duo_score": 163.75390625
+        }
+      ],
+      "splits": {
+        "seen_solo": {
+          "score": 184.77734375,
+          "survival": 96.8828125
+        },
+        "seen_duo": {
+          "score": 163.75390625,
+          "survival": 82.8671875
+        },
+        "heldout_solo": {
+          "score": 171.375,
+          "survival": 92.375
+        },
+        "heldout_duo": {
+          "score": 135.76171875,
+          "survival": 73.3203125
+        }
+      }
+    },
+    {
+      "arm": "F0",
+      "trained_models": 4,
+      "final_episodes_each": 256,
+      "final_score": {
+        "mean": 35.93798828125,
+        "minimum": 29.51171875,
+        "maximum": 40.615234375,
+        "per_seed": [
+          40.615234375,
+          29.51171875,
+          35.453125,
+          38.171875
+        ]
+      },
+      "final_survival": {
+        "mean": 20.7685546875,
+        "minimum": 16.2890625,
+        "maximum": 22.91015625,
+        "per_seed": [
+          22.91015625,
+          16.2890625,
+          21.8125,
+          22.0625
+        ]
+      },
+      "final_treasures": {
+        "mean": 0.0478515625,
+        "minimum": 0.02734375,
+        "maximum": 0.0625,
+        "per_seed": [
+          0.0625,
+          0.05078125,
+          0.02734375,
+          0.05078125
+        ]
+      },
+      "capture_rate": {
+        "mean": 1.0,
+        "minimum": 1.0,
+        "maximum": 1.0,
+        "per_seed": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "mixed_AUC": {
+        "mean": 0.027817081164762465,
+        "minimum": 0.02545307137373555,
+        "maximum": 0.03237015387915462,
+        "per_seed": [
+          0.03237015387915462,
+          0.025554679032695087,
+          0.0278904203734646,
+          0.02545307137373555
+        ]
+      },
+      "seen_duo_AUC": {
+        "mean": 0.029296169391257225,
+        "minimum": 0.0246165722091763,
+        "maximum": 0.038773906024205204,
+        "per_seed": [
+          0.038773906024205204,
+          0.027349394869942194,
+          0.026444804461705204,
+          0.0246165722091763
+        ]
+      },
+      "early_mixed_AUC": {
+        "mean": 0.028094429501219292,
+        "minimum": 0.024400655933887284,
+        "maximum": 0.03264710531069365,
+        "per_seed": [
+          0.03264710531069365,
+          0.026662837563222543,
+          0.028667119197073702,
+          0.024400655933887284
+        ]
+      },
+      "curves": [
+        {
+          "checkpoint": 0,
+          "mixed_score": 32.669921875,
+          "seen_duo_score": 32.11328125
+        },
+        {
+          "checkpoint": 16384,
+          "mixed_score": 39.37890625,
+          "seen_duo_score": 37.5625
+        },
+        {
+          "checkpoint": 65536,
+          "mixed_score": 40.2919921875,
+          "seen_duo_score": 41.12109375
+        },
+        {
+          "checkpoint": 131072,
+          "mixed_score": 35.93798828125,
+          "seen_duo_score": 44.630859375
+        }
+      ],
+      "splits": {
+        "seen_solo": {
+          "score": 32.060546875,
+          "survival": 19.55078125
+        },
+        "seen_duo": {
+          "score": 44.630859375,
+          "survival": 24.28515625
+        },
+        "heldout_solo": {
+          "score": 31.001953125,
+          "survival": 19.88671875
+        },
+        "heldout_duo": {
+          "score": 36.05859375,
+          "survival": 19.3515625
+        }
+      },
+      "frozen_prediction": {
+        "model_MSE": 0.02598910372432499,
+        "identity_MSE": 0.02781611833653241,
+        "model_better_than_identity_seeds": 4,
+        "actual_bootstrap_inclusion": [
+          0.714208839197225,
+          0.714878592666006,
+          0.7143782132680871
+        ]
+      }
+    },
+    {
+      "arm": "F-RP",
+      "trained_models": 4,
+      "final_episodes_each": 256,
+      "final_score": {
+        "mean": 48.04541015625,
+        "minimum": 43.576171875,
+        "maximum": 53.814453125,
+        "per_seed": [
+          43.576171875,
+          49.439453125,
+          45.3515625,
+          53.814453125
+        ]
+      },
+      "final_survival": {
+        "mean": 26.9521484375,
+        "minimum": 24.765625,
+        "maximum": 29.88671875,
+        "per_seed": [
+          25.14453125,
+          28.01171875,
+          24.765625,
+          29.88671875
+        ]
+      },
+      "final_treasures": {
+        "mean": 0.076171875,
+        "minimum": 0.05859375,
+        "maximum": 0.08984375,
+        "per_seed": [
+          0.05859375,
+          0.07421875,
+          0.08203125,
+          0.08984375
+        ]
+      },
+      "capture_rate": {
+        "mean": 1.0,
+        "minimum": 1.0,
+        "maximum": 1.0,
+        "per_seed": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "mixed_AUC": {
+        "mean": 0.029109359476607657,
+        "minimum": 0.028219057645411848,
+        "maximum": 0.03105084193235188,
+        "per_seed": [
+          0.028692521111813585,
+          0.028475017216853325,
+          0.028219057645411848,
+          0.03105084193235188
+        ]
+      },
+      "seen_duo_AUC": {
+        "mean": 0.029126117684248554,
+        "minimum": 0.028346420023482657,
+        "maximum": 0.029536781972543353,
+        "per_seed": [
+          0.028346420023482657,
+          0.029536781972543353,
+          0.029227019734465315,
+          0.02939424900650289
+        ]
+      },
+      "early_mixed_AUC": {
+        "mean": 0.026922677982749277,
+        "minimum": 0.026006621432442194,
+        "maximum": 0.027435831940932083,
+        "per_seed": [
+          0.02705021676300578,
+          0.027198041794617052,
+          0.026006621432442194,
+          0.027435831940932083
+        ]
+      },
+      "curves": [
+        {
+          "checkpoint": 0,
+          "mixed_score": 35.708984375,
+          "seen_duo_score": 34.25
+        },
+        {
+          "checkpoint": 16384,
+          "mixed_score": 36.658203125,
+          "seen_duo_score": 33.76953125
+        },
+        {
+          "checkpoint": 65536,
+          "mixed_score": 38.58203125,
+          "seen_duo_score": 40.078125
+        },
+        {
+          "checkpoint": 131072,
+          "mixed_score": 48.04541015625,
+          "seen_duo_score": 48.7734375
+        }
+      ],
+      "splits": {
+        "seen_solo": {
+          "score": 51.267578125,
+          "survival": 28.44921875
+        },
+        "seen_duo": {
+          "score": 48.7734375,
+          "survival": 27.828125
+        },
+        "heldout_solo": {
+          "score": 45.74609375,
+          "survival": 26.0703125
+        },
+        "heldout_duo": {
+          "score": 46.39453125,
+          "survival": 25.4609375
+        }
+      },
+      "frozen_prediction": {
+        "model_MSE": 0.011533779972931923,
+        "identity_MSE": 0.011555444699390452,
+        "model_better_than_identity_seeds": 2,
+        "actual_bootstrap_inclusion": [
+          0.714208839197225,
+          0.714878592666006,
+          0.7143782132680871
+        ]
+      },
+      "frozen_readout": {
+        "full_score": 47.4619140625,
+        "Q_only_score": 58.6357421875,
+        "full_minus_Q": {
+          "mean": -11.173828125,
+          "minimum": -23.40625,
+          "maximum": 17.58203125,
+          "per_seed": [
+            -18.6640625,
+            17.58203125,
+            -20.20703125,
+            -23.40625
+          ]
+        },
+        "full_better_seeds": 1
+      }
+    },
+    {
+      "arm": "F-R",
+      "trained_models": 4,
+      "final_episodes_each": 256,
+      "final_score": {
+        "mean": 46.06640625,
+        "minimum": 39.3203125,
+        "maximum": 56.296875,
+        "per_seed": [
+          56.296875,
+          41.34375,
+          39.3203125,
+          47.3046875
+        ]
+      },
+      "final_survival": {
+        "mean": 25.6328125,
+        "minimum": 22.09375,
+        "maximum": 31.28125,
+        "per_seed": [
+          31.28125,
+          22.09375,
+          22.828125,
+          26.328125
+        ]
+      },
+      "final_treasures": {
+        "mean": 0.076171875,
+        "minimum": 0.05078125,
+        "maximum": 0.09375,
+        "per_seed": [
+          0.09375,
+          0.08203125,
+          0.05078125,
+          0.078125
+        ]
+      },
+      "capture_rate": {
+        "mean": 1.0,
+        "minimum": 1.0,
+        "maximum": 1.0,
+        "per_seed": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "mixed_AUC": {
+        "mean": 0.028168165614839234,
+        "minimum": 0.025743605773572976,
+        "maximum": 0.0316216794052565,
+        "per_seed": [
+          0.0316216794052565,
+          0.025743605773572976,
+          0.028101750191925578,
+          0.02720562708860188
+        ]
+      },
+      "seen_duo_AUC": {
+        "mean": 0.027435655538746388,
+        "minimum": 0.026450449331647398,
+        "maximum": 0.027923054777817917,
+        "per_seed": [
+          0.027923054777817917,
+          0.026450449331647398,
+          0.027763587201950865,
+          0.027605530843569367
+        ]
+      },
+      "early_mixed_AUC": {
+        "mean": 0.02533893915959176,
+        "minimum": 0.02384146100523844,
+        "maximum": 0.027323640150830924,
+        "per_seed": [
+          0.027323640150830924,
+          0.02385557318009393,
+          0.026335082302203758,
+          0.02384146100523844
+        ]
+      },
+      "curves": [
+        {
+          "checkpoint": 0,
+          "mixed_score": 33.775390625,
+          "seen_duo_score": 33.83984375
+        },
+        {
+          "checkpoint": 16384,
+          "mixed_score": 31.8935546875,
+          "seen_duo_score": 31.9765625
+        },
+        {
+          "checkpoint": 65536,
+          "mixed_score": 39.734375,
+          "seen_duo_score": 36.109375
+        },
+        {
+          "checkpoint": 131072,
+          "mixed_score": 46.06640625,
+          "seen_duo_score": 48.255859375
+        }
+      ],
+      "splits": {
+        "seen_solo": {
+          "score": 49.6171875,
+          "survival": 26.828125
+        },
+        "seen_duo": {
+          "score": 48.255859375,
+          "survival": 28.00390625
+        },
+        "heldout_solo": {
+          "score": 41.5625,
+          "survival": 23.28125
+        },
+        "heldout_duo": {
+          "score": 44.830078125,
+          "survival": 24.41796875
+        }
+      },
+      "frozen_prediction": {
+        "model_MSE": 0.010172828616715732,
+        "identity_MSE": 0.011022519681182582,
+        "model_better_than_identity_seeds": 4,
+        "actual_bootstrap_inclusion": [
+          0.714208839197225,
+          0.714878592666006,
+          0.7143782132680871
+        ]
+      },
+      "frozen_readout": {
+        "full_score": 46.53125,
+        "Q_only_score": 54.580078125,
+        "full_minus_Q": {
+          "mean": -8.048828125,
+          "minimum": -11.39453125,
+          "maximum": -5.4765625,
+          "per_seed": [
+            -7.92578125,
+            -5.4765625,
+            -11.39453125,
+            -7.3984375
+          ]
+        },
+        "full_better_seeds": 0
+      }
+    }
+  ],
+  "decision": "Pilot complete; do not scale this candidate or restart old64seed. Diagnose fact-learning vs training-time readout before more scale.",
+  "old_run_restarted": false,
+  "new_followup_started": false,
+  "old_root_exit_reconstructed": false,
+  "scope": "Four paired new training seeds; combined repair, not original64seed conclusion or component-isolated attribution."
+}

@@ -1,0 +1,72 @@
+{
+  "schema": "V09_SAMPLER_SUCCESSOR_REPAIR_PILOT_V183",
+  "utc": "2026-11-08T05:40:50.660771+00:00",
+  "parent_commit": "1a531fbef4e53a4024d3fb53a0dc811de53e9ec3",
+  "authority": "那就先修复采样公式和后继预测的问题，做一轮小规模的四组对照实验，看看修复后的效果，再决定怎么继续V0.9；继续",
+  "scope": "New version, fresh small four-arm pilot. Do not resume or restart defective64seed run. Accept positive/zero/negative results.",
+  "repairs": {
+    "bootstrap": "Deterministic per-record/per-head/per-training-seed SplitMix64 mask; expected5/7inclusion, persistent real record uid, no global RNG interference.",
+    "successor_parameterization": "clamp(h+0.1delta,-1,1), zero delta preservesh exactly; same3MLP heads/output74.",
+    "successor_supervision": "Head-only residual transition regression to detached actually observed next representation, nonterminal only; weight1 instead of0.1. For hybrids additionally align all legal successor Q outputs using detached ownQ weights/targets, weight1. No Q or reward signal added toF0.",
+    "gradient_route": "Transition loss trains factual heads without distorting encoder orQ to make a poor predictor look accurate; ordinaryQ and outcome-fact learning remain.",
+    "readout": "No automaticQfallback or action restrictions added. Original full factual readout retained so remaining planning harm stays visible.",
+    "not_changed": [
+      "Environment/maps",
+      "Observation/history",
+      "Physical actions",
+      "Reward/capture penalties",
+      "Architecture of common encoder/GRU/Q",
+      "Q optimizer/warmup/replay/target sync/exploration",
+      "Stage boundaries0/16384/65536",
+      "Retrieval prior and query rules"
+    ]
+  },
+  "matrix": {
+    "seeds": [
+      93001,
+      93002,
+      93003,
+      93004
+    ],
+    "arms": [
+      "RL-RP",
+      "F0",
+      "F-RP",
+      "F-R"
+    ],
+    "models": 16,
+    "training_steps_each": 131072,
+    "total_train_steps": 2097152,
+    "checkpoints": [
+      0,
+      16384,
+      65536,
+      131072
+    ],
+    "earlier_evaluation_episodes_each": 128,
+    "final_evaluation_episodes_each": 256,
+    "frozen_hybrid_Q_only_episodes_each": 128,
+    "all_evaluation_episodes": 11264,
+    "all_environment_steps_upper": 4980736
+  },
+  "parallelism": "8isolated model processes, paired sources across arms; no shared mutable model/history, every model chronology serial.",
+  "resources": {
+    "wall_seconds": 3600,
+    "aggregate_RAM_gib": 20,
+    "compressed_evidence_gib": 6,
+    "workers": 8,
+    "numeric_threads_each": 1,
+    "paid_compute": false,
+    "new_automation": false
+  },
+  "evaluation": "Frozen parameters/optimizer/persistent replay, episode-local memory allowed. Seen/heldout x solo/duo balanced with original V09 scenario rule; same sources across4arms/checkpoints/Q-only.",
+  "primary_readout": [
+    "Four-arm final task score/survival/treasures and common-stepAUC",
+    "Heldout and seen/duo split",
+    "Frozen observed-next-frame prediction error vsidentity baseline",
+    "Matched full-vs-ownQ-only hybrid scores on final j0..127",
+    "All real interaction/optimizer/compute costs"
+  ],
+  "inference": "4independent paired training seeds, episodes are nested; engineering pilot not replacement64seed confirmation. Combined repair cannot identify contribution of each change. Different seed/budget from old run means old final means are contextual only, not paired effect estimates.",
+  "failure": "Exclusive capture, preserve first errors/partials, no automatic rerun. Do not enlarge budget or change algorithm based on pilot results."
+}

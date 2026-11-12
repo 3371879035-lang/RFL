@@ -1,0 +1,42 @@
+{
+ "reward_semantics": {
+  "HORIZON": 12,
+  "STEP_COST": -0.02,
+  "REWARD_SUCCESS": 1.0,
+  "REWARD_FAILURE_A": -1.0,
+  "REWARD_FAILURE_B": 0.0,
+  "dp_discount": "none (finite-horizon, undiscounted, mode A)"
+ },
+ "dp_value_range": {
+  "q_min": -1.2000000000000002,
+  "q_max": 0.98,
+  "v_min": -1.1800000000000002,
+  "v_max": 0.98
+ },
+ "v_start_per_kappa_option": {
+  "kappa0_z0": 0.9199999999999999,
+  "kappa0_z1": 0.8799999999999999,
+  "kappa0_z2": 0.8999999999999999,
+  "kappa0_z3": 0.8399999999999999,
+  "kappa1_z0": 0.9199999999999999,
+  "kappa1_z1": 0.8799999999999999,
+  "kappa1_z2": 0.8799999999999999,
+  "kappa1_z3": 0.8399999999999999
+ },
+ "targets_in_08": {
+  "PositiveAlternative": "+1",
+  "Contrastive": "failure / +1",
+  "NegativeOnly": "failure value (unspecified constant or factual?)",
+  "CFTarget": "G^CF_{a_alt}"
+ },
+ "audit": {
+  "plus_one_exceeds_best_reachable_return": true,
+  "best_reachable_return": 0.98,
+  "plus_one_overstatement": 0.020000000000000018,
+  "plus_one_implies_zero_step_cost": true,
+  "minus_one_is_the_bare_constant": true
+ },
+ "reading": "`+1` describes a success with ZERO step cost, which no episode can reach: the largest reachable undiscounted return is 0.9800. `-1` likewise describes a failure with zero step cost, whereas the worst reachable return is -1.1800. A38 already removed exactly this hard-coded +-1 from the kernel's return_value; `08`'s targets appear to predate that correction and were never rescaled.",
+ "downstream_hazard": "8.3% of the canonical support's D slots are tied-optimal (A75 pre-check). A NegativeOnly-style write of a failure value into the FACTUAL entry therefore corrupts an entry that was already optimal on those slots.",
+ "note": "audit only; no formula is proposed here, and no code is changed"
+}

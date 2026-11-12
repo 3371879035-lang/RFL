@@ -1,0 +1,28 @@
+{
+  "schema": "a96-v25-guard-namespace-engineering-repair-no-scientific-retry",
+  "parent_commit": "967bf2d17640027564d553857c08a0d90b834ce6",
+  "initial_native_child_exit_code": 1,
+  "initial_start_utc": "2026-10-10T15:06:02.668880+00:00",
+  "initial_finish_utc": "2026-10-10T15:06:03.212142+00:00",
+  "initial_stdout_bytes": 0,
+  "initial_failure": "AttributeError at guard setup before main: kernel.ExogenousEpisode does not exist; original training.ExogenousEpisode owns derive.",
+  "initial_source_claim_exit_stdout_stderr_preserved_byte_exact": true,
+  "initial_attempt_SHA256": {
+    "candidate.py": "c450125487796f89424c2198181806e26be92a5653a4ca3bccb28fea739ac257",
+    "contract.json": "d47c1eb80cf0ab8917d0c864bcc3ee21e85dbd458642fa1070166afca2d49fbb",
+    "execute.py": "7d6104945739d670b1e61cdba233e1948ddda42253bf831a025f7b08e4faa351",
+    "evidence/claim.json": "b25a119fd47808dccaa404f59d2cbe8bdd1c8e92235192150f333de896bd2049",
+    "evidence/exit.json": "c5968da02db980b4fe4df99065d55dd92498d974ab4c952c05f3c35f31194217",
+    "evidence/stderr.log": "683579d7176e123f9a9840b2d5bc9bfccac7932c577f61055dcffba42da6c6a7",
+    "evidence/stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "correction": "New candidate_corrected.py uses the actual original training.ExogenousEpisode guard and adds immutable initial-failure binding. Original candidate.py is not edited.",
+  "fixed_scene_defect_arms_truth_reference_and_outcome_policy_unchanged": true,
+  "new_output": "evidence_corrected/",
+  "engineering_guard_repair_is_scientific_retry_or_outcome_search": false,
+  "initial_mechanism_cases_executed": 0,
+  "original_science_or_v24_or806_rerun": false,
+  "science_or_workload_keys_allocated": 0,
+  "collection_authorized": false,
+  "research_complete": false
+}

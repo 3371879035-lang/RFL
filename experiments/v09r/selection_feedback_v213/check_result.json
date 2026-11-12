@@ -1,0 +1,103 @@
+{
+  "schema": "v213-mathematical-checks",
+  "checks": [
+    {
+      "name": "complete_equivalence_not_snapshot_hash",
+      "ok": true,
+      "detail": {
+        "different_snapshot_same_behavior": true,
+        "alpha_issued": 0
+      },
+      "seconds": 0.06198989998665638
+    },
+    {
+      "name": "duplicate_and_input_order_invariance",
+      "ok": true,
+      "detail": {
+        "classes": 9,
+        "complete_contexts": 16
+      },
+      "seconds": 0.07685500002116896
+    },
+    {
+      "name": "actual_propensity_one_use_and_scalar_neural_update",
+      "ok": true,
+      "detail": {
+        "max_scalar_weight_error": 2.7755575615628914e-17
+      },
+      "seconds": 0.002948300010757521
+    },
+    {
+      "name": "ips_expectation_and_second_moment_exact_enumeration",
+      "ok": true,
+      "detail": {
+        "expectation_error": 0.0,
+        "second_moment_upper": 1.9496890898812889,
+        "proved_bound": 4.0
+      },
+      "seconds": 0.0031977000180631876
+    },
+    {
+      "name": "tv_bound_all_extreme_utilities_and_no_budget_reset",
+      "ok": true,
+      "detail": {
+        "tv_spent": 3.3152241722967584,
+        "reserved_risk": 8.0,
+        "incumbent_unchanged": true,
+        "synthetic_observations": 20
+      },
+      "seconds": 0.03577680001035333
+    },
+    {
+      "name": "temporary_trial_is_not_permanent_adoption",
+      "ok": true,
+      "detail": {
+        "synthetic_new_pairs": 7,
+        "status": "adopt",
+        "old_data_rejected": true
+      },
+      "seconds": 0.004442699981154874
+    },
+    {
+      "name": "three_way_relation_probe_can_become_candidate",
+      "ok": true,
+      "detail": {
+        "fresh_observations": 256,
+        "replay_reads": 128,
+        "replay_seconds": 0.014402900007553399,
+        "log_gain": 165.2569200832796,
+        "complexity_cost": 2.772588722239781,
+        "candidate_eligible": true,
+        "permanent_adoption": false
+      },
+      "seconds": 0.2943593999953009
+    },
+    {
+      "name": "simple_rule_does_not_force_structure_growth",
+      "ok": true,
+      "detail": {
+        "fresh_observations": 256,
+        "replay_reads": 128,
+        "replay_seconds": 0.014993000018876046,
+        "log_gain": -12.033606292364096,
+        "complexity_cost": 4.1588830833596715,
+        "candidate_eligible": false,
+        "permanent_adoption": false
+      },
+      "seconds": 0.28383679999387823
+    },
+    {
+      "name": "parameters_and_rng_unchanged",
+      "ok": true,
+      "detail": {
+        "gradient_updates": 0,
+        "torch_rng_unchanged": true
+      },
+      "seconds": 0.00016980001237243414
+    }
+  ],
+  "passed": 9,
+  "failed": 0,
+  "actual_environment_episodes": 0,
+  "facts_are_synthetic": true
+}

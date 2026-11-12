@@ -1,0 +1,34 @@
+{
+  "schema": "V102_BOUNDED_RECORDED_CURVE_MUTATION_SENSITIVITY",
+  "parent_commit": "9241e1b915e36a2cb4d3b67b923fbabfa2ded675",
+  "purpose": "Exercise the six A91 error semantics against already captured V95 curve records without replaying any old native, fixture, bank, B1, or checker.",
+  "reference": {
+    "namespace": "experiments/v03r/a96_dense/b2_prepare/owned_curve_connector_v95",
+    "contract_sha256": "5531211db69482613ab24bb783f91c5e2aca0311e602ffb12cdb3aaa2a845fdd",
+    "stdout_sha256": "154d0daaee0bc33f40e69ecadca9148d1f4bc2556376ae8c9fe459a22bc4902a",
+    "exit_sha256": "c925a56faf33075b78d57ddd71cd47fe953357fbbfe07b4ad5346bb408efc3ac",
+    "learning_sha256": "38b4e0e0cde2bcfa35e321fff5a16a11139c00d0a183dc909a7c556e7a9e24d4",
+    "owned_curve_sha256": "3e50b38a7e101e56e9ed7b3d349f3254351aae9d387ede5bae49a7a11584e739"
+  },
+  "checks": [
+    "pre-step Q address reconstructed from actual step transitions and compared with independent binary64 TD addresses",
+    "actual P-mode option_in_force distinguished from proposal in first TD address",
+    "exact rejection behavior compared with the flooring mutant; V95's claimed n=5 runtime rejection is explicitly audited",
+    "actual composite immediate I_a fingerprint held fixed while current numeric state changes",
+    "all actual role curves consume one locked pre-level; a per-arm one-ULP mutant is rejected",
+    "same-epoch role episodes and overlapping lazy coordinates are paired; a one-coordinate mutant is rejected"
+  ],
+  "budget": {
+    "native_rollout": 0,
+    "native_step": 0,
+    "B1": 0,
+    "transaction": 0,
+    "random_or_key_calls": 0,
+    "dp_or_calibration": 0,
+    "seconds": 60,
+    "stdout_bytes": 1000000,
+    "stderr_bytes": 30000
+  },
+  "exclusive_capture": "One new namespace and one bounded stdlib child. Read-only binding to the complete V95 captured stdout/contract/receipt and executed candidate source hashes. No mutation of source files; each mutant is an in-memory copy of a previously captured observation. No old checker or RFL module execution; no retry.",
+  "claim_limits": "This is stored-observation mutation sensitivity, not six source-level go-red runs and not formal keyed-stream, full A91, production resource, full k/shape/family, or scientific qualification. V95's real explored step had two admissible actions, so its episode did not execute the n=5 rejection despite the contract prose. The separate n=5 arithmetic probe tests only the original rejection rule's observable coordinate consumption. Preserve that integration gap."
+}

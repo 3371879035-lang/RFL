@@ -1,0 +1,61 @@
+{
+ "checks": {
+  "3_subset_of_global_grammar": true,
+  "4_old_semantic_equivalence": true,
+  "1_pure_evidence_dependence": true,
+  "2_no_support_block_shortcut": true
+ },
+ "detail": {
+  "3_4": {
+   "rows_blocks_checked": 547,
+   "subset_ok": true,
+   "equivalence_ok": true,
+   "mismatches": []
+  },
+  "1": {
+   "identical_for_identical_evidence": true,
+   "n_candidates": 12,
+   "note": "synth_queries has no access to world identity, so two worlds sharing I necessarily share Q_syn; the signature check in item 2 is what makes this structural rather than incidental."
+  },
+  "2": {
+   "signature_ok": true
+  },
+  "5": {
+   "n": 547,
+   "min": 8,
+   "mean": 36.91,
+   "median": 39,
+   "max": 47,
+   "histogram": {
+    "8": 3,
+    "10": 3,
+    "12": 12,
+    "14": 21,
+    "16": 12,
+    "25": 6,
+    "26": 3,
+    "28": 24,
+    "29": 30,
+    "30": 9,
+    "32": 21,
+    "33": 12,
+    "34": 1,
+    "35": 18,
+    "36": 24,
+    "37": 6,
+    "38": 30,
+    "39": 52,
+    "40": 8,
+    "41": 22,
+    "42": 33,
+    "43": 52,
+    "44": 4,
+    "45": 30,
+    "46": 105,
+    "47": 6
+   }
+  }
+ },
+ "status": "PASS",
+ "consumes_smoke_or_dev_scenes": false
+}

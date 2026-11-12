@@ -1,0 +1,267 @@
+{
+  "role": "EXTERNAL_PARALLEL_ENGINEERING_START_OBSERVATION_NOT_NATIVE_CONTROLLER_RECEIPT",
+  "observed_at": "2026-10-09T08:25:40.9212850Z",
+  "root": "D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009",
+  "source_bound_review_sha256": "76ae46a93edb46779fea4b23b8fc1e9efc3c7301e72af5dd900488fd22e1df09",
+  "source_bound_review_commit": "2d8aebf5294e73d1915d6feae0a51aa3cdf8dbe7",
+  "runtime_launch": {
+    "argv": [
+      "D:\\python\\python.exe",
+      "-u",
+      "-B",
+      "-X",
+      "utf8",
+      "scripts/benchmark_f0_runtime.py",
+      "--output-dir",
+      "D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009\\experiments\\v03r\\a96_dense\\f0_runtime"
+    ],
+    "automatic_retry": false,
+    "pid": 38332,
+    "role": "START_RECORD_NOT_COMPLETION",
+    "started_at": "2026-10-09T16:07:27.353439+08:00"
+  },
+  "current_processes": [
+    {
+      "pid": 9924,
+      "parent_pid": 24856,
+      "command_line": "\"C:\\Users\\huani\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe\" -NoProfile -NonInteractive -WindowStyle Hidden -File \"D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009\\scripts\\launch_a96_pipeline.ps1\"",
+      "start_utc": "2026-10-09T07:48:59.3389540Z",
+      "start_utc_ticks": "639271289393389540",
+      "cpu_seconds": 4.671875
+    },
+    {
+      "pid": 26592,
+      "parent_pid": 9924,
+      "command_line": "\"D:\\python\\python.exe\" -u -B -X utf8 \"D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009\\scripts\\run_a96_pipeline.py\"",
+      "start_utc": "2026-10-09T07:49:01.3910189Z",
+      "start_utc_ticks": "639271289413910189",
+      "cpu_seconds": 1.9375
+    },
+    {
+      "pid": 38332,
+      "parent_pid": 26592,
+      "command_line": "D:\\python\\python.exe -u -B -X utf8 scripts/benchmark_f0_runtime.py --output-dir D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009\\experiments\\v03r\\a96_dense\\f0_runtime",
+      "start_utc": "2026-10-09T08:07:27.3567858Z",
+      "start_utc_ticks": "639271300473567858",
+      "cpu_seconds": 0.65625
+    },
+    {
+      "pid": 44100,
+      "parent_pid": 38332,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=38332, pipe_handle=380)\" \"--multiprocessing-fork\"",
+      "start_utc": "2026-10-09T08:23:59.3910459Z",
+      "start_utc_ticks": "639271310393910459",
+      "cpu_seconds": 98.53125
+    },
+    {
+      "pid": 25440,
+      "parent_pid": 38332,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=38332, pipe_handle=452)\" \"--multiprocessing-fork\"",
+      "start_utc": "2026-10-09T08:23:59.4051517Z",
+      "start_utc_ticks": "639271310394051517",
+      "cpu_seconds": 98.328125
+    },
+    {
+      "pid": 7944,
+      "parent_pid": 38332,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=38332, pipe_handle=460)\" \"--multiprocessing-fork\"",
+      "start_utc": "2026-10-09T08:23:59.4168811Z",
+      "start_utc_ticks": "639271310394168811",
+      "cpu_seconds": 98.375
+    },
+    {
+      "pid": 43360,
+      "parent_pid": 38332,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=38332, pipe_handle=440)\" \"--multiprocessing-fork\"",
+      "start_utc": "2026-10-09T08:23:59.4296836Z",
+      "start_utc_ticks": "639271310394296836",
+      "cpu_seconds": 98.125
+    },
+    {
+      "pid": 38348,
+      "parent_pid": 38332,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=38332, pipe_handle=476)\" \"--multiprocessing-fork\"",
+      "start_utc": "2026-10-09T08:23:59.4399440Z",
+      "start_utc_ticks": "639271310394399440",
+      "cpu_seconds": 98.328125
+    }
+  ],
+  "runtime_gate_receipts": [
+    {
+      "path": "D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009\\experiments\\v03r\\a96_dense\\f0_runtime\\gates\\gate-01.receipt.json",
+      "sha256": "bbaa7d20dc1640b151c42c41d48f4c56a3961fc81624fdd00085e7768bf491c5",
+      "receipt": {
+        "argv": [
+          "D:\\python\\python.exe",
+          "-m",
+          "pytest",
+          "-q",
+          "--junitxml=D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009\\experiments\\v03r\\a96_dense\\f0_runtime\\gates\\regression.xml"
+        ],
+        "finished_unix": 1791534094.704899,
+        "native_exit_code": 0,
+        "receipt_origin": "native_subprocess_wait",
+        "started_unix": 1791533247.9780328
+      }
+    },
+    {
+      "path": "D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009\\experiments\\v03r\\a96_dense\\f0_runtime\\gates\\gate-02.receipt.json",
+      "sha256": "1a5875b2b2644b963d9d8902251f963cd8cff39fb29e2d7aea9e7dea6f610617",
+      "receipt": {
+        "argv": [
+          "D:\\python\\python.exe",
+          "scripts/spec_audit.py"
+        ],
+        "finished_unix": 1791534095.0718322,
+        "native_exit_code": 0,
+        "receipt_origin": "native_subprocess_wait",
+        "started_unix": 1791534094.709858
+      }
+    },
+    {
+      "path": "D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009\\experiments\\v03r\\a96_dense\\f0_runtime\\gates\\gate-03.receipt.json",
+      "sha256": "b8f98bb2494ce22eb6cd7d8c29b9c967f003baa01e9ee7629bed1de4d88bb8e6",
+      "receipt": {
+        "argv": [
+          "D:\\python\\python.exe",
+          "scripts/b2_view_gate_selfcheck.py"
+        ],
+        "finished_unix": 1791534166.2262392,
+        "native_exit_code": 0,
+        "receipt_origin": "native_subprocess_wait",
+        "started_unix": 1791534095.0770805
+      }
+    },
+    {
+      "path": "D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009\\experiments\\v03r\\a96_dense\\f0_runtime\\gates\\gate-04.receipt.json",
+      "sha256": "be01e9a826c6af14e8e1474eff6603006b051f0233dfcd9684887017dc151296",
+      "receipt": {
+        "argv": [
+          "D:\\python\\python.exe",
+          "scripts/a91_training_gate_selfcheck.py"
+        ],
+        "finished_unix": 1791534175.4410963,
+        "native_exit_code": 0,
+        "receipt_origin": "native_subprocess_wait",
+        "started_unix": 1791534166.229113
+      }
+    },
+    {
+      "path": "D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009\\experiments\\v03r\\a96_dense\\f0_runtime\\gates\\gate-05.receipt.json",
+      "sha256": "1853530d265bf7ed07df68d5549549e4dd81423092d10966e4eb7b1e02cd7e91",
+      "receipt": {
+        "argv": [
+          "D:\\python\\python.exe",
+          "scripts/run_calibration.py"
+        ],
+        "finished_unix": 1791534236.5018876,
+        "native_exit_code": 0,
+        "receipt_origin": "native_subprocess_wait",
+        "started_unix": 1791534175.446027
+      }
+    },
+    {
+      "path": "D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009\\experiments\\v03r\\a96_dense\\f0_runtime\\gates\\gate-06.receipt.json",
+      "sha256": "a1181cfec7276aa52ce42a64036d906ff6e2776b7151283e508d2775afd79560",
+      "receipt": {
+        "argv": [
+          "D:\\python\\python.exe",
+          "scripts/f0_manifest_selfcheck.py"
+        ],
+        "finished_unix": 1791534239.0824778,
+        "native_exit_code": 0,
+        "receipt_origin": "native_subprocess_wait",
+        "started_unix": 1791534236.5059097
+      }
+    }
+  ],
+  "runtime_stdout_tail": [
+    "gate 1/6 exit=0: python -m pytest -q",
+    "gate 2/6 exit=0: python scripts/spec_audit.py",
+    "gate 3/6 exit=0: python scripts/b2_view_gate_selfcheck.py",
+    "gate 4/6 exit=0: python scripts/a91_training_gate_selfcheck.py",
+    "gate 5/6 exit=0: python scripts/run_calibration.py",
+    "gate 6/6 exit=0: python scripts/f0_manifest_selfcheck.py",
+    "SEED_STARTED seed=2026101200 pid=44100",
+    "SEED_STARTED seed=2026101201 pid=25440",
+    "SEED_STARTED seed=2026101202 pid=7944",
+    "SEED_STARTED seed=2026101203 pid=43360",
+    "SEED_STARTED seed=2026101204 pid=38348"
+  ],
+  "pipeline_failure_exists": false,
+  "native_pipeline_exit_exists": false,
+  "full_runtime_native_completion_exists": false,
+  "formal_smoke_launch_exists": false,
+  "dev_launch_exists": false,
+  "controller_sha256": "bb9a1989d8e7f67b3dca6065a51f518e72dd87806501f3547c71c7b792673f4d",
+  "launcher_sha256": "5d49fe0752cc95caa7dcf1d814f6706a5e927771eac6eebaa3c081adb0a90d17",
+  "stable_boundary_verification": {
+    "role": "READ_ONLY_STABLE_BOUNDARY_VERIFICATION_NOT_NATIVE_RECEIPT",
+    "source_count": 313,
+    "sources_digest": "1dfd80ce49255231998b70fca2b7bcd72e0940822a1bf9d4a8e731603ccc4838",
+    "committed_sources_match": true,
+    "old_sources_count": 309,
+    "old_compressed_shards": 32,
+    "old_native_evidence_count": 11,
+    "parent_unchanged": true,
+    "observed_at": "2026-10-09T08:25:42.136090+00:00"
+  },
+  "interpretation": {
+    "full_acceptance": "SIX_SERIAL_NATIVE_ZERO_GATES_AND_COMMITTED_INTERNAL_REVIEW",
+    "runtime_prerequisite_gates": "SIX_SERIAL_NATIVE_ZERO_GATES",
+    "current_execution_level": "ENGINEERING_SMOKE5_REHEARSAL_FIVE_REAL_SPAWN_WORKERS",
+    "maximum_spawn_workers": 16,
+    "engineering_smoke_live_workers": 5,
+    "complete_37_key_timing": false,
+    "new_F0_complete": false,
+    "formal_scientific_smoke_started": false,
+    "scientific_development_started": false,
+    "treatment_or_confirmation_collected": false,
+    "research_complete": false,
+    "note": "Engineering rehearsal keys2026101200..2026101204 are not the formal scientific smoke keys. Later32-engineering-key batch dispatch is bounded to16; it is not claimed running yet. Started logs and CPU progress are not completion receipts. No execution source, protocol, parameter or gate JSON was changed."
+  },
+  "worker_cpu_progress": [
+    {
+      "pid": 44100,
+      "start_utc_ticks": "639271310393910459",
+      "earlier_observed_at": "2026-10-09T08:24:42.7555148Z",
+      "earlier_cpu_seconds": 41.8125,
+      "later_observed_at": "2026-10-09T08:25:40.9212850Z",
+      "later_cpu_seconds": 98.53125
+    },
+    {
+      "pid": 25440,
+      "start_utc_ticks": "639271310394051517",
+      "earlier_observed_at": "2026-10-09T08:24:42.7555148Z",
+      "earlier_cpu_seconds": 41.703125,
+      "later_observed_at": "2026-10-09T08:25:40.9212850Z",
+      "later_cpu_seconds": 98.328125
+    },
+    {
+      "pid": 7944,
+      "start_utc_ticks": "639271310394168811",
+      "earlier_observed_at": "2026-10-09T08:24:42.7555148Z",
+      "earlier_cpu_seconds": 41.6875,
+      "later_observed_at": "2026-10-09T08:25:40.9212850Z",
+      "later_cpu_seconds": 98.375
+    },
+    {
+      "pid": 43360,
+      "start_utc_ticks": "639271310394296836",
+      "earlier_observed_at": "2026-10-09T08:24:42.7555148Z",
+      "earlier_cpu_seconds": 41.484375,
+      "later_observed_at": "2026-10-09T08:25:40.9212850Z",
+      "later_cpu_seconds": 98.125
+    },
+    {
+      "pid": 38348,
+      "start_utc_ticks": "639271310394399440",
+      "earlier_observed_at": "2026-10-09T08:24:42.7555148Z",
+      "earlier_cpu_seconds": 41.75,
+      "later_observed_at": "2026-10-09T08:25:40.9212850Z",
+      "later_cpu_seconds": 98.328125
+    }
+  ],
+  "automatic_retry": false,
+  "external_publish": false
+}

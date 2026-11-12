@@ -1,0 +1,79 @@
+V0.3R 测量修订：精确条款及实现说明（草案，未冻结）
+2026-10-08
+工作始于 2026-10-08，构造测试及审查延续至北京时间 2026-10-09；目录日期是版本标签。
+
+授权与身份
+用户在“是否允许修订测量协议后继续”的问题之后回复“那就继续吧”。
+授权范围是原 V0.3 问题内的测量设计和实现；不是任意放宽阈值或立即采集。
+独立 worktree：D:\强化反馈学习\RFL-CausalChase-v0.3-measurement-20261008。
+分支 study/v03r-measurement-revision-20261008，起点 559f53b。
+旧 checkout、旧源码、raw、回执、有效停止结论全部保留。
+本文件与 contract.json 仍是 DRAFT_NOT_RATIFIED；prototype 不接生产采集入口。
+
+研究问题和判决不变
+原因和 credit 给定时，更新能否改善未来学习？仍须分别满足 FutureUtility、
+Collateral、Retention、瞬态 T 的伤害约束，不以总分抵消伤害。
+主研究 L0 与自己的 NoWriteRef 配对；L2/L3 是信息/构造上限。
+T/P 分开，seed 为统计单位，共同随机数配对；最终主确认 N=400。
+Retention 保留原 A79 的 persistence/non-inferiority 角色，不偷偷改成“可选描述”。
+
+条款 1：观察时长从“健康且持续趋稳”确定
+cap=576、K=3、epsilon_s=.001、epsilon_f=.1、恢复比例=.95 均不改变。
+对完整 baseline 轴 e=0..cap：窗口末点 e 的 K 个水平必须都 >=.95*v_pre；
+该窗口和从 e 到 cap 的每个 K 窗口均满足原严格 abs(slope)<.001、flip_rate<.1。
+零增量窗口 flip=0；非恒定但 flip 分母无定义仍拒绝，不填 0。
+窗口末点后还须存在 K-1=2 个真实随访回合；末尾才偶然达标不构成识别。
+取满足条件的第一个窗口末点 s_i；不存在记 None（删失/不可识别）。
+缺失回合、错误轴、损坏或 NaN 是 invalid，不能伪装为 None 后丢掉。
+在全部 32 seed 上取 nearest-rank 第 ceil(.90*32)=29 位 q；None 留在原分母。
+T=max(ceil(6*q/5),q+2)。第二项仅保证有三个不同的绝对晚期检查点。
+若未满 29 个事件或 T>576，合法 NO_ADMISSIBLE_T；不得扩 cap、换初始化或补种子。
+这是 baseline 全轴的回顾性设计函数，不是在线提前停止算法，也不读取治疗曲线。
+它修正 first-flat-window 的概念，不保证恢复或统计功效。
+
+条款 2：统一晚期窗口，不按治疗结果或每 seed 恢复时间挑窗口
+晚期三锚点 q、q+floor((T-q)/2)、T；对所有 future arms 和 seed 使用同一绝对窗口。
+每个旧粗/中/细 grid 函数与上述锚点取有序并集；保持最坏 utility 误差<=.05 门。
+选择仍为最少检查点、再原模板次序，不能随机选择最有利网格。
+RetentionAtH 保持 H=T；LateWindowRetention 改为 H1=q,H2=T。
+后者仍为窗口内选定检查点的平均水平，不冒称连续物理时间积分。
+锚点/窗口都是 baseline 锁定量，不对未恢复 seed 改定义或条件化。
+
+条款 3：把“不同测量构念”与“样本相关性”分开
+明确请求替换 rev5 的强制 abs(Spearman)<=.90 冗余门及其排序，
+而不是宣布它在旧结果上已通过或把 null 填成 0。
+新的候选仍只有原两个 all-seed 形式；以固定代数挑战验证：存在同样恢复时间和
+同样 locked-grid DeficitAUC、但不同末期/晚期水平的曲线，估计器必须分辨。
+在同一网格的末两节点构造该对照；梯形面积用有理数证明完全相等，
+原 binary64 估计器另作 abs误差<=1e-12 的舍入核查（relative tolerance=0）。
+不能只证明 dense-grid 的构念区别却把它冒充稀疏 grid 的同一函数证明。
+全健康/全删失时每 seed 仍能计算；早期恢复后退化必须能显示 Retention 下降。
+相关系数照实报告（包含无定义），作为依赖和功效的诊断，不作资格/排序标准。
+稳定性<=.10、分母epsilon=1e-9、margin=.25*baseline population-SD 全部保留。
+零 Retention spread 仍 NO_ADMISSIBLE，不发零阈值、不换新 margin 来追 PASS。
+排序改为较小稳定性、再原形式次序。这一条是科学资格规则变更，需精确批准。
+构念非等价不证明独立、治疗有效或实用意义；多重比较和最终各维门禁仍适用。
+
+实现与验收范围
+measurement_prototype.py 是无采集/无发布的纯函数原型；没有 monkeypatch 原 F1。
+require_scientific_execution_authorization 始终拒绝。test_measurement_prototype.py
+只运行确定性人工曲线，不读取旧 raw、不抽随机种子、不做训练。
+原 instrument 全量回归与原 295 字节库存只验证旧基底保全，不冒称新科学仪器验收。
+当前 schema、生产 F0/F1 适配、全采集与最终统计尚未完成，旧 PASS 不能迁移。
+精确条款批准后才能把新规则纳入生产 inventory，绑定全部源和新协议，
+完成 review、全负载计时、串行 mutation gates、新 F0、全新 smoke/dev 和整锁。
+后续治疗/确认有单独预注册门禁；不存在从本草案直接进入采集的权限。
+
+方法依据及边界
+Royston & Parmar (2013) https://pmc.ncbi.nlm.nih.gov/articles/PMC3922847/
+RMST 所用截断时点属于估计目标，随访设计不能藏在算法实现里随意变动。
+FDA (2022) https://www.fda.gov/media/162416/download，III.B、III.C.1：
+共主指标结构可以要求每个重要维度同时成立，相关性影响功效。
+把这种统计结构用于 RL 是本提案的类比推论，不是 FDA 对本研究的认可。
+文献不直接规定本提案的健康窗口、q+2 或 .10；这些是公开的设计选择，
+需要语义验收与用户精确批准，不能包装成文献必然推导。
+
+仍可停止的分支
+健康趋稳不可识别、T超cap、评估prefix/grid/refinement不合格、
+Retention不稳定或零spread、全负载工程证据无效，均不进入治疗/确认。
+有效科学停止、有效治疗负结果、操作无效分别报告，不把测试 PASS 当研究 PASS。

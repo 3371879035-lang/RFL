@@ -1,0 +1,209 @@
+{
+  "schema": "a96-v25-matched-architecture-collision-mechanism-summary",
+  "role": "BOUNDED_DETERMINISTIC_ENGINEERING_MECHANISM_CASE_NOT_SCIENCE_SAMPLE_OR_ENDPOINT",
+  "parent_commit": "967bf2d17640027564d553857c08a0d90b834ce6",
+  "direct_human_mechanism_authority": "继续啊，我是麻瓜看不懂，能验证机制就行",
+  "plain_language_result": "新增固定碰撞案例：Q表和决策补丁独立安装同一合法但错误的决策；修正前完整真实轨迹一致、实际责任均为Decision_1。各自同层级不修正对照仍碰撞(-1.04)，原L0事实回报写入/删除事实补丁各恢复该即时场景成功(0.88)。这是一个案例的两种表示，不是两个独立科学样本。",
+  "actual_results": [
+    {
+      "Oracle_credit": [
+        "Decision_1"
+      ],
+      "actual_manifestations": 1,
+      "architecture": "D_Q",
+      "arms": [
+        {
+          "law": "NoWrite",
+          "n_scalar": 0,
+          "outcome": "COLLISION",
+          "receipts": [
+            "1,2,1,0,2,1,0|EVALUABLE_NOOP|0"
+          ],
+          "return": -1.04,
+          "role": "reference",
+          "scalar_metrics_applicable": true,
+          "transactions": []
+        },
+        {
+          "law": "FactualReturnWrite",
+          "n_scalar": 1,
+          "outcome": "SUCCESS",
+          "receipts": [
+            "1,2,1,0,2,1,0|APPLIED|1"
+          ],
+          "return": 0.88,
+          "role": "treatment",
+          "scalar_metrics_applicable": true,
+          "transactions": [
+            {
+              "entry_edits": 1,
+              "fingerprint_pre": "dc65d85b20432a556221515719ada52f0407b4ec9b1f54581a3b7f31ab47779f",
+              "on_this_clone": true
+            }
+          ]
+        }
+      ],
+      "installed_contexts": 1
+    },
+    {
+      "Oracle_credit": [
+        "Decision_1"
+      ],
+      "actual_manifestations": 1,
+      "architecture": "D_patch",
+      "arms": [
+        {
+          "law": "NoWrite",
+          "n_scalar": 0,
+          "outcome": "COLLISION",
+          "receipts": [
+            "1,2,1,0,2,1,0|EVALUABLE_NOOP|0"
+          ],
+          "return": -1.04,
+          "role": "reference",
+          "scalar_metrics_applicable": false,
+          "transactions": []
+        },
+        {
+          "law": "DeleteFactualPatch",
+          "n_scalar": 0,
+          "outcome": "SUCCESS",
+          "receipts": [
+            "1,2,1,0,2,1,0|APPLIED|1"
+          ],
+          "return": 0.88,
+          "role": "treatment",
+          "scalar_metrics_applicable": false,
+          "transactions": [
+            {
+              "entry_edits": 1,
+              "fingerprint_pre": "3752ab778e5ebaeb1bae5b79de6399cc0f8c8d152d44cb0aa63ea1c6109f8938",
+              "on_this_clone": true
+            }
+          ]
+        }
+      ],
+      "installed_contexts": 1
+    }
+  ],
+  "complete_raw_file_bindings": {
+    "experiments/v03r/a96_dense/b2_prepare/mechanism_v25/candidate.py": {
+      "bytes": 10711,
+      "sha256": "c450125487796f89424c2198181806e26be92a5653a4ca3bccb28fea739ac257"
+    },
+    "experiments/v03r/a96_dense/b2_prepare/mechanism_v25/candidate_corrected.py": {
+      "bytes": 11195,
+      "sha256": "4470cfed599741a8488241d5336f2d9ac6426875db428a844b395dbcae314e81"
+    },
+    "experiments/v03r/a96_dense/b2_prepare/mechanism_v25/contract.json": {
+      "bytes": 2156,
+      "sha256": "d47c1eb80cf0ab8917d0c864bcc3ee21e85dbd458642fa1070166afca2d49fbb"
+    },
+    "experiments/v03r/a96_dense/b2_prepare/mechanism_v25/evidence/claim.json": {
+      "bytes": 749,
+      "sha256": "b25a119fd47808dccaa404f59d2cbe8bdd1c8e92235192150f333de896bd2049"
+    },
+    "experiments/v03r/a96_dense/b2_prepare/mechanism_v25/evidence/exit.json": {
+      "bytes": 1214,
+      "sha256": "c5968da02db980b4fe4df99065d55dd92498d974ab4c952c05f3c35f31194217"
+    },
+    "experiments/v03r/a96_dense/b2_prepare/mechanism_v25/evidence/stderr.log": {
+      "bytes": 434,
+      "sha256": "683579d7176e123f9a9840b2d5bc9bfccac7932c577f61055dcffba42da6c6a7"
+    },
+    "experiments/v03r/a96_dense/b2_prepare/mechanism_v25/evidence/stdout.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "experiments/v03r/a96_dense/b2_prepare/mechanism_v25/evidence_corrected/claim.json": {
+      "bytes": 876,
+      "sha256": "995cd4624279e803cb30c6040e2f15da0e0f8a98f0e8927ad604bb13b177430c"
+    },
+    "experiments/v03r/a96_dense/b2_prepare/mechanism_v25/evidence_corrected/exit.json": {
+      "bytes": 1344,
+      "sha256": "87650397204a442d4691190550167c0556d2c2773749ac8c10c5ab22da244dd3"
+    },
+    "experiments/v03r/a96_dense/b2_prepare/mechanism_v25/evidence_corrected/stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "experiments/v03r/a96_dense/b2_prepare/mechanism_v25/evidence_corrected/stdout.log": {
+      "bytes": 108814,
+      "sha256": "4c63c3d6f5fa92b54e93c68dd42da6e5e0b2248010beba269cc164ffb8d972f2"
+    },
+    "experiments/v03r/a96_dense/b2_prepare/mechanism_v25/execute.py": {
+      "bytes": 1765,
+      "sha256": "7d6104945739d670b1e61cdba233e1948ddda42253bf831a025f7b08e4faa351"
+    },
+    "experiments/v03r/a96_dense/b2_prepare/mechanism_v25/execute_corrected.py": {
+      "bytes": 1826,
+      "sha256": "2135135aba1525a6fc2e9c9b50b97504235073e62e03f18f81db6bb4e88af893"
+    },
+    "experiments/v03r/a96_dense/b2_prepare/mechanism_v25/repair_contract.json": {
+      "bytes": 1808,
+      "sha256": "8415025b61aa1018a7a8bd7b0dd1c3d455a6cd5b20ad24b4d91d18c1ab8dc4c3"
+    }
+  },
+  "initial_harness_error": {
+    "native_exit": 1,
+    "stdout_bytes": 0,
+    "cause": "Guard tried kernel.ExogenousEpisode instead of original training.ExogenousEpisode, before main/input binding/factual execution/B1.",
+    "source_and_all_original_logs_preserved": true,
+    "actual_mechanism_cases_executed": 0,
+    "classified_scientific_or_mechanism_failure": false
+  },
+  "separate_corrected_engineering_execution": {
+    "native_exit": 0,
+    "start_utc": "2026-10-10T15:07:31.233118+00:00",
+    "finish_utc": "2026-10-10T15:07:48.420315+00:00",
+    "stdout": {
+      "bytes": 108814,
+      "sha256": "4c63c3d6f5fa92b54e93c68dd42da6e5e0b2248010beba269cc164ffb8d972f2"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "initial_failure_bytes_bound": true,
+    "guard_namespace_repaired_without_changing_case_or_outcome_policy": true
+  },
+  "evidence_boundaries": {
+    "before_after_input_files": 721,
+    "parent_HEAD_byte_bindings": 558,
+    "original_frozen_sources": 313,
+    "original_native_bindings": 153,
+    "prior_preparation_files": 244,
+    "full_stored_trace_return_credit_ledger_and_source_check_exit": 0,
+    "independent_primary_checker_not_candidate_reexecution": true,
+    "whole_factual_trace_equality": true,
+    "complete_Oracle_credit_retained": true,
+    "native_B1_arm_executions": 4,
+    "actual_B1_write_transactions": 2,
+    "installed_contexts_not_inference_N": true,
+    "patch_scalar_metrics_zero_is_inapplicable_not_no_write": true,
+    "source_fingerprints_unchanged": true
+  },
+  "interpretation": {
+    "same_tier_only": true,
+    "architecture_ranking_or_general_superiority_claimed": false,
+    "ordinary_diagnostic_algorithm_selected": false,
+    "Oracle_truth_is_original_evaluator_credit_not_learner_cause_discovery": true,
+    "immediate_post_observation_is_future_learning": false,
+    "scientific_k_shape_family_or_weights_chosen": false,
+    "joint_primary_collateral_or_calibration_used": false,
+    "new_scientific_endpoint_or_delta_joint_frozen": false,
+    "native_engineering0_is_scientific_PASS": false,
+    "independent_expert_approval": false,
+    "full_original_regression_or_integrated_B2_mutation_gates": false,
+    "actual_dense_B2_resource_certification": false
+  },
+  "remaining": "Other original channel/real multi-context defect shapes, complete prospective k-by-shape and whole-set measurement coverage/calibration, final family/conjunction, owner-executed future integration, complete gates and real workload/registry/committed one-use collection preregistration remain outstanding.",
+  "original313_F1_and_prior244_preparation_preserved": true,
+  "old806_or_v24_fixtures_or_science_rerun": false,
+  "science_or_workload_keys_allocated": 0,
+  "future_training_episodes": 0,
+  "collection_authorized": false,
+  "research_complete": false,
+  "valid_current_scientific_STOP": false,
+  "continuation_active": true
+}

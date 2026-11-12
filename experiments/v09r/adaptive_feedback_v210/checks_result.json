@@ -1,0 +1,315 @@
+{
+  "schema": "v210-finite-mathematical-operator-check-v1",
+  "checks": [
+    {
+      "name": "conjunctions",
+      "status": "PASS",
+      "detail": {
+        "exact_activation_entries": 420,
+        "cardinalities": [
+          2,
+          3,
+          2
+        ]
+      },
+      "seconds": 0.005266399995889515
+    },
+    {
+      "name": "frontier",
+      "status": "PASS",
+      "detail": {
+        "structures": [
+          [
+            0
+          ],
+          [
+            1
+          ],
+          [
+            2
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            0,
+            1,
+            2
+          ]
+        ],
+        "total_cells": 26
+      },
+      "seconds": 0.0015998000162653625
+    },
+    {
+      "name": "parity_representation",
+      "status": "PASS",
+      "detail": {
+        "artificial_records": 128,
+        "before": [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
+        "after": [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          1.0,
+          0.5
+        ],
+        "new_structures": [
+          [
+            0,
+            1,
+            2
+          ],
+          [
+            0,
+            1,
+            3
+          ],
+          [
+            0,
+            2,
+            3
+          ],
+          [
+            1,
+            2,
+            3
+          ]
+        ],
+        "replay_reads_not_new_samples": 512
+      },
+      "seconds": 0.4863093000021763
+    },
+    {
+      "name": "propensity_not_sample_count",
+      "status": "PASS",
+      "detail": {
+        "one_observation_predictions_mu_01_mu_1": [
+          0.6666666666666666,
+          0.6666666666666666
+        ],
+        "not_beta_11_1": true
+      },
+      "seconds": 0.004357800004072487
+    },
+    {
+      "name": "scalar_filter",
+      "status": "PASS",
+      "detail": {
+        "observations": 63,
+        "maximum_abs_difference": 6.106226635438361e-16,
+        "starts": [
+          0,
+          7,
+          14,
+          21,
+          28,
+          35,
+          42,
+          49,
+          56
+        ]
+      },
+      "seconds": 0.038262999994913116
+    },
+    {
+      "name": "temporal_change",
+      "status": "PASS",
+      "detail": {
+        "artificial_sequence_only": true,
+        "old_observations": 91,
+        "new_observations": 25,
+        "new_outcome_probability_adaptive": 0.9090113349013229,
+        "all_history_pool": 0.22033898305084745,
+        "archived_facts": 116
+      },
+      "seconds": 0.06407779999426566
+    },
+    {
+      "name": "predict_before_update",
+      "status": "PASS",
+      "detail": {
+        "pre_outcome_p_success": 0.7000000000000001,
+        "failure_prediction": 0.30000000000000004,
+        "new_segment_weight_after_failure": 0.33333333333333337
+      },
+      "seconds": 0.0014072000049054623
+    },
+    {
+      "name": "common_action_mixture",
+      "status": "PASS",
+      "detail": {
+        "same_action_values": [
+          0.5,
+          0.5
+        ],
+        "invalid_average_of_worldwise_maxima": 0.9545454545454546
+      },
+      "seconds": 0.0003319999959785491
+    },
+    {
+      "name": "frozen_snapshot",
+      "status": "PASS",
+      "detail": {
+        "live_facts": 12,
+        "snapshot_facts": 1,
+        "same_parameters": true,
+        "snapshot_nonalias": true
+      },
+      "seconds": 0.00554270000429824
+    },
+    {
+      "name": "ranking_and_fresh_cutoff",
+      "status": "PASS",
+      "detail": {
+        "reference": 0.49999999999999983,
+        "candidate": 0.9,
+        "selection_cutoff_propagated_even_without_observe": 119
+      },
+      "seconds": 0.012579800008097664
+    },
+    {
+      "name": "evidence_algebra",
+      "status": "PASS",
+      "detail": {
+        "e_plus": 0.4345944447553331,
+        "e_minus": 0.30881352666799206,
+        "status": "unresolved_keep",
+        "boundary_null_factor_expectation": 1
+      },
+      "seconds": 0.004421399993589148
+    },
+    {
+      "name": "exact_null_enumeration",
+      "status": "PASS",
+      "detail": {
+        "distribution": "two independent fair binary outcomes per pair",
+        "pairs_max": 8,
+        "old_positive_mean_accept_probability": 0.4018096923828125,
+        "new_anytime_accept_probability": 0.000274658203125,
+        "new_exact_fraction": "9/32768",
+        "single_trial_alpha": 0.025,
+        "not_empirical_task_evidence": true
+      },
+      "seconds": 0.4541210999886971
+    },
+    {
+      "name": "early_stop_and_unresolved",
+      "status": "PASS",
+      "detail": {
+        "strong_positive": {
+          "pairs": 7,
+          "status": "adopt"
+        },
+        "all_equal": {
+          "pairs": 16,
+          "status": "unresolved_keep"
+        },
+        "strong_negative": {
+          "pairs": 7,
+          "status": "not_worth_cost"
+        }
+      },
+      "seconds": 0.006031099997926503
+    },
+    {
+      "name": "costs_and_error_budget",
+      "status": "PASS",
+      "detail": {
+        "trial_alphas": [
+          0.025,
+          0.008333333333333333,
+          0.004166666666666667
+        ],
+        "threshold": 0.1,
+        "pair_cost_spent": 0.6
+      },
+      "seconds": 0.0026658000133465976
+    },
+    {
+      "name": "no_evidence_reuse",
+      "status": "PASS",
+      "detail": {
+        "distinct_observation_ids": [
+          1000,
+          1001,
+          1002,
+          1003
+        ],
+        "second_cutoff": 1001
+      },
+      "seconds": 0.003127400006633252
+    },
+    {
+      "name": "feedback_closed_loop",
+      "status": "PASS",
+      "detail": {
+        "artificial_input_only": true,
+        "first_status": "unresolved_keep",
+        "growth_after_unresolved": [
+          [
+            1
+          ]
+        ],
+        "second_status": "adopt",
+        "second_pairs": 9,
+        "all_trial_facts_preserved": 23
+      },
+      "seconds": 0.035779800004092976
+    },
+    {
+      "name": "schema_and_frozen_boundaries",
+      "status": "PASS",
+      "detail": {
+        "duplicate_and_hidden_schema_rejected": true,
+        "modified_frozen_snapshot_rejected": true
+      },
+      "seconds": 0.005390900012571365
+    },
+    {
+      "name": "frozen_inputs_and_torch_rng",
+      "status": "PASS",
+      "detail": {
+        "input_files": 15,
+        "input_bytes_unchanged": true,
+        "torch_rng_unchanged": true
+      }
+    }
+  ],
+  "passed": 18,
+  "failed": 0,
+  "environment_episodes": 0,
+  "gradient_or_optimizer_updates": 0,
+  "v209_reruns": 0,
+  "artificial_input_not_performance_evidence": true,
+  "wall_seconds": 1.1968388000095729
+}

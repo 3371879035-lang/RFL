@@ -1,0 +1,33 @@
+{
+ "n_mechanism_keys": 8658,
+ "n_locator_classes": 893,
+ "n_observational_classes": 4513,
+ "i1_rows_violations": 0,
+ "i2_fire_violations": 0,
+ "i3_truth_violations": 0,
+ "i4_partial_feasibility_keys": 0,
+ "gamma_minus_mismatches": 0,
+ "gamma_plus_mismatches": 0,
+ "gamma_star_set_mismatches": 0,
+ "mixed_classes_locator": 14,
+ "mixed_classes_observational": 70,
+ "checks": {
+  "I1_rows_invariant_under_nuisance": true,
+  "I2_fire_vector_invariant_under_nuisance": true,
+  "I3_gamma_desc_invariant_under_nuisance": true,
+  "I4_feasibility_all_or_nothing": true,
+  "gamma_minus_obs_equals_gamma_minus_loc": true,
+  "gamma_plus_obs_equals_gamma_plus_loc": true,
+  "gamma_star_set_obs_equals_loc": true,
+  "n_locator_classes_equals_893": true,
+  "n_observational_classes_equals_4513": true
+ },
+ "n_worlds": 1038960,
+ "nuisance_pairs_per_phase": 120,
+ "ratio_obs_over_loc": 5.0537513997760355,
+ "status": "PASS",
+ "verdict": "rows-only LICENSED: feedback is a target-preserving nuisance",
+ "kill_condition": "one violation of I1-I4 or of the envelope equality voids rows-only and reverts the main gate to 4513",
+ "quotient": "X^loc = (rows, Z^fire) is the causal locator's input; X^obs = (rows, feedback, Z^fire) is the full learner-visible observation; q drops feedback",
+ "i3_note": "the truth is rebuilt from each world's own (error_flag, cause_rank); keying it on the mechanism key alone would make I3 constant by construction and unable to fail"
+}

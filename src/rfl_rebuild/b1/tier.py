@@ -1,0 +1,627 @@
+r"""A77 §65.1–§65.2 — the information contract: tiers, cells and exact delivery.
+
+This module is the **structure** A77 froze, introduced here for the architecture that
+already exists. It contains no $D_Q$ object: no ``QAddress``, no store, no target value.
+The $D_Q$ row is added in a later step, as A77 §65.12 requires.
+
+Three things live here and nowhere else.
+
+**The tier is a closed opaque enum** (§65.1). Declared exactly once per law, with ``None``
+as the NOT-DECLARED sentinel and an identity test, so an ``int`` or a ``bool`` cannot pass
+for a tier:
+
+$$\boxed{\texttt{type(tier) is Tier}}$$
+
+**Delivery is a property of the cell** ``(architecture, tier)``, not of the law (§65.2):
+
+$$\boxed{\text{fields}(\alpha,\ell) = \text{the complete field set handed to every law in
+that cell}}$$
+
+and a cell may be **ill-typed**, meaning no substantive treatment exists in it. Declaring
+such a cell is a ``PROTOCOL_ERROR``, which is how §65.2's table becomes executable rather
+than advisory: on a value-free architecture $L_2$ is ill-typed, and on a scalar one $L_1$
+is — the second is the rule that keeps `PositiveAlternative` retired.
+
+**The delivered object is derived from the declared field set, never from the record.**
+A law therefore cannot receive a field its cell excludes, and a cell with
+$\text{fields} = \varnothing$ delivers **no object at all** rather than an empty one. The
+projection is deliberately narrower than the evaluator-side record: `TargetRecord` also
+carries ``factual_command``, which exists for validation and is not delivered content
+($a^+\neq a^F$ is the validator's question, not the law's).
+
+That last point is the honest statement of what "exact delivery" means here. Equality
+between the delivered keys and ``fields(α,ℓ)`` holds **by construction**, because the
+projection is built *from* the declared set; asserting it at runtime would be a check that
+cannot fail. What is therefore gated instead is what can fail: that the projection does
+not leak an undeclared field, that an empty cell delivers nothing, and that an ill-typed
+cell is rejected before a law runs.
+"""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+from enum import Enum
+from types import MappingProxyType
+from typing import Any, Callable, Mapping
+
+from rfl_rebuild.b1.contract import ProtocolError
+from rfl_rebuild.env import kernel as K
+from rfl_rebuild.env.domain import (
+    is_decision_context,
+    is_true_int,
+    non_integer_state_fields,
+)
+from rfl_rebuild.b1.addressing import AddressDomain
+from rfl_rebuild.b1.plan import dq_owner
+from rfl_rebuild.learner.store import (
+    CONTROLLER,
+    PROCESS,
+    QAddress,
+    DECISION,
+    Q,
+    DecisionAddress,
+    LearnerPersistentState,
+    owner_Q,
+)
+
+__all__ = [
+    "DQ_DOMAIN",
+    "DQ_SLICE",
+    "ILL_TYPED",
+    "PATCH_DOMAIN",
+    "PATCH_SLICE",
+    "X_DOMAIN",
+    "X_SLICE",
+    "SliceDescriptor",
+    "Tier",
+]
+
+
+class Tier(Enum):
+    r"""The four information tiers of A76 §63.1, opaque and unordered.
+
+    An ``Enum`` and deliberately not an ``IntEnum``: nothing in the design compares
+    tiers numerically, and an integer-valued member would let ``0``, ``True`` and ``1``
+    all pass for $L_0$ — the same class of accident the boolean flag produced.
+
+    **Truthiness is refused, not merely discouraged** (§65.1's "no truthiness
+    inference"). ``type(tier) is Tier`` stops another *value* posing as a tier; it does
+    not stop ``if tier:`` collapsing all four members into one branch, because every
+    enum member is truthy by default. Raising here turns that into a fail-stop rather
+    than a silent wrong branch:
+
+    $$\boxed{\texttt{bool(Tier.x)}\ \Longrightarrow\ \texttt{PROTOCOL\_ERROR}}$$
+    """
+
+    L0_FACTUAL = "L0_factual"
+    L1_CORRECTIVE = "L1_corrective"
+    L2_COUNTERFACTUAL = "L2_counterfactual"
+    L3_ORACLE = "L3_oracle"
+
+    def __bool__(self) -> bool:                      # pragma: no cover - always raises
+        raise ProtocolError(
+            f"Tier is opaque (A77 §65.1): {self.name} has no truth value; test identity "
+            "with `is`, and dispatch on the cell, never on truthiness")
+
+
+class _IllTyped:
+    """A cell with no substantive compatible treatment. Not a field set."""
+
+    __slots__ = ()
+
+    def __repr__(self) -> str:                       # pragma: no cover - diagnostics
+        return "<ill-typed cell>"
+
+
+#: Declaring a law in an ill-typed cell is a protocol error (§65.2, §65.3).
+ILL_TYPED = _IllTyped()
+
+
+@dataclass(frozen=True)
+class SliceDescriptor:
+    r"""One architecture's store slice: what it writes, and what each cell delivers.
+
+    **Two questions, deliberately kept apart.**
+
+    ``cells`` answers the *semantic* one and is A77 §65.2 verbatim: what field set does
+    this cell carry, or is it ill-typed? It never records build progress, so enabling a
+    cell later is an implementation change rather than a rewrite of what ``fields()``
+    means.
+
+    ``implemented_tiers`` answers the *build* one: which of those cells this revision can
+    actually run? A tier may be semantically real and not yet implemented — $D_Q\times L_2$
+    and $D_Q\times L_3$ are exactly that today, because their content ($G_t^{CF}$; the row
+    restore) is not authorised yet — and a tier may never be implemented because it is
+    ill-typed ($D_Q\times L_1$).
+
+    An earlier revision conflated the two by putting a ``DEFERRED`` sentinel *inside*
+    ``cells``, which made ``fields(D_Q, L2)`` raise "not built in this revision". That
+    answered a build question with a semantic table and would have forced the next step to
+    redefine ``fields()`` while implementing the counterfactual — the two questions
+    colliding exactly when clarity matters most.
+
+    ``extract`` maps a declared field name to the function that reads it from the
+    evaluator-side record, so delivery is a projection over *declared* names and a record
+    that grows a field cannot silently widen what a law sees.
+
+    **The descriptor validates and freezes itself.** ``@dataclass(frozen=True)`` freezes
+    the *attribute binding*, not the dicts behind it, and it validates nothing, so an
+    earlier version allowed both of these:
+
+    * ``cells[L1] = {"alternative"}`` with ``extract = {}`` — accepted at construction,
+      then ``deliver`` raised a bare ``KeyError: alternative`` from inside the read path
+      instead of the ``PROTOCOL_ERROR`` the contract promises. The same "the error path
+      crashes first" defect this project keeps finding;
+    * ``PATCH_SLICE.cells[Tier.L0_FACTUAL] = frozenset({"anything"})`` — the frozen
+      information contract could be edited in place at runtime, which is precisely what
+      making the cell table executable was supposed to prevent.
+
+    So construction is the contract boundary:
+
+    $$\boxed{\operatorname{keys}(\texttt{cells}) = \texttt{Tier}}$$
+
+    every value is either :data:`ILL_TYPED` or a ``frozenset[str]``;
+    ``implemented_tiers \subseteq keys(cells)``; an implemented tier must be a real field
+    set (an ill-typed cell can never be implemented); and
+
+    $$\boxed{\bigcup_{\ell\ \text{implemented}} \text{fields}(\alpha,\ell) \subseteq
+    \operatorname{keys}(\texttt{extract})}$$
+
+    — conditioned on implementation, because a field that cannot be delivered yet does not
+    need an extractor yet, while a *typo* in a delivered cell's field name still does.
+    """
+
+    name: str
+    store: str
+    scalar: bool
+    domain: AddressDomain
+    view: Callable[[LearnerPersistentState], dict]
+    cells: Mapping[Tier, Any]
+    extract: Mapping[str, Callable[[Any], Any]]
+    implemented_tiers: frozenset | None = None
+
+    def __post_init__(self) -> None:
+        if self.implemented_tiers is None:
+            # The default is the complete-build case: every cell that declares a field set
+            # is implemented. It is a *safe* default rather than a convenient one, because
+            # the extractor rule below is conditioned on implementation -- claiming a cell
+            # implemented without extractors for its fields fails at construction. A
+            # mid-build architecture narrows this explicitly, which is what D_Q does.
+            object.__setattr__(
+                self, "implemented_tiers",
+                frozenset(t for t, c in self.cells.items() if c is not ILL_TYPED))
+        object.__setattr__(self, "implemented_tiers", frozenset(self.implemented_tiers))
+        if type(self.scalar) is not bool:
+            raise ProtocolError(
+                f"{self.name}: scalar={self.scalar!r} is not a bool; whether a store is "
+                "scalar-valued decides the ledger's accounting domain, so it may not be "
+                "coerced or inferred")
+        if not isinstance(self.domain, AddressDomain):
+            raise ProtocolError(
+                f"{self.name}: domain is {self.domain!r}, not an AddressDomain")
+        for attr in ("view",):
+            if not callable(getattr(self, attr)):
+                raise ProtocolError(f"{self.name}: {attr} must be callable")
+        if set(self.cells) != set(Tier):
+            missing = sorted(t.name for t in set(Tier) - set(self.cells))
+            extra = sorted(repr(k) for k in set(self.cells) - set(Tier))
+            raise ProtocolError(
+                f"{self.name}: the cell table must declare every tier; missing {missing}, "
+                f"unknown {extra}. An undeclared cell would be discovered only when a "
+                "law first ran in it")
+        unknown = sorted(repr(t) for t in self.implemented_tiers
+                         if type(t) is not Tier)
+        if unknown:
+            # Checked BEFORE any `.name` access: Tier is a closed opaque enum, so a
+            # non-member in the build set is a malformed descriptor and must not surface
+            # as an AttributeError from inside the validation that exists to catch it.
+            raise ProtocolError(
+                f"{self.name}: implemented_tiers contains {unknown}, which are not Tier "
+                "members; the tier namespace is closed (A77 §65.1)")
+        unbuilt = sorted(t.name for t in self.implemented_tiers if t not in self.cells)
+        if unbuilt:
+            raise ProtocolError(
+                f"{self.name}: implemented tier(s) {unbuilt} have no declared cell; "
+                "implementation state cannot outrun the semantics it implements")
+        for tier in sorted(self.implemented_tiers, key=lambda t: t.name):
+            if self.cells[tier] is ILL_TYPED:
+                raise ProtocolError(
+                    f"{self.name}: tier {tier.name} is marked implemented but its cell is "
+                    "ill-typed; an architecture cannot implement a cell A77 says has no "
+                    "substantive treatment")
+        declared: set = set()
+        for tier, cell in self.cells.items():
+            if cell is ILL_TYPED:
+                continue
+            if not isinstance(cell, frozenset) or not all(
+                    isinstance(f, str) for f in cell):
+                raise ProtocolError(
+                    f"{self.name}: cell {tier.name} is {cell!r}; a well-typed cell must "
+                    "be a frozenset of field names (or ILL_TYPED)")
+            if tier in self.implemented_tiers:
+                declared |= set(cell)
+        missing_extractors = sorted(declared - set(self.extract))
+        if missing_extractors:
+            raise ProtocolError(
+                f"{self.name}: cell field(s) {missing_extractors} have no extractor; the "
+                "failure would otherwise surface as a KeyError inside delivery, not as a "
+                "protocol error at the contract boundary")
+        for field_name, extractor in self.extract.items():
+            if not callable(extractor):
+                raise ProtocolError(
+                    f"{self.name}: extractor for {field_name!r} is not callable")
+        # Freeze the contents, not just the binding.
+        object.__setattr__(self, "cells", MappingProxyType(dict(self.cells)))
+        object.__setattr__(self, "extract", MappingProxyType(dict(self.extract)))
+
+    @property
+    def owner(self):
+        """$owner_\\alpha$ — the domain's resolver, kept reachable from the slice."""
+        return self.domain.owner
+
+    def fields(self, tier: Tier) -> frozenset:
+        r"""``fields(α, ℓ)``, or a ``PROTOCOL_ERROR`` for a cell a law may not use."""
+        cell = self.cells.get(tier)
+        if cell is None:
+            raise ProtocolError(
+                f"{self.name} declares no cell for tier {tier!r}; every tier the "
+                "architecture supports must be declared, ill-typed included")
+        if cell is ILL_TYPED:
+            raise ProtocolError(
+                f"{self.name} has no substantive treatment at tier {tier!r}: the cell is "
+                "ill-typed, so a law may not be declared in it (A77 §65.2)")
+        return cell
+
+    def require_implemented(self, tier: Tier) -> None:
+        """Fail stop when a **semantically real** cell is not built in this revision.
+
+        Kept separate from :meth:`fields` on purpose: ``fields`` answers what the cell
+        *is*, this answers whether the run may use it. $D_Q\\times L_2$ is the live case —
+        its field set is frozen and it has no implementation yet.
+        """
+        if tier not in self.implemented_tiers:
+            raise ProtocolError(
+                f"{self.name} at tier {tier.name} is declared by A77 §65.2 but not built "
+                "in this revision; the cell is not ill-typed, it is unimplemented, and a "
+                "law may not be declared in it until its fields can be delivered")
+
+    def deliver(self, tier: Tier, addresses, envelope):
+        r"""Project the envelope onto exactly ``fields(α, ℓ)``.
+
+        An empty cell returns ``None``: a law that needs nothing is handed nothing, not
+        an empty container. A cell that declares fields and is handed no envelope is a
+        ``PROTOCOL_ERROR`` — the caller was supposed to build one.
+        """
+        declared = self.fields(tier)
+        if not declared:
+            return None
+        if envelope is None:
+            raise ProtocolError(
+                f"{self.name} at tier {tier!r} declares fields {sorted(declared)} but no "
+                "envelope was supplied; the runner must build the cell's fields before "
+                "any law in it runs")
+        rows = {}
+        for a in addresses:
+            rows[a] = MappingProxyType({f: self.extract[f](envelope[a])
+                                        for f in sorted(declared)})
+        return MappingProxyType(rows)
+
+
+def _legacy_accept(value) -> None:
+    r"""$D_{patch}$'s frozen admission policy: admit, and let the store decide.
+
+    This is not an omission and not a gap to be closed in passing. The recorded, frozen state of
+    $D_{patch}$ is that its two same-tier arms differ in admissibility —
+
+    $$\boxed{\texttt{NoWrite} \text{ accepts a malformed credited alias} \neq
+    \texttt{SetAlternative} \text{ fails at its write boundary}}$$
+
+    — and A80 §68.5 forbids repairing it as a side effect of generalising the substrate; it needs
+    its own authorisation. Step 1 briefly made the credited boundary universal, which silently
+    removed the asymmetry for both arms; that is the drift this function exists to prevent, and
+    the regression gate in `tests/rebuild/test_b1_patch_slice.py` holds it in place.
+
+    The *mechanism* stays generic — the runner always asks the architecture's domain — but the
+    **policy** is the architecture's, so $D_Q$ can be strict, $D_{patch}$ can stay as audited, and
+    $X/P$ can choose their own when they are implemented.
+    """
+    return None
+
+
+def _decision_credited(value) -> None:
+    """The strict credited-address rule both $D_Q$ and $D_{patch}$ admit."""
+    if type(value) is not DecisionAddress:
+        raise ProtocolError(
+            f"credited address {value!r} has type {type(value).__name__}, not "
+            "DecisionAddress; the credited population is typed before any arm plans")
+    if not is_decision_context(value.state, value.z, value.m):
+        raise ProtocolError(
+            f"credited address {value!r} is not a strictly typed decision context: its State "
+            "fields must be true integers in their domains and z, m true integers inside "
+            "theirs. Python folds 1.0, True and 1 into one key, so a value-equal alias would "
+            "otherwise be admitted by whichever arm does not happen to construct a typed "
+            "object (A78 §66.5)")
+
+
+def _decision_store(value) -> None:
+    if type(value) is not DecisionAddress:
+        raise ProtocolError(
+            f"the {DECISION} store is keyed by DecisionAddress, got {type(value).__name__}")
+
+
+def _q_store(value) -> None:
+    if type(value) is not QAddress:
+        raise ProtocolError(
+            f"the {Q} store is keyed by QAddress, got {type(value).__name__}")
+
+
+def _decision_canonical(value) -> str:
+    """The decision receipt's canonical form: the pre-refactor encoding, byte for byte."""
+    s = value.state
+    return f"{s.x},{s.y},{s.t},{s.kappa},{s.phi},{value.z},{value.m}"
+
+
+#: The $D_{patch}$ address domain. Its credited and store **policy** is the frozen legacy one —
+#: admit, and let the store's own typed boundary decide — while its codec and owner are as
+#: audited. $D_{patch}$'s addresses are the same type as $D_Q$'s; what differs is who admits
+#: them, which is exactly the distinction A80 §68.2 calls architecture-owned policy.
+PATCH_DOMAIN = AddressDomain(
+    tag="D_patch",
+    require_credited=_legacy_accept,
+    require_store=_legacy_accept,
+    owner=lambda address: address,                 # owner_patch = identity
+    canonical=_decision_canonical,
+)
+
+#: The $D_Q$ address domain: the credited address is still a decision address, the store address
+#: is a `QAddress`, and $owner_Q$ is total over entry addresses and row operations (A78 §66.5).
+DQ_DOMAIN = AddressDomain(
+    tag="D_Q",
+    require_credited=_decision_credited,
+    require_store=_q_store,
+    owner=dq_owner,
+    canonical=_decision_canonical,
+)
+
+def _controller_view(state: LearnerPersistentState) -> dict:
+    return dict(state.controller_overrides)
+
+
+def _q_view(state: LearnerPersistentState) -> dict:
+    return dict(state.q_overrides)
+
+
+def _site_credited(value) -> None:
+    r"""$X$'s credited-address rule: a nominal `ControllerSite` with a strictly typed state.
+
+    The folding lesson applies at this key too: `ControllerSite` is a dataclass, so a site whose
+    `State` carries `1.0` would compare equal, with equal hashes, to the legal site — and $C_X$ is
+    a function **of the command**, so `cmd` is type-checked as well.
+    """
+    if type(value) is not K.ControllerSite:
+        raise ProtocolError(
+            f"credited controller site {value!r} has type {type(value).__name__}, not "
+            "ControllerSite")
+    bad = non_integer_state_fields(value.state)
+    if bad:
+        raise ProtocolError(
+            f"credited controller site {value!r} has non-integer State field(s) {bad}; Python "
+            "folds 1.0, True and 1 into one key")
+    if not is_true_int(value.cmd):
+        raise ProtocolError(
+            f"credited controller site {value!r} carries cmd={value.cmd!r}, not a true integer")
+
+
+def _site_store(value) -> None:
+    if type(value) is not K.ControllerSite:
+        raise ProtocolError(
+            f"the {CONTROLLER} store is keyed by ControllerSite, got {type(value).__name__}")
+
+
+def _site_canonical(value) -> str:
+    r"""$X$'s canonical receipt: injective on the legal domain, `cmd` included.
+
+    $$\boxed{canon_X(s, a_1) \neq canon_X(s, a_2) \text{ whenever } a_1 \neq a_2}$$
+
+    The legacy controller site keyed on `(x, y, t, t)` and omitted $a^{cmd}$, so two different
+    commands from one state were one site. An encoding that dropped it here would give two distinct
+    credited sites one receipt identity, which is why the command is in the string.
+    """
+    s = value.state
+    return f"{s.x},{s.y},{s.t},{s.kappa},{s.phi}|{value.cmd}"
+
+
+#: The $X$ address domain: a credited site is its own store key, `owner_X` is the identity, and the
+#: credited rule is strict because the controller key is a folding target like every other.
+X_DOMAIN = AddressDomain(
+    tag="X",
+    require_credited=_site_credited,
+    require_store=_site_store,
+    owner=lambda site: site,
+    canonical=_site_canonical,
+)
+
+
+#: The $D_Q$ row of A77 §65.2's table **verbatim**, plus this revision's build state.
+#:
+#: ``cells`` is the frozen semantics and nothing else:
+#:
+#: * $L_0 = \{a_t^F, G_t^F\}$ — the factual action and its suffix return. No $a_t^+$, no
+#:   $G_t^{CF}$: the cell *is* the information boundary, and widening it "because the
+#:   builder could compute more" is the leak the boundary exists to prevent;
+#: * $L_1$ is **ill-typed**, permanently: it supplies $a^+$ without its value, and on a
+#:   scalar store every write is a value (A76 §63.5, §65.2);
+#: * $L_2 = \{a_t^F, G_t^F, a_t^+, G_t^{CF}\}$ and $L_3 = \varnothing$, exactly as §65.2
+#:   writes them.
+#:
+#: ``implemented_tiers`` is the build state: $L_0$, $L_2$ and $L_3$ all run. Enabling a cell
+#: is an implementation change — flip one set and supply its extractors — rather than a
+#: redefinition of what ``fields()`` means. That distinction is why the ``DEFERRED`` sentinel
+#: was removed from ``cells``, and it has now paid twice: $L_2$ needed the table already
+#: correct, and $L_3$ needed it correct *and* empty.
+#:
+#: ``owner=dq_owner`` rather than the substrate's ``owner_Q``: $L_3$'s row operation is a B1
+#: object, and A78 §66.5 requires the resolver to be total over entry addresses and row
+#: operations while `learner/store.py::owner_Q` keeps taking a `QAddress`.
+DQ_SLICE = SliceDescriptor(
+    name="D_Q",
+    store=Q,
+    scalar=True,
+    domain=DQ_DOMAIN,
+    view=_q_view,
+    cells={
+        Tier.L0_FACTUAL: frozenset({"a_factual", "g_factual"}),
+        Tier.L1_CORRECTIVE: ILL_TYPED,
+        Tier.L2_COUNTERFACTUAL: frozenset({"a_factual", "g_factual", "a_plus",
+                                           "g_cf"}),
+        Tier.L3_ORACLE: frozenset(),
+    },
+    extract={
+        "a_factual": lambda record: record.a_factual,
+        "g_factual": lambda record: record.g_factual,
+        "a_plus": lambda record: record.a_plus,
+        "g_cf": lambda record: record.g_cf,
+    },
+    implemented_tiers=frozenset({Tier.L0_FACTUAL, Tier.L2_COUNTERFACTUAL,
+                                 Tier.L3_ORACLE}),
+)
+
+
+#: The $X$ row of A76 §63.9: $L_0$ delivers $\{a^{cmd}\}$, $L_3$ delivers $\varnothing$, and
+#: $L_1$/$L_2$ are **ill-typed** — A76 writes "—" in both, and A80 §68.3 adds that an empty cell
+#: acquires no arm and no same-tier reference merely because the infrastructure could express one.
+#:
+#: `scalar=False`: the controller store holds actions, and A76 §63.4's "on a value-free store every
+#: write is a value" is about $D_{patch}$'s shape — here the write is an action, so the ledger's
+#: scalar accounting is not applicable and the identity write's canonicalisation to deletion is
+#: what makes $L_3$ the same operation as $L_0$.
+X_SLICE = SliceDescriptor(
+    name="X",
+    store=CONTROLLER,
+    scalar=False,
+    domain=X_DOMAIN,
+    view=_controller_view,
+    cells={
+        Tier.L0_FACTUAL: frozenset({"a_cmd"}),
+        Tier.L1_CORRECTIVE: ILL_TYPED,
+        Tier.L2_COUNTERFACTUAL: ILL_TYPED,
+        Tier.L3_ORACLE: frozenset(),
+    },
+    extract={"a_cmd": lambda record: record.a_cmd},
+    implemented_tiers=frozenset({Tier.L0_FACTUAL, Tier.L3_ORACLE}),
+)
+
+
+def _process_view(state: LearnerPersistentState) -> dict:
+    return dict(state.process_overrides)
+
+
+def _process_credited(value) -> None:
+    r"""$P$'s credited-address rule: a **true integer** option id, in that order.
+
+    $$\boxed{\text{exact } int \rightarrow \text{domain membership}}$$
+
+    The order is the whole rule. `True == 1` and `1.0 == 1` with equal hashes, so a membership
+    test alone would credit a boolean or a float as the option it resembles — and the process
+    store persists option ids, so the alias would reach the store as a legal-looking key (A78
+    §66.5's finding, at this architecture's key).
+    """
+    if not is_true_int(value):
+        raise ProtocolError(
+            f"credited process address {value!r} has type {type(value).__name__}, not int; a "
+            "process address is an option id, and Python folds True, 1.0 and 1 into one key")
+    if value not in K.option_ids():
+        raise ProtocolError(
+            f"credited process address {value!r} is not an option id; the process store is keyed "
+            f"by z in {K.option_ids()!r}")
+
+
+def _process_store(value) -> None:
+    if not is_true_int(value) or value not in K.option_ids():
+        raise ProtocolError(
+            f"the {PROCESS} store is keyed by an option id, got {value!r} of type "
+            f"{type(value).__name__}")
+
+
+def _process_canonical(value) -> str:
+    r"""$P$'s canonical receipt: the option key, and injective on the legal domain.
+
+    The type is guaranteed before this is reached (`require_credited` on the credited side, the
+    store's own boundary on the store side), so `z=1` cannot be produced by `True`: a canonical
+    form that folded the two would give a bool and an int one receipt identity.
+    """
+    return f"z={value}"
+
+
+#: The $P$ address domain: the resolved proposal **is** the store key, `owner_P` is the identity,
+#: and the credited rule is exact-integer-first because the process key is an option id.
+P_DOMAIN = AddressDomain(
+    tag="P",
+    require_credited=_process_credited,
+    require_store=_process_store,
+    owner=lambda z: z,
+    canonical=_process_canonical,
+)
+
+
+#: The $P$ row of A76 §63.9: $L_1$ delivers $\{z^{\text{proposal}}\}$, $L_3$ delivers
+#: $\varnothing$, and $L_0$/$L_2$ are **ill-typed** — A76 writes "—" in both, and the reason is
+#: structural rather than a choice of placement: the factual rows carry $z^{\text{in-force}}$ and
+#: never $z^{\text{proposal}}$, so the key cannot be computed from $L_0$ information at all
+#: (A76 §63.1). That is what makes
+#:
+#: $$\boxed{P_{id} \in L_1, \qquad P_{id} \notin L_0}$$
+#:
+#: a fact about the information contract rather than a preference — and why the runner's refusal
+#: of $P_{id}$ at $L_0$ is mechanical (`_law_contract` asks this table) instead of a convention
+#: someone has to remember.
+#:
+#: `scalar=False`: the process store holds option **ids**, i.e. choices, not values, so the
+#: ledger's scalar accounting (A76 §63.4's value store) does not apply here — the same reading the
+#: controller store takes, and the reason the identity write's canonicalisation to a deletion is
+#: what makes $L_3$ the same operation as $L_1$.
+P_SLICE = SliceDescriptor(
+    name="P",
+    store=PROCESS,
+    scalar=False,
+    domain=P_DOMAIN,
+    view=_process_view,
+    cells={
+        Tier.L0_FACTUAL: ILL_TYPED,
+        Tier.L1_CORRECTIVE: frozenset({"z_proposal"}),
+        Tier.L2_COUNTERFACTUAL: ILL_TYPED,
+        Tier.L3_ORACLE: frozenset(),
+    },
+    extract={"z_proposal": lambda record: record.z_proposal},
+    implemented_tiers=frozenset({Tier.L1_CORRECTIVE, Tier.L3_ORACLE}),
+)
+
+
+def _patch_view(state: LearnerPersistentState) -> dict:
+    return dict(state.decision_overrides)
+
+
+#: The $D_{patch}$ row of A77 §65.2's table, and nothing else.
+#:
+#: $L_2$ is **ill-typed** here: every value target is ill-typed on a value-free store
+#: (A76 §63.6). $L_3$ delivers $\varnothing$ because on this architecture the healthy
+#: referent *is* "no override", so the restore is a deletion and needs no content.
+#:
+#: Every well-typed cell of this architecture is implemented, so this slice's build state
+#: is complete and the two questions coincide here — which is why the separation was
+#: invisible until $D_Q$ arrived.
+PATCH_SLICE = SliceDescriptor(
+    name="D_patch",
+    store=DECISION,
+    scalar=False,
+    domain=PATCH_DOMAIN,
+    view=_patch_view,
+    cells={
+        Tier.L0_FACTUAL: frozenset(),
+        Tier.L1_CORRECTIVE: frozenset({"alternative"}),
+        Tier.L2_COUNTERFACTUAL: ILL_TYPED,
+        Tier.L3_ORACLE: frozenset(),
+    },
+    extract={"alternative": lambda record: record.alternative},
+    implemented_tiers=frozenset({Tier.L0_FACTUAL, Tier.L1_CORRECTIVE, Tier.L3_ORACLE}),
+)

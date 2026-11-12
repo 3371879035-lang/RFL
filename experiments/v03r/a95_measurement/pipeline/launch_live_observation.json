@@ -1,0 +1,41 @@
+{
+  "role": "EXTERNAL_LIVE_PROCESS_OBSERVATION_NOT_NATIVE_COMPLETION_RECEIPT",
+  "observed_at": "2026-10-08T16:56:29.4056658Z",
+  "processes": [
+    {
+      "pid": 26732,
+      "parent_pid": 23516,
+      "full_command": "\"D:\\python\\python.exe\" -u -B -X utf8 \"D:\\强化反馈学习\\RFL-CausalChase-v0.3-measurement-20261008\\scripts\\run_a95_pipeline.py\"",
+      "start_utc_ticks": "639270752638521679",
+      "cpu_seconds": 0.953125
+    },
+    {
+      "pid": 23516,
+      "parent_pid": 8032,
+      "full_command": "\"C:\\Users\\huani\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe\" -NoProfile -NonInteractive -WindowStyle Hidden -File \"D:\\强化反馈学习\\RFL-CausalChase-v0.3-measurement-20261008\\scripts\\launch_a95_pipeline.ps1\"",
+      "start_utc_ticks": "639270752627165537",
+      "cpu_seconds": 2.046875
+    }
+  ],
+  "current_children": [
+    {
+      "pid": 26932,
+      "parent_pid": 26732,
+      "full_command": "\\??\\C:\\WINDOWS\\system32\\conhost.exe 0x4",
+      "start_utc_ticks": "639270752638645436",
+      "cpu_seconds": 0.046875
+    },
+    {
+      "pid": 37636,
+      "parent_pid": 26732,
+      "full_command": "D:\\python\\python.exe -m pytest -q --junitxml=D:\\强化反馈学习\\RFL-CausalChase-v0.3-measurement-20261008\\experiments\\v03r\\a95_measurement\\pipeline\\acceptance_gates\\regression.xml",
+      "start_utc_ticks": "639270752652299410",
+      "cpu_seconds": 119.953125
+    }
+  ],
+  "controller_hash_match": true,
+  "launcher_hash_match": true,
+  "current_stage": "FRESH_FULL_REGRESSION",
+  "fresh_scientific_training_started": false,
+  "research_complete": false
+}

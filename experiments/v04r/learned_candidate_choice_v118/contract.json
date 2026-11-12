@@ -1,0 +1,37 @@
+{
+  "schema": "V118_PROSPECTIVE_FINITE_LEARNED_CANDIDATE_VS_KEEP_EXPERIMENT",
+  "date_asia_shanghai": "2026-11-06",
+  "parent_commit": "4d9cabb918bc25f847181271daf791fcd59f9b35",
+  "purpose": "Learn candidate consequences from actual developmental branches, freeze the selector, then compare one-event selection on unseen contexts. Local V0.4 experiment, not the original 400/200 confirmation or full learned causal RFL.",
+  "representations": {
+    "features": "mode, task-observed terminal, whether any visible a_cmd differs from a_realized. No scenario label, kappa, context identity, fault configuration, evaluator truth or measured held-out outcome enters the selector.",
+    "candidates": ["keep", "clear the entries at all factual visited commanded-action addresses in Q (DQ) or literal D (patch); no Q* target lookup in candidate generation"],
+    "learner": "Tabular arithmetic mean of actual two-task continuation returns per feature/candidate, frozen before held-out tasks. If a candidate mean is strictly higher than keep, use it; exact ties and unknown features choose keep. No post-result margin/weight/family tuning.",
+    "cost": "Report task returns, actual address writes/transactions and developmental probes separately; no claim of net wall-time or resource savings, no new weighted utility objective."
+  },
+  "cases": {
+    "development": "Both modes, kappa0/phase2/errorflag0/cause_rank1/base_option1: collision, timeout, external trap and success control; eight factual cases. Train persistent numeric magnitude4 collision /8 timeout; patch uses independent literal actions, not those magnitudes.",
+    "held_out": "Both modes, kappa1/phase2/errorflag0/cause_rank2/base_option1, same four mechanisms. DQ collision magnitude6/timeout6. New kappa and numeric magnitudes, not a blind new family or independent statistical seeds. Patch magnitudes in descriptor are not extra treatments.",
+    "collision": "Install wrong RIGHT at (1,2,t1,current kappa,phase2,z1,m0). DQ Q_RIGHT fixed magnitude; patch D_RIGHT. One unread other-kappa RIGHT sentinel and unread process3->2 preserved.",
+    "timeout": "Install WAIT at START all t0..11/m0,1; DQ Q_WAIT fixed magnitude, patch D_WAIT. Same unread sentinels. These high legal overrides deliberately retain post-TD headroom; this is prospective mechanism engineering, not a screened population.",
+    "external_trap": "Genuinely healthy empty initial stores; task environment trap(1,2) at action-step0 remains present during factual and continuations. Its configuration is evaluator-only, never a diagnostic feature. Ordinary task learning may learn to avoid it.",
+    "success": "DQ START RIGHT value2.0 with correct policy; patch genuinely healthy. Success runs ordinary learning only, no diagnosis/probe/model observation."
+  },
+  "training_protocol": "Eight genuine factual tasks with diagnosis disabled. Only if actual task fails, fork its full actual post-TD R+L into one keep and one clear_factual candidate branch. Each branch receives the same two declared ordinary continuation tasks and same environment, no further diagnosis. Learn from every branch return, no outcome selection. Each fork is a genuine live clone, not a serialized issued source or B1 handle. Successful continuation outcomes are value targets within an already failure-triggered experiment, not new success-attribution calls.",
+  "held_out_protocol": "Freeze the table first. For each of eight held-out cases, independently clone equal initial states into TaskTD, AlwaysClear, LearnedChoice. Same shared 3-episode plan and masks; first task has ordinary learning then arm-specific one-event diagnosis. Next two are ordinary-only continuations for all arms. Actual terminal alone triggers a diagnostic. No evaluation outcomes update the frozen selector. Log all positive/zero/negative differences.",
+  "episode_inputs": "Within a case, chronological e0..2, fixed task kappa/phase/base_option and errorflag0 cause_rank; uint64MAX coins (nonexplore), (MAX,0) rejection tuples available lazily. Common nominal Q*, alpha1/2 epsilon1/10 remain. This is a deterministic finite stream, not stochastic Xi or learned exploration.",
+  "reference": {
+    "path": "experiments/v03r/a96_dense/b2_prepare/grammar_catalog_v31/evidence/stdout.log",
+    "sha256": "d0aafb6dc20b1cc0c872ac4c48497d94feb707ffe14448bd1c2f3ddd1bbb467b",
+    "q_digest": "d9078b5b5b823df56f998e8c28eb6a3e388bd3ae216f41a21acdb5202d2ec05a"
+  },
+  "declared_arms": ["TaskTD", "AlwaysClear", "LearnedChoice"],
+  "diagnostic_address_budget_per_event": 12,
+  "online_diagnostic_query_capability": false,
+  "developmental_probe_budget_per_failed_factual": 4,
+  "budget": {"rollout": 120, "step": 1440, "transaction": 512, "raw_bytes": 33554432, "seconds": 120},
+  "expected_structural_extent_not_effect_gate": {"development_factual_tasks": 8, "development_branch_continuations_if_all_six_expected_failures_occur": 24, "held_out_task_rollouts": 72, "total_expected_rollouts": 104},
+  "capture": "New namespace, new source/contract/launcher bound before first native, exclusive evidence directory, complete task raw and R+L/TD/choice/table/probe receipts before assertions. First failures and partial remain; no retry, no replacing inputs to obtain gains. Original313, V0.3/V0.4 executed modules and all old evidence remain unchanged. New stdlib-only stored review, no old checker execution.",
+  "scope_limits": "This is a learned two-action consequence selector, NOT a learned causal posterior, full repair grammar, general transfer, architecture ranking, statistical confirmation or end-to-end full RFL. One-event comparison, not a full recurrent diagnostic policy. No arbitrary old PASS transfer or new science/workload keys/DP/RNG/native calibration/formal collector. V0.3 remains complete under the human local-stage scope; do not reopen it.",
+  "automation": "User turned scheduling off; do not inspect or change it."
+}

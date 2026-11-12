@@ -1,0 +1,156 @@
+{
+  "schema": "V03R_FINITE_EXACT_PLAN_HOOK_PURE_PREFLIGHT_V84",
+  "parent_commit": "b1e0cbfde43f059db2c64d40a7e66c39805db860",
+  "human_instruction": "按V0.3原机制主线继续；v83之后先原API完整源码/静态及实际inspect.signature核对，本次不自动重试新native",
+  "role": "PURE_SIGNATURE_PREFLIGHT_NOT_NATIVE_INTEGRATION_OR_SCIENCE",
+  "necessity": "v83 new instrumentation renamed targets to delivery and original _law_contract correctly rejected before any B1. AST/compile alone did not detect this. This component only checks actual bound callable and original pure _law_contract before any later independent native.",
+  "old_failure_source": {
+    "path": "experiments/v03r/a96_dense/b2_prepare/oracle_mainline_v83/test_new_integration.py",
+    "bytes": 21878,
+    "sha256": "a62739cdf820931f0d1e5775044aa03b823b5d9a565951a772c265cc6057b23e"
+  },
+  "immutable_v83": {
+    "experiments/v03r/a96_dense/b2_prepare/oracle_mainline_v83/contract.json": {
+      "bytes": 258397,
+      "sha256": "fb32e2b0678bb68cd0916568c7a48b76b58516dab5e4b2120d5bceea20e39b67"
+    },
+    "experiments/v03r/a96_dense/b2_prepare/oracle_mainline_v83/evidence/claim.json": {
+      "bytes": 474079,
+      "sha256": "83f5ed03585f5520dee032b802a7b43c51495cc9378d7437738db961f33f4fc4"
+    },
+    "experiments/v03r/a96_dense/b2_prepare/oracle_mainline_v83/evidence/exit.json": {
+      "bytes": 474068,
+      "sha256": "14670f94aecb16e21975b31a6a7ecb6270f8afac62d82c5224197a6c849852cb"
+    },
+    "experiments/v03r/a96_dense/b2_prepare/oracle_mainline_v83/evidence/stderr.log": {
+      "bytes": 2356,
+      "sha256": "1f58b46f1edfa3bb5c61a8dd9f6f73e10de46291d21a86dcdecb068efb415903"
+    },
+    "experiments/v03r/a96_dense/b2_prepare/oracle_mainline_v83/evidence/stdout.log": {
+      "bytes": 212759,
+      "sha256": "537f4a2e0f880f66e34a1c4839d89d5ba72fc2f14595c46ef0da2fff529e87fc"
+    },
+    "experiments/v03r/a96_dense/b2_prepare/oracle_mainline_v83/execute.py": {
+      "bytes": 2706,
+      "sha256": "6ef0904dc73e79d32619355bfc3d18e9486e49774a6343da00e31bf69511ec42"
+    },
+    "experiments/v03r/a96_dense/b2_prepare/oracle_mainline_v83/result_summary.json": {
+      "bytes": 1198046,
+      "sha256": "45d17c46ae584e23f3defa8671ce7aa3845d7bd427a845498cfa0e2b3947b0f4"
+    },
+    "experiments/v03r/a96_dense/b2_prepare/oracle_mainline_v83/test_new_integration.py": {
+      "bytes": 21878,
+      "sha256": "a62739cdf820931f0d1e5775044aa03b823b5d9a565951a772c265cc6057b23e"
+    }
+  },
+  "original_API_sources": {
+    "experiments/v03r/a96_dense/dev_lock.json": {
+      "bytes": 35631,
+      "sha256": "7d43ee9ae33a218e1266ab3cd2351e07d7e30922302e4527c65facbddaa3472f"
+    },
+    "src/rfl_rebuild/b1/__init__.py": {
+      "bytes": 5095,
+      "sha256": "9958907612ded2457d0f07864ea30db6b42871f0986a8a9b1dbf2100fa6fbf81"
+    },
+    "src/rfl_rebuild/b1/laws.py": {
+      "bytes": 28307,
+      "sha256": "b62789d82032377cfe3e698839741ab748deae0245bae9c088f62e4d07e35940"
+    },
+    "src/rfl_rebuild/b1/runner.py": {
+      "bytes": 39548,
+      "sha256": "ab8c61835906e29f56b33fc54ca1a558ef37302037d66a39a307e5dbf93c8de3"
+    },
+    "src/rfl_rebuild/b1/tier.py": {
+      "bytes": 28400,
+      "sha256": "e43e6c445278ac5de98bb9197a1024418c418e8d44a21ff9e8836bab807770bb"
+    }
+  },
+  "immutable_wrappers": [
+    {
+      "path": "experiments/v03r/a96_dense/b2_prepare/oracle_mainline_v74.py",
+      "bytes": 33143,
+      "sha256": "1635523ef1591a51424a7b74d53c328b61e6c77bcdef3d6dbc514f5c6c9e525a"
+    },
+    {
+      "path": "experiments/v03r/a96_dense/b2_prepare/oracle_mainline_v75.py",
+      "bytes": 12757,
+      "sha256": "7944c6136f1637da13d8686f10578288e99fab3edcc7647e316865aea5b42812"
+    },
+    {
+      "path": "experiments/v03r/a96_dense/b2_prepare/oracle_mainline_v77.py",
+      "bytes": 9241,
+      "sha256": "435bd13e9ab54f47e53ed6aeb214f2dc9c574f26c257ef439686200ea826fbfc"
+    }
+  ],
+  "scope": {
+    "original_law_classes": [
+      "NoWriteRef",
+      "DQLocalOracleRestore",
+      "SetAlternative",
+      "DeleteFactualPatch (defining parent of LocalOracleRestore)"
+    ],
+    "registered_roles": [
+      "DQ_L3_NoWrite",
+      "DQ_L3_LocalOracleRestore",
+      "PATCH_L1_NoWrite",
+      "PATCH_L1_SetAlternative",
+      "PATCH_L3_NoWrite",
+      "PATCH_L3_LocalOracleRestore"
+    ],
+    "expected_original_bound_parameters": [
+      "addresses",
+      "targets"
+    ],
+    "new_unbound_hook_parameters": [
+      "law",
+      "addresses",
+      "targets"
+    ],
+    "local_recording_variable": "delivery = targets; original and observer receive identical objects",
+    "alias_policy": "patch original defining DeleteFactualPatch parent, not LocalOracleRestore own method; inherited alias plan function remains identical before/during/after",
+    "no_signature_mask": "no __signature__, __wrapped__, decorator or weak original API guard",
+    "original_pure_contract_calls": 12,
+    "actual_original_plans": 0,
+    "synthetic_cases": "2 forward same-object calls (None and object target), 1 synthetic original failure, 1 synthetic observer failure; no State/address/envelope/LawPlan",
+    "native_entrypoint_policy": "all original run_* entrypoints, kernel step/rollout, learner constructor/clone/transaction blocked; profile refuses original law plan and B1 run/lowering/metrics, b2/solve execution",
+    "old_failure_read": "full AST only; do not import, call or execute old test/hook/checker",
+    "production_modules_changed": 0
+  },
+  "cases": [
+    "six_original_and_six_new_hook_actual_bound_contract_checks_alias_restore",
+    "synthetic_forwarding_same_objects_return_once_empty_nonempty",
+    "synthetic_original_observer_exceptions_propagate_no_retry",
+    "full_AST_v83_pin_and_new_hook_real_signature_no_mask"
+  ],
+  "budget": {
+    "test_methods": 4,
+    "original_contract_calls": 12,
+    "synthetic_original_calls": 4,
+    "synthetic_observer_calls": 3,
+    "stdout_bytes": 100000,
+    "rollout": 0,
+    "step": 0,
+    "B1": 0,
+    "original_plan": 0,
+    "transaction": 0,
+    "source_capture": 0,
+    "bank": 0,
+    "DP": 0,
+    "RNG": 0,
+    "training": 0,
+    "keys": 0,
+    "native_calibration": 0,
+    "collector": 0
+  },
+  "execution": "one new exclusive pure child, all tracked and new input bytes before/after, parent HEAD pinned, no automatic retry/no executed file edits; native means B1/kernel/state/training none, child exit is not a mechanism/science PASS",
+  "science": {
+    "scientific_result": "UNEVALUATED",
+    "scientific_PASS": false,
+    "collection_authorized": false,
+    "research_complete": false,
+    "primary_Collateral": null,
+    "scientific_rules_adopted": false,
+    "mechanism_direction_falsified": false
+  },
+  "remaining": "Original P DQ L3 and Dpatch L1/L3 positive owned bank chains remain unexecuted, no issued source recreated from serialized bytes. Full production gates/kshape/fair budgets/fullfamily and whole scientific Collateral/resource/prospective freeze/keys still open. ALL153792/125366 unchanged, no nativecalibration."
+}

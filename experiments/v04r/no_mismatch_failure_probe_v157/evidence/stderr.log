@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v04r\no_mismatch_failure_probe_v157\workload.py", line 123, in main
+    sys.setprofile(profile);rows=experiment();emit('RESULT',{'complete':True,'counts':dict(COUNTS),'streams':rows,'new_keys':0,'formal_collection':False});ok=True
+                                 ^^^^^^^^^^^^
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v04r\no_mismatch_failure_probe_v157\workload.py", line 108, in experiment
+    CONTEXT['main_epoch']=e;mask=K.FaultMask(trap=K.Trap(tuple(s['trap']['cell']),s['trap']['t']))
+                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 5, in __init__
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\src\rfl_rebuild\env\kernel.py", line 443, in __post_init__
+    raise ValueError("trap cell may not be START or GOAL (11 §6.6)")
+ValueError: trap cell may not be START or GOAL (11 §6.6)

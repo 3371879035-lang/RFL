@@ -1,0 +1,229 @@
+{
+  "schema": "V134_VERIFIED_EXPERIENCE_MEMORY_RESULT",
+  "date_asia_shanghai": "2026-11-07",
+  "parent_commit": "08128ca49bba9117cc728eb998521bf6540ae932",
+  "status": "EXTENSION_COMPLETE_MEMORY_UPDATE_WITH_LATER_TRANSFER_NOT_EXERCISED",
+  "execution": {
+    "native_first_exit": 0,
+    "new_stored_review_first_exit": 0,
+    "rollout": 149,
+    "step": 1687,
+    "transaction": 111,
+    "records": 570,
+    "input_pins": 340,
+    "main_tasks": 80,
+    "practice_tasks": 9,
+    "readonly_rollouts": 60,
+    "main_steps": 928,
+    "practice_steps": 75,
+    "readonly_steps": 684,
+    "ordinary_full_R_L_updates": 89,
+    "source_install_transactions": 1,
+    "source_install_edits": 44,
+    "live_diagnostic_transactions": 15,
+    "practice_candidate_transactions": 6,
+    "diagnostic_memory_training_events": 2,
+    "instrumented_wall_seconds": 10.172000000020489,
+    "success_diagnostics": 0,
+    "base_model_updates": 0,
+    "automatic_retry": false,
+    "new_keys": 0,
+    "formal_collection": false
+  },
+  "per_arm_summary": [
+    {
+      "mode": "dq",
+      "arm": "Anchored",
+      "successes": 15,
+      "task_return_sum": 5.36,
+      "task_return_mean": 0.268,
+      "practice_events": 1,
+      "practice_rollouts": 3,
+      "diagnostic_memory_updates": 1,
+      "memory_retrievals": 1,
+      "diagnostic_calls": 5,
+      "later_phase_memory_lookups": 0
+    },
+    {
+      "mode": "dq",
+      "arm": "Frozen",
+      "successes": 15,
+      "task_return_sum": 5.36,
+      "task_return_mean": 0.268,
+      "practice_events": 1,
+      "practice_rollouts": 3,
+      "diagnostic_memory_updates": 0,
+      "memory_retrievals": 1,
+      "diagnostic_calls": 5,
+      "later_phase_memory_lookups": 0
+    },
+    {
+      "mode": "dq",
+      "arm": "Online",
+      "successes": 15,
+      "task_return_sum": 5.36,
+      "task_return_mean": 0.268,
+      "practice_events": 1,
+      "practice_rollouts": 3,
+      "diagnostic_memory_updates": 1,
+      "memory_retrievals": 1,
+      "diagnostic_calls": 5,
+      "later_phase_memory_lookups": 0
+    },
+    {
+      "mode": "dq",
+      "arm": "TaskTD",
+      "successes": 14,
+      "task_return_sum": 3.3600000000000003,
+      "task_return_mean": 0.168,
+      "practice_events": 0,
+      "practice_rollouts": 0,
+      "diagnostic_memory_updates": 0,
+      "memory_retrievals": 0,
+      "diagnostic_calls": 0,
+      "later_phase_memory_lookups": 0
+    }
+  ],
+  "actual_practice_events": [
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "Frozen",
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:7": 1
+      },
+      "epoch": 0,
+      "means": {
+        "keep": -1.24,
+        "single:0": -1.02,
+        "single:7": 0.76
+      },
+      "menu": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.24
+        ],
+        "single:0": [
+          -1.02
+        ],
+        "single:7": [
+          0.76
+        ]
+      },
+      "selected": "single:7",
+      "strategy": "verify-one",
+      "unprobed": []
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "Online",
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:7": 1
+      },
+      "epoch": 0,
+      "means": {
+        "keep": -1.24,
+        "single:0": -1.02,
+        "single:7": 0.76
+      },
+      "menu": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.24
+        ],
+        "single:0": [
+          -1.02
+        ],
+        "single:7": [
+          0.76
+        ]
+      },
+      "selected": "single:7",
+      "strategy": "verify-one",
+      "unprobed": []
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "Anchored",
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:7": 1
+      },
+      "epoch": 0,
+      "means": {
+        "keep": -1.24,
+        "single:0": -1.02,
+        "single:7": 0.76
+      },
+      "menu": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.24
+        ],
+        "single:0": [
+          -1.02
+        ],
+        "single:7": [
+          0.76
+        ]
+      },
+      "selected": "single:7",
+      "strategy": "verify-one",
+      "unprobed": []
+    }
+  ],
+  "future_memory_benefit": "NOT_MEASURED_ENTRY_NOT_EXERCISED",
+  "findings": [
+    "Verified actual outcomes genuinely update mutable diagnostic M in Online and Anchored after e0; original Q*/ordinary learning/reward unchanged.",
+    "All three corrected roles have identical 20 main raw traces and results: 15 successes, mean0.268,3 private trials; TaskTD14/20,mean0.168,no probes.",
+    "Intended later M comparison NOT EXERCISED: phi3/5 factual terminals COLLISION, frozen base ambiguity gate bypasses M. All three roles have only e0 lookup/practice; zero later lookups.",
+    "One verified update is not evidence of future memory benefit or no-benefit. The next concrete gap is candidate entry independent of frozen-selector top-score ambiguity, not forcing the world to produce TIMEOUT."
+  ],
+  "limits": [
+    "One known-mechanism-inspired deterministic DQ stream,20 tasks; no independentseed/population/patch/general qualification.",
+    "M sample means/anchors are empirical estimates, not causal truth or confidence. Reused prior data is recorded training data, not revived runtime handles.",
+    "Corrected mainstream improvement over ordinary baseline reflects first intervention plus ordinary learning, not demonstrated memory transfer.",
+    "All actual COLLISION/negative trial outcomes preserved; no world replacement, native retry or old checker run.",
+    "Native wall is instrumented total; CPU/M-refit/clone overhead not separately profiled."
+  ],
+  "preservation": {
+    "old72_ledger_values": true,
+    "old266_provenance": true,
+    "original313_current_sha_match": 313,
+    "current_nonledger_input_pins_match": 339,
+    "automation_inspected_or_modified": false,
+    "independent_expert_or_sciencegate": false,
+    "whole_repository_audit_claimed": false
+  }
+}

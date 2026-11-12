@@ -1,0 +1,56 @@
+{
+  "schema": "a96-v47-empty-Gamma-entry-dispatch-only-repair",
+  "parent_commit": "dce97b980c2a4190530c91994bc4b974c0e17289",
+  "original_source_sha256": {
+    "contract.json": "c6251b607c0b1439bb99b5798a091bf09b3113341728f2332bbb3ee37fe0898e",
+    "candidate.py": "ae128e81573c6f57e2e9b72d249e79fca192af265d2b81df3a927b3a12ca5f17",
+    "execute.py": "8a2e1c9994f942894728598452db349e134c5c3b3c8eff20443afd046292bffe",
+    "check_stored.py": "79f7855be9c05b49cb17be1329081f262839e5b9ef3a45ac39ada608010c8f12"
+  },
+  "original_failure": {
+    "role": "KEYLESS_NATIVE_MIXED_PROJECTION_ENGINEERING",
+    "command": [
+      "D:\\python\\python.exe",
+      "-X",
+      "utf8",
+      "-B",
+      "D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3-dense-20261009\\experiments\\v03r\\a96_dense\\b2_prepare\\mixed_projection_v47\\candidate.py"
+    ],
+    "start_utc": "2026-10-10T23:31:38.852678+00:00",
+    "cwd": "D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3-dense-20261009",
+    "inputs": {
+      "contract.json": "c6251b607c0b1439bb99b5798a091bf09b3113341728f2332bbb3ee37fe0898e",
+      "candidate.py": "ae128e81573c6f57e2e9b72d249e79fca192af265d2b81df3a927b3a12ca5f17",
+      "execute.py": "8a2e1c9994f942894728598452db349e134c5c3b3c8eff20443afd046292bffe",
+      "check_stored.py": "79f7855be9c05b49cb17be1329081f262839e5b9ef3a45ac39ada608010c8f12"
+    },
+    "finish_utc": "2026-10-10T23:31:49.015974+00:00",
+    "native_child_exit_code": 1,
+    "files": {
+      "stdout.log": {
+        "bytes": 15393410,
+        "sha256": "52cb96d128bc7897ca6a7a0891c7777da04ac0f5d1593f8bfc7456c890c67bf2"
+      },
+      "stderr.log": {
+        "bytes": 870,
+        "sha256": "237afb239041297b91e983e54cad40bde9d316cf151772d6814fe0e05c3156ab"
+      }
+    },
+    "scientific_PASS": false,
+    "collection_authorized": false
+  },
+  "original_stderr_complete": "Traceback (most recent call last):\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3-dense-20261009\\experiments\\v03r\\a96_dense\\b2_prepare\\mixed_projection_v47\\candidate.py\", line 246, in <module>\n    main()\n    ~~~~^^\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3-dense-20261009\\experiments\\v03r\\a96_dense\\b2_prepare\\mixed_projection_v47\\candidate.py\", line 196, in main\n    truth=factual._persistent_truth(trace,scene,reference);oracle=OracleCreditAdapter.evaluate(truth['Gamma_P_star'])\n                                                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3-dense-20261009\\src\\rfl_rebuild\\method\\credit.py\", line 226, in evaluate\n    raise ProtocolError(\"Gamma* is never empty (A67)\")\nrfl_rebuild.method.credit.ProtocolError: Gamma* is never empty (A67)\n",
+  "allowed_change": "Retain ALL exact scope/world/panel/target/amplitude/mass. Compute and emit originaltruth for empty Gamma without calling nonempty-only Oracle adapter. Explicit NO_MANIFESTATION_ORACLE_INAPPLICABLE status; no credit/effect filled. Original failure had one SUCCESS factual captured then zero B1, zero accepted ACTUAL. Repaired full execution repeats this one incomplete keyless control factual exactly once, counted separately. Original source/capture remain unchanged. No automatic retry of original candidate. Separate corrected source and exclusive outputs.",
+  "expected_barrier": {
+    "basis_world_records": 5791,
+    "unique_full_pre_worlds": 5728,
+    "query_tree_nodes": 23764,
+    "prediction_sha256": "58aea331779c0f0c582d8a8acbb5e8c18f03c7f38bf72d355e511d97c3321b9d",
+    "world_sha256": "504b5fcae16cf5c129bf5f5954f7927d5be2b0fabb5c1d8b0b632047739f0bd9",
+    "scope_sha256": "58d7050343413750bfd9bf1b2ca3edbdc4b77ebae7994466c02f618148544425"
+  },
+  "runtime_inputs": 1073,
+  "scientific_PASS": false,
+  "collection_authorized": false
+}
+

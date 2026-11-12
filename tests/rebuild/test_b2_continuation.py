@@ -1,0 +1,479 @@
+r"""A87 §75.6 — the $U_1$ continuation instrument, and its closure gates G1--G5.
+
+$$\boxed{\text{Continuation CLOSED} = G1 \land G2 \land G3 \land G4 \land G5 \land
+\text{a clean kernel/B1 regression suite}}$$
+
+Each gate answers exactly one question, and the split matters because the failure modes are
+different:
+
+| gate | what it proves |
+|---|---|
+| G1 | the $D_Q$ and $X$ **post-update** learner channels reach a continuation the same way they reach an ordinary rollout, on the frozen projection images |
+| G2 | a continuation entered at the post-commit state is the *suffix* of the ordinary rollout of the frozen $\mathcal C_P$ scene |
+| G3 | the continuation does **not** re-execute $C_P^{L}$ |
+| G4 | the equality is not a $\texttt{START}$-only accident: every pre-action context with $t > 0$ on the frozen canary healthy traces |
+| G5 | the scalar semantics hold on the whole of $\mathcal X_D$, against the frozen exact solve |
+
+Nothing here is the structural screening: no behaviour on $\mathcal X_D$ or $U_2$ is measured against
+a candidate, no $\Delta V^{meas}$ is formed, and no seed is drawn. The canary scenes are the
+instrument's calibration scenes -- A86 §74.4 requires per-architecture synthetic calibration, and a
+gate that never exercised its own edit could not tell instrument blindness from candidate blindness.
+"""
+
+from __future__ import annotations
+
+import ast
+import pathlib
+import sys
+
+import pytest
+
+ROOT = pathlib.Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "src"))
+
+from rfl_rebuild.b1.errors import ProtocolError  # noqa: E402
+from rfl_rebuild.b2 import assert_modules_are_closed  # noqa: E402
+from rfl_rebuild.b2.continuation import (  # noqa: E402
+    ContinuationContractError,
+    continuation,
+    exogenous_lift,
+    sigma_suffix,
+    suffix_from,
+)
+from rfl_rebuild.b2.environment import (  # noqa: E402
+    PRODUCTION_MODULES,
+    audited_modules,
+    learned_rollout,
+    learner_channels,
+)
+from rfl_rebuild.b2.screening import (  # noqa: E402
+    WITNESS_SUFFIX_STEP,
+    X_SITE,
+    canary_edit,
+)
+from rfl_rebuild.env.domain import decision_contexts, is_decision_context  # noqa: E402
+from rfl_rebuild.env.kernel import (  # noqa: E402
+    HORIZON,
+    START,
+    ControlState,
+    ControllerSite,
+    SemanticTape,
+    State,
+    continue_rollout,
+    initial_control,
+    option_actions,
+    option_ids,
+)
+from rfl_rebuild.learner.reference import reference_view_from  # noqa: E402
+from rfl_rebuild.learner.store import (  # noqa: E402
+    CONTROLLER,
+    PROCESS,
+    Q,
+    Edit,
+    LearnerPersistentState,
+    LearnerStateError,
+    QAddress,
+    StoreTransactionError,
+)
+from rfl_rebuild.solve.dp import solve_reference  # noqa: E402
+
+SOL = solve_reference()
+REFERENCE = reference_view_from(SOL)
+INSTRUMENT = ROOT / "src" / "rfl_rebuild" / "b2" / "continuation.py"
+
+#: The frozen canary scene of §75.2, in the projection-image form the gates are bound to.
+START_STATE = State(x=START[0], y=START[1], t=0, kappa=0, phi=0)
+CANARY_TAPE = SemanticTape(phase=0, error_flag=0, cause_rank=0)
+U2_BASE_OPTION = {"D_Q": 1, "X": 1, "P": 0}
+CANARIES = ("D_Q", "X", "P")
+
+
+# `canary_edit` is imported from the harness, so the fixture exists once: a second copy here
+# could drift from the one the screening measures with.
+
+
+def learner_with(edits=()) -> LearnerPersistentState:
+    r"""A learner state with the given persistent edits.
+
+    A $Q$ edit must be handed the injected reference view: it supplies both the domain the entry
+    must lie in and the value that canonicalises to a deletion (A77 §65.4), and nothing in the
+    substrate fetches one for itself. The same reference the instrument reads is passed here, so
+    an edit and its read path cannot disagree about the referent.
+"""
+    state = LearnerPersistentState()
+    if edits:
+        state.apply_transaction(list(edits), q_reference=REFERENCE)
+    return state
+
+
+def ordinary(kind: str, learner: LearnerPersistentState):
+    r"""The ordinary rollout of the frozen $U_2$ image of canary ``kind``."""
+    return learned_rollout(learner, kappa=0, tape=CANARY_TAPE,
+                           base_option=U2_BASE_OPTION[kind], q_reference=REFERENCE)
+
+
+def entry_image(kind: str) -> tuple:
+    r"""$g_{U_1}(\xi_A^*)$: A88 §76.3 moves the X witness, and the $P$ image stays pre-update."""
+    if kind == "D_Q":
+        return (START_STATE, 1, 0)
+    if kind == "X":
+        return (X_SITE, 1, 0)
+    return (START_STATE, 0, 0)
+
+
+def cont(learner: LearnerPersistentState, state: State, z: int, m: int):
+    r"""The instrument, entered with the lift the screening will use."""
+    return continuation(learner=learner, state=state, z=z, m=m, kappa=state.kappa,
+                        tape=exogenous_lift(state, z, m), q_reference=REFERENCE)
+
+
+def healthy_contexts(kind: str) -> list:
+    r"""The pre-action contexts a rollout of the frozen scene actually used.
+
+    Step $j$ was taken from ``(steps[j-1].state, steps[j-1].control)``, so enumerating
+    $j = 1 \ldots \lvert\text{steps}\rvert - 1$ is **complete** by construction: it is exactly the
+    set of contexts the loop acted on, and it excludes the post-terminal state, which no step
+    consumed and which the kernel could not resume from.
+    """
+    learner = learner_with()
+    trace = ordinary(kind, learner)
+    return learner, trace, [(trace.steps[j - 1].state, trace.steps[j - 1].control)
+                            for j in range(1, len(trace.steps))]
+
+
+# --------------------------------------------------------------------------- #
+# 1-3. the instrument's own contract
+# --------------------------------------------------------------------------- #
+
+def test_1_the_entry_must_be_a_legal_decision_context():
+    r"""§75.6 (i): membership in $\mathcal X_D$ by the **frozen** enumerator, types first.
+
+    An arbitrary `State`/`ControlState` pair is not accepted, so an instrument cannot quietly widen
+    the unit's domain -- the image table of §75.2 would stop being well defined if it could.
+    """
+    learner = learner_with()
+    bad = [
+        State(x=4, y=2, t=0, kappa=0, phi=0),          # GOAL: never a decision point
+        State(x=0, y=2, t=HORIZON, kappa=0, phi=0),    # past the horizon
+        State(x=0.0, y=2, t=0, kappa=0, phi=0),        # float-typed field: numeric folding
+    ]
+    for state in bad:
+        with pytest.raises(ContinuationContractError):
+            cont(learner, state, 1, 0)
+    for z, m in ((9, 0), (1, 2), (True, 0), (1, 0.0)):
+        with pytest.raises(ContinuationContractError):
+            cont(learner, START_STATE, z, m)
+    with pytest.raises(ContinuationContractError):
+        continuation(learner=object(), state=START_STATE, z=1, m=0, kappa=0,
+                     tape=CANARY_TAPE, q_reference=REFERENCE)
+    # the legal entry the gates use is accepted, so the refusals above are not a blanket refusal
+    assert is_decision_context(START_STATE, 1, 0)
+    assert sigma_suffix(cont(learner, START_STATE, 1, 0)).steps
+
+
+def test_2_the_exogenous_continuation_must_be_the_frozen_lift():
+    r"""§75.4 and §75.6 (ii): exactly $\lambda_{U_1}(s,z,m)$, not merely phase-compatible.
+
+    A tape that agrees on the phase but differs in `error_flag` or `cause_rank` is a *different*
+    legal completion of the same unit, so accepting it would restore the freedom the lift removed --
+    $u \mapsto V$ would be a relation again. That those two fields happen not to move the current
+    physics is deliberately not relied on; if it were the argument, the lift would not be needed.
+    """
+    learner = learner_with()
+    with pytest.raises(ContinuationContractError):
+        continuation(learner=learner, state=START_STATE, z=1, m=0, kappa=0,
+                     tape=SemanticTape(phase=3, error_flag=0, cause_rank=0), q_reference=REFERENCE)
+    for tape in (SemanticTape(phase=0, error_flag=1, cause_rank=0),
+                 SemanticTape(phase=0, error_flag=0, cause_rank=59),
+                 SemanticTape(phase=0, error_flag=1, cause_rank=59)):
+        with pytest.raises(ContinuationContractError):
+            continuation(learner=learner, state=START_STATE, z=1, m=0, kappa=0,
+                         tape=tape, q_reference=REFERENCE)
+    wrong_kappa = State(x=START[0], y=START[1], t=0, kappa=1, phi=0)
+    with pytest.raises(ContinuationContractError):
+        continuation(learner=learner, state=wrong_kappa, z=1, m=0, kappa=0,
+                     tape=SemanticTape(phase=0, error_flag=0, cause_rank=0), q_reference=REFERENCE)
+
+
+def test_2b_the_measurement_signature_is_closed():
+    r"""§75.3: the reward mode is part of the functional, so it is not an argument.
+
+    $$\boxed{\text{generic kernel core} \neq \text{frozen B2 measurement instrument}}$$
+
+    The core keeps both freedoms; an entry that could be handed a different reward mode or a
+    different completion could form two values for one $u$, which is the defect the lift closes.
+    """
+    import inspect
+    parameters = inspect.signature(continuation).parameters
+    assert "reward_mode" not in parameters
+    assert not any(p.kind is inspect.Parameter.VAR_KEYWORD for p in parameters.values())
+    with pytest.raises(TypeError):
+        continuation(learner=learner_with(), state=START_STATE, z=1, m=0, kappa=0,
+                     tape=CANARY_TAPE, q_reference=REFERENCE, reward_mode="B")
+    source = INSTRUMENT.read_text(encoding="utf-8")
+    assigned = {node.targets[0].id for node in ast.walk(ast.parse(source))
+                if isinstance(node, ast.Assign) and isinstance(node.targets[0], ast.Name)}
+    assert "reward_mode" not in assigned
+    assert source.count('reward_mode="A"') == 1, "the mode is fixed, once, at the call"
+
+
+def test_3_lambda_U1_is_a_deterministic_lift_and_not_unit_identity():
+    r"""§75.4: one complete assignment per context, so that $u \mapsto V$ is a function.
+
+    It depends on the state's phase and on nothing else -- not on $z$, not on $m$ -- and it never
+    enters the domain or a cell's name.
+    """
+    for state in (START_STATE, State(x=1, y=3, t=4, kappa=1, phi=5)):
+        tapes = {exogenous_lift(state, z, m)
+                 for z in option_ids() for m in (0, 1)}
+        assert tapes == {SemanticTape(phase=state.phi, error_flag=0, cause_rank=0)}
+        assert exogenous_lift(state, 1, 0) == exogenous_lift(state, 1, 0)
+    assert START_STATE in {s for (s, _z, _m) in decision_contexts()}
+
+
+def test_4_the_instrument_cannot_recommit_and_uses_the_one_core():
+    r"""§75.6 (iii), (iv) — checked on the source, because a comment cannot fail.
+
+    The entry has no process-commit parameter at all: $z$ is taken as already in force. A version
+    that reached for `rollout` or for `process_commit_provider` would re-execute $C_P^{L}$ and
+    manufacture the sensitivity the screening exists to test for.
+    """
+    source = INSTRUMENT.read_text(encoding="utf-8")
+    tree = ast.parse(source)
+    calls = {node.func.id for node in ast.walk(tree)
+             if isinstance(node, ast.Call) and isinstance(node.func, ast.Name)}
+    attributes = {node.attr for node in ast.walk(tree) if isinstance(node, ast.Attribute)}
+    names = {node.id for node in ast.walk(tree) if isinstance(node, ast.Name)}
+    assert "continue_rollout" in calls, "the instrument must call the shared core"
+    assert "rollout" not in calls, "the instrument may not go back through the commit edge"
+    assert "process_commit_provider" not in attributes
+    assert "process_commit_provider" not in names
+    assert "learner_process_commit" not in {a for a in attributes} | names
+    # and it is inside the audited production chain, not beside it
+    assert "rfl_rebuild/b2/continuation.py" in PRODUCTION_MODULES
+    assert_modules_are_closed(audited_modules(ROOT / "src"))
+
+
+# --------------------------------------------------------------------------- #
+# G1-G5
+# --------------------------------------------------------------------------- #
+
+def test_g1_refactor_equivalence_bound_to_the_frozen_projection_images():
+    r"""G1: $\Sigma_{\text{suffix}}$ agrees for every $W \in \mathcal W_{\text{gate}}$
+    restricted to the two decision/controller canaries, on their own frozen images.
+
+    A88 §76.4 rebinds the comparison to a **suffix**: the X witness sits at $t = 2$, so the rollout
+    side is taken from $t_A^*$ (`WITNESS_SUFFIX_STEP`, $t_{D_Q}^* = 0$ and $t_X^* = 2$) rather than
+    from the episode start. Non-vacuity is established from **frozen structural facts** -- that the
+    calibration write lands on the channel the scene consults -- and not by comparing pre-edit with
+    post-edit behaviour, which belongs to the screening.
+    """
+    assert START == (START_STATE.x, START_STATE.y)
+    for kind in ("D_Q", "X"):
+        state, z, m = entry_image(kind)
+        t_star = WITNESS_SUFFIX_STEP[kind]
+        assert (state, z, m) == (START_STATE, 1, 0) if kind == "D_Q" else (state, z, m) == (X_SITE, 1, 0)
+        pre, cal = learner_with(), learner_with([canary_edit(kind)])
+        provider_pre, controller_pre = learner_channels(pre.snapshot(), REFERENCE)
+        provider_cal, controller_cal = learner_channels(cal.snapshot(), REFERENCE)
+        healthy = ordinary(kind, pre)
+        if kind == "D_Q":
+            # the calibration write lands on the row the decision read path actually consults
+            assert provider_pre(START_STATE, ControlState(z=1, m=0)) == 3
+            assert provider_cal(START_STATE, ControlState(z=1, m=0)) == 4
+            assert len(controller_pre) == 0
+        else:
+            site = ControllerSite(state=X_SITE, cmd=3)
+            assert healthy.steps[t_star].a_cmd == 3   # the command the healthy path sends there
+            assert site not in controller_pre
+            assert controller_cal[site] == 1
+            # A88 §76.2: the rewrite is legal for **every** option and automaton state that can
+            # arrive at the site. This is the constraint A87's definition was missing, and the
+            # defect it caused is why the witness moved.
+            for zz in option_ids():
+                for mm in (0, 1):
+                    assert 1 in option_actions(zz, ControlState(z=zz, m=mm), X_SITE)
+        for learner in (pre, cal):
+            assert (sigma_suffix(cont(learner, state, z, m))
+                    == suffix_from(ordinary(kind, learner), t_star))
+
+
+def test_g2_decomposition_equivalence_at_the_frozen_p_scene():
+    r"""G2: the ordinary rollout runs the frozen $\mathcal C_P$ scene and its **own** commit produces
+    $z^{\text{in-force}} = C_P^{L}(0) = 1$; the continuation then enters from that post-commit state.
+
+    Both sides therefore share the scene, the learner and the exogenous assignment, and differ only
+    in whether the commit edge was traversed -- which is what decomposition equivalence means.
+    """
+    learner = learner_with([canary_edit("P")])
+    trace = ordinary("P", learner)
+    assert trace.option_in_force == 1                      # C_P^L(0) = 1
+    assert trace.base_option == 0                          # the scene's proposal
+    assert exogenous_lift(START_STATE, 1, 0) == CANARY_TAPE  # the lift is the P scene's own tape
+    assert sigma_suffix(cont(learner, START_STATE, 1, 0)) == sigma_suffix(trace)
+    assert sigma_suffix(cont(learner, START_STATE, 1, 0)) == suffix_from(trace, 0)
+
+
+def test_g3_the_continuation_does_not_read_the_process_channel():
+    r"""G3: a commit override that *would* change $z$ must not be read.
+
+    $$\boxed{\Sigma^{\text{poison}}_{\text{suffix}} = \Sigma^{\text{clean}}_{\text{suffix}}$$
+
+    The liveness half is witnessed by the **option in force** of the paired ordinary rollout, not by
+    a return: the poison's only purpose is to show that the ordinary entry really does read
+    $C_P^{L}$, and two different options could otherwise share a return and make the gate fail
+    spuriously.
+    """
+    poison = [Edit(PROCESS, z, (z + 1) % len(option_ids())) for z in option_ids()]
+    clean, poisoned = learner_with(), learner_with(poison)
+    entry = (START_STATE, 1, 0)
+    assert sigma_suffix(cont(poisoned, *entry)) == sigma_suffix(cont(clean, *entry))
+    assert ordinary("P", poisoned).option_in_force != ordinary("P", clean).option_in_force
+
+
+def test_g4_non_start_suffix_equality_over_the_frozen_canary_healthy_traces():
+    r"""G4: equality on the interior of the frozen traces, not only at $\texttt{START}$.
+
+    A wrapper that reset a non-zero $t$, dropped the passed $m$, or resumed with the wrong remaining
+    horizon could satisfy G1--G3. The context set is complete by construction (see
+    `healthy_contexts`), the tape is the lift of each context, and the $m = 1$ case is required when
+    the frozen traces contain one -- they do, so the conditional is discharged here rather than
+    deferred to G5.
+    """
+    seen = {0: 0, 1: 0}
+    for kind in CANARIES:
+        learner, trace, contexts = healthy_contexts(kind)
+        eligible = [(s, c) for (s, c) in contexts if is_decision_context(s, c.z, c.m)]
+        assert len(eligible) == len(contexts), "a context the loop used is outside X_D"
+        assert eligible, "no interior context: the gate would be vacuous"
+        for step, (state, control) in enumerate(eligible, start=1):
+            assert exogenous_lift(state, control.z, control.m) == CANARY_TAPE
+            assert sigma_suffix(cont(learner, state, control.z, control.m)) == suffix_from(trace, step)
+            seen[control.m] += 1
+    assert seen[0] >= 1, "no t > 0 context with m = 0"
+    assert seen[1] >= 1, (
+        "the frozen healthy traces contain no t > 0 context with m = 1, so the m = 1 half of G4 is "
+        "not exercised; G5 still covers m = 1 on the whole domain")
+
+
+def test_g5_full_domain_scalar_semantics_with_the_lift():
+    r"""G5: $\forall (s,z,m) \in \mathcal X_D:\ V^{cont}_{W_{\text{pre}}}(s,z,m;\lambda_{U_1}) =
+    V^{*}(s,z,m)$, with the existing DP gate's tolerance.
+
+    Stated against the lift rather than a bare phase clause, so the object validated is the
+    instrument the screening will use. This is not a measurement of a candidate: $W_{\text{pre}}$ is
+    the unedited learner and the oracle is the frozen exact solve.
+    """
+    contexts = decision_contexts()
+    assert len(contexts) == 13824
+    learner = learner_with()
+    checked = 0
+    for (state, z, m) in contexts:
+        trace = cont(learner, state, z, m)
+        assert trace.return_value == pytest.approx(SOL.value(state, z, m), rel=1e-6, abs=1e-12)
+        assert trace.option_in_force == z
+        checked += 1
+    assert checked == len(contexts)
+
+
+# --------------------------------------------------------------------------- #
+# 9. mutation power: the gates must be able to fail
+# --------------------------------------------------------------------------- #
+
+def test_9_the_gates_kill_a_divergent_instrument():
+    r"""A gate that cannot fail is not a gate.
+
+    Four deliberate defects, each one a plausible implementation of the same interface, each one
+    killed by the gate that owns that failure mode -- and each kill is checked *through the gate's
+    own comparison*, so the mutation table cannot drift away from the contracts it certifies.
+    """
+    state, z, m = entry_image("D_Q")
+    learner = learner_with()
+    reference_signature = sigma_suffix(cont(learner, state, z, m))
+
+    def wrong_t_reset(entry_state: State, ez: int, em: int):
+        provider, controller = learner_channels(learner.snapshot(), REFERENCE)
+        return continue_rollout(
+            state=State(x=entry_state.x, y=entry_state.y, t=0, kappa=entry_state.kappa,
+                        phi=entry_state.phi),
+            control=ControlState(z=ez, m=em), tape=exogenous_lift(entry_state, ez, em),
+            command_provider=provider, base_option=ez, option_in_force=ez, controller=controller)
+
+    def wrong_m_dropped(entry_state: State, ez: int, em: int):
+        provider, controller = learner_channels(learner.snapshot(), REFERENCE)
+        return continue_rollout(
+            state=entry_state, control=ControlState(z=ez, m=0),
+            tape=exogenous_lift(entry_state, ez, em), command_provider=provider,
+            base_option=ez, option_in_force=ez, controller=controller)
+
+    def wrong_reference_shortcut(entry_state: State, ez: int, em: int):
+        return cont(learner_with(), entry_state, ez, em)      # the unedited learner's channels
+
+    def wrong_recommit(entry_state: State, ez: int, em: int):
+        snapshot = learner.snapshot()
+        provider, controller = learner_channels(snapshot, REFERENCE)
+        recommitted = snapshot.process_commit_provider()(ez)
+        return continue_rollout(
+            state=entry_state, control=initial_control(recommitted),
+            tape=exogenous_lift(entry_state, ez, em), command_provider=provider,
+            base_option=ez, option_in_force=recommitted, controller=controller)
+
+    # (a) G4 owns the t / m surface: a reset t or a dropped m must change an interior suffix
+    kills = {"t_reset": 0, "m_dropped": 0}
+    for kind in CANARIES:
+        _learner, trace, contexts = healthy_contexts(kind)
+        for step, (ctx_state, control) in enumerate(
+                [(s, c) for (s, c) in contexts if is_decision_context(s, c.z, c.m)], start=1):
+            want = suffix_from(trace, step)
+            if sigma_suffix(wrong_t_reset(ctx_state, control.z, control.m)) != want:
+                kills["t_reset"] += 1
+            if sigma_suffix(wrong_m_dropped(ctx_state, control.z, control.m)) != want:
+                kills["m_dropped"] += 1
+    assert kills["t_reset"] > 0, "G4 cannot see a reset t"
+    assert kills["m_dropped"] > 0, "G4 cannot see a dropped m"
+
+    # (b) G1 owns the learner-channel surface: a continuation that ignores the edited W must
+    #     disagree with the ordinary rollout of the *same* edited W.
+    for kind in ("D_Q", "X"):
+        edited = learner_with([canary_edit(kind)])
+        image, ez, em = entry_image(kind)
+        assert sigma_suffix(wrong_reference_shortcut(image, ez, em)) != sigma_suffix(ordinary(kind, edited))
+
+    # (c) G3 owns the commit surface: under a poison that *would* change z, a wrapper that recommits
+    #     leaves the poisoned/clean equality that the real instrument satisfies.
+    poison = [Edit(PROCESS, zz, (zz + 1) % len(option_ids())) for zz in option_ids()]
+    poisoned = learner_with(poison)
+    clean_signature = sigma_suffix(cont(learner_with(), state, z, m))
+    assert sigma_suffix(cont(poisoned, state, z, m)) == clean_signature          # the real thing
+    snapshot = poisoned.snapshot()
+    provider, controller = learner_channels(snapshot, REFERENCE)
+    recommitted = snapshot.process_commit_provider()(z)
+    assert recommitted != z, "the poison must change the option, or liveness is untested"
+    assert sigma_suffix(continue_rollout(
+        state=state, control=initial_control(recommitted),
+        tape=exogenous_lift(state, z, m), command_provider=provider,
+        base_option=z, option_in_force=recommitted, controller=controller)) != clean_signature
+
+
+def test_10_the_reference_oracle_the_gates_compare_against_is_the_frozen_solver():
+    r"""G5's oracle is `solve_reference()`, and the two rows §75.7 cites come from it."""
+    assert SOL.value(START_STATE, 0, 0) == pytest.approx(0.92, rel=1e-6)
+    assert SOL.value(START_STATE, 1, 0) == pytest.approx(0.88, rel=1e-6)
+
+
+def test_11_the_instrument_refuses_an_entry_outside_the_frozen_canary_images():
+    r"""The images are frozen in §75.2, so the gates cannot be re-pointed at a friendlier scene.
+
+    This is the regression that keeps G1/G2 honest: if a later revision moved an image -- say the
+    $P$ image to the post-commit option, or the $D_Q$ image to $z = 0$ -- the gate would exercise a
+    different scene while still printing `PASS`.
+    """
+    assert entry_image("D_Q") == (START_STATE, 1, 0)
+    assert entry_image("X") == (X_SITE, 1, 0)          # A88 §76.3
+    assert entry_image("P") == (START_STATE, 0, 0)
+    assert U2_BASE_OPTION == {"D_Q": 1, "X": 1, "P": 0}
+    assert CANARY_TAPE == SemanticTape(phase=0, error_flag=0, cause_rank=0)
+    # the P image is pre-update by rule: the option the scene proposes, not the one the arm commits
+    assert entry_image("P")[1] == 0 and learner_with([canary_edit("P")]).process_overrides
+    with pytest.raises((ProtocolError, LearnerStateError, StoreTransactionError)):
+        learner_with().apply_transaction([Edit(PROCESS, 0, 9)])

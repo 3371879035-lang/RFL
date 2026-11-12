@@ -1,0 +1,77 @@
+{
+  "version": 224,
+  "status": "UNTRAINED_REAL_CREDIT_CHECKED",
+  "utc": "2026-11-11T15:39:05.671604+00:00",
+  "head": "d0edad11137a117f45ab94f5f10cf6f045a61ac3",
+  "preferred_class": "feedback_program_v224.FeedbackCreditNet",
+  "parameters": 20469653,
+  "parameter_tensors": 249,
+  "new_parameters_over_v223": 2063684,
+  "actual_counts": {
+    "actual_events": 62,
+    "main_steps": 54,
+    "trials": 8,
+    "successes": 3,
+    "imagined_nodes": 213,
+    "particle_rows": 800,
+    "decisions": 79
+  },
+  "failure_sessions": 6,
+  "baseline_trials": 5,
+  "candidate_trials": 3,
+  "adoptions": 2,
+  "real_credit_gradient_tensors": 89,
+  "world_gradient_tensors": 155,
+  "critic_gradient_tensors": 5,
+  "cross_route_gradient_leaks": 0,
+  "same_snapshot_replay": {
+    "109": {
+      "candidate_code_max": 0.0,
+      "policy_max": 0.0,
+      "value_max": 0.0,
+      "log_probability_delta": -2.05063552982665e-06
+    },
+    "127": {
+      "candidate_code_max": 0.0,
+      "policy_max": 0.0,
+      "value_max": 0.0,
+      "log_probability_delta": -7.064457676619895e-06
+    }
+  },
+  "same_world_diagnostic_importance_weights": {
+    "109": 1.0714179249411973,
+    "127": 0.8408522830792152
+  },
+  "checks": 14,
+  "checks_all_passed": true,
+  "exit": {
+    "first_run_exit": 0,
+    "audit_exit": 0,
+    "timeout": false,
+    "automatic_retries": 0,
+    "wall_seconds": 43.12135440000566,
+    "input_count": 697,
+    "changed_inputs": [],
+    "utc": "2026-11-11T15:34:18.584281+00:00"
+  },
+  "preserved_previous_inputs": 684,
+  "optimizer_steps": 0,
+  "old_native_reruns": 0,
+  "automatic_tasks_changed": 0,
+  "git_commit_created": false,
+  "untrained_checkpoints": [
+    "experiments/v09r/real_credit_v224/capture/untrained_seed109.pt",
+    "experiments/v09r/real_credit_v224/capture/untrained_seed127.pt"
+  ],
+  "math": "docs/feedback_math/real_credit_v224/MATHEMATICAL_MODEL_V16.md",
+  "report": "experiments/v09r/real_credit_v224/RESULTS.md",
+  "usage": "experiments/v09r/real_credit_v224/USAGE.md",
+  "limits": [
+    "Trainable connectivity, not trained efficacy or causal discovery",
+    "Goal/cost policy optimization is RL-style if later trained, not automatically a strict reward-free feedback arm",
+    "No scalar target weights adopted",
+    "No trained SLEEP consolidation",
+    "Same-world full-trajectory importance weights can have high variance",
+    "Fixed failure-path coverage and later task labels are not a population comparison or independent final test"
+  ]
+}

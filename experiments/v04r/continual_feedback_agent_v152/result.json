@@ -1,0 +1,866 @@
+{
+  "schema": "V152_CONTINUAL_FEEDBACK_AGENT_RESULT",
+  "date_asia_shanghai": "2026-11-07",
+  "parent_commit": "70a6da0eaa1bfdec84ca646c02448af7d8661156",
+  "status": "ASSEMBLED_AGENT_CONTINUALLY_QUERIES_CORRECTS_AND_LEARNS_ACROSS_ONE_PERSISTENT32TASK_STREAM",
+  "actual": {
+    "native_first_exit": 0,
+    "new_stored_audit_first_exit": 0,
+    "native_counts": {
+      "rollout": 108,
+      "step": 577,
+      "transaction": 236
+    },
+    "records": 754,
+    "native_pins": 336,
+    "main_tasks": 96,
+    "private_tasks": 12,
+    "old_preparation_rollouts": 0,
+    "checkpoint_TX": 3,
+    "fresh_shared_source_TX": 1,
+    "fresh_source_edits": 8,
+    "ordinary_numeric_TX": 111,
+    "ordinary_policy_TX": 111,
+    "private_candidate_X_TX": 6,
+    "main_feedback_X_TX": 4,
+    "issued_observations": 12,
+    "consumed_observations": 6,
+    "accepted_observations": 3,
+    "rejected_observations": 3,
+    "unconsumed_observations": 6,
+    "success_diagnosis": 0,
+    "no_visible_mismatch_keeps": 3,
+    "trial_budget_keeps": 0,
+    "terminal_counts": {
+      "stream": {
+        "TRAP": 19,
+        "SUCCESS": 74,
+        "COLLISION": 3
+      },
+      "private": {
+        "TRAP": 6,
+        "SUCCESS": 6
+      }
+    },
+    "old_native_checker_bank_reruns": 0,
+    "keys_RNG_keyderive_DP_calibration_formal_collection": 0,
+    "started_at_utc": "2026-11-06T20:41:36.958252+00:00",
+    "completed_at_utc": "2026-11-06T20:41:40.775809+00:00",
+    "instrumented_wall_seconds": 3.8119999999762513
+  },
+  "summaries": [
+    {
+      "arm": "TaskTD",
+      "successes": 19,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.06,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        -1.06,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        0.88,
+        0.88,
+        0.88,
+        0.88
+      ],
+      "outcomes": [
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.09937499999999999,
+      "external_updates": 0,
+      "diagnostic_account": {
+        "feedback_enabled": false,
+        "feedback_queries": 0,
+        "learn_from_trials": false,
+        "trial_task_budget": 0,
+        "trial_tasks_used": 0
+      }
+    },
+    {
+      "arm": "PrefixRepair",
+      "successes": 27,
+      "returns": [
+        -1.02,
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.06,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        -1.06,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.88,
+        0.88,
+        0.88,
+        0.88
+      ],
+      "outcomes": [
+        "TRAP",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.569375,
+      "external_updates": 0,
+      "diagnostic_account": {
+        "feedback_enabled": true,
+        "feedback_queries": 3,
+        "learn_from_trials": false,
+        "trial_task_budget": 12,
+        "trial_tasks_used": 6
+      }
+    },
+    {
+      "arm": "PrefixRepairLearn",
+      "successes": 28,
+      "returns": [
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.06,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        -1.06,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.88,
+        0.88,
+        0.88,
+        0.88
+      ],
+      "outcomes": [
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.628125,
+      "external_updates": 3,
+      "diagnostic_account": {
+        "feedback_enabled": true,
+        "feedback_queries": 3,
+        "learn_from_trials": true,
+        "trial_task_budget": 12,
+        "trial_tasks_used": 6
+      }
+    }
+  ],
+  "phase_results": [
+    {
+      "arm": "TaskTD",
+      "stage": "A",
+      "start_epoch": 0,
+      "tasks": 6,
+      "successes": 0,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02
+      ],
+      "mean_return": -1.02,
+      "query_epochs": []
+    },
+    {
+      "arm": "TaskTD",
+      "stage": "B",
+      "start_epoch": 6,
+      "tasks": 6,
+      "successes": 5,
+      "returns": [
+        -1.06,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        0.88
+      ],
+      "mean_return": 0.5566666666666666,
+      "query_epochs": []
+    },
+    {
+      "arm": "TaskTD",
+      "stage": "C",
+      "start_epoch": 12,
+      "tasks": 6,
+      "successes": 5,
+      "returns": [
+        -1.06,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.5399999999999999,
+      "query_epochs": []
+    },
+    {
+      "arm": "TaskTD",
+      "stage": "D",
+      "start_epoch": 18,
+      "tasks": 6,
+      "successes": 5,
+      "returns": [
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.5466666666666666,
+      "query_epochs": []
+    },
+    {
+      "arm": "TaskTD",
+      "stage": "A_return",
+      "start_epoch": 24,
+      "tasks": 4,
+      "successes": 0,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02
+      ],
+      "mean_return": -1.02,
+      "query_epochs": []
+    },
+    {
+      "arm": "TaskTD",
+      "stage": "B_return",
+      "start_epoch": 28,
+      "tasks": 4,
+      "successes": 4,
+      "returns": [
+        0.88,
+        0.88,
+        0.88,
+        0.88
+      ],
+      "mean_return": 0.88,
+      "query_epochs": []
+    },
+    {
+      "arm": "PrefixRepair",
+      "stage": "A",
+      "start_epoch": 0,
+      "tasks": 6,
+      "successes": 4,
+      "returns": [
+        -1.02,
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.2333333333333333,
+      "query_epochs": [
+        0
+      ]
+    },
+    {
+      "arm": "PrefixRepair",
+      "stage": "B",
+      "start_epoch": 6,
+      "tasks": 6,
+      "successes": 5,
+      "returns": [
+        -1.06,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        0.88
+      ],
+      "mean_return": 0.5566666666666666,
+      "query_epochs": [
+        6
+      ]
+    },
+    {
+      "arm": "PrefixRepair",
+      "stage": "C",
+      "start_epoch": 12,
+      "tasks": 6,
+      "successes": 5,
+      "returns": [
+        -1.06,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.5399999999999999,
+      "query_epochs": [
+        12
+      ]
+    },
+    {
+      "arm": "PrefixRepair",
+      "stage": "D",
+      "start_epoch": 18,
+      "tasks": 6,
+      "successes": 5,
+      "returns": [
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.5466666666666666,
+      "query_epochs": []
+    },
+    {
+      "arm": "PrefixRepair",
+      "stage": "A_return",
+      "start_epoch": 24,
+      "tasks": 4,
+      "successes": 4,
+      "returns": [
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.86,
+      "query_epochs": []
+    },
+    {
+      "arm": "PrefixRepair",
+      "stage": "B_return",
+      "start_epoch": 28,
+      "tasks": 4,
+      "successes": 4,
+      "returns": [
+        0.88,
+        0.88,
+        0.88,
+        0.88
+      ],
+      "mean_return": 0.88,
+      "query_epochs": []
+    },
+    {
+      "arm": "PrefixRepairLearn",
+      "stage": "A",
+      "start_epoch": 0,
+      "tasks": 6,
+      "successes": 5,
+      "returns": [
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.5466666666666666,
+      "query_epochs": [
+        0
+      ]
+    },
+    {
+      "arm": "PrefixRepairLearn",
+      "stage": "B",
+      "start_epoch": 6,
+      "tasks": 6,
+      "successes": 5,
+      "returns": [
+        -1.06,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        0.88
+      ],
+      "mean_return": 0.5566666666666666,
+      "query_epochs": [
+        6
+      ]
+    },
+    {
+      "arm": "PrefixRepairLearn",
+      "stage": "C",
+      "start_epoch": 12,
+      "tasks": 6,
+      "successes": 5,
+      "returns": [
+        -1.06,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.5399999999999999,
+      "query_epochs": [
+        12
+      ]
+    },
+    {
+      "arm": "PrefixRepairLearn",
+      "stage": "D",
+      "start_epoch": 18,
+      "tasks": 6,
+      "successes": 5,
+      "returns": [
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.5466666666666666,
+      "query_epochs": []
+    },
+    {
+      "arm": "PrefixRepairLearn",
+      "stage": "A_return",
+      "start_epoch": 24,
+      "tasks": 4,
+      "successes": 4,
+      "returns": [
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.86,
+      "query_epochs": []
+    },
+    {
+      "arm": "PrefixRepairLearn",
+      "stage": "B_return",
+      "start_epoch": 28,
+      "tasks": 4,
+      "successes": 4,
+      "returns": [
+        0.88,
+        0.88,
+        0.88,
+        0.88
+      ],
+      "mean_return": 0.88,
+      "query_epochs": []
+    }
+  ],
+  "queries": [
+    {
+      "arm": "PrefixRepair",
+      "epoch": 0,
+      "stage": "A",
+      "observed": {
+        "keep": [
+          -1.02
+        ],
+        "controller-delete": [
+          0.86
+        ]
+      },
+      "choice": "controller-delete",
+      "target_delta": 1.88,
+      "target_index": 0
+    },
+    {
+      "arm": "PrefixRepair",
+      "epoch": 6,
+      "stage": "B",
+      "observed": {
+        "keep": [
+          -1.06
+        ],
+        "controller-delete": [
+          0.86
+        ]
+      },
+      "choice": "controller-delete",
+      "target_delta": 1.92,
+      "target_index": 2
+    },
+    {
+      "arm": "PrefixRepair",
+      "epoch": 12,
+      "stage": "C",
+      "observed": {
+        "keep": [
+          0.86
+        ],
+        "controller-delete": [
+          -1.02
+        ]
+      },
+      "choice": "keep",
+      "target_delta": -1.88,
+      "target_index": 0
+    },
+    {
+      "arm": "PrefixRepairLearn",
+      "epoch": 0,
+      "stage": "A",
+      "observed": {
+        "keep": [
+          -1.02
+        ],
+        "controller-delete": [
+          0.86
+        ]
+      },
+      "choice": "controller-delete",
+      "target_delta": 1.88,
+      "target_index": 0
+    },
+    {
+      "arm": "PrefixRepairLearn",
+      "epoch": 6,
+      "stage": "B",
+      "observed": {
+        "keep": [
+          -1.06
+        ],
+        "controller-delete": [
+          0.86
+        ]
+      },
+      "choice": "controller-delete",
+      "target_delta": 1.92,
+      "target_index": 2
+    },
+    {
+      "arm": "PrefixRepairLearn",
+      "epoch": 12,
+      "stage": "C",
+      "observed": {
+        "keep": [
+          0.86
+        ],
+        "controller-delete": [
+          -1.02
+        ]
+      },
+      "choice": "keep",
+      "target_delta": -1.88,
+      "target_index": 0
+    }
+  ],
+  "online_costs_excluding_shared4TX": [
+    {
+      "arm": "TaskTD",
+      "main_tasks": 32,
+      "private_tasks": 0,
+      "rollout": 32,
+      "step": 141,
+      "transaction": 64,
+      "shared4TX_excluded": true
+    },
+    {
+      "arm": "PrefixRepair",
+      "main_tasks": 32,
+      "private_tasks": 6,
+      "rollout": 38,
+      "step": 215,
+      "transaction": 81,
+      "shared4TX_excluded": true
+    },
+    {
+      "arm": "PrefixRepairLearn",
+      "main_tasks": 32,
+      "private_tasks": 6,
+      "rollout": 38,
+      "step": 221,
+      "transaction": 87,
+      "shared4TX_excluded": true
+    }
+  ],
+  "accepted": [
+    {
+      "epoch": 0,
+      "stage": "A",
+      "candidate": "controller-delete",
+      "terminal": "SUCCESS",
+      "numeric_content_changed": true
+    },
+    {
+      "epoch": 6,
+      "stage": "B",
+      "candidate": "controller-delete",
+      "terminal": "SUCCESS",
+      "numeric_content_changed": true
+    },
+    {
+      "epoch": 12,
+      "stage": "C",
+      "candidate": "keep",
+      "terminal": "SUCCESS",
+      "numeric_content_changed": true
+    }
+  ],
+  "rejected": [
+    {
+      "epoch": 0,
+      "stage": "A",
+      "candidate": "keep",
+      "terminal": "TRAP",
+      "mechanism_changes": [
+        {
+          "channel": "X",
+          "address": {
+            "state": {
+              "x": 0,
+              "y": 2,
+              "t": 0,
+              "kappa": 1,
+              "phi": 0
+            },
+            "cmd": 4
+          },
+          "origin": 3,
+          "current": 4
+        }
+      ]
+    },
+    {
+      "epoch": 6,
+      "stage": "B",
+      "candidate": "keep",
+      "terminal": "TRAP",
+      "mechanism_changes": [
+        {
+          "channel": "X",
+          "address": {
+            "state": {
+              "kappa": 1,
+              "phi": 2,
+              "t": 2,
+              "x": 1,
+              "y": 2
+            },
+            "cmd": 0
+          },
+          "origin": 3,
+          "current": 0
+        }
+      ]
+    },
+    {
+      "epoch": 12,
+      "stage": "C",
+      "candidate": "controller-delete",
+      "terminal": "TRAP",
+      "mechanism_changes": [
+        {
+          "channel": "X",
+          "address": {
+            "state": {
+              "x": 0,
+              "y": 2,
+              "t": 0,
+              "kappa": 0,
+              "phi": 3
+            },
+            "cmd": 3
+          },
+          "origin": 3,
+          "current": 4
+        }
+      ]
+    }
+  ],
+  "preservation": [
+    {
+      "arm": "TaskTD",
+      "all32_I_preserved": true,
+      "unread_sentinel_preserved": true,
+      "protective_X_preserved": true,
+      "phase_boundary_resets": 0
+    },
+    {
+      "arm": "PrefixRepair",
+      "all32_I_preserved": true,
+      "unread_sentinel_preserved": true,
+      "protective_X_preserved": true,
+      "phase_boundary_resets": 0
+    },
+    {
+      "arm": "PrefixRepairLearn",
+      "all32_I_preserved": true,
+      "unread_sentinel_preserved": true,
+      "protective_X_preserved": true,
+      "phase_boundary_resets": 0
+    }
+  ],
+  "findings": {
+    "overall": "Same32maininputs, TaskTD19/32mean.099375; PrefixRepair27/32mean.569375 +6paidprivatetasks; PrefixRepairLearn28/32mean.628125 also6paidprivatetasks. Notcompute-matched: RFLpaysqueries/TDandmoremainstepsbecausefewerearlyfailures.",
+    "continued_diagnosis": "Bothfeedbackagents actuallyqueryatmainindices0,6,12 (three differentvisiblefailures), notafirst-failure-only demo. Index18 no-visiblemismatchfailure keepswithoutprivatequery; normalTDrecovers. ReturnA/B8tasksallSUCCESSbothfeedbackmethods, noextraqueries/noreset.",
+    "retention": "All32protectedI/P/unreadsentinel preserved, protectiveC mapping kept. Thisisobservedstatepreservation/revisitperformance, notoriginalformalRetention/Collateralaggregatequalification.",
+    "information": "A actualkeepTRAP-1.02 versusdeleteSUCCESS.86; BkeepTRAP-1.06 versusdeleteSUCCESS.86; CkeepSUCCESS.86 versusdeleteTRAP-1.02. CsourceDecisionbadprior iscorrectedbyordinaryvisitedD forALLgroups, notnewB1valueknowledge.",
+    "trial_learning": "Learneringests3compatibleSUCCESS privateobservations (A/Bcandidate,Ckeep), rejects3incompatibleTRAP observations. Thisrundoesnotdemonstrateacceptedfailedsamples; v151 separatelyrecordsactualfailedsamplelearning. LearnA firstsuccessmain2 vsRepairmain3, +1totalmainSUCCESS withoutnewprivatetrials; extraordinaryTDcost6TX.",
+    "limits": "Informednonoverlappingfixedcontextschedule/commonQ*/greedyliteralmainstream, noindependentseed/population/generalquery/worldmodelclaim. Candidate/probelanguagehandprovided; nojointmulti-errorsearch, adaptiveexploration, orlearnedqueryplanner. Originalfullconfirmation/B1/gatequalificationnotinferred."
+  },
+  "integrity": {
+    "native_input_before_after_equal": true,
+    "old_ledger_values_preserved": 90,
+    "old_provenance_preserved": 266,
+    "original313_unchanged": true,
+    "all_old_executed_bytes_unchanged": true,
+    "new_Retention_Collateral_measured": false,
+    "formal_science_PASS": false,
+    "automation_not_touched": true
+  }
+}

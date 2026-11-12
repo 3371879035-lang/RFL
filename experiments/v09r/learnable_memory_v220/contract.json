@@ -1,0 +1,23 @@
+{
+  "schema": "v220-untrained-architecture-probe",
+  "purpose": "Trainable memory and practice architecture after mathematical derivation; no learned-skill claim",
+  "model_seeds": [7, 19, 31],
+  "families": ["stable", "changed", "noisy", "missing"],
+  "main_episodes_per_run": 16,
+  "max_trials_per_failed_task": 1,
+  "trial_budget_per_run": 16,
+  "main_episode_budget": 192,
+  "trial_episode_budget": 192,
+  "protocol_fixture_environment_calls": 3,
+  "structural_checks": 14,
+  "optimizer_steps": 0,
+  "old_native_reruns": 0,
+  "automatic_retries": 0,
+  "wall_budget_seconds": 300,
+  "torch_threads": 1,
+  "default_config": {"width": 192, "attention_heads": 6, "memory_layers": 2, "hypotheses": 8, "candidates": 3},
+  "schema_dimensions": {"observation": 16, "action": 8, "feedback": 8, "goal": 8},
+  "selection": "Network softmax sampling for action, trial, adoption; only tested candidates eligible",
+  "training_boundary": "Gradients checked without optimizer. Initial checkpoints are untrained.",
+  "interpretation": "No four/five-arm performance ranking; not comparable to manually programmed V219 priors"
+}

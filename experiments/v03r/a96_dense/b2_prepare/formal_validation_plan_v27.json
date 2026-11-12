@@ -1,0 +1,5953 @@
+{
+  "schema": "a96-formal-validation-plan-v27",
+  "status": "DRAFT_FOR_REVIEW_NOT_ADOPTED_NOT_FROZEN_NOT_IMPLEMENTED",
+  "local_date": "2026-10-11",
+  "timezone": "Asia/Shanghai",
+  "parent_head": "5f81c62ac0ce6328be074a3c378574b0ab2edfc6",
+  "authority": {
+    "question": "是否授权我补齐这份正式验证方案供你确认？这一步仍不改原冻结源码和 F1、不分配实验种子、不启动采集，也不自动批准新判定规则。",
+    "direct_human_reply": "可以的，你负责就好了",
+    "scope": "integrated prospective draft and primary-agent internal review only",
+    "technical_proposals_owned_by_agent": true
+  },
+  "permissions": {
+    "alter_frozen_sources": false,
+    "reopen_F1": false,
+    "adopt_new_scientific_rules": false,
+    "reduce_scientific_population": false,
+    "implement_addon": false,
+    "execute_collector": false,
+    "allocate_engineering_keys": false,
+    "allocate_science_keys": false,
+    "future_training": false,
+    "scientific_collection": false,
+    "external_publication": false
+  },
+  "evidence_boundary": {
+    "frozen_source_count": 313,
+    "frozen_source_digest": "1dfd80ce49255231998b70fca2b7bcd72e0940822a1bf9d4a8e731603ccc4838",
+    "native_file_count": 153,
+    "prior_preparation_files": 271,
+    "parent_HEAD_bindings": 585,
+    "F1_status": "LOCKED_NOT_RESEARCH_COMPLETE",
+    "science_result": "NOT_EVALUATED_F1_DESIGN_LOCKED",
+    "collection_open": false,
+    "fixtures_v24_to_v26": "mechanism construction evidence only; no population gain or sample N; do not rerun"
+  },
+  "locked_measurement": {
+    "q": 387,
+    "T": 465,
+    "grid": "all integers 0..465",
+    "N_eval": 100,
+    "late_window": [
+      387,
+      465
+    ],
+    "refinement": "eligible_all",
+    "cap": 576,
+    "development_initialization": "C3 layer1 unchanged",
+    "alpha": [
+      1,
+      2
+    ],
+    "epsilon": [
+      1,
+      10
+    ],
+    "master_bank": 1024,
+    "K": 3,
+    "healthy_fraction": 0.95,
+    "source": "fresh A96 native F1 not A95",
+    "dev_lock_sha256": "7d43ee9ae33a218e1266ab3cd2351e07d7e30922302e4527c65facbddaa3472f",
+    "historical_thresholds": [
+      {
+        "claim": "benchmark-quantitative-improvement",
+        "decision_rule": "benchmark-margin-interval-v1",
+        "equivalence_claimed": false,
+        "practical_meaning_claimed": false,
+        "provenance": {
+          "claim": "benchmark-quantitative-improvement",
+          "difference": "reference-minus-treatment",
+          "equivalence_claimed": false,
+          "estimand": "restricted-mean-recovery-time-on-locked-grid",
+          "kind": "benchmark-quantitative-margin-v1",
+          "practical_meaning_claimed": false,
+          "ratified": true,
+          "rationale": "Retain the previously proposed 1.5 episode comparison margin before any scientific acquisition, without making the criterion easier after engineering runs. This is a declared benchmark target, not an independently validated minimum useful effect, cost-benefit threshold, or equivalence bound. Crossing it supports only the stated quantitative restricted-mean difference on the locked checkpoint grid; staying inside it is not practical equivalence. Its T-regime alias is a separate quantitative harm tolerance, not zero harm.",
+          "statistic": "RMST",
+          "units": "training-episodes",
+          "value": 1.5,
+          "zero_harm_claimed": false
+        },
+        "regime": "P",
+        "statistic": "RMST",
+        "value": 1.5
+      },
+      {
+        "provenance": "inherited",
+        "regime": "P",
+        "statistic": "DeficitAUC",
+        "value": 0.01
+      },
+      {
+        "provenance": "nearest-rank-0.95-all-credited-sites",
+        "regime": "P",
+        "statistic": "BehavioralCollateral",
+        "value": 0.04146752410689062
+      },
+      {
+        "endpoint": {
+          "form": "LateWindowRetention",
+          "parameters": {
+            "H1": 387,
+            "H2": 465
+          }
+        },
+        "provenance": "0.25-times-per-seed-population-sd",
+        "regime": "P",
+        "statistic": "Retention",
+        "value": 0.00005515977517224342
+      },
+      {
+        "bound_inclusive": true,
+        "claim": "benchmark-quantitative-harm-bound",
+        "criterion": "lower-ci-bound>=-margin",
+        "decision_rule": "benchmark-harm-bound-v1",
+        "practical_meaning_claimed": false,
+        "provenance": "alias:P:RMST",
+        "regime": "T",
+        "statistic": "RMST",
+        "value": 1.5,
+        "zero_harm_claimed": false
+      },
+      {
+        "provenance": "alias:P:DeficitAUC",
+        "regime": "T",
+        "statistic": "DeficitAUC",
+        "value": 0.01
+      }
+    ]
+  },
+  "scientific_question": "Given all real regime-specific Oracle credit, does one typed persistent update improve future recovery, retain improvement and avoid excessive unrelated or transient harm?",
+  "transient_population": {
+    "source": "original A62 canonical feasible world DGP",
+    "support": "all feasible worlds; normalize whole world rather than context-first rejection",
+    "failure_only": "COLLISION/TRAP/TIMEOUT; SUCCESS no reflection, ordinary TD remains",
+    "strata": [
+      "pure",
+      "mixed",
+      "zero"
+    ],
+    "retain_full_DGP_masses": true,
+    "no_whole_support_primary_mean": true,
+    "zero_mass_table_policy": "report absent structural mass; freeze registry before science; do not fabricate conditional mean",
+    "empty_architecture_projection": "preserve full Gamma and global stratum, explicit no-reflection/no-edit, two actual future clones; Collateral not applicable not zero"
+  },
+  "persistent_population_proposal": {
+    "scope": "new controlled finite family requiring review; not ratified reduction of original population",
+    "decision": {
+      "contexts": "all original decision_contexts with a legal strictly nonoptimal action",
+      "subset_distribution": "uniform within structural cell",
+      "action_distribution": "independent uniform legal strictly nonoptimal actions",
+      "cluster_group_fields": [
+        "kappa",
+        "phi",
+        "z",
+        "m"
+      ],
+      "clustered": "one group, distinct complete states",
+      "distributed": "at least two groups",
+      "cells": [
+        {
+          "id": "k1-singleton",
+          "k": 1,
+          "shape": "singleton",
+          "weight": [
+            1,
+            4
+          ]
+        },
+        {
+          "id": "k2-clustered",
+          "k": 2,
+          "shape": "clustered",
+          "weight": [
+            1,
+            8
+          ]
+        },
+        {
+          "id": "k2-distributed",
+          "k": 2,
+          "shape": "distributed",
+          "weight": [
+            1,
+            8
+          ]
+        },
+        {
+          "id": "k4-clustered",
+          "k": 4,
+          "shape": "clustered",
+          "weight": [
+            1,
+            8
+          ]
+        },
+        {
+          "id": "k4-distributed",
+          "k": 4,
+          "shape": "distributed",
+          "weight": [
+            1,
+            8
+          ]
+        },
+        {
+          "id": "k8-clustered",
+          "k": 8,
+          "shape": "clustered",
+          "weight": [
+            1,
+            8
+          ]
+        },
+        {
+          "id": "k8-distributed",
+          "k": 8,
+          "shape": "distributed",
+          "weight": [
+            1,
+            8
+          ]
+        }
+      ],
+      "installation": {
+        "D_Q": "only bad-action Q entry = b+(b-q) from own original healthy reference; other entries unchanged",
+        "D_patch": "independent action patch from same external defect declaration and own healthy reference",
+        "no_cross_installer_read": true,
+        "not_development_initialization": true
+      }
+    },
+    "controller": {
+      "cells": [
+        {
+          "id": "k1",
+          "k": 1,
+          "weight": [
+            1,
+            4
+          ]
+        },
+        {
+          "id": "k2",
+          "k": 2,
+          "weight": [
+            1,
+            4
+          ]
+        },
+        {
+          "id": "k4",
+          "k": 4,
+          "weight": [
+            1,
+            4
+          ]
+        },
+        {
+          "id": "k8",
+          "k": 8,
+          "weight": [
+            1,
+            4
+          ]
+        }
+      ],
+      "sites": "original common-legal site domain with alternative command",
+      "targets": "uniform common-legal intersection minus original a_cmd",
+      "no_invented_shape": true
+    },
+    "process": {
+      "cells": [
+        {
+          "id": "k1",
+          "k": 1,
+          "weight": [
+            1,
+            4
+          ]
+        },
+        {
+          "id": "k2",
+          "k": 2,
+          "weight": [
+            1,
+            4
+          ]
+        },
+        {
+          "id": "k3",
+          "k": 3,
+          "weight": [
+            1,
+            4
+          ]
+        },
+        {
+          "id": "k4",
+          "k": 4,
+          "weight": [
+            1,
+            4
+          ]
+        }
+      ],
+      "keys": "uniform k-subset of original proposal keys",
+      "targets": "independent uniform other legal option",
+      "manifestation": "ProcessCommit; at most one actual proposal owner per event, not installed k"
+    },
+    "trigger_selection": "defect first, complete full-U2 factual census, original no-transient scene measure conditional on failure with nonempty full Gamma_P; do not weight defects by trigger count",
+    "nontrigger_policy": "preserve all nontrigger worlds and report structural mass; P conditional estimand is new proposed population decision requiring explicit review",
+    "seed_aggregation": "one cell defect/trigger per seed; all cell endpoints calculated first then weighted endpoint scalar; addresses/cells/architectures not independent seeds",
+    "cells_per_primary_seed": {
+      "Decision": 7,
+      "Controller": 4
+    },
+    "cells_per_secondary_seed": {
+      "Decision": 7,
+      "Process": 4
+    },
+    "all_real_manifestations_retained": true,
+    "no_APPLIED_only_selection": true,
+    "no_fixture_population_inference": true
+  },
+  "generation_proposal": {
+    "cell_namespace": "a96-v27-population-v1",
+    "encoding": "compact ASCII JSON array [namespace,seed,regime,cell,purpose,draw_index,rejection_counter] followed by LF",
+    "integer_variate": "unsigned SHA256 digest as 256-bit big-endian integer",
+    "uniform_rank": "limit=2^256-(2^256%M); first v<limit gives v%M",
+    "maximum_rejections": 4294967296,
+    "invalid": "bool/float seed; M>2^256; exhausted rejection; no seed replacement or fallback",
+    "weighted_rank": "exact rational probabilities converted to integer intervals",
+    "canonical_order": "complete world and defect combination ranks",
+    "future_CRN": "original ExogenousEpisode.derive(seed,e) unchanged, paired arms and within-seed cells share episode-coordinate CRN",
+    "fresh_key_files": null,
+    "science_keys_allocated": 0,
+    "workload_keys_allocated": 0
+  },
+  "contrasts": [
+    {
+      "role": "primary",
+      "id": "DQ-L0-FRW",
+      "architecture": "D_Q",
+      "tier": "L0",
+      "law": "FactualReturnWrite",
+      "population": "Decision",
+      "reference": "NoWriteRef(L0)",
+      "N": 400
+    },
+    {
+      "role": "primary",
+      "id": "DP-L0-Delete",
+      "architecture": "D_patch",
+      "tier": "L0",
+      "law": "DeleteFactualPatch",
+      "population": "Decision",
+      "reference": "NoWriteRef(L0)",
+      "N": 400
+    },
+    {
+      "role": "primary",
+      "id": "X-L0-id",
+      "architecture": "X",
+      "tier": "L0",
+      "law": "X_id",
+      "population": "Controller",
+      "reference": "NoWriteRef(L0)",
+      "N": 400
+    },
+    {
+      "role": "secondary",
+      "id": "DQ-L2-CF",
+      "architecture": "D_Q",
+      "tier": "L2",
+      "law": "CounterfactualReturnWrite",
+      "population": "Decision",
+      "reference": "NoWriteRef(L2)",
+      "N": 200
+    },
+    {
+      "role": "secondary",
+      "id": "DQ-L2-Dual",
+      "architecture": "D_Q",
+      "tier": "L2",
+      "law": "DualReturnWrite",
+      "population": "Decision",
+      "reference": "NoWriteRef(L2)",
+      "N": 200
+    },
+    {
+      "role": "secondary",
+      "id": "DP-L1-Set",
+      "architecture": "D_patch",
+      "tier": "L1",
+      "law": "SetAlternative",
+      "population": "Decision",
+      "reference": "NoWriteRef(L1)",
+      "N": 200
+    },
+    {
+      "role": "secondary",
+      "id": "P-L1-id",
+      "architecture": "Process",
+      "tier": "L1",
+      "law": "P_id",
+      "population": "Process",
+      "reference": "NoWriteRef(L1)",
+      "N": 200
+    }
+  ],
+  "whole_update": {
+    "one_native_B1_transaction": true,
+    "all_targets_same_pre_state": true,
+    "all_owner_receipts_retained": true,
+    "all_real_credit_and_residuals_retained": true,
+    "original_singleton_runner_unchanged": true,
+    "new_addon_record_not_fake_singleton": true
+  },
+  "ceilings": {
+    "locality_matched_L3": "normalization ceiling diagnostic; aliases not additional independent treatments",
+    "GlobalOracleRestore": "constructional diagnostic only, not RecoveryFraction denominator",
+    "zero_denominator": "undefined ratio, retain absolute differences"
+  },
+  "joint_ruler_proposal": {
+    "adopted": false,
+    "definition": "full U2 pre-success and no consultation of any declared owner in S; intersection of original E(c)",
+    "scene_count": 5760,
+    "census_time": "before all arms",
+    "shared_region_and_pre_map": true,
+    "reference_uses_same_S": true,
+    "constructor_inputs": [
+      "sanitized_complete_S",
+      "scene",
+      "pre_trace",
+      "healthy_reference"
+    ],
+    "forbidden_dependencies": [
+      "Gamma",
+      "truth_tag",
+      "k_or_shape",
+      "arm_or_law",
+      "APPLIED_only_WriteSet",
+      "ledger",
+      "post_outcome",
+      "canary"
+    ],
+    "scalar": "ordered_mean(pre)-ordered_mean(immediate_post_B1)",
+    "effect": "reference_B-minus-treatment_B",
+    "future_training_on_separate_clone": true,
+    "per_site_diagnostics": "same whole-update maps, not isolated causal effects or main aggregation",
+    "total_domain": "all distinct (architecture,full_pre_state,complete_S) possible with positive mass in whole proposed grammar; not arbitrary powerset or sampled seeds",
+    "totality_certificate": "complete enumeration extent or checkable structural proof plus explicit complete counterexample-search boundary",
+    "empty_or_nonproper": "preserve counterexample and block proposed design; no shrink S, imputation, world skip or current-scientific STOP",
+    "feasibility": "NOT_PROVEN; combinatorial scale and Process empty-healthy-region counterexamples possible; first later implementation task is feasibility, not collection"
+  },
+  "calibration_proposal": {
+    "scope": "every distinct production region with respective architecture including independent D_patch",
+    "injection": "lexicographic first legal off-all-S site using original A89 scene/site order before viewing effect",
+    "D_Q": "original factual action row to min(Q*)-1",
+    "X": "minimum different common-legal alternative",
+    "Process": "minimum other option",
+    "D_patch": "first off-S native Decision owner in pre trace, smallest legal strictly nonoptimal action",
+    "no_legal_site_or_zero_aggregate_prediction": "uncertified; do not switch site or amplitude",
+    "independent_predictor": "full pre-state and declared edit using original step/return semantics; preserve all other defects; never copy measured maps or substitute healthy continuation",
+    "raw_maps_and_reward_order_required": true,
+    "numeric_tolerance": "abs(error)<=max(1e-12,1e-6*abs(predicted)) per scene and aggregate",
+    "tolerance_not_scientific_margin": true,
+    "executed": false
+  },
+  "delta_joint_proposal": {
+    "value": null,
+    "adopted": false,
+    "domain": "pre-only total production census of all distinct (A,W_pre,S), all four architectures/all cells, one spread per instance not scientific sample frequency",
+    "spread": "ordered population SD of raw pre values on joint region; explicit constant=0; no sum/sumsq reconstruction",
+    "formula": "nearest-rank 95th percentile; rank ceil(0.95*M); no interpolation or fit",
+    "source_not_old_F1_threshold": true,
+    "all_zero_nonfinite_nonpositive": "undefined proposed bound; no fabricated positive number",
+    "intractable_total_census": "uncertified; no sample approximation or automatic baseline seeds",
+    "bound": "inclusive lowerCI(reference_B-treatment_B)>=-delta_joint",
+    "absolute_loss": "report raw maps, not undeclared second pass gate",
+    "executed": false
+  },
+  "training": {
+    "initial_update_once": true,
+    "followup_oracle_corrections": false,
+    "protocol": "original FutureTrainingProtocol",
+    "episodes": 465,
+    "checkpoints": 466,
+    "each_arm_independent_post_clone": true,
+    "shared_reference_once_published_bytes": true,
+    "shared_ordered_prefix100": true,
+    "healthy_reference_candidate": 0.7642000000000008,
+    "master_reference_not_substitute": 0.7630078124999966,
+    "all_results_retained_including_unrecovered": true,
+    "interim_100_200_300": "diagnostic only cumulative and fresh100; only final look inferential",
+    "scientific_execution_this_turn": false
+  },
+  "statistical_proposal": {
+    "inferential_unit": "independent seed; exactly one paired endpoint scalar per seed per declared row",
+    "primary": {
+      "N": 400,
+      "blocks": [
+        100,
+        100,
+        100,
+        100
+      ]
+    },
+    "secondary": {
+      "N": 200,
+      "blocks": [
+        100,
+        100
+      ]
+    },
+    "never_pool_to_600": true,
+    "bootstrap": {
+      "replicates": 10000,
+      "method": "paired-seed percentile-linear",
+      "CI": 0.95,
+      "RNG": "Python random.Random(960031)",
+      "reset": "once per cohort for complete report; same saved index matrix across every row in that cohort, no dependence on row or worker completion order",
+      "CIs_not_simultaneous": true,
+      "analysis_RNG_not_environment_seed": true
+    },
+    "formal_tests": {
+      "benefit_vector": "d-margin",
+      "noninferiority_vector": "d+margin",
+      "interaction_vector": "unshifted paired difference",
+      "sign": "two-sided exact binomial on nonzero count",
+      "Wilcoxon": "two-sided conditional exact signed rank with average tie ranks and zero-wilcox",
+      "Holm_alpha": 0.05,
+      "formal_sign_family": "all ordered rows across both cohorts",
+      "companion_Wilcoxon_family": "same complete ordered rows, mandatory report not additional significance gate",
+      "diagnostic_sign_family": "all unshifted rows separately, p identities never conflated",
+      "structural_zero_mass": "regenerate exact closed family before freeze from mass proof, not science outcomes",
+      "normal_missing_row": "block analysis not p=1"
+    },
+    "degeneracy_proposal": {
+      "all_zero_formal_vector": "analytic p=1 DEGENERATE_NO_EVIDENCE, retained in family; new proposal not edits to old null candidate",
+      "unshifted_all_ties": "unresolved direction; dz and zero-net top5 null",
+      "zero_SD": "real constant bootstrap CI, no fabricated SD",
+      "missing_normal_p": "invalid not imputed"
+    },
+    "positive_claim": "CI strict margin + formal Holm-sign + raw mean/median/5%-each-tail trim improvement + unshifted complete diagnostic Holm-sign consistent + top5 same-direction contribution/net<0.50, report delete-top5 mean",
+    "noninferiority": "inclusive CI bound + same direction/sign/trim/tail guards on offset vector; all raw diagnostics reported; not positive benefit, equivalence or zero harm",
+    "seed_improvement_fraction": "count(d>0)/N including ties in denominator, not bootstrap mean-positive probability",
+    "RMST_labels": [
+      "MARGIN_A",
+      "MARGIN_B",
+      "WITHIN_BENCHMARK_MARGIN",
+      "INCONCLUSIVE"
+    ],
+    "family_generation_assumption": "all three original T strata have positive mass; final actual member IDs frozen from complete pre-science mass proof",
+    "provisional_counts": {
+      "primary": 182,
+      "secondary": 212,
+      "total": 394
+    },
+    "ordered_family_rows": [
+      {
+        "id": "primary/DQ-L0-FRW/P/family/RMST",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "cell": "family",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/family/DeficitAUC",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "cell": "family",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/family/Collateral_joint",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "cell": "family",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/family/Retention",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "cell": "family",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/k1-singleton/RMST",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "cell": "k1-singleton",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/k1-singleton/DeficitAUC",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "cell": "k1-singleton",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/k1-singleton/Collateral_joint",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "cell": "k1-singleton",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/k1-singleton/Retention",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "cell": "k1-singleton",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/k2-clustered/RMST",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "cell": "k2-clustered",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/k2-clustered/DeficitAUC",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "cell": "k2-clustered",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/k2-clustered/Collateral_joint",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "cell": "k2-clustered",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/k2-clustered/Retention",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "cell": "k2-clustered",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/k2-distributed/RMST",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "cell": "k2-distributed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/k2-distributed/DeficitAUC",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "cell": "k2-distributed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/k2-distributed/Collateral_joint",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "cell": "k2-distributed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/k2-distributed/Retention",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "cell": "k2-distributed",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/k4-clustered/RMST",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "cell": "k4-clustered",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/k4-clustered/DeficitAUC",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "cell": "k4-clustered",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/k4-clustered/Collateral_joint",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "cell": "k4-clustered",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/k4-clustered/Retention",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "cell": "k4-clustered",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/k4-distributed/RMST",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "cell": "k4-distributed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/k4-distributed/DeficitAUC",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "cell": "k4-distributed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/k4-distributed/Collateral_joint",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "cell": "k4-distributed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/k4-distributed/Retention",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "cell": "k4-distributed",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/k8-clustered/RMST",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "cell": "k8-clustered",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/k8-clustered/DeficitAUC",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "cell": "k8-clustered",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/k8-clustered/Collateral_joint",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "cell": "k8-clustered",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/k8-clustered/Retention",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "cell": "k8-clustered",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/k8-distributed/RMST",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "cell": "k8-distributed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/k8-distributed/DeficitAUC",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "cell": "k8-distributed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/k8-distributed/Collateral_joint",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "cell": "k8-distributed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/k8-distributed/Retention",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "cell": "k8-distributed",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "primary/DQ-L0-FRW/T/pure/RMST",
+        "role": "primary",
+        "kind": "T_endpoint",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "stratum": "pure",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "primary/DQ-L0-FRW/T/pure/DeficitAUC",
+        "role": "primary",
+        "kind": "T_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "stratum": "pure",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "primary/DQ-L0-FRW/T/mixed/RMST",
+        "role": "primary",
+        "kind": "T_endpoint",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "stratum": "mixed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "primary/DQ-L0-FRW/T/mixed/DeficitAUC",
+        "role": "primary",
+        "kind": "T_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "stratum": "mixed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "primary/DQ-L0-FRW/T/zero/RMST",
+        "role": "primary",
+        "kind": "T_endpoint",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "stratum": "zero",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "primary/DQ-L0-FRW/T/zero/DeficitAUC",
+        "role": "primary",
+        "kind": "T_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "stratum": "zero",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/family/RMST",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "cell": "family",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/family/DeficitAUC",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "cell": "family",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/family/Collateral_joint",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "cell": "family",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/family/Retention",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "cell": "family",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/k1-singleton/RMST",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "cell": "k1-singleton",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/k1-singleton/DeficitAUC",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "cell": "k1-singleton",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/k1-singleton/Collateral_joint",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "cell": "k1-singleton",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/k1-singleton/Retention",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "cell": "k1-singleton",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/k2-clustered/RMST",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "cell": "k2-clustered",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/k2-clustered/DeficitAUC",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "cell": "k2-clustered",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/k2-clustered/Collateral_joint",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "cell": "k2-clustered",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/k2-clustered/Retention",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "cell": "k2-clustered",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/k2-distributed/RMST",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "cell": "k2-distributed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/k2-distributed/DeficitAUC",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "cell": "k2-distributed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/k2-distributed/Collateral_joint",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "cell": "k2-distributed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/k2-distributed/Retention",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "cell": "k2-distributed",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/k4-clustered/RMST",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "cell": "k4-clustered",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/k4-clustered/DeficitAUC",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "cell": "k4-clustered",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/k4-clustered/Collateral_joint",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "cell": "k4-clustered",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/k4-clustered/Retention",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "cell": "k4-clustered",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/k4-distributed/RMST",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "cell": "k4-distributed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/k4-distributed/DeficitAUC",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "cell": "k4-distributed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/k4-distributed/Collateral_joint",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "cell": "k4-distributed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/k4-distributed/Retention",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "cell": "k4-distributed",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/k8-clustered/RMST",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "cell": "k8-clustered",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/k8-clustered/DeficitAUC",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "cell": "k8-clustered",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/k8-clustered/Collateral_joint",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "cell": "k8-clustered",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/k8-clustered/Retention",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "cell": "k8-clustered",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/k8-distributed/RMST",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "cell": "k8-distributed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/k8-distributed/DeficitAUC",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "cell": "k8-distributed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/k8-distributed/Collateral_joint",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "cell": "k8-distributed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/k8-distributed/Retention",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "cell": "k8-distributed",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "primary/DP-L0-Delete/T/pure/RMST",
+        "role": "primary",
+        "kind": "T_endpoint",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "stratum": "pure",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "primary/DP-L0-Delete/T/pure/DeficitAUC",
+        "role": "primary",
+        "kind": "T_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "stratum": "pure",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "primary/DP-L0-Delete/T/mixed/RMST",
+        "role": "primary",
+        "kind": "T_endpoint",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "stratum": "mixed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "primary/DP-L0-Delete/T/mixed/DeficitAUC",
+        "role": "primary",
+        "kind": "T_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "stratum": "mixed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "primary/DP-L0-Delete/T/zero/RMST",
+        "role": "primary",
+        "kind": "T_endpoint",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "stratum": "zero",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "primary/DP-L0-Delete/T/zero/DeficitAUC",
+        "role": "primary",
+        "kind": "T_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "stratum": "zero",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "primary/X-L0-id/P/family/RMST",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "X-L0-id",
+        "cell": "family",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "primary/X-L0-id/P/family/DeficitAUC",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "X-L0-id",
+        "cell": "family",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "primary/X-L0-id/P/family/Collateral_joint",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 400,
+        "contrast": "X-L0-id",
+        "cell": "family",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "primary/X-L0-id/P/family/Retention",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 400,
+        "contrast": "X-L0-id",
+        "cell": "family",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "primary/X-L0-id/P/k1/RMST",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "X-L0-id",
+        "cell": "k1",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "primary/X-L0-id/P/k1/DeficitAUC",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "X-L0-id",
+        "cell": "k1",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "primary/X-L0-id/P/k1/Collateral_joint",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 400,
+        "contrast": "X-L0-id",
+        "cell": "k1",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "primary/X-L0-id/P/k1/Retention",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 400,
+        "contrast": "X-L0-id",
+        "cell": "k1",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "primary/X-L0-id/P/k2/RMST",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "X-L0-id",
+        "cell": "k2",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "primary/X-L0-id/P/k2/DeficitAUC",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "X-L0-id",
+        "cell": "k2",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "primary/X-L0-id/P/k2/Collateral_joint",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 400,
+        "contrast": "X-L0-id",
+        "cell": "k2",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "primary/X-L0-id/P/k2/Retention",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 400,
+        "contrast": "X-L0-id",
+        "cell": "k2",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "primary/X-L0-id/P/k4/RMST",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "X-L0-id",
+        "cell": "k4",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "primary/X-L0-id/P/k4/DeficitAUC",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "X-L0-id",
+        "cell": "k4",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "primary/X-L0-id/P/k4/Collateral_joint",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 400,
+        "contrast": "X-L0-id",
+        "cell": "k4",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "primary/X-L0-id/P/k4/Retention",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 400,
+        "contrast": "X-L0-id",
+        "cell": "k4",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "primary/X-L0-id/P/k8/RMST",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "X-L0-id",
+        "cell": "k8",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "primary/X-L0-id/P/k8/DeficitAUC",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "X-L0-id",
+        "cell": "k8",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "primary/X-L0-id/P/k8/Collateral_joint",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 400,
+        "contrast": "X-L0-id",
+        "cell": "k8",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "primary/X-L0-id/P/k8/Retention",
+        "role": "primary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 400,
+        "contrast": "X-L0-id",
+        "cell": "k8",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "primary/X-L0-id/T/pure/RMST",
+        "role": "primary",
+        "kind": "T_endpoint",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "X-L0-id",
+        "stratum": "pure",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "primary/X-L0-id/T/pure/DeficitAUC",
+        "role": "primary",
+        "kind": "T_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "X-L0-id",
+        "stratum": "pure",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "primary/X-L0-id/T/mixed/RMST",
+        "role": "primary",
+        "kind": "T_endpoint",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "X-L0-id",
+        "stratum": "mixed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "primary/X-L0-id/T/mixed/DeficitAUC",
+        "role": "primary",
+        "kind": "T_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "X-L0-id",
+        "stratum": "mixed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "primary/X-L0-id/T/zero/RMST",
+        "role": "primary",
+        "kind": "T_endpoint",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "X-L0-id",
+        "stratum": "zero",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "primary/X-L0-id/T/zero/DeficitAUC",
+        "role": "primary",
+        "kind": "T_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "X-L0-id",
+        "stratum": "zero",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/interaction-k/1-to-2/RMST",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/interaction-k/1-to-2/DeficitAUC",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/interaction-k/1-to-2/Collateral_joint",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "Collateral_joint",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/interaction-k/1-to-2/Retention",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "Retention",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/interaction-k/2-to-4/RMST",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          2,
+          4
+        ]
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/interaction-k/2-to-4/DeficitAUC",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          2,
+          4
+        ]
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/interaction-k/2-to-4/Collateral_joint",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "Collateral_joint",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          2,
+          4
+        ]
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/interaction-k/2-to-4/Retention",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "Retention",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          2,
+          4
+        ]
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/interaction-k/4-to-8/RMST",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          4,
+          8
+        ]
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/interaction-k/4-to-8/DeficitAUC",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          4,
+          8
+        ]
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/interaction-k/4-to-8/Collateral_joint",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "Collateral_joint",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          4,
+          8
+        ]
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/interaction-k/4-to-8/Retention",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "Retention",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          4,
+          8
+        ]
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/interaction-shape/k2/RMST",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 2
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/interaction-shape/k2/DeficitAUC",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 2
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/interaction-shape/k2/Collateral_joint",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "Collateral_joint",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 2
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/interaction-shape/k2/Retention",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "Retention",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 2
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/interaction-shape/k4/RMST",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 4
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/interaction-shape/k4/DeficitAUC",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 4
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/interaction-shape/k4/Collateral_joint",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "Collateral_joint",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 4
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/interaction-shape/k4/Retention",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "Retention",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 4
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/interaction-shape/k8/RMST",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 8
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/interaction-shape/k8/DeficitAUC",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 8
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/interaction-shape/k8/Collateral_joint",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "Collateral_joint",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 8
+      },
+      {
+        "id": "primary/DQ-L0-FRW/P/interaction-shape/k8/Retention",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "Retention",
+        "N": 400,
+        "contrast": "DQ-L0-FRW",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 8
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/interaction-k/1-to-2/RMST",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/interaction-k/1-to-2/DeficitAUC",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/interaction-k/1-to-2/Collateral_joint",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "Collateral_joint",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/interaction-k/1-to-2/Retention",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "Retention",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/interaction-k/2-to-4/RMST",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          2,
+          4
+        ]
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/interaction-k/2-to-4/DeficitAUC",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          2,
+          4
+        ]
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/interaction-k/2-to-4/Collateral_joint",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "Collateral_joint",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          2,
+          4
+        ]
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/interaction-k/2-to-4/Retention",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "Retention",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          2,
+          4
+        ]
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/interaction-k/4-to-8/RMST",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          4,
+          8
+        ]
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/interaction-k/4-to-8/DeficitAUC",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          4,
+          8
+        ]
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/interaction-k/4-to-8/Collateral_joint",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "Collateral_joint",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          4,
+          8
+        ]
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/interaction-k/4-to-8/Retention",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "Retention",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          4,
+          8
+        ]
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/interaction-shape/k2/RMST",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 2
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/interaction-shape/k2/DeficitAUC",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 2
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/interaction-shape/k2/Collateral_joint",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "Collateral_joint",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 2
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/interaction-shape/k2/Retention",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "Retention",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 2
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/interaction-shape/k4/RMST",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 4
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/interaction-shape/k4/DeficitAUC",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 4
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/interaction-shape/k4/Collateral_joint",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "Collateral_joint",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 4
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/interaction-shape/k4/Retention",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "Retention",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 4
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/interaction-shape/k8/RMST",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 8
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/interaction-shape/k8/DeficitAUC",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 8
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/interaction-shape/k8/Collateral_joint",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "Collateral_joint",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 8
+      },
+      {
+        "id": "primary/DP-L0-Delete/P/interaction-shape/k8/Retention",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "Retention",
+        "N": 400,
+        "contrast": "DP-L0-Delete",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 8
+      },
+      {
+        "id": "primary/DQ-L0-FRW-minus-DP-L0-Delete/P/interaction-architecture/family/RMST",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "DQ-L0-FRW-minus-DP-L0-Delete",
+        "cell": "family",
+        "definition": "paired D_Q L0 effect minus D_patch L0 effect; same extensional defect independently installed"
+      },
+      {
+        "id": "primary/DQ-L0-FRW-minus-DP-L0-Delete/P/interaction-architecture/family/DeficitAUC",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "DQ-L0-FRW-minus-DP-L0-Delete",
+        "cell": "family",
+        "definition": "paired D_Q L0 effect minus D_patch L0 effect; same extensional defect independently installed"
+      },
+      {
+        "id": "primary/DQ-L0-FRW-minus-DP-L0-Delete/P/interaction-architecture/family/Collateral_joint",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "Collateral_joint",
+        "N": 400,
+        "contrast": "DQ-L0-FRW-minus-DP-L0-Delete",
+        "cell": "family",
+        "definition": "paired D_Q L0 effect minus D_patch L0 effect; same extensional defect independently installed"
+      },
+      {
+        "id": "primary/DQ-L0-FRW-minus-DP-L0-Delete/P/interaction-architecture/family/Retention",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "Retention",
+        "N": 400,
+        "contrast": "DQ-L0-FRW-minus-DP-L0-Delete",
+        "cell": "family",
+        "definition": "paired D_Q L0 effect minus D_patch L0 effect; same extensional defect independently installed"
+      },
+      {
+        "id": "primary/DQ-L0-FRW-minus-DP-L0-Delete/P/interaction-architecture/k1-singleton/RMST",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "DQ-L0-FRW-minus-DP-L0-Delete",
+        "cell": "k1-singleton",
+        "definition": "paired D_Q L0 effect minus D_patch L0 effect; same extensional defect independently installed"
+      },
+      {
+        "id": "primary/DQ-L0-FRW-minus-DP-L0-Delete/P/interaction-architecture/k1-singleton/DeficitAUC",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "DQ-L0-FRW-minus-DP-L0-Delete",
+        "cell": "k1-singleton",
+        "definition": "paired D_Q L0 effect minus D_patch L0 effect; same extensional defect independently installed"
+      },
+      {
+        "id": "primary/DQ-L0-FRW-minus-DP-L0-Delete/P/interaction-architecture/k1-singleton/Collateral_joint",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "Collateral_joint",
+        "N": 400,
+        "contrast": "DQ-L0-FRW-minus-DP-L0-Delete",
+        "cell": "k1-singleton",
+        "definition": "paired D_Q L0 effect minus D_patch L0 effect; same extensional defect independently installed"
+      },
+      {
+        "id": "primary/DQ-L0-FRW-minus-DP-L0-Delete/P/interaction-architecture/k1-singleton/Retention",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "Retention",
+        "N": 400,
+        "contrast": "DQ-L0-FRW-minus-DP-L0-Delete",
+        "cell": "k1-singleton",
+        "definition": "paired D_Q L0 effect minus D_patch L0 effect; same extensional defect independently installed"
+      },
+      {
+        "id": "primary/DQ-L0-FRW-minus-DP-L0-Delete/P/interaction-architecture/k2-clustered/RMST",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "DQ-L0-FRW-minus-DP-L0-Delete",
+        "cell": "k2-clustered",
+        "definition": "paired D_Q L0 effect minus D_patch L0 effect; same extensional defect independently installed"
+      },
+      {
+        "id": "primary/DQ-L0-FRW-minus-DP-L0-Delete/P/interaction-architecture/k2-clustered/DeficitAUC",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "DQ-L0-FRW-minus-DP-L0-Delete",
+        "cell": "k2-clustered",
+        "definition": "paired D_Q L0 effect minus D_patch L0 effect; same extensional defect independently installed"
+      },
+      {
+        "id": "primary/DQ-L0-FRW-minus-DP-L0-Delete/P/interaction-architecture/k2-clustered/Collateral_joint",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "Collateral_joint",
+        "N": 400,
+        "contrast": "DQ-L0-FRW-minus-DP-L0-Delete",
+        "cell": "k2-clustered",
+        "definition": "paired D_Q L0 effect minus D_patch L0 effect; same extensional defect independently installed"
+      },
+      {
+        "id": "primary/DQ-L0-FRW-minus-DP-L0-Delete/P/interaction-architecture/k2-clustered/Retention",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "Retention",
+        "N": 400,
+        "contrast": "DQ-L0-FRW-minus-DP-L0-Delete",
+        "cell": "k2-clustered",
+        "definition": "paired D_Q L0 effect minus D_patch L0 effect; same extensional defect independently installed"
+      },
+      {
+        "id": "primary/DQ-L0-FRW-minus-DP-L0-Delete/P/interaction-architecture/k2-distributed/RMST",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "DQ-L0-FRW-minus-DP-L0-Delete",
+        "cell": "k2-distributed",
+        "definition": "paired D_Q L0 effect minus D_patch L0 effect; same extensional defect independently installed"
+      },
+      {
+        "id": "primary/DQ-L0-FRW-minus-DP-L0-Delete/P/interaction-architecture/k2-distributed/DeficitAUC",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "DQ-L0-FRW-minus-DP-L0-Delete",
+        "cell": "k2-distributed",
+        "definition": "paired D_Q L0 effect minus D_patch L0 effect; same extensional defect independently installed"
+      },
+      {
+        "id": "primary/DQ-L0-FRW-minus-DP-L0-Delete/P/interaction-architecture/k2-distributed/Collateral_joint",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "Collateral_joint",
+        "N": 400,
+        "contrast": "DQ-L0-FRW-minus-DP-L0-Delete",
+        "cell": "k2-distributed",
+        "definition": "paired D_Q L0 effect minus D_patch L0 effect; same extensional defect independently installed"
+      },
+      {
+        "id": "primary/DQ-L0-FRW-minus-DP-L0-Delete/P/interaction-architecture/k2-distributed/Retention",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "Retention",
+        "N": 400,
+        "contrast": "DQ-L0-FRW-minus-DP-L0-Delete",
+        "cell": "k2-distributed",
+        "definition": "paired D_Q L0 effect minus D_patch L0 effect; same extensional defect independently installed"
+      },
+      {
+        "id": "primary/DQ-L0-FRW-minus-DP-L0-Delete/P/interaction-architecture/k4-clustered/RMST",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "DQ-L0-FRW-minus-DP-L0-Delete",
+        "cell": "k4-clustered",
+        "definition": "paired D_Q L0 effect minus D_patch L0 effect; same extensional defect independently installed"
+      },
+      {
+        "id": "primary/DQ-L0-FRW-minus-DP-L0-Delete/P/interaction-architecture/k4-clustered/DeficitAUC",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "DQ-L0-FRW-minus-DP-L0-Delete",
+        "cell": "k4-clustered",
+        "definition": "paired D_Q L0 effect minus D_patch L0 effect; same extensional defect independently installed"
+      },
+      {
+        "id": "primary/DQ-L0-FRW-minus-DP-L0-Delete/P/interaction-architecture/k4-clustered/Collateral_joint",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "Collateral_joint",
+        "N": 400,
+        "contrast": "DQ-L0-FRW-minus-DP-L0-Delete",
+        "cell": "k4-clustered",
+        "definition": "paired D_Q L0 effect minus D_patch L0 effect; same extensional defect independently installed"
+      },
+      {
+        "id": "primary/DQ-L0-FRW-minus-DP-L0-Delete/P/interaction-architecture/k4-clustered/Retention",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "Retention",
+        "N": 400,
+        "contrast": "DQ-L0-FRW-minus-DP-L0-Delete",
+        "cell": "k4-clustered",
+        "definition": "paired D_Q L0 effect minus D_patch L0 effect; same extensional defect independently installed"
+      },
+      {
+        "id": "primary/DQ-L0-FRW-minus-DP-L0-Delete/P/interaction-architecture/k4-distributed/RMST",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "DQ-L0-FRW-minus-DP-L0-Delete",
+        "cell": "k4-distributed",
+        "definition": "paired D_Q L0 effect minus D_patch L0 effect; same extensional defect independently installed"
+      },
+      {
+        "id": "primary/DQ-L0-FRW-minus-DP-L0-Delete/P/interaction-architecture/k4-distributed/DeficitAUC",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "DQ-L0-FRW-minus-DP-L0-Delete",
+        "cell": "k4-distributed",
+        "definition": "paired D_Q L0 effect minus D_patch L0 effect; same extensional defect independently installed"
+      },
+      {
+        "id": "primary/DQ-L0-FRW-minus-DP-L0-Delete/P/interaction-architecture/k4-distributed/Collateral_joint",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "Collateral_joint",
+        "N": 400,
+        "contrast": "DQ-L0-FRW-minus-DP-L0-Delete",
+        "cell": "k4-distributed",
+        "definition": "paired D_Q L0 effect minus D_patch L0 effect; same extensional defect independently installed"
+      },
+      {
+        "id": "primary/DQ-L0-FRW-minus-DP-L0-Delete/P/interaction-architecture/k4-distributed/Retention",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "Retention",
+        "N": 400,
+        "contrast": "DQ-L0-FRW-minus-DP-L0-Delete",
+        "cell": "k4-distributed",
+        "definition": "paired D_Q L0 effect minus D_patch L0 effect; same extensional defect independently installed"
+      },
+      {
+        "id": "primary/DQ-L0-FRW-minus-DP-L0-Delete/P/interaction-architecture/k8-clustered/RMST",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "DQ-L0-FRW-minus-DP-L0-Delete",
+        "cell": "k8-clustered",
+        "definition": "paired D_Q L0 effect minus D_patch L0 effect; same extensional defect independently installed"
+      },
+      {
+        "id": "primary/DQ-L0-FRW-minus-DP-L0-Delete/P/interaction-architecture/k8-clustered/DeficitAUC",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "DQ-L0-FRW-minus-DP-L0-Delete",
+        "cell": "k8-clustered",
+        "definition": "paired D_Q L0 effect minus D_patch L0 effect; same extensional defect independently installed"
+      },
+      {
+        "id": "primary/DQ-L0-FRW-minus-DP-L0-Delete/P/interaction-architecture/k8-clustered/Collateral_joint",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "Collateral_joint",
+        "N": 400,
+        "contrast": "DQ-L0-FRW-minus-DP-L0-Delete",
+        "cell": "k8-clustered",
+        "definition": "paired D_Q L0 effect minus D_patch L0 effect; same extensional defect independently installed"
+      },
+      {
+        "id": "primary/DQ-L0-FRW-minus-DP-L0-Delete/P/interaction-architecture/k8-clustered/Retention",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "Retention",
+        "N": 400,
+        "contrast": "DQ-L0-FRW-minus-DP-L0-Delete",
+        "cell": "k8-clustered",
+        "definition": "paired D_Q L0 effect minus D_patch L0 effect; same extensional defect independently installed"
+      },
+      {
+        "id": "primary/DQ-L0-FRW-minus-DP-L0-Delete/P/interaction-architecture/k8-distributed/RMST",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "RMST",
+        "N": 400,
+        "contrast": "DQ-L0-FRW-minus-DP-L0-Delete",
+        "cell": "k8-distributed",
+        "definition": "paired D_Q L0 effect minus D_patch L0 effect; same extensional defect independently installed"
+      },
+      {
+        "id": "primary/DQ-L0-FRW-minus-DP-L0-Delete/P/interaction-architecture/k8-distributed/DeficitAUC",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "DeficitAUC",
+        "N": 400,
+        "contrast": "DQ-L0-FRW-minus-DP-L0-Delete",
+        "cell": "k8-distributed",
+        "definition": "paired D_Q L0 effect minus D_patch L0 effect; same extensional defect independently installed"
+      },
+      {
+        "id": "primary/DQ-L0-FRW-minus-DP-L0-Delete/P/interaction-architecture/k8-distributed/Collateral_joint",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "Collateral_joint",
+        "N": 400,
+        "contrast": "DQ-L0-FRW-minus-DP-L0-Delete",
+        "cell": "k8-distributed",
+        "definition": "paired D_Q L0 effect minus D_patch L0 effect; same extensional defect independently installed"
+      },
+      {
+        "id": "primary/DQ-L0-FRW-minus-DP-L0-Delete/P/interaction-architecture/k8-distributed/Retention",
+        "role": "primary",
+        "kind": "interaction",
+        "endpoint": "Retention",
+        "N": 400,
+        "contrast": "DQ-L0-FRW-minus-DP-L0-Delete",
+        "cell": "k8-distributed",
+        "definition": "paired D_Q L0 effect minus D_patch L0 effect; same extensional defect independently installed"
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/family/RMST",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "cell": "family",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/family/DeficitAUC",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "cell": "family",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/family/Collateral_joint",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "cell": "family",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/family/Retention",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "cell": "family",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/k1-singleton/RMST",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "cell": "k1-singleton",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/k1-singleton/DeficitAUC",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "cell": "k1-singleton",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/k1-singleton/Collateral_joint",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "cell": "k1-singleton",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/k1-singleton/Retention",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "cell": "k1-singleton",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/k2-clustered/RMST",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "cell": "k2-clustered",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/k2-clustered/DeficitAUC",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "cell": "k2-clustered",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/k2-clustered/Collateral_joint",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "cell": "k2-clustered",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/k2-clustered/Retention",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "cell": "k2-clustered",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/k2-distributed/RMST",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "cell": "k2-distributed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/k2-distributed/DeficitAUC",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "cell": "k2-distributed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/k2-distributed/Collateral_joint",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "cell": "k2-distributed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/k2-distributed/Retention",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "cell": "k2-distributed",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/k4-clustered/RMST",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "cell": "k4-clustered",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/k4-clustered/DeficitAUC",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "cell": "k4-clustered",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/k4-clustered/Collateral_joint",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "cell": "k4-clustered",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/k4-clustered/Retention",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "cell": "k4-clustered",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/k4-distributed/RMST",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "cell": "k4-distributed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/k4-distributed/DeficitAUC",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "cell": "k4-distributed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/k4-distributed/Collateral_joint",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "cell": "k4-distributed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/k4-distributed/Retention",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "cell": "k4-distributed",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/k8-clustered/RMST",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "cell": "k8-clustered",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/k8-clustered/DeficitAUC",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "cell": "k8-clustered",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/k8-clustered/Collateral_joint",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "cell": "k8-clustered",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/k8-clustered/Retention",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "cell": "k8-clustered",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/k8-distributed/RMST",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "cell": "k8-distributed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/k8-distributed/DeficitAUC",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "cell": "k8-distributed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/k8-distributed/Collateral_joint",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "cell": "k8-distributed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/k8-distributed/Retention",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "cell": "k8-distributed",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-CF/T/pure/RMST",
+        "role": "secondary",
+        "kind": "T_endpoint",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "stratum": "pure",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-CF/T/pure/DeficitAUC",
+        "role": "secondary",
+        "kind": "T_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "stratum": "pure",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-CF/T/mixed/RMST",
+        "role": "secondary",
+        "kind": "T_endpoint",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "stratum": "mixed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-CF/T/mixed/DeficitAUC",
+        "role": "secondary",
+        "kind": "T_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "stratum": "mixed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-CF/T/zero/RMST",
+        "role": "secondary",
+        "kind": "T_endpoint",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "stratum": "zero",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-CF/T/zero/DeficitAUC",
+        "role": "secondary",
+        "kind": "T_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "stratum": "zero",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/family/RMST",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "cell": "family",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/family/DeficitAUC",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "cell": "family",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/family/Collateral_joint",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "cell": "family",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/family/Retention",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "cell": "family",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/k1-singleton/RMST",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "cell": "k1-singleton",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/k1-singleton/DeficitAUC",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "cell": "k1-singleton",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/k1-singleton/Collateral_joint",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "cell": "k1-singleton",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/k1-singleton/Retention",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "cell": "k1-singleton",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/k2-clustered/RMST",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "cell": "k2-clustered",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/k2-clustered/DeficitAUC",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "cell": "k2-clustered",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/k2-clustered/Collateral_joint",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "cell": "k2-clustered",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/k2-clustered/Retention",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "cell": "k2-clustered",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/k2-distributed/RMST",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "cell": "k2-distributed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/k2-distributed/DeficitAUC",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "cell": "k2-distributed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/k2-distributed/Collateral_joint",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "cell": "k2-distributed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/k2-distributed/Retention",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "cell": "k2-distributed",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/k4-clustered/RMST",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "cell": "k4-clustered",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/k4-clustered/DeficitAUC",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "cell": "k4-clustered",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/k4-clustered/Collateral_joint",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "cell": "k4-clustered",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/k4-clustered/Retention",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "cell": "k4-clustered",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/k4-distributed/RMST",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "cell": "k4-distributed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/k4-distributed/DeficitAUC",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "cell": "k4-distributed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/k4-distributed/Collateral_joint",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "cell": "k4-distributed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/k4-distributed/Retention",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "cell": "k4-distributed",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/k8-clustered/RMST",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "cell": "k8-clustered",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/k8-clustered/DeficitAUC",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "cell": "k8-clustered",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/k8-clustered/Collateral_joint",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "cell": "k8-clustered",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/k8-clustered/Retention",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "cell": "k8-clustered",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/k8-distributed/RMST",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "cell": "k8-distributed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/k8-distributed/DeficitAUC",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "cell": "k8-distributed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/k8-distributed/Collateral_joint",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "cell": "k8-distributed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/k8-distributed/Retention",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "cell": "k8-distributed",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/T/pure/RMST",
+        "role": "secondary",
+        "kind": "T_endpoint",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "stratum": "pure",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/T/pure/DeficitAUC",
+        "role": "secondary",
+        "kind": "T_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "stratum": "pure",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/T/mixed/RMST",
+        "role": "secondary",
+        "kind": "T_endpoint",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "stratum": "mixed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/T/mixed/DeficitAUC",
+        "role": "secondary",
+        "kind": "T_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "stratum": "mixed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/T/zero/RMST",
+        "role": "secondary",
+        "kind": "T_endpoint",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "stratum": "zero",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/T/zero/DeficitAUC",
+        "role": "secondary",
+        "kind": "T_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "stratum": "zero",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/family/RMST",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "cell": "family",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/family/DeficitAUC",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "cell": "family",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/family/Collateral_joint",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "cell": "family",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/family/Retention",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "cell": "family",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/k1-singleton/RMST",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "cell": "k1-singleton",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/k1-singleton/DeficitAUC",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "cell": "k1-singleton",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/k1-singleton/Collateral_joint",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "cell": "k1-singleton",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/k1-singleton/Retention",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "cell": "k1-singleton",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/k2-clustered/RMST",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "cell": "k2-clustered",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/k2-clustered/DeficitAUC",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "cell": "k2-clustered",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/k2-clustered/Collateral_joint",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "cell": "k2-clustered",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/k2-clustered/Retention",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "cell": "k2-clustered",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/k2-distributed/RMST",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "cell": "k2-distributed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/k2-distributed/DeficitAUC",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "cell": "k2-distributed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/k2-distributed/Collateral_joint",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "cell": "k2-distributed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/k2-distributed/Retention",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "cell": "k2-distributed",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/k4-clustered/RMST",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "cell": "k4-clustered",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/k4-clustered/DeficitAUC",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "cell": "k4-clustered",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/k4-clustered/Collateral_joint",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "cell": "k4-clustered",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/k4-clustered/Retention",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "cell": "k4-clustered",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/k4-distributed/RMST",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "cell": "k4-distributed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/k4-distributed/DeficitAUC",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "cell": "k4-distributed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/k4-distributed/Collateral_joint",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "cell": "k4-distributed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/k4-distributed/Retention",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "cell": "k4-distributed",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/k8-clustered/RMST",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "cell": "k8-clustered",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/k8-clustered/DeficitAUC",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "cell": "k8-clustered",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/k8-clustered/Collateral_joint",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "cell": "k8-clustered",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/k8-clustered/Retention",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "cell": "k8-clustered",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/k8-distributed/RMST",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "cell": "k8-distributed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/k8-distributed/DeficitAUC",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "cell": "k8-distributed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/k8-distributed/Collateral_joint",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "cell": "k8-distributed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/k8-distributed/Retention",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "cell": "k8-distributed",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "secondary/DP-L1-Set/T/pure/RMST",
+        "role": "secondary",
+        "kind": "T_endpoint",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "stratum": "pure",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "secondary/DP-L1-Set/T/pure/DeficitAUC",
+        "role": "secondary",
+        "kind": "T_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "stratum": "pure",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "secondary/DP-L1-Set/T/mixed/RMST",
+        "role": "secondary",
+        "kind": "T_endpoint",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "stratum": "mixed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "secondary/DP-L1-Set/T/mixed/DeficitAUC",
+        "role": "secondary",
+        "kind": "T_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "stratum": "mixed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "secondary/DP-L1-Set/T/zero/RMST",
+        "role": "secondary",
+        "kind": "T_endpoint",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "stratum": "zero",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "secondary/DP-L1-Set/T/zero/DeficitAUC",
+        "role": "secondary",
+        "kind": "T_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "stratum": "zero",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "secondary/P-L1-id/P/family/RMST",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "P-L1-id",
+        "cell": "family",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "secondary/P-L1-id/P/family/DeficitAUC",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "P-L1-id",
+        "cell": "family",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "secondary/P-L1-id/P/family/Collateral_joint",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 200,
+        "contrast": "P-L1-id",
+        "cell": "family",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "secondary/P-L1-id/P/family/Retention",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 200,
+        "contrast": "P-L1-id",
+        "cell": "family",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "secondary/P-L1-id/P/k1/RMST",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "P-L1-id",
+        "cell": "k1",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "secondary/P-L1-id/P/k1/DeficitAUC",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "P-L1-id",
+        "cell": "k1",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "secondary/P-L1-id/P/k1/Collateral_joint",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 200,
+        "contrast": "P-L1-id",
+        "cell": "k1",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "secondary/P-L1-id/P/k1/Retention",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 200,
+        "contrast": "P-L1-id",
+        "cell": "k1",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "secondary/P-L1-id/P/k2/RMST",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "P-L1-id",
+        "cell": "k2",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "secondary/P-L1-id/P/k2/DeficitAUC",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "P-L1-id",
+        "cell": "k2",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "secondary/P-L1-id/P/k2/Collateral_joint",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 200,
+        "contrast": "P-L1-id",
+        "cell": "k2",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "secondary/P-L1-id/P/k2/Retention",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 200,
+        "contrast": "P-L1-id",
+        "cell": "k2",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "secondary/P-L1-id/P/k3/RMST",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "P-L1-id",
+        "cell": "k3",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "secondary/P-L1-id/P/k3/DeficitAUC",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "P-L1-id",
+        "cell": "k3",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "secondary/P-L1-id/P/k3/Collateral_joint",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 200,
+        "contrast": "P-L1-id",
+        "cell": "k3",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "secondary/P-L1-id/P/k3/Retention",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 200,
+        "contrast": "P-L1-id",
+        "cell": "k3",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "secondary/P-L1-id/P/k4/RMST",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "P-L1-id",
+        "cell": "k4",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "secondary/P-L1-id/P/k4/DeficitAUC",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "P-L1-id",
+        "cell": "k4",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "benefit",
+          "lowerCI": ">",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "secondary/P-L1-id/P/k4/Collateral_joint",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Collateral_joint",
+        "N": 200,
+        "contrast": "P-L1-id",
+        "cell": "k4",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": "delta_joint_proposed_uncomputed"
+        }
+      },
+      {
+        "id": "secondary/P-L1-id/P/k4/Retention",
+        "role": "secondary",
+        "kind": "P_endpoint",
+        "endpoint": "Retention",
+        "N": 200,
+        "contrast": "P-L1-id",
+        "cell": "k4",
+        "direction": "treatment-minus-reference",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.00005515977517224342
+        }
+      },
+      {
+        "id": "secondary/P-L1-id/T/pure/RMST",
+        "role": "secondary",
+        "kind": "T_endpoint",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "P-L1-id",
+        "stratum": "pure",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "secondary/P-L1-id/T/pure/DeficitAUC",
+        "role": "secondary",
+        "kind": "T_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "P-L1-id",
+        "stratum": "pure",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "secondary/P-L1-id/T/mixed/RMST",
+        "role": "secondary",
+        "kind": "T_endpoint",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "P-L1-id",
+        "stratum": "mixed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "secondary/P-L1-id/T/mixed/DeficitAUC",
+        "role": "secondary",
+        "kind": "T_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "P-L1-id",
+        "stratum": "mixed",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "secondary/P-L1-id/T/zero/RMST",
+        "role": "secondary",
+        "kind": "T_endpoint",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "P-L1-id",
+        "stratum": "zero",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 1.5
+        }
+      },
+      {
+        "id": "secondary/P-L1-id/T/zero/DeficitAUC",
+        "role": "secondary",
+        "kind": "T_endpoint",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "P-L1-id",
+        "stratum": "zero",
+        "direction": "reference-minus-treatment",
+        "criterion": {
+          "type": "noninferiority",
+          "lowerCI": ">=",
+          "margin": 0.01
+        }
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/interaction-k/1-to-2/RMST",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/interaction-k/1-to-2/DeficitAUC",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/interaction-k/1-to-2/Collateral_joint",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "Collateral_joint",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/interaction-k/1-to-2/Retention",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "Retention",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/interaction-k/2-to-4/RMST",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          2,
+          4
+        ]
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/interaction-k/2-to-4/DeficitAUC",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          2,
+          4
+        ]
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/interaction-k/2-to-4/Collateral_joint",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "Collateral_joint",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          2,
+          4
+        ]
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/interaction-k/2-to-4/Retention",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "Retention",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          2,
+          4
+        ]
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/interaction-k/4-to-8/RMST",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          4,
+          8
+        ]
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/interaction-k/4-to-8/DeficitAUC",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          4,
+          8
+        ]
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/interaction-k/4-to-8/Collateral_joint",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "Collateral_joint",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          4,
+          8
+        ]
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/interaction-k/4-to-8/Retention",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "Retention",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          4,
+          8
+        ]
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/interaction-shape/k2/RMST",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 2
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/interaction-shape/k2/DeficitAUC",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 2
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/interaction-shape/k2/Collateral_joint",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "Collateral_joint",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 2
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/interaction-shape/k2/Retention",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "Retention",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 2
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/interaction-shape/k4/RMST",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 4
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/interaction-shape/k4/DeficitAUC",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 4
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/interaction-shape/k4/Collateral_joint",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "Collateral_joint",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 4
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/interaction-shape/k4/Retention",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "Retention",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 4
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/interaction-shape/k8/RMST",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 8
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/interaction-shape/k8/DeficitAUC",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 8
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/interaction-shape/k8/Collateral_joint",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "Collateral_joint",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 8
+      },
+      {
+        "id": "secondary/DQ-L2-CF/P/interaction-shape/k8/Retention",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "Retention",
+        "N": 200,
+        "contrast": "DQ-L2-CF",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 8
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/interaction-k/1-to-2/RMST",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/interaction-k/1-to-2/DeficitAUC",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/interaction-k/1-to-2/Collateral_joint",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "Collateral_joint",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/interaction-k/1-to-2/Retention",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "Retention",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/interaction-k/2-to-4/RMST",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          2,
+          4
+        ]
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/interaction-k/2-to-4/DeficitAUC",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          2,
+          4
+        ]
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/interaction-k/2-to-4/Collateral_joint",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "Collateral_joint",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          2,
+          4
+        ]
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/interaction-k/2-to-4/Retention",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "Retention",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          2,
+          4
+        ]
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/interaction-k/4-to-8/RMST",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          4,
+          8
+        ]
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/interaction-k/4-to-8/DeficitAUC",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          4,
+          8
+        ]
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/interaction-k/4-to-8/Collateral_joint",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "Collateral_joint",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          4,
+          8
+        ]
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/interaction-k/4-to-8/Retention",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "Retention",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          4,
+          8
+        ]
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/interaction-shape/k2/RMST",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 2
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/interaction-shape/k2/DeficitAUC",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 2
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/interaction-shape/k2/Collateral_joint",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "Collateral_joint",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 2
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/interaction-shape/k2/Retention",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "Retention",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 2
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/interaction-shape/k4/RMST",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 4
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/interaction-shape/k4/DeficitAUC",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 4
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/interaction-shape/k4/Collateral_joint",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "Collateral_joint",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 4
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/interaction-shape/k4/Retention",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "Retention",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 4
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/interaction-shape/k8/RMST",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 8
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/interaction-shape/k8/DeficitAUC",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 8
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/interaction-shape/k8/Collateral_joint",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "Collateral_joint",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 8
+      },
+      {
+        "id": "secondary/DQ-L2-Dual/P/interaction-shape/k8/Retention",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "Retention",
+        "N": 200,
+        "contrast": "DQ-L2-Dual",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 8
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/interaction-k/1-to-2/RMST",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/interaction-k/1-to-2/DeficitAUC",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/interaction-k/1-to-2/Collateral_joint",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "Collateral_joint",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/interaction-k/1-to-2/Retention",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "Retention",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/interaction-k/2-to-4/RMST",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          2,
+          4
+        ]
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/interaction-k/2-to-4/DeficitAUC",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          2,
+          4
+        ]
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/interaction-k/2-to-4/Collateral_joint",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "Collateral_joint",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          2,
+          4
+        ]
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/interaction-k/2-to-4/Retention",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "Retention",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          2,
+          4
+        ]
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/interaction-k/4-to-8/RMST",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          4,
+          8
+        ]
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/interaction-k/4-to-8/DeficitAUC",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          4,
+          8
+        ]
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/interaction-k/4-to-8/Collateral_joint",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "Collateral_joint",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          4,
+          8
+        ]
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/interaction-k/4-to-8/Retention",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "Retention",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "definition": "paired higher-k effect minus lower-k effect; each k>=2 mean of both shapes",
+        "k": [
+          4,
+          8
+        ]
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/interaction-shape/k2/RMST",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 2
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/interaction-shape/k2/DeficitAUC",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 2
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/interaction-shape/k2/Collateral_joint",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "Collateral_joint",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 2
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/interaction-shape/k2/Retention",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "Retention",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 2
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/interaction-shape/k4/RMST",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 4
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/interaction-shape/k4/DeficitAUC",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 4
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/interaction-shape/k4/Collateral_joint",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "Collateral_joint",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 4
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/interaction-shape/k4/Retention",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "Retention",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 4
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/interaction-shape/k8/RMST",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "RMST",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 8
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/interaction-shape/k8/DeficitAUC",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "DeficitAUC",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 8
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/interaction-shape/k8/Collateral_joint",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "Collateral_joint",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 8
+      },
+      {
+        "id": "secondary/DP-L1-Set/P/interaction-shape/k8/Retention",
+        "role": "secondary",
+        "kind": "interaction",
+        "endpoint": "Retention",
+        "N": 200,
+        "contrast": "DP-L1-Set",
+        "definition": "paired distributed effect minus clustered effect",
+        "k": 8
+      }
+    ]
+  },
+  "version_conclusion_proposal": {
+    "anchor": "DQ-L0-FRW",
+    "anchor_selection": "new prospective rule, not original A79 automatic authority",
+    "core_support": "primary final400 weighted P four-endpoint conjunction plus all positive-mass T harm constraints and full multiplicity/direction/tail guards; wait entire primary400 and secondary200 final report",
+    "other_primary_mechanisms": "separate D_patch/X results cannot rescue core anchor",
+    "secondary_or_L3_cannot_rescue_anchor": true,
+    "cell_sign_reversal": "report interaction; no universal winner",
+    "family_mean_not_all_cells_safe": true,
+    "stronger_all_cell_support": "only if every cell separately meets complete required criteria",
+    "incomplete_or_uncertified": "not science FAIL/STOP/NO_ADMISSIBLE",
+    "no_practical_equivalence_or_zero_harm_claim": true
+  },
+  "staged_prerequisites": [
+    "review concrete scientific proposals without treating draft as adoption",
+    "separate addon implementation authority and first total-domain feasibility/counterexample certification",
+    "complete original serial gates/regression with only original 1 skip, addon adversarial checks, stable post-mutation source hashes and source-bound review",
+    "total ruler calibration and pre-only bound certification, no F1 reopen",
+    "separately authorized fresh engineering keys and actual complete dense workload/resources, no prefix extrapolation",
+    "full local preregistration/addon inventory/population/weights/reference/family/statistics/resources/keyfiles commits and separately explicit science/collection scope; one-time gate",
+    "complete native workers, receipts, raw checkpoints/maps/ledgers/incidence, compressed and canonical SHA and stable source gates; ordered index-last publication",
+    "complete final analysis and unique-ledger closure before ending heartbeat"
+  ],
+  "execution_constraints": {
+    "max_workers": 16,
+    "smoke_max_seeds": 5,
+    "parallel_unit": "independent seed or shard only",
+    "same_seed_and_mutation_gates": "serial",
+    "abort_bound": "2*(T_suite+10*T_stage_workload), not ETA; exact workload extent must be frozen before run",
+    "completed_workload_certification": false
+  },
+  "interruption_policy": "preserve reservation and incomplete evidence, external observation only, no forged native exit, automatic rerun, overwrite or replacement seeds; invalid post-collection bug evidence retained and new version/keys require new authority",
+  "source_sha256": {
+    "docs/rebuild/05-STATISTICAL-PROTOCOL.md": "06f0441920ace7c58594b8b23d4b054e11428886242fca9fff2f94e1f7a5f15d",
+    "docs/rebuild/12-AMENDMENTS.md": "3721d35f7e7f860ee4ac1f506f876b1a3e22e7ee2224cb1acc369b98fca11170",
+    "docs/rebuild/15-SCENE-DGP.md": "4cd9b7d275c6dec2a2c157e33acc81c014faaf104138480fe59d6de00c9ebabf",
+    "docs/rebuild/20-B2-DEV-PROTOCOL-FREEZE.md": "57bf3cec4c0110140a51ce52fc7b9188e996d5e0686eb131fac5d2d9102456d9",
+    "docs/rebuild/31-FAILURE-ONLY-AND-RMST-AMENDMENT.md": "5f7479021294426cfb2c702de931d9a0d65c3d5ebbb504246faa9415e2fcd5d2",
+    "docs/rebuild/34-A96-DENSE-MEASUREMENT.md": "80192208555069d834a83d6050d3dd428412d72c8b3ca14d8429bbb8b03a6553",
+    "src/rfl_rebuild/env/domain.py": "00dcd49c94a52efc2a64bda1711c0f8b05d22e3503432dc66d309ebbea3a05c9",
+    "src/rfl_rebuild/method/dgp.py": "325f2f241a2a5f11460f9d15f38933dd3f60e5e5bc9fd2f8bba327438849c6f0",
+    "src/rfl_rebuild/b1/runner.py": "ab8c61835906e29f56b33fc54ca1a558ef37302037d66a39a307e5dbf93c8de3",
+    "src/rfl_rebuild/b2/runner.py": "c3a363e76eb425819c0cbdab4cc96c9dd59b1013e1588c3b6ccf22baffb078cd",
+    "src/rfl_rebuild/b2/training.py": "0342626da5a111952873f33028866718a5504c2535e31d8790af952e08c472d6",
+    "src/rfl_rebuild/b2/unaffected.py": "70fcc6188ef23039189cf7603eb8403585eb499c559efdb38310970a68675b9c",
+    "src/rfl_rebuild/b2/calibration.py": "ad0c3ed8f640e6ca448a09bae7dc3f86d59260ce90205fd18490a318a9ac38b4",
+    "experiments/v03r/a96_dense/b2_prepare/protocol_scope_audit_v21.json": "40f9a7eaa4bb3c3f5209b0c33bba82b84b1eb9eb4aea3540861356e0eaae7dd3",
+    "experiments/v03r/a96_dense/b2_prepare/whole_credit_protocol_draft_v23.json": "83f34a4c991ae8f60d395e127021c7fabf0d0c326b9a7b70ca8069c4c69df87f",
+    "experiments/v03r/a96_dense/b2_prepare/mechanism_v26/result_summary.json": "7dff0d5d6e9cb9bdc3795287ce378c658a0823ed2108ae00af7c209381677839"
+  },
+  "pending_outputs": {
+    "population_catalog_and_mass_certificate": null,
+    "delta_joint": null,
+    "totality_and_calibration_certificate": null,
+    "addon_source_inventory": null,
+    "complete_workload_resources": null,
+    "actual_seed_files": null,
+    "collection_manifest": null,
+    "native_scientific_result": null
+  },
+  "next_authority": "explicit implementation of independent addon and engineering verification; still not science collection authority"
+}

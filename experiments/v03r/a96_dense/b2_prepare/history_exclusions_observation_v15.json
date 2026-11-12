@@ -1,0 +1,952 @@
+{
+  "schema": "a96-bounded-history-exclusions-observation-v15",
+  "role": "DERIVED_FROM_COMPLETE_NATIVE_READ_ONLY_SNAPSHOT_NOT_NEW_VALIDATION_PASS_OR_FRESHNESS_GATE",
+  "parent_commit": "2f199ef71d6a6e90bf6e39d5291dd55aa938e026",
+  "parent_sources_digest": "1dfd80ce49255231998b70fca2b7bcd72e0940822a1bf9d4a8e731603ccc4838",
+  "lock_sha256": "7d43ee9ae33a218e1266ab3cd2351e07d7e30922302e4527c65facbddaa3472f",
+  "native_snapshot": {
+    "stdout": "experiments/v03r/a96_dense/b2_prepare/evidence_v15/retained_snapshot_final.stdout.log",
+    "bytes": 9001510,
+    "sha256": "0d396ef4dd175a22e2084ac483a9a1f0c8241eb1d4d521e43d928e327bfc364c",
+    "payload_sha256": "a1c355d63abd10f2ec397f6010b9e509fd17e6790eec43faac6024b1a2b57306",
+    "native_exit_code": 0,
+    "started_utc": "2026-10-10T05:50:03.1145088Z",
+    "ended_utc": "2026-10-10T05:50:13.8817886Z",
+    "actual_scope_file_sha256": "49fa502a9d96bcec5cd039fe0255273eab0c624c52b8a5af7770f6a6e40dce53"
+  },
+  "counts": {
+    "explicit_roots": 10,
+    "enumerated_files": 8005,
+    "evidence_records": 7297,
+    "actual_byte_bound_files": 7285,
+    "unbound_over16MiB_records": 12,
+    "files_with_literal_claims": 2566,
+    "distinct_literal_modulo64_identities": 2478,
+    "independent_scientific_samples": 0,
+    "new_environment_key_draws": 0
+  },
+  "root_summaries": [
+    {
+      "available": true,
+      "bound_record_count": 557,
+      "categories": {
+        "json-parsed": 427,
+        "opaque-or-archive-unparsed:": 2,
+        "opaque-or-archive-unparsed:.csv": 25,
+        "opaque-or-archive-unparsed:.gz": 9,
+        "opaque-or-archive-unparsed:.npy": 4,
+        "opaque-or-archive-unparsed:.png": 9,
+        "other-text-bound-not-parsed:.jsonl": 14,
+        "other-text-bound-not-parsed:.md": 11,
+        "other-text-bound-not-parsed:.py": 75,
+        "other-text-bound-not-parsed:.toml": 1,
+        "other-text-bound-not-parsed:.txt": 17,
+        "other-text-bound-not-parsed:.yaml": 9,
+        "over16MiB-unparsed:.jsonl": 3
+      },
+      "enumerated_file_count": 606,
+      "omitted_directories_or_reparse": [
+        ".git",
+        ".pytest_cache",
+        "scripts/__pycache__"
+      ],
+      "root": "RFL-CausalChase-v0.1",
+      "stable": true,
+      "walk_errors": []
+    },
+    {
+      "available": true,
+      "bound_record_count": 608,
+      "categories": {
+        "json-parsed": 455,
+        "opaque-or-archive-unparsed:": 2,
+        "opaque-or-archive-unparsed:.csv": 27,
+        "opaque-or-archive-unparsed:.gz": 7,
+        "opaque-or-archive-unparsed:.png": 3,
+        "other-text-bound-not-parsed:.jsonl": 26,
+        "other-text-bound-not-parsed:.md": 14,
+        "other-text-bound-not-parsed:.py": 72,
+        "other-text-bound-not-parsed:.toml": 1,
+        "other-text-bound-not-parsed:.txt": 27,
+        "other-text-bound-not-parsed:.yaml": 12,
+        "over16MiB-unparsed:.jsonl": 1
+      },
+      "enumerated_file_count": 647,
+      "omitted_directories_or_reparse": [
+        ".pytest_cache",
+        "scripts/__pycache__",
+        "src/rflcc/__pycache__",
+        "src/rflcc/baselines/__pycache__",
+        "tests/__pycache__"
+      ],
+      "root": "RFL-CausalChase-v0.2",
+      "stable": true,
+      "walk_errors": []
+    },
+    {
+      "available": true,
+      "bound_record_count": 477,
+      "categories": {
+        "json-parsed": 345,
+        "opaque-or-archive-unparsed:": 5,
+        "opaque-or-archive-unparsed:.1": 1,
+        "opaque-or-archive-unparsed:.bat": 2,
+        "opaque-or-archive-unparsed:.cfg": 1,
+        "opaque-or-archive-unparsed:.csv": 16,
+        "opaque-or-archive-unparsed:.exe": 15,
+        "opaque-or-archive-unparsed:.fish": 1,
+        "opaque-or-archive-unparsed:.gz": 4,
+        "opaque-or-archive-unparsed:.png": 3,
+        "other-text-bound-not-parsed:.jsonl": 12,
+        "other-text-bound-not-parsed:.md": 10,
+        "other-text-bound-not-parsed:.ps1": 1,
+        "other-text-bound-not-parsed:.py": 75,
+        "other-text-bound-not-parsed:.toml": 1,
+        "other-text-bound-not-parsed:.txt": 22,
+        "other-text-bound-not-parsed:.yaml": 10,
+        "over16MiB-unparsed:.jsonl": 1
+      },
+      "enumerated_file_count": 525,
+      "omitted_directories_or_reparse": [
+        ".pytest_cache",
+        ".venv-v02/Lib/site-packages",
+        "scripts/__pycache__",
+        "src/rflcc/__pycache__",
+        "src/rflcc/baselines/__pycache__",
+        "tests/__pycache__"
+      ],
+      "root": "RFL-CausalChase-v0.2-release",
+      "stable": true,
+      "walk_errors": []
+    },
+    {
+      "available": true,
+      "bound_record_count": 683,
+      "categories": {
+        "json-parsed": 210,
+        "json-refused": 5,
+        "opaque-or-archive-unparsed:": 6,
+        "opaque-or-archive-unparsed:.gz": 78,
+        "opaque-or-archive-unparsed:.png": 4,
+        "opaque-or-archive-unparsed:.xml": 20,
+        "opaque-or-archive-unparsed:.zip": 4,
+        "other-text-bound-not-parsed:.jsonl": 7,
+        "other-text-bound-not-parsed:.log": 73,
+        "other-text-bound-not-parsed:.md": 62,
+        "other-text-bound-not-parsed:.ps1": 2,
+        "other-text-bound-not-parsed:.py": 262,
+        "other-text-bound-not-parsed:.toml": 1,
+        "other-text-bound-not-parsed:.txt": 3,
+        "other-text-bound-not-parsed:.yaml": 53,
+        "over16MiB-unparsed:.json": 2,
+        "over16MiB-unparsed:.jsonl": 1,
+        "seed-text-refused": 2
+      },
+      "enumerated_file_count": 795,
+      "omitted_directories_or_reparse": [
+        ".git",
+        ".pytest_cache",
+        "__pycache__",
+        "experiments/v03r/amendment_20260927/__pycache__",
+        "experiments/v03r/review_20260927/__pycache__",
+        "scripts/__pycache__",
+        "src/rfl_rebuild/__pycache__",
+        "src/rfl_rebuild/b1/__pycache__",
+        "src/rfl_rebuild/b2/__pycache__",
+        "src/rfl_rebuild/env/__pycache__",
+        "src/rfl_rebuild/learner/__pycache__",
+        "src/rfl_rebuild/method/__pycache__",
+        "src/rfl_rebuild/solve/__pycache__",
+        "src/rflnext/__pycache__",
+        "src/rflv04/__pycache__",
+        "tests/__pycache__",
+        "tests/rebuild/__pycache__"
+      ],
+      "root": "RFL-CausalChase-v0.3",
+      "stable": true,
+      "walk_errors": []
+    },
+    {
+      "available": true,
+      "bound_record_count": 1745,
+      "categories": {
+        "current-v15-and-ledger-self-excluded": 19,
+        "json-parsed": 1026,
+        "json-refused": 5,
+        "literal-seed-text-parsed": 4,
+        "opaque-or-archive-unparsed:": 7,
+        "opaque-or-archive-unparsed:.gz": 68,
+        "opaque-or-archive-unparsed:.png": 4,
+        "opaque-or-archive-unparsed:.xml": 51,
+        "opaque-or-archive-unparsed:.zip": 4,
+        "other-text-bound-not-parsed:.jsonl": 7,
+        "other-text-bound-not-parsed:.log": 233,
+        "other-text-bound-not-parsed:.md": 62,
+        "other-text-bound-not-parsed:.ps1": 13,
+        "other-text-bound-not-parsed:.py": 330,
+        "other-text-bound-not-parsed:.toml": 1,
+        "other-text-bound-not-parsed:.txt": 8,
+        "other-text-bound-not-parsed:.yaml": 53,
+        "over16MiB-unparsed:.jsonl": 1,
+        "seed-text-refused": 2
+      },
+      "enumerated_file_count": 1898,
+      "omitted_directories_or_reparse": [
+        ".pytest_cache"
+      ],
+      "root": "RFL-CausalChase-v0.3-dense-20261009",
+      "stable": true,
+      "walk_errors": []
+    },
+    {
+      "available": true,
+      "bound_record_count": 1274,
+      "categories": {
+        "json-parsed": 669,
+        "json-refused": 5,
+        "literal-seed-text-parsed": 2,
+        "opaque-or-archive-unparsed:": 7,
+        "opaque-or-archive-unparsed:.gz": 68,
+        "opaque-or-archive-unparsed:.png": 4,
+        "opaque-or-archive-unparsed:.xml": 46,
+        "opaque-or-archive-unparsed:.zip": 4,
+        "other-text-bound-not-parsed:.jsonl": 7,
+        "other-text-bound-not-parsed:.log": 155,
+        "other-text-bound-not-parsed:.md": 61,
+        "other-text-bound-not-parsed:.ps1": 13,
+        "other-text-bound-not-parsed:.py": 297,
+        "other-text-bound-not-parsed:.toml": 1,
+        "other-text-bound-not-parsed:.txt": 8,
+        "other-text-bound-not-parsed:.yaml": 53,
+        "over16MiB-unparsed:.jsonl": 1,
+        "seed-text-refused": 2
+      },
+      "enumerated_file_count": 1403,
+      "omitted_directories_or_reparse": [
+        ".pytest_cache",
+        "__pycache__",
+        "scripts/__pycache__",
+        "src/rfl_rebuild/__pycache__",
+        "src/rfl_rebuild/b1/__pycache__",
+        "src/rfl_rebuild/b2/__pycache__",
+        "src/rfl_rebuild/env/__pycache__",
+        "src/rfl_rebuild/learner/__pycache__",
+        "src/rfl_rebuild/method/__pycache__",
+        "src/rfl_rebuild/solve/__pycache__",
+        "src/rflnext/__pycache__",
+        "src/rflv04/__pycache__",
+        "tests/__pycache__",
+        "tests/rebuild/__pycache__"
+      ],
+      "root": "RFL-CausalChase-v0.3-measurement-20261008",
+      "stable": true,
+      "walk_errors": []
+    },
+    {
+      "available": true,
+      "bound_record_count": 1231,
+      "categories": {
+        "json-parsed": 621,
+        "json-refused": 5,
+        "opaque-or-archive-unparsed:": 7,
+        "opaque-or-archive-unparsed:.bin": 2,
+        "opaque-or-archive-unparsed:.gz": 68,
+        "opaque-or-archive-unparsed:.png": 4,
+        "opaque-or-archive-unparsed:.xml": 40,
+        "opaque-or-archive-unparsed:.zip": 4,
+        "other-text-bound-not-parsed:.jsonl": 8,
+        "other-text-bound-not-parsed:.log": 177,
+        "other-text-bound-not-parsed:.md": 60,
+        "other-text-bound-not-parsed:.ps1": 13,
+        "other-text-bound-not-parsed:.py": 284,
+        "other-text-bound-not-parsed:.toml": 1,
+        "other-text-bound-not-parsed:.txt": 6,
+        "other-text-bound-not-parsed:.yaml": 53,
+        "over16MiB-unparsed:.jsonl": 1,
+        "seed-text-refused": 2
+      },
+      "enumerated_file_count": 1356,
+      "omitted_directories_or_reparse": [
+        ".pytest_cache"
+      ],
+      "root": "RFL-CausalChase-v0.3-parallel16-20261008",
+      "stable": true,
+      "walk_errors": []
+    },
+    {
+      "available": true,
+      "bound_record_count": 693,
+      "categories": {
+        "json-parsed": 219,
+        "json-refused": 5,
+        "opaque-or-archive-unparsed:": 7,
+        "opaque-or-archive-unparsed:.gz": 13,
+        "opaque-or-archive-unparsed:.png": 4,
+        "opaque-or-archive-unparsed:.xml": 23,
+        "opaque-or-archive-unparsed:.zip": 4,
+        "other-text-bound-not-parsed:.jsonl": 7,
+        "other-text-bound-not-parsed:.log": 77,
+        "other-text-bound-not-parsed:.md": 59,
+        "other-text-bound-not-parsed:.ps1": 3,
+        "other-text-bound-not-parsed:.py": 263,
+        "other-text-bound-not-parsed:.toml": 1,
+        "other-text-bound-not-parsed:.txt": 3,
+        "other-text-bound-not-parsed:.yaml": 53,
+        "over16MiB-unparsed:.jsonl": 1,
+        "seed-text-refused": 2
+      },
+      "enumerated_file_count": 744,
+      "omitted_directories_or_reparse": [
+        ".pytest_cache"
+      ],
+      "root": "RFL-CausalChase-v0.3-restart-20261008",
+      "stable": true,
+      "walk_errors": []
+    },
+    {
+      "available": true,
+      "bound_record_count": 20,
+      "categories": {
+        "json-parsed": 8,
+        "opaque-or-archive-unparsed:.patch": 1,
+        "opaque-or-archive-unparsed:.xml": 1,
+        "other-text-bound-not-parsed:.md": 9,
+        "other-text-bound-not-parsed:.py": 2,
+        "other-text-bound-not-parsed:.txt": 1
+      },
+      "enumerated_file_count": 22,
+      "omitted_directories_or_reparse": [],
+      "root": "RFL-handoff-20260926",
+      "stable": true,
+      "walk_errors": []
+    },
+    {
+      "available": true,
+      "bound_record_count": 9,
+      "categories": {
+        "json-parsed": 6,
+        "other-text-bound-not-parsed:.py": 2,
+        "other-text-bound-not-parsed:.txt": 1
+      },
+      "enumerated_file_count": 9,
+      "omitted_directories_or_reparse": [],
+      "root": "RFL-V0.3R-next-measurement-draft-20261009",
+      "stable": true,
+      "walk_errors": []
+    }
+  ],
+  "by_root_actual_byte_bound": {
+    "RFL-CausalChase-v0.1": {
+      "actual_byte_bound": 554,
+      "unbound_over_limit": 3
+    },
+    "RFL-CausalChase-v0.2": {
+      "actual_byte_bound": 607,
+      "unbound_over_limit": 1
+    },
+    "RFL-CausalChase-v0.2-release": {
+      "actual_byte_bound": 476,
+      "unbound_over_limit": 1
+    },
+    "RFL-CausalChase-v0.3": {
+      "actual_byte_bound": 680,
+      "unbound_over_limit": 3
+    },
+    "RFL-CausalChase-v0.3-dense-20261009": {
+      "actual_byte_bound": 1744,
+      "unbound_over_limit": 1
+    },
+    "RFL-CausalChase-v0.3-measurement-20261008": {
+      "actual_byte_bound": 1273,
+      "unbound_over_limit": 1
+    },
+    "RFL-CausalChase-v0.3-parallel16-20261008": {
+      "actual_byte_bound": 1230,
+      "unbound_over_limit": 1
+    },
+    "RFL-CausalChase-v0.3-restart-20261008": {
+      "actual_byte_bound": 692,
+      "unbound_over_limit": 1
+    },
+    "RFL-handoff-20260926": {
+      "actual_byte_bound": 20
+    },
+    "RFL-V0.3R-next-measurement-draft-20261009": {
+      "actual_byte_bound": 9
+    }
+  },
+  "all_available_selected_files_and_root_names_stable_at_native_boundary": true,
+  "literal_exclusions_not_covered_by_original_registry_and_analysis_rng": [
+    [
+      5,
+      11
+    ],
+    [
+      940001,
+      940002
+    ],
+    [
+      2000000,
+      2000001
+    ],
+    [
+      2100000,
+      2100011
+    ],
+    [
+      4000000,
+      4000399
+    ],
+    [
+      4100000,
+      4100199
+    ],
+    [
+      4200000,
+      4200199
+    ],
+    [
+      4300000,
+      4300199
+    ],
+    [
+      4400000,
+      4400399
+    ],
+    [
+      4500000,
+      4500399
+    ],
+    [
+      4600000,
+      4600399
+    ]
+  ],
+  "union_intervals": [
+    [
+      0,
+      11
+    ],
+    [
+      1000,
+      1031
+    ],
+    [
+      900001,
+      900032
+    ],
+    [
+      940001,
+      940002
+    ],
+    [
+      950001,
+      950037
+    ],
+    [
+      960001,
+      960002
+    ],
+    [
+      960031,
+      960031
+    ],
+    [
+      970001,
+      970037
+    ],
+    [
+      980100,
+      980119
+    ],
+    [
+      980200,
+      980231
+    ],
+    [
+      2000000,
+      2000001
+    ],
+    [
+      2100000,
+      2100011
+    ],
+    [
+      4000000,
+      4000399
+    ],
+    [
+      4100000,
+      4100199
+    ],
+    [
+      4200000,
+      4200199
+    ],
+    [
+      4300000,
+      4300199
+    ],
+    [
+      4400000,
+      4400399
+    ],
+    [
+      4500000,
+      4500399
+    ],
+    [
+      4600000,
+      4600399
+    ],
+    [
+      2026100800,
+      2026100804
+    ],
+    [
+      2026100900,
+      2026100904
+    ],
+    [
+      2026100910,
+      2026100941
+    ],
+    [
+      2026101000,
+      2026101036
+    ],
+    [
+      2026101100,
+      2026101104
+    ],
+    [
+      2026101110,
+      2026101141
+    ],
+    [
+      2026101200,
+      2026101236
+    ]
+  ],
+  "seed11_actual_content_examples": [
+    {
+      "root": "RFL-CausalChase-v0.1",
+      "path": "legacy/invalid_v02_outputs/v02_pilot_b/run_meta.json",
+      "file_sha256": "de3898cd351819ed38b022ab6f15f264895a92580d1d421b916fc3aa3f88c4e5",
+      "pointer": "/results/11/seed",
+      "field": "seed",
+      "seed": 11
+    },
+    {
+      "root": "RFL-CausalChase-v0.1",
+      "path": "legacy/invalid_v02_outputs/v02_pilot_b/seed_11/checkpoint.json",
+      "file_sha256": "8f200332758a3757d455ca0dcf1cfe45964a6526eb9df8df8ab0880b4fa77005",
+      "pointer": "/seed",
+      "field": "seed",
+      "seed": 11
+    },
+    {
+      "root": "RFL-CausalChase-v0.1",
+      "path": "legacy/invalid_v02_outputs/v02_pilot_b/transfer_seed11.json",
+      "file_sha256": "27a006fcce2aec102a6f50855ed9631fbf964504abbcef6be1b6014766a18005",
+      "pointer": "/seed",
+      "field": "seed",
+      "seed": 11
+    },
+    {
+      "root": "RFL-CausalChase-v0.1",
+      "path": "legacy/invalid_v02_outputs/v02_pilot_b_final/B4_standard_seed11.json",
+      "file_sha256": "24ef32d78a219ec53c14cb604e28eb723c78a2de7d6aaa0691cf90caaa334cbb",
+      "pointer": "/result/seed",
+      "field": "seed",
+      "seed": 11
+    },
+    {
+      "root": "RFL-CausalChase-v0.1",
+      "path": "legacy/invalid_v02_outputs/v02_pilot_b_final/run_meta.json",
+      "file_sha256": "744224e1ca9a99d0649ba2ac0fa8fa4957bc05c3356e0f9c6df3013ec0b5a92a",
+      "pointer": "/results/11/seed",
+      "field": "seed",
+      "seed": 11
+    },
+    {
+      "root": "RFL-CausalChase-v0.1",
+      "path": "legacy/invalid_v02_outputs/v02_pilot_b_final/seed_11/checkpoint.json",
+      "file_sha256": "13b4010dbff6baf8b1949b3cd9625e32f24bb8f0f906803a58640bcfcf8b11ef",
+      "pointer": "/seed",
+      "field": "seed",
+      "seed": 11
+    }
+  ],
+  "unresolved_issues_occurrence_counts": {
+    "schedule-or-external-reference-not-resolved": 233,
+    "scalar-seed-container-may-be-count-not-identity": 236,
+    "declared-seed-list-has-unsupported-value": 650,
+    "unknown-seed-related-field-not-resolved": 3753,
+    "declared-seed-value-not-literal-native-int": 27,
+    "whole-json-refused:ValueError": 25,
+    "declared-seed-container-has-unrecognized-members": 97762,
+    "unassigned-null-seed-declaration": 25
+  },
+  "whole_json_and_over_limit_gaps": [
+    {
+      "root": "RFL-CausalChase-v0.1",
+      "path": "outputs/confirmatory_a/_as_run_50seeds/episodes.jsonl",
+      "gap": "over16MiB"
+    },
+    {
+      "root": "RFL-CausalChase-v0.1",
+      "path": "outputs/confirmatory_a/episodes.jsonl",
+      "gap": "over16MiB"
+    },
+    {
+      "root": "RFL-CausalChase-v0.1",
+      "path": "outputs/verification_20260830/a_confirmatory_50/episodes.jsonl",
+      "gap": "over16MiB"
+    },
+    {
+      "root": "RFL-CausalChase-v0.2",
+      "path": "outputs/verification_20260830/a_confirmatory_50/episodes.jsonl",
+      "gap": "over16MiB"
+    },
+    {
+      "root": "RFL-CausalChase-v0.2-release",
+      "path": "outputs/verification_20260830/a_confirmatory_50/episodes.jsonl",
+      "gap": "over16MiB"
+    },
+    {
+      "root": "RFL-CausalChase-v0.3",
+      "path": "experiments/v01r/calibration_conf_v2.json",
+      "gap": [
+        {
+          "example_pointer": "",
+          "occurrences": 1,
+          "reason": "whole-json-refused:ValueError"
+        }
+      ]
+    },
+    {
+      "root": "RFL-CausalChase-v0.3",
+      "path": "experiments/v01r/calibration_dev_v2.json",
+      "gap": [
+        {
+          "example_pointer": "",
+          "occurrences": 1,
+          "reason": "whole-json-refused:ValueError"
+        }
+      ]
+    },
+    {
+      "root": "RFL-CausalChase-v0.3",
+      "path": "experiments/v01r/calibration_dev_v2_reported.json",
+      "gap": [
+        {
+          "example_pointer": "",
+          "occurrences": 1,
+          "reason": "whole-json-refused:ValueError"
+        }
+      ]
+    },
+    {
+      "root": "RFL-CausalChase-v0.3",
+      "path": "experiments/v01r/calibration_smoke.json",
+      "gap": [
+        {
+          "example_pointer": "",
+          "occurrences": 1,
+          "reason": "whole-json-refused:ValueError"
+        }
+      ]
+    },
+    {
+      "root": "RFL-CausalChase-v0.3",
+      "path": "experiments/v01r/calibration_smoke_v2.json",
+      "gap": [
+        {
+          "example_pointer": "",
+          "occurrences": 1,
+          "reason": "whole-json-refused:ValueError"
+        }
+      ]
+    },
+    {
+      "root": "RFL-CausalChase-v0.3",
+      "path": "experiments/v01r/support_cache.json",
+      "gap": "over16MiB"
+    },
+    {
+      "root": "RFL-CausalChase-v0.3",
+      "path": "experiments/v01r/support_cache_slice.json",
+      "gap": "over16MiB"
+    },
+    {
+      "root": "RFL-CausalChase-v0.3",
+      "path": "outputs/v03_gamma_formal/attribution_evidence.jsonl",
+      "gap": "over16MiB"
+    },
+    {
+      "root": "RFL-CausalChase-v0.3-dense-20261009",
+      "path": "experiments/v01r/calibration_conf_v2.json",
+      "gap": [
+        {
+          "example_pointer": "",
+          "occurrences": 1,
+          "reason": "whole-json-refused:ValueError"
+        }
+      ]
+    },
+    {
+      "root": "RFL-CausalChase-v0.3-dense-20261009",
+      "path": "experiments/v01r/calibration_dev_v2.json",
+      "gap": [
+        {
+          "example_pointer": "",
+          "occurrences": 1,
+          "reason": "whole-json-refused:ValueError"
+        }
+      ]
+    },
+    {
+      "root": "RFL-CausalChase-v0.3-dense-20261009",
+      "path": "experiments/v01r/calibration_dev_v2_reported.json",
+      "gap": [
+        {
+          "example_pointer": "",
+          "occurrences": 1,
+          "reason": "whole-json-refused:ValueError"
+        }
+      ]
+    },
+    {
+      "root": "RFL-CausalChase-v0.3-dense-20261009",
+      "path": "experiments/v01r/calibration_smoke.json",
+      "gap": [
+        {
+          "example_pointer": "",
+          "occurrences": 1,
+          "reason": "whole-json-refused:ValueError"
+        }
+      ]
+    },
+    {
+      "root": "RFL-CausalChase-v0.3-dense-20261009",
+      "path": "experiments/v01r/calibration_smoke_v2.json",
+      "gap": [
+        {
+          "example_pointer": "",
+          "occurrences": 1,
+          "reason": "whole-json-refused:ValueError"
+        }
+      ]
+    },
+    {
+      "root": "RFL-CausalChase-v0.3-dense-20261009",
+      "path": "outputs/v03_gamma_formal/attribution_evidence.jsonl",
+      "gap": "over16MiB"
+    },
+    {
+      "root": "RFL-CausalChase-v0.3-measurement-20261008",
+      "path": "experiments/v01r/calibration_conf_v2.json",
+      "gap": [
+        {
+          "example_pointer": "",
+          "occurrences": 1,
+          "reason": "whole-json-refused:ValueError"
+        }
+      ]
+    },
+    {
+      "root": "RFL-CausalChase-v0.3-measurement-20261008",
+      "path": "experiments/v01r/calibration_dev_v2.json",
+      "gap": [
+        {
+          "example_pointer": "",
+          "occurrences": 1,
+          "reason": "whole-json-refused:ValueError"
+        }
+      ]
+    },
+    {
+      "root": "RFL-CausalChase-v0.3-measurement-20261008",
+      "path": "experiments/v01r/calibration_dev_v2_reported.json",
+      "gap": [
+        {
+          "example_pointer": "",
+          "occurrences": 1,
+          "reason": "whole-json-refused:ValueError"
+        }
+      ]
+    },
+    {
+      "root": "RFL-CausalChase-v0.3-measurement-20261008",
+      "path": "experiments/v01r/calibration_smoke.json",
+      "gap": [
+        {
+          "example_pointer": "",
+          "occurrences": 1,
+          "reason": "whole-json-refused:ValueError"
+        }
+      ]
+    },
+    {
+      "root": "RFL-CausalChase-v0.3-measurement-20261008",
+      "path": "experiments/v01r/calibration_smoke_v2.json",
+      "gap": [
+        {
+          "example_pointer": "",
+          "occurrences": 1,
+          "reason": "whole-json-refused:ValueError"
+        }
+      ]
+    },
+    {
+      "root": "RFL-CausalChase-v0.3-measurement-20261008",
+      "path": "outputs/v03_gamma_formal/attribution_evidence.jsonl",
+      "gap": "over16MiB"
+    },
+    {
+      "root": "RFL-CausalChase-v0.3-parallel16-20261008",
+      "path": "experiments/v01r/calibration_conf_v2.json",
+      "gap": [
+        {
+          "example_pointer": "",
+          "occurrences": 1,
+          "reason": "whole-json-refused:ValueError"
+        }
+      ]
+    },
+    {
+      "root": "RFL-CausalChase-v0.3-parallel16-20261008",
+      "path": "experiments/v01r/calibration_dev_v2.json",
+      "gap": [
+        {
+          "example_pointer": "",
+          "occurrences": 1,
+          "reason": "whole-json-refused:ValueError"
+        }
+      ]
+    },
+    {
+      "root": "RFL-CausalChase-v0.3-parallel16-20261008",
+      "path": "experiments/v01r/calibration_dev_v2_reported.json",
+      "gap": [
+        {
+          "example_pointer": "",
+          "occurrences": 1,
+          "reason": "whole-json-refused:ValueError"
+        }
+      ]
+    },
+    {
+      "root": "RFL-CausalChase-v0.3-parallel16-20261008",
+      "path": "experiments/v01r/calibration_smoke.json",
+      "gap": [
+        {
+          "example_pointer": "",
+          "occurrences": 1,
+          "reason": "whole-json-refused:ValueError"
+        }
+      ]
+    },
+    {
+      "root": "RFL-CausalChase-v0.3-parallel16-20261008",
+      "path": "experiments/v01r/calibration_smoke_v2.json",
+      "gap": [
+        {
+          "example_pointer": "",
+          "occurrences": 1,
+          "reason": "whole-json-refused:ValueError"
+        }
+      ]
+    },
+    {
+      "root": "RFL-CausalChase-v0.3-parallel16-20261008",
+      "path": "outputs/v03_gamma_formal/attribution_evidence.jsonl",
+      "gap": "over16MiB"
+    },
+    {
+      "root": "RFL-CausalChase-v0.3-restart-20261008",
+      "path": "experiments/v01r/calibration_conf_v2.json",
+      "gap": [
+        {
+          "example_pointer": "",
+          "occurrences": 1,
+          "reason": "whole-json-refused:ValueError"
+        }
+      ]
+    },
+    {
+      "root": "RFL-CausalChase-v0.3-restart-20261008",
+      "path": "experiments/v01r/calibration_dev_v2.json",
+      "gap": [
+        {
+          "example_pointer": "",
+          "occurrences": 1,
+          "reason": "whole-json-refused:ValueError"
+        }
+      ]
+    },
+    {
+      "root": "RFL-CausalChase-v0.3-restart-20261008",
+      "path": "experiments/v01r/calibration_dev_v2_reported.json",
+      "gap": [
+        {
+          "example_pointer": "",
+          "occurrences": 1,
+          "reason": "whole-json-refused:ValueError"
+        }
+      ]
+    },
+    {
+      "root": "RFL-CausalChase-v0.3-restart-20261008",
+      "path": "experiments/v01r/calibration_smoke.json",
+      "gap": [
+        {
+          "example_pointer": "",
+          "occurrences": 1,
+          "reason": "whole-json-refused:ValueError"
+        }
+      ]
+    },
+    {
+      "root": "RFL-CausalChase-v0.3-restart-20261008",
+      "path": "experiments/v01r/calibration_smoke_v2.json",
+      "gap": [
+        {
+          "example_pointer": "",
+          "occurrences": 1,
+          "reason": "whole-json-refused:ValueError"
+        }
+      ]
+    },
+    {
+      "root": "RFL-CausalChase-v0.3-restart-20261008",
+      "path": "outputs/v03_gamma_formal/attribution_evidence.jsonl",
+      "gap": "over16MiB"
+    }
+  ],
+  "conservative_role": "Potential historical identity evidence, not assertion of valid scientific execution, role equivalence or independent sample count. Repeated/copy/fixture/invalid/engineering/analysis/reserved evidence remains forbidden for future reuse; outcomes were not used to select keys or design.",
+  "superseded_snapshot": {
+    "stdout": "experiments/v03r/a96_dense/b2_prepare/evidence_v15/retained_snapshot.stdout.log",
+    "bytes": 9013408,
+    "sha256": "a28175f3affc6d12c99ef54afa9efa5df14167c8d2276afdcc55d2daeb18aeae",
+    "payload_sha256": "eb14b2d7c479e25cd11cd43801744fdadf15828cbc3c78822bec8fb97be69f7d",
+    "native_exit_code": 0,
+    "status": "RETAINED_SUPERSEDED_FOR_EXCLUSION_INFERENCE",
+    "reason": "Native0 read-only snapshot exposed ambiguous plural seeds scalar counts (e.g.12,400) which were over-conservatively treated as identities. Final39 adds an explicit refusal/gap for these scalars and a separate final snapshot; neither snapshot authorizes freshness, a key plan or science."
+  },
+  "known_registry_coverage_gap_confirmed": "Explicit prior result/checkpoint/transfer seed literals include5..11 beyond original small old_scientific0..4. Additional observed large literal families are listed exactly, without altering original registry or allocating new identities.",
+  "next_required_resolution": [
+    "Literal/data-dependent schedules and seed_base/offset/reference keys in byte-bound Python/PowerShell/YAML/log/JSONL sources",
+    "Unparsed archival/opaque/Git/other roots, large JSONL/support caches and25 rejected complete JSON records",
+    "Explicit parent-bound addon exclusion inventory for newly visible nominal fixture constructions before any real science or engineering plan",
+    "Owner-executed complete future/raw-record chain and positive D_Q/nonempty P integration; exact prospective populations/real fault/diagnostics/same-tier contrast/family/direction/endpoint conjunction",
+    "Original full regression and integrated serial gates/source-bound review; actual complete dense B2 engineering workload/resource certificate; separate frozen committed preregistration/manifest and one-shot collection gate"
+  ],
+  "complete_historical_usage_freshness_audit": false,
+  "parent_registry_or_v14_exclusions_modified": false,
+  "keys_allocated_or_reserved": false,
+  "collection_authorized": false,
+  "scientific_claim_authorized": false,
+  "research_complete": false
+}

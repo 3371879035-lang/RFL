@@ -1,0 +1,18 @@
+{
+  "version": "V222_DIRECTED_NUMERICAL_CHECK_AND_PENDING_CHECK_COMPLETION",
+  "reason": "Initial native completed four real flows, then failed an exact-equality assertion comparing 8-row and 32-row kernels. Preserve first exit1 and all 59 actual calls. Do not rerun them.",
+  "actual_environment_calls": 0,
+  "optimizer_steps": 0,
+  "old_native_or_bank_reruns": 0,
+  "original_passed_sequence_check_reruns": 0,
+  "model_seed_checkpoint": 73,
+  "comparison": "Capture the actual 32-row kernel output used by the thought sampler and demand bit-exact sampling identity. Separately report 8-row versus 32-row numeric deviation.",
+  "batch_shape_roundoff_atol": 0.000001,
+  "maximum_thought_depth": 3,
+  "additional_pending_checks": ["candidate physics isolation", "thought topology", "noise replay", "sequence masks", "practice/adoption boundary", "gradient routing"],
+  "stored_actual_prefix_review": true,
+  "wall_budget_seconds": 300,
+  "torch_threads": 1,
+  "automatic_retry": false,
+  "first_failed_sources_and_capture_immutable": true
+}

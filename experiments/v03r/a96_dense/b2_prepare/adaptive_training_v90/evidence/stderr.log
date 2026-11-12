@@ -1,0 +1,76 @@
+test_01_full_initial_read_and_inforce (__main__.Integration.test_01_full_initial_read_and_inforce) ... FAIL
+test_02_patch_three_real_episodes_persist_values_and_learn_policy (__main__.Integration.test_02_patch_three_real_episodes_persist_values_and_learn_policy) ... FAIL
+test_03_full_dq_differential_three_episodes (__main__.Integration.test_03_full_dq_differential_three_episodes) ... FAIL
+test_04_exploration_not_shadowed_by_patch_and_rejection_coordinates (__main__.Integration.test_04_exploration_not_shadowed_by_patch_and_rejection_coordinates) ... FAIL
+test_05_eval_zero_draws_zero_writes_and_full_fingerprint (__main__.Integration.test_05_eval_zero_draws_zero_writes_and_full_fingerprint) ... ok
+test_06_protected_immediate_and_independent_roles (__main__.Integration.test_06_protected_immediate_and_independent_roles) ... ok
+test_07_empty_patch_mode_stays_patch_and_maps_to_dq (__main__.Integration.test_07_empty_patch_mode_stays_patch_and_maps_to_dq) ... ok
+test_08_original_invalid_d_plus_q_guard_unchanged (__main__.Integration.test_08_original_invalid_d_plus_q_guard_unchanged) ... ok
+test_09_incomplete_attempt_no_retry_no_numeric_or_actor_commit (__main__.Integration.test_09_incomplete_attempt_no_retry_no_numeric_or_actor_commit) ... FAIL
+test_10_policy_improvement_is_not_numeric_td_gain (__main__.Integration.test_10_policy_improvement_is_not_numeric_td_gain) ... FAIL
+test_11_rebinding_mode_source_or_reference_is_refused (__main__.Integration.test_11_rebinding_mode_source_or_reference_is_refused) ... ok
+
+======================================================================
+FAIL: test_01_full_initial_read_and_inforce (__main__.Integration.test_01_full_initial_read_and_inforce)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v03r\a96_dense\b2_prepare\adaptive_training_v90\test_integration.py", line 144, in test_01_full_initial_read_and_inforce
+    self.assertEqual(r["trace"]["steps"][0]["a_cmd"], K.WAIT)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 3 != 4
+
+======================================================================
+FAIL: test_02_patch_three_real_episodes_persist_values_and_learn_policy (__main__.Integration.test_02_patch_three_real_episodes_persist_values_and_learn_policy)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v03r\a96_dense\b2_prepare\adaptive_training_v90\test_integration.py", line 161, in test_02_patch_three_real_episodes_persist_values_and_learn_policy
+    self.assertNotEqual(actor._current.decision_overrides[owner], K.WAIT)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 4 == 4
+
+======================================================================
+FAIL: test_03_full_dq_differential_three_episodes (__main__.Integration.test_03_full_dq_differential_three_episodes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v03r\a96_dense\b2_prepare\adaptive_training_v90\test_integration.py", line 173, in test_03_full_dq_differential_three_episodes
+    self.assertEqual(edits, expected)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (Edit[38 chars]te(x=0, y=2, t=0, kappa=0, phi=2), z=1, m=0, a[584 chars].98)) != (Edit[38 chars]te(x=1, y=1, t=0, kappa=0, phi=2), z=1, m=0, a[584 chars].98))
+
+First differing element 0:
+Edit([37 chars]te(x=0, y=2, t=0, kappa=0, phi=2), z=1, m=0, a[25 chars]9999)
+Edit([37 chars]te(x=1, y=1, t=0, kappa=0, phi=2), z=1, m=0, a[25 chars]9999)
+
+Diff is 1480 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_04_exploration_not_shadowed_by_patch_and_rejection_coordinates (__main__.Integration.test_04_exploration_not_shadowed_by_patch_and_rejection_coordinates)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v03r\a96_dense\b2_prepare\adaptive_training_v90\test_integration.py", line 191, in test_04_exploration_not_shadowed_by_patch_and_rejection_coordinates
+    self.assertNotEqual(r["trace"]["steps"][0]["a_cmd"],K.WAIT)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 4 == 4
+
+======================================================================
+FAIL: test_09_incomplete_attempt_no_retry_no_numeric_or_actor_commit (__main__.Integration.test_09_incomplete_attempt_no_retry_no_numeric_or_actor_commit)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v03r\a96_dense\b2_prepare\adaptive_training_v90\test_integration.py", line 247, in test_09_incomplete_attempt_no_retry_no_numeric_or_actor_commit
+    self.fail("planned draw exhaustion was not refused")
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: planned draw exhaustion was not refused
+
+======================================================================
+FAIL: test_10_policy_improvement_is_not_numeric_td_gain (__main__.Integration.test_10_policy_improvement_is_not_numeric_td_gain)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v03r\a96_dense\b2_prepare\adaptive_training_v90\test_integration.py", line 267, in test_10_policy_improvement_is_not_numeric_td_gain
+    self.assertTrue(r["policy_improvement_edits"])
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: [] is not true
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.988s
+
+FAILED (failures=6)

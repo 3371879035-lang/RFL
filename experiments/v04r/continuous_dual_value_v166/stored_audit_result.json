@@ -1,0 +1,4134 @@
+{
+  "schema": "V166_STDLIB_CONTINUOUS_DUAL_VALUE_REVIEW",
+  "complete": true,
+  "native_counts": {
+    "execution_features": 3,
+    "public_geometry": 294,
+    "query_features": 4,
+    "rollout": 154,
+    "step": 1031,
+    "transaction": 305
+  },
+  "records": 1204,
+  "input_pins": 360,
+  "summaries": [
+    {
+      "arm": "TaskTD",
+      "successes": 16,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.06,
+        0.86,
+        0.86,
+        0.86,
+        -1.08,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.08,
+        0.86,
+        0.86,
+        -1.08,
+        0.86,
+        0.86,
+        -1.24,
+        -1.24,
+        -1.24,
+        -1.24,
+        -1.24,
+        -1.24,
+        -1.02,
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.24,
+        -1.24
+      ],
+      "outcomes": [
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "TIMEOUT",
+        "TIMEOUT",
+        "TIMEOUT",
+        "TIMEOUT",
+        "TIMEOUT",
+        "TIMEOUT",
+        "TRAP",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TIMEOUT",
+        "TIMEOUT"
+      ],
+      "mean_return": -0.1935294117647059,
+      "external_updates": 0,
+      "diagnostic_account": {
+        "algorithm": "TaskTD",
+        "base_queries": 0,
+        "expanded_queries": 0,
+        "trial_task_budget": 0,
+        "trial_tasks_used": 0
+      }
+    },
+    {
+      "arm": "UngatedUnified",
+      "successes": 20,
+      "returns": [
+        -1.02,
+        -1.02,
+        0.86,
+        0.86,
+        -1.06,
+        0.86,
+        0.86,
+        0.86,
+        -1.08,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.08,
+        0.86,
+        0.86,
+        -1.08,
+        0.86,
+        0.86,
+        -1.24,
+        -1.24,
+        -1.24,
+        -1.24,
+        -1.24,
+        -1.24,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.24,
+        -1.24
+      ],
+      "outcomes": [
+        "TRAP",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "TIMEOUT",
+        "TIMEOUT",
+        "TIMEOUT",
+        "TIMEOUT",
+        "TIMEOUT",
+        "TIMEOUT",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TIMEOUT",
+        "TIMEOUT"
+      ],
+      "mean_return": 0.027647058823529396,
+      "external_updates": 3,
+      "diagnostic_account": {
+        "algorithm": "UngatedUnified",
+        "base_queries": 3,
+        "expanded_queries": 1,
+        "trial_task_budget": 6,
+        "trial_tasks_used": 6
+      }
+    },
+    {
+      "arm": "EventOnlyGate",
+      "successes": 21,
+      "returns": [
+        -1.02,
+        -1.02,
+        0.86,
+        0.86,
+        -1.06,
+        0.86,
+        0.86,
+        0.86,
+        -1.08,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.08,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.24,
+        -1.24,
+        -1.24,
+        -1.24,
+        -1.24,
+        -1.24,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.24,
+        -1.24
+      ],
+      "outcomes": [
+        "TRAP",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TIMEOUT",
+        "TIMEOUT",
+        "TIMEOUT",
+        "TIMEOUT",
+        "TIMEOUT",
+        "TIMEOUT",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TIMEOUT",
+        "TIMEOUT"
+      ],
+      "mean_return": 0.08470588235294116,
+      "external_updates": 3,
+      "diagnostic_account": {
+        "algorithm": "EventOnlyGate",
+        "base_queries": 3,
+        "expanded_queries": 1,
+        "trial_task_budget": 6,
+        "trial_tasks_used": 6
+      }
+    },
+    {
+      "arm": "AllQueryGate",
+      "successes": 28,
+      "returns": [
+        -1.02,
+        -1.02,
+        0.86,
+        0.86,
+        -1.06,
+        0.86,
+        0.86,
+        0.86,
+        -1.08,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.08,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.24,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.88,
+        0.88
+      ],
+      "outcomes": [
+        "TRAP",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TIMEOUT",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.5211764705882352,
+      "external_updates": 3,
+      "diagnostic_account": {
+        "algorithm": "AllQueryGate",
+        "base_queries": 3,
+        "expanded_queries": 1,
+        "trial_task_budget": 6,
+        "trial_tasks_used": 6
+      }
+    }
+  ],
+  "execution_value_decisions": [
+    {
+      "arm": "AllQueryGate",
+      "epoch": 0,
+      "stage": "A_compound_execution",
+      "x": [
+        -0.94,
+        1.0
+      ],
+      "prediction": 1.2533333333333332,
+      "decision": "supported_probe",
+      "trial_tasks_used_before": 0
+    },
+    {
+      "arm": "AllQueryGate",
+      "epoch": 4,
+      "stage": "P_early_protection",
+      "x": [
+        0.46499999999999997,
+        1.0
+      ],
+      "prediction": 0.0,
+      "decision": "supported_skip",
+      "trial_tasks_used_before": 3
+    },
+    {
+      "arm": "AllQueryGate",
+      "epoch": 20,
+      "stage": "W_late_unseen_wait",
+      "x": [
+        -0.010000000000000009,
+        12.0
+      ],
+      "prediction": null,
+      "decision": "unknown_probe",
+      "trial_tasks_used_before": 4
+    }
+  ],
+  "execution_model_record": {
+    "sha256": "7576c702c1bb473e7647dc9ad0275265b85adc8c20a0eee4d352758a8ad5a495",
+    "new_native_fits": 0,
+    "parameters_exact": true
+  },
+  "query_value_decisions": [
+    {
+      "arm": "EventOnlyGate",
+      "epoch": 8,
+      "stage": "B_zero_gain_event",
+      "x": [
+        0.040000000000000036,
+        0.0,
+        0.0
+      ],
+      "prediction": 0.0,
+      "decision": "supported_skip",
+      "trial_tasks_used_before": 5
+    },
+    {
+      "arm": "EventOnlyGate",
+      "epoch": 14,
+      "stage": "C_useful_event",
+      "x": [
+        0.040000000000000036,
+        0.0,
+        0.040000000000000036
+      ],
+      "prediction": 1.94,
+      "decision": "supported_probe",
+      "trial_tasks_used_before": 5
+    },
+    {
+      "arm": "AllQueryGate",
+      "epoch": 8,
+      "stage": "B_zero_gain_event",
+      "x": [
+        0.040000000000000036,
+        0.0,
+        0.0
+      ],
+      "prediction": 0.0,
+      "decision": "supported_skip",
+      "trial_tasks_used_before": 3
+    },
+    {
+      "arm": "AllQueryGate",
+      "epoch": 14,
+      "stage": "C_useful_event",
+      "x": [
+        0.040000000000000036,
+        0.0,
+        0.040000000000000036
+      ],
+      "prediction": 1.94,
+      "decision": "supported_probe",
+      "trial_tasks_used_before": 3
+    }
+  ],
+  "recorded_model_pair": {
+    "raw_sha256": "9907ee1103a20231dc485288f7ec7b298e4131901a8d8c5e297cdf648aeec754",
+    "new_native_fits": 0,
+    "parameters_exact": true
+  },
+  "dispatches": [
+    {
+      "arm": "UngatedUnified",
+      "epoch": 0,
+      "stage": "A_compound_execution",
+      "branch": "execution",
+      "trial_tasks_used_before": 0
+    },
+    {
+      "arm": "UngatedUnified",
+      "epoch": 1,
+      "stage": "A_compound_execution",
+      "branch": "event",
+      "trial_tasks_used_before": 3
+    },
+    {
+      "arm": "UngatedUnified",
+      "epoch": 4,
+      "stage": "P_early_protection",
+      "branch": "execution",
+      "trial_tasks_used_before": 3
+    },
+    {
+      "arm": "UngatedUnified",
+      "epoch": 8,
+      "stage": "B_zero_gain_event",
+      "branch": "event",
+      "trial_tasks_used_before": 5
+    },
+    {
+      "arm": "UngatedUnified",
+      "epoch": 14,
+      "stage": "C_useful_event",
+      "branch": "event",
+      "trial_tasks_used_before": 6
+    },
+    {
+      "arm": "UngatedUnified",
+      "epoch": 17,
+      "stage": "C_useful_event",
+      "branch": "event",
+      "trial_tasks_used_before": 6
+    },
+    {
+      "arm": "UngatedUnified",
+      "epoch": 20,
+      "stage": "W_late_unseen_wait",
+      "branch": "execution",
+      "trial_tasks_used_before": 6
+    },
+    {
+      "arm": "UngatedUnified",
+      "epoch": 21,
+      "stage": "W_late_unseen_wait",
+      "branch": "execution",
+      "trial_tasks_used_before": 6
+    },
+    {
+      "arm": "UngatedUnified",
+      "epoch": 22,
+      "stage": "W_late_unseen_wait",
+      "branch": "execution",
+      "trial_tasks_used_before": 6
+    },
+    {
+      "arm": "UngatedUnified",
+      "epoch": 23,
+      "stage": "W_late_unseen_wait",
+      "branch": "execution",
+      "trial_tasks_used_before": 6
+    },
+    {
+      "arm": "UngatedUnified",
+      "epoch": 24,
+      "stage": "W_late_unseen_wait",
+      "branch": "execution",
+      "trial_tasks_used_before": 6
+    },
+    {
+      "arm": "UngatedUnified",
+      "epoch": 25,
+      "stage": "W_late_unseen_wait",
+      "branch": "execution",
+      "trial_tasks_used_before": 6
+    },
+    {
+      "arm": "UngatedUnified",
+      "epoch": 32,
+      "stage": "W_revisit",
+      "branch": "execution",
+      "trial_tasks_used_before": 6
+    },
+    {
+      "arm": "UngatedUnified",
+      "epoch": 33,
+      "stage": "W_revisit",
+      "branch": "execution",
+      "trial_tasks_used_before": 6
+    },
+    {
+      "arm": "EventOnlyGate",
+      "epoch": 0,
+      "stage": "A_compound_execution",
+      "branch": "execution",
+      "trial_tasks_used_before": 0
+    },
+    {
+      "arm": "EventOnlyGate",
+      "epoch": 1,
+      "stage": "A_compound_execution",
+      "branch": "event",
+      "trial_tasks_used_before": 3
+    },
+    {
+      "arm": "EventOnlyGate",
+      "epoch": 4,
+      "stage": "P_early_protection",
+      "branch": "execution",
+      "trial_tasks_used_before": 3
+    },
+    {
+      "arm": "EventOnlyGate",
+      "epoch": 8,
+      "stage": "B_zero_gain_event",
+      "branch": "event",
+      "trial_tasks_used_before": 5
+    },
+    {
+      "arm": "EventOnlyGate",
+      "epoch": 14,
+      "stage": "C_useful_event",
+      "branch": "event",
+      "trial_tasks_used_before": 5
+    },
+    {
+      "arm": "EventOnlyGate",
+      "epoch": 20,
+      "stage": "W_late_unseen_wait",
+      "branch": "execution",
+      "trial_tasks_used_before": 6
+    },
+    {
+      "arm": "EventOnlyGate",
+      "epoch": 21,
+      "stage": "W_late_unseen_wait",
+      "branch": "execution",
+      "trial_tasks_used_before": 6
+    },
+    {
+      "arm": "EventOnlyGate",
+      "epoch": 22,
+      "stage": "W_late_unseen_wait",
+      "branch": "execution",
+      "trial_tasks_used_before": 6
+    },
+    {
+      "arm": "EventOnlyGate",
+      "epoch": 23,
+      "stage": "W_late_unseen_wait",
+      "branch": "execution",
+      "trial_tasks_used_before": 6
+    },
+    {
+      "arm": "EventOnlyGate",
+      "epoch": 24,
+      "stage": "W_late_unseen_wait",
+      "branch": "execution",
+      "trial_tasks_used_before": 6
+    },
+    {
+      "arm": "EventOnlyGate",
+      "epoch": 25,
+      "stage": "W_late_unseen_wait",
+      "branch": "execution",
+      "trial_tasks_used_before": 6
+    },
+    {
+      "arm": "EventOnlyGate",
+      "epoch": 32,
+      "stage": "W_revisit",
+      "branch": "execution",
+      "trial_tasks_used_before": 6
+    },
+    {
+      "arm": "EventOnlyGate",
+      "epoch": 33,
+      "stage": "W_revisit",
+      "branch": "execution",
+      "trial_tasks_used_before": 6
+    },
+    {
+      "arm": "AllQueryGate",
+      "epoch": 0,
+      "stage": "A_compound_execution",
+      "branch": "execution",
+      "trial_tasks_used_before": 0
+    },
+    {
+      "arm": "AllQueryGate",
+      "epoch": 1,
+      "stage": "A_compound_execution",
+      "branch": "event",
+      "trial_tasks_used_before": 3
+    },
+    {
+      "arm": "AllQueryGate",
+      "epoch": 4,
+      "stage": "P_early_protection",
+      "branch": "execution",
+      "trial_tasks_used_before": 3
+    },
+    {
+      "arm": "AllQueryGate",
+      "epoch": 8,
+      "stage": "B_zero_gain_event",
+      "branch": "event",
+      "trial_tasks_used_before": 3
+    },
+    {
+      "arm": "AllQueryGate",
+      "epoch": 14,
+      "stage": "C_useful_event",
+      "branch": "event",
+      "trial_tasks_used_before": 3
+    },
+    {
+      "arm": "AllQueryGate",
+      "epoch": 20,
+      "stage": "W_late_unseen_wait",
+      "branch": "execution",
+      "trial_tasks_used_before": 4
+    }
+  ],
+  "event_hypotheses": [
+    {
+      "arm": "UngatedUnified",
+      "epoch": 1,
+      "stage": "A_compound_execution",
+      "specification": null,
+      "public_search": {
+        "public_candidate_transitions": 2,
+        "target_inference_transitions": 1,
+        "search_exhausted": false,
+        "reason": "no_legal_alternate_entry"
+      }
+    },
+    {
+      "arm": "UngatedUnified",
+      "epoch": 8,
+      "stage": "B_zero_gain_event",
+      "specification": {
+        "target": {
+          "x": 3,
+          "y": 1,
+          "t": 4,
+          "kappa": 0,
+          "phi": 4
+        },
+        "observed_last_pre": {
+          "x": 2,
+          "y": 1,
+          "t": 3,
+          "kappa": 0,
+          "phi": 4
+        },
+        "observed_last_command": 3,
+        "rows": [
+          {
+            "state": {
+              "x": 0,
+              "y": 2,
+              "t": 0,
+              "kappa": 0,
+              "phi": 4
+            },
+            "control": {
+              "z": 1,
+              "m": 0
+            },
+            "command": 3,
+            "admissible_rank": 0
+          },
+          {
+            "state": {
+              "x": 1,
+              "y": 2,
+              "t": 1,
+              "kappa": 0,
+              "phi": 4
+            },
+            "control": {
+              "z": 1,
+              "m": 0
+            },
+            "command": 3,
+            "admissible_rank": 3
+          },
+          {
+            "state": {
+              "x": 2,
+              "y": 2,
+              "t": 2,
+              "kappa": 0,
+              "phi": 4
+            },
+            "control": {
+              "z": 1,
+              "m": 0
+            },
+            "command": 3,
+            "admissible_rank": 2
+          },
+          {
+            "state": {
+              "x": 3,
+              "y": 2,
+              "t": 3,
+              "kappa": 0,
+              "phi": 4
+            },
+            "control": {
+              "z": 1,
+              "m": 0
+            },
+            "command": 0,
+            "admissible_rank": 0
+          }
+        ]
+      },
+      "public_search": {
+        "public_candidate_transitions": 56,
+        "target_inference_transitions": 1,
+        "search_exhausted": false,
+        "reason": "alternate_entry_found"
+      },
+      "assessment": {
+        "checked_steps": 4,
+        "reason": "actual_target_TRAP",
+        "status": "consistent_on_tested_alternate"
+      }
+    },
+    {
+      "arm": "EventOnlyGate",
+      "epoch": 1,
+      "stage": "A_compound_execution",
+      "specification": null,
+      "public_search": {
+        "public_candidate_transitions": 2,
+        "target_inference_transitions": 1,
+        "search_exhausted": false,
+        "reason": "no_legal_alternate_entry"
+      }
+    },
+    {
+      "arm": "EventOnlyGate",
+      "epoch": 8,
+      "stage": "B_zero_gain_event",
+      "specification": {
+        "target": {
+          "x": 3,
+          "y": 1,
+          "t": 4,
+          "kappa": 0,
+          "phi": 4
+        },
+        "observed_last_pre": {
+          "x": 2,
+          "y": 1,
+          "t": 3,
+          "kappa": 0,
+          "phi": 4
+        },
+        "observed_last_command": 3,
+        "rows": [
+          {
+            "state": {
+              "x": 0,
+              "y": 2,
+              "t": 0,
+              "kappa": 0,
+              "phi": 4
+            },
+            "control": {
+              "z": 1,
+              "m": 0
+            },
+            "command": 3,
+            "admissible_rank": 0
+          },
+          {
+            "state": {
+              "x": 1,
+              "y": 2,
+              "t": 1,
+              "kappa": 0,
+              "phi": 4
+            },
+            "control": {
+              "z": 1,
+              "m": 0
+            },
+            "command": 3,
+            "admissible_rank": 3
+          },
+          {
+            "state": {
+              "x": 2,
+              "y": 2,
+              "t": 2,
+              "kappa": 0,
+              "phi": 4
+            },
+            "control": {
+              "z": 1,
+              "m": 0
+            },
+            "command": 3,
+            "admissible_rank": 2
+          },
+          {
+            "state": {
+              "x": 3,
+              "y": 2,
+              "t": 3,
+              "kappa": 0,
+              "phi": 4
+            },
+            "control": {
+              "z": 1,
+              "m": 0
+            },
+            "command": 0,
+            "admissible_rank": 0
+          }
+        ]
+      },
+      "public_search": {
+        "public_candidate_transitions": 56,
+        "target_inference_transitions": 1,
+        "search_exhausted": false,
+        "reason": "alternate_entry_found"
+      }
+    },
+    {
+      "arm": "EventOnlyGate",
+      "epoch": 14,
+      "stage": "C_useful_event",
+      "specification": {
+        "target": {
+          "x": 3,
+          "y": 1,
+          "t": 4,
+          "kappa": 1,
+          "phi": 1
+        },
+        "observed_last_pre": {
+          "x": 2,
+          "y": 1,
+          "t": 3,
+          "kappa": 1,
+          "phi": 1
+        },
+        "observed_last_command": 3,
+        "rows": [
+          {
+            "state": {
+              "x": 0,
+              "y": 2,
+              "t": 0,
+              "kappa": 1,
+              "phi": 1
+            },
+            "control": {
+              "z": 1,
+              "m": 0
+            },
+            "command": 3,
+            "admissible_rank": 0
+          },
+          {
+            "state": {
+              "x": 1,
+              "y": 2,
+              "t": 1,
+              "kappa": 1,
+              "phi": 1
+            },
+            "control": {
+              "z": 1,
+              "m": 0
+            },
+            "command": 3,
+            "admissible_rank": 3
+          },
+          {
+            "state": {
+              "x": 2,
+              "y": 2,
+              "t": 2,
+              "kappa": 1,
+              "phi": 1
+            },
+            "control": {
+              "z": 1,
+              "m": 0
+            },
+            "command": 3,
+            "admissible_rank": 2
+          },
+          {
+            "state": {
+              "x": 3,
+              "y": 2,
+              "t": 3,
+              "kappa": 1,
+              "phi": 1
+            },
+            "control": {
+              "z": 1,
+              "m": 0
+            },
+            "command": 0,
+            "admissible_rank": 0
+          }
+        ]
+      },
+      "public_search": {
+        "public_candidate_transitions": 56,
+        "target_inference_transitions": 1,
+        "search_exhausted": false,
+        "reason": "alternate_entry_found"
+      },
+      "assessment": {
+        "checked_steps": 4,
+        "reason": "actual_target_TRAP",
+        "status": "consistent_on_tested_alternate"
+      }
+    },
+    {
+      "arm": "AllQueryGate",
+      "epoch": 1,
+      "stage": "A_compound_execution",
+      "specification": null,
+      "public_search": {
+        "public_candidate_transitions": 2,
+        "target_inference_transitions": 1,
+        "search_exhausted": false,
+        "reason": "no_legal_alternate_entry"
+      }
+    },
+    {
+      "arm": "AllQueryGate",
+      "epoch": 8,
+      "stage": "B_zero_gain_event",
+      "specification": {
+        "target": {
+          "x": 3,
+          "y": 1,
+          "t": 4,
+          "kappa": 0,
+          "phi": 4
+        },
+        "observed_last_pre": {
+          "x": 2,
+          "y": 1,
+          "t": 3,
+          "kappa": 0,
+          "phi": 4
+        },
+        "observed_last_command": 3,
+        "rows": [
+          {
+            "state": {
+              "x": 0,
+              "y": 2,
+              "t": 0,
+              "kappa": 0,
+              "phi": 4
+            },
+            "control": {
+              "z": 1,
+              "m": 0
+            },
+            "command": 3,
+            "admissible_rank": 0
+          },
+          {
+            "state": {
+              "x": 1,
+              "y": 2,
+              "t": 1,
+              "kappa": 0,
+              "phi": 4
+            },
+            "control": {
+              "z": 1,
+              "m": 0
+            },
+            "command": 3,
+            "admissible_rank": 3
+          },
+          {
+            "state": {
+              "x": 2,
+              "y": 2,
+              "t": 2,
+              "kappa": 0,
+              "phi": 4
+            },
+            "control": {
+              "z": 1,
+              "m": 0
+            },
+            "command": 3,
+            "admissible_rank": 2
+          },
+          {
+            "state": {
+              "x": 3,
+              "y": 2,
+              "t": 3,
+              "kappa": 0,
+              "phi": 4
+            },
+            "control": {
+              "z": 1,
+              "m": 0
+            },
+            "command": 0,
+            "admissible_rank": 0
+          }
+        ]
+      },
+      "public_search": {
+        "public_candidate_transitions": 56,
+        "target_inference_transitions": 1,
+        "search_exhausted": false,
+        "reason": "alternate_entry_found"
+      }
+    },
+    {
+      "arm": "AllQueryGate",
+      "epoch": 14,
+      "stage": "C_useful_event",
+      "specification": {
+        "target": {
+          "x": 3,
+          "y": 1,
+          "t": 4,
+          "kappa": 1,
+          "phi": 1
+        },
+        "observed_last_pre": {
+          "x": 2,
+          "y": 1,
+          "t": 3,
+          "kappa": 1,
+          "phi": 1
+        },
+        "observed_last_command": 3,
+        "rows": [
+          {
+            "state": {
+              "x": 0,
+              "y": 2,
+              "t": 0,
+              "kappa": 1,
+              "phi": 1
+            },
+            "control": {
+              "z": 1,
+              "m": 0
+            },
+            "command": 3,
+            "admissible_rank": 0
+          },
+          {
+            "state": {
+              "x": 1,
+              "y": 2,
+              "t": 1,
+              "kappa": 1,
+              "phi": 1
+            },
+            "control": {
+              "z": 1,
+              "m": 0
+            },
+            "command": 3,
+            "admissible_rank": 3
+          },
+          {
+            "state": {
+              "x": 2,
+              "y": 2,
+              "t": 2,
+              "kappa": 1,
+              "phi": 1
+            },
+            "control": {
+              "z": 1,
+              "m": 0
+            },
+            "command": 3,
+            "admissible_rank": 2
+          },
+          {
+            "state": {
+              "x": 3,
+              "y": 2,
+              "t": 3,
+              "kappa": 1,
+              "phi": 1
+            },
+            "control": {
+              "z": 1,
+              "m": 0
+            },
+            "command": 0,
+            "admissible_rank": 0
+          }
+        ]
+      },
+      "public_search": {
+        "public_candidate_transitions": 56,
+        "target_inference_transitions": 1,
+        "search_exhausted": false,
+        "reason": "alternate_entry_found"
+      },
+      "assessment": {
+        "checked_steps": 4,
+        "reason": "actual_target_TRAP",
+        "status": "consistent_on_tested_alternate"
+      }
+    }
+  ],
+  "path_checks": [
+    {
+      "arm": "UngatedUnified",
+      "epoch": 0,
+      "stage": "A_compound_execution",
+      "desired_episodes": [
+        {
+          "coins": [
+            0,
+            0,
+            0,
+            18446744073709551615,
+            18446744073709551615,
+            18446744073709551615,
+            18446744073709551615,
+            18446744073709551615,
+            18446744073709551615,
+            18446744073709551615,
+            18446744073709551615,
+            18446744073709551615
+          ],
+          "epoch": 0,
+          "kappa": 0,
+          "proposal": 1,
+          "rejections": [
+            [
+              1
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ]
+          ],
+          "tape": {
+            "cause_rank": 12,
+            "error_flag": 0,
+            "phase": 3
+          }
+        }
+      ],
+      "desired_protocol": {
+        "lock_digest": "v166-current-private",
+        "parameters": {
+          "alpha": {
+            "rational": [
+              1,
+              2
+            ]
+          },
+          "epsilon": {
+            "rational": [
+              1,
+              10
+            ]
+          }
+        },
+        "sample": [
+          {
+            "base_option": 1,
+            "cause_rank": 12,
+            "error_flag": 0,
+            "kappa": 0,
+            "phase": 3
+          }
+        ],
+        "v_pre": {
+          "binary64_hex": "0x1.874538ef34d71p-1"
+        }
+      },
+      "observation_ids": [
+        "UngatedUnified:owned:1",
+        "UngatedUnified:owned:2"
+      ],
+      "proofs": [
+        {
+          "bindings": {
+            "mode_role_equal": true,
+            "origin_L_equal": true,
+            "origin_R_equal": true,
+            "plan_protocol_equal": true,
+            "proposal_equal": true,
+            "reference_identity_equal": true,
+            "same_current_complete_observation": true
+          },
+          "equivalent": true,
+          "native_episode_input_equal": false,
+          "original_coordinate_calls": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              1
+            ]
+          ],
+          "reason": "same_commands_inductively_same_deterministic_terminal_outcome",
+          "steps": [
+            {
+              "actual_command": 4,
+              "command_equal": true,
+              "desired_command": 4,
+              "desired_coordinate_DATA": [
+                [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0,
+                  1
+                ]
+              ],
+              "desired_explore": true,
+              "pre_control": {
+                "m": 0,
+                "z": 1
+              },
+              "pre_state": {
+                "kappa": 0,
+                "phi": 3,
+                "t": 0,
+                "x": 0,
+                "y": 2
+              }
+            }
+          ]
+        },
+        {
+          "bindings": {
+            "mode_role_equal": true,
+            "origin_L_equal": true,
+            "origin_R_equal": true,
+            "plan_protocol_equal": true,
+            "proposal_equal": true,
+            "reference_identity_equal": true,
+            "same_current_complete_observation": true
+          },
+          "equivalent": true,
+          "native_episode_input_equal": false,
+          "original_coordinate_calls": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              1
+            ],
+            [
+              1,
+              0,
+              0,
+              18446744073709551615
+            ],
+            [
+              2,
+              0,
+              0,
+              18446744073709551615
+            ]
+          ],
+          "reason": "same_commands_inductively_same_deterministic_terminal_outcome",
+          "steps": [
+            {
+              "actual_command": 4,
+              "command_equal": true,
+              "desired_command": 4,
+              "desired_coordinate_DATA": [
+                [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0,
+                  1
+                ]
+              ],
+              "desired_explore": true,
+              "pre_control": {
+                "m": 0,
+                "z": 1
+              },
+              "pre_state": {
+                "kappa": 0,
+                "phi": 3,
+                "t": 0,
+                "x": 0,
+                "y": 2
+              }
+            },
+            {
+              "actual_command": 3,
+              "command_equal": true,
+              "desired_command": 3,
+              "desired_coordinate_DATA": [
+                [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                [
+                  1,
+                  1,
+                  0,
+                  0
+                ]
+              ],
+              "desired_explore": true,
+              "pre_control": {
+                "m": 0,
+                "z": 1
+              },
+              "pre_state": {
+                "kappa": 0,
+                "phi": 3,
+                "t": 1,
+                "x": 0,
+                "y": 2
+              }
+            },
+            {
+              "actual_command": 0,
+              "command_equal": true,
+              "desired_command": 0,
+              "desired_coordinate_DATA": [
+                [
+                  2,
+                  0,
+                  0,
+                  0
+                ],
+                [
+                  2,
+                  1,
+                  0,
+                  0
+                ]
+              ],
+              "desired_explore": true,
+              "pre_control": {
+                "m": 0,
+                "z": 1
+              },
+              "pre_state": {
+                "kappa": 0,
+                "phi": 3,
+                "t": 2,
+                "x": 1,
+                "y": 2
+              }
+            }
+          ]
+        }
+      ],
+      "reuse": true
+    },
+    {
+      "arm": "EventOnlyGate",
+      "epoch": 0,
+      "stage": "A_compound_execution",
+      "desired_episodes": [
+        {
+          "coins": [
+            0,
+            0,
+            0,
+            18446744073709551615,
+            18446744073709551615,
+            18446744073709551615,
+            18446744073709551615,
+            18446744073709551615,
+            18446744073709551615,
+            18446744073709551615,
+            18446744073709551615,
+            18446744073709551615
+          ],
+          "epoch": 0,
+          "kappa": 0,
+          "proposal": 1,
+          "rejections": [
+            [
+              1
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ]
+          ],
+          "tape": {
+            "cause_rank": 12,
+            "error_flag": 0,
+            "phase": 3
+          }
+        }
+      ],
+      "desired_protocol": {
+        "lock_digest": "v166-current-private",
+        "parameters": {
+          "alpha": {
+            "rational": [
+              1,
+              2
+            ]
+          },
+          "epsilon": {
+            "rational": [
+              1,
+              10
+            ]
+          }
+        },
+        "sample": [
+          {
+            "base_option": 1,
+            "cause_rank": 12,
+            "error_flag": 0,
+            "kappa": 0,
+            "phase": 3
+          }
+        ],
+        "v_pre": {
+          "binary64_hex": "0x1.874538ef34d71p-1"
+        }
+      },
+      "observation_ids": [
+        "EventOnlyGate:owned:1",
+        "EventOnlyGate:owned:2"
+      ],
+      "proofs": [
+        {
+          "bindings": {
+            "mode_role_equal": true,
+            "origin_L_equal": true,
+            "origin_R_equal": true,
+            "plan_protocol_equal": true,
+            "proposal_equal": true,
+            "reference_identity_equal": true,
+            "same_current_complete_observation": true
+          },
+          "equivalent": true,
+          "native_episode_input_equal": false,
+          "original_coordinate_calls": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              1
+            ]
+          ],
+          "reason": "same_commands_inductively_same_deterministic_terminal_outcome",
+          "steps": [
+            {
+              "actual_command": 4,
+              "command_equal": true,
+              "desired_command": 4,
+              "desired_coordinate_DATA": [
+                [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0,
+                  1
+                ]
+              ],
+              "desired_explore": true,
+              "pre_control": {
+                "m": 0,
+                "z": 1
+              },
+              "pre_state": {
+                "kappa": 0,
+                "phi": 3,
+                "t": 0,
+                "x": 0,
+                "y": 2
+              }
+            }
+          ]
+        },
+        {
+          "bindings": {
+            "mode_role_equal": true,
+            "origin_L_equal": true,
+            "origin_R_equal": true,
+            "plan_protocol_equal": true,
+            "proposal_equal": true,
+            "reference_identity_equal": true,
+            "same_current_complete_observation": true
+          },
+          "equivalent": true,
+          "native_episode_input_equal": false,
+          "original_coordinate_calls": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              1
+            ],
+            [
+              1,
+              0,
+              0,
+              18446744073709551615
+            ],
+            [
+              2,
+              0,
+              0,
+              18446744073709551615
+            ]
+          ],
+          "reason": "same_commands_inductively_same_deterministic_terminal_outcome",
+          "steps": [
+            {
+              "actual_command": 4,
+              "command_equal": true,
+              "desired_command": 4,
+              "desired_coordinate_DATA": [
+                [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0,
+                  1
+                ]
+              ],
+              "desired_explore": true,
+              "pre_control": {
+                "m": 0,
+                "z": 1
+              },
+              "pre_state": {
+                "kappa": 0,
+                "phi": 3,
+                "t": 0,
+                "x": 0,
+                "y": 2
+              }
+            },
+            {
+              "actual_command": 3,
+              "command_equal": true,
+              "desired_command": 3,
+              "desired_coordinate_DATA": [
+                [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                [
+                  1,
+                  1,
+                  0,
+                  0
+                ]
+              ],
+              "desired_explore": true,
+              "pre_control": {
+                "m": 0,
+                "z": 1
+              },
+              "pre_state": {
+                "kappa": 0,
+                "phi": 3,
+                "t": 1,
+                "x": 0,
+                "y": 2
+              }
+            },
+            {
+              "actual_command": 0,
+              "command_equal": true,
+              "desired_command": 0,
+              "desired_coordinate_DATA": [
+                [
+                  2,
+                  0,
+                  0,
+                  0
+                ],
+                [
+                  2,
+                  1,
+                  0,
+                  0
+                ]
+              ],
+              "desired_explore": true,
+              "pre_control": {
+                "m": 0,
+                "z": 1
+              },
+              "pre_state": {
+                "kappa": 0,
+                "phi": 3,
+                "t": 2,
+                "x": 1,
+                "y": 2
+              }
+            }
+          ]
+        }
+      ],
+      "reuse": true
+    },
+    {
+      "arm": "AllQueryGate",
+      "epoch": 0,
+      "stage": "A_compound_execution",
+      "desired_episodes": [
+        {
+          "coins": [
+            0,
+            0,
+            0,
+            18446744073709551615,
+            18446744073709551615,
+            18446744073709551615,
+            18446744073709551615,
+            18446744073709551615,
+            18446744073709551615,
+            18446744073709551615,
+            18446744073709551615,
+            18446744073709551615
+          ],
+          "epoch": 0,
+          "kappa": 0,
+          "proposal": 1,
+          "rejections": [
+            [
+              1
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ]
+          ],
+          "tape": {
+            "cause_rank": 12,
+            "error_flag": 0,
+            "phase": 3
+          }
+        }
+      ],
+      "desired_protocol": {
+        "lock_digest": "v166-current-private",
+        "parameters": {
+          "alpha": {
+            "rational": [
+              1,
+              2
+            ]
+          },
+          "epsilon": {
+            "rational": [
+              1,
+              10
+            ]
+          }
+        },
+        "sample": [
+          {
+            "base_option": 1,
+            "cause_rank": 12,
+            "error_flag": 0,
+            "kappa": 0,
+            "phase": 3
+          }
+        ],
+        "v_pre": {
+          "binary64_hex": "0x1.874538ef34d71p-1"
+        }
+      },
+      "observation_ids": [
+        "AllQueryGate:owned:1",
+        "AllQueryGate:owned:2"
+      ],
+      "proofs": [
+        {
+          "bindings": {
+            "mode_role_equal": true,
+            "origin_L_equal": true,
+            "origin_R_equal": true,
+            "plan_protocol_equal": true,
+            "proposal_equal": true,
+            "reference_identity_equal": true,
+            "same_current_complete_observation": true
+          },
+          "equivalent": true,
+          "native_episode_input_equal": false,
+          "original_coordinate_calls": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              1
+            ]
+          ],
+          "reason": "same_commands_inductively_same_deterministic_terminal_outcome",
+          "steps": [
+            {
+              "actual_command": 4,
+              "command_equal": true,
+              "desired_command": 4,
+              "desired_coordinate_DATA": [
+                [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0,
+                  1
+                ]
+              ],
+              "desired_explore": true,
+              "pre_control": {
+                "m": 0,
+                "z": 1
+              },
+              "pre_state": {
+                "kappa": 0,
+                "phi": 3,
+                "t": 0,
+                "x": 0,
+                "y": 2
+              }
+            }
+          ]
+        },
+        {
+          "bindings": {
+            "mode_role_equal": true,
+            "origin_L_equal": true,
+            "origin_R_equal": true,
+            "plan_protocol_equal": true,
+            "proposal_equal": true,
+            "reference_identity_equal": true,
+            "same_current_complete_observation": true
+          },
+          "equivalent": true,
+          "native_episode_input_equal": false,
+          "original_coordinate_calls": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              1
+            ],
+            [
+              1,
+              0,
+              0,
+              18446744073709551615
+            ],
+            [
+              2,
+              0,
+              0,
+              18446744073709551615
+            ]
+          ],
+          "reason": "same_commands_inductively_same_deterministic_terminal_outcome",
+          "steps": [
+            {
+              "actual_command": 4,
+              "command_equal": true,
+              "desired_command": 4,
+              "desired_coordinate_DATA": [
+                [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0,
+                  1
+                ]
+              ],
+              "desired_explore": true,
+              "pre_control": {
+                "m": 0,
+                "z": 1
+              },
+              "pre_state": {
+                "kappa": 0,
+                "phi": 3,
+                "t": 0,
+                "x": 0,
+                "y": 2
+              }
+            },
+            {
+              "actual_command": 3,
+              "command_equal": true,
+              "desired_command": 3,
+              "desired_coordinate_DATA": [
+                [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                [
+                  1,
+                  1,
+                  0,
+                  0
+                ]
+              ],
+              "desired_explore": true,
+              "pre_control": {
+                "m": 0,
+                "z": 1
+              },
+              "pre_state": {
+                "kappa": 0,
+                "phi": 3,
+                "t": 1,
+                "x": 0,
+                "y": 2
+              }
+            },
+            {
+              "actual_command": 0,
+              "command_equal": true,
+              "desired_command": 0,
+              "desired_coordinate_DATA": [
+                [
+                  2,
+                  0,
+                  0,
+                  0
+                ],
+                [
+                  2,
+                  1,
+                  0,
+                  0
+                ]
+              ],
+              "desired_explore": true,
+              "pre_control": {
+                "m": 0,
+                "z": 1
+              },
+              "pre_state": {
+                "kappa": 0,
+                "phi": 3,
+                "t": 2,
+                "x": 1,
+                "y": 2
+              }
+            }
+          ]
+        }
+      ],
+      "reuse": true
+    }
+  ],
+  "negative_checks": [
+    {
+      "desired_episodes": [
+        {
+          "coins": [
+            0,
+            0,
+            0,
+            18446744073709551615,
+            18446744073709551615,
+            18446744073709551615,
+            18446744073709551615,
+            18446744073709551615,
+            18446744073709551615,
+            18446744073709551615,
+            18446744073709551615,
+            18446744073709551615
+          ],
+          "epoch": 0,
+          "kappa": 0,
+          "proposal": 1,
+          "rejections": [
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ]
+          ],
+          "tape": {
+            "cause_rank": 12,
+            "error_flag": 0,
+            "phase": 3
+          }
+        }
+      ],
+      "observation_id": "UngatedUnified:owned:1",
+      "proof": {
+        "bindings": {
+          "mode_role_equal": true,
+          "origin_L_equal": true,
+          "origin_R_equal": true,
+          "plan_protocol_equal": true,
+          "proposal_equal": true,
+          "reference_identity_equal": true,
+          "same_current_complete_observation": true
+        },
+        "equivalent": false,
+        "native_episode_input_equal": false,
+        "original_coordinate_calls": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0,
+            1
+          ]
+        ],
+        "reason": "desired_command_differs_on_actual_consumed_path",
+        "steps": [
+          {
+            "actual_command": 4,
+            "command_equal": false,
+            "desired_command": 3,
+            "desired_coordinate_DATA": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                0
+              ]
+            ],
+            "desired_explore": true,
+            "pre_control": {
+              "m": 0,
+              "z": 1
+            },
+            "pre_state": {
+              "kappa": 0,
+              "phi": 3,
+              "t": 0,
+              "x": 0,
+              "y": 2
+            }
+          }
+        ]
+      }
+    },
+    {
+      "desired_episodes": [
+        {
+          "coins": [
+            0,
+            0,
+            0,
+            18446744073709551615,
+            18446744073709551615,
+            18446744073709551615,
+            18446744073709551615,
+            18446744073709551615,
+            18446744073709551615,
+            18446744073709551615,
+            18446744073709551615,
+            18446744073709551615
+          ],
+          "epoch": 0,
+          "kappa": 0,
+          "proposal": 1,
+          "rejections": [
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ]
+          ],
+          "tape": {
+            "cause_rank": 12,
+            "error_flag": 0,
+            "phase": 3
+          }
+        }
+      ],
+      "observation_id": "EventOnlyGate:owned:1",
+      "proof": {
+        "bindings": {
+          "mode_role_equal": true,
+          "origin_L_equal": true,
+          "origin_R_equal": true,
+          "plan_protocol_equal": true,
+          "proposal_equal": true,
+          "reference_identity_equal": true,
+          "same_current_complete_observation": true
+        },
+        "equivalent": false,
+        "native_episode_input_equal": false,
+        "original_coordinate_calls": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0,
+            1
+          ]
+        ],
+        "reason": "desired_command_differs_on_actual_consumed_path",
+        "steps": [
+          {
+            "actual_command": 4,
+            "command_equal": false,
+            "desired_command": 3,
+            "desired_coordinate_DATA": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                0
+              ]
+            ],
+            "desired_explore": true,
+            "pre_control": {
+              "m": 0,
+              "z": 1
+            },
+            "pre_state": {
+              "kappa": 0,
+              "phi": 3,
+              "t": 0,
+              "x": 0,
+              "y": 2
+            }
+          }
+        ]
+      }
+    },
+    {
+      "desired_episodes": [
+        {
+          "coins": [
+            0,
+            0,
+            0,
+            18446744073709551615,
+            18446744073709551615,
+            18446744073709551615,
+            18446744073709551615,
+            18446744073709551615,
+            18446744073709551615,
+            18446744073709551615,
+            18446744073709551615,
+            18446744073709551615
+          ],
+          "epoch": 0,
+          "kappa": 0,
+          "proposal": 1,
+          "rejections": [
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ]
+          ],
+          "tape": {
+            "cause_rank": 12,
+            "error_flag": 0,
+            "phase": 3
+          }
+        }
+      ],
+      "observation_id": "AllQueryGate:owned:1",
+      "proof": {
+        "bindings": {
+          "mode_role_equal": true,
+          "origin_L_equal": true,
+          "origin_R_equal": true,
+          "plan_protocol_equal": true,
+          "proposal_equal": true,
+          "reference_identity_equal": true,
+          "same_current_complete_observation": true
+        },
+        "equivalent": false,
+        "native_episode_input_equal": false,
+        "original_coordinate_calls": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0,
+            1
+          ]
+        ],
+        "reason": "desired_command_differs_on_actual_consumed_path",
+        "steps": [
+          {
+            "actual_command": 4,
+            "command_equal": false,
+            "desired_command": 3,
+            "desired_coordinate_DATA": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                0
+              ]
+            ],
+            "desired_explore": true,
+            "pre_control": {
+              "m": 0,
+              "z": 1
+            },
+            "pre_state": {
+              "kappa": 0,
+              "phi": 3,
+              "t": 0,
+              "x": 0,
+              "y": 2
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "phase_results": [
+    {
+      "arm": "TaskTD",
+      "stage": "A_compound_execution",
+      "start_epoch": 0,
+      "tasks": 4,
+      "successes": 0,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02
+      ],
+      "mean_return": -1.02,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "TaskTD",
+      "stage": "P_early_protection",
+      "start_epoch": 4,
+      "tasks": 4,
+      "successes": 3,
+      "returns": [
+        -1.06,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.38,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "TaskTD",
+      "stage": "B_zero_gain_event",
+      "start_epoch": 8,
+      "tasks": 6,
+      "successes": 5,
+      "returns": [
+        -1.08,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.5366666666666666,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "TaskTD",
+      "stage": "C_useful_event",
+      "start_epoch": 14,
+      "tasks": 6,
+      "successes": 4,
+      "returns": [
+        -1.08,
+        0.86,
+        0.86,
+        -1.08,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.2133333333333333,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "TaskTD",
+      "stage": "W_late_unseen_wait",
+      "start_epoch": 20,
+      "tasks": 6,
+      "successes": 0,
+      "returns": [
+        -1.24,
+        -1.24,
+        -1.24,
+        -1.24,
+        -1.24,
+        -1.24
+      ],
+      "mean_return": -1.24,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "TaskTD",
+      "stage": "A_revisit",
+      "start_epoch": 26,
+      "tasks": 2,
+      "successes": 0,
+      "returns": [
+        -1.02,
+        -1.02
+      ],
+      "mean_return": -1.02,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "TaskTD",
+      "stage": "B_revisit",
+      "start_epoch": 28,
+      "tasks": 2,
+      "successes": 2,
+      "returns": [
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.86,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "TaskTD",
+      "stage": "C_revisit",
+      "start_epoch": 30,
+      "tasks": 2,
+      "successes": 2,
+      "returns": [
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.86,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "TaskTD",
+      "stage": "W_revisit",
+      "start_epoch": 32,
+      "tasks": 2,
+      "successes": 0,
+      "returns": [
+        -1.24,
+        -1.24
+      ],
+      "mean_return": -1.24,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "UngatedUnified",
+      "stage": "A_compound_execution",
+      "start_epoch": 0,
+      "tasks": 4,
+      "successes": 2,
+      "returns": [
+        -1.02,
+        -1.02,
+        0.86,
+        0.86
+      ],
+      "mean_return": -0.08000000000000002,
+      "base_query_epochs": [
+        0
+      ],
+      "expanded_query_epochs": [
+        0
+      ]
+    },
+    {
+      "arm": "UngatedUnified",
+      "stage": "P_early_protection",
+      "start_epoch": 4,
+      "tasks": 4,
+      "successes": 3,
+      "returns": [
+        -1.06,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.38,
+      "base_query_epochs": [
+        4
+      ],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "UngatedUnified",
+      "stage": "B_zero_gain_event",
+      "start_epoch": 8,
+      "tasks": 6,
+      "successes": 5,
+      "returns": [
+        -1.08,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.5366666666666666,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "UngatedUnified",
+      "stage": "C_useful_event",
+      "start_epoch": 14,
+      "tasks": 6,
+      "successes": 4,
+      "returns": [
+        -1.08,
+        0.86,
+        0.86,
+        -1.08,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.2133333333333333,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "UngatedUnified",
+      "stage": "W_late_unseen_wait",
+      "start_epoch": 20,
+      "tasks": 6,
+      "successes": 0,
+      "returns": [
+        -1.24,
+        -1.24,
+        -1.24,
+        -1.24,
+        -1.24,
+        -1.24
+      ],
+      "mean_return": -1.24,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "UngatedUnified",
+      "stage": "A_revisit",
+      "start_epoch": 26,
+      "tasks": 2,
+      "successes": 2,
+      "returns": [
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.86,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "UngatedUnified",
+      "stage": "B_revisit",
+      "start_epoch": 28,
+      "tasks": 2,
+      "successes": 2,
+      "returns": [
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.86,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "UngatedUnified",
+      "stage": "C_revisit",
+      "start_epoch": 30,
+      "tasks": 2,
+      "successes": 2,
+      "returns": [
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.86,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "UngatedUnified",
+      "stage": "W_revisit",
+      "start_epoch": 32,
+      "tasks": 2,
+      "successes": 0,
+      "returns": [
+        -1.24,
+        -1.24
+      ],
+      "mean_return": -1.24,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "EventOnlyGate",
+      "stage": "A_compound_execution",
+      "start_epoch": 0,
+      "tasks": 4,
+      "successes": 2,
+      "returns": [
+        -1.02,
+        -1.02,
+        0.86,
+        0.86
+      ],
+      "mean_return": -0.08000000000000002,
+      "base_query_epochs": [
+        0
+      ],
+      "expanded_query_epochs": [
+        0
+      ]
+    },
+    {
+      "arm": "EventOnlyGate",
+      "stage": "P_early_protection",
+      "start_epoch": 4,
+      "tasks": 4,
+      "successes": 3,
+      "returns": [
+        -1.06,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.38,
+      "base_query_epochs": [
+        4
+      ],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "EventOnlyGate",
+      "stage": "B_zero_gain_event",
+      "start_epoch": 8,
+      "tasks": 6,
+      "successes": 5,
+      "returns": [
+        -1.08,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.5366666666666666,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "EventOnlyGate",
+      "stage": "C_useful_event",
+      "start_epoch": 14,
+      "tasks": 6,
+      "successes": 5,
+      "returns": [
+        -1.08,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.5366666666666666,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "EventOnlyGate",
+      "stage": "W_late_unseen_wait",
+      "start_epoch": 20,
+      "tasks": 6,
+      "successes": 0,
+      "returns": [
+        -1.24,
+        -1.24,
+        -1.24,
+        -1.24,
+        -1.24,
+        -1.24
+      ],
+      "mean_return": -1.24,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "EventOnlyGate",
+      "stage": "A_revisit",
+      "start_epoch": 26,
+      "tasks": 2,
+      "successes": 2,
+      "returns": [
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.86,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "EventOnlyGate",
+      "stage": "B_revisit",
+      "start_epoch": 28,
+      "tasks": 2,
+      "successes": 2,
+      "returns": [
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.86,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "EventOnlyGate",
+      "stage": "C_revisit",
+      "start_epoch": 30,
+      "tasks": 2,
+      "successes": 2,
+      "returns": [
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.86,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "EventOnlyGate",
+      "stage": "W_revisit",
+      "start_epoch": 32,
+      "tasks": 2,
+      "successes": 0,
+      "returns": [
+        -1.24,
+        -1.24
+      ],
+      "mean_return": -1.24,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "AllQueryGate",
+      "stage": "A_compound_execution",
+      "start_epoch": 0,
+      "tasks": 4,
+      "successes": 2,
+      "returns": [
+        -1.02,
+        -1.02,
+        0.86,
+        0.86
+      ],
+      "mean_return": -0.08000000000000002,
+      "base_query_epochs": [
+        0
+      ],
+      "expanded_query_epochs": [
+        0
+      ]
+    },
+    {
+      "arm": "AllQueryGate",
+      "stage": "P_early_protection",
+      "start_epoch": 4,
+      "tasks": 4,
+      "successes": 3,
+      "returns": [
+        -1.06,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.38,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "AllQueryGate",
+      "stage": "B_zero_gain_event",
+      "start_epoch": 8,
+      "tasks": 6,
+      "successes": 5,
+      "returns": [
+        -1.08,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.5366666666666666,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "AllQueryGate",
+      "stage": "C_useful_event",
+      "start_epoch": 14,
+      "tasks": 6,
+      "successes": 5,
+      "returns": [
+        -1.08,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.5366666666666666,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "AllQueryGate",
+      "stage": "W_late_unseen_wait",
+      "start_epoch": 20,
+      "tasks": 6,
+      "successes": 5,
+      "returns": [
+        -1.24,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        0.88
+      ],
+      "mean_return": 0.5266666666666667,
+      "base_query_epochs": [
+        20
+      ],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "AllQueryGate",
+      "stage": "A_revisit",
+      "start_epoch": 26,
+      "tasks": 2,
+      "successes": 2,
+      "returns": [
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.86,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "AllQueryGate",
+      "stage": "B_revisit",
+      "start_epoch": 28,
+      "tasks": 2,
+      "successes": 2,
+      "returns": [
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.86,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "AllQueryGate",
+      "stage": "C_revisit",
+      "start_epoch": 30,
+      "tasks": 2,
+      "successes": 2,
+      "returns": [
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.86,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "AllQueryGate",
+      "stage": "W_revisit",
+      "start_epoch": 32,
+      "tasks": 2,
+      "successes": 2,
+      "returns": [
+        0.88,
+        0.88
+      ],
+      "mean_return": 0.88,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    }
+  ],
+  "online_costs": [
+    {
+      "arm": "TaskTD",
+      "main_tasks": 34,
+      "private_tasks": 0,
+      "rollout": 34,
+      "step": 229,
+      "transaction": 59,
+      "shared4TX_excluded": true,
+      "public_geometry": 0
+    },
+    {
+      "arm": "UngatedUnified",
+      "main_tasks": 34,
+      "private_tasks": 6,
+      "rollout": 40,
+      "step": 276,
+      "transaction": 81,
+      "shared4TX_excluded": true,
+      "public_geometry": 60
+    },
+    {
+      "arm": "EventOnlyGate",
+      "main_tasks": 34,
+      "private_tasks": 6,
+      "rollout": 40,
+      "step": 279,
+      "transaction": 80,
+      "shared4TX_excluded": true,
+      "public_geometry": 117
+    },
+    {
+      "arm": "AllQueryGate",
+      "main_tasks": 34,
+      "private_tasks": 6,
+      "rollout": 40,
+      "step": 247,
+      "transaction": 81,
+      "shared4TX_excluded": true,
+      "public_geometry": 117
+    }
+  ],
+  "base_queries": [
+    {
+      "arm": "UngatedUnified",
+      "epoch": 0,
+      "stage": "A_compound_execution",
+      "observed": {
+        "keep": [
+          -1.02
+        ],
+        "first": [
+          -1.06
+        ]
+      },
+      "values": {
+        "keep": -1.02,
+        "first": -1.06
+      },
+      "choice": "keep",
+      "proposal": {
+        "action": "keep",
+        "edits": []
+      },
+      "horizon": 1
+    },
+    {
+      "arm": "UngatedUnified",
+      "epoch": 4,
+      "stage": "P_early_protection",
+      "observed": {
+        "keep": [
+          0.86
+        ],
+        "first": [
+          -1.02
+        ]
+      },
+      "values": {
+        "keep": 0.86,
+        "first": -1.02
+      },
+      "choice": "keep",
+      "proposal": {
+        "action": "keep",
+        "edits": []
+      },
+      "horizon": 1
+    },
+    {
+      "arm": "EventOnlyGate",
+      "epoch": 0,
+      "stage": "A_compound_execution",
+      "observed": {
+        "keep": [
+          -1.02
+        ],
+        "first": [
+          -1.06
+        ]
+      },
+      "values": {
+        "keep": -1.02,
+        "first": -1.06
+      },
+      "choice": "keep",
+      "proposal": {
+        "action": "keep",
+        "edits": []
+      },
+      "horizon": 1
+    },
+    {
+      "arm": "EventOnlyGate",
+      "epoch": 4,
+      "stage": "P_early_protection",
+      "observed": {
+        "keep": [
+          0.86
+        ],
+        "first": [
+          -1.02
+        ]
+      },
+      "values": {
+        "keep": 0.86,
+        "first": -1.02
+      },
+      "choice": "keep",
+      "proposal": {
+        "action": "keep",
+        "edits": []
+      },
+      "horizon": 1
+    },
+    {
+      "arm": "AllQueryGate",
+      "epoch": 0,
+      "stage": "A_compound_execution",
+      "observed": {
+        "keep": [
+          -1.02
+        ],
+        "first": [
+          -1.06
+        ]
+      },
+      "values": {
+        "keep": -1.02,
+        "first": -1.06
+      },
+      "choice": "keep",
+      "proposal": {
+        "action": "keep",
+        "edits": []
+      },
+      "horizon": 1
+    },
+    {
+      "arm": "AllQueryGate",
+      "epoch": 20,
+      "stage": "W_late_unseen_wait",
+      "observed": {
+        "keep": [
+          -1.24
+        ],
+        "first": [
+          0.88
+        ]
+      },
+      "values": {
+        "keep": -1.24,
+        "first": 0.88
+      },
+      "choice": "first",
+      "proposal": {
+        "action": "apply",
+        "edits": [
+          {
+            "address": {
+              "cmd": 3,
+              "state": {
+                "kappa": 0,
+                "phi": 0,
+                "t": 0,
+                "x": 0,
+                "y": 2
+              }
+            },
+            "store": "controller",
+            "value": null
+          }
+        ]
+      },
+      "horizon": 1
+    }
+  ],
+  "expanded_queries": [
+    {
+      "arm": "UngatedUnified",
+      "epoch": 0,
+      "stage": "A_compound_execution",
+      "observed": {
+        "deep-keep": [
+          -1.02
+        ],
+        "deep-first": [
+          -1.06
+        ],
+        "joint": [
+          0.86
+        ]
+      },
+      "values": {
+        "deep-keep": -1.02,
+        "deep-first": -1.06,
+        "joint": 0.86
+      },
+      "choice": "joint",
+      "proposal": {
+        "action": "apply",
+        "edits": [
+          {
+            "address": {
+              "cmd": 4,
+              "state": {
+                "kappa": 0,
+                "phi": 3,
+                "t": 0,
+                "x": 0,
+                "y": 2
+              }
+            },
+            "store": "controller",
+            "value": null
+          },
+          {
+            "store": "controller",
+            "address": {
+              "state": {
+                "x": 1,
+                "y": 2,
+                "t": 2,
+                "kappa": 0,
+                "phi": 3
+              },
+              "cmd": 0
+            },
+            "value": null
+          }
+        ]
+      },
+      "horizon": 1
+    },
+    {
+      "arm": "EventOnlyGate",
+      "epoch": 0,
+      "stage": "A_compound_execution",
+      "observed": {
+        "deep-keep": [
+          -1.02
+        ],
+        "deep-first": [
+          -1.06
+        ],
+        "joint": [
+          0.86
+        ]
+      },
+      "values": {
+        "deep-keep": -1.02,
+        "deep-first": -1.06,
+        "joint": 0.86
+      },
+      "choice": "joint",
+      "proposal": {
+        "action": "apply",
+        "edits": [
+          {
+            "address": {
+              "cmd": 4,
+              "state": {
+                "kappa": 0,
+                "phi": 3,
+                "t": 0,
+                "x": 0,
+                "y": 2
+              }
+            },
+            "store": "controller",
+            "value": null
+          },
+          {
+            "store": "controller",
+            "address": {
+              "state": {
+                "x": 1,
+                "y": 2,
+                "t": 2,
+                "kappa": 0,
+                "phi": 3
+              },
+              "cmd": 0
+            },
+            "value": null
+          }
+        ]
+      },
+      "horizon": 1
+    },
+    {
+      "arm": "AllQueryGate",
+      "epoch": 0,
+      "stage": "A_compound_execution",
+      "observed": {
+        "deep-keep": [
+          -1.02
+        ],
+        "deep-first": [
+          -1.06
+        ],
+        "joint": [
+          0.86
+        ]
+      },
+      "values": {
+        "deep-keep": -1.02,
+        "deep-first": -1.06,
+        "joint": 0.86
+      },
+      "choice": "joint",
+      "proposal": {
+        "action": "apply",
+        "edits": [
+          {
+            "address": {
+              "cmd": 4,
+              "state": {
+                "kappa": 0,
+                "phi": 3,
+                "t": 0,
+                "x": 0,
+                "y": 2
+              }
+            },
+            "store": "controller",
+            "value": null
+          },
+          {
+            "store": "controller",
+            "address": {
+              "state": {
+                "x": 1,
+                "y": 2,
+                "t": 2,
+                "kappa": 0,
+                "phi": 3
+              },
+              "cmd": 0
+            },
+            "value": null
+          }
+        ]
+      },
+      "horizon": 1
+    }
+  ],
+  "derived_hypotheses": [
+    {
+      "arm": "UngatedUnified",
+      "epoch": 0,
+      "stage": "A_compound_execution",
+      "proposal": {
+        "action": "apply",
+        "edits": [
+          {
+            "address": {
+              "cmd": 4,
+              "state": {
+                "kappa": 0,
+                "phi": 3,
+                "t": 0,
+                "x": 0,
+                "y": 2
+              }
+            },
+            "store": "controller",
+            "value": null
+          },
+          {
+            "store": "controller",
+            "address": {
+              "state": {
+                "x": 1,
+                "y": 2,
+                "t": 2,
+                "kappa": 0,
+                "phi": 3
+              },
+              "cmd": 0
+            },
+            "value": null
+          }
+        ]
+      },
+      "witness_id": "UngatedUnified:owned:2",
+      "new_site_in_original_main": false
+    },
+    {
+      "arm": "EventOnlyGate",
+      "epoch": 0,
+      "stage": "A_compound_execution",
+      "proposal": {
+        "action": "apply",
+        "edits": [
+          {
+            "address": {
+              "cmd": 4,
+              "state": {
+                "kappa": 0,
+                "phi": 3,
+                "t": 0,
+                "x": 0,
+                "y": 2
+              }
+            },
+            "store": "controller",
+            "value": null
+          },
+          {
+            "store": "controller",
+            "address": {
+              "state": {
+                "x": 1,
+                "y": 2,
+                "t": 2,
+                "kappa": 0,
+                "phi": 3
+              },
+              "cmd": 0
+            },
+            "value": null
+          }
+        ]
+      },
+      "witness_id": "EventOnlyGate:owned:2",
+      "new_site_in_original_main": false
+    },
+    {
+      "arm": "AllQueryGate",
+      "epoch": 0,
+      "stage": "A_compound_execution",
+      "proposal": {
+        "action": "apply",
+        "edits": [
+          {
+            "address": {
+              "cmd": 4,
+              "state": {
+                "kappa": 0,
+                "phi": 3,
+                "t": 0,
+                "x": 0,
+                "y": 2
+              }
+            },
+            "store": "controller",
+            "value": null
+          },
+          {
+            "store": "controller",
+            "address": {
+              "state": {
+                "x": 1,
+                "y": 2,
+                "t": 2,
+                "kappa": 0,
+                "phi": 3
+              },
+              "cmd": 0
+            },
+            "value": null
+          }
+        ]
+      },
+      "witness_id": "AllQueryGate:owned:2",
+      "new_site_in_original_main": false
+    }
+  ],
+  "diagnoses": [
+    {
+      "arm": "UngatedUnified",
+      "epoch": 0,
+      "stage": "A_compound_execution",
+      "terminal": "TRAP"
+    },
+    {
+      "arm": "UngatedUnified",
+      "epoch": 1,
+      "stage": "A_compound_execution",
+      "terminal": "TRAP"
+    },
+    {
+      "arm": "UngatedUnified",
+      "epoch": 4,
+      "stage": "P_early_protection",
+      "terminal": "COLLISION"
+    },
+    {
+      "arm": "UngatedUnified",
+      "epoch": 8,
+      "stage": "B_zero_gain_event",
+      "terminal": "TRAP"
+    },
+    {
+      "arm": "UngatedUnified",
+      "epoch": 14,
+      "stage": "C_useful_event",
+      "terminal": "TRAP"
+    },
+    {
+      "arm": "UngatedUnified",
+      "epoch": 17,
+      "stage": "C_useful_event",
+      "terminal": "TRAP"
+    },
+    {
+      "arm": "UngatedUnified",
+      "epoch": 20,
+      "stage": "W_late_unseen_wait",
+      "terminal": "TIMEOUT"
+    },
+    {
+      "arm": "UngatedUnified",
+      "epoch": 21,
+      "stage": "W_late_unseen_wait",
+      "terminal": "TIMEOUT"
+    },
+    {
+      "arm": "UngatedUnified",
+      "epoch": 22,
+      "stage": "W_late_unseen_wait",
+      "terminal": "TIMEOUT"
+    },
+    {
+      "arm": "UngatedUnified",
+      "epoch": 23,
+      "stage": "W_late_unseen_wait",
+      "terminal": "TIMEOUT"
+    },
+    {
+      "arm": "UngatedUnified",
+      "epoch": 24,
+      "stage": "W_late_unseen_wait",
+      "terminal": "TIMEOUT"
+    },
+    {
+      "arm": "UngatedUnified",
+      "epoch": 25,
+      "stage": "W_late_unseen_wait",
+      "terminal": "TIMEOUT"
+    },
+    {
+      "arm": "UngatedUnified",
+      "epoch": 32,
+      "stage": "W_revisit",
+      "terminal": "TIMEOUT"
+    },
+    {
+      "arm": "UngatedUnified",
+      "epoch": 33,
+      "stage": "W_revisit",
+      "terminal": "TIMEOUT"
+    },
+    {
+      "arm": "EventOnlyGate",
+      "epoch": 0,
+      "stage": "A_compound_execution",
+      "terminal": "TRAP"
+    },
+    {
+      "arm": "EventOnlyGate",
+      "epoch": 1,
+      "stage": "A_compound_execution",
+      "terminal": "TRAP"
+    },
+    {
+      "arm": "EventOnlyGate",
+      "epoch": 4,
+      "stage": "P_early_protection",
+      "terminal": "COLLISION"
+    },
+    {
+      "arm": "EventOnlyGate",
+      "epoch": 8,
+      "stage": "B_zero_gain_event",
+      "terminal": "TRAP"
+    },
+    {
+      "arm": "EventOnlyGate",
+      "epoch": 14,
+      "stage": "C_useful_event",
+      "terminal": "TRAP"
+    },
+    {
+      "arm": "EventOnlyGate",
+      "epoch": 20,
+      "stage": "W_late_unseen_wait",
+      "terminal": "TIMEOUT"
+    },
+    {
+      "arm": "EventOnlyGate",
+      "epoch": 21,
+      "stage": "W_late_unseen_wait",
+      "terminal": "TIMEOUT"
+    },
+    {
+      "arm": "EventOnlyGate",
+      "epoch": 22,
+      "stage": "W_late_unseen_wait",
+      "terminal": "TIMEOUT"
+    },
+    {
+      "arm": "EventOnlyGate",
+      "epoch": 23,
+      "stage": "W_late_unseen_wait",
+      "terminal": "TIMEOUT"
+    },
+    {
+      "arm": "EventOnlyGate",
+      "epoch": 24,
+      "stage": "W_late_unseen_wait",
+      "terminal": "TIMEOUT"
+    },
+    {
+      "arm": "EventOnlyGate",
+      "epoch": 25,
+      "stage": "W_late_unseen_wait",
+      "terminal": "TIMEOUT"
+    },
+    {
+      "arm": "EventOnlyGate",
+      "epoch": 32,
+      "stage": "W_revisit",
+      "terminal": "TIMEOUT"
+    },
+    {
+      "arm": "EventOnlyGate",
+      "epoch": 33,
+      "stage": "W_revisit",
+      "terminal": "TIMEOUT"
+    },
+    {
+      "arm": "AllQueryGate",
+      "epoch": 0,
+      "stage": "A_compound_execution",
+      "terminal": "TRAP"
+    },
+    {
+      "arm": "AllQueryGate",
+      "epoch": 1,
+      "stage": "A_compound_execution",
+      "terminal": "TRAP"
+    },
+    {
+      "arm": "AllQueryGate",
+      "epoch": 4,
+      "stage": "P_early_protection",
+      "terminal": "COLLISION"
+    },
+    {
+      "arm": "AllQueryGate",
+      "epoch": 8,
+      "stage": "B_zero_gain_event",
+      "terminal": "TRAP"
+    },
+    {
+      "arm": "AllQueryGate",
+      "epoch": 14,
+      "stage": "C_useful_event",
+      "terminal": "TRAP"
+    },
+    {
+      "arm": "AllQueryGate",
+      "epoch": 20,
+      "stage": "W_late_unseen_wait",
+      "terminal": "TIMEOUT"
+    }
+  ],
+  "accepted": [
+    {
+      "arm": "UngatedUnified",
+      "epoch": 0,
+      "stage": "A_compound_execution",
+      "candidate": "joint",
+      "terminal": "SUCCESS",
+      "numeric_content_changed": true
+    },
+    {
+      "arm": "UngatedUnified",
+      "epoch": 4,
+      "stage": "P_early_protection",
+      "candidate": "keep",
+      "terminal": "SUCCESS",
+      "numeric_content_changed": true
+    },
+    {
+      "arm": "UngatedUnified",
+      "epoch": 8,
+      "stage": "B_zero_gain_event",
+      "candidate": "alternate-entry",
+      "terminal": "TRAP",
+      "numeric_content_changed": true
+    },
+    {
+      "arm": "EventOnlyGate",
+      "epoch": 0,
+      "stage": "A_compound_execution",
+      "candidate": "joint",
+      "terminal": "SUCCESS",
+      "numeric_content_changed": true
+    },
+    {
+      "arm": "EventOnlyGate",
+      "epoch": 4,
+      "stage": "P_early_protection",
+      "candidate": "keep",
+      "terminal": "SUCCESS",
+      "numeric_content_changed": true
+    },
+    {
+      "arm": "EventOnlyGate",
+      "epoch": 14,
+      "stage": "C_useful_event",
+      "candidate": "alternate-entry",
+      "terminal": "TRAP",
+      "numeric_content_changed": true
+    },
+    {
+      "arm": "AllQueryGate",
+      "epoch": 0,
+      "stage": "A_compound_execution",
+      "candidate": "joint",
+      "terminal": "SUCCESS",
+      "numeric_content_changed": true
+    },
+    {
+      "arm": "AllQueryGate",
+      "epoch": 14,
+      "stage": "C_useful_event",
+      "candidate": "alternate-entry",
+      "terminal": "TRAP",
+      "numeric_content_changed": true
+    },
+    {
+      "arm": "AllQueryGate",
+      "epoch": 20,
+      "stage": "W_late_unseen_wait",
+      "candidate": "first",
+      "terminal": "SUCCESS",
+      "numeric_content_changed": true
+    }
+  ],
+  "rejected": [
+    {
+      "arm": "UngatedUnified",
+      "epoch": 0,
+      "stage": "A_compound_execution",
+      "candidate": "keep",
+      "terminal": "TRAP",
+      "mechanism_changes": [
+        {
+          "channel": "X",
+          "address": {
+            "state": {
+              "x": 0,
+              "y": 2,
+              "t": 0,
+              "kappa": 0,
+              "phi": 3
+            },
+            "cmd": 4
+          },
+          "origin": 3,
+          "current": 4
+        }
+      ]
+    },
+    {
+      "arm": "UngatedUnified",
+      "epoch": 0,
+      "stage": "A_compound_execution",
+      "candidate": "first",
+      "terminal": "COLLISION",
+      "mechanism_changes": [
+        {
+          "channel": "X",
+          "address": {
+            "state": {
+              "kappa": 0,
+              "phi": 3,
+              "t": 2,
+              "x": 1,
+              "y": 2
+            },
+            "cmd": 0
+          },
+          "origin": 3,
+          "current": 0
+        }
+      ]
+    },
+    {
+      "arm": "UngatedUnified",
+      "epoch": 4,
+      "stage": "P_early_protection",
+      "candidate": "first",
+      "terminal": "TRAP",
+      "mechanism_changes": [
+        {
+          "channel": "X",
+          "address": {
+            "state": {
+              "x": 0,
+              "y": 2,
+              "t": 0,
+              "kappa": 1,
+              "phi": 0
+            },
+            "cmd": 3
+          },
+          "origin": 3,
+          "current": 4
+        }
+      ]
+    },
+    {
+      "arm": "EventOnlyGate",
+      "epoch": 0,
+      "stage": "A_compound_execution",
+      "candidate": "keep",
+      "terminal": "TRAP",
+      "mechanism_changes": [
+        {
+          "channel": "X",
+          "address": {
+            "state": {
+              "x": 0,
+              "y": 2,
+              "t": 0,
+              "kappa": 0,
+              "phi": 3
+            },
+            "cmd": 4
+          },
+          "origin": 3,
+          "current": 4
+        }
+      ]
+    },
+    {
+      "arm": "EventOnlyGate",
+      "epoch": 0,
+      "stage": "A_compound_execution",
+      "candidate": "first",
+      "terminal": "COLLISION",
+      "mechanism_changes": [
+        {
+          "channel": "X",
+          "address": {
+            "state": {
+              "kappa": 0,
+              "phi": 3,
+              "t": 2,
+              "x": 1,
+              "y": 2
+            },
+            "cmd": 0
+          },
+          "origin": 3,
+          "current": 0
+        }
+      ]
+    },
+    {
+      "arm": "EventOnlyGate",
+      "epoch": 4,
+      "stage": "P_early_protection",
+      "candidate": "first",
+      "terminal": "TRAP",
+      "mechanism_changes": [
+        {
+          "channel": "X",
+          "address": {
+            "state": {
+              "x": 0,
+              "y": 2,
+              "t": 0,
+              "kappa": 1,
+              "phi": 0
+            },
+            "cmd": 3
+          },
+          "origin": 3,
+          "current": 4
+        }
+      ]
+    },
+    {
+      "arm": "AllQueryGate",
+      "epoch": 0,
+      "stage": "A_compound_execution",
+      "candidate": "keep",
+      "terminal": "TRAP",
+      "mechanism_changes": [
+        {
+          "channel": "X",
+          "address": {
+            "state": {
+              "x": 0,
+              "y": 2,
+              "t": 0,
+              "kappa": 0,
+              "phi": 3
+            },
+            "cmd": 4
+          },
+          "origin": 3,
+          "current": 4
+        }
+      ]
+    },
+    {
+      "arm": "AllQueryGate",
+      "epoch": 0,
+      "stage": "A_compound_execution",
+      "candidate": "first",
+      "terminal": "COLLISION",
+      "mechanism_changes": [
+        {
+          "channel": "X",
+          "address": {
+            "state": {
+              "kappa": 0,
+              "phi": 3,
+              "t": 2,
+              "x": 1,
+              "y": 2
+            },
+            "cmd": 0
+          },
+          "origin": 3,
+          "current": 0
+        }
+      ]
+    },
+    {
+      "arm": "AllQueryGate",
+      "epoch": 20,
+      "stage": "W_late_unseen_wait",
+      "candidate": "keep",
+      "terminal": "TIMEOUT",
+      "mechanism_changes": [
+        {
+          "channel": "X",
+          "address": {
+            "state": {
+              "x": 0,
+              "y": 2,
+              "t": 0,
+              "kappa": 0,
+              "phi": 0
+            },
+            "cmd": 3
+          },
+          "origin": 4,
+          "current": 3
+        }
+      ]
+    }
+  ],
+  "preservation": [
+    {
+      "arm": "TaskTD",
+      "all34_I_preserved": true,
+      "protective_X_retained": true,
+      "unread_sentinel_retained": true,
+      "forced_RIGHT_realized_WAIT_at_global5": true,
+      "phase_resets": 0,
+      "single_current_state": true
+    },
+    {
+      "arm": "UngatedUnified",
+      "all34_I_preserved": true,
+      "protective_X_retained": true,
+      "unread_sentinel_retained": true,
+      "forced_RIGHT_realized_WAIT_at_global5": true,
+      "phase_resets": 0,
+      "single_current_state": true
+    },
+    {
+      "arm": "EventOnlyGate",
+      "all34_I_preserved": true,
+      "protective_X_retained": true,
+      "unread_sentinel_retained": true,
+      "forced_RIGHT_realized_WAIT_at_global5": true,
+      "phase_resets": 0,
+      "single_current_state": true
+    },
+    {
+      "arm": "AllQueryGate",
+      "all34_I_preserved": true,
+      "protective_X_retained": true,
+      "unread_sentinel_retained": true,
+      "forced_RIGHT_realized_WAIT_at_global5": true,
+      "phase_resets": 0,
+      "single_current_state": true
+    }
+  ],
+  "main_write_addresses": [
+    {
+      "arm": "UngatedUnified",
+      "epoch": 0,
+      "addresses": 2,
+      "atomic_TX": 1
+    },
+    {
+      "arm": "EventOnlyGate",
+      "epoch": 0,
+      "addresses": 2,
+      "atomic_TX": 1
+    },
+    {
+      "arm": "AllQueryGate",
+      "epoch": 0,
+      "addresses": 2,
+      "atomic_TX": 1
+    },
+    {
+      "arm": "AllQueryGate",
+      "epoch": 20,
+      "addresses": 1,
+      "atomic_TX": 1
+    }
+  ],
+  "native_ordinary_updates": 154,
+  "ordinary_policy_TX": 116,
+  "external_ordinary_updates": 9,
+  "external_policy_TX": 9,
+  "private_candidate_X_TX": 9,
+  "main_feedback_X_TX": 4,
+  "issued_observations": 18,
+  "consumed_observations": 18,
+  "unconsumed_observations": 0,
+  "actual_explore_events": 37,
+  "success_diagnosis": 0,
+  "no_mismatch_keeps": 0,
+  "budget_keeps": 18,
+  "old_native_checker_bank_reruns": 0,
+  "new_keys_RNG_DP_calibration_collection": 0,
+  "formal_B1_or_science_qualification": false
+}

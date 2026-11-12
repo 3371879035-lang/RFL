@@ -1,0 +1,168 @@
+{
+  "schema": "V154_WITNESS_CONTEXT_BINDING_RESULT",
+  "date_asia_shanghai": "2026-11-07",
+  "parent_commit": "fc3d3c4da03ec9d848d0e4ccb90bf09335de2db6",
+  "status": "ACTUAL_LEGACY_FOREIGN_WITNESS_AUTHORITY_REPRODUCED_AND_NARROWED_FULL_AGENT_ENTRY_VALIDATED",
+  "actual": {
+    "primary_native_first_exit": 0,
+    "primary_stored_audit_first_exit": 0,
+    "integration_native_first_exit": 0,
+    "integration_stored_audit_first_exit": 0,
+    "combined_counts": {
+      "rollout": 15,
+      "step": 33,
+      "transaction": 51
+    },
+    "combined_records": 167,
+    "primary_counts": {
+      "rollout": 8,
+      "step": 16,
+      "transaction": 27
+    },
+    "integration_counts": {
+      "rollout": 7,
+      "step": 17,
+      "transaction": 24
+    },
+    "primary_pins": 336,
+    "integration_pins": 338,
+    "actual_main_rollouts": 5,
+    "actual_private_rollouts": 10,
+    "completed_main_receipts": 4,
+    "expected_protocol_partial_main": 1,
+    "partial_ordinary_committed": true,
+    "partial_retried": false,
+    "checkpoint_restore_TX": 6,
+    "additional_source_install_TX": 2,
+    "additional_source_install_edits": 8,
+    "ordinary_numeric_TX": 17,
+    "ordinary_policy_TX": 17,
+    "private_candidate_TX": 7,
+    "main_feedback_TX": 2,
+    "main_feedback_addresses": 4,
+    "main_SUCCESS_count": 0,
+    "private_SUCCESS_count": 2,
+    "new_future_utility_or_curve_claim": false,
+    "original_v153_fixture_checker_native_reruns": 0,
+    "new_keys_RNG_keyderive_DP_calibration_formal_collection": 0,
+    "started_at_utc": "2026-11-06T21:15:08.455990+00:00",
+    "primary_completed_at_utc": "2026-11-06T21:15:09.323343+00:00",
+    "integration_completed_at_utc": "2026-11-06T21:20:39.574780+00:00"
+  },
+  "legacy_and_strict_events": [
+    {
+      "case": "LegacyForeign",
+      "legacy_foreign_authority_admitted": true,
+      "foreign_site": {
+        "cmd": 4,
+        "state": {
+          "kappa": 1,
+          "phi": 3,
+          "t": 0,
+          "x": 0,
+          "y": 2
+        }
+      },
+      "live_commit": false
+    },
+    {
+      "case": "StrictForeign",
+      "gate": "factory",
+      "rejected": true,
+      "native_delta": {
+        "rollout": 0,
+        "step": 0,
+        "transaction": 0
+      }
+    },
+    {
+      "case": "StrictForeign",
+      "gate": "actual_foreign_witness",
+      "rejected": true,
+      "native_delta": {
+        "rollout": 0,
+        "step": 0,
+        "transaction": 0
+      }
+    },
+    {
+      "case": "StrictValid",
+      "authorized": true,
+      "baseline_return": -1.02,
+      "joint_return": 0.86,
+      "same_episode": true
+    }
+  ],
+  "primary_cases": [
+    {
+      "case": "LegacyForeign",
+      "authority_records": 1,
+      "registered_sources": 1,
+      "external_updates": 0,
+      "main_terminal": "TRAP",
+      "live_diagnostic_TX": 0,
+      "live_edit_addresses": 0
+    },
+    {
+      "case": "StrictForeign",
+      "authority_records": 0,
+      "registered_sources": 1,
+      "external_updates": 0,
+      "main_terminal": "TRAP",
+      "live_diagnostic_TX": 0,
+      "live_edit_addresses": 0
+    },
+    {
+      "case": "StrictValid",
+      "authority_records": 1,
+      "registered_sources": 3,
+      "external_updates": 1,
+      "main_terminal": "TRAP",
+      "live_diagnostic_TX": 1,
+      "live_edit_addresses": 2
+    }
+  ],
+  "integration_positive": {
+    "main_complete": true,
+    "joint_live_addresses": 2,
+    "atomic_live_TX": 1,
+    "private_tasks": 5,
+    "context": [
+      1,
+      3
+    ],
+    "external_updates": 1
+  },
+  "integration_negative": {
+    "main_complete": false,
+    "expected_protocol_rejection": true,
+    "closed": true,
+    "ordinary_committed": true,
+    "registered_sources": 0,
+    "private_tasks": 0,
+    "extra_work_after_main_ordinary": {
+      "rollout": 0,
+      "step": 0,
+      "transaction": 0
+    },
+    "no_retry": true
+  },
+  "findings": {
+    "legacy_counterexample": "Maink1phi0, genuinelegacyregisteredtrialk1phi3, sharedref/mode/params/numericorigin. Frozenv153actuallyderivedandvalidatedjointcontainingforeignphi3site. LegacyhandlerkeptliveRunchanged, so0unsafe livewrites. Thisisactualadmissioncounterexample, notforgedserializedhandle.",
+    "fix": "NewStrictWitnessLoop checksnominalsourceepisode0againstactualcurrentmainkappa/fullSemanticTape/proposal/paramsbeforeanyfactoryTX/K; newwitnesscheckbindsactualepisode/issuerplan/input/registration/nativeTrace/sourceI. Onlynarrowsadmission; nochangeordinaryTD/sourceexecution/atomicapply orcandidatevalue.",
+    "negative": "Foreignfactory rejectswith0roll/step/TX and0registrations. Explicitlegacybasefactory compatibilitychallengeproducesrealforeignobservation, whichstrictwitnessgate rejectswith0work and0newauthority. Foreignfeedbackkept, nottreatedaszerovalueorinvalidinitsowncontext.",
+    "positive": "StrictWitnessLoop genuinecontext0jointflow completesatomic2editTX; newlyassembledStrictTrialDerivedAgent genuinecontext3full5trialpolicy alsoderives/verifies/commitsjoint andlearnseligibletrialobservation. BoundAgentMROactuallyrecordedandraw/TDchecked.",
+    "partial": "Fullboundagent withdeliberatelyforeignprivateplan firstdoesrealmainordinaryTDthenrejectsdiagnosticfactory. TASK_PARTIALordinary_committed true, agentclosed, nofullmainreceipt/source/authority/privateK. Preservedaspartial; harness exit0means expectedcheckobserved, not taskcompleted.",
+    "historical_values": "v153originalallactualwitnesscontexts matchedandraw/sourcebytesunchanged. Thisfixdoesnotretractv153fixedscenario9vs8 finding orturnitintosolidgeneralAPIqualification. No newfutureutilityconclusionfromthisgateexperiment.",
+    "limits": "Specificphase0/3newinputcounterexample+two same-context positiveflows, notallcontext/exception/keyed/mutation qualification. No originalB1/law/backend/F1 sciencePASS."
+  },
+  "integrity": {
+    "old_ledger_values_preserved": 92,
+    "old_provenance_preserved": 266,
+    "original313_unchanged": true,
+    "old_executed_sources_captures_unchanged": true,
+    "two_new_exclusive_captures_not_retry": true,
+    "automation_not_touched": true,
+    "full_tracked_store_audit": false
+  }
+}

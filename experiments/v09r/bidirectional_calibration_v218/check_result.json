@@ -1,0 +1,120 @@
+{
+  "checks": [
+    {
+      "name": "identity_before_any_feedback",
+      "ok": true,
+      "details": {
+        "bitwise_identity": true,
+        "conditions": 3
+      }
+    },
+    {
+      "name": "bounded_bidirectional_map_family",
+      "ok": true,
+      "details": {
+        "grid_points": 1001,
+        "valid_and_monotone": true
+      }
+    },
+    {
+      "name": "confidence_and_bias_are_distinct_directions",
+      "ok": true,
+      "details": {
+        "maps_at_p08": [
+          0.8,
+          0.896,
+          0.7040000000000001,
+          0.96,
+          0.6400000000000001
+        ],
+        "maps_at_p03": [
+          0.3,
+          0.21599999999999997,
+          0.384,
+          0.51,
+          0.09
+        ]
+      }
+    },
+    {
+      "name": "different_conditions_can_raise_and_lower",
+      "ok": true,
+      "details": {
+        "condition0": 0.8959999304748282,
+        "condition1": 0.640000000120937,
+        "synthetic_not_task_result": true
+      }
+    },
+    {
+      "name": "independent_scalar_and_variance",
+      "ok": true,
+      "details": {
+        "max_scalar_error": 1.1102230246251565e-16
+      }
+    },
+    {
+      "name": "single_factor_ratio_and_identity_reference_bound",
+      "ok": true,
+      "details": {
+        "calibrated_log_loss": 89.37891730851972,
+        "base_log_loss": 98.34240127049435,
+        "log_ratio_marginal": 8.963483961974546,
+        "identity_expert_log_ratio": 0
+      }
+    },
+    {
+      "name": "global_calibration_cannot_create_action_gain",
+      "ok": true,
+      "details": {
+        "global_monotone_argmax_unchanged": true
+      }
+    },
+    {
+      "name": "duplicate_identity_and_replay",
+      "ok": true,
+      "details": {
+        "unique_current_events": 1,
+        "replay_updates": 0,
+        "original_history_unique": 32
+      }
+    },
+    {
+      "name": "trainable_prior_gradient_finite_difference",
+      "ok": true,
+      "details": {
+        "analytic": 0.0036142406728585665,
+        "finite_difference": 0.0036142406692474256,
+        "optimizer_steps": 0
+      }
+    },
+    {
+      "name": "whole_network_training_loss_connected",
+      "ok": true,
+      "details": {
+        "trainable_scalars": 80,
+        "loss": 0.77988633549818,
+        "gradient_l1": 0.06979304017959723
+      }
+    },
+    {
+      "name": "evaluation_does_not_train",
+      "ok": true,
+      "details": {
+        "read_only": true
+      }
+    },
+    {
+      "name": "fixed_parameters_and_rng",
+      "ok": true,
+      "details": {
+        "trainable_but_unoptimized": true,
+        "random_initialization": false
+      }
+    }
+  ],
+  "passed": 12,
+  "failed": 0,
+  "synthetic_only": true,
+  "actual_environment_interactions": 0,
+  "optimizer_steps": 0
+}

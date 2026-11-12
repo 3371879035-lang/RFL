@@ -1,0 +1,714 @@
+{
+  "schema": "V07_FACT_TO_ACTION_PLAN_V173",
+  "date_asia_shanghai": "2026-11-07",
+  "parent_commit": "e57c9135a0eb18859347a937c9ac79efb83de973",
+  "status": "DESIGN_DEFINED_NOT_IMPLEMENTED_NOT_EXECUTED",
+  "authority": {
+    "direct_user_request": "那就规划V0.7吧，重点解决事实记住了却没用好的问题，同时增加独立训练和评估次数，纯强化学习、纯反馈、有奖惩和只有奖励的对照继续保留。",
+    "scope": "Plan and save only. No learner implementation, native execution, random tapes, automation or legacy formal collection."
+  },
+  "question": "Can factual outcome evidence enter action selection when Q values tie, and improve early learning beyond either fixed command ties or outcome-blind attempt-count ties?",
+  "motivation": {
+    "known_v06_case": {
+      "seed": 6001,
+      "mirror": 0,
+      "p": 0.1,
+      "arm": "F-R",
+      "checkpoint": 16,
+      "observed_counts_0_0": [
+        0,
+        16
+      ],
+      "Q_values": [
+        0.0,
+        0.0
+      ],
+      "greedy_first_command": 0,
+      "raw_line": 4468
+    },
+    "zero_target": "p_hat * V(next) + (1-p_hat)*0 = 0 while V(next)=0",
+    "design_informed_by_known_v06_results": true,
+    "not_a_claim_of_general_feedback_failure": true
+  },
+  "arms": [
+    {
+      "id": "RL-RP",
+      "family": "direct_model_free_Q",
+      "reward_success": 1,
+      "reward_failure": -1,
+      "reward_nonterminal": 0,
+      "facts_model": false,
+      "extra_compute": "own-real newest-first replay",
+      "same_update_family_as": "RL-RP",
+      "readout": "Q_argmax_then_smallest_command",
+      "new_policy_variant": false
+    },
+    {
+      "id": "RL-R",
+      "family": "direct_model_free_Q",
+      "reward_success": 1,
+      "reward_failure": 0,
+      "reward_nonterminal": 0,
+      "facts_model": false,
+      "extra_compute": "own-real newest-first replay",
+      "same_update_family_as": "RL-R",
+      "readout": "Q_argmax_then_smallest_command",
+      "new_policy_variant": false
+    },
+    {
+      "id": "F0",
+      "family": "probabilistic_factual_goal_planner",
+      "reward_field_present": false,
+      "Q_head": false,
+      "facts_model": true,
+      "extra_compute": "backward goal-reachability probability calculation",
+      "same_update_family_as": "F0",
+      "readout": "goal_reachability_probability",
+      "new_policy_variant": false
+    },
+    {
+      "id": "F-RP",
+      "family": "factual_model_plus_Q",
+      "reward_success": 1,
+      "reward_failure": -1,
+      "reward_nonterminal": 0,
+      "facts_model": true,
+      "extra_compute": "bounded expected-model Q backups",
+      "same_update_family_as": "F-RP",
+      "readout": "Q_argmax_then_smallest_command",
+      "new_policy_variant": false
+    },
+    {
+      "id": "F-R",
+      "family": "factual_model_plus_Q",
+      "reward_success": 1,
+      "reward_failure": 0,
+      "reward_nonterminal": 0,
+      "facts_model": true,
+      "extra_compute": "bounded expected-model Q backups",
+      "same_update_family_as": "F-R",
+      "readout": "Q_argmax_then_smallest_command",
+      "new_policy_variant": false
+    },
+    {
+      "id": "F-RP-FT",
+      "family": "factual_model_plus_Q",
+      "reward_success": 1,
+      "reward_failure": -1,
+      "reward_nonterminal": 0,
+      "facts_model": true,
+      "extra_compute": "bounded expected-model Q backups",
+      "same_update_family_as": "F-RP",
+      "readout": "Q_argmax_then_max_fact_probability_then_smallest_command",
+      "new_policy_variant": true
+    },
+    {
+      "id": "F-R-FT",
+      "family": "factual_model_plus_Q",
+      "reward_success": 1,
+      "reward_failure": 0,
+      "reward_nonterminal": 0,
+      "facts_model": true,
+      "extra_compute": "bounded expected-model Q backups",
+      "same_update_family_as": "F-R",
+      "readout": "Q_argmax_then_max_fact_probability_then_smallest_command",
+      "new_policy_variant": true
+    },
+    {
+      "id": "F-RP-CT",
+      "family": "factual_model_plus_Q",
+      "reward_success": 1,
+      "reward_failure": -1,
+      "reward_nonterminal": 0,
+      "facts_model": true,
+      "extra_compute": "bounded expected-model Q backups",
+      "same_update_family_as": "F-RP",
+      "readout": "Q_argmax_then_min_real_attempt_count_then_smallest_command",
+      "new_policy_variant": true
+    },
+    {
+      "id": "F-R-CT",
+      "family": "factual_model_plus_Q",
+      "reward_success": 1,
+      "reward_failure": 0,
+      "reward_nonterminal": 0,
+      "facts_model": true,
+      "extra_compute": "bounded expected-model Q backups",
+      "same_update_family_as": "F-R",
+      "readout": "Q_argmax_then_min_real_attempt_count_then_smallest_command",
+      "new_policy_variant": true
+    }
+  ],
+  "readouts": {
+    "argmax_set": "exact binary64 maximum equality; no new near-tie tolerance",
+    "FT": "unique Q maximum unchanged; within a Q tie maximize (n_forward+1)/(n_forward+n_collision+2); residual tie smallest command",
+    "CT": "unique Q maximum unchanged; within a Q tie minimize n_forward+n_collision; residual tie smallest command",
+    "unknown_context": {
+      "n_forward": 0,
+      "n_collision": 0,
+      "declared_prior": "Beta(1,1)",
+      "p_hat": 0.5
+    },
+    "new_random_draws_for_tie_resolution": 0,
+    "no_Q_or_reward_shaping": true,
+    "no_permanent_action_ban": true,
+    "CT_interpretation": "Attempt history is also broad feedback. CT deliberately ignores outcome ratio in tie selection, while keeping the same real factual model and ordinary/model updates.",
+    "limitation": "Strictly unequal but incorrect Q rankings remain unchanged. Report this residual, do not silently widen FT.",
+    "same_state_shadow_readouts": "Old, FT and CT proposals on the same real pre-training state; read-only, no native calls, no claim of three counterfactual completed training trajectories.",
+    "history_after_divergence": "Same update rules and initially empty data, not forced identical realized histories after policies diverge."
+  },
+  "learning": {
+    "public_task": "same rooms, legal commands, goal and nominal layered topology; no exit truth",
+    "context": [
+      "room",
+      "command"
+    ],
+    "initial_history": "empty per independent stream",
+    "Q_initialization": 0.0,
+    "alpha": 0.5,
+    "gamma": 1.0,
+    "train_epsilon": 0.1,
+    "eval_epsilon": 0.0,
+    "tie_break": "arm-specific readout above; baseline ties command0",
+    "Q_buffer_real_transitions": 64,
+    "extra_Q_backups_per_train_episode": "min(12, current own buffer length)",
+    "RL_replay_order": "newest-first real transitions, chronological ordinary updates before replay",
+    "factual_model": {
+      "counts": [
+        "n_forward",
+        "n_collision"
+      ],
+      "prior": "Beta(1,1)",
+      "estimate": "(n_forward+1)/(n_forward+n_collision+2)",
+      "contradictory_outcomes": "both retained as legal evidence, not protocol error",
+      "action_permanent_ban_after_one_failure": false,
+      "new_version_not_inplace_v169_fix": true
+    },
+    "F0_readout": "P(goal)=1; backward P(room)=max_command p_hat(room,command)*P(room+1); no Q or scalar reward packet",
+    "hybrid_readout": "Baseline currentQ; FT/CT variants use only the declared argmax-set tie readout.",
+    "hybrid_model_backups": {
+      "visited_contexts_only": true,
+      "order": "room descending then command ascending, cyclic",
+      "target_nonfinal": "p_hat*max_a Q(room+1,a) + (1-p_hat)*r_failure",
+      "target_final": "p_hat*1 + (1-p_hat)*r_failure",
+      "sources": "own real counts plus declared symmetric prior and public channel reward rule; no hidden truth, fabricated raw or reward-weight mixture"
+    },
+    "ordinary_learning_on_success_and_failure": true,
+    "success_extra_attribution": 0,
+    "failure_extra_native_queries": 0,
+    "all_groups_keep_own_history": true,
+    "old_Qstar_or_checkpoint_import": false,
+    "objective_identity": "At gamma=1, binary absorbing outcomes and no step penalty, J_R=P(success), J_RP=2P(success)-1; optimal rankings match. Test finite learning, not different ideal optima.",
+    "other_update_equations_unchanged_from_v06": true
+  },
+  "environment": {
+    "new_version_only": true,
+    "decision_points": 3,
+    "mirrors": [
+      0,
+      1
+    ],
+    "structural_case_sources": [
+      {
+        "id": "d3_m0",
+        "index": 2,
+        "decision_points": 3,
+        "mirror": 0,
+        "passable_exits": [
+          0,
+          1,
+          0
+        ],
+        "controller_mappings": [
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            6,
+            0,
+            1
+          ],
+          [
+            7,
+            1,
+            0
+          ]
+        ],
+        "protected_addresses": [
+          [
+            6,
+            0
+          ],
+          [
+            7,
+            1
+          ]
+        ]
+      },
+      {
+        "id": "d3_m1",
+        "index": 3,
+        "decision_points": 3,
+        "mirror": 1,
+        "passable_exits": [
+          1,
+          0,
+          1
+        ],
+        "controller_mappings": [
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            6,
+            0,
+            1
+          ],
+          [
+            7,
+            1,
+            0
+          ]
+        ],
+        "protected_addresses": [
+          [
+            6,
+            0
+          ],
+          [
+            7,
+            1
+          ]
+        ]
+      }
+    ],
+    "accidental_failure_probability": [
+      0.0,
+      0.1
+    ],
+    "safe_exit": "advance with probability 1-p, otherwise terminal COLLISION",
+    "blocked_exit": "terminal COLLISION with probability 1",
+    "same_visible_failure_label": true,
+    "horizon": 12,
+    "controller_edit_capability": "none for all arms",
+    "stationary_within_stream": true,
+    "drift": false,
+    "learner_hidden": [
+      "passable_exits",
+      "full_controller_maps",
+      "p",
+      "accidental_vs_blocked_cause",
+      "future_noise_tape",
+      "external_evaluation_results"
+    ]
+  },
+  "workload": {
+    "local_engineering_seed_ids": [
+      7001,
+      7002,
+      7003,
+      7004,
+      7005,
+      7006,
+      7007,
+      7008,
+      7009,
+      7010,
+      7011,
+      7012,
+      7013,
+      7014,
+      7015,
+      7016,
+      7017,
+      7018,
+      7019,
+      7020,
+      7021,
+      7022,
+      7023,
+      7024,
+      7025,
+      7026,
+      7027,
+      7028,
+      7029,
+      7030,
+      7031,
+      7032
+    ],
+    "independent_seed_blocks": 32,
+    "mirrors": 2,
+    "noise_conditions": 2,
+    "arms": 9,
+    "streams": 1152,
+    "train_tasks_per_stream": 64,
+    "cold_train_tasks": 32,
+    "continued_train_tasks": 32,
+    "reset_at_midpoint": false,
+    "checkpoints": [
+      0,
+      8,
+      16,
+      32,
+      48,
+      64
+    ],
+    "eval_rollouts_per_checkpoint": {
+      "p0": 1,
+      "p01": 512
+    },
+    "main_train_rollouts": 73728,
+    "deterministic_eval_rollouts": 3456,
+    "noisy_eval_rollouts": 1769472,
+    "matrix_rollouts": 1846656,
+    "wiring_rollouts_cap": 16,
+    "combined_rollouts_cap": 1846672,
+    "combined_step_cap": 22160064,
+    "Q_arms": 8,
+    "extra_Q_backups_matrix_cap": 786432,
+    "extra_Q_backups_wiring_cap": 96,
+    "extra_Q_backups_combined_cap": 786528,
+    "native_wall_seconds_cap": 5400,
+    "compressed_capture_bytes_cap": 2147483648,
+    "device": "local CPU",
+    "paid_resources": false,
+    "capture": "Stream losslessly compressed raw/update/state records; do not repeat full training history inside every eval episode; no result-only capture or outcome filtering.",
+    "old_control_arms": "New seeds and current paired matrix, not reruns of old fixture and not substitution of old v172 aggregate results."
+  },
+  "randomness": {
+    "not_activated_this_turn": true,
+    "implementation_namespace": "Python random.Random(f\"V07|{seed}|{mirror}|{phase}\") string seed version2",
+    "phases": [
+      "train_env",
+      "train_action",
+      "eval_env"
+    ],
+    "train_environment_coordinate": [
+      "seed",
+      "mirror",
+      "train_env",
+      "episode",
+      "room"
+    ],
+    "train_exploration_coordinate": [
+      "seed",
+      "mirror",
+      "train_action",
+      "episode",
+      "room",
+      "explore_or_command"
+    ],
+    "eval_environment_coordinate": [
+      "seed",
+      "mirror",
+      "eval_env",
+      "bank_item",
+      "room"
+    ],
+    "arm_p_and_checkpoint_excluded": true,
+    "no_path_length_dependent_consumption": true,
+    "eval_tape_disjoint_from_train": true,
+    "materialize_before_first_matrix_native": true,
+    "learner_cannot_read_tapes_or_ids": true,
+    "native_random_calls_planned": 135168,
+    "review_reconstruction": "Separately count any identical-tape audit reconstruction; not new population samples.",
+    "analysis_bootstrap": "Separate local analysis RNG namespace V07|analysis_bootstrap, no training calls; 10000 complete seed-block resamples of 32 blocks, selected once and reused for all paired summaries."
+  },
+  "wiring": {
+    "arms": [
+      "F-RP-FT",
+      "F-R-FT",
+      "F-RP-CT",
+      "F-R-CT"
+    ],
+    "streams": 4,
+    "rollouts_each": 4,
+    "train_each": 2,
+    "eval_each": 2,
+    "world": {
+      "passable_exits": [
+        0,
+        0
+      ],
+      "root_command_swap": true,
+      "p": 0.1,
+      "horizon": 12,
+      "protected_unread_sentinels": true
+    },
+    "first_two_programs": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        0
+      ]
+    ],
+    "environment_uniforms_per_episode": [
+      0.9,
+      0.9
+    ],
+    "first_two_outcomes": "actual root COLLISION, each normally learned",
+    "last_two": "actual policy of the same fully frozen clone; expected [1,0] and SUCCESS, no eval count/Q/buffer/history writes",
+    "old_five_signal_gate_evidence": "Reuse exact already executed v172 evidence only; no old wiring/native/checker rerun.",
+    "engineering_not_independent_scientific_N": true
+  },
+  "evaluation": {
+    "frozen_state": "complete Q/counts/buffer/history clone, eval_epsilon0, no attempt-counter updates for CT",
+    "no_learning_from_eval": true,
+    "no_eval_based_training_or_stopping": true,
+    "policies_deterministic_given_frozen_state": true,
+    "primary_condition_p": 0.1,
+    "primary_pairs": [
+      [
+        "F-R-FT",
+        "F-R"
+      ],
+      [
+        "F-R-FT",
+        "F-R-CT"
+      ]
+    ],
+    "primary_metric": {
+      "id": "early_frozen_AUC_0_32",
+      "points": [
+        0,
+        8,
+        16,
+        32
+      ],
+      "formula": "sum((e_next-e)*(observed_success_rate_e+observed_success_rate_next)/2)/32",
+      "both_comparisons_reported": true
+    },
+    "secondary_pairs": [
+      [
+        "F-RP-FT",
+        "F-RP"
+      ],
+      [
+        "F-RP-FT",
+        "F-RP-CT"
+      ],
+      [
+        "F0",
+        "RL-RP"
+      ],
+      [
+        "F0",
+        "RL-R"
+      ],
+      [
+        "F-R",
+        "RL-R"
+      ],
+      [
+        "F-RP",
+        "RL-RP"
+      ],
+      [
+        "F-R-FT",
+        "RL-R"
+      ],
+      [
+        "F-RP-FT",
+        "RL-RP"
+      ],
+      [
+        "RL-RP",
+        "RL-R"
+      ],
+      [
+        "F-RP",
+        "F-R"
+      ],
+      [
+        "F-RP-FT",
+        "F-R-FT"
+      ],
+      [
+        "F-RP-CT",
+        "F-R-CT"
+      ]
+    ],
+    "online_metrics": [
+      "successes at16/32/64",
+      "early and full cumulative failures",
+      "actual visited repeated collisions with history context",
+      "successful deliveries at matched train-step budgets"
+    ],
+    "frozen_metrics": [
+      "all6 observed success rates",
+      "early and full AUC",
+      "external exact probability of actual frozen policy",
+      "regressions after crossing",
+      "observed and exact first crossing reported separately"
+    ],
+    "external_exact_evaluator": "From source configuration and fixed greedy program only: (1-p)^3 if every command takes the viable exit, otherwise0. Evaluator-only oracle, never learner input or training target.",
+    "single_bank_interval": "Wilson95percent for observed rate; distinct from independent training-run uncertainty",
+    "threshold_exact": {
+      "p0": [
+        9,
+        10
+      ],
+      "p01": [
+        6561,
+        10000
+      ]
+    },
+    "threshold_interpretation": "Auxiliary only; report observed/exact crossings separately and mark measurement uncertain when Wilson interval spans threshold. Preserve null/right-censored and later drops; never relabel old v06.",
+    "grid_precision": "Grid0/8/16/32/48/64 only; no interpolated exact mastery time.",
+    "pair_cost_fractions": [
+      0.25,
+      0.5,
+      0.75,
+      1.0
+    ],
+    "pair_cost_rule": "B=min(actual train steps) within seed/mirror/p/pair; count completed successes by B fraction.",
+    "mechanism_fields": [
+      "actual visited Q argmax and values",
+      "real outcome counts and p_hat",
+      "outcome-informative Q ties",
+      "old FT CT readout difference on same state",
+      "exploration overriding readout",
+      "actual chosen action and outcome",
+      "remaining strict-Q-misranking diagnostic external only"
+    ],
+    "interpretation_guard": "Choosing lower estimated p does not establish actual inferiority; revisiting a collision is not automatically waste in a stochastic task.",
+    "inference_unit": "32 independent paired seed blocks; average two mirrors within seed, split p conditions. No episode/bank/checkpoint pseudoreplication.",
+    "summary": [
+      "all32 paired seed differences",
+      "mean",
+      "median",
+      "positive/zero/negative counts",
+      "95percent paired seed-block bootstrap intervals"
+    ],
+    "bootstrap_resamples": 10000,
+    "no_family_winner_or_equivalence_claim_from_point_estimates": true,
+    "no_significance_completion_gate": true,
+    "costs_separate": [
+      "training environment steps",
+      "evaluation environment steps",
+      "ordinary TD",
+      "real replay",
+      "expected model backups",
+      "fact count writes",
+      "policy readout work",
+      "probability planning",
+      "shadow readouts",
+      "external exact evaluation",
+      "instrumented CPU and wall time",
+      "capture bytes and observed memory"
+    ],
+    "design_precision": [
+      {
+        "eval_episodes": 32,
+        "assumed_true_success_probability": 0.729,
+        "approx_95_half_width": 0.15400311019586585,
+        "probability_of_observed_rate_below_0_6561": 0.1314821875231963,
+        "kind": "analytic_binomial_design_calculation_not_experiment"
+      },
+      {
+        "eval_episodes": 512,
+        "assumed_true_success_probability": 0.729,
+        "approx_95_half_width": 0.03850077754896646,
+        "probability_of_observed_rate_below_0_6561": 0.00012246260649345015,
+        "kind": "analytic_binomial_design_calculation_not_experiment"
+      }
+    ]
+  },
+  "completion": {
+    "required": [
+      "all nine declared paths and complete paired matrix",
+      "actual factual tie use and uninformative count control traceable",
+      "no unintended learner update changes",
+      "real frozen eval isolated",
+      "complete costs, nulls, zeros, negative outcomes and uncertainty reported"
+    ],
+    "positive_effect_required": false,
+    "all_metrics_win_required": false,
+    "unseen_transfer_required": false,
+    "general_taste_required": false,
+    "interpretations": [
+      "FT exceeds old and CT: local evidence for outcome content in tie readout",
+      "FT and CT similar, both exceed old: simpler use of attempt history suffices",
+      "early gain with same endpoint is valid efficiency benefit",
+      "zero or adverse FT retained; no same-round new algorithm chasing"
+    ],
+    "first_step": "Implement only FT/CT readouts, then the new16-rollout directed wiring, then this fixed new-seed matrix.",
+    "first_failure_partial_timeout_preserved": true,
+    "no_automatic_retry_or_rerun_of_completed_streams": true,
+    "no_result_dependent_seed_parameter_threshold_or_sample_size_change": true,
+    "not_a_universal_solution": "Unchanged alpha/replay, simple stationary topology and strict-Q errors remain scoped limitations, not a claim against all RL."
+  },
+  "prior_source_files": [
+    {
+      "path": "experiments/v06r/plan_v171.json",
+      "bytes": 13057,
+      "sha256": "55f1b67426c66449f4f5d53cd6a39131035894e5a8839d7900290433baa6facc",
+      "physical_equals_parent_git": true
+    },
+    {
+      "path": "experiments/v06r/stochastic_matrix_v172/experiment.py",
+      "bytes": 26647,
+      "sha256": "cedbb8d154b77f5fe0e7caca2d27024191745c9e2492a2de33f09b0c4feed595",
+      "physical_equals_parent_git": true
+    },
+    {
+      "path": "experiments/v06r/stochastic_matrix_v172/result.md",
+      "bytes": 10664,
+      "sha256": "8b1da9acc2e4a1b935165cc01e9ead6ce2388cbcdae15d6e140c06f25a313ac2",
+      "physical_equals_parent_git": true
+    },
+    {
+      "path": "experiments/v06r/stochastic_matrix_v172/evidence_matrix/raw.jsonl",
+      "bytes": 41992431,
+      "sha256": "fb2fdf4fa3ad9bbbab1e99502079bce468b21ba9019e7b5940e05ea69f19705d",
+      "physical_equals_parent_git": true
+    },
+    {
+      "path": "experiments/v05r/rl_baseline_v170/result.md",
+      "bytes": 8240,
+      "sha256": "42a144ad1d2f823a93f51f8e1804c2109fc6f23eb21b6028e94ca1a1e51c84cd",
+      "physical_equals_parent_git": true
+    }
+  ],
+  "literature": [
+    {
+      "title": "Agarwal et al., Deep Reinforcement Learning at the Edge of the Statistical Precipice",
+      "url": "https://arxiv.org/html/2108.13264v4",
+      "use": "Separate training replicates and evaluation episodes; effect intervals, not a positive-significance completion requirement."
+    },
+    {
+      "title": "Watkins and Dayan, Q-learning",
+      "url": "https://www.gatsby.ucl.ac.uk/~dayan/papers/cjch.pdf",
+      "use": "Direct tabular Q baseline reference; do not claim fixed-alpha finite-run convergence theorem coverage."
+    }
+  ],
+  "this_turn_execution": {
+    "learner_implementation": 0,
+    "new_native": 0,
+    "new_train_rollouts": 0,
+    "new_eval_rollouts": 0,
+    "new_RNG_draws": 0,
+    "old_checker_or_fixture_runs": 0,
+    "formal_collection": 0,
+    "automation_changes": 0
+  },
+  "old_stage_sources_evidence_and_formal_plans": "unchanged; not prerequisites of this bounded local stage"
+}

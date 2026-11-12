@@ -1,0 +1,152 @@
+{
+  "schema": "V125_PROSPECTIVE_EQUAL_EXTRA_ROLLOUT_CONTROL",
+  "date_asia_shanghai": "2026-11-06",
+  "parent_commit": "be96224901ea12b83f92781d9aebd691461d307d",
+  "question": "At the same supported ambiguity and same six-extra-task allowance, does candidate-intervention practice differ from six sequential ordinary training tasks with all learned R+L retained?",
+  "modes": [
+    "dq",
+    "patch-adaptive"
+  ],
+  "arms": [
+    "TaskTD",
+    "EvidenceValue",
+    "EvidenceExtraTD",
+    "PracticeValue"
+  ],
+  "sources": [
+    {
+      "kappa": 0,
+      "prefix": 3,
+      "cell": [
+        2,
+        1
+      ]
+    },
+    {
+      "kappa": 1,
+      "prefix": 5,
+      "cell": [
+        3,
+        2
+      ]
+    }
+  ],
+  "source_rule": "One fresh state per mode installs both kappa sources at once: WAIT at specified cell for t>=prefix through11, m0,1,z1,phi2; DQ6 or independent literalD WAIT. One phase4 unread wrong-RIGHT sentinel at(1,2,t1,kappa0,z1,m0) plus unread process3->2. Equal full initialR+L cloned independently to four arms; no state resets between tasks.",
+  "schedule": [
+    {
+      "kappa": 0,
+      "trap": false
+    },
+    {
+      "kappa": 1,
+      "trap": false
+    },
+    {
+      "kappa": 0,
+      "trap": false
+    },
+    {
+      "kappa": 1,
+      "trap": false
+    },
+    {
+      "kappa": 0,
+      "trap": true
+    },
+    {
+      "kappa": 0,
+      "trap": true
+    },
+    {
+      "kappa": 1,
+      "trap": false
+    },
+    {
+      "kappa": 0,
+      "trap": true
+    },
+    {
+      "kappa": 1,
+      "trap": false
+    },
+    {
+      "kappa": 0,
+      "trap": false
+    },
+    {
+      "kappa": 1,
+      "trap": false
+    },
+    {
+      "kappa": 0,
+      "trap": false
+    },
+    {
+      "kappa": 1,
+      "trap": false
+    },
+    {
+      "kappa": 0,
+      "trap": false
+    },
+    {
+      "kappa": 1,
+      "trap": false
+    },
+    {
+      "kappa": 0,
+      "trap": false
+    },
+    {
+      "kappa": 1,
+      "trap": false
+    },
+    {
+      "kappa": 0,
+      "trap": false
+    }
+  ],
+  "episode_inputs": "Chronological main e0..17, kappa from shared schedule,phi2/errorflag0/rank10/base1, sharedMAX coins. Trap(1,2,step0) only e4,5,7. Supplement branches repeat CURRENT task conditions, not future stream conditions.",
+  "model": "Same frozen28row value model. Neither arm retrains it. Practice uses event outcomes to choose an edit; ExtraTD retains all6ordinary updates in a separate declared dataflow. All roles retain main ordinary learning, success zero diagnostics.",
+  "diagnostic": "Enabled after every actual COLLISION/TRAP/TIMEOUT for corrected arms, not only first task. SUCCESS ordinary-only. Max12addresses and0queries per event; individual consumed epochs, completeR+L and immediateI persist. TaskTD never diagnoses. Keep allowed.",
+  "retention_checkpoints_completed_tasks": [
+    0,
+    2,
+    4,
+    8,
+    12,
+    18
+  ],
+  "retention_protocol": "At each checkpoint ordinary greedy read-only rollouts in kappa0 and1, phi2/rank8/base1/no-fault. No coins, TD, diagnosis, writes or new source identity. Full before/after R+L+I identical; native counts separately. These are outcome checks, not success attribution. They are not training episodes or independent seeds.",
+  "metrics": "All18 chronological main task returns/successes, all supplements costs, current-state carry/adoption, and6checkpoint clean read-only banks. No posthoc best window/weightedutility or invented overall equivalence.",
+  "reference": {
+    "path": "experiments/v03r/a96_dense/b2_prepare/grammar_catalog_v31/evidence/stdout.log",
+    "sha256": "d0aafb6dc20b1cc0c872ac4c48497d94feb707ffe14448bd1c2f3ddd1bbb467b",
+    "q_digest": "d9078b5b5b823df56f998e8c28eb6a3e388bd3ae216f41a21acdb5202d2ec05a"
+  },
+  "budget": {
+    "rollout": 280,
+    "step": 3360,
+    "transaction": 1024,
+    "raw_bytes": 33554432,
+    "seconds": 120
+  },
+  "expected_extent_not_effect_gate": {
+    "source_installs": 2,
+    "main_tasks": 144,
+    "read_only_probes": 96,
+    "extra_rollout_upper_bound": 24,
+    "total_upper_bound": 264
+  },
+  "capture": "New exclusive bounded capture and source pins before first execution. Old code/positive/negative/partial results unchanged, no old checker/native rerun, no automatic retry or replacing adverse/unknown outcomes.",
+  "limits": "Fixed scripted stream, not blind population/seeds/general causal posterior. Same sharedQ*, alpha1/2 epsilon1/10 and original rewards. Legal local edits on post-TD current, not original same-pre wholeB1. Trap phases are deliberate environmental changes; compare same-schedule arms, do not label changing-environment return as general collateral. No new science/workload keys, RNG/keyderive, DP/calibration/formal collection. Automation off, not inspected or changed. This is a new action-intervention practice capability in the revised V04 experiment, not an assertion that v122 already had it. Only the tested aliased candidates are adjudicated; no total compute matching or universal attribution claim. Additional experiment after local-stage closure; v124 remains a historical scoped completion, not withdrawn or rewritten. Rollout-count matching is weaker than exact compute matching; not a pure representation ablation, population inference or full causal pipeline.",
+  "practice": {
+    "trigger": "PracticeValue only, actual failed task after ordinary learning, chosen single-address has at least2 top-scored single candidates with identical feature key. No truth/location label, future schedule or environment configuration is passed to request/choice policy.",
+    "cap": "At most ONE supplemental event per role. PracticeValue: keep+first2aliased top singles,2ordinarytasks/branch=6tasks. EvidenceExtraTD: no candidate edit at event,6sequentialordinarytasks in ONE live fullR+L clone, then retain all final R+L, no choosing best checkpoint. Both require the same actual visible ambiguity trigger.",
+    "execution": "Runner-private current-task environment capability binds current observed kappa/phase and current actual mask, never future masks. Clone actual complete live post-TD R+L into separate branches; candidate edits on branch,2repeat-current-condition tasks, no diagnostics inside branches. Origin and its I stay unchanged. New typed data/branches, not restored issuedB1handles.",
+    "decision": "Choose greatest actual two-task mean from keep and tested singles; exact ties prefer fewer attempted address edits then declared order. Apply chosen original proposal once to live post-TD state. Scores remain frozen; practice outcomes are ephemeral event evidence.",
+    "cost": "All branch rollouts/steps/ordinary transactions and candidate writes counted separately; task and retention comparison shares task schedule but NOT total compute. No net efficiency or full-menu optimality claim. Standard query API remains0; these new practice operations are not claimed free or nonexistent."
+  },
+  "extra_ordinary": "At ambiguity EvidenceExtraTD returns keep to existing diagnostic executor. AFTER that main task completes, a new explicit runner operation consumes6ordinary episodes in a fresh live post-TD R+L clone with no diagnosis; it adopts the complete actual learned R+L into that same main learner, preserves original I/stream clock, and records both clocks. Not an old B1 receipt, fake Proposal, monkeypatch or serialized handle. No ordinary learning owner filter. Supplement data always retained regardless of outcomes.",
+  "comparison": "Match extra rollout allowance and, if achieved, actual rollout counts. Task horizon12each gives same upper action allowance; actual steps/transactions/clones/IO/time may differ and must be reported. Root full R+L+I at first event compared, no claim of exact total compute matching."
+}

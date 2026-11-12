@@ -1,0 +1,131 @@
+{
+  "schema": "V149_EXECUTION_AND_ORDINARY_DATA_BINDING",
+  "parent_commit": "7b184fed4a768c5a2581d10c38d6ecae4e2739b7",
+  "native_capture": {
+    "contract.json": {
+      "bytes": 5921,
+      "sha256": "93e8b677aaa281a1f52ed9f13e570ff6b6ec1c5391915344e38d1e1660dc8d14"
+    },
+    "workload.py": {
+      "bytes": 14137,
+      "sha256": "4b0acaf2d9017ce84f0696bf52d1881f8baacc02291e5d83f758925cd799668c"
+    },
+    "execute.py": {
+      "bytes": 4303,
+      "sha256": "96cf637917457a3bfaff53e7383b49062ce0bcb08a1eaaad88d0f63b14aeb75c"
+    },
+    "evidence/claim.json": {
+      "bytes": 43301,
+      "sha256": "fcef35d7847e6f932a78dea43b489ca211db91905f26b5c03f3da7105b3ed655"
+    },
+    "evidence/exit.json": {
+      "bytes": 43433,
+      "sha256": "63bacddb4cb6d6b28e7dcd01c9a90492f50cb0f17eba7de139bfe16d2c155724"
+    },
+    "evidence/raw.jsonl": {
+      "bytes": 1289143,
+      "sha256": "a08cec803801eebc9e199da60b10d835e891013ab943e30632f364a1e19e0f83"
+    }
+  },
+  "reviews": {
+    "audit_stored.py": {
+      "bytes": 29366,
+      "sha256": "193a96f74c8c0787515f6dbbcecb8a9d309bd629f1159e0b309055ffcfce4b10"
+    },
+    "evidence_audit/claim.json": {
+      "bytes": 327,
+      "sha256": "2fdccbf5343f3c8057c7d36fb10c1894351457df8148f74ed4a95292cc092ca6"
+    },
+    "evidence_audit/exit.json": {
+      "bytes": 412,
+      "sha256": "6c21c725967b7b534f276a409e79d8444c2b2ca6a700014bad67da5232c3fb82"
+    },
+    "audit_stored_v2.py": {
+      "bytes": 29408,
+      "sha256": "9940441f7fbf934792183086be60b46b91cc9965375adefc54fb78b1c034c910"
+    },
+    "evidence_audit_v2/claim.json": {
+      "bytes": 327,
+      "sha256": "633186fcab739a11b099c14801554d3b447dc493272c1c2396ed83300d1d6d86"
+    },
+    "evidence_audit_v2/exit.json": {
+      "bytes": 201,
+      "sha256": "174d64073cdc89655a41455bffd26cc6d170139737a0882e5b38ab81ce4d5c52"
+    },
+    "stored_audit_result_v2.json": {
+      "bytes": 10564,
+      "sha256": "4e7c5d6f7585da719e94ca251d8d312ce8a0521aea947d4004383114d29aeb5a"
+    },
+    "audit_process_exits.json": {
+      "bytes": 355,
+      "sha256": "2c05a5e419c24bf41f9c3b7eb833fcd1202d3855f1a89dcac29fc6a3f177db6f"
+    }
+  },
+  "audit_v2_diff": "Exact rename rejections episode-coordinate list to rejection_coordinates; distinct evidence/result paths. Native/oldsource unchanged.",
+  "ordinary_checkpoint": {
+    "raw": {
+      "path": "experiments/v04r/learned_relative_transfer_v148/evidence/raw.jsonl",
+      "bytes": 1382529,
+      "sha256": "de3796632d9eb8223053d435af5e1f7eeefbf1f87babd0f7557691d102306fd6"
+    },
+    "exit": {
+      "path": "experiments/v04r/learned_relative_transfer_v148/evidence/exit.json",
+      "bytes": 43758,
+      "sha256": "cf14ca352b6469071c65b493964225502bc801f7c302248d3645ded441612513"
+    },
+    "review": {
+      "path": "experiments/v04r/learned_relative_transfer_v148/stored_audit_result.json",
+      "bytes": 10702,
+      "sha256": "14def5237c7a6744c83b4788fff6d2bbfeeef3aa92c89a967f21dacb1efedade"
+    },
+    "selector": {
+      "tag": "PREPARATION_COMPLETE",
+      "field": "state"
+    },
+    "recorded_completed_tasks": 1,
+    "recorded_external_updates": 0,
+    "type": "Construct existing RecordedOrdinaryCheckpoint as explicit ordinary-state DATA only; exact fullI/R/L materialization by original legal3TX. No old source/pair/receipt/issuedidentity restore and no repeat of finished preparatory rollout."
+  },
+  "frozen_model": {
+    "path": "experiments/v04r/learned_relative_transfer_v148/frozen_model.json",
+    "bytes": 1824,
+    "sha256": "70d061c3796bc49eae6b517c1b8890fbbab9d64e7b0a6c6cdb67d8f111b134d0"
+  },
+  "model_code": {
+    "path": "experiments/v04r/learned_relative_transfer_v148/relative_model.py",
+    "bytes": 3188,
+    "sha256": "9f99aa06f388b6f7f0a6a8f6e64701b628e9cc078bc78af73de34ff2fc0de5f1"
+  },
+  "constructorflow": "Pinned v148 PREPARATION_COMPLETE.state -> RecordedOrdinaryCheckpoint data -> original3 legal store TX -> new case originals -> genuine fresh main loops/private NativeLoop -> registered genuine NativeTrialObservation -> unchanged v147 consumer; targeted probe data not turned into issued observations.",
+  "input_scope": {
+    "native_pins": 336,
+    "before_after_equal": true,
+    "parent_Git_blobs_equal": 332,
+    "new_prospective_native_inputs": {
+      "experiments/v04r/targeted_probe_challenge_v149/audit_stored.py": {
+        "bytes": 29366,
+        "sha256": "193a96f74c8c0787515f6dbbcecb8a9d309bd629f1159e0b309055ffcfce4b10"
+      },
+      "experiments/v04r/targeted_probe_challenge_v149/contract.json": {
+        "bytes": 5921,
+        "sha256": "93e8b677aaa281a1f52ed9f13e570ff6b6ec1c5391915344e38d1e1660dc8d14"
+      },
+      "experiments/v04r/targeted_probe_challenge_v149/execute.py": {
+        "bytes": 4303,
+        "sha256": "96cf637917457a3bfaff53e7383b49062ce0bcb08a1eaaad88d0f63b14aeb75c"
+      },
+      "experiments/v04r/targeted_probe_challenge_v149/workload.py": {
+        "bytes": 14137,
+        "sha256": "4b0acaf2d9017ce84f0696bf52d1881f8baacc02291e5d83f758925cd799668c"
+      }
+    },
+    "parent_blob_bytes": 11357279,
+    "nonledger_pins_to_preserve_after_index_append": 335
+  },
+  "ledger_preservation": {
+    "old_fields": 87,
+    "provenance_entries": 266
+  },
+  "independent_expert_or_science_gate": false,
+  "all_tracked_bytes_audited": false
+}

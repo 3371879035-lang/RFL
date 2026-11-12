@@ -1,0 +1,161 @@
+{
+  "schema": "V155_LEARNED_PROBE_PROGRAM_RESULT",
+  "date_asia_shanghai": "2026-11-07",
+  "parent_commit": "fe38b7df4a79540cd1152b162dcb02fe8ac212f2",
+  "status": "FIRST_NATIVE_AND_FIRST_STORED_REVIEW_EXIT0_CURRENT_QUERY_WORK_SAVED_WITH_UNCHANGED_MAIN_RESULTS",
+  "actual": {
+    "native_first_exit": 0,
+    "stored_review_first_exit": 0,
+    "native_counts": {
+      "rollout": 76,
+      "step": 310,
+      "transaction": 202
+    },
+    "records": 716,
+    "native_wall_seconds_instrumented": 6.98399999999674,
+    "input_pins": 349,
+    "input_bytes_unchanged": true,
+    "main_tasks_each": 20,
+    "successes_each": [
+      12,
+      12
+    ],
+    "means_each": [
+      0.10799999999999998,
+      0.10799999999999998
+    ],
+    "all_main_RLI_and_raw_equal": true,
+    "costs": [
+      {
+        "arm": "FreshDiscovery",
+        "main_tasks": 20,
+        "private_tasks": 20,
+        "rollout": 40,
+        "step": 160,
+        "transaction": 104,
+        "shared4TX_excluded": true
+      },
+      {
+        "arm": "ProgramMemory",
+        "main_tasks": 20,
+        "private_tasks": 16,
+        "rollout": 36,
+        "step": 150,
+        "transaction": 94,
+        "shared4TX_excluded": true
+      }
+    ],
+    "private_saved": 4,
+    "private_saving_fraction": 0.2,
+    "stages": [
+      {
+        "main_epoch": 0,
+        "stage": "A_knownshape",
+        "actual_private_tasks": 3,
+        "reuse_live_current_observations": true,
+        "program_rows_after_learning": 3
+      },
+      {
+        "main_epoch": 4,
+        "stage": "B_newdepth",
+        "actual_private_tasks": 5,
+        "reuse_live_current_observations": false,
+        "program_rows_after_learning": 5
+      },
+      {
+        "main_epoch": 8,
+        "stage": "C_learneddepth",
+        "actual_private_tasks": 3,
+        "reuse_live_current_observations": true,
+        "program_rows_after_learning": 5
+      },
+      {
+        "main_epoch": 12,
+        "stage": "D_shorteragain",
+        "actual_private_tasks": 5,
+        "reuse_live_current_observations": false,
+        "program_rows_after_learning": 3
+      }
+    ],
+    "historical_full_diagnostic_private_tasks": 5,
+    "all_history_charged_to_this_batch_private": 21,
+    "native_ordinary_updates": 76,
+    "external_ordinary_updates": 8,
+    "issued": 36,
+    "consumed": 24,
+    "unconsumed": 12,
+    "main_feedback_TX": 8,
+    "main_feedback_addresses": 16,
+    "shared_checkpoint_TX": 3,
+    "shared_fresh_source_TX": 1,
+    "fresh_source_edits": 13,
+    "history_native_reruns": 0,
+    "old_checker_native_reruns": 0,
+    "new_keys_RNG_DP_calibration_collection": 0,
+    "automation_changes": 0
+  },
+  "scope": "Finite explicit diagnostic-memory algorithm, actual current-source evidence authorization; not cold-start compute win/full V04 completion/oldB1 qualification/scienceN/neural weight learning",
+  "artifacts": [
+    {
+      "path": "experiments/v04r/learned_probe_program_v155/contract.json",
+      "bytes": 7298,
+      "sha256": "043bac46b575c830e07d699097eb52db304cfa38c8012dabf1ae47de333e02b5"
+    },
+    {
+      "path": "experiments/v04r/learned_probe_program_v155/program.py",
+      "bytes": 1596,
+      "sha256": "0116d2bfcdea0e9f8cb619003892875f643dbbb6453a5c2fd785fa214289812d"
+    },
+    {
+      "path": "experiments/v04r/learned_probe_program_v155/memory_agent.py",
+      "bytes": 7229,
+      "sha256": "6ae029dac5fe8e19903ac1a77c08a5405a5f2ae93f0b0aef908fcda078310c82"
+    },
+    {
+      "path": "experiments/v04r/learned_probe_program_v155/workload.py",
+      "bytes": 10475,
+      "sha256": "06b6659f3f3a649d9da6fa75a7f9bf93dbfdafbb5842d70b227d5718a924e8aa"
+    },
+    {
+      "path": "experiments/v04r/learned_probe_program_v155/execute.py",
+      "bytes": 4453,
+      "sha256": "3971932dd57d510dd55602f8f0f223a54b767eda1575e11be1dd76e836b65084"
+    },
+    {
+      "path": "experiments/v04r/learned_probe_program_v155/audit_stored.py",
+      "bytes": 38195,
+      "sha256": "854cbd157bff842abf83a708f75a2b788a1117e66a9fee003b38418ccfec1bdb"
+    },
+    {
+      "path": "experiments/v04r/learned_probe_program_v155/evidence/claim.json",
+      "bytes": 45310,
+      "sha256": "01f402d797088930a976570de68c2084571c34a2b681eb968542c55fb3de3c0f"
+    },
+    {
+      "path": "experiments/v04r/learned_probe_program_v155/evidence/exit.json",
+      "bytes": 45443,
+      "sha256": "bac71d31e320187b40e61c11903371c752011ad40caf08ac3e971cb6616434eb"
+    },
+    {
+      "path": "experiments/v04r/learned_probe_program_v155/evidence/raw.jsonl",
+      "bytes": 3230499,
+      "sha256": "05401315b80bd35809b3ee7f8590baba87398e67e1d4160af56b7c9723a0ad06"
+    },
+    {
+      "path": "experiments/v04r/learned_probe_program_v155/audit_process_exit.json",
+      "bytes": 41,
+      "sha256": "2d542270094b4386662714961f173cd557ff986f1fd9b53b37d3c802589e58c3"
+    },
+    {
+      "path": "experiments/v04r/learned_probe_program_v155/stored_audit_result.json",
+      "bytes": 58856,
+      "sha256": "fb7122e7de55deab3c4572cb836def52ebe345edb46cc053d4f4d6f5acdb2d31"
+    },
+    {
+      "path": "experiments/v04r/learned_probe_program_v155/result.md",
+      "bytes": 6209,
+      "sha256": "818e5a4bc55461f26e896383f233a502b4c0bb6302f71362cb7c3f25bc166cdd"
+    }
+  ],
+  "qualification": false
+}

@@ -1,0 +1,2448 @@
+{
+  "schema": "V165_LEARNED_EXECUTION_VALUE_ACTUAL_RESULT",
+  "parent_commit": "d7a239b6a233ed7006b9106572ff78f982e11110",
+  "status": "FIRST_NATIVE_REVIEW0_EXECUTION_QUERY_VALUE_SAVED2TRIALS_SAME14OF18_MAIN_AND_UNKNOWN_REAL_TEST_RETAINED",
+  "native_first_exit": 0,
+  "stored_review_first_exit": 0,
+  "wall_seconds_instrumented": 4.2189999999827705,
+  "review_wall_seconds": 0.4690000000409782,
+  "native_counts": {
+    "transaction": 159,
+    "query_model_fit": 1,
+    "execution_features": 5,
+    "public_geometry": 6,
+    "rollout": 66,
+    "step": 402
+  },
+  "records": 545,
+  "input_pins": 360,
+  "native_inputs_unchanged": true,
+  "combined_fixed_case_descriptions": [
+    {
+      "arm": "TaskTD",
+      "main_tasks": 18,
+      "successes": 5,
+      "main_return_sum": -10.32,
+      "private_tasks": 0,
+      "rollout": 18,
+      "step": 116,
+      "transaction_shared_excluded": 36,
+      "public_geometry": 0,
+      "simple_all_interaction_return_not_adopted_utility": -10.32,
+      "all_interaction_failures": 13
+    },
+    {
+      "arm": "EventOnlyGate",
+      "main_tasks": 18,
+      "successes": 14,
+      "main_return_sum": 7.8,
+      "private_tasks": 7,
+      "rollout": 25,
+      "step": 147,
+      "transaction_shared_excluded": 62,
+      "public_geometry": 3,
+      "simple_all_interaction_return_not_adopted_utility": 6.06,
+      "all_interaction_failures": 8
+    },
+    {
+      "arm": "AllQueryGate",
+      "main_tasks": 18,
+      "successes": 14,
+      "main_return_sum": 7.8,
+      "private_tasks": 5,
+      "rollout": 23,
+      "step": 139,
+      "transaction_shared_excluded": 55,
+      "public_geometry": 3,
+      "simple_all_interaction_return_not_adopted_utility": 6.22,
+      "all_interaction_failures": 7
+    }
+  ],
+  "cases": [
+    {
+      "case": "A_new_compound",
+      "complete": true,
+      "native_counts": {
+        "execution_features": 1,
+        "public_geometry": 6,
+        "rollout": 24,
+        "step": 88,
+        "transaction": 59
+      },
+      "summaries": [
+        {
+          "arm": "TaskTD",
+          "successes": 0,
+          "returns": [
+            -1.02,
+            -1.02,
+            -1.02,
+            -1.02,
+            -1.02,
+            -1.02
+          ],
+          "outcomes": [
+            "TRAP",
+            "TRAP",
+            "TRAP",
+            "TRAP",
+            "TRAP",
+            "TRAP"
+          ],
+          "mean_return": -1.02,
+          "external_updates": 0,
+          "diagnostic_account": {
+            "algorithm": "TaskTD",
+            "base_queries": 0,
+            "expanded_queries": 0,
+            "trial_task_budget": 0,
+            "trial_tasks_used": 0
+          }
+        },
+        {
+          "arm": "EventOnlyGate",
+          "successes": 4,
+          "returns": [
+            -1.02,
+            -1.02,
+            0.86,
+            0.86,
+            0.86,
+            0.86
+          ],
+          "outcomes": [
+            "TRAP",
+            "TRAP",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "mean_return": 0.2333333333333333,
+          "external_updates": 1,
+          "diagnostic_account": {
+            "algorithm": "EventOnlyGate",
+            "base_queries": 1,
+            "expanded_queries": 1,
+            "trial_task_budget": 4,
+            "trial_tasks_used": 3
+          }
+        },
+        {
+          "arm": "AllQueryGate",
+          "successes": 4,
+          "returns": [
+            -1.02,
+            -1.02,
+            0.86,
+            0.86,
+            0.86,
+            0.86
+          ],
+          "outcomes": [
+            "TRAP",
+            "TRAP",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "mean_return": 0.2333333333333333,
+          "external_updates": 1,
+          "diagnostic_account": {
+            "algorithm": "AllQueryGate",
+            "base_queries": 1,
+            "expanded_queries": 1,
+            "trial_task_budget": 4,
+            "trial_tasks_used": 3
+          }
+        }
+      ],
+      "query_value_decisions": [],
+      "execution_value_decisions": [
+        {
+          "arm": "AllQueryGate",
+          "epoch": 0,
+          "stage": "A_new_compound",
+          "x": [
+            -0.94,
+            1.0
+          ],
+          "prediction": 1.2533333333333332,
+          "decision": "supported_probe",
+          "trial_tasks_used_before": 0
+        }
+      ],
+      "dispatches": [
+        {
+          "arm": "EventOnlyGate",
+          "epoch": 0,
+          "stage": "A_new_compound",
+          "branch": "execution",
+          "trial_tasks_used_before": 0
+        },
+        {
+          "arm": "EventOnlyGate",
+          "epoch": 1,
+          "stage": "A_new_compound",
+          "branch": "event",
+          "trial_tasks_used_before": 3
+        },
+        {
+          "arm": "AllQueryGate",
+          "epoch": 0,
+          "stage": "A_new_compound",
+          "branch": "execution",
+          "trial_tasks_used_before": 0
+        },
+        {
+          "arm": "AllQueryGate",
+          "epoch": 1,
+          "stage": "A_new_compound",
+          "branch": "event",
+          "trial_tasks_used_before": 3
+        }
+      ],
+      "event_hypotheses": [
+        {
+          "arm": "EventOnlyGate",
+          "epoch": 1,
+          "stage": "A_new_compound",
+          "specification": null,
+          "public_search": {
+            "public_candidate_transitions": 2,
+            "target_inference_transitions": 1,
+            "search_exhausted": false,
+            "reason": "no_legal_alternate_entry"
+          }
+        },
+        {
+          "arm": "AllQueryGate",
+          "epoch": 1,
+          "stage": "A_new_compound",
+          "specification": null,
+          "public_search": {
+            "public_candidate_transitions": 2,
+            "target_inference_transitions": 1,
+            "search_exhausted": false,
+            "reason": "no_legal_alternate_entry"
+          }
+        }
+      ],
+      "path_checks": [
+        {
+          "arm": "EventOnlyGate",
+          "epoch": 0,
+          "stage": "A_new_compound",
+          "desired_episodes": [
+            {
+              "coins": [
+                0,
+                0,
+                0,
+                18446744073709551615,
+                18446744073709551615,
+                18446744073709551615,
+                18446744073709551615,
+                18446744073709551615,
+                18446744073709551615,
+                18446744073709551615,
+                18446744073709551615,
+                18446744073709551615
+              ],
+              "epoch": 0,
+              "kappa": 0,
+              "proposal": 1,
+              "rejections": [
+                [
+                  1
+                ],
+                [
+                  0
+                ],
+                [
+                  0
+                ],
+                [
+                  0
+                ],
+                [
+                  0
+                ],
+                [
+                  0
+                ],
+                [
+                  0
+                ],
+                [
+                  0
+                ],
+                [
+                  0
+                ],
+                [
+                  0
+                ],
+                [
+                  0
+                ],
+                [
+                  0
+                ]
+              ],
+              "tape": {
+                "cause_rank": 12,
+                "error_flag": 0,
+                "phase": 3
+              }
+            }
+          ],
+          "desired_protocol": {
+            "lock_digest": "v165-current-private",
+            "parameters": {
+              "alpha": {
+                "rational": [
+                  1,
+                  2
+                ]
+              },
+              "epsilon": {
+                "rational": [
+                  1,
+                  10
+                ]
+              }
+            },
+            "sample": [
+              {
+                "base_option": 1,
+                "cause_rank": 12,
+                "error_flag": 0,
+                "kappa": 0,
+                "phase": 3
+              }
+            ],
+            "v_pre": {
+              "binary64_hex": "0x1.874538ef34d71p-1"
+            }
+          },
+          "observation_ids": [
+            "A_new_compound:EventOnlyGate:owned:1",
+            "A_new_compound:EventOnlyGate:owned:2"
+          ],
+          "proofs": [
+            {
+              "bindings": {
+                "mode_role_equal": true,
+                "origin_L_equal": true,
+                "origin_R_equal": true,
+                "plan_protocol_equal": true,
+                "proposal_equal": true,
+                "reference_identity_equal": true,
+                "same_current_complete_observation": true
+              },
+              "equivalent": true,
+              "native_episode_input_equal": false,
+              "original_coordinate_calls": [
+                [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0,
+                  1
+                ]
+              ],
+              "reason": "same_commands_inductively_same_deterministic_terminal_outcome",
+              "steps": [
+                {
+                  "actual_command": 4,
+                  "command_equal": true,
+                  "desired_command": 4,
+                  "desired_coordinate_DATA": [
+                    [
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      1,
+                      0,
+                      1
+                    ]
+                  ],
+                  "desired_explore": true,
+                  "pre_control": {
+                    "m": 0,
+                    "z": 1
+                  },
+                  "pre_state": {
+                    "kappa": 0,
+                    "phi": 3,
+                    "t": 0,
+                    "x": 0,
+                    "y": 2
+                  }
+                }
+              ]
+            },
+            {
+              "bindings": {
+                "mode_role_equal": true,
+                "origin_L_equal": true,
+                "origin_R_equal": true,
+                "plan_protocol_equal": true,
+                "proposal_equal": true,
+                "reference_identity_equal": true,
+                "same_current_complete_observation": true
+              },
+              "equivalent": true,
+              "native_episode_input_equal": false,
+              "original_coordinate_calls": [
+                [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0,
+                  1
+                ],
+                [
+                  1,
+                  0,
+                  0,
+                  18446744073709551615
+                ],
+                [
+                  2,
+                  0,
+                  0,
+                  18446744073709551615
+                ]
+              ],
+              "reason": "same_commands_inductively_same_deterministic_terminal_outcome",
+              "steps": [
+                {
+                  "actual_command": 4,
+                  "command_equal": true,
+                  "desired_command": 4,
+                  "desired_coordinate_DATA": [
+                    [
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      1,
+                      0,
+                      1
+                    ]
+                  ],
+                  "desired_explore": true,
+                  "pre_control": {
+                    "m": 0,
+                    "z": 1
+                  },
+                  "pre_state": {
+                    "kappa": 0,
+                    "phi": 3,
+                    "t": 0,
+                    "x": 0,
+                    "y": 2
+                  }
+                },
+                {
+                  "actual_command": 3,
+                  "command_equal": true,
+                  "desired_command": 3,
+                  "desired_coordinate_DATA": [
+                    [
+                      1,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      1,
+                      1,
+                      0,
+                      0
+                    ]
+                  ],
+                  "desired_explore": true,
+                  "pre_control": {
+                    "m": 0,
+                    "z": 1
+                  },
+                  "pre_state": {
+                    "kappa": 0,
+                    "phi": 3,
+                    "t": 1,
+                    "x": 0,
+                    "y": 2
+                  }
+                },
+                {
+                  "actual_command": 0,
+                  "command_equal": true,
+                  "desired_command": 0,
+                  "desired_coordinate_DATA": [
+                    [
+                      2,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      2,
+                      1,
+                      0,
+                      0
+                    ]
+                  ],
+                  "desired_explore": true,
+                  "pre_control": {
+                    "m": 0,
+                    "z": 1
+                  },
+                  "pre_state": {
+                    "kappa": 0,
+                    "phi": 3,
+                    "t": 2,
+                    "x": 1,
+                    "y": 2
+                  }
+                }
+              ]
+            }
+          ],
+          "reuse": true
+        },
+        {
+          "arm": "AllQueryGate",
+          "epoch": 0,
+          "stage": "A_new_compound",
+          "desired_episodes": [
+            {
+              "coins": [
+                0,
+                0,
+                0,
+                18446744073709551615,
+                18446744073709551615,
+                18446744073709551615,
+                18446744073709551615,
+                18446744073709551615,
+                18446744073709551615,
+                18446744073709551615,
+                18446744073709551615,
+                18446744073709551615
+              ],
+              "epoch": 0,
+              "kappa": 0,
+              "proposal": 1,
+              "rejections": [
+                [
+                  1
+                ],
+                [
+                  0
+                ],
+                [
+                  0
+                ],
+                [
+                  0
+                ],
+                [
+                  0
+                ],
+                [
+                  0
+                ],
+                [
+                  0
+                ],
+                [
+                  0
+                ],
+                [
+                  0
+                ],
+                [
+                  0
+                ],
+                [
+                  0
+                ],
+                [
+                  0
+                ]
+              ],
+              "tape": {
+                "cause_rank": 12,
+                "error_flag": 0,
+                "phase": 3
+              }
+            }
+          ],
+          "desired_protocol": {
+            "lock_digest": "v165-current-private",
+            "parameters": {
+              "alpha": {
+                "rational": [
+                  1,
+                  2
+                ]
+              },
+              "epsilon": {
+                "rational": [
+                  1,
+                  10
+                ]
+              }
+            },
+            "sample": [
+              {
+                "base_option": 1,
+                "cause_rank": 12,
+                "error_flag": 0,
+                "kappa": 0,
+                "phase": 3
+              }
+            ],
+            "v_pre": {
+              "binary64_hex": "0x1.874538ef34d71p-1"
+            }
+          },
+          "observation_ids": [
+            "A_new_compound:AllQueryGate:owned:1",
+            "A_new_compound:AllQueryGate:owned:2"
+          ],
+          "proofs": [
+            {
+              "bindings": {
+                "mode_role_equal": true,
+                "origin_L_equal": true,
+                "origin_R_equal": true,
+                "plan_protocol_equal": true,
+                "proposal_equal": true,
+                "reference_identity_equal": true,
+                "same_current_complete_observation": true
+              },
+              "equivalent": true,
+              "native_episode_input_equal": false,
+              "original_coordinate_calls": [
+                [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0,
+                  1
+                ]
+              ],
+              "reason": "same_commands_inductively_same_deterministic_terminal_outcome",
+              "steps": [
+                {
+                  "actual_command": 4,
+                  "command_equal": true,
+                  "desired_command": 4,
+                  "desired_coordinate_DATA": [
+                    [
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      1,
+                      0,
+                      1
+                    ]
+                  ],
+                  "desired_explore": true,
+                  "pre_control": {
+                    "m": 0,
+                    "z": 1
+                  },
+                  "pre_state": {
+                    "kappa": 0,
+                    "phi": 3,
+                    "t": 0,
+                    "x": 0,
+                    "y": 2
+                  }
+                }
+              ]
+            },
+            {
+              "bindings": {
+                "mode_role_equal": true,
+                "origin_L_equal": true,
+                "origin_R_equal": true,
+                "plan_protocol_equal": true,
+                "proposal_equal": true,
+                "reference_identity_equal": true,
+                "same_current_complete_observation": true
+              },
+              "equivalent": true,
+              "native_episode_input_equal": false,
+              "original_coordinate_calls": [
+                [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0,
+                  1
+                ],
+                [
+                  1,
+                  0,
+                  0,
+                  18446744073709551615
+                ],
+                [
+                  2,
+                  0,
+                  0,
+                  18446744073709551615
+                ]
+              ],
+              "reason": "same_commands_inductively_same_deterministic_terminal_outcome",
+              "steps": [
+                {
+                  "actual_command": 4,
+                  "command_equal": true,
+                  "desired_command": 4,
+                  "desired_coordinate_DATA": [
+                    [
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      1,
+                      0,
+                      1
+                    ]
+                  ],
+                  "desired_explore": true,
+                  "pre_control": {
+                    "m": 0,
+                    "z": 1
+                  },
+                  "pre_state": {
+                    "kappa": 0,
+                    "phi": 3,
+                    "t": 0,
+                    "x": 0,
+                    "y": 2
+                  }
+                },
+                {
+                  "actual_command": 3,
+                  "command_equal": true,
+                  "desired_command": 3,
+                  "desired_coordinate_DATA": [
+                    [
+                      1,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      1,
+                      1,
+                      0,
+                      0
+                    ]
+                  ],
+                  "desired_explore": true,
+                  "pre_control": {
+                    "m": 0,
+                    "z": 1
+                  },
+                  "pre_state": {
+                    "kappa": 0,
+                    "phi": 3,
+                    "t": 1,
+                    "x": 0,
+                    "y": 2
+                  }
+                },
+                {
+                  "actual_command": 0,
+                  "command_equal": true,
+                  "desired_command": 0,
+                  "desired_coordinate_DATA": [
+                    [
+                      2,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      2,
+                      1,
+                      0,
+                      0
+                    ]
+                  ],
+                  "desired_explore": true,
+                  "pre_control": {
+                    "m": 0,
+                    "z": 1
+                  },
+                  "pre_state": {
+                    "kappa": 0,
+                    "phi": 3,
+                    "t": 2,
+                    "x": 1,
+                    "y": 2
+                  }
+                }
+              ]
+            }
+          ],
+          "reuse": true
+        }
+      ],
+      "negative_checks": [
+        {
+          "desired_episodes": [
+            {
+              "coins": [
+                0,
+                0,
+                0,
+                18446744073709551615,
+                18446744073709551615,
+                18446744073709551615,
+                18446744073709551615,
+                18446744073709551615,
+                18446744073709551615,
+                18446744073709551615,
+                18446744073709551615,
+                18446744073709551615
+              ],
+              "epoch": 0,
+              "kappa": 0,
+              "proposal": 1,
+              "rejections": [
+                [
+                  0
+                ],
+                [
+                  0
+                ],
+                [
+                  0
+                ],
+                [
+                  0
+                ],
+                [
+                  0
+                ],
+                [
+                  0
+                ],
+                [
+                  0
+                ],
+                [
+                  0
+                ],
+                [
+                  0
+                ],
+                [
+                  0
+                ],
+                [
+                  0
+                ],
+                [
+                  0
+                ]
+              ],
+              "tape": {
+                "cause_rank": 12,
+                "error_flag": 0,
+                "phase": 3
+              }
+            }
+          ],
+          "observation_id": "A_new_compound:EventOnlyGate:owned:1",
+          "proof": {
+            "bindings": {
+              "mode_role_equal": true,
+              "origin_L_equal": true,
+              "origin_R_equal": true,
+              "plan_protocol_equal": true,
+              "proposal_equal": true,
+              "reference_identity_equal": true,
+              "same_current_complete_observation": true
+            },
+            "equivalent": false,
+            "native_episode_input_equal": false,
+            "original_coordinate_calls": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                1
+              ]
+            ],
+            "reason": "desired_command_differs_on_actual_consumed_path",
+            "steps": [
+              {
+                "actual_command": 4,
+                "command_equal": false,
+                "desired_command": 3,
+                "desired_coordinate_DATA": [
+                  [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  [
+                    0,
+                    1,
+                    0,
+                    0
+                  ]
+                ],
+                "desired_explore": true,
+                "pre_control": {
+                  "m": 0,
+                  "z": 1
+                },
+                "pre_state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 0,
+                  "x": 0,
+                  "y": 2
+                }
+              }
+            ]
+          }
+        },
+        {
+          "desired_episodes": [
+            {
+              "coins": [
+                0,
+                0,
+                0,
+                18446744073709551615,
+                18446744073709551615,
+                18446744073709551615,
+                18446744073709551615,
+                18446744073709551615,
+                18446744073709551615,
+                18446744073709551615,
+                18446744073709551615,
+                18446744073709551615
+              ],
+              "epoch": 0,
+              "kappa": 0,
+              "proposal": 1,
+              "rejections": [
+                [
+                  0
+                ],
+                [
+                  0
+                ],
+                [
+                  0
+                ],
+                [
+                  0
+                ],
+                [
+                  0
+                ],
+                [
+                  0
+                ],
+                [
+                  0
+                ],
+                [
+                  0
+                ],
+                [
+                  0
+                ],
+                [
+                  0
+                ],
+                [
+                  0
+                ],
+                [
+                  0
+                ]
+              ],
+              "tape": {
+                "cause_rank": 12,
+                "error_flag": 0,
+                "phase": 3
+              }
+            }
+          ],
+          "observation_id": "A_new_compound:AllQueryGate:owned:1",
+          "proof": {
+            "bindings": {
+              "mode_role_equal": true,
+              "origin_L_equal": true,
+              "origin_R_equal": true,
+              "plan_protocol_equal": true,
+              "proposal_equal": true,
+              "reference_identity_equal": true,
+              "same_current_complete_observation": true
+            },
+            "equivalent": false,
+            "native_episode_input_equal": false,
+            "original_coordinate_calls": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                1
+              ]
+            ],
+            "reason": "desired_command_differs_on_actual_consumed_path",
+            "steps": [
+              {
+                "actual_command": 4,
+                "command_equal": false,
+                "desired_command": 3,
+                "desired_coordinate_DATA": [
+                  [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  [
+                    0,
+                    1,
+                    0,
+                    0
+                  ]
+                ],
+                "desired_explore": true,
+                "pre_control": {
+                  "m": 0,
+                  "z": 1
+                },
+                "pre_state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 0,
+                  "x": 0,
+                  "y": 2
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "phase_results": [
+        {
+          "arm": "TaskTD",
+          "stage": "A_new_compound",
+          "start_epoch": 0,
+          "tasks": 6,
+          "successes": 0,
+          "returns": [
+            -1.02,
+            -1.02,
+            -1.02,
+            -1.02,
+            -1.02,
+            -1.02
+          ],
+          "mean_return": -1.02,
+          "base_query_epochs": [],
+          "expanded_query_epochs": []
+        },
+        {
+          "arm": "EventOnlyGate",
+          "stage": "A_new_compound",
+          "start_epoch": 0,
+          "tasks": 6,
+          "successes": 4,
+          "returns": [
+            -1.02,
+            -1.02,
+            0.86,
+            0.86,
+            0.86,
+            0.86
+          ],
+          "mean_return": 0.2333333333333333,
+          "base_query_epochs": [
+            0
+          ],
+          "expanded_query_epochs": [
+            0
+          ]
+        },
+        {
+          "arm": "AllQueryGate",
+          "stage": "A_new_compound",
+          "start_epoch": 0,
+          "tasks": 6,
+          "successes": 4,
+          "returns": [
+            -1.02,
+            -1.02,
+            0.86,
+            0.86,
+            0.86,
+            0.86
+          ],
+          "mean_return": 0.2333333333333333,
+          "base_query_epochs": [
+            0
+          ],
+          "expanded_query_epochs": [
+            0
+          ]
+        }
+      ],
+      "online_costs": [
+        {
+          "arm": "TaskTD",
+          "main_tasks": 6,
+          "private_tasks": 0,
+          "rollout": 6,
+          "step": 6,
+          "transaction": 12,
+          "shared4TX_excluded": true,
+          "public_geometry": 0
+        },
+        {
+          "arm": "EventOnlyGate",
+          "main_tasks": 6,
+          "private_tasks": 3,
+          "rollout": 9,
+          "step": 41,
+          "transaction": 23,
+          "shared4TX_excluded": true,
+          "public_geometry": 3
+        },
+        {
+          "arm": "AllQueryGate",
+          "main_tasks": 6,
+          "private_tasks": 3,
+          "rollout": 9,
+          "step": 41,
+          "transaction": 23,
+          "shared4TX_excluded": true,
+          "public_geometry": 3
+        }
+      ],
+      "base_queries": [
+        {
+          "arm": "EventOnlyGate",
+          "epoch": 0,
+          "stage": "A_new_compound",
+          "observed": {
+            "keep": [
+              -1.02
+            ],
+            "first": [
+              -1.06
+            ]
+          },
+          "values": {
+            "keep": -1.02,
+            "first": -1.06
+          },
+          "choice": "keep",
+          "proposal": {
+            "action": "keep",
+            "edits": []
+          },
+          "horizon": 1
+        },
+        {
+          "arm": "AllQueryGate",
+          "epoch": 0,
+          "stage": "A_new_compound",
+          "observed": {
+            "keep": [
+              -1.02
+            ],
+            "first": [
+              -1.06
+            ]
+          },
+          "values": {
+            "keep": -1.02,
+            "first": -1.06
+          },
+          "choice": "keep",
+          "proposal": {
+            "action": "keep",
+            "edits": []
+          },
+          "horizon": 1
+        }
+      ],
+      "expanded_queries": [
+        {
+          "arm": "EventOnlyGate",
+          "epoch": 0,
+          "stage": "A_new_compound",
+          "observed": {
+            "deep-keep": [
+              -1.02
+            ],
+            "deep-first": [
+              -1.06
+            ],
+            "joint": [
+              0.86
+            ]
+          },
+          "values": {
+            "deep-keep": -1.02,
+            "deep-first": -1.06,
+            "joint": 0.86
+          },
+          "choice": "joint",
+          "proposal": {
+            "action": "apply",
+            "edits": [
+              {
+                "address": {
+                  "cmd": 4,
+                  "state": {
+                    "kappa": 0,
+                    "phi": 3,
+                    "t": 0,
+                    "x": 0,
+                    "y": 2
+                  }
+                },
+                "store": "controller",
+                "value": null
+              },
+              {
+                "store": "controller",
+                "address": {
+                  "state": {
+                    "x": 1,
+                    "y": 2,
+                    "t": 2,
+                    "kappa": 0,
+                    "phi": 3
+                  },
+                  "cmd": 0
+                },
+                "value": null
+              }
+            ]
+          },
+          "horizon": 1
+        },
+        {
+          "arm": "AllQueryGate",
+          "epoch": 0,
+          "stage": "A_new_compound",
+          "observed": {
+            "deep-keep": [
+              -1.02
+            ],
+            "deep-first": [
+              -1.06
+            ],
+            "joint": [
+              0.86
+            ]
+          },
+          "values": {
+            "deep-keep": -1.02,
+            "deep-first": -1.06,
+            "joint": 0.86
+          },
+          "choice": "joint",
+          "proposal": {
+            "action": "apply",
+            "edits": [
+              {
+                "address": {
+                  "cmd": 4,
+                  "state": {
+                    "kappa": 0,
+                    "phi": 3,
+                    "t": 0,
+                    "x": 0,
+                    "y": 2
+                  }
+                },
+                "store": "controller",
+                "value": null
+              },
+              {
+                "store": "controller",
+                "address": {
+                  "state": {
+                    "x": 1,
+                    "y": 2,
+                    "t": 2,
+                    "kappa": 0,
+                    "phi": 3
+                  },
+                  "cmd": 0
+                },
+                "value": null
+              }
+            ]
+          },
+          "horizon": 1
+        }
+      ],
+      "derived_hypotheses": [
+        {
+          "arm": "EventOnlyGate",
+          "epoch": 0,
+          "stage": "A_new_compound",
+          "proposal": {
+            "action": "apply",
+            "edits": [
+              {
+                "address": {
+                  "cmd": 4,
+                  "state": {
+                    "kappa": 0,
+                    "phi": 3,
+                    "t": 0,
+                    "x": 0,
+                    "y": 2
+                  }
+                },
+                "store": "controller",
+                "value": null
+              },
+              {
+                "store": "controller",
+                "address": {
+                  "state": {
+                    "x": 1,
+                    "y": 2,
+                    "t": 2,
+                    "kappa": 0,
+                    "phi": 3
+                  },
+                  "cmd": 0
+                },
+                "value": null
+              }
+            ]
+          },
+          "witness_id": "A_new_compound:EventOnlyGate:owned:2",
+          "new_site_in_original_main": false
+        },
+        {
+          "arm": "AllQueryGate",
+          "epoch": 0,
+          "stage": "A_new_compound",
+          "proposal": {
+            "action": "apply",
+            "edits": [
+              {
+                "address": {
+                  "cmd": 4,
+                  "state": {
+                    "kappa": 0,
+                    "phi": 3,
+                    "t": 0,
+                    "x": 0,
+                    "y": 2
+                  }
+                },
+                "store": "controller",
+                "value": null
+              },
+              {
+                "store": "controller",
+                "address": {
+                  "state": {
+                    "x": 1,
+                    "y": 2,
+                    "t": 2,
+                    "kappa": 0,
+                    "phi": 3
+                  },
+                  "cmd": 0
+                },
+                "value": null
+              }
+            ]
+          },
+          "witness_id": "A_new_compound:AllQueryGate:owned:2",
+          "new_site_in_original_main": false
+        }
+      ],
+      "accepted": [
+        {
+          "arm": "EventOnlyGate",
+          "epoch": 0,
+          "stage": "A_new_compound",
+          "candidate": "joint",
+          "terminal": "SUCCESS",
+          "numeric_content_changed": true
+        },
+        {
+          "arm": "AllQueryGate",
+          "epoch": 0,
+          "stage": "A_new_compound",
+          "candidate": "joint",
+          "terminal": "SUCCESS",
+          "numeric_content_changed": true
+        }
+      ],
+      "rejected": [
+        {
+          "arm": "EventOnlyGate",
+          "epoch": 0,
+          "stage": "A_new_compound",
+          "candidate": "keep",
+          "terminal": "TRAP",
+          "mechanism_changes": [
+            {
+              "channel": "X",
+              "address": {
+                "state": {
+                  "x": 0,
+                  "y": 2,
+                  "t": 0,
+                  "kappa": 0,
+                  "phi": 3
+                },
+                "cmd": 4
+              },
+              "origin": 3,
+              "current": 4
+            }
+          ]
+        },
+        {
+          "arm": "EventOnlyGate",
+          "epoch": 0,
+          "stage": "A_new_compound",
+          "candidate": "first",
+          "terminal": "COLLISION",
+          "mechanism_changes": [
+            {
+              "channel": "X",
+              "address": {
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 2,
+                  "x": 1,
+                  "y": 2
+                },
+                "cmd": 0
+              },
+              "origin": 3,
+              "current": 0
+            }
+          ]
+        },
+        {
+          "arm": "AllQueryGate",
+          "epoch": 0,
+          "stage": "A_new_compound",
+          "candidate": "keep",
+          "terminal": "TRAP",
+          "mechanism_changes": [
+            {
+              "channel": "X",
+              "address": {
+                "state": {
+                  "x": 0,
+                  "y": 2,
+                  "t": 0,
+                  "kappa": 0,
+                  "phi": 3
+                },
+                "cmd": 4
+              },
+              "origin": 3,
+              "current": 4
+            }
+          ]
+        },
+        {
+          "arm": "AllQueryGate",
+          "epoch": 0,
+          "stage": "A_new_compound",
+          "candidate": "first",
+          "terminal": "COLLISION",
+          "mechanism_changes": [
+            {
+              "channel": "X",
+              "address": {
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 2,
+                  "x": 1,
+                  "y": 2
+                },
+                "cmd": 0
+              },
+              "origin": 3,
+              "current": 0
+            }
+          ]
+        }
+      ],
+      "preservation": [
+        {
+          "arm": "TaskTD",
+          "all6_I_preserved": true,
+          "protective_challenge_applicable": false,
+          "protective_X_retained_if_applicable": true,
+          "unread_sentinel_retained": true,
+          "phase_resets": 0
+        },
+        {
+          "arm": "EventOnlyGate",
+          "all6_I_preserved": true,
+          "protective_challenge_applicable": false,
+          "protective_X_retained_if_applicable": true,
+          "unread_sentinel_retained": true,
+          "phase_resets": 0
+        },
+        {
+          "arm": "AllQueryGate",
+          "all6_I_preserved": true,
+          "protective_challenge_applicable": false,
+          "protective_X_retained_if_applicable": true,
+          "unread_sentinel_retained": true,
+          "phase_resets": 0
+        }
+      ],
+      "main_write_addresses": [
+        {
+          "arm": "EventOnlyGate",
+          "epoch": 0,
+          "addresses": 2,
+          "atomic_TX": 1
+        },
+        {
+          "arm": "AllQueryGate",
+          "epoch": 0,
+          "addresses": 2,
+          "atomic_TX": 1
+        }
+      ],
+      "native_ordinary_updates": 24,
+      "ordinary_policy_TX": 24,
+      "external_ordinary_updates": 2,
+      "external_policy_TX": 2,
+      "private_candidate_X_TX": 4,
+      "main_feedback_X_TX": 2,
+      "issued_observations": 6,
+      "consumed_observations": 6,
+      "unconsumed_observations": 0,
+      "budget_keeps": 0
+    },
+    {
+      "case": "P_new_protection",
+      "complete": true,
+      "native_counts": {
+        "execution_features": 1,
+        "rollout": 20,
+        "step": 122,
+        "transaction": 44
+      },
+      "summaries": [
+        {
+          "arm": "TaskTD",
+          "successes": 5,
+          "returns": [
+            -1.06,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86
+          ],
+          "outcomes": [
+            "COLLISION",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "mean_return": 0.5399999999999999,
+          "external_updates": 0,
+          "diagnostic_account": {
+            "algorithm": "TaskTD",
+            "base_queries": 0,
+            "expanded_queries": 0,
+            "trial_task_budget": 0,
+            "trial_tasks_used": 0
+          }
+        },
+        {
+          "arm": "EventOnlyGate",
+          "successes": 5,
+          "returns": [
+            -1.06,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86
+          ],
+          "outcomes": [
+            "COLLISION",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "mean_return": 0.5399999999999999,
+          "external_updates": 1,
+          "diagnostic_account": {
+            "algorithm": "EventOnlyGate",
+            "base_queries": 1,
+            "expanded_queries": 0,
+            "trial_task_budget": 4,
+            "trial_tasks_used": 2
+          }
+        },
+        {
+          "arm": "AllQueryGate",
+          "successes": 5,
+          "returns": [
+            -1.06,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86
+          ],
+          "outcomes": [
+            "COLLISION",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "mean_return": 0.5399999999999999,
+          "external_updates": 0,
+          "diagnostic_account": {
+            "algorithm": "AllQueryGate",
+            "base_queries": 0,
+            "expanded_queries": 0,
+            "trial_task_budget": 4,
+            "trial_tasks_used": 0
+          }
+        }
+      ],
+      "query_value_decisions": [],
+      "execution_value_decisions": [
+        {
+          "arm": "AllQueryGate",
+          "epoch": 0,
+          "stage": "P_new_protection",
+          "x": [
+            -0.010000000000000009,
+            1.0
+          ],
+          "prediction": 0.0,
+          "decision": "supported_skip",
+          "trial_tasks_used_before": 0
+        }
+      ],
+      "dispatches": [
+        {
+          "arm": "EventOnlyGate",
+          "epoch": 0,
+          "stage": "P_new_protection",
+          "branch": "execution",
+          "trial_tasks_used_before": 0
+        },
+        {
+          "arm": "AllQueryGate",
+          "epoch": 0,
+          "stage": "P_new_protection",
+          "branch": "execution",
+          "trial_tasks_used_before": 0
+        }
+      ],
+      "event_hypotheses": [],
+      "path_checks": [],
+      "negative_checks": [],
+      "phase_results": [
+        {
+          "arm": "TaskTD",
+          "stage": "P_new_protection",
+          "start_epoch": 0,
+          "tasks": 6,
+          "successes": 5,
+          "returns": [
+            -1.06,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86
+          ],
+          "mean_return": 0.5399999999999999,
+          "base_query_epochs": [],
+          "expanded_query_epochs": []
+        },
+        {
+          "arm": "EventOnlyGate",
+          "stage": "P_new_protection",
+          "start_epoch": 0,
+          "tasks": 6,
+          "successes": 5,
+          "returns": [
+            -1.06,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86
+          ],
+          "mean_return": 0.5399999999999999,
+          "base_query_epochs": [
+            0
+          ],
+          "expanded_query_epochs": []
+        },
+        {
+          "arm": "AllQueryGate",
+          "stage": "P_new_protection",
+          "start_epoch": 0,
+          "tasks": 6,
+          "successes": 5,
+          "returns": [
+            -1.06,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86
+          ],
+          "mean_return": 0.5399999999999999,
+          "base_query_epochs": [],
+          "expanded_query_epochs": []
+        }
+      ],
+      "online_costs": [
+        {
+          "arm": "TaskTD",
+          "main_tasks": 6,
+          "private_tasks": 0,
+          "rollout": 6,
+          "step": 38,
+          "transaction": 12,
+          "shared4TX_excluded": true,
+          "public_geometry": 0
+        },
+        {
+          "arm": "EventOnlyGate",
+          "main_tasks": 6,
+          "private_tasks": 2,
+          "rollout": 8,
+          "step": 46,
+          "transaction": 19,
+          "shared4TX_excluded": true,
+          "public_geometry": 0
+        },
+        {
+          "arm": "AllQueryGate",
+          "main_tasks": 6,
+          "private_tasks": 0,
+          "rollout": 6,
+          "step": 38,
+          "transaction": 12,
+          "shared4TX_excluded": true,
+          "public_geometry": 0
+        }
+      ],
+      "base_queries": [
+        {
+          "arm": "EventOnlyGate",
+          "epoch": 0,
+          "stage": "P_new_protection",
+          "observed": {
+            "keep": [
+              0.86
+            ],
+            "first": [
+              -1.02
+            ]
+          },
+          "values": {
+            "keep": 0.86,
+            "first": -1.02
+          },
+          "choice": "keep",
+          "proposal": {
+            "action": "keep",
+            "edits": []
+          },
+          "horizon": 1
+        }
+      ],
+      "expanded_queries": [],
+      "derived_hypotheses": [],
+      "accepted": [
+        {
+          "arm": "EventOnlyGate",
+          "epoch": 0,
+          "stage": "P_new_protection",
+          "candidate": "keep",
+          "terminal": "SUCCESS",
+          "numeric_content_changed": true
+        }
+      ],
+      "rejected": [
+        {
+          "arm": "EventOnlyGate",
+          "epoch": 0,
+          "stage": "P_new_protection",
+          "candidate": "first",
+          "terminal": "TRAP",
+          "mechanism_changes": [
+            {
+              "channel": "X",
+              "address": {
+                "state": {
+                  "x": 0,
+                  "y": 2,
+                  "t": 0,
+                  "kappa": 0,
+                  "phi": 3
+                },
+                "cmd": 3
+              },
+              "origin": 3,
+              "current": 4
+            }
+          ]
+        }
+      ],
+      "preservation": [
+        {
+          "arm": "TaskTD",
+          "all6_I_preserved": true,
+          "protective_challenge_applicable": true,
+          "protective_X_retained_if_applicable": true,
+          "unread_sentinel_retained": true,
+          "phase_resets": 0
+        },
+        {
+          "arm": "EventOnlyGate",
+          "all6_I_preserved": true,
+          "protective_challenge_applicable": true,
+          "protective_X_retained_if_applicable": true,
+          "unread_sentinel_retained": true,
+          "phase_resets": 0
+        },
+        {
+          "arm": "AllQueryGate",
+          "all6_I_preserved": true,
+          "protective_challenge_applicable": true,
+          "protective_X_retained_if_applicable": true,
+          "unread_sentinel_retained": true,
+          "phase_resets": 0
+        }
+      ],
+      "main_write_addresses": [],
+      "native_ordinary_updates": 20,
+      "ordinary_policy_TX": 20,
+      "external_ordinary_updates": 1,
+      "external_policy_TX": 1,
+      "private_candidate_X_TX": 1,
+      "main_feedback_X_TX": 0,
+      "issued_observations": 2,
+      "consumed_observations": 2,
+      "unconsumed_observations": 0,
+      "budget_keeps": 0
+    },
+    {
+      "case": "W_unseen_recurrent_wait",
+      "complete": true,
+      "native_counts": {
+        "execution_features": 1,
+        "rollout": 22,
+        "step": 192,
+        "transaction": 53
+      },
+      "summaries": [
+        {
+          "arm": "TaskTD",
+          "successes": 0,
+          "returns": [
+            -1.24,
+            -1.24,
+            -1.24,
+            -1.24,
+            -1.24,
+            -1.24
+          ],
+          "outcomes": [
+            "TIMEOUT",
+            "TIMEOUT",
+            "TIMEOUT",
+            "TIMEOUT",
+            "TIMEOUT",
+            "TIMEOUT"
+          ],
+          "mean_return": -1.24,
+          "external_updates": 0,
+          "diagnostic_account": {
+            "algorithm": "TaskTD",
+            "base_queries": 0,
+            "expanded_queries": 0,
+            "trial_task_budget": 0,
+            "trial_tasks_used": 0
+          }
+        },
+        {
+          "arm": "EventOnlyGate",
+          "successes": 5,
+          "returns": [
+            -1.24,
+            0.88,
+            0.88,
+            0.88,
+            0.88,
+            0.88
+          ],
+          "outcomes": [
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "mean_return": 0.5266666666666667,
+          "external_updates": 1,
+          "diagnostic_account": {
+            "algorithm": "EventOnlyGate",
+            "base_queries": 1,
+            "expanded_queries": 0,
+            "trial_task_budget": 4,
+            "trial_tasks_used": 2
+          }
+        },
+        {
+          "arm": "AllQueryGate",
+          "successes": 5,
+          "returns": [
+            -1.24,
+            0.88,
+            0.88,
+            0.88,
+            0.88,
+            0.88
+          ],
+          "outcomes": [
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "mean_return": 0.5266666666666667,
+          "external_updates": 1,
+          "diagnostic_account": {
+            "algorithm": "AllQueryGate",
+            "base_queries": 1,
+            "expanded_queries": 0,
+            "trial_task_budget": 4,
+            "trial_tasks_used": 2
+          }
+        }
+      ],
+      "query_value_decisions": [],
+      "execution_value_decisions": [
+        {
+          "arm": "AllQueryGate",
+          "epoch": 0,
+          "stage": "W_unseen_recurrent_wait",
+          "x": [
+            -0.010000000000000009,
+            12.0
+          ],
+          "prediction": null,
+          "decision": "unknown_probe",
+          "trial_tasks_used_before": 0
+        }
+      ],
+      "dispatches": [
+        {
+          "arm": "EventOnlyGate",
+          "epoch": 0,
+          "stage": "W_unseen_recurrent_wait",
+          "branch": "execution",
+          "trial_tasks_used_before": 0
+        },
+        {
+          "arm": "AllQueryGate",
+          "epoch": 0,
+          "stage": "W_unseen_recurrent_wait",
+          "branch": "execution",
+          "trial_tasks_used_before": 0
+        }
+      ],
+      "event_hypotheses": [],
+      "path_checks": [],
+      "negative_checks": [],
+      "phase_results": [
+        {
+          "arm": "TaskTD",
+          "stage": "W_unseen_recurrent_wait",
+          "start_epoch": 0,
+          "tasks": 6,
+          "successes": 0,
+          "returns": [
+            -1.24,
+            -1.24,
+            -1.24,
+            -1.24,
+            -1.24,
+            -1.24
+          ],
+          "mean_return": -1.24,
+          "base_query_epochs": [],
+          "expanded_query_epochs": []
+        },
+        {
+          "arm": "EventOnlyGate",
+          "stage": "W_unseen_recurrent_wait",
+          "start_epoch": 0,
+          "tasks": 6,
+          "successes": 5,
+          "returns": [
+            -1.24,
+            0.88,
+            0.88,
+            0.88,
+            0.88,
+            0.88
+          ],
+          "mean_return": 0.5266666666666667,
+          "base_query_epochs": [
+            0
+          ],
+          "expanded_query_epochs": []
+        },
+        {
+          "arm": "AllQueryGate",
+          "stage": "W_unseen_recurrent_wait",
+          "start_epoch": 0,
+          "tasks": 6,
+          "successes": 5,
+          "returns": [
+            -1.24,
+            0.88,
+            0.88,
+            0.88,
+            0.88,
+            0.88
+          ],
+          "mean_return": 0.5266666666666667,
+          "base_query_epochs": [
+            0
+          ],
+          "expanded_query_epochs": []
+        }
+      ],
+      "online_costs": [
+        {
+          "arm": "TaskTD",
+          "main_tasks": 6,
+          "private_tasks": 0,
+          "rollout": 6,
+          "step": 72,
+          "transaction": 12,
+          "shared4TX_excluded": true,
+          "public_geometry": 0
+        },
+        {
+          "arm": "EventOnlyGate",
+          "main_tasks": 6,
+          "private_tasks": 2,
+          "rollout": 8,
+          "step": 60,
+          "transaction": 20,
+          "shared4TX_excluded": true,
+          "public_geometry": 0
+        },
+        {
+          "arm": "AllQueryGate",
+          "main_tasks": 6,
+          "private_tasks": 2,
+          "rollout": 8,
+          "step": 60,
+          "transaction": 20,
+          "shared4TX_excluded": true,
+          "public_geometry": 0
+        }
+      ],
+      "base_queries": [
+        {
+          "arm": "EventOnlyGate",
+          "epoch": 0,
+          "stage": "W_unseen_recurrent_wait",
+          "observed": {
+            "keep": [
+              -1.24
+            ],
+            "first": [
+              0.88
+            ]
+          },
+          "values": {
+            "keep": -1.24,
+            "first": 0.88
+          },
+          "choice": "first",
+          "proposal": {
+            "action": "apply",
+            "edits": [
+              {
+                "address": {
+                  "cmd": 3,
+                  "state": {
+                    "kappa": 0,
+                    "phi": 0,
+                    "t": 0,
+                    "x": 0,
+                    "y": 2
+                  }
+                },
+                "store": "controller",
+                "value": null
+              }
+            ]
+          },
+          "horizon": 1
+        },
+        {
+          "arm": "AllQueryGate",
+          "epoch": 0,
+          "stage": "W_unseen_recurrent_wait",
+          "observed": {
+            "keep": [
+              -1.24
+            ],
+            "first": [
+              0.88
+            ]
+          },
+          "values": {
+            "keep": -1.24,
+            "first": 0.88
+          },
+          "choice": "first",
+          "proposal": {
+            "action": "apply",
+            "edits": [
+              {
+                "address": {
+                  "cmd": 3,
+                  "state": {
+                    "kappa": 0,
+                    "phi": 0,
+                    "t": 0,
+                    "x": 0,
+                    "y": 2
+                  }
+                },
+                "store": "controller",
+                "value": null
+              }
+            ]
+          },
+          "horizon": 1
+        }
+      ],
+      "expanded_queries": [],
+      "derived_hypotheses": [],
+      "accepted": [
+        {
+          "arm": "EventOnlyGate",
+          "epoch": 0,
+          "stage": "W_unseen_recurrent_wait",
+          "candidate": "first",
+          "terminal": "SUCCESS",
+          "numeric_content_changed": true
+        },
+        {
+          "arm": "AllQueryGate",
+          "epoch": 0,
+          "stage": "W_unseen_recurrent_wait",
+          "candidate": "first",
+          "terminal": "SUCCESS",
+          "numeric_content_changed": true
+        }
+      ],
+      "rejected": [
+        {
+          "arm": "EventOnlyGate",
+          "epoch": 0,
+          "stage": "W_unseen_recurrent_wait",
+          "candidate": "keep",
+          "terminal": "TIMEOUT",
+          "mechanism_changes": [
+            {
+              "channel": "X",
+              "address": {
+                "state": {
+                  "x": 0,
+                  "y": 2,
+                  "t": 0,
+                  "kappa": 0,
+                  "phi": 0
+                },
+                "cmd": 3
+              },
+              "origin": 4,
+              "current": 3
+            }
+          ]
+        },
+        {
+          "arm": "AllQueryGate",
+          "epoch": 0,
+          "stage": "W_unseen_recurrent_wait",
+          "candidate": "keep",
+          "terminal": "TIMEOUT",
+          "mechanism_changes": [
+            {
+              "channel": "X",
+              "address": {
+                "state": {
+                  "x": 0,
+                  "y": 2,
+                  "t": 0,
+                  "kappa": 0,
+                  "phi": 0
+                },
+                "cmd": 3
+              },
+              "origin": 4,
+              "current": 3
+            }
+          ]
+        }
+      ],
+      "preservation": [
+        {
+          "arm": "TaskTD",
+          "all6_I_preserved": true,
+          "protective_challenge_applicable": false,
+          "protective_X_retained_if_applicable": true,
+          "unread_sentinel_retained": true,
+          "phase_resets": 0
+        },
+        {
+          "arm": "EventOnlyGate",
+          "all6_I_preserved": true,
+          "protective_challenge_applicable": false,
+          "protective_X_retained_if_applicable": true,
+          "unread_sentinel_retained": true,
+          "phase_resets": 0
+        },
+        {
+          "arm": "AllQueryGate",
+          "all6_I_preserved": true,
+          "protective_challenge_applicable": false,
+          "protective_X_retained_if_applicable": true,
+          "unread_sentinel_retained": true,
+          "phase_resets": 0
+        }
+      ],
+      "main_write_addresses": [
+        {
+          "arm": "EventOnlyGate",
+          "epoch": 0,
+          "addresses": 1,
+          "atomic_TX": 1
+        },
+        {
+          "arm": "AllQueryGate",
+          "epoch": 0,
+          "addresses": 1,
+          "atomic_TX": 1
+        }
+      ],
+      "native_ordinary_updates": 22,
+      "ordinary_policy_TX": 22,
+      "external_ordinary_updates": 2,
+      "external_policy_TX": 2,
+      "private_candidate_X_TX": 2,
+      "main_feedback_X_TX": 2,
+      "issued_observations": 4,
+      "consumed_observations": 4,
+      "unconsumed_observations": 0,
+      "budget_keeps": 0
+    }
+  ],
+  "execution_training_points": [
+    {
+      "x": [
+        -0.94,
+        1.0
+      ],
+      "gain_per_paid_probe": 1.2533333333333332
+    },
+    {
+      "x": [
+        0.46499999999999997,
+        1.0
+      ],
+      "gain_per_paid_probe": 0.0
+    }
+  ],
+  "execution_model": {
+    "support": [
+      [
+        {
+          "binary64_hex": "-0x1.e147ae147ae14p-1"
+        },
+        {
+          "binary64_hex": "0x1.dc28f5c28f5c2p-2"
+        }
+      ],
+      [
+        {
+          "binary64_hex": "0x1.0000000000000p+0"
+        },
+        {
+          "binary64_hex": "0x1.0000000000000p+0"
+        }
+      ]
+    ],
+    "root": {
+      "value": {
+        "binary64_hex": "0x1.40da740da740dp-1"
+      },
+      "n": 2,
+      "sse": {
+        "binary64_hex": "0x1.9222dc8bfdff4p-1"
+      },
+      "feature": 0,
+      "threshold": {
+        "binary64_hex": "-0x1.e666666666666p-3"
+      },
+      "left": {
+        "value": {
+          "binary64_hex": "0x1.40da740da740dp+0"
+        },
+        "n": 1,
+        "sse": {
+          "binary64_hex": "0x0.0p+0"
+        },
+        "feature": null,
+        "threshold": null,
+        "left": null,
+        "right": null
+      },
+      "right": {
+        "value": {
+          "binary64_hex": "0x0.0p+0"
+        },
+        "n": 1,
+        "sse": {
+          "binary64_hex": "0x0.0p+0"
+        },
+        "feature": null,
+        "threshold": null,
+        "left": null,
+        "right": null
+      }
+    },
+    "n": 2
+  },
+  "execution_training_interactions_reused_not_free": 58,
+  "new_execution_model_fits": 1,
+  "new_event_model_fits": 0,
+  "checkpoint_TX": 3,
+  "source_install_TX": 3,
+  "source_edits": 22,
+  "actual_conclusions": [
+    "First genuine executionvalue gate after actual ordinaryTD, not hand-coded protection exception. Actor-owned before/afterL DATA and factualmismatchcount only, source/truth/terminal/cost labels excluded from features.",
+    "Same14of18main vs event-only gate, private5vs7, K139vs147, nonsharedTX55vs62. Ordinary baseline5of18 normally learned, not frozen.",
+    "Compoundnewsource positivehistorical prediction keepsactual3trialrepair. Newprotection TDalreadyimprovedfuture: predicted0 skips2menu trials, same5of6main, originalprotectiveX and forcedRIGHT->WAIT retained.",
+    "Unseen recurrentwaiting has firstTDdelta same asprotection but12distinct observedmismatches outside support; predictsNone and performsactual2trialmenu. Deletesonlyactualfirstmapping, other11unreadmappingvalues retained; following5mainSUCCESS vs baseline6TIMEOUT.",
+    "Unknown actualtest is existinggenericsupport behavior, not learnedaccuratevalue for recurrent failures; no claim firstfeature alone works or simulated outcomes substitute for native."
+  ],
+  "limits": [
+    "2historical executionquestionlabels, informed fixed new3sources not independentseed population or universally reliable queryvalue",
+    "Feature and query grammar handengineered; learnedparameterprediction/threshold comesfrom actual pairedhistory",
+    "Executionlabel window3futuremain vs eventmodel window5, so their numbers are NOT compared as common crossbranch utility/prioritization",
+    "Threeindependent6taskcaseagents not onecontinuous18taskrun; fullmixedintegration remains v164 evidence, no fake transfer of newentryfullstream qualification",
+    "FormalXi/family/fullF1/B1/sciencequalification notclaimed, no global optimum or allV04completion"
+  ],
+  "old_native_checker_bank_reruns": 0,
+  "new_keys_RNG_keyderive_DP_calibration_collection": 0,
+  "automation_changes": 0,
+  "qualification": false
+}

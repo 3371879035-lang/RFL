@@ -1,0 +1,145 @@
+{
+  "schema": "a96-v56-baseline-source-invariant-exclusion-not-native-gate",
+  "parent_commit": "371f1381bdae0763be96836b3f827383cc887d4e",
+  "parent_paths": 2503,
+  "prior_preparation": 785,
+  "prior_provenance": 234,
+  "sources": {
+    "src/rfl_rebuild/b2/temporal_initializer.py": {
+      "sha256": "46e2287f799e6065a2ca2087fd9679b1909c6b5e298c34415aeb0c2ba6550069",
+      "functions": {
+        "layer_edits": "a6f014a129911373b5d64b465384d707af6a452d72dd43d5448a3a8840756d9a",
+        "temporal_initializer": "7124c78cfa2802858fd3789564ba29f8b429e706af74aa1c08edca630df0dc8e"
+      }
+    },
+    "src/rfl_rebuild/b2/acquisition.py": {
+      "sha256": "a65ef4aa63149736ce087b46d798c2a47f674b9db6c3e33e02295bbd39668609",
+      "functions": {
+        "iter_master_baseline": "a848797ef0c152ebfc033f9219aae61e53207379eb224971966b1f280f591548",
+        "_run_material": "6de053660d1cc885d8f676f22420c79cebd1c19755490c79663924ffcc558623"
+      }
+    },
+    "src/rfl_rebuild/b2/training.py": {
+      "sha256": "0342626da5a111952873f33028866718a5504c2535e31d8790af952e08c472d6",
+      "functions": {
+        "episode_rollout": "caec145bc4bcccdc3d7fc714fc19f3a3e77e9635f84d5140040e91f0d93ab7b6",
+        "visited_order": "f11d6d0ee737bd153621ea0dae8d8d53c059f4764ed6eb461990b9183de60ce7",
+        "sweep_edits": "3d9710e118d3a488fb3667308949c822bfa20b35a1432ed8dc7d264e851b5ba4"
+      }
+    },
+    "src/rfl_rebuild/b2/parallel_acquisition.py": {
+      "sha256": "03a0fa9ad60fa031ea7b60566512fe2885526a78070bd6cb9463a57cf5f0f17e",
+      "functions": {
+        "_worker_seed": "5b9cbf4b76936d3c02aabc0923ad62570ce1a36ad641265fa27797371c83ca74",
+        "write_parallel": "c958ea3acf56ae06ad0d64115a7c0707bf17a03da3bf5622253e44a79636d644"
+      }
+    },
+    "src/rfl_rebuild/b2/f0_stages.py": {
+      "sha256": "bd8559c4c2f11ccdb5a5bdcdf5fdcdcc8cd8273df8522032a956243e50083241",
+      "functions": {
+        "run_baseline": "9abf1c7cccfda019417ce82e01c8e8cff6cd7ed1d8ac6a1cca7c13574415842a"
+      }
+    },
+    "src/rfl_rebuild/b2/baseline_artifact.py": {
+      "sha256": "bbc2179dd983eedd4ad2ccaec61149903a31a0a2ec390a72652a372788ae5ad1",
+      "functions": {
+        "record_from_material": "e31dbc448dc336ef9ef74d3ed952f9f41a7fac201f7ae5900b0494095cc5c6c8",
+        "write_seed_shard": "2b8bc37e08315c23038a472e1cb229f5342179cfb1c403fb3d3182c63be1577f"
+      }
+    },
+    "src/rfl_rebuild/env/kernel.py": {
+      "sha256": "2387e15a66beb2d13ebb5aad248c0f5672f49dfed11663419816eec36c571ab8",
+      "functions": {
+        "_enter": "22d88341f38a0375644a2a821b8601a6c8052171aa07ae870649e8c1ba9ec101",
+        "step": "7f8b2095b416f3fb28c516fc3bf6b67275be0eb1c1530ae894fafa257a6f5cfc",
+        "rollout": "eeb8939c6d28de82dd071a3ad8dba5b47fd01aeb3d9d3866398de6928241ec6d"
+      }
+    },
+    "scripts/benchmark_f0_runtime.py": {
+      "sha256": "79891a6f52084fba060bb07fc2e68956ae5b1ccb0a7fa05a9549f256cb8182a6",
+      "functions": {
+        "benchmark": "f3a1e8f480c7173d1fb8b36f5e06a0479c887b4491a56cac34a765555b989059"
+      }
+    },
+    "src/rfl_rebuild/learner/store.py": {
+      "sha256": "2c41ce68994020cad87c6ccd6bba4fb6ca231a0cb1ef43ff0f3756b3dbf523c4",
+      "functions": {
+        "apply_transaction": "1af6ab5439d9b043f3217130cbc1490a845a9da86bb75881b3bee0b006c953bb"
+      }
+    },
+    "src/rfl_rebuild/b2/environment.py": {
+      "sha256": "c25ed7940489e341e781e47b8d98dd0e6d723985477b71a87611e2007c4a7087",
+      "functions": {
+        "learned_rollout": "19eb3fd525b791ee14e9bcec473063dfdda5cd6cf15db42cd09b7ba0e8055e70",
+        "learner_channels": "09877a31a9be1e3bc3ea4a751abeac28a8007cb5abfbe07e3a38db88bca5509e"
+      }
+    },
+    "src/rfl_rebuild/solve/dp.py": {
+      "sha256": "3854f6986ef421ef17858a64f90f773de601ddc592e9d58d03ace23342e44237",
+      "functions": {
+        "solve_reference": "99dfb0e373270d85ef27a837318a10a20b68a84f844ba89b39805e7d38bffda3"
+      }
+    },
+    "src/rfl_rebuild/learner/reference.py": {
+      "sha256": "c5ff468670ddb03da27b7742f1476cf4379a46f8d60ce3278c098c7c1d8a0f43",
+      "functions": {}
+    },
+    "src/rfl_rebuild/b2/unaffected.py": {
+      "sha256": "70fcc6188ef23039189cf7603eb8403585eb499c559efdb38310970a68675b9c",
+      "functions": {
+        "pre_update_traces": "59afc382d6d949496f3a2029f22b91e8434ad85826b4b87d74fc5715f2396a75"
+      }
+    }
+  },
+  "witness_Q_address": [
+    1,
+    1,
+    1,
+    0,
+    0,
+    1,
+    0,
+    1
+  ],
+  "witness_catalog_context": [
+    1,
+    1,
+    1,
+    0,
+    0,
+    1,
+    0
+  ],
+  "witness_selection": "lex first original v31 row with t1, Manhattan distance from START(0,2)>1 and strict min-max gap; selected from pre reference only, no outcome/effect",
+  "plan_capture": "experiments/v03r/a96_dense/b2_prepare/native_alias_inventory_v55/evidence",
+  "plan_stdout_sha256": "da63f0dde2e8918a23607af84e5195e81e50294183b79de1968394a587a1bd05",
+  "catalog_capture": "experiments/v03r/a96_dense/b2_prepare/grammar_catalog_v31/evidence",
+  "catalog_stdout_sha256": "d0aafb6dc20b1cc0c872ac4c48497d94feb707ffe14448bd1c2f3ddd1bbb467b",
+  "baseline_indexes": [
+    "experiments/v03r/a96_dense/dev_baseline.json",
+    "experiments/v03r/a96_dense/f0_runtime/baseline.json"
+  ],
+  "proof": [
+    "Both actual old acquisition entry points explicitly call write_parallel -> _worker_seed -> iter_master_baseline with temporal_initializer; source bytes are identical to both old index execution.sources. Old complete native receipts and full validators are byte-bound, not re-executed.",
+    "temporal_initializer starts full empty learner, installs layer1 strict-gap minimum-action promoted Q only. Original stored complete Q row proves fixed witness legal with strict gap and min action1; store canonicalization cannot delete this strictly-above-best value.",
+    "Every ordinary episode starts START(0,2),t0; each step only one cardinal/WAIT move or stays and increments t by1. At t1 position(1,1) requires Manhattan2, impossible regardless of keyed draws or policy. No altered START or continuation entry is used by baseline acquisition.",
+    "sweep_edits writes only Q at each visited pre-step context; even bootstrap reads create no edit there. Thus witness scalar persists through ALL e0..576, while D/P/X remain empty. Greedy read-only full U2 evaluations do not mutate state.",
+    "Compare EVERY full original planned four-store key to this invariant; no missing raw/store field or filename/role/exit-status exclusion. Witness absence alone proves fullstore inequality for any scene/policy/reference. Never replace it by equal fingerprint/return, never omit unread entries.",
+    "This closes ONLY the 64 old baseline shards and their source-constrained measurement family. Their incidence serializer lacks full raw/state: no actual root key, full store, path or reused raw measurement is fabricated. ALL other historical measurement contracts and153792 pending keys remain pending before any native launch."
+  ],
+  "guards": {
+    "keys": 300000,
+    "shards": 64,
+    "bytes": 150000000
+  },
+  "historical_native_exclusion_complete": false,
+  "native_launch_gate": false,
+  "native_calibration_executed": false,
+  "scientific_rules_adopted": false,
+  "keys_allocated": 0,
+  "random_draws": 0,
+  "future_training": 0,
+  "collector_executed": false,
+  "collection_authorized": false,
+  "research_complete": false
+}

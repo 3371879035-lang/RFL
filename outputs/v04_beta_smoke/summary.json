@@ -1,0 +1,468 @@
+{
+  "schema_version": "0.4.0",
+  "experiment": "v04_beta",
+  "config": {
+    "schema_version": "0.4.0",
+    "environment": {
+      "horizon": 4,
+      "gamma": 1.0
+    },
+    "learning": {
+      "alpha_low": 0.1,
+      "alpha_high": 0.1,
+      "alpha_diag": 0.1,
+      "epsilon_decay_fraction": 0.8
+    },
+    "gate": {
+      "noninferiority_margin": 0.01,
+      "wmd_relative_decrease": 0.2,
+      "inconclusive_ci_width": 0.05,
+      "ceiling_success": 0.98,
+      "ceiling_episodes": 500,
+      "learning_failure_success": 0.3
+    },
+    "experiment": {
+      "name": "v04_beta",
+      "seeds": 2,
+      "seed_base": 4600000,
+      "warmup_episodes": 300,
+      "episodes": 300,
+      "eval_every": 250,
+      "eval_episodes": 100,
+      "reward_mode": "A",
+      "corrupt_states": 6,
+      "corrupt_delta": 1.0,
+      "knowledge_theta": 0.2,
+      "arms": [
+        "NoCorrection",
+        "NegativeOnly",
+        "PositiveAlternative",
+        "Contrastive",
+        "CFRevalue"
+      ]
+    }
+  },
+  "seeds": [
+    {
+      "seed": 4600000,
+      "arm": "NoCorrection",
+      "success_auc": 0.5,
+      "final_success": 1.0,
+      "wmd": 0.0,
+      "kd_innocent": 0.0,
+      "collateral": 0.0,
+      "corrections": 0,
+      "sites": 0,
+      "clippings": 0,
+      "checkpoints": [
+        0,
+        250
+      ],
+      "curve": [
+        0.0,
+        1.0
+      ],
+      "q_hash": "6257bfde554208d2e04cacd12961ad2826d4f20f747b6e9e73240858b2274a66"
+    },
+    {
+      "seed": 4600000,
+      "arm": "NegativeOnly",
+      "success_auc": 0.5,
+      "final_success": 1.0,
+      "wmd": 0.036441100649405166,
+      "kd_innocent": 0.0,
+      "collateral": 0.0,
+      "corrections": 134,
+      "sites": 214,
+      "clippings": 3,
+      "checkpoints": [
+        0,
+        250
+      ],
+      "curve": [
+        0.0,
+        1.0
+      ],
+      "q_hash": "6afc394bf31bfe92615be56d41c8a3819ead3b936e9b84df4a4ef47cce4de2cd"
+    },
+    {
+      "seed": 4600000,
+      "arm": "PositiveAlternative",
+      "success_auc": 0.5,
+      "final_success": 1.0,
+      "wmd": 0.10512834506822351,
+      "kd_innocent": 9.129019191385159e-05,
+      "collateral": 0.010309278350515464,
+      "corrections": 137,
+      "sites": 388,
+      "clippings": 0,
+      "checkpoints": [
+        0,
+        250
+      ],
+      "curve": [
+        0.0,
+        1.0
+      ],
+      "q_hash": "93ca9b81bfc51dd35656870f96e8319a6c195cc26588244fdce6154c36426317"
+    },
+    {
+      "seed": 4600000,
+      "arm": "Contrastive",
+      "success_auc": 0.5,
+      "final_success": 1.0,
+      "wmd": 0.047679518516648915,
+      "kd_innocent": 0.0,
+      "collateral": 0.0019305019305019305,
+      "corrections": 121,
+      "sites": 518,
+      "clippings": 3,
+      "checkpoints": [
+        0,
+        250
+      ],
+      "curve": [
+        0.0,
+        1.0
+      ],
+      "q_hash": "d15b45faf5a54bca12dc432a46a9f767e9da825a0ae295a5311d89934f497baf"
+    },
+    {
+      "seed": 4600000,
+      "arm": "CFRevalue",
+      "success_auc": 0.5,
+      "final_success": 1.0,
+      "wmd": 0.0024078065443864597,
+      "kd_innocent": 5.661144510442149e-05,
+      "collateral": 0.0,
+      "corrections": 136,
+      "sites": 215,
+      "clippings": 0,
+      "checkpoints": [
+        0,
+        250
+      ],
+      "curve": [
+        0.0,
+        1.0
+      ],
+      "q_hash": "d0e58145fc6ce91f91402d40e27a49035fc70b890ef59b5496695e927aad515b"
+    },
+    {
+      "seed": 4600001,
+      "arm": "NoCorrection",
+      "success_auc": 0.5,
+      "final_success": 1.0,
+      "wmd": 0.0,
+      "kd_innocent": 0.0,
+      "collateral": 0.0,
+      "corrections": 0,
+      "sites": 0,
+      "clippings": 0,
+      "checkpoints": [
+        0,
+        250
+      ],
+      "curve": [
+        0.0,
+        1.0
+      ],
+      "q_hash": "7c95079f1907f96e693ad377953caa6563fe591cc8ee59e00481f8285ee1a135"
+    },
+    {
+      "seed": 4600001,
+      "arm": "NegativeOnly",
+      "success_auc": 0.5,
+      "final_success": 1.0,
+      "wmd": 0.06818888566159498,
+      "kd_innocent": 0.0,
+      "collateral": 0.0,
+      "corrections": 136,
+      "sites": 275,
+      "clippings": 2,
+      "checkpoints": [
+        0,
+        250
+      ],
+      "curve": [
+        0.0,
+        1.0
+      ],
+      "q_hash": "bc3bd59741b53dba8820fbc9d5f06e3c9cab6bd87562ce74ea976fe6d035d797"
+    },
+    {
+      "seed": 4600001,
+      "arm": "PositiveAlternative",
+      "success_auc": 0.5,
+      "final_success": 1.0,
+      "wmd": 0.00864171153363166,
+      "kd_innocent": 0.0,
+      "collateral": 0.0,
+      "corrections": 126,
+      "sites": 328,
+      "clippings": 0,
+      "checkpoints": [
+        0,
+        250
+      ],
+      "curve": [
+        0.0,
+        1.0
+      ],
+      "q_hash": "b430c4a967c35a504145962b925d4ed31700f8db359d9e76c88a0b877b68ac7a"
+    },
+    {
+      "seed": 4600001,
+      "arm": "Contrastive",
+      "success_auc": 0.5,
+      "final_success": 1.0,
+      "wmd": 0.05336597129695758,
+      "kd_innocent": 0.0,
+      "collateral": 0.0017301038062283738,
+      "corrections": 128,
+      "sites": 578,
+      "clippings": 2,
+      "checkpoints": [
+        0,
+        250
+      ],
+      "curve": [
+        0.0,
+        1.0
+      ],
+      "q_hash": "3ccdec3fa3d3580796b3ffa8ec4df6ed643efe14d087d31cef3c971d4bb6e27f"
+    },
+    {
+      "seed": 4600001,
+      "arm": "CFRevalue",
+      "success_auc": 0.5,
+      "final_success": 1.0,
+      "wmd": 0.14722151190187727,
+      "kd_innocent": 0.0,
+      "collateral": 0.0,
+      "corrections": 160,
+      "sites": 278,
+      "clippings": 0,
+      "checkpoints": [
+        0,
+        250
+      ],
+      "curve": [
+        0.0,
+        1.0
+      ],
+      "q_hash": "660135e48b51df92b7067cb8dc3c6a7b0173b72457a5fc166b90e4b0c8bf6372"
+    }
+  ],
+  "pooled": {
+    "NoCorrection": {
+      "success_auc": 0.5,
+      "final_success": 1.0,
+      "wmd": 0.0,
+      "kd_innocent": 0.0,
+      "collateral": 0.0,
+      "sites": 0.0
+    },
+    "NegativeOnly": {
+      "success_auc": 0.5,
+      "final_success": 1.0,
+      "wmd": 0.052314993155500075,
+      "kd_innocent": 0.0,
+      "collateral": 0.0,
+      "sites": 244.5
+    },
+    "PositiveAlternative": {
+      "success_auc": 0.5,
+      "final_success": 1.0,
+      "wmd": 0.056885028300927586,
+      "kd_innocent": 4.5645095956925796e-05,
+      "collateral": 0.005154639175257732,
+      "sites": 358.0
+    },
+    "Contrastive": {
+      "success_auc": 0.5,
+      "final_success": 1.0,
+      "wmd": 0.05052274490680325,
+      "kd_innocent": 0.0,
+      "collateral": 0.0018303028683651522,
+      "sites": 548.0
+    },
+    "CFRevalue": {
+      "success_auc": 0.5,
+      "final_success": 1.0,
+      "wmd": 0.07481465922313187,
+      "kd_innocent": 2.8305722552210746e-05,
+      "collateral": 0.0,
+      "sites": 246.5
+    }
+  },
+  "contrasts_vs_NegativeOnly": {
+    "NoCorrection": {
+      "success_auc": {
+        "n_seeds": 2,
+        "mean": 0.0,
+        "median": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "cohens_dz": 0.0,
+        "p_sign_flip": 1.0,
+        "p_wilcoxon": null,
+        "probability_of_improvement": 0.0
+      },
+      "wmd": {
+        "n_seeds": 2,
+        "mean": -0.052314993155500075,
+        "median": -0.052314993155500075,
+        "ci": [
+          -0.06818888566159498,
+          -0.036441100649405166
+        ],
+        "cohens_dz": -2.330385342081562,
+        "p_sign_flip": 0.5011,
+        "p_wilcoxon": 0.25,
+        "probability_of_improvement": 0.0
+      },
+      "collateral": {
+        "n_seeds": 2,
+        "mean": 0.0,
+        "median": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "cohens_dz": 0.0,
+        "p_sign_flip": 1.0,
+        "p_wilcoxon": null,
+        "probability_of_improvement": 0.0
+      }
+    },
+    "PositiveAlternative": {
+      "success_auc": {
+        "n_seeds": 2,
+        "mean": 0.0,
+        "median": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "cohens_dz": 0.0,
+        "p_sign_flip": 1.0,
+        "p_wilcoxon": null,
+        "probability_of_improvement": 0.0
+      },
+      "wmd": {
+        "n_seeds": 2,
+        "mean": 0.004570035145427517,
+        "median": 0.004570035145427517,
+        "ci": [
+          -0.059547174127963315,
+          0.06868724441881835
+        ],
+        "cohens_dz": 0.05039992972578966,
+        "p_sign_flip": 1.0,
+        "p_wilcoxon": 1.0,
+        "probability_of_improvement": 0.7494
+      },
+      "collateral": {
+        "n_seeds": 2,
+        "mean": 0.005154639175257732,
+        "median": 0.005154639175257732,
+        "ci": [
+          0.0,
+          0.010309278350515464
+        ],
+        "cohens_dz": 0.7071067811865476,
+        "p_sign_flip": 1.0,
+        "p_wilcoxon": 1.0,
+        "probability_of_improvement": 0.7499
+      }
+    },
+    "Contrastive": {
+      "success_auc": {
+        "n_seeds": 2,
+        "mean": 0.0,
+        "median": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "cohens_dz": 0.0,
+        "p_sign_flip": 1.0,
+        "p_wilcoxon": null,
+        "probability_of_improvement": 0.0
+      },
+      "wmd": {
+        "n_seeds": 2,
+        "mean": -0.0017922482486968233,
+        "median": -0.0017922482486968233,
+        "ci": [
+          -0.014822914364637396,
+          0.01123841786724375
+        ],
+        "cohens_dz": -0.09725603272674761,
+        "p_sign_flip": 1.0,
+        "p_wilcoxon": 1.0,
+        "probability_of_improvement": 0.247
+      },
+      "collateral": {
+        "n_seeds": 2,
+        "mean": 0.0018303028683651522,
+        "median": 0.0018303028683651522,
+        "ci": [
+          0.0017301038062283738,
+          0.0019305019305019305
+        ],
+        "cohens_dz": 12.916483869674268,
+        "p_sign_flip": 0.4961,
+        "p_wilcoxon": 0.25,
+        "probability_of_improvement": 1.0
+      }
+    },
+    "CFRevalue": {
+      "success_auc": {
+        "n_seeds": 2,
+        "mean": 0.0,
+        "median": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "cohens_dz": 0.0,
+        "p_sign_flip": 1.0,
+        "p_wilcoxon": null,
+        "probability_of_improvement": 0.0
+      },
+      "wmd": {
+        "n_seeds": 2,
+        "mean": 0.02249966606763179,
+        "median": 0.02249966606763179,
+        "ci": [
+          -0.03403329410501871,
+          0.07903262624028229
+        ],
+        "cohens_dz": 0.28142284434191145,
+        "p_sign_flip": 1.0,
+        "p_wilcoxon": 1.0,
+        "probability_of_improvement": 0.7486
+      },
+      "collateral": {
+        "n_seeds": 2,
+        "mean": 0.0,
+        "median": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "cohens_dz": 0.0,
+        "p_sign_flip": 1.0,
+        "p_wilcoxon": null,
+        "probability_of_improvement": 0.0
+      }
+    }
+  },
+  "primary_contrast": "Contrastive - NegativeOnly",
+  "verdict": "PRIMARY_SUPPORTED",
+  "ci_width": 0.0
+}

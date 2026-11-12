@@ -1,0 +1,642 @@
+{
+  "schema": "V151_INTERVENTION_TRIAL_LEARNING_RESULT",
+  "date_asia_shanghai": "2026-11-07",
+  "parent_commit": "59938277dafa82847283fcd471ec9ef02ff88f2b",
+  "status": "REAL_CANDIDATE_FAILURE_AND_SUCCESS_OBSERVATIONS_TRAIN_ORDINARY_LEARNER_UNDER_SELECTED_MECHANISM",
+  "actual": {
+    "native_first_exit": 0,
+    "new_stored_audit_first_exit": 0,
+    "native_counts": {
+      "rollout": 72,
+      "step": 386,
+      "transaction": 177
+    },
+    "records": 529,
+    "native_pins": 335,
+    "main_tasks": 48,
+    "private_tasks": 24,
+    "old_preparation_rollouts": 0,
+    "checkpoint_TX": 3,
+    "freshsource_TX": 2,
+    "freshsource_edits": 2,
+    "ordinary_numeric_TX": 78,
+    "ordinary_policy_TX": 78,
+    "private_candidate_X_TX": 8,
+    "main_feedback_X_TX": 8,
+    "new_issued_observations": 16,
+    "consumed_observations": 8,
+    "accepted_observations": 6,
+    "mechanism_rejections": 2,
+    "unconsumed_observations": 8,
+    "duplicate_rejections_zero_native_delta": 6,
+    "accepted_failed_TRAP_observations": 4,
+    "accepted_SUCCESS_observations": 2,
+    "success_diagnosis": 0,
+    "terminal_counts": {
+      "stream": {
+        "TRAP": 5,
+        "SUCCESS": 39,
+        "COLLISION": 4
+      },
+      "private": {
+        "TRAP": 12,
+        "SUCCESS": 8,
+        "COLLISION": 4
+      }
+    },
+    "old_native_checker_bank_reruns": 0,
+    "new_keys_RNG_keyderive_DP_calibration_collection": 0,
+    "started_at_utc": "2026-11-06T20:27:43.051117+00:00",
+    "completed_at_utc": "2026-11-06T20:27:44.739838+00:00",
+    "instrumented_wall_seconds": 1.6869999999762513
+  },
+  "summaries": [
+    {
+      "case": "first_failure_then_gain",
+      "arm": "NoTrialLearning",
+      "successes": 4,
+      "returns": [
+        -1.02,
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "outcomes": [
+        "TRAP",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.2333333333333333,
+      "external_updates": 0
+    },
+    {
+      "case": "first_failure_then_gain",
+      "arm": "KeepOnly",
+      "successes": 5,
+      "returns": [
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "outcomes": [
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.5466666666666666,
+      "external_updates": 1
+    },
+    {
+      "case": "first_failure_then_gain",
+      "arm": "CandidateOnly",
+      "successes": 5,
+      "returns": [
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "outcomes": [
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.5466666666666666,
+      "external_updates": 1
+    },
+    {
+      "case": "first_failure_then_gain",
+      "arm": "CompatibleBatch",
+      "successes": 5,
+      "returns": [
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "outcomes": [
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.5466666666666666,
+      "external_updates": 2
+    },
+    {
+      "case": "late_repair",
+      "arm": "NoTrialLearning",
+      "successes": 5,
+      "returns": [
+        -1.06,
+        0.86,
+        0.84,
+        0.84,
+        0.84,
+        0.84
+      ],
+      "outcomes": [
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.5266666666666666,
+      "external_updates": 0
+    },
+    {
+      "case": "late_repair",
+      "arm": "KeepOnly",
+      "successes": 5,
+      "returns": [
+        -1.06,
+        0.86,
+        0.84,
+        0.84,
+        0.84,
+        0.84
+      ],
+      "outcomes": [
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.5266666666666666,
+      "external_updates": 0
+    },
+    {
+      "case": "late_repair",
+      "arm": "CandidateOnly",
+      "successes": 5,
+      "returns": [
+        -1.06,
+        0.86,
+        0.84,
+        0.84,
+        0.84,
+        0.84
+      ],
+      "outcomes": [
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.5266666666666666,
+      "external_updates": 1
+    },
+    {
+      "case": "late_repair",
+      "arm": "CompatibleBatch",
+      "successes": 5,
+      "returns": [
+        -1.06,
+        0.86,
+        0.84,
+        0.84,
+        0.84,
+        0.84
+      ],
+      "outcomes": [
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.5266666666666666,
+      "external_updates": 1
+    }
+  ],
+  "queries": [
+    {
+      "case": "first_failure_then_gain",
+      "arm": "NoTrialLearning",
+      "observed": {
+        "keep": [
+          -1.02,
+          -1.02
+        ],
+        "controller-delete": [
+          -1.02,
+          0.86
+        ]
+      },
+      "means": {
+        "keep": -1.02,
+        "controller-delete": -0.08000000000000002
+      },
+      "query_delta": 0.94,
+      "choice": "controller-delete",
+      "horizon": 2
+    },
+    {
+      "case": "first_failure_then_gain",
+      "arm": "KeepOnly",
+      "observed": {
+        "keep": [
+          -1.02,
+          -1.02
+        ],
+        "controller-delete": [
+          -1.02,
+          0.86
+        ]
+      },
+      "means": {
+        "keep": -1.02,
+        "controller-delete": -0.08000000000000002
+      },
+      "query_delta": 0.94,
+      "choice": "controller-delete",
+      "horizon": 2
+    },
+    {
+      "case": "first_failure_then_gain",
+      "arm": "CandidateOnly",
+      "observed": {
+        "keep": [
+          -1.02,
+          -1.02
+        ],
+        "controller-delete": [
+          -1.02,
+          0.86
+        ]
+      },
+      "means": {
+        "keep": -1.02,
+        "controller-delete": -0.08000000000000002
+      },
+      "query_delta": 0.94,
+      "choice": "controller-delete",
+      "horizon": 2
+    },
+    {
+      "case": "first_failure_then_gain",
+      "arm": "CompatibleBatch",
+      "observed": {
+        "keep": [
+          -1.02,
+          -1.02
+        ],
+        "controller-delete": [
+          -1.02,
+          0.86
+        ]
+      },
+      "means": {
+        "keep": -1.02,
+        "controller-delete": -0.08000000000000002
+      },
+      "query_delta": 0.94,
+      "choice": "controller-delete",
+      "horizon": 2
+    },
+    {
+      "case": "late_repair",
+      "arm": "NoTrialLearning",
+      "observed": {
+        "keep": [
+          -1.06
+        ],
+        "controller-delete": [
+          0.86
+        ]
+      },
+      "means": {
+        "keep": -1.06,
+        "controller-delete": 0.86
+      },
+      "query_delta": 1.92,
+      "choice": "controller-delete",
+      "horizon": 1
+    },
+    {
+      "case": "late_repair",
+      "arm": "KeepOnly",
+      "observed": {
+        "keep": [
+          -1.06
+        ],
+        "controller-delete": [
+          0.86
+        ]
+      },
+      "means": {
+        "keep": -1.06,
+        "controller-delete": 0.86
+      },
+      "query_delta": 1.92,
+      "choice": "controller-delete",
+      "horizon": 1
+    },
+    {
+      "case": "late_repair",
+      "arm": "CandidateOnly",
+      "observed": {
+        "keep": [
+          -1.06
+        ],
+        "controller-delete": [
+          0.86
+        ]
+      },
+      "means": {
+        "keep": -1.06,
+        "controller-delete": 0.86
+      },
+      "query_delta": 1.92,
+      "choice": "controller-delete",
+      "horizon": 1
+    },
+    {
+      "case": "late_repair",
+      "arm": "CompatibleBatch",
+      "observed": {
+        "keep": [
+          -1.06
+        ],
+        "controller-delete": [
+          0.86
+        ]
+      },
+      "means": {
+        "keep": -1.06,
+        "controller-delete": 0.86
+      },
+      "query_delta": 1.92,
+      "choice": "controller-delete",
+      "horizon": 1
+    }
+  ],
+  "accepted_with_numeric_changes": [
+    {
+      "case": "first_failure_then_gain",
+      "arm": "KeepOnly",
+      "candidate": "keep",
+      "terminal": "TRAP",
+      "numeric_content_changed": true,
+      "illustrative_Q_address": {
+        "state": {
+          "x": 0,
+          "y": 2,
+          "t": 0,
+          "kappa": 1,
+          "phi": 0
+        },
+        "z": 1,
+        "m": 0,
+        "a": 3
+      },
+      "before": -0.07000000000000006,
+      "after": -0.545
+    },
+    {
+      "case": "first_failure_then_gain",
+      "arm": "CandidateOnly",
+      "candidate": "controller-delete",
+      "terminal": "TRAP",
+      "numeric_content_changed": true,
+      "illustrative_Q_address": {
+        "state": {
+          "x": 0,
+          "y": 2,
+          "t": 0,
+          "kappa": 1,
+          "phi": 0
+        },
+        "z": 1,
+        "m": 0,
+        "a": 3
+      },
+      "before": -0.07000000000000006,
+      "after": -0.545
+    },
+    {
+      "case": "first_failure_then_gain",
+      "arm": "CompatibleBatch",
+      "candidate": "keep",
+      "terminal": "TRAP",
+      "numeric_content_changed": true,
+      "illustrative_Q_address": {
+        "state": {
+          "x": 0,
+          "y": 2,
+          "t": 0,
+          "kappa": 1,
+          "phi": 0
+        },
+        "z": 1,
+        "m": 0,
+        "a": 3
+      },
+      "before": -0.07000000000000006,
+      "after": -0.545
+    },
+    {
+      "case": "first_failure_then_gain",
+      "arm": "CompatibleBatch",
+      "candidate": "controller-delete",
+      "terminal": "TRAP",
+      "numeric_content_changed": true,
+      "illustrative_Q_address": {
+        "state": {
+          "x": 0,
+          "y": 2,
+          "t": 0,
+          "kappa": 1,
+          "phi": 0
+        },
+        "z": 1,
+        "m": 0,
+        "a": 3
+      },
+      "before": -0.545,
+      "after": -0.7825
+    },
+    {
+      "case": "late_repair",
+      "arm": "CandidateOnly",
+      "candidate": "controller-delete",
+      "terminal": "SUCCESS",
+      "numeric_content_changed": true,
+      "illustrative_Q_address": {
+        "state": {
+          "x": 1,
+          "y": 2,
+          "t": 2,
+          "kappa": 1,
+          "phi": 0
+        },
+        "z": 1,
+        "m": 0,
+        "a": 0
+      },
+      "before": -0.06000000000000005,
+      "after": 0.41999999999999993
+    },
+    {
+      "case": "late_repair",
+      "arm": "CompatibleBatch",
+      "candidate": "controller-delete",
+      "terminal": "SUCCESS",
+      "numeric_content_changed": true,
+      "illustrative_Q_address": {
+        "state": {
+          "x": 1,
+          "y": 2,
+          "t": 2,
+          "kappa": 1,
+          "phi": 0
+        },
+        "z": 1,
+        "m": 0,
+        "a": 0
+      },
+      "before": -0.06000000000000005,
+      "after": 0.41999999999999993
+    }
+  ],
+  "rejected": [
+    {
+      "case": "late_repair",
+      "arm": "KeepOnly",
+      "candidate": "keep",
+      "terminal": "COLLISION",
+      "mechanism_changes": [
+        {
+          "channel": "X",
+          "address": {
+            "state": {
+              "kappa": 1,
+              "phi": 0,
+              "t": 2,
+              "x": 1,
+              "y": 2
+            },
+            "cmd": 0
+          },
+          "origin": 3,
+          "current": 0
+        }
+      ]
+    },
+    {
+      "case": "late_repair",
+      "arm": "CompatibleBatch",
+      "candidate": "keep",
+      "terminal": "COLLISION",
+      "mechanism_changes": [
+        {
+          "channel": "X",
+          "address": {
+            "state": {
+              "kappa": 1,
+              "phi": 0,
+              "t": 2,
+              "x": 1,
+              "y": 2
+            },
+            "cmd": 0
+          },
+          "origin": 3,
+          "current": 0
+        }
+      ]
+    }
+  ],
+  "comparisons": [
+    {
+      "case": "first_failure_then_gain",
+      "left": "KeepOnly",
+      "right": "CandidateOnly",
+      "all6_main_raw_identical": true,
+      "all6_full_R_L_I_identical": true
+    },
+    {
+      "case": "first_failure_then_gain",
+      "left": "KeepOnly",
+      "right": "CompatibleBatch",
+      "all6_main_raw_identical": true,
+      "all6_full_R_L_I_identical": false
+    },
+    {
+      "case": "late_repair",
+      "left": "CandidateOnly",
+      "right": "CompatibleBatch",
+      "all6_main_raw_identical": true,
+      "all6_full_R_L_I_identical": true
+    }
+  ],
+  "online_costs_excluding_shared5TX": {
+    "NoTrialLearning": {
+      "rollout": 18,
+      "step": 92,
+      "transaction": 40
+    },
+    "KeepOnly": {
+      "rollout": 18,
+      "step": 98,
+      "transaction": 42
+    },
+    "CandidateOnly": {
+      "rollout": 18,
+      "step": 98,
+      "transaction": 44
+    },
+    "CompatibleBatch": {
+      "rollout": 18,
+      "step": 98,
+      "transaction": 46
+    }
+  },
+  "findings": {
+    "comparison_control": "Allarms performsameactualpaidtrialmenu andsamechosenXrepair. NoTrialLearning isnotNoWrite/frozenlearning: itdoesordinarymainTDbutdoesnotreusetrialobservation. CandidateOnly samplethusisolatestrialdatareuse, nottotaleffectofrepair.",
+    "failure_case": "CandidatefirsttrialTRAP/-1.02, secondtrialSUCCESS/.86; two-taskrelativevalue+.94choosesrepair. CandidateOnlyordinaryTDontheactualfailedfirstobservation changesRIGHTQ -.07000000000000006 -> -.545 andvisitedD toWAIT. NextmainSUCCESS, success4/6->5/6, mean+.3133333333333333; firstsuccess3rd->2nd. Noextraenvironmenttrialtasksforingestion; extraTD/TXcostretained.",
+    "late_case": "KeepobservationCOLLISIONusesoldXUP->RIGHT; afterrepaircurrentXidentity itisrejected. CandidateSUCCESSusesselectedidentitymechanism, accepted, UPQ -.06000000000000005 -> .41999999999999993. Current6mainreturnsunchanged5/6: numericstateimprovementnotautomaticallyutilitygain.",
+    "batch_case": "Firstkeep/candidateactualfirsttracesidentical; batchupdatesQRIGHTa secondtime -.545->-.7825, butsame5/6asoneobservation. RepeatedactualTD isnotnewindependentinformation, knowledgecountoradditionalbenefit. CandidateOnlyandKeepOnlyfirstcasefullR/L/Iandrawexactlymatch.",
+    "cost": "All4arms18rollovertwocases. NoTrialLearning92steps/40TX; KeepOnly98/42; CandidateOnly98/44; Batch98/46. Morestepswithlearningbecauseonefailedmainbecomessuccess, notresourcefailure. Ingestionitself0K/draws butnotfreecompute; historicaldiscovery/preparationnotfree.",
+    "scope": "Newnominalobservation/sourcefactory/batchentryexplicitlyversioned, originalv144sourcebodyASTidenticalexceptnewissueblock. ExactoldoriginalB1/law/fullkeyed/nativeidentityqualificationnotinferred. Fullbatchpartial/stochasticexternaldriftnotqualified; onlysameactualexternalconditionspercase."
+  },
+  "integrity": {
+    "native_input_before_after_equal": true,
+    "pre_ingestion_roots_equal_except_labels": true,
+    "source_AST_only_issue_block_changed": true,
+    "old_ledger_fields_preserved": 89,
+    "old_provenance_preserved": 266,
+    "original313_unchanged": true,
+    "all_old_executed_bytes_unchanged": true,
+    "new_Retention_Collateral_measured": false,
+    "formal_B1_or_science_PASS": false,
+    "automation_not_touched": true
+  }
+}

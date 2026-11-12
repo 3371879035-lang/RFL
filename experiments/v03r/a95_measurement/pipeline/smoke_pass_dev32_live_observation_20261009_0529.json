@@ -1,0 +1,231 @@
+{
+  "schema": "a95-smoke-completion-development32-external-observation-v1",
+  "role": "EXTERNAL_LIVE_AUDIT_NOT_NATIVE_EXECUTION_RECEIPT",
+  "observed_at_utc": "2026-10-08T21:29:30.5581819Z",
+  "root": "D:\\强化反馈学习\\RFL-CausalChase-v0.3-measurement-20261008",
+  "source_commit": "fd4d4f52eb49274174e02db548a6b64cbf0663ba",
+  "source_count": 309,
+  "sources_digest": "4d8a4bc3a0afc2c0335decafa559af44e2cd9028ccd3c4776189fc8c11dffd79",
+  "source_inventory_equal_frozen_checked_this_audit": true,
+  "F0_commit": "e3da58a005878d5b84142227d82d9ccc286a803b",
+  "F0_sha256": "7050dedac3eb23ca1d6b84b2ddb63d510f5de54f4eff6c495845edac0601af1b",
+  "smoke_report_sha256": "3a94014badcfe8b1804bfde79896575d5ddcebf4fc601fb376750b06288d99a1",
+  "native_formal_smoke_receipt": {
+    "argv": [
+      "D:\\python\\python.exe",
+      "-u",
+      "-B",
+      "-X",
+      "utf8",
+      "scripts/run_smoke.py",
+      "--seeds-file",
+      "D:\\强化反馈学习\\RFL-CausalChase-v0.3-measurement-20261008\\experiments\\v03r\\a95_measurement\\smoke_seeds.txt"
+    ],
+    "finished_at": "2026-10-09T05:18:26.464396+08:00",
+    "native_exit_code": 0,
+    "pid": 32604,
+    "receipt_origin": "native_subprocess_wait",
+    "started_at": "2026-10-09T04:26:16.997939+08:00"
+  },
+  "native_independent_smoke_evaluator_receipt": {
+    "argv": [
+      "D:\\python\\python.exe",
+      "-u",
+      "-B",
+      "-X",
+      "utf8",
+      "experiments/v03r/evaluate_smoke_gate.py"
+    ],
+    "finished_at": "2026-10-09T05:18:27.108+08:00",
+    "native_exit_code": 0,
+    "pid": 38500,
+    "receipt_origin": "native_subprocess_wait",
+    "started_at": "2026-10-09T05:18:26.47816+08:00"
+  },
+  "independent_smoke_evaluator_result": {
+    "reason": null,
+    "verdict": "PASS"
+  },
+  "smoke_report_seeds": [
+    2026100900,
+    2026100901,
+    2026100902,
+    2026100903,
+    2026100904
+  ],
+  "smoke_manifest_binding": {
+    "instrument_commit": "3b6194318bb0f4a20e91b9dcf80557d7648df256",
+    "manifest_sha256": "7050dedac3eb23ca1d6b84b2ddb63d510f5de54f4eff6c495845edac0601af1b"
+  },
+  "smoke_errors": [],
+  "smoke_fallbacks": [],
+  "smoke_gate_exit_codes": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "smoke_seed_completion_log_count": 5,
+  "development_launch": {
+    "argv": [
+      "D:\\python\\python.exe",
+      "-u",
+      "-B",
+      "-X",
+      "utf8",
+      "scripts/run_dev_baseline.py",
+      "--seeds-file",
+      "D:\\强化反馈学习\\RFL-CausalChase-v0.3-measurement-20261008\\experiments\\v03r\\a95_measurement\\dev_seeds.txt"
+    ],
+    "automatic_retry": false,
+    "pid": 36076,
+    "role": "START_RECORD_NOT_COMPLETION",
+    "started_at": "2026-10-09T05:18:27.941228+08:00"
+  },
+  "development_seed_started_log_count": 16,
+  "development_seed_completed_log_count": 0,
+  "authenticated_live_processes": [
+    {
+      "pid": 23516,
+      "parent_pid": 8032,
+      "full_command": "\"C:\\Users\\huani\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe\" -NoProfile -NonInteractive -WindowStyle Hidden -File \"D:\\强化反馈学习\\RFL-CausalChase-v0.3-measurement-20261008\\scripts\\launch_a95_pipeline.ps1\"",
+      "start_utc_ticks": "639270752627165537",
+      "cpu_seconds": 4.40625
+    },
+    {
+      "pid": 26732,
+      "parent_pid": 23516,
+      "full_command": "\"D:\\python\\python.exe\" -u -B -X utf8 \"D:\\强化反馈学习\\RFL-CausalChase-v0.3-measurement-20261008\\scripts\\run_a95_pipeline.py\"",
+      "start_utc_ticks": "639270752638521679",
+      "cpu_seconds": 5.59375
+    },
+    {
+      "pid": 36076,
+      "parent_pid": 26732,
+      "full_command": "D:\\python\\python.exe -u -B -X utf8 scripts/run_dev_baseline.py --seeds-file D:\\强化反馈学习\\RFL-CausalChase-v0.3-measurement-20261008\\experiments\\v03r\\a95_measurement\\dev_seeds.txt",
+      "start_utc_ticks": "639270911079474044",
+      "cpu_seconds": 0.390625
+    },
+    {
+      "pid": 25596,
+      "parent_pid": 36076,
+      "full_command": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=36076, pipe_handle=388)\" \"--multiprocessing-fork\"",
+      "start_utc_ticks": "639270911085558854",
+      "cpu_seconds": 401.28125
+    },
+    {
+      "pid": 23608,
+      "parent_pid": 36076,
+      "full_command": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=36076, pipe_handle=428)\" \"--multiprocessing-fork\"",
+      "start_utc_ticks": "639270911085655875",
+      "cpu_seconds": 399.5625
+    },
+    {
+      "pid": 37544,
+      "parent_pid": 36076,
+      "full_command": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=36076, pipe_handle=328)\" \"--multiprocessing-fork\"",
+      "start_utc_ticks": "639270911085752891",
+      "cpu_seconds": 399.890625
+    },
+    {
+      "pid": 26876,
+      "parent_pid": 36076,
+      "full_command": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=36076, pipe_handle=452)\" \"--multiprocessing-fork\"",
+      "start_utc_ticks": "639270911085866569",
+      "cpu_seconds": 397.140625
+    },
+    {
+      "pid": 9268,
+      "parent_pid": 36076,
+      "full_command": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=36076, pipe_handle=488)\" \"--multiprocessing-fork\"",
+      "start_utc_ticks": "639270911085986320",
+      "cpu_seconds": 402.375
+    },
+    {
+      "pid": 1048,
+      "parent_pid": 36076,
+      "full_command": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=36076, pipe_handle=512)\" \"--multiprocessing-fork\"",
+      "start_utc_ticks": "639270911086113861",
+      "cpu_seconds": 401.6875
+    },
+    {
+      "pid": 22204,
+      "parent_pid": 36076,
+      "full_command": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=36076, pipe_handle=508)\" \"--multiprocessing-fork\"",
+      "start_utc_ticks": "639270911086200683",
+      "cpu_seconds": 402.5
+    },
+    {
+      "pid": 28188,
+      "parent_pid": 36076,
+      "full_command": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=36076, pipe_handle=540)\" \"--multiprocessing-fork\"",
+      "start_utc_ticks": "639270911086290328",
+      "cpu_seconds": 397.765625
+    },
+    {
+      "pid": 26148,
+      "parent_pid": 36076,
+      "full_command": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=36076, pipe_handle=164)\" \"--multiprocessing-fork\"",
+      "start_utc_ticks": "639270911086365479",
+      "cpu_seconds": 398.515625
+    },
+    {
+      "pid": 29296,
+      "parent_pid": 36076,
+      "full_command": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=36076, pipe_handle=180)\" \"--multiprocessing-fork\"",
+      "start_utc_ticks": "639270911086455157",
+      "cpu_seconds": 399.921875
+    },
+    {
+      "pid": 29532,
+      "parent_pid": 36076,
+      "full_command": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=36076, pipe_handle=676)\" \"--multiprocessing-fork\"",
+      "start_utc_ticks": "639270911086544070",
+      "cpu_seconds": 401.515625
+    },
+    {
+      "pid": 4120,
+      "parent_pid": 36076,
+      "full_command": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=36076, pipe_handle=680)\" \"--multiprocessing-fork\"",
+      "start_utc_ticks": "639270911086629163",
+      "cpu_seconds": 398.515625
+    },
+    {
+      "pid": 36764,
+      "parent_pid": 36076,
+      "full_command": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=36076, pipe_handle=484)\" \"--multiprocessing-fork\"",
+      "start_utc_ticks": "639270911086722219",
+      "cpu_seconds": 404.203125
+    },
+    {
+      "pid": 22548,
+      "parent_pid": 36076,
+      "full_command": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=36076, pipe_handle=324)\" \"--multiprocessing-fork\"",
+      "start_utc_ticks": "639270911086820176",
+      "cpu_seconds": 396.640625
+    },
+    {
+      "pid": 34744,
+      "parent_pid": 36076,
+      "full_command": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=36076, pipe_handle=776)\" \"--multiprocessing-fork\"",
+      "start_utc_ticks": "639270911086912083",
+      "cpu_seconds": 399.34375
+    },
+    {
+      "pid": 35724,
+      "parent_pid": 36076,
+      "full_command": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=36076, pipe_handle=780)\" \"--multiprocessing-fork\"",
+      "start_utc_ticks": "639270911087020696",
+      "cpu_seconds": 396.953125
+    }
+  ],
+  "observed_spawn_workers": 16,
+  "development_native_completion_observed": false,
+  "F1_completed": false,
+  "treatment_or_confirmatory_collected": false,
+  "research_complete": false,
+  "old_valid_rev5_stop_unchanged": true,
+  "automatic_retry": false
+}

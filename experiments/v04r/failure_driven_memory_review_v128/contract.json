@@ -1,0 +1,220 @@
+{
+  "schema": "V128_PROSPECTIVE_FAILURE_DRIVEN_MEMORY_REVIEW",
+  "date_asia_shanghai": "2026-11-06",
+  "parent_commit": "df030136b4b54b123ba7ad83560e05c2bedff6e8",
+  "question": "Can actual failure after an executed remembered correction trigger finite re-investigation and improve the subsequent task stream without automatically punishing the remembered option?",
+  "modes": [
+    "dq",
+    "patch-adaptive"
+  ],
+  "arms": [
+    "NaiveMemory",
+    "FailureRefresh",
+    "AwareMemory"
+  ],
+  "sources": [
+    {
+      "kappa": 0,
+      "phi": 2,
+      "prefix": 3,
+      "cell": [
+        2,
+        1
+      ]
+    },
+    {
+      "kappa": 1,
+      "phi": 1,
+      "prefix": 1,
+      "cell": [
+        1,
+        2
+      ]
+    }
+  ],
+  "source_rule": "Install both source contexts together: wrong WAIT value6/literalD at declared cell for t>=prefix,m0/1,z1 and its own kappa/phi. Unread phase4 RIGHT sentinel and process3->2 unchanged. No source choice based on new results. In second context additionally install highWAIT at START t0,1 for bothm. The second context always has trap(1,2,step0); that initial wait can protect against the trap but a later persistentWAIT still prevents success. This deliberately creates two repeated-run candidates with the same existing memory key, not a blindly sampled population.",
+  "schedule": [
+    {
+      "kappa": 0,
+      "phi": 2,
+      "trap": false
+    },
+    {
+      "kappa": 0,
+      "phi": 2,
+      "trap": false
+    },
+    {
+      "kappa": 0,
+      "phi": 2,
+      "trap": true
+    },
+    {
+      "kappa": 0,
+      "phi": 2,
+      "trap": true
+    },
+    {
+      "kappa": 0,
+      "phi": 2,
+      "trap": true
+    },
+    {
+      "kappa": 0,
+      "phi": 2,
+      "trap": false
+    },
+    {
+      "kappa": 0,
+      "phi": 2,
+      "trap": false
+    },
+    {
+      "kappa": 0,
+      "phi": 2,
+      "trap": false
+    },
+    {
+      "kappa": 1,
+      "phi": 1,
+      "trap": true
+    },
+    {
+      "kappa": 1,
+      "phi": 1,
+      "trap": true
+    },
+    {
+      "kappa": 1,
+      "phi": 1,
+      "trap": true
+    },
+    {
+      "kappa": 1,
+      "phi": 1,
+      "trap": true
+    },
+    {
+      "kappa": 1,
+      "phi": 1,
+      "trap": true
+    },
+    {
+      "kappa": 1,
+      "phi": 1,
+      "trap": true
+    },
+    {
+      "kappa": 1,
+      "phi": 1,
+      "trap": true
+    },
+    {
+      "kappa": 1,
+      "phi": 1,
+      "trap": true
+    },
+    {
+      "kappa": 1,
+      "phi": 1,
+      "trap": true
+    },
+    {
+      "kappa": 1,
+      "phi": 1,
+      "trap": true
+    },
+    {
+      "kappa": 1,
+      "phi": 1,
+      "trap": true
+    },
+    {
+      "kappa": 1,
+      "phi": 1,
+      "trap": true
+    },
+    {
+      "kappa": 0,
+      "phi": 2,
+      "trap": false
+    },
+    {
+      "kappa": 0,
+      "phi": 2,
+      "trap": false
+    },
+    {
+      "kappa": 0,
+      "phi": 2,
+      "trap": false
+    },
+    {
+      "kappa": 0,
+      "phi": 2,
+      "trap": false
+    }
+  ],
+  "episode_inputs": "24task persistent stream: first8 A(k0/phi2), next12 B(k1/phi1), last4 returnA. TrapA only e2,3,4; allB trap(1,2,step0), finalA clean. Same actual source and exogenous script across all three arms; no reset between contexts. v127 conditions reused as a controlled adverse mechanism, but this is a new extended stream and new algorithm comparison, not old fixture execution.",
+  "model": "Shared frozen base28row model and ordinary learner unchanged. Additional online diagnostic memory is explicit new learned component; no neural-weight/self-RSI claim.",
+  "diagnostic": "All three arms ordinary-update every task, diagnose only actual task-visible failure, same max12addresses/0queries. FailureRefresh additionally links an executed memory-hit intervention to the immediately next task only if observed kappa/phi match. A failure marks its memory key for investigation, never edits its empirical mean or attributes the failure as causal proof. Success has no diagnosis/trial/memory update; receipt monitor simply expires a one-task pending token.",
+  "retention_checkpoints_completed_tasks": [
+    0,
+    8,
+    10,
+    12,
+    20,
+    24
+  ],
+  "retention_protocol": "Six clean2scene readonly banks per role after completed tasks0/8/10/12/20/24. FullR+L+I unchanged; no TD/draw/diagnosis or diagnostic-M learning. Not independent scientific seeds.",
+  "metrics": "Full24main tasks, separate Ainitial/B/returnA results, actual repeat failures before recovery, memory review/retest chronology, all practice cost and clean retention. No assumption failure-driven policy must succeed or beat preventative checking.",
+  "reference": {
+    "path": "experiments/v03r/a96_dense/b2_prepare/grammar_catalog_v31/evidence/stdout.log",
+    "sha256": "d0aafb6dc20b1cc0c872ac4c48497d94feb707ffe14448bd1c2f3ddd1bbb467b",
+    "q_digest": "d9078b5b5b823df56f998e8c28eb6a3e388bd3ae216f41a21acdb5202d2ec05a"
+  },
+  "budget": {
+    "rollout": 320,
+    "step": 3840,
+    "transaction": 1024,
+    "raw_bytes": 33554432,
+    "seconds": 120
+  },
+  "expected_extent_not_effect_gate": {
+    "main_tasks": 144,
+    "read_only_rollouts": 72,
+    "practice_rollouts_upper_bound": 72,
+    "total_rollouts_upper_bound": 288
+  },
+  "capture": "New exclusive bounded capture and source pins before first execution. Old code/positive/negative/partial results unchanged, no old checker/native rerun, no automatic retry or replacing adverse/unknown outcomes.",
+  "limits": "Fixed scripted stream, not blind population/seeds/general causal posterior. Same sharedQ*, alpha1/2 epsilon1/10 and original rewards. Legal local edits on post-TD current, not original same-pre wholeB1. Trap phases are deliberate environmental changes; compare same-schedule arms, do not label changing-environment return as general collateral. No new science/workload keys, RNG/keyderive, DP/calibration/formal collection. Automation off, not inspected or changed. This is a new action-intervention practice capability in the revised V04 experiment, not an assertion that v122 already had it. Only the tested aliased candidates are adjudicated; no total compute matching or universal attribution claim. Two sequential context exposures in one fixed stream, not independent statistical seeds. Any practice saving is simulator-work saving in this run, not an exact total-compute or generic real-world memory benefit. v124 local closure and all prior positive/negative evidence remain unchanged. Targeted alias stress case motivated by earlier favorable transfer, not a blind generalization rate. Same-key reuse can be invalid; any local guard benefit need not generalize or save compute. New post-failure review is a supplied local temporal rule, not learned causal attribution or statistical surprise calibration. Same-context consecutive failure can still have an unrelated cause. No automatic rollback, artificial restoration of a deleted address, hidden cause label, or future-state read. If deletion-only candidates cannot recover, retain that actual limitation; do not expand menu or retry after result. The known first8 condition prefix is necessary fresh online training for this new comparison, not old checker/native rerun.",
+  "practice": {
+    "trigger": "Same actual-failure candidate ambiguity trigger as v127. Naive recall uses covered-key mean. FailureRefresh only declines direct recall for a requested key previously linked to an immediately following observed failure; then uses the SAME finite current-condition practice capability. AwareMemory uses prior duplicate-key/conflict rule as preventative comparator. No future result supplied.",
+    "cap": "At most2 practice events per stream role, consumed before first branch. At most2 eligible singles (canonical order), plus keep; exactly2 ordinary tasks per branch. Extra eligible/unprobed candidates explicitly retained. No outcome-conditioned rerun or base scorer update.",
+    "execution": "Runner-private current-task environment capability binds current observed kappa/phase and current actual mask, never future masks. Clone actual complete live post-TD R+L into separate branches; candidate edits on branch,2repeat-current-condition tasks, no diagnostics inside branches. Origin and its I stay unchanged. New typed data/branches, not restored issuedB1handles.",
+    "decision": "Choose highest actual two-task mean from keep/tested singles, exact ties fewer edits then declared order. Apply chosen proposal once to live post-TD state. Base28row scores frozen; own actual practice returns update diagnostic M, separate from ordinary R+L. No hidden cause or manually prescribed winner.",
+    "cost": "All branch rollouts/steps/ordinary transactions and candidate writes counted separately; task and retention comparison shares task schedule but NOT total compute. No net efficiency or full-menu optimality claim. Standard query API remains0; these new practice operations are not claimed free or nonexistent."
+  },
+  "online_memory": {
+    "state": "All three arms start emptyM with own real practice samples. AwareMemory retains contested-key set. FailureRefresh additionally owns needs-retest keys and one immediately-next-task pending recall token. All R+L persist; base28row table frozen.",
+    "features": "Base visible candidate feature plus whether the contiguous same-cell/same-action run containing it spans multiple observed steps. No absolute x/y/t/kappa/phi, ordinal identity or fault truth stored. Representation supplied; empirical values learned.",
+    "training": "M values updated only from actual practice branch consequences. An observed main failure changes only needs-retest state, never contributes a negative numeric sample to the recalled intervention. Once that key is actually practiced, clear its needs-retest flag but retain all old/new samples. This intentionally tests a limited failure-review policy; pooled key values can still be inadequate.",
+    "recall": "NaiveMemory unchanged. AwareMemory declines duplicate-best-key or previous actual same-key conflicts. FailureRefresh does NOT apply the preventative duplicate-key rule: it may make the initial error, then records an actual same-observed-context failed successor and declines the implicated key on the next supported ambiguity until real practice tests it.",
+    "comparison": "Three new persistent24task flows per mode; same2event/role practice cap, keep+2singles,2tasks/branch. No totalcompute matching; every branch and native transaction counted. Not a reproduction claim for v12716task native fixture.",
+    "hypothesis_not_effect_gate": "Memory may or may not transfer; preserve fallback probes, failures and imperfect value predictions. Second context differs in kappa/phase, installed error position and possible healthy route; not a blind population or universal invariance test.",
+    "conflict_learning": "AwareMemory records a key as contested only after two tested actions in the same actual event map to that key and have different actual two-task means. Full samples retained, no erasing/collapsing conflicts into a confident mean. This is a local representation-ambiguity flag, not statistical uncertainty calibration."
+  },
+  "prefix_wait_source": {
+    "kappa": 1,
+    "phi": 1,
+    "cell": [
+      0,
+      2
+    ],
+    "times": [
+      0,
+      1
+    ]
+  },
+  "failure_review": "Pending recall recorded only after actual remembered proposal is executed and complete main receipt exists; next failure is observed by native task loop before ordinary TD and then reviewed during diagnosis after ordinary TD. Only same observed kappa/phi and consecutive epoch qualify. A success or context switch expires the token without a diagnosis. Marking a key for investigation is not proof the prior intervention caused failure, a permanent action ban, or global punishment. Actual re-practice budget consumed once before branch start; no reset or retry."
+}

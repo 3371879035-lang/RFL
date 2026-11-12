@@ -1,0 +1,127 @@
+{
+  "schema": "V146_STDLIB_PROTECTIVE_MAPPING_REVIEW",
+  "complete": true,
+  "native_counts": {
+    "rollout": 22,
+    "step": 130,
+    "transaction": 50
+  },
+  "records": 138,
+  "input_pins": 338,
+  "summaries": [
+    {
+      "arm": "NoWrite",
+      "successes": 5,
+      "outcomes": [
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "returns": [
+        -1.06,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.5399999999999999
+    },
+    {
+      "arm": "DirectSite",
+      "successes": 4,
+      "outcomes": [
+        "COLLISION",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "returns": [
+        -1.06,
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.22666666666666666
+    },
+    {
+      "arm": "PairedValue",
+      "successes": 5,
+      "outcomes": [
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "returns": [
+        -1.06,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.5399999999999999
+    }
+  ],
+  "paired_value_model": {
+    "samples": {
+      "keep": [
+        0.86,
+        0.86
+      ],
+      "controller-delete": [
+        -1.02,
+        0.86
+      ]
+    },
+    "values": {
+      "keep": 0.86,
+      "controller-delete": -0.08000000000000002
+    },
+    "choice": "keep"
+  },
+  "historical_value_contrast": {
+    "old_broken_controller_values": {
+      "keep": -1.02,
+      "controller-delete": -0.08000000000000002
+    },
+    "new_protective_values": {
+      "keep": 0.86,
+      "controller-delete": -0.08000000000000002
+    },
+    "same_delete_absolute_value": true,
+    "old_choice": "controller-delete",
+    "new_choice": "keep"
+  },
+  "NoWrite_PairedValue_equivalence": {
+    "all6main_raw_identical": true,
+    "all6post_R_L_I_identical": true
+  },
+  "first_factual_fullraw_equal_all_arms": true,
+  "ordinary_TD_already_restores_actual_bad_D_to_UP": true,
+  "native_ordinary_updates": 22,
+  "ordinary_policy_TX": 22,
+  "source_checkpoint_TX": 3,
+  "source_install_TX": 1,
+  "source_install_edits": 3,
+  "private_X_TX": 1,
+  "main_X_TX": 1,
+  "actual_exploration_events": 5,
+  "main_diagnostic_calls": 4,
+  "success_diagnostic_calls": 0,
+  "external_observation_ingestions": 0,
+  "model_fits": 1,
+  "old_native_checker_reruns": 0,
+  "new_keys_RNG_DP_calibration_collection": 0,
+  "formal_B1_or_science_qualification": false
+}

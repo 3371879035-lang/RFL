@@ -1,0 +1,1132 @@
+{
+  "schema": "V153_TRIAL_DERIVED_JOINT_REPAIR_RESULT",
+  "date_asia_shanghai": "2026-11-07",
+  "parent_commit": "6dae3366a19aa3e13e3de3ec02daff454cd4e7f1",
+  "status": "REAL_FAILED_REPAIR_TRIAL_REVEALS_NEW_SITE_AND_VERIFIED_ATOMIC_JOINT_REPAIR_IMPROVES_COMPOUND_TASKS",
+  "actual": {
+    "native_first_exit": 0,
+    "new_stored_audit_first_exit": 0,
+    "native_counts": {
+      "rollout": 109,
+      "step": 308,
+      "transaction": 272
+    },
+    "records": 920,
+    "native_pins": 336,
+    "main_tasks": 64,
+    "private_tasks": 45,
+    "old_preparation_rollouts": 0,
+    "checkpoint_TX": 3,
+    "fresh_source_TX": 1,
+    "fresh_source_edits": 6,
+    "ordinary_numeric_TX": 124,
+    "ordinary_policy_TX": 124,
+    "private_candidate_TX": 18,
+    "private_candidate_edit_addresses": 21,
+    "main_feedback_TX": 2,
+    "main_feedback_addresses": 3,
+    "joint_two_address_one_TX_commits": 1,
+    "trial_derived_hypotheses": 3,
+    "original_main_unvisited_extra_sites": 3,
+    "issued_observations": 33,
+    "consumed_observations": 27,
+    "accepted_observations": 15,
+    "rejected_observations": 12,
+    "unconsumed_observations": 6,
+    "accepted_failed_observations": 12,
+    "accepted_success_observations": 3,
+    "success_diagnosis": 0,
+    "budget_keeps": 3,
+    "terminal_counts": {
+      "stream": {
+        "TRAP": 46,
+        "COLLISION": 1,
+        "SUCCESS": 17
+      },
+      "private": {
+        "TRAP": 21,
+        "COLLISION": 16,
+        "SUCCESS": 8
+      }
+    },
+    "old_native_checker_bank_reruns": 0,
+    "keys_RNG_keyderive_DP_calibration_formal_collection": 0,
+    "started_at_utc": "2026-11-06T20:57:35.118375+00:00",
+    "completed_at_utc": "2026-11-06T20:57:39.096741+00:00",
+    "instrumented_wall_seconds": 3.969000000040978
+  },
+  "summaries": [
+    {
+      "arm": "TaskTD",
+      "successes": 0,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02
+      ],
+      "outcomes": [
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP"
+      ],
+      "mean_return": -1.02,
+      "external_updates": 0,
+      "diagnostic_account": {
+        "algorithm": "TaskTD",
+        "base_queries": 0,
+        "expanded_queries": 0,
+        "trial_task_budget": 0,
+        "trial_tasks_used": 0
+      }
+    },
+    {
+      "arm": "SinglePrefix",
+      "successes": 0,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02
+      ],
+      "outcomes": [
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP"
+      ],
+      "mean_return": -1.02,
+      "external_updates": 6,
+      "diagnostic_account": {
+        "algorithm": "SinglePrefix",
+        "base_queries": 6,
+        "expanded_queries": 0,
+        "trial_task_budget": 20,
+        "trial_tasks_used": 12
+      }
+    },
+    {
+      "arm": "HorizonSingle",
+      "successes": 8,
+      "returns": [
+        -1.02,
+        -1.06,
+        0.84,
+        0.84,
+        0.84,
+        0.84,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        0.84,
+        0.84,
+        0.84,
+        0.84
+      ],
+      "outcomes": [
+        "TRAP",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": -0.09250000000000003,
+      "external_updates": 6,
+      "diagnostic_account": {
+        "algorithm": "HorizonSingle",
+        "base_queries": 3,
+        "expanded_queries": 0,
+        "trial_task_budget": 20,
+        "trial_tasks_used": 18
+      }
+    },
+    {
+      "arm": "TrialExpanded",
+      "successes": 9,
+      "returns": [
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "outcomes": [
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.037499999999999985,
+      "external_updates": 3,
+      "diagnostic_account": {
+        "algorithm": "TrialExpanded",
+        "base_queries": 3,
+        "expanded_queries": 3,
+        "trial_task_budget": 20,
+        "trial_tasks_used": 15
+      }
+    }
+  ],
+  "phase_results": [
+    {
+      "arm": "TaskTD",
+      "stage": "A_compound",
+      "start_epoch": 0,
+      "tasks": 6,
+      "successes": 0,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02
+      ],
+      "mean_return": -1.02,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "TaskTD",
+      "stage": "B_shadow",
+      "start_epoch": 6,
+      "tasks": 6,
+      "successes": 0,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02
+      ],
+      "mean_return": -1.02,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "TaskTD",
+      "stage": "A_return",
+      "start_epoch": 12,
+      "tasks": 4,
+      "successes": 0,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02
+      ],
+      "mean_return": -1.02,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "SinglePrefix",
+      "stage": "A_compound",
+      "start_epoch": 0,
+      "tasks": 6,
+      "successes": 0,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02
+      ],
+      "mean_return": -1.02,
+      "base_query_epochs": [
+        0,
+        3
+      ],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "SinglePrefix",
+      "stage": "B_shadow",
+      "start_epoch": 6,
+      "tasks": 6,
+      "successes": 0,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02
+      ],
+      "mean_return": -1.02,
+      "base_query_epochs": [
+        6,
+        10
+      ],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "SinglePrefix",
+      "stage": "A_return",
+      "start_epoch": 12,
+      "tasks": 4,
+      "successes": 0,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02
+      ],
+      "mean_return": -1.02,
+      "base_query_epochs": [
+        12,
+        15
+      ],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "HorizonSingle",
+      "stage": "A_compound",
+      "start_epoch": 0,
+      "tasks": 6,
+      "successes": 4,
+      "returns": [
+        -1.02,
+        -1.06,
+        0.84,
+        0.84,
+        0.84,
+        0.84
+      ],
+      "mean_return": 0.2133333333333333,
+      "base_query_epochs": [
+        0,
+        1
+      ],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "HorizonSingle",
+      "stage": "B_shadow",
+      "start_epoch": 6,
+      "tasks": 6,
+      "successes": 0,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02
+      ],
+      "mean_return": -1.02,
+      "base_query_epochs": [
+        6
+      ],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "HorizonSingle",
+      "stage": "A_return",
+      "start_epoch": 12,
+      "tasks": 4,
+      "successes": 4,
+      "returns": [
+        0.84,
+        0.84,
+        0.84,
+        0.84
+      ],
+      "mean_return": 0.84,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "TrialExpanded",
+      "stage": "A_compound",
+      "start_epoch": 0,
+      "tasks": 6,
+      "successes": 5,
+      "returns": [
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.5466666666666666,
+      "base_query_epochs": [
+        0
+      ],
+      "expanded_query_epochs": [
+        0
+      ]
+    },
+    {
+      "arm": "TrialExpanded",
+      "stage": "B_shadow",
+      "start_epoch": 6,
+      "tasks": 6,
+      "successes": 0,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02
+      ],
+      "mean_return": -1.02,
+      "base_query_epochs": [
+        6,
+        10
+      ],
+      "expanded_query_epochs": [
+        6,
+        10
+      ]
+    },
+    {
+      "arm": "TrialExpanded",
+      "stage": "A_return",
+      "start_epoch": 12,
+      "tasks": 4,
+      "successes": 4,
+      "returns": [
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.86,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    }
+  ],
+  "online_costs_excluding_shared4TX": [
+    {
+      "arm": "TaskTD",
+      "main_tasks": 16,
+      "private_tasks": 0,
+      "rollout": 16,
+      "step": 16,
+      "transaction": 32,
+      "shared4TX_excluded": true
+    },
+    {
+      "arm": "SinglePrefix",
+      "main_tasks": 16,
+      "private_tasks": 12,
+      "rollout": 28,
+      "step": 40,
+      "transaction": 74,
+      "shared4TX_excluded": true
+    },
+    {
+      "arm": "HorizonSingle",
+      "main_tasks": 16,
+      "private_tasks": 18,
+      "rollout": 34,
+      "step": 145,
+      "transaction": 84,
+      "shared4TX_excluded": true
+    },
+    {
+      "arm": "TrialExpanded",
+      "main_tasks": 16,
+      "private_tasks": 15,
+      "rollout": 31,
+      "step": 107,
+      "transaction": 78,
+      "shared4TX_excluded": true
+    }
+  ],
+  "base_queries": [
+    {
+      "arm": "SinglePrefix",
+      "epoch": 0,
+      "stage": "A_compound",
+      "observed": {
+        "keep": [
+          -1.02
+        ],
+        "first": [
+          -1.06
+        ]
+      },
+      "values": {
+        "keep": -1.02,
+        "first": -1.06
+      },
+      "choice": "keep",
+      "proposal": {
+        "action": "keep",
+        "edits": []
+      },
+      "horizon": 1
+    },
+    {
+      "arm": "SinglePrefix",
+      "epoch": 3,
+      "stage": "A_compound",
+      "observed": {
+        "keep": [
+          -1.02
+        ],
+        "first": [
+          -1.06
+        ]
+      },
+      "values": {
+        "keep": -1.02,
+        "first": -1.06
+      },
+      "choice": "keep",
+      "proposal": {
+        "action": "keep",
+        "edits": []
+      },
+      "horizon": 1
+    },
+    {
+      "arm": "SinglePrefix",
+      "epoch": 6,
+      "stage": "B_shadow",
+      "observed": {
+        "keep": [
+          -1.02
+        ],
+        "first": [
+          -1.06
+        ]
+      },
+      "values": {
+        "keep": -1.02,
+        "first": -1.06
+      },
+      "choice": "keep",
+      "proposal": {
+        "action": "keep",
+        "edits": []
+      },
+      "horizon": 1
+    },
+    {
+      "arm": "SinglePrefix",
+      "epoch": 10,
+      "stage": "B_shadow",
+      "observed": {
+        "keep": [
+          -1.02
+        ],
+        "first": [
+          -1.06
+        ]
+      },
+      "values": {
+        "keep": -1.02,
+        "first": -1.06
+      },
+      "choice": "keep",
+      "proposal": {
+        "action": "keep",
+        "edits": []
+      },
+      "horizon": 1
+    },
+    {
+      "arm": "SinglePrefix",
+      "epoch": 12,
+      "stage": "A_return",
+      "observed": {
+        "keep": [
+          -1.02
+        ],
+        "first": [
+          -1.06
+        ]
+      },
+      "values": {
+        "keep": -1.02,
+        "first": -1.06
+      },
+      "choice": "keep",
+      "proposal": {
+        "action": "keep",
+        "edits": []
+      },
+      "horizon": 1
+    },
+    {
+      "arm": "SinglePrefix",
+      "epoch": 15,
+      "stage": "A_return",
+      "observed": {
+        "keep": [
+          -1.02
+        ],
+        "first": [
+          -1.06
+        ]
+      },
+      "values": {
+        "keep": -1.02,
+        "first": -1.06
+      },
+      "choice": "keep",
+      "proposal": {
+        "action": "keep",
+        "edits": []
+      },
+      "horizon": 1
+    },
+    {
+      "arm": "HorizonSingle",
+      "epoch": 0,
+      "stage": "A_compound",
+      "observed": {
+        "keep": [
+          -1.02,
+          -1.02,
+          -1.02
+        ],
+        "first": [
+          -1.02,
+          -1.06,
+          0.84
+        ]
+      },
+      "values": {
+        "keep": -1.02,
+        "first": -0.4133333333333334
+      },
+      "choice": "first",
+      "proposal": {
+        "action": "apply",
+        "edits": [
+          {
+            "address": {
+              "cmd": 4,
+              "state": {
+                "kappa": 1,
+                "phi": 0,
+                "t": 0,
+                "x": 0,
+                "y": 2
+              }
+            },
+            "store": "controller",
+            "value": null
+          }
+        ]
+      },
+      "horizon": 3
+    },
+    {
+      "arm": "HorizonSingle",
+      "epoch": 1,
+      "stage": "A_compound",
+      "observed": {
+        "keep": [
+          0.84,
+          0.84,
+          0.84
+        ],
+        "first": [
+          0.84,
+          0.84,
+          0.84
+        ]
+      },
+      "values": {
+        "keep": 0.84,
+        "first": 0.84
+      },
+      "choice": "keep",
+      "proposal": {
+        "action": "keep",
+        "edits": []
+      },
+      "horizon": 3
+    },
+    {
+      "arm": "HorizonSingle",
+      "epoch": 6,
+      "stage": "B_shadow",
+      "observed": {
+        "keep": [
+          -1.02,
+          -1.02,
+          -1.02
+        ],
+        "first": [
+          -1.02,
+          -1.02,
+          -1.06
+        ]
+      },
+      "values": {
+        "keep": -1.02,
+        "first": -1.0333333333333334
+      },
+      "choice": "keep",
+      "proposal": {
+        "action": "keep",
+        "edits": []
+      },
+      "horizon": 3
+    },
+    {
+      "arm": "TrialExpanded",
+      "epoch": 0,
+      "stage": "A_compound",
+      "observed": {
+        "keep": [
+          -1.02
+        ],
+        "first": [
+          -1.06
+        ]
+      },
+      "values": {
+        "keep": -1.02,
+        "first": -1.06
+      },
+      "choice": "keep",
+      "proposal": {
+        "action": "keep",
+        "edits": []
+      },
+      "horizon": 1
+    },
+    {
+      "arm": "TrialExpanded",
+      "epoch": 6,
+      "stage": "B_shadow",
+      "observed": {
+        "keep": [
+          -1.02
+        ],
+        "first": [
+          -1.06
+        ]
+      },
+      "values": {
+        "keep": -1.02,
+        "first": -1.06
+      },
+      "choice": "keep",
+      "proposal": {
+        "action": "keep",
+        "edits": []
+      },
+      "horizon": 1
+    },
+    {
+      "arm": "TrialExpanded",
+      "epoch": 10,
+      "stage": "B_shadow",
+      "observed": {
+        "keep": [
+          -1.02
+        ],
+        "first": [
+          -1.06
+        ]
+      },
+      "values": {
+        "keep": -1.02,
+        "first": -1.06
+      },
+      "choice": "keep",
+      "proposal": {
+        "action": "keep",
+        "edits": []
+      },
+      "horizon": 1
+    }
+  ],
+  "expanded_queries": [
+    {
+      "arm": "TrialExpanded",
+      "epoch": 0,
+      "stage": "A_compound",
+      "observed": {
+        "deep-keep": [
+          -1.02
+        ],
+        "deep-first": [
+          -1.06
+        ],
+        "joint": [
+          0.86
+        ]
+      },
+      "values": {
+        "deep-keep": -1.02,
+        "deep-first": -1.06,
+        "joint": 0.86
+      },
+      "choice": "joint",
+      "proposal": {
+        "action": "apply",
+        "edits": [
+          {
+            "address": {
+              "cmd": 4,
+              "state": {
+                "kappa": 1,
+                "phi": 0,
+                "t": 0,
+                "x": 0,
+                "y": 2
+              }
+            },
+            "store": "controller",
+            "value": null
+          },
+          {
+            "store": "controller",
+            "address": {
+              "state": {
+                "x": 1,
+                "y": 2,
+                "t": 2,
+                "kappa": 1,
+                "phi": 0
+              },
+              "cmd": 0
+            },
+            "value": null
+          }
+        ]
+      },
+      "horizon": 1
+    },
+    {
+      "arm": "TrialExpanded",
+      "epoch": 6,
+      "stage": "B_shadow",
+      "observed": {
+        "deep-keep": [
+          -1.02
+        ],
+        "deep-first": [
+          -1.06
+        ],
+        "joint": [
+          -1.06
+        ]
+      },
+      "values": {
+        "deep-keep": -1.02,
+        "deep-first": -1.06,
+        "joint": -1.06
+      },
+      "choice": "deep-keep",
+      "proposal": {
+        "action": "keep",
+        "edits": []
+      },
+      "horizon": 1
+    },
+    {
+      "arm": "TrialExpanded",
+      "epoch": 10,
+      "stage": "B_shadow",
+      "observed": {
+        "deep-keep": [
+          -1.02
+        ],
+        "deep-first": [
+          -1.06
+        ],
+        "joint": [
+          -1.06
+        ]
+      },
+      "values": {
+        "deep-keep": -1.02,
+        "deep-first": -1.06,
+        "joint": -1.06
+      },
+      "choice": "deep-keep",
+      "proposal": {
+        "action": "keep",
+        "edits": []
+      },
+      "horizon": 1
+    }
+  ],
+  "derived_hypotheses": [
+    {
+      "arm": "TrialExpanded",
+      "epoch": 0,
+      "stage": "A_compound",
+      "proposal": {
+        "action": "apply",
+        "edits": [
+          {
+            "address": {
+              "cmd": 4,
+              "state": {
+                "kappa": 1,
+                "phi": 0,
+                "t": 0,
+                "x": 0,
+                "y": 2
+              }
+            },
+            "store": "controller",
+            "value": null
+          },
+          {
+            "store": "controller",
+            "address": {
+              "state": {
+                "x": 1,
+                "y": 2,
+                "t": 2,
+                "kappa": 1,
+                "phi": 0
+              },
+              "cmd": 0
+            },
+            "value": null
+          }
+        ]
+      },
+      "witness_id": "TrialExpanded:owned:2",
+      "new_site_in_original_main": false
+    },
+    {
+      "arm": "TrialExpanded",
+      "epoch": 6,
+      "stage": "B_shadow",
+      "proposal": {
+        "action": "apply",
+        "edits": [
+          {
+            "address": {
+              "cmd": 4,
+              "state": {
+                "kappa": 1,
+                "phi": 3,
+                "t": 0,
+                "x": 0,
+                "y": 2
+              }
+            },
+            "store": "controller",
+            "value": null
+          },
+          {
+            "store": "controller",
+            "address": {
+              "state": {
+                "x": 1,
+                "y": 2,
+                "t": 2,
+                "kappa": 1,
+                "phi": 3
+              },
+              "cmd": 0
+            },
+            "value": null
+          }
+        ]
+      },
+      "witness_id": "TrialExpanded:owned:7",
+      "new_site_in_original_main": false
+    },
+    {
+      "arm": "TrialExpanded",
+      "epoch": 10,
+      "stage": "B_shadow",
+      "proposal": {
+        "action": "apply",
+        "edits": [
+          {
+            "address": {
+              "cmd": 4,
+              "state": {
+                "kappa": 1,
+                "phi": 3,
+                "t": 0,
+                "x": 0,
+                "y": 2
+              }
+            },
+            "store": "controller",
+            "value": null
+          },
+          {
+            "store": "controller",
+            "address": {
+              "state": {
+                "x": 1,
+                "y": 2,
+                "t": 2,
+                "kappa": 1,
+                "phi": 3
+              },
+              "cmd": 0
+            },
+            "value": null
+          }
+        ]
+      },
+      "witness_id": "TrialExpanded:owned:12",
+      "new_site_in_original_main": false
+    }
+  ],
+  "main_writes": [
+    {
+      "arm": "HorizonSingle",
+      "epoch": 0,
+      "addresses": 1,
+      "atomic_TX": 1
+    },
+    {
+      "arm": "TrialExpanded",
+      "epoch": 0,
+      "addresses": 2,
+      "atomic_TX": 1
+    }
+  ],
+  "preservation": [
+    {
+      "arm": "TaskTD",
+      "all16_I_preserved": true,
+      "unread_sentinel_preserved": true,
+      "phase_boundary_resets": 0
+    },
+    {
+      "arm": "SinglePrefix",
+      "all16_I_preserved": true,
+      "unread_sentinel_preserved": true,
+      "phase_boundary_resets": 0
+    },
+    {
+      "arm": "HorizonSingle",
+      "all16_I_preserved": true,
+      "unread_sentinel_preserved": true,
+      "phase_boundary_resets": 0
+    },
+    {
+      "arm": "TrialExpanded",
+      "all16_I_preserved": true,
+      "unread_sentinel_preserved": true,
+      "phase_boundary_resets": 0
+    }
+  ],
+  "AST_transport": {
+    "source_run_AST_only_new_nominal_issue_block": true,
+    "main_run_AST_only_new_evidence_eligibility_and_removed_unused_old_issue_block": true,
+    "ordinary_TD_method_inherited_unchanged_from_v144": true,
+    "original_atomic_apply_body_unchanged": true,
+    "full_API_or_exception_equivalence_claim": false
+  },
+  "findings": {
+    "compound_case": "Initialprefixkeep-1.02/firstrepair-1.06 makesSinglePrefixdeclinefirstrepair. TrialExpandedactualfirstrepairfailure revealsUPsiteatstep2, notinoriginalone-stepmainfactual. Newownedtrialwitnessauthorizesjoint2Xdelete. Freshcommonlongerprefixmenu keep-1.02/first-1.06/joint+.86 thenchoosesjoint, oneatomicoriginalstoreTX2addresses.",
+    "main_result": "TaskTD0/16mean-1.02; SinglePrefix0/16mean-1.02; HorizonSingle8/16mean-.0925; TrialExpanded9/16mean+.0375. Ainitial4/6vs5/6(HorizonvsExpanded), returnA both4/4 but.84vs.86. Bshadowall0/6; notomittedorworldsifted.",
+    "cost": "Expanded15private/31totalroll/107step/78TX vsHorizon18private/34totalroll/145step/84TX (samepredeclared20privatecap, shared4TXexcluded). Horizon3futureandprefixH1querydifferentestimands/operatorpower, notglobalalgorithmrank orcompute-matchedpopulationinference. TaskTD16steps becausealltasksdieearly, nothigherqualityefficiency.",
+    "shadow_negative": "Jointcandidate inBactual-1.06, baseline-1.02, bestmenukeep; all6Bmainstillfail. Thisonlyrulesoutcurrentmenuundertheseconditions, notallrepairs/direction. RepeatBquerye10genuinechangednumericorigin/chronology, notindependentscientificN; Horizoncap20hits3budgetkeeps after18paidtrialtasks.",
+    "law_scope": "ExplicitnewlocalV04evidenceadmissibility permitsoneextrapositiononlyfromactualregisteredfailedownedtrialwithparenteditlineage/ref/mode/chrono/numericorigin. Notoldmain-factual-onlyB1lawqualification orunchangedexecutorclaim. Originalguard/API/law/registry untouched.",
+    "protocol_scope": "Allactualwitnessplans/nativeepisodes correctlymatchmainkappa/phi andbindsource/root, checkedfromcapture. _check_witness reliesoncontrolledprivateplanfactory forstandalonecross-context eligibility; adversarialforeign-context/partialentrygatesnotqualified. No broadproductionAPI claim."
+  },
+  "integrity": {
+    "native_input_before_after_equal": true,
+    "old_ledger_values_preserved": 91,
+    "old_provenance_preserved": 266,
+    "original313_unchanged": true,
+    "old_executed_sources_captures_unchanged": true,
+    "new_Retention_Collateral_measured": false,
+    "formal_science_PASS": false,
+    "automation_not_touched": true
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "role": "PREFREEZE_ENGINEERING_HANDOFF_NOT_F0_OR_SCIENTIFIC_RESULT",
+  "measurement_profile": "v03r-a96-dense-measurement-v1",
+  "decision": "PROCEED_TO_ONE_SHOT_FRESH_ACCEPTANCE",
+  "full_regression": {
+    "tests": 1624,
+    "passed": 1623,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 1,
+    "native_exit_code": 0,
+    "existing_skip": "tests.rebuild.test_b2_acquisition.test_12_a_site_no_episode_consults_shares_the_generic_value[P]",
+    "receipt": "prelaunch/full_regression.receipt.json"
+  },
+  "spec_audit": {
+    "native_exit_code": 0,
+    "receipt": "prelaunch/spec_audit.receipt.json"
+  },
+  "final_operational_checks": {
+    "tests": 82,
+    "passed": 82,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0,
+    "native_exit_code": 0,
+    "receipt": "prelaunch/final_controller_checks.receipt.json"
+  },
+  "final_read_only_boundary": {
+    "native_exit_code": 0,
+    "source_count": 313,
+    "sources_digest": "1dfd80ce49255231998b70fca2b7bcd72e0940822a1bf9d4a8e731603ccc4838",
+    "preserved_parent_sources": 309,
+    "preserved_parent_compressed_shards": 32,
+    "receipt": "prelaunch/final_boundary.receipt.json"
+  },
+  "powershell_syntax": {
+    "errors": 0,
+    "executed_launcher": false
+  },
+  "observed_driver_issue": "External prelaunch driver exit1 is separately disclosed; all named native test/spec/boundary stages have their own true exits. No science run occurred.",
+  "final_instrument_changes_after_full_regression": "Only launcher UTF8/thread environment, A96 receipt line-ending protection and matching operational assertions; 82 final checks passed after those changes. Background full acceptance will be entirely fresh.",
+  "independent_agent_or_external_review": false,
+  "new_F0_created": false,
+  "scientific_collected": false,
+  "maximum_spawn_workers": 16,
+  "automatic_retry": false
+}

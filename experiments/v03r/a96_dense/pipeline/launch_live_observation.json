@@ -1,0 +1,79 @@
+{
+  "observed_at": "2026-10-09T07:49:45.1983337Z",
+  "source_count": 313,
+  "processes": [
+    {
+      "cpu_s": 3.9375,
+      "working_set_bytes": 118882304,
+      "start_utc_ticks": "639271289393389540",
+      "cim_creation_utc": "2026-10-09T07:48:59.3389540Z",
+      "parent_pid": 24856,
+      "start_utc": "2026-10-09T07:48:59.3389540Z",
+      "pid": 9924,
+      "command_line": "\"C:\\Users\\huani\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe\" -NoProfile -NonInteractive -WindowStyle Hidden -File \"D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009\\scripts\\launch_a96_pipeline.ps1\""
+    },
+    {
+      "cpu_s": 1.3125,
+      "working_set_bytes": 31404032,
+      "start_utc_ticks": "639271289413910189",
+      "cim_creation_utc": "2026-10-09T07:49:01.3910180Z",
+      "parent_pid": 9924,
+      "start_utc": "2026-10-09T07:49:01.3910189Z",
+      "pid": 26592,
+      "command_line": "\"D:\\python\\python.exe\" -u -B -X utf8 \"D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009\\scripts\\run_a96_pipeline.py\""
+    },
+    {
+      "cpu_s": 0.046875,
+      "working_set_bytes": 10452992,
+      "start_utc_ticks": "639271289414145087",
+      "cim_creation_utc": "2026-10-09T07:49:01.4145080Z",
+      "parent_pid": 26592,
+      "start_utc": "2026-10-09T07:49:01.4145087Z",
+      "pid": 21004,
+      "command_line": "\\??\\C:\\WINDOWS\\system32\\conhost.exe 0x4"
+    },
+    {
+      "cpu_s": 38.9375,
+      "working_set_bytes": 352202752,
+      "start_utc_ticks": "639271289435234906",
+      "cim_creation_utc": "2026-10-09T07:49:03.5234900Z",
+      "parent_pid": 26592,
+      "start_utc": "2026-10-09T07:49:03.5234906Z",
+      "pid": 39280,
+      "command_line": "D:\\python\\python.exe -m pytest -q --junitxml=D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009\\experiments\\v03r\\a96_dense\\pipeline\\acceptance_gates\\regression.xml"
+    }
+  ],
+  "pipeline_stdout": null,
+  "scientific_collection_started": false,
+  "sources_digest": "1dfd80ce49255231998b70fca2b7bcd72e0940822a1bf9d4a8e731603ccc4838",
+  "research_complete": false,
+  "pipeline_stderr": null,
+  "role": "EXTERNAL_LIVE_IDENTITY_OBSERVATION_NOT_NATIVE_CONTROLLER_RECEIPT",
+  "pipeline_failure_exists": false,
+  "launch": {
+    "automatic_retry": false,
+    "start_utc_ticks": "639271289413910189",
+    "controller_sha256": "bb9a1989d8e7f67b3dca6065a51f518e72dd87806501f3547c71c7b792673f4d",
+    "launcher_pid": 9924,
+    "root": "D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009",
+    "research_complete": false,
+    "launcher_sha256": "5d49fe0752cc95caa7dcf1d814f6706a5e927771eac6eebaa3c081adb0a90d17",
+    "started_at": "2026-10-09T07:49:01.3910189Z",
+    "controller": "D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009\\scripts\\run_a96_pipeline.py",
+    "pid": 26592
+  },
+  "launcher_claim": {
+    "automatic_retry": false,
+    "observed_at": "2026-10-09T07:49:01.2540198Z",
+    "launcher_pid": 9924,
+    "start_utc_ticks": "639271289393389540",
+    "root": "D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009"
+  },
+  "native_pipeline_exit_exists": false,
+  "parent_preservation_exists": true,
+  "instrument_commit": "f3de11cfcb58e3cfef557e0874bb0f2a2935fb81",
+  "current_control_hashes": {
+    "controller": "bb9a1989d8e7f67b3dca6065a51f518e72dd87806501f3547c71c7b792673f4d",
+    "launcher": "5d49fe0752cc95caa7dcf1d814f6706a5e927771eac6eebaa3c081adb0a90d17"
+  }
+}

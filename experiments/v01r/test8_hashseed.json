@@ -1,0 +1,27 @@
+{
+ "checks": {
+  "A_builder_cache_byte_identical": true,
+  "B_runtime_payload_byte_identical": true
+ },
+ "detail": {
+  "A": {
+   "1": "e535f31614112eed9161b459",
+   "999": "e535f31614112eed9161b459"
+  },
+  "B": {
+   "payload_hash": "a99c70ebeaa9a576291fa2a4",
+   "n_worlds": 1038960,
+   "n_blocks": 547,
+   "global_prior_fp": "61614097c7b75d0c2ce261c4",
+   "registry_order_hash": "430f235fe993f5af90f91979",
+   "mapping_len": 200,
+   "mapped_zero": 0
+  }
+ },
+ "seeds": [
+  "1",
+  "999"
+ ],
+ "status": "PASS",
+ "known_gap": "The runtime payload omits item 5's q_0, whose one legality pass over the 547-block global prior costs ~1.04M rollouts (~20 min per side). Support, beliefs, sample->world mapping and registry order ARE covered; the end-to-end query trace is not yet."
+}

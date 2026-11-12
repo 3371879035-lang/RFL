@@ -1,0 +1,110 @@
+{
+  "schema": "V154_STDLIB_WITNESS_CONTEXT_REVIEW",
+  "complete": true,
+  "native_counts": {
+    "rollout": 8,
+    "step": 16,
+    "transaction": 27
+  },
+  "records": 89,
+  "input_pins": 336,
+  "events": [
+    {
+      "case": "LegacyForeign",
+      "legacy_foreign_authority_admitted": true,
+      "foreign_site": {
+        "cmd": 4,
+        "state": {
+          "kappa": 1,
+          "phi": 3,
+          "t": 0,
+          "x": 0,
+          "y": 2
+        }
+      },
+      "live_commit": false
+    },
+    {
+      "case": "StrictForeign",
+      "gate": "factory",
+      "rejected": true,
+      "native_delta": {
+        "rollout": 0,
+        "step": 0,
+        "transaction": 0
+      }
+    },
+    {
+      "case": "StrictForeign",
+      "gate": "actual_foreign_witness",
+      "rejected": true,
+      "native_delta": {
+        "rollout": 0,
+        "step": 0,
+        "transaction": 0
+      }
+    },
+    {
+      "case": "StrictValid",
+      "authorized": true,
+      "baseline_return": -1.02,
+      "joint_return": 0.86,
+      "same_episode": true
+    }
+  ],
+  "cases": [
+    {
+      "case": "LegacyForeign",
+      "authority_records": 1,
+      "registered_sources": 1,
+      "external_updates": 0,
+      "main_terminal": "TRAP",
+      "live_diagnostic_TX": 0,
+      "live_edit_addresses": 0
+    },
+    {
+      "case": "StrictForeign",
+      "authority_records": 0,
+      "registered_sources": 1,
+      "external_updates": 0,
+      "main_terminal": "TRAP",
+      "live_diagnostic_TX": 0,
+      "live_edit_addresses": 0
+    },
+    {
+      "case": "StrictValid",
+      "authority_records": 1,
+      "registered_sources": 3,
+      "external_updates": 1,
+      "main_terminal": "TRAP",
+      "live_diagnostic_TX": 1,
+      "live_edit_addresses": 2
+    }
+  ],
+  "legacy_foreign_authority_counterexample": true,
+  "strict_foreign_factory_zero_work_rejection": true,
+  "strict_actual_foreign_witness_zero_work_rejection": true,
+  "strict_samecontext_atomic_joint_path_completed": true,
+  "native_ordinary_updates": 8,
+  "ordinary_policy_TX": 8,
+  "external_ordinary_updates": 1,
+  "external_policy_TX": 1,
+  "private_candidate_TX": 4,
+  "main_feedback_TX": 1,
+  "issued_observations": 5,
+  "consumed_observations": 2,
+  "unconsumed_observations": 3,
+  "accepted": [
+    "StrictValid:owned:3"
+  ],
+  "rejected": [
+    "StrictValid:owned:2"
+  ],
+  "future_curve_or_utility_experiment": false,
+  "success_main_diagnosis": 0,
+  "original_v153_actual_capture_modified_or_rerun": false,
+  "all_source_and_R_L_I_checked": true,
+  "old_checker_bank_reruns": 0,
+  "new_keys_RNG_DP_calibration_collection": 0,
+  "full_API_or_science_qualification": false
+}

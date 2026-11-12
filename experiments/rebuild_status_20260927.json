@@ -1,0 +1,95 @@
+{
+  "as_of": "2026-09-27",
+  "line": "rebuild V0.1R-V0.4R",
+  "historical_artifacts_read_not_rerun": true,
+  "sources": {
+    "experiments/v01r/calibration_conf_v2.json": "0c2135de3bad99436671420268e344bb8f8f3860c6076b5a973a60b0979a1408",
+    "experiments/v02r/a73_corrected_census.json": "3fcbc466ddfef736ed778f4cbea6708020e050856ec4bfd2a19d9c5f03d631f8",
+    "experiments/v03r/f0_manifest.json": "ea783185e34b735f86484c7cdae5bce4f669f92e9dd1dbd9e922fa6f225e93bf",
+    "experiments/v03r/f0_runtime/frozen_inputs.json": "171398b641505edcc7737b0d6acc0a4f60f04bdefd4b90c65580757eda29c0e4",
+    "experiments/v03r/c3_construction/report.json": "b5de06953c072b159e42ffafae63c7c6a9dbb90751b10347bbc078f1a49ae243"
+  },
+  "v01r": {
+    "status": "CLOSED",
+    "confirmatory_scenes": 400,
+    "verdict": "PASS",
+    "primary": {
+      "n": 400,
+      "batch_macro_auprc_alt": 1.0,
+      "batch_macro_auprc_base": 0.3899206343359361,
+      "batch_macro_delta": 0.610079365664064,
+      "per_scene_score": "Brier (diagnostic only; AUPRC is undefined at n=1)",
+      "mean_per_scene_brier_delta": 0.14400000000000002,
+      "median": 0.0,
+      "trimmed_mean": 0.11750000000000001,
+      "tie_fraction": 0.555,
+      "wins": 178,
+      "losses": 0,
+      "sign_test_p_two_sided": 5.22024357439882e-54,
+      "top5_share_of_total_delta": 0.05208333333333333,
+      "delta_min": 0.05,
+      "position_vs_delta_min": "ABOVE"
+    },
+    "not_evaluable_causes": [
+      "U"
+    ],
+    "scope": "Fault attribution under the frozen DGP; no learning claim."
+  },
+  "v02r": {
+    "status": "CLOSED",
+    "census_worlds": 1038960,
+    "census_status": "PASS",
+    "aggregate": {
+      "OracleCredit": {
+        "cov_w": 1.0,
+        "fcr_w": 0.0,
+        "size_w": 1.0848192052634906,
+        "cov_c": 1.0,
+        "fcr_c": 0.0,
+        "size_c": 1.706976206976207
+      },
+      "CausalSetLocator": {
+        "cov_w": 1.0,
+        "fcr_w": 0.0006046787014510047,
+        "size_w": 1.0867004278900654,
+        "cov_c": 1.0,
+        "fcr_c": 0.002772002772002891,
+        "size_c": 1.7166782166782166
+      },
+      "Module": {
+        "cov_w": 0.5614063818769824,
+        "fcr_w": 0.46218586922552934,
+        "size_w": 5.396838874100634,
+        "cov_c": 0.9833679833679834,
+        "fcr_c": 0.7958295083299246,
+        "size_c": 12.814275814275815
+      },
+      "Trajectory": {
+        "cov_w": 1.0,
+        "fcr_w": 0.9308937935811211,
+        "size_w": 16.520063155308087,
+        "cov_c": 1.0,
+        "fcr_c": 0.9016684391691713,
+        "size_c": 17.895356895356894
+      }
+    },
+    "scope": "measures over-credit under a FIXED ontology (A65/A67); it does NOT validate that ontology, since Gamma+ is built from the same pi_credit as the truth"
+  },
+  "v03r": {
+    "status": "F0_CONSTRUCTION",
+    "f0_status": "NOT_VALID",
+    "formal_online_comparison_started": false,
+    "operational_runtime_benchmark": "STARTED; not completed at this snapshot",
+    "benchmark_instrument_commit": "7da3830de6d7c7a3c6d5dd3763d78172aa91c65b",
+    "remaining": [
+      "full-envelope runtime evidence",
+      "independent-of-outcome practical RMST rationale",
+      "complete instrument and C3 amendment review"
+    ]
+  },
+  "v04r": {
+    "status": "NOT_STARTED_IN_REBUILD",
+    "condition": "Requires interpretable V0.3R recovery evidence; legacy code is not rebuild completion"
+  },
+  "user_decision_required_now": false
+}

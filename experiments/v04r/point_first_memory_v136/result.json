@@ -1,0 +1,2007 @@
+{
+  "schema": "V136_POINT_FIRST_MEMORY_AND_PROTECTION_SHIFT_RESULT",
+  "date_asia_shanghai": "2026-11-07",
+  "parent_commit": "c31eeb255fa0f15f03dc76ff59cf2ec282332ef7",
+  "status": "EXTENSION_COMPLETE_CONDITIONAL_SMALL_COST_SAVING_AND_STALE_NEGATIVE_PRIOR_REGRESSION",
+  "execution": {
+    "native_first_exit": 0,
+    "new_stored_review_first_exit": 0,
+    "rollout": 81,
+    "step": 879,
+    "transaction": 104,
+    "records": 570,
+    "declared_input_pins_unchanged": 349,
+    "main_tasks": 60,
+    "practice_tasks": 21,
+    "read_only_rollouts": 0,
+    "main_steps": 678,
+    "practice_steps": 201,
+    "ordinary_full_R_L_updates_verified": 81,
+    "source_install_transactions": 2,
+    "source_install_edits": 88,
+    "live_diagnostic_transactions": 9,
+    "practice_candidate_transactions": 12,
+    "diagnostic_memory_training_events": 9,
+    "instrumented_wall_seconds": 9.672000000020489,
+    "success_diagnostics": 0,
+    "base_model_updates": 0,
+    "new_keys": 0,
+    "formal_collection": false,
+    "automatic_retry": false,
+    "old_checker_or_native_reruns": 0
+  },
+  "per_arm_summary": [
+    {
+      "arm": "StablePoint",
+      "case": "stable",
+      "successes": 17,
+      "task_return_sum": 9.280000000000001,
+      "task_return_mean": 0.4640000000000001,
+      "practice_events": 3,
+      "practice_rollouts": 7,
+      "diagnostic_memory_updates": 3,
+      "memory_retrievals": 3,
+      "returns": [
+        -1.24,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        -1.18,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        -1.22,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        0.76
+      ],
+      "outcomes": [
+        "TIMEOUT",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ]
+    },
+    {
+      "arm": "DriftBase",
+      "case": "drift",
+      "successes": 17,
+      "task_return_sum": 9.88,
+      "task_return_mean": 0.49400000000000005,
+      "practice_events": 3,
+      "practice_rollouts": 7,
+      "diagnostic_memory_updates": 3,
+      "memory_retrievals": 3,
+      "returns": [
+        -1.24,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        -1.18,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        -1.22,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        0.76,
+        0.76
+      ],
+      "outcomes": [
+        "TIMEOUT",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ]
+    },
+    {
+      "arm": "DriftPoint",
+      "case": "drift",
+      "successes": 17,
+      "task_return_sum": 9.280000000000001,
+      "task_return_mean": 0.4640000000000001,
+      "practice_events": 3,
+      "practice_rollouts": 7,
+      "diagnostic_memory_updates": 3,
+      "memory_retrievals": 3,
+      "returns": [
+        -1.24,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        -1.18,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        -1.22,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        0.76
+      ],
+      "outcomes": [
+        "TIMEOUT",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ]
+    }
+  ],
+  "per_arm_native_work": {
+    "StablePoint": {
+      "stream_rollout": 20,
+      "stream_step": 236,
+      "ORDINARY_UPDATE": 27,
+      "practice_rollout": 7,
+      "practice_step": 69,
+      "PRACTICE_TX_END": 4,
+      "DIAGNOSTIC_TX_END": 3,
+      "total_K_steps": 305,
+      "total_rollouts": 27,
+      "transactions_excluding_shared_source": 34
+    },
+    "DriftBase": {
+      "stream_rollout": 20,
+      "stream_step": 206,
+      "ORDINARY_UPDATE": 27,
+      "practice_rollout": 7,
+      "practice_step": 63,
+      "PRACTICE_TX_END": 4,
+      "DIAGNOSTIC_TX_END": 3,
+      "total_K_steps": 269,
+      "total_rollouts": 27,
+      "transactions_excluding_shared_source": 34
+    },
+    "DriftPoint": {
+      "stream_rollout": 20,
+      "stream_step": 236,
+      "ORDINARY_UPDATE": 27,
+      "practice_rollout": 7,
+      "practice_step": 69,
+      "PRACTICE_TX_END": 4,
+      "DIAGNOSTIC_TX_END": 3,
+      "total_K_steps": 305,
+      "total_rollouts": 27,
+      "transactions_excluding_shared_source": 34
+    }
+  },
+  "failure_counts": {
+    "StablePoint": {
+      "stream_TIMEOUT": 1,
+      "practice_TIMEOUT": 1,
+      "practice_TRAP": 1,
+      "practice_SUCCESS": 3,
+      "stream_SUCCESS": 17,
+      "stream_COLLISION": 2,
+      "practice_COLLISION": 2
+    },
+    "DriftBase": {
+      "stream_TIMEOUT": 1,
+      "practice_TIMEOUT": 1,
+      "practice_TRAP": 1,
+      "practice_SUCCESS": 3,
+      "stream_SUCCESS": 17,
+      "stream_COLLISION": 2,
+      "practice_COLLISION": 2
+    },
+    "DriftPoint": {
+      "stream_TIMEOUT": 1,
+      "practice_TIMEOUT": 1,
+      "practice_TRAP": 1,
+      "practice_SUCCESS": 3,
+      "stream_SUCCESS": 17,
+      "stream_COLLISION": 2,
+      "practice_COLLISION": 2
+    }
+  },
+  "actual_practice_events": [
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "StablePoint",
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:7": 1
+      },
+      "epoch": 0,
+      "means": {
+        "keep": -1.24,
+        "single:0": -1.02,
+        "single:7": 0.76
+      },
+      "menu": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.24
+        ],
+        "single:0": [
+          -1.02
+        ],
+        "single:7": [
+          0.76
+        ]
+      },
+      "selected": "single:7",
+      "strategy": "verify-one",
+      "unprobed": []
+    },
+    {
+      "actions": [
+        "keep",
+        "single:7"
+      ],
+      "arm": "StablePoint",
+      "costs": {
+        "keep": 0,
+        "single:7": 1
+      },
+      "epoch": 6,
+      "means": {
+        "keep": -1.18,
+        "single:7": 0.76
+      },
+      "menu": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.18
+        ],
+        "single:7": [
+          0.76
+        ]
+      },
+      "selected": "single:7",
+      "strategy": "verify-one",
+      "unprobed": [
+        "single:0"
+      ]
+    },
+    {
+      "actions": [
+        "keep",
+        "single:7"
+      ],
+      "arm": "StablePoint",
+      "costs": {
+        "keep": 0,
+        "single:7": 1
+      },
+      "epoch": 12,
+      "means": {
+        "keep": -1.22,
+        "single:7": 0.76
+      },
+      "menu": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.22
+        ],
+        "single:7": [
+          0.76
+        ]
+      },
+      "selected": "single:7",
+      "strategy": "verify-one",
+      "unprobed": [
+        "single:0"
+      ]
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "DriftBase",
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:7": 1
+      },
+      "epoch": 0,
+      "means": {
+        "keep": -1.24,
+        "single:0": -1.02,
+        "single:7": 0.76
+      },
+      "menu": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.24
+        ],
+        "single:0": [
+          -1.02
+        ],
+        "single:7": [
+          0.76
+        ]
+      },
+      "selected": "single:7",
+      "strategy": "verify-one",
+      "unprobed": []
+    },
+    {
+      "actions": [
+        "keep",
+        "single:7"
+      ],
+      "arm": "DriftBase",
+      "costs": {
+        "keep": 0,
+        "single:7": 1
+      },
+      "epoch": 6,
+      "means": {
+        "keep": -1.18,
+        "single:7": 0.76
+      },
+      "menu": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.18
+        ],
+        "single:7": [
+          0.76
+        ]
+      },
+      "selected": "single:7",
+      "strategy": "verify-one",
+      "unprobed": [
+        "single:0"
+      ]
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0"
+      ],
+      "arm": "DriftBase",
+      "costs": {
+        "keep": 0,
+        "single:0": 1
+      },
+      "epoch": 12,
+      "means": {
+        "keep": -1.22,
+        "single:0": 0.88
+      },
+      "menu": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.22
+        ],
+        "single:0": [
+          0.88
+        ]
+      },
+      "selected": "single:0",
+      "strategy": "verify-one",
+      "unprobed": [
+        "single:7"
+      ]
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "DriftPoint",
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:7": 1
+      },
+      "epoch": 0,
+      "means": {
+        "keep": -1.24,
+        "single:0": -1.02,
+        "single:7": 0.76
+      },
+      "menu": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.24
+        ],
+        "single:0": [
+          -1.02
+        ],
+        "single:7": [
+          0.76
+        ]
+      },
+      "selected": "single:7",
+      "strategy": "verify-one",
+      "unprobed": []
+    },
+    {
+      "actions": [
+        "keep",
+        "single:7"
+      ],
+      "arm": "DriftPoint",
+      "costs": {
+        "keep": 0,
+        "single:7": 1
+      },
+      "epoch": 6,
+      "means": {
+        "keep": -1.18,
+        "single:7": 0.76
+      },
+      "menu": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.18
+        ],
+        "single:7": [
+          0.76
+        ]
+      },
+      "selected": "single:7",
+      "strategy": "verify-one",
+      "unprobed": [
+        "single:0"
+      ]
+    },
+    {
+      "actions": [
+        "keep",
+        "single:7"
+      ],
+      "arm": "DriftPoint",
+      "costs": {
+        "keep": 0,
+        "single:7": 1
+      },
+      "epoch": 12,
+      "means": {
+        "keep": -1.22,
+        "single:7": 0.76
+      },
+      "menu": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.22
+        ],
+        "single:7": [
+          0.76
+        ]
+      },
+      "selected": "single:7",
+      "strategy": "verify-one",
+      "unprobed": [
+        "single:0"
+      ]
+    }
+  ],
+  "memory_lookup_provenance": [
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "StablePoint",
+      "epoch": 0,
+      "info": {
+        "coverage": {
+          "keep": {
+            "exact_terminal_point_samples": 4,
+            "matched_other_terminal_point_samples": 0,
+            "same_terminal_family_samples": 4
+          },
+          "single:0": {
+            "exact_terminal_point_samples": 0,
+            "matched_other_terminal_point_samples": 0,
+            "same_terminal_family_samples": 8
+          },
+          "single:7": {
+            "exact_terminal_point_samples": 4,
+            "matched_other_terminal_point_samples": 0,
+            "same_terminal_family_samples": 8
+          }
+        },
+        "keys": {
+          "keep": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "keep",
+            "run-span",
+            0
+          ],
+          "single:0": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            6
+          ],
+          "single:7": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            1
+          ]
+        },
+        "missing": [],
+        "models": {
+          "single:0": {
+            "cut": {
+              "binary64_hex": "0x1.4000000000000p+2"
+            },
+            "left": {
+              "binary64_hex": "-0x1.69d0369d0369dp-3"
+            },
+            "n": 8,
+            "right": {
+              "binary64_hex": "0x1.b851eb851eb85p-1"
+            },
+            "squared_error": {
+              "binary64_hex": "0x1.7ab250022f3d9p+2"
+            }
+          }
+        },
+        "prediction_sources": {
+          "keep": "empirical",
+          "single:0": "stump",
+          "single:7": "empirical"
+        },
+        "provisional_actions": [],
+        "representation": "point-first",
+        "scores": {
+          "keep": {
+            "binary64_hex": "-0x1.eb851eb851eb8p-3"
+          },
+          "single:0": {
+            "binary64_hex": "0x1.b851eb851eb85p-1"
+          },
+          "single:7": {
+            "binary64_hex": "-0x1.999999999999ap-3"
+          }
+        },
+        "source_keys": {
+          "keep": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "keep",
+              "run-span",
+              0
+            ]
+          ],
+          "single:0": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              1
+            ],
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              2
+            ],
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              8
+            ]
+          ],
+          "single:7": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              1
+            ]
+          ]
+        },
+        "supported": true
+      },
+      "mode": "dq",
+      "raw_selected": "single:0",
+      "selected": "single:0",
+      "status": "supported-unique"
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "StablePoint",
+      "epoch": 6,
+      "info": {
+        "coverage": {
+          "keep": {
+            "exact_terminal_point_samples": 0,
+            "matched_other_terminal_point_samples": 5,
+            "same_terminal_family_samples": 0
+          },
+          "single:0": {
+            "exact_terminal_point_samples": 0,
+            "matched_other_terminal_point_samples": 1,
+            "same_terminal_family_samples": 0
+          },
+          "single:7": {
+            "exact_terminal_point_samples": 0,
+            "matched_other_terminal_point_samples": 5,
+            "same_terminal_family_samples": 0
+          }
+        },
+        "keys": {
+          "keep": [
+            "dq",
+            "COLLISION",
+            false,
+            "keep",
+            "run-span",
+            0
+          ],
+          "single:0": [
+            "dq",
+            "COLLISION",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            6
+          ],
+          "single:7": [
+            "dq",
+            "COLLISION",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            1
+          ]
+        },
+        "missing": [],
+        "models": {},
+        "prediction_sources": {
+          "keep": "terminal-backoff-empirical",
+          "single:0": "terminal-backoff-empirical",
+          "single:7": "terminal-backoff-empirical"
+        },
+        "provisional_actions": [
+          "keep",
+          "single:0",
+          "single:7"
+        ],
+        "representation": "point-first",
+        "scores": {
+          "keep": {
+            "binary64_hex": "-0x1.c28f5c28f5c2ap-2"
+          },
+          "single:0": {
+            "binary64_hex": "-0x1.051eb851eb852p+0"
+          },
+          "single:7": {
+            "binary64_hex": "-0x1.0624dd2f1aa00p-7"
+          }
+        },
+        "source_keys": {
+          "keep": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "keep",
+              "run-span",
+              0
+            ]
+          ],
+          "single:0": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              6
+            ]
+          ],
+          "single:7": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              1
+            ]
+          ]
+        },
+        "supported": true
+      },
+      "mode": "dq",
+      "raw_selected": "single:7",
+      "selected": "single:7",
+      "status": "supported-unique"
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "StablePoint",
+      "epoch": 12,
+      "info": {
+        "coverage": {
+          "keep": {
+            "exact_terminal_point_samples": 1,
+            "matched_other_terminal_point_samples": 5,
+            "same_terminal_family_samples": 1
+          },
+          "single:0": {
+            "exact_terminal_point_samples": 0,
+            "matched_other_terminal_point_samples": 1,
+            "same_terminal_family_samples": 1
+          },
+          "single:7": {
+            "exact_terminal_point_samples": 1,
+            "matched_other_terminal_point_samples": 5,
+            "same_terminal_family_samples": 1
+          }
+        },
+        "keys": {
+          "keep": [
+            "dq",
+            "COLLISION",
+            false,
+            "keep",
+            "run-span",
+            0
+          ],
+          "single:0": [
+            "dq",
+            "COLLISION",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            6
+          ],
+          "single:7": [
+            "dq",
+            "COLLISION",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            1
+          ]
+        },
+        "missing": [],
+        "models": {},
+        "prediction_sources": {
+          "keep": "empirical",
+          "single:0": "terminal-backoff-empirical",
+          "single:7": "empirical"
+        },
+        "provisional_actions": [
+          "single:0"
+        ],
+        "representation": "point-first",
+        "scores": {
+          "keep": {
+            "binary64_hex": "-0x1.2e147ae147ae1p+0"
+          },
+          "single:0": {
+            "binary64_hex": "-0x1.051eb851eb852p+0"
+          },
+          "single:7": {
+            "binary64_hex": "0x1.851eb851eb852p-1"
+          }
+        },
+        "source_keys": {
+          "keep": [
+            [
+              "dq",
+              "COLLISION",
+              false,
+              "keep",
+              "run-span",
+              0
+            ]
+          ],
+          "single:0": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              6
+            ]
+          ],
+          "single:7": [
+            [
+              "dq",
+              "COLLISION",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              1
+            ]
+          ]
+        },
+        "supported": true
+      },
+      "mode": "dq",
+      "raw_selected": "single:7",
+      "selected": "single:7",
+      "status": "supported-unique"
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "DriftBase",
+      "epoch": 0,
+      "info": {
+        "keys": {
+          "keep": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "keep",
+            "run-span",
+            0
+          ],
+          "single:0": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            6
+          ],
+          "single:7": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            1
+          ]
+        },
+        "missing": [],
+        "models": {
+          "single:0": {
+            "cut": {
+              "binary64_hex": "0x1.4000000000000p+2"
+            },
+            "left": {
+              "binary64_hex": "-0x1.69d0369d0369dp-3"
+            },
+            "n": 8,
+            "right": {
+              "binary64_hex": "0x1.b851eb851eb85p-1"
+            },
+            "squared_error": {
+              "binary64_hex": "0x1.7ab250022f3d9p+2"
+            }
+          }
+        },
+        "prediction_sources": {
+          "keep": "empirical",
+          "single:0": "stump",
+          "single:7": "empirical"
+        },
+        "provisional_actions": [],
+        "representation": "terminal-backoff",
+        "scores": {
+          "keep": {
+            "binary64_hex": "-0x1.eb851eb851eb8p-3"
+          },
+          "single:0": {
+            "binary64_hex": "0x1.b851eb851eb85p-1"
+          },
+          "single:7": {
+            "binary64_hex": "-0x1.999999999999ap-3"
+          }
+        },
+        "source_keys": {
+          "keep": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "keep",
+              "run-span",
+              0
+            ]
+          ],
+          "single:0": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              1
+            ],
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              2
+            ],
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              8
+            ]
+          ],
+          "single:7": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              1
+            ]
+          ]
+        },
+        "supported": true
+      },
+      "mode": "dq",
+      "raw_selected": "single:0",
+      "selected": "single:0",
+      "status": "supported-unique"
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "DriftBase",
+      "epoch": 6,
+      "info": {
+        "keys": {
+          "keep": [
+            "dq",
+            "COLLISION",
+            false,
+            "keep",
+            "run-span",
+            0
+          ],
+          "single:0": [
+            "dq",
+            "COLLISION",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            6
+          ],
+          "single:7": [
+            "dq",
+            "COLLISION",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            1
+          ]
+        },
+        "missing": [],
+        "models": {},
+        "prediction_sources": {
+          "keep": "terminal-backoff-empirical",
+          "single:0": "terminal-backoff-empirical",
+          "single:7": "terminal-backoff-empirical"
+        },
+        "provisional_actions": [
+          "keep",
+          "single:0",
+          "single:7"
+        ],
+        "representation": "terminal-backoff",
+        "scores": {
+          "keep": {
+            "binary64_hex": "-0x1.c28f5c28f5c2ap-2"
+          },
+          "single:0": {
+            "binary64_hex": "-0x1.051eb851eb852p+0"
+          },
+          "single:7": {
+            "binary64_hex": "-0x1.0624dd2f1aa00p-7"
+          }
+        },
+        "source_keys": {
+          "keep": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "keep",
+              "run-span",
+              0
+            ]
+          ],
+          "single:0": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              6
+            ]
+          ],
+          "single:7": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              1
+            ]
+          ]
+        },
+        "supported": true
+      },
+      "mode": "dq",
+      "raw_selected": "single:7",
+      "selected": "single:7",
+      "status": "supported-unique"
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "DriftBase",
+      "epoch": 12,
+      "info": {
+        "keys": {
+          "keep": [
+            "dq",
+            "COLLISION",
+            false,
+            "keep",
+            "run-span",
+            0
+          ],
+          "single:0": [
+            "dq",
+            "COLLISION",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            6
+          ],
+          "single:7": [
+            "dq",
+            "COLLISION",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            1
+          ]
+        },
+        "missing": [],
+        "models": {
+          "single:0": {
+            "cut": null,
+            "left": {
+              "binary64_hex": "0x1.851eb851eb852p-1"
+            },
+            "n": 1,
+            "right": {
+              "binary64_hex": "0x1.851eb851eb852p-1"
+            },
+            "squared_error": {
+              "binary64_hex": "0x0.0p+0"
+            }
+          }
+        },
+        "prediction_sources": {
+          "keep": "empirical",
+          "single:0": "stump",
+          "single:7": "empirical"
+        },
+        "provisional_actions": [],
+        "representation": "terminal-backoff",
+        "scores": {
+          "keep": {
+            "binary64_hex": "-0x1.2e147ae147ae1p+0"
+          },
+          "single:0": {
+            "binary64_hex": "0x1.851eb851eb852p-1"
+          },
+          "single:7": {
+            "binary64_hex": "0x1.851eb851eb852p-1"
+          }
+        },
+        "source_keys": {
+          "keep": [
+            [
+              "dq",
+              "COLLISION",
+              false,
+              "keep",
+              "run-span",
+              0
+            ]
+          ],
+          "single:0": [
+            [
+              "dq",
+              "COLLISION",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              1
+            ]
+          ],
+          "single:7": [
+            [
+              "dq",
+              "COLLISION",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              1
+            ]
+          ]
+        },
+        "supported": true
+      },
+      "mode": "dq",
+      "raw_selected": "single:0",
+      "selected": "single:0",
+      "status": "supported-unique"
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "DriftPoint",
+      "epoch": 0,
+      "info": {
+        "coverage": {
+          "keep": {
+            "exact_terminal_point_samples": 4,
+            "matched_other_terminal_point_samples": 0,
+            "same_terminal_family_samples": 4
+          },
+          "single:0": {
+            "exact_terminal_point_samples": 0,
+            "matched_other_terminal_point_samples": 0,
+            "same_terminal_family_samples": 8
+          },
+          "single:7": {
+            "exact_terminal_point_samples": 4,
+            "matched_other_terminal_point_samples": 0,
+            "same_terminal_family_samples": 8
+          }
+        },
+        "keys": {
+          "keep": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "keep",
+            "run-span",
+            0
+          ],
+          "single:0": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            6
+          ],
+          "single:7": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            1
+          ]
+        },
+        "missing": [],
+        "models": {
+          "single:0": {
+            "cut": {
+              "binary64_hex": "0x1.4000000000000p+2"
+            },
+            "left": {
+              "binary64_hex": "-0x1.69d0369d0369dp-3"
+            },
+            "n": 8,
+            "right": {
+              "binary64_hex": "0x1.b851eb851eb85p-1"
+            },
+            "squared_error": {
+              "binary64_hex": "0x1.7ab250022f3d9p+2"
+            }
+          }
+        },
+        "prediction_sources": {
+          "keep": "empirical",
+          "single:0": "stump",
+          "single:7": "empirical"
+        },
+        "provisional_actions": [],
+        "representation": "point-first",
+        "scores": {
+          "keep": {
+            "binary64_hex": "-0x1.eb851eb851eb8p-3"
+          },
+          "single:0": {
+            "binary64_hex": "0x1.b851eb851eb85p-1"
+          },
+          "single:7": {
+            "binary64_hex": "-0x1.999999999999ap-3"
+          }
+        },
+        "source_keys": {
+          "keep": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "keep",
+              "run-span",
+              0
+            ]
+          ],
+          "single:0": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              1
+            ],
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              2
+            ],
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              8
+            ]
+          ],
+          "single:7": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              1
+            ]
+          ]
+        },
+        "supported": true
+      },
+      "mode": "dq",
+      "raw_selected": "single:0",
+      "selected": "single:0",
+      "status": "supported-unique"
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "DriftPoint",
+      "epoch": 6,
+      "info": {
+        "coverage": {
+          "keep": {
+            "exact_terminal_point_samples": 0,
+            "matched_other_terminal_point_samples": 5,
+            "same_terminal_family_samples": 0
+          },
+          "single:0": {
+            "exact_terminal_point_samples": 0,
+            "matched_other_terminal_point_samples": 1,
+            "same_terminal_family_samples": 0
+          },
+          "single:7": {
+            "exact_terminal_point_samples": 0,
+            "matched_other_terminal_point_samples": 5,
+            "same_terminal_family_samples": 0
+          }
+        },
+        "keys": {
+          "keep": [
+            "dq",
+            "COLLISION",
+            false,
+            "keep",
+            "run-span",
+            0
+          ],
+          "single:0": [
+            "dq",
+            "COLLISION",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            6
+          ],
+          "single:7": [
+            "dq",
+            "COLLISION",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            1
+          ]
+        },
+        "missing": [],
+        "models": {},
+        "prediction_sources": {
+          "keep": "terminal-backoff-empirical",
+          "single:0": "terminal-backoff-empirical",
+          "single:7": "terminal-backoff-empirical"
+        },
+        "provisional_actions": [
+          "keep",
+          "single:0",
+          "single:7"
+        ],
+        "representation": "point-first",
+        "scores": {
+          "keep": {
+            "binary64_hex": "-0x1.c28f5c28f5c2ap-2"
+          },
+          "single:0": {
+            "binary64_hex": "-0x1.051eb851eb852p+0"
+          },
+          "single:7": {
+            "binary64_hex": "-0x1.0624dd2f1aa00p-7"
+          }
+        },
+        "source_keys": {
+          "keep": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "keep",
+              "run-span",
+              0
+            ]
+          ],
+          "single:0": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              6
+            ]
+          ],
+          "single:7": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              1
+            ]
+          ]
+        },
+        "supported": true
+      },
+      "mode": "dq",
+      "raw_selected": "single:7",
+      "selected": "single:7",
+      "status": "supported-unique"
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "DriftPoint",
+      "epoch": 12,
+      "info": {
+        "coverage": {
+          "keep": {
+            "exact_terminal_point_samples": 1,
+            "matched_other_terminal_point_samples": 5,
+            "same_terminal_family_samples": 1
+          },
+          "single:0": {
+            "exact_terminal_point_samples": 0,
+            "matched_other_terminal_point_samples": 1,
+            "same_terminal_family_samples": 1
+          },
+          "single:7": {
+            "exact_terminal_point_samples": 1,
+            "matched_other_terminal_point_samples": 5,
+            "same_terminal_family_samples": 1
+          }
+        },
+        "keys": {
+          "keep": [
+            "dq",
+            "COLLISION",
+            false,
+            "keep",
+            "run-span",
+            0
+          ],
+          "single:0": [
+            "dq",
+            "COLLISION",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            6
+          ],
+          "single:7": [
+            "dq",
+            "COLLISION",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            1
+          ]
+        },
+        "missing": [],
+        "models": {},
+        "prediction_sources": {
+          "keep": "empirical",
+          "single:0": "terminal-backoff-empirical",
+          "single:7": "empirical"
+        },
+        "provisional_actions": [
+          "single:0"
+        ],
+        "representation": "point-first",
+        "scores": {
+          "keep": {
+            "binary64_hex": "-0x1.2e147ae147ae1p+0"
+          },
+          "single:0": {
+            "binary64_hex": "-0x1.051eb851eb852p+0"
+          },
+          "single:7": {
+            "binary64_hex": "0x1.851eb851eb852p-1"
+          }
+        },
+        "source_keys": {
+          "keep": [
+            [
+              "dq",
+              "COLLISION",
+              false,
+              "keep",
+              "run-span",
+              0
+            ]
+          ],
+          "single:0": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              6
+            ]
+          ],
+          "single:7": [
+            [
+              "dq",
+              "COLLISION",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              1
+            ]
+          ]
+        },
+        "supported": true
+      },
+      "mode": "dq",
+      "raw_selected": "single:7",
+      "selected": "single:7",
+      "status": "supported-unique"
+    }
+  ],
+  "recorded_control_metrics": [
+    {
+      "main_tasks": 20,
+      "practice_K_steps": 0,
+      "practice_rollouts": 0,
+      "recorded_arm": "TaskTD",
+      "successes": 14,
+      "task_return_mean": 0.168,
+      "task_return_sum": 3.3600000000000003
+    },
+    {
+      "main_tasks": 20,
+      "practice_K_steps": 70,
+      "practice_rollouts": 8,
+      "recorded_arm": "OpenExact",
+      "successes": 17,
+      "task_return_mean": 0.4640000000000001,
+      "task_return_sum": 9.280000000000001
+    },
+    {
+      "main_tasks": 20,
+      "practice_K_steps": 70,
+      "practice_rollouts": 8,
+      "recorded_arm": "OpenBackoff",
+      "successes": 17,
+      "task_return_mean": 0.4640000000000001,
+      "task_return_sum": 9.280000000000001
+    }
+  ],
+  "recorded_control_exact_bindings": [
+    {
+      "actual_main_raw_identical": false,
+      "post_TD_R_L_I_identical": [
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "post_task_R_L_I_identical": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "recorded_arm": "TaskTD"
+    },
+    {
+      "actual_main_raw_identical": true,
+      "post_TD_R_L_I_identical": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "post_task_R_L_I_identical": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "recorded_arm": "OpenExact"
+    },
+    {
+      "actual_main_raw_identical": true,
+      "post_TD_R_L_I_identical": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "post_task_R_L_I_identical": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "recorded_arm": "OpenBackoff"
+    }
+  ],
+  "e12_equal_input_observation": {
+    "visible_failure_evidence_identical": true,
+    "Msample_table_identical": true,
+    "post_TD_full_R_L_I_identical": true,
+    "mask_used_as_model_feature": false
+  },
+  "findings": [
+    "Newpoint-first hierarchicalprior preserves signed fullspanempiricalpoint beforewithin-terminal interpolation. No negativeveto/signfilter/globalpenalty, unknownzero, causaltruth or confidenceclaim. Explicitpointcoverage logs distinguishobserved/currentterminal, observed/otherterminal andinterpolation.",
+    "StablePointactualnewnative17/20mean.464 with7privateprobes versusbyte-pinnedv135OpenExact/OpenBackoffrecorded17/20mean.464 with8. All20main raw andallpre/postordinaryfullcurrentR+L/protectedI exactsame. No oldcontrol/native/checker/readonlybankrerun orruntimeidentityrestore.",
+    "Actualstablecostsaving small: practice69vs70Ksteps(only1saved),7vs8rollouts,34vs36non-sourceTX. OmittedprefixprobeusedtoTRAPafter1step. Do notmarket12.5percentfewerprobesas12.5percentlessCPU/wholework.",
+    "Prospectiveprotection-shift challenge: earlytrap trueonlyfirst6tasks, thereafterfalse. DriftBase/DriftPoint samefresh44editinitialstore andall20conditions; both17/20success/7privateprobes/34TX. Baseactuallyselectsprefixatee12aftertrialSUCCESS.88; PointselectslateSUCCESS.76andstopsprefixunprobed.",
+    "DriftBase mean.494 vsDriftPoint.464; fiveactualnextmainreturns .88vs.76,totalgap.60. Base269KstepsvsPoint305 (30main+6private difference), same27rollouts. Pointpriorityretainsstaleconditionalnegativeevidence, successful-but-suboptimalproposalpassesverification; no globalbenefit/adoptionclaim.",
+    "Atee12StablePoint/DriftBase/DriftPoint have exactlysame actualvisiblefailureevidence, Msampletable, postTDfullR+L/I. Hiddenmask/protectioncondition differsbutisnotamodelinput. Neitherpermanentnegativepointprioritynorblanketforgettingcaninferthatdifferencefromthese equalinputs; extraobservation/testwouldbe realnewinformation.",
+    "Knownnegativeprefixnotbanned: haditbeentestednow inDriftBaseitactuallysucceeds. Generalizeconditionalfailuresashypotheses, notdeathsentences. ConverselyoneprivateSUCCESSdoesnotprovebestcandidate. Failedprivateprobesallpreserved; successmainzerodiagnosis, ordinarylearningcontinues."
+  ],
+  "limits": [
+    "Two knownmechanism-inspiredfixedDQcases, stableisinformedregressioncomparisonnotindependentconfirmation; no blindseed/populationestimate or pooledfamilyweights.",
+    "Stablebaseline reusedrecordedcontrol, notsimultaneousfreshrole; exactsource/protocol/nonledgerpins andall20R+L/I/raw bindingschecked, runtimeidentitynotreconstructed. Oldreadonlycostexcludedexplicitlyfromnewcostcomparison.",
+    "Conditionaldriftresultdoesnotprovealloldnegativeexperienceharmful orallinterpolationbetter. Onefixedprotectionchange andfinitecandidatecap; no netuniversalalgorithmwinner.",
+    "No newretention/Collateralmeasurement orclaim; no exception/partial/fullkeyed/densequalification. OriginalfullV04R/400seedPASSnotinherited.",
+    "Modelgetsprovidedfeatures/family/cap; no autonomousfeaturediscovery/worldmodel/fullAIclaim. Oneepisodeverificationcanmisleadunderstochasticity; saferclonecapabilitynotfreeinphysicaltasks.",
+    "Instrumentedwall9.672s notproductionCPU/clone/RAM/IOtiming; environmentKsteps/rollout/TX measuredseparately. Allworkincluding2freshsourcescounted."
+  ],
+  "preservation": {
+    "old74_ledger_values": true,
+    "old266_provenance": true,
+    "original313_current_sha_match": 313,
+    "current_nonledger_input_pins_match": 348,
+    "old_checker_native_reruns": 0,
+    "automation_inspected_or_modified": false,
+    "whole_repository_audit_claimed": false,
+    "independent_expert_or_sciencegate": false
+  },
+  "next_actual_gap": "Distinguish validatedsuccessfromadequatelycomparedalternative underconditional/staleexperience; selectivelyacquire currentalternativeevidencewithactualbudget, notreadhiddenconditionorconvertoldfailuretopermanentban. No nextpolicyimplemented/claimedhere."
+}

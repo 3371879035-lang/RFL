@@ -1,0 +1,77 @@
+{
+  "schema": "V144_PROSPECTIVE_CONTROLLER_REPAIR_HORIZON",
+  "date_asia_shanghai": "2026-11-07",
+  "parent_commit": "84c34998fbef5fa275f2c7950d85ee91a1322d04",
+  "question": "Can an observed-site controller candidate have delayed ordinary-learning benefit that one-step candidate value misses, and does actual validation avoid applying it to a plant-confounded mismatch?",
+  "checkpoint": {
+    "raw": {
+      "path": "experiments/v04r/ordinary_extra_control_v142/evidence/raw.jsonl",
+      "bytes": 3225077,
+      "sha256": "d4ceca7cff8eb133f4c7779b7225cfa5f3212ef6828552161d2e94e2dffb1bec"
+    },
+    "stored_review": {
+      "path": "experiments/v04r/ordinary_extra_control_v142/stored_audit_v2_result.json",
+      "bytes": 70094,
+      "sha256": "59e37c01425a3c582237c367e9c5eb35642e97d82aa7ccb06bd15fde0d0db3ed"
+    },
+    "contract": {
+      "path": "experiments/v04r/ordinary_extra_control_v142/contract.json",
+      "bytes": 16085,
+      "sha256": "c0133a859f3aedd4e4a683b7de7b9cf6ffa54eafed5a2e0c355307d8c2eaeb8d"
+    },
+    "selector": {
+      "tag": "STREAM_ARM",
+      "arm": "DriftOrdinaryExtra",
+      "field": "final_state"
+    },
+    "recorded_completed_main_tasks": 20,
+    "recorded_external_updates": 4,
+    "restoration": "Explicit recorded ordinary model checkpoint, not source/pair/receipt/issued-observation identity. Rebuild complete I/R/L through original legal store transactions; full wire equality. Fresh task clocks 0..11, never pretend to resume original issued plan/counter/runtime."
+  },
+  "reference": {
+    "path": "experiments/v03r/a96_dense/b2_prepare/grammar_catalog_v31/evidence/stdout.log",
+    "sha256": "d0aafb6dc20b1cc0c872ac4c48497d94feb707ffe14448bd1c2f3ddd1bbb467b",
+    "q_digest": "d9078b5b5b823df56f998e8c28eb6a3e388bd3ae216f41a21acdb5202d2ec05a"
+  },
+  "cases": {
+    "controller": {
+      "install_controller": true,
+      "plant_fault": false
+    },
+    "plant": {
+      "install_controller": false,
+      "plant_fault": true
+    }
+  },
+  "arms": [
+    "ExperienceNoWrite",
+    "OneStepValue",
+    "TwoStepValue"
+  ],
+  "tasks_each": 6,
+  "trial_horizon": 2,
+  "trial_events_each": 1,
+  "source": "Read exact recorded v142 DriftOrdinaryExtra I/R/L as ordinary model data via unchanged v143 checkpoint materialization (3TX), no issued identity. One new controller source adds X[(START,k0,phi3,t0),WAIT]=RIGHT via original legal TX. New role I is its own complete case current source; current R and L copied independently; old checkpoint I retained as source data, not falsely treated as this new role I.",
+  "masks": "Both native cases trap entering(1,2) atstep0. Plant case additionally PlantFault(t0,RIGHT). Main first observation WAIT->RIGHT/TRAP matches across cases, but X deletion cannot remove a plant intervention.",
+  "boundary": "Task-visible actual failure triggers diagnostics after unchanged ordinary TD. Success ordinary-only. Candidate generated only from first observed cmd!=realized step, no source/cause label or mask feature; candidate is original legal substrate delete at actually visited ControllerSite. This is a NEW versioned local X-update executor, not original B1 law/whole-pair qualification or issued B1 receipt.",
+  "learning_revision": "New ObservationTaskLoop explicitly anchors current P/X at the last authorized local feedback commit, while initial full I remains immutable. Ordinary TD must preserve that anchor and full R+L. Both NoWrite and treatment use this same ordinary learner and genuine keep observation ingestion, never freezing or owner-filtering ordinary learning.",
+  "trial_policy": "First actual main failure only: keep and observed-X-delete, independently clone complete post-TD R+L, actual2 sequential ordinary tasks in same native current mask. First complete keep trace is genuine issued native observation consumed once after main repair/complete, for every arm. Second trace contributes to value but is not ingested, all work counted. Partial batch gives no completed mean/usable source, no retry.",
+  "learned_value": "EmpiricalHorizonValue fits candidate return means from actual trial first1 or first2 observations; same actual4 private tasks paid by all arms. OneStepValue uses first return, TwoStepValue uses ordered mean of2; equal score chooses keep (less writes). NoWrite forces keep but same fitted two-step values and extra keep observation. No causal posterior or learned feature discovery claim.",
+  "ordinary_plan": "Manual MAX coins, actual explore0, alpha1/2 epsilon1/10 unchanged, k0 phi3/proposal1 error0 rank12; fresh main epochs0..5 and private0..1. No key/RNG/DP/calibration/collector or old prefix replay.",
+  "expected_extent_not_effect_gate": {
+    "main_tasks": 36,
+    "private_tasks_upper": 24,
+    "registered_keep_observations": 6,
+    "extra_source_install_TX": 1,
+    "checkpoint_TX": 3
+  },
+  "budget": {
+    "rollout": 72,
+    "step": 864,
+    "transaction": 200,
+    "raw_bytes": 25165824,
+    "seconds": 120
+  },
+  "limits": "Two fixed mechanism-development cases from one learned ordinary checkpoint, not blindseed/population/architecture claims. Trial serial chronology counts; no reset or copying private L. Single native masks and finite episodes do not establish uncertainty calibration/fulltotality/general safety.",
+  "capture": "Exclusive new finite capture before firstnative, firstfailure/partial/zero/adverse preserved; no automatic retry or old native/checker/bank reruns; original313/API/guard/law/registry allunchanged."
+}

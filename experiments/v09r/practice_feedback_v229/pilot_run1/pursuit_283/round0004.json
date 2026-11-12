@@ -1,0 +1,260 @@
+{
+  "round": 4,
+  "groups": {
+    "original-F-R": {
+      "group": "F-R",
+      "round": 4,
+      "steps": 16384,
+      "updates": 1024,
+      "counts": {
+        "real_trials": 16,
+        "trial_steps": 132,
+        "teacher_tests": 1,
+        "teacher_pass": 0,
+        "student_tests": 0,
+        "student_pass": 0,
+        "sleep_updates": 0,
+        "ordinary_updates": 1016,
+        "candidate_updates": 8,
+        "reward_packets": 16384,
+        "fact_labels": 65435,
+        "effect_pairs": 4,
+        "effect_negative_or_zero": 3,
+        "actual_steps": 16384,
+        "ordinary_steps": 16129,
+        "gate_steps": 123,
+        "actual_episodes": 688
+      },
+      "before": "04919af7fae51192a3de866afbaa5a66d5af822fd4a7c8100f6c4b19ad18d0e9",
+      "after": "965f3ab8e540412c5d997b5bb6c422cd60e297fde9800b247f5caaeebf08da06",
+      "replay": 8192,
+      "memory": 16,
+      "events": 257,
+      "last_losses": [
+        {
+          "kind": "optimizer",
+          "stage": "ordinary",
+          "update": 1020,
+          "loss": 0.0036160247400403023,
+          "parts": {
+            "td": 0.0006794444052502513,
+            "factual": 0.002936580218374729
+          }
+        },
+        {
+          "kind": "optimizer",
+          "stage": "ordinary",
+          "update": 1021,
+          "loss": 0.0033779265359044075,
+          "parts": {
+            "td": 0.00015183381037786603,
+            "factual": 0.0032260927837342024
+          }
+        },
+        {
+          "kind": "optimizer",
+          "stage": "ordinary",
+          "update": 1022,
+          "loss": 0.03465447202324867,
+          "parts": {
+            "td": 0.031453050673007965,
+            "factual": 0.0032014199532568455
+          }
+        },
+        {
+          "kind": "optimizer",
+          "stage": "ordinary",
+          "update": 1023,
+          "loss": 0.003493719035759568,
+          "parts": {
+            "td": 0.00022064140648581088,
+            "factual": 0.003273077541962266
+          }
+        },
+        {
+          "kind": "optimizer",
+          "stage": "ordinary",
+          "update": 1024,
+          "loss": 0.003791762050241232,
+          "parts": {
+            "td": 0.0006670785951428115,
+            "factual": 0.0031246833968907595
+          }
+        }
+      ]
+    },
+    "open-random": {
+      "group": "open-random",
+      "round": 4,
+      "steps": 16384,
+      "updates": 1024,
+      "counts": {
+        "real_trials": 16,
+        "trial_steps": 188,
+        "student_tests": 4,
+        "student_pass": 1,
+        "sleep_updates": 32,
+        "ordinary_updates": 992,
+        "reward_packets": 16384,
+        "fact_labels": 65485,
+        "effect_pairs": 4,
+        "effect_negative_or_zero": 3,
+        "actual_steps": 16384,
+        "ordinary_steps": 15582,
+        "gate_steps": 614,
+        "actual_episodes": 649
+      },
+      "before": "a41c8576f63c606d304cc46ca0237d081ace29eec9dbb9e2e57f73d7ad7ca76f",
+      "after": "71c754b7c774957d7379465703469d2904011c8b7afe92b40d33f066f42213f4",
+      "replay": 16384,
+      "memory": 16384,
+      "events": 258,
+      "last_losses": [
+        {
+          "kind": "optimizer",
+          "stage": "ordinary",
+          "update": 1020,
+          "loss": 0.007559583988040686,
+          "parts": {
+            "td": 0.005108420737087727,
+            "factual": 0.0024436775129288435,
+            "effect": 7.485356036340818e-05
+          }
+        },
+        {
+          "kind": "optimizer",
+          "stage": "ordinary",
+          "update": 1021,
+          "loss": 0.0028683135751634836,
+          "parts": {
+            "td": 0.001047253725118935,
+            "factual": 0.0018209333065897226,
+            "effect": 1.2654223837671452e-06
+          }
+        },
+        {
+          "kind": "optimizer",
+          "stage": "ordinary",
+          "update": 1022,
+          "loss": 0.0024325770791620016,
+          "parts": {
+            "td": 0.0013092180015519261,
+            "factual": 0.0011228640796616673,
+            "effect": 4.949238700646674e-06
+          }
+        },
+        {
+          "kind": "optimizer",
+          "stage": "ordinary",
+          "update": 1023,
+          "loss": 0.0019573383033275604,
+          "parts": {
+            "td": 0.0004449671250768006,
+            "factual": 0.0015112252440303564,
+            "effect": 1.1459048437245656e-05
+          }
+        },
+        {
+          "kind": "optimizer",
+          "stage": "ordinary",
+          "update": 1024,
+          "loss": 0.004048359114676714,
+          "parts": {
+            "td": 0.0015560484025627375,
+            "factual": 0.002490186132490635,
+            "effect": 2.1250356439850293e-05
+          }
+        }
+      ]
+    },
+    "open-learned": {
+      "group": "open-learned",
+      "round": 4,
+      "steps": 16384,
+      "updates": 1024,
+      "counts": {
+        "real_trials": 16,
+        "trial_steps": 383,
+        "student_tests": 4,
+        "student_pass": 0,
+        "sleep_updates": 32,
+        "ordinary_updates": 992,
+        "reward_packets": 16384,
+        "fact_labels": 65509,
+        "effect_pairs": 4,
+        "effect_negative_or_zero": 4,
+        "actual_steps": 16384,
+        "ordinary_steps": 15657,
+        "gate_steps": 344,
+        "actual_episodes": 678
+      },
+      "before": "96218cbbbe06406ee2ed5a1b7069bc20cefac5fe6145089f9f2e5d16fa03d334",
+      "after": "3638fbfd664467ab0f775ef679ebf693df85b3fc72a1d7c132fe832f667b1f55",
+      "replay": 16384,
+      "memory": 16384,
+      "events": 258,
+      "last_losses": [
+        {
+          "kind": "optimizer",
+          "stage": "ordinary",
+          "update": 1020,
+          "loss": 0.0026770178228616714,
+          "parts": {
+            "td": 0.0002932323550339788,
+            "factual": 0.002381272614002228,
+            "effect": 2.512994615244679e-05
+          }
+        },
+        {
+          "kind": "optimizer",
+          "stage": "ordinary",
+          "update": 1021,
+          "loss": 0.0038604270666837692,
+          "parts": {
+            "td": 0.0007317650597542524,
+            "factual": 0.0031279795803129673,
+            "effect": 6.824681804573629e-06
+          }
+        },
+        {
+          "kind": "optimizer",
+          "stage": "ordinary",
+          "update": 1022,
+          "loss": 0.002473705681040883,
+          "parts": {
+            "td": 0.00025519757764413953,
+            "factual": 0.0022173160687088966,
+            "effect": 1.1921222721866798e-05
+          }
+        },
+        {
+          "kind": "optimizer",
+          "stage": "ordinary",
+          "update": 1023,
+          "loss": 0.002692821901291609,
+          "parts": {
+            "td": 0.00014032426406629384,
+            "factual": 0.00255235331133008,
+            "effect": 1.442947109353554e-06
+          }
+        },
+        {
+          "kind": "optimizer",
+          "stage": "ordinary",
+          "update": 1024,
+          "loss": 0.0024084157776087523,
+          "parts": {
+            "td": 0.0003754281788133085,
+            "factual": 0.0020327786915004253,
+            "effect": 2.0894967747153714e-06
+          }
+        }
+      ]
+    }
+  },
+  "training_seconds": {
+    "original-F-R": 62.63483540000743,
+    "open-random": 95.06834779999917,
+    "open-learned": 108.61550249997526
+  }
+}

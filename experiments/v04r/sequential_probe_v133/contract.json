@@ -1,0 +1,210 @@
+{
+  "schema": "V133_PROSPECTIVE_SEQUENTIAL_INTERVENTION_PROBE",
+  "date_asia_shanghai": "2026-11-07",
+  "parent_commit": "78b14ee18e9b2533126af1ae18832a8ddb533fb5",
+  "question": "Can a finite single-episode keep-versus-model intervention probe prevent knownbad writes, preserving measured taskquality withless practice than the twoepisodes/fullmenu procedure?",
+  "modes": [
+    "dq"
+  ],
+  "arms": [
+    "compatible:TaskTD",
+    "compatible:Direct",
+    "compatible:Full",
+    "compatible:Verified",
+    "reversal:TaskTD",
+    "reversal:Direct",
+    "reversal:Full",
+    "reversal:Verified"
+  ],
+  "source_rule": "Two genuinecaseinitializations, eachsharedbyitsfourfreshroleclones. Compatiblecase:STARTWAITt0,1 + longWAITat1,2 t>=1, bothm,28totaledits. Reversalcase:STARTWAITt0..5 + singleWAIT1,2t7,bothm,16totaledits. Bothkeep unreadk0phi4RIGHT/P3->2sentinels. Samek0phi1world/trapstep0; sourcecaseid usedonlyforinstallation/audit, notmodelscore ortrialpolicy.",
+  "schedule": [
+    {
+      "kappa": 0,
+      "phi": 1,
+      "trap": true
+    },
+    {
+      "kappa": 0,
+      "phi": 1,
+      "trap": true
+    },
+    {
+      "kappa": 0,
+      "phi": 1,
+      "trap": true
+    },
+    {
+      "kappa": 0,
+      "phi": 1,
+      "trap": true
+    },
+    {
+      "kappa": 0,
+      "phi": 1,
+      "trap": true
+    },
+    {
+      "kappa": 0,
+      "phi": 1,
+      "trap": true
+    },
+    {
+      "kappa": 0,
+      "phi": 1,
+      "trap": true
+    },
+    {
+      "kappa": 0,
+      "phi": 1,
+      "trap": true
+    }
+  ],
+  "episode_inputs": "Eightmain tasks perrole percase, samek0phi1/rank12/error0/base1/MAXcoins andtrap(1,2,step0). No resetwithinrole; differentcases are independentinitialstates, not onepersistentlearner. Bothcases chosenbeforeexecution, notblindpopulation.",
+  "model": "Allmodelusingroles sameunchangedv131frozen5.0cut/samples; no parameterlearning/retuning fromnewlabels. Full/task use no diagnosticmodel. Onlyverificationprotocol changes. Pureprobe_policy sees actualterminal/return evidence, notmask/source/learnerstate. Nativeprobeplans are newexplicitone-episode ororiginaltwo-episode plans, no e0retry.",
+  "diagnostic": "Taskonlynone. Direct uses frozenlearnedstump/review asv132; Full alwayseligiblefullmenu3branches2ordinarytasks each. Verified on supportedapplyprediction first probeskeepandprediction oneepisodeeach; ifpredictedtrialfailsorunderperformskeep, also probesremainingcandidateoneepisode. Onunsupported/reviewdecline, oneepisodeeachofall3. Keeppredictionmaykeepwithouttrial; subsequentfailedkeepcantriggerreview. Successmainordinaryonly.",
+  "retention_checkpoints_completed_tasks": [
+    0,
+    4,
+    8
+  ],
+  "retention_protocol": "Threeclean(noTRAP)single-scene readonlybanks perrole; noTD/draw/diagnosis, fullR+L+I preserved. This is not a generalCollateral or retentionqualification.",
+  "metrics": "Per-case8task completequality, predreject/accept decisions, allnativepracticecosts; explicitbalancedtwo-case aggregate isdescriptiveonly, not populationweights/sciencefamily adoption. Keepalladverse/zero/partial. Compareverifiedoneepisode procedurevsfulltwoepisode, not exactcompute matching or universaltrialreliability.",
+  "reference": {
+    "path": "experiments/v03r/a96_dense/b2_prepare/grammar_catalog_v31/evidence/stdout.log",
+    "sha256": "d0aafb6dc20b1cc0c872ac4c48497d94feb707ffe14448bd1c2f3ddd1bbb467b",
+    "q_digest": "d9078b5b5b823df56f998e8c28eb6a3e388bd3ae216f41a21acdb5202d2ec05a"
+  },
+  "budget": {
+    "rollout": 144,
+    "step": 1728,
+    "transaction": 512,
+    "raw_bytes": 50331648,
+    "seconds": 90
+  },
+  "expected_extent_not_effect_gate": {
+    "main_tasks": 64,
+    "read_only_rollouts": 24,
+    "practice_rollouts_upper_bound": 36,
+    "total_rollouts_upper_bound": 124
+  },
+  "capture": "New exclusive bounded capture and source pins before first execution. Old code/positive/negative/partial results unchanged, no old checker/native rerun, no automatic retry or replacing adverse/unknown outcomes.",
+  "limits": "Two deliberatelyselectedknownmechanisms andfixed8taskpercase, DQonly, not blindindependentconfirmatoryseeds/generalperformance. Oneepisodeprobe ischeaperbutweaker evidence thantwoepisodes; currentdeterministic repeatabilitynot realisticstochasticguarantee. Successfulbranchresult ispart of failure-triggered investigation, notadditionalreflectionon successfulmain tasks. Frozenmodel5.0 unchanged, ordinaryR+L activeallroles. Same originalQ*/alpha1/2/epsilon1/10/rewards; no punishmentablation. Allprivatebranchwork counted, standardqueryAPIstill0notfreework. No oldfixture/checker/native rerun, sciencekeys/RNG/keyderive/DP/calibration/collector/automationchange, APIorissuedidentity spoofing.",
+  "practice": {
+    "trigger": "OnlyafteractualmainfailureandordinaryTD. NewVerified doesnotdirectlycommitapplymemoryhit: itexecutesactualprobesfirst. Current-condition simulatorcapability runnerprivate, completepostTD R+L clones/nonalias/protectedI. No learner-directedmainactionexploration ornewRNG.",
+    "cap": "Oneconsumedpracticeevent perrole, canonicalmenu keep+first2eligible singles retained. Full/directfallback2ordinaryepisodes perbranch, Verified1 perbranch(max3). No failedbranchretry, menuexpansion or thresholdchange. Unprobedcandidateexplicitwhenverificationstopsafter2probes.",
+    "execution": "Runner-private current-task environment capability binds current observed kappa/phase and current actual mask, never future masks. Clone actual complete live post-TD R+L into separate branches; candidate edits on branch,2repeat-current-condition tasks, no diagnostics inside branches. Origin and its I stay unchanged. New typed data/branches, not restored issuedB1handles.",
+    "decision": "Choose highestactualmean amongprobedactions, tie loweraddresscost thenoriginalcanonicalmenuorder. Positivefirstprobe allowsboundedearlystop, not claimuntestedalternativeoptimal. Ifhypothesisfailsorunderperformskeep, plannedremainingcandidateprobe happens; no permanentban or punitiveMlabel.",
+    "cost": "All branch rollouts/steps/ordinary transactions and candidate writes counted separately; task and retention comparison shares task schedule but NOT total compute. No net efficiency or full-menu optimality claim. Standard query API remains0; these new practice operations are not claimed free or nonexistent.",
+    "event_cap": 1
+  },
+  "online_memory": {
+    "state": "FrozenMemory is ownnominal frozen dataclass withtupleweights; observe method absent. Modelsrecorded beforefirstnative. Review/conflictflags are livefeedback state, so fullagent isnot calledentirelyfrozen; ordinaryR+L continues.",
+    "training": "No modeltraining duringheldouttest. Twelveprioractualreturn samples/provenance preserved. Newpractice labels loggedasunused; sameMweights before/aftereverytask. No successattribution or globalfailurepenalty.",
+    "features": "Sameold coarse or numericrunlength features, no newabsolutecontext/cell/ordinal feature. Newlength6 liesinthelearnedhighbranch (>5), not proof of harm.",
+    "comparison": "DirectandVerified useidenticalrecorded12samplediagnosticmodel andbothhybridguards. Full/no-model explicitcontrol. Mretrieval count notactualcommitcount: rejectedpredictionneverbecomespendingactualmainintervention. Probeoutcomeskeptbutnotmodeltrained."
+  },
+  "failure_review": "Pending recall recorded only after actual remembered proposal is executed and complete main receipt exists; next failure is observed by native task loop before ordinary TD and then reviewed during diagnosis after ordinary TD. Only same observed kappa/phi and consecutive epoch qualify. A success or context switch expires the token without a diagnosis. Marking a key for investigation is not proof the prior intervention caused failure, a permanent action ban, or global punishment. Actual re-practice budget consumed once before branch start; no reset or retry.",
+  "retention_scenes": [
+    {
+      "kappa": 0,
+      "phi": 1
+    }
+  ],
+  "cases": {
+    "compatible": {
+      "sources": [
+        {
+          "kappa": 0,
+          "phi": 1,
+          "prefix": 1,
+          "cell": [
+            1,
+            2
+          ]
+        }
+      ],
+      "prefix_wait_source": {
+        "kappa": 0,
+        "phi": 1,
+        "cell": [
+          0,
+          2
+        ],
+        "times": [
+          0,
+          1
+        ]
+      },
+      "scripted_source": {
+        "kappa": 0,
+        "phi": 1,
+        "entries": []
+      }
+    },
+    "reversal": {
+      "sources": [],
+      "prefix_wait_source": {
+        "kappa": 0,
+        "phi": 1,
+        "cell": [
+          0,
+          2
+        ],
+        "times": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "scripted_source": {
+        "kappa": 0,
+        "phi": 1,
+        "entries": [
+          {
+            "x": 1,
+            "y": 2,
+            "t": 7,
+            "action": 4
+          }
+        ]
+      }
+    }
+  },
+  "roles": {
+    "compatible:TaskTD": {
+      "case": "compatible",
+      "policy": "task"
+    },
+    "compatible:Direct": {
+      "case": "compatible",
+      "policy": "direct"
+    },
+    "compatible:Full": {
+      "case": "compatible",
+      "policy": "full"
+    },
+    "compatible:Verified": {
+      "case": "compatible",
+      "policy": "verify"
+    },
+    "reversal:TaskTD": {
+      "case": "reversal",
+      "policy": "task"
+    },
+    "reversal:Direct": {
+      "case": "reversal",
+      "policy": "direct"
+    },
+    "reversal:Full": {
+      "case": "reversal",
+      "policy": "full"
+    },
+    "reversal:Verified": {
+      "case": "reversal",
+      "policy": "verify"
+    }
+  }
+}

@@ -1,0 +1,148 @@
+{
+  "schema": "V91_NEW_TRUE_PATCH_HIT_ENGINEERING_INPUT_CONTRACT",
+  "parent_commit": "5aefee1984bc016a9d1e2c085ba05a53e7ca306a",
+  "human_request": "那就解决这些问题啊",
+  "purpose": "Verify actual patch-hit training, persistence and DQ equivalence at the true START using unchanged v90 revised module. No failed v90 test/checker/launcher execution.",
+  "reference_input": {
+    "path": "experiments/v03r/a96_dense/b2_prepare/grammar_catalog_v31/evidence/stdout.log",
+    "sha256": "d0aafb6dc20b1cc0c872ac4c48497d94feb707ffe14448bd1c2f3ddd1bbb467b",
+    "q_digest": "d9078b5b5b823df56f998e8c28eb6a3e388bd3ae216f41a21acdb5202d2ec05a",
+    "method": "Read every stored DECISION_CONTEXT q_row_hex, reconstruct typed full QReferenceView; no solver execution or old fixture rerun."
+  },
+  "frozen_manifest": "experiments/v03r/a96_dense/pipeline/frozen_inputs.json",
+  "actual_start": [
+    0,
+    2
+  ],
+  "changed_engineering_sources": "All ordinary fullpre owner/unread D/Q addresses move from the incorrect (1,1) to the actual source-defined START (0,2); these are different full states and genuine untested hit branches, not repeated v90 sources.",
+  "exact_source_definitions": {
+    "phase": 2,
+    "kappa": 0,
+    "proposal": 0,
+    "process": "0→1",
+    "tape": [
+      2,
+      0,
+      57
+    ],
+    "source_owner": [
+      0,
+      2,
+      0,
+      0,
+      2,
+      1,
+      0
+    ],
+    "owner_bad_literal": 4,
+    "unread": [
+      0,
+      2,
+      0,
+      1,
+      2,
+      1,
+      0
+    ],
+    "unread_literal": 4,
+    "unread_X": "kappa1 phi2 START cmdWAIT→RIGHT",
+    "active_X_only_case2_and3": "kappa0 phi2 START cmdWAIT→RIGHT",
+    "dq_override": "independent literal WAIT, max original row+1",
+    "planned_partial_owner": [
+      1,
+      2,
+      1,
+      0,
+      2,
+      1,
+      0
+    ],
+    "partial_literal": 3,
+    "partial_draws": "step0 nonexplore/no START patch→reference RIGHT; step1 explore over five legal actions with only uint64MAX then exhaustion. One real prefix step, no complete trace/commit/retry.",
+    "complete_rejection": "step0 explore draw0→RIGHT; step1 uint64MAX rejected on n5, then draw0→UP",
+    "source_selection": "Original kernel.py START and stored legal rows only, never select by native outcome or repair gain."
+  },
+  "unchanged_revised_core": "adaptive_training_v90/adaptive_training.py SHA 4e15a9b4e91c0065b0234fe988fc38e97cc284d036255543fc96b4856c34834b",
+  "semantic_revision": "Explicit L plus learnable literal D via visited-context greedy policy improvement. Not unchanged A77/A91, not v87 immutable D-priority, not science adoption.",
+  "crucial_qualification_limit": "Exact-zero numeric TD can still change D by policy improvement using the existing Q* prior; no reward-learning gain or autonomous discovery inference.",
+  "preserve_failure": {
+    "v90_exit_code": 1,
+    "v90_test_methods": 11,
+    "v90_failures": 6,
+    "root_cause": "New harness incorrectly hard-coded START=(1,1) instead of (0,2), so intended patches were unread; independent TD oracle used wrong pre-state and first action set n2 did not reject uint64MAX.",
+    "v90_runtime_counts": {
+      "rollout": 16,
+      "step": 108,
+      "sweep": 11,
+      "train_episode": 10,
+      "transaction": 21
+    },
+    "raw_limit": "Some v90 assertions failed before records were emitted; their raw was not captured. Do not reconstruct by rerun or claim complete raw for v90.",
+    "action": "Original executed files, six failures and both normal/partial products permanently preserved; never edit or run their fixture/checker/native again."
+  },
+  "preserved_v90_files": {
+    "experiments/v03r/a96_dense/b2_prepare/adaptive_training_v90/adaptive_training.py": {
+      "bytes": 12068,
+      "sha256": "4e15a9b4e91c0065b0234fe988fc38e97cc284d036255543fc96b4856c34834b"
+    },
+    "experiments/v03r/a96_dense/b2_prepare/adaptive_training_v90/audit_stored.py": {
+      "bytes": 8510,
+      "sha256": "2a4f32cc0e4064bc007c4056020b5490af28e94e92fd64c203decda331f1d7c3"
+    },
+    "experiments/v03r/a96_dense/b2_prepare/adaptive_training_v90/contract.json": {
+      "bytes": 6997,
+      "sha256": "922cc362ea49a8f8784aaa2844934bb8857e69c48065b9e91f1f286fa387833c"
+    },
+    "experiments/v03r/a96_dense/b2_prepare/adaptive_training_v90/execute.py": {
+      "bytes": 3011,
+      "sha256": "27cd2486f19ea69dd9748f6c72d39b2b152bd7422fd55e17dc939496ccb912fd"
+    },
+    "experiments/v03r/a96_dense/b2_prepare/adaptive_training_v90/test_integration.py": {
+      "bytes": 14517,
+      "sha256": "7f3d00d4249b339006b4c9c51d03b8c31189c744a5ea76a1aafeb2f5d7e130c5"
+    },
+    "experiments/v03r/a96_dense/b2_prepare/adaptive_training_v90/evidence/claim.json": {
+      "bytes": 40839,
+      "sha256": "6ff606716f933ce5938754a8977ac11cc65fd3f8a08c04be1c6d4e069d659521"
+    },
+    "experiments/v03r/a96_dense/b2_prepare/adaptive_training_v90/evidence/exit.json": {
+      "bytes": 40829,
+      "sha256": "dd82dc670ca388d6e212b59a25cc30598051e470e1eae1bbab16fa1138de6095"
+    },
+    "experiments/v03r/a96_dense/b2_prepare/adaptive_training_v90/evidence/stderr.log": {
+      "bytes": 6200,
+      "sha256": "5579ce0886fe2fa400d82b0a2f30161b738347f87490c2defdb7c48256cf5f69"
+    },
+    "experiments/v03r/a96_dense/b2_prepare/adaptive_training_v90/evidence/stdout.log": {
+      "bytes": 56596,
+      "sha256": "99445454a5139ce9d528ab7e1039a7f9a70db39b08bfd94a25522d41cc163b80"
+    }
+  },
+  "coverage": [
+    "true initial literal hit in training and eval, policy release after learning",
+    "persistent nonempty L with D retained and P/X/unread/immediate unchanged",
+    "2 exact new DQ action/TD/fullpost/eval differentials",
+    "outer exploration at a hit and n5 rejection",
+    "partial one-step prefix preserved, no commit/complete trace/retry",
+    "zero TD versus policy-improvement distinction"
+  ],
+  "expected_test_methods": 6,
+  "expected_complete_revised_episodes": 8,
+  "original_dq_differential_episodes": 2,
+  "budget": {
+    "rollout": 40,
+    "step": 480,
+    "transaction": 100,
+    "seconds": 60,
+    "stdout_bytes": 2000000,
+    "stderr_bytes": 100000
+  },
+  "capture": "Every actual K.step/K.rollout return and completed training/eval receipt emitted by test-only profile before assertions. No module/API/provider monkeypatch.",
+  "no_new_scientific_or_workload_key": true,
+  "no_RNG_or_DP_or_calibration": true,
+  "no_original_B1_issued_handle_claim": true,
+  "no_FutureTrainingProtocol_or_Curve_or_collector": true,
+  "old_scientific_family_and_F1_qualification_not_migrated": true,
+  "scientific_state": "UNEVALUATED_COLLECTION_CLOSED_RESEARCH_INCOMPLETE",
+  "exclusive_output": "adaptive_training_hit_v91/evidence; one new child, no automatic retry"
+}

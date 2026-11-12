@@ -1,0 +1,52 @@
+{
+  "schema": "V09_GROUNDED_RESIDUAL_READOUT_V187",
+  "utc": "2026-11-08T08:13:30.914998+00:00",
+  "authority": "那你解决吧；继续修反馈决策，不以仅恢复Q为最终解决",
+  "scope": "One fixed candidate afterV185gradientrepairandV186factorial. Hybridonly; purefeedbackF0notchanged.",
+  "change": "RetainV185protectedQ, all outcome/latent factuallearning and history. Add one zero-initialized residual output per factualhead (75vs74outputs). Train residual using actual DoubleDQN target minus detached actual currentQ, perheadfixedbootstrap, weight1. Frozen/action feedback score=ownQ+meanpredictedresidual; no hypotheticalsuccessorvalueoverwrite or empiricaladditivescore/deeprollout forhybrids. Trainingbehavior remainsownQ for clean competence test; finalfeedbackreadout may overruleQ. This is reward-using hybrid residual value learning, not proof of purefactualorindependentattributionbenefit.",
+  "matrix": {
+    "seeds": [
+      93001,
+      93002,
+      93003,
+      93004
+    ],
+    "arms": [
+      "F-RP",
+      "F-R"
+    ],
+    "models": 8,
+    "training_steps_each": 131072,
+    "total_train_steps": 1048576,
+    "checkpoints": [
+      0,
+      16384,
+      65536,
+      131072
+    ],
+    "full_eval_counts": [
+      128,
+      128,
+      128,
+      256
+    ],
+    "Q_eval_counts": [
+      128,
+      128,
+      128,
+      128
+    ],
+    "evaluation_episodes": 9216,
+    "environment_steps_upper": 3407872
+  },
+  "resources": {
+    "workers": 8,
+    "numeric_threads_each": 1,
+    "wall_seconds": 3600,
+    "aggregate_RAM_GiB": 20,
+    "evidence_GiB": 6
+  },
+  "evaluation": "Samepaired128scenes across old/new/full/Q. Fourknownseeds, no freshconfirmation; noeffectdrivenweights/budgetchanges. Reportfull256separately.",
+  "failure": "Exclusivecapture firstfailurepartial retained noautomaticretry. No64seedrestart.",
+  "limits": "Compositecandidate not an isolated proof for eachremovedreadoutterm. Extraresidualoutput/loss changeshybridmethod; notclaimedfreeoronlyfeedbackinformationchange. Trainingpolicy feedback takeover notyettested. Acceptnegative/zeroresultswithoutchasingmorevariants."
+}

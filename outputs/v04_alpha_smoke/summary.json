@@ -1,0 +1,895 @@
+{
+  "schema_version": "0.4.0",
+  "experiment": "v04_alpha",
+  "git_commit": "151a7aa00cd9241b16087bfe093629c3cb7a8472",
+  "config": {
+    "schema_version": "0.4.0",
+    "environment": {
+      "horizon": 4,
+      "gamma": 1.0
+    },
+    "learning": {
+      "alpha_low": 0.1,
+      "alpha_high": 0.1,
+      "alpha_diag": 0.1,
+      "epsilon_decay_fraction": 0.8
+    },
+    "gate": {
+      "noninferiority_margin": 0.01,
+      "wmd_relative_decrease": 0.2,
+      "inconclusive_ci_width": 0.05,
+      "ceiling_success": 0.98,
+      "ceiling_episodes": 500,
+      "learning_failure_success": 0.3
+    },
+    "experiment": {
+      "name": "v04_alpha",
+      "seeds": 4,
+      "seed_base": 4600000,
+      "warmup_episodes": 300,
+      "episodes": 800,
+      "eval_every": 250,
+      "eval_episodes": 100,
+      "reward_mode": "A",
+      "corrupt_states": 6,
+      "corrupt_delta": 1.0,
+      "knowledge_theta": 0.2,
+      "arms": [
+        "NoCorruption",
+        "NoCorrection",
+        "ModuleOracle",
+        "DecisionOracle",
+        "RepairOracle"
+      ]
+    }
+  },
+  "seeds": [
+    {
+      "seed": 4600000,
+      "arm": "NoCorruption",
+      "success_auc": 1.0,
+      "final_success": 1.0,
+      "wmd": 0.0,
+      "kd_innocent": 0.0,
+      "collateral": 0.0,
+      "corrections": 0,
+      "sites": 0,
+      "clippings": 0,
+      "family_counts": {
+        "Decision": 121,
+        "clean": 449,
+        "WholeProcess": 208,
+        "CLEAN": 16,
+        "Execution": 5,
+        "Plan": 1
+      },
+      "checkpoints": [
+        0,
+        250,
+        500,
+        750
+      ],
+      "curve": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "wall_s": 0.06610129994805902,
+      "q_hash": "2dbc33853ea0cb9a88f8d393c9f92ebdd3a37b6e46c4eed2f17018544e032a72"
+    },
+    {
+      "seed": 4600000,
+      "arm": "NoCorrection",
+      "success_auc": 0.8333333333333334,
+      "final_success": 1.0,
+      "wmd": 0.0,
+      "kd_innocent": 0.0,
+      "collateral": 0.0,
+      "corrections": 0,
+      "sites": 0,
+      "clippings": 0,
+      "family_counts": {
+        "Decision": 141,
+        "WholeProcess": 209,
+        "CLEAN": 16,
+        "Execution": 5,
+        "clean": 428,
+        "Plan": 1
+      },
+      "checkpoints": [
+        0,
+        250,
+        500,
+        750
+      ],
+      "curve": [
+        0.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "wall_s": 0.0568788000382483,
+      "q_hash": "91246d9d5333fbc2a1e635c6dca94bd29de75104b40919a6ad135076700f11c8"
+    },
+    {
+      "seed": 4600000,
+      "arm": "ModuleOracle",
+      "success_auc": 0.6666666666666666,
+      "final_success": 1.0,
+      "wmd": 0.10907186336307688,
+      "kd_innocent": 0.001327223763779241,
+      "collateral": 0.4861111111111111,
+      "corrections": 417,
+      "sites": 1800,
+      "clippings": 0,
+      "family_counts": {
+        "Decision": 121,
+        "WholeProcess": 255,
+        "Plan": 41,
+        "clean": 375,
+        "CLEAN": 8
+      },
+      "checkpoints": [
+        0,
+        250,
+        500,
+        750
+      ],
+      "curve": [
+        0.0,
+        0.5,
+        1.0,
+        1.0
+      ],
+      "wall_s": 0.09354179998626933,
+      "q_hash": "21d3da672fa0a63025e3397ed95dffd1f26499b7452fd9c1b35fed75d3f1dd7e"
+    },
+    {
+      "seed": 4600000,
+      "arm": "DecisionOracle",
+      "success_auc": 0.8333333333333334,
+      "final_success": 1.0,
+      "wmd": 0.0899029844114791,
+      "kd_innocent": 0.0002698314956911761,
+      "collateral": 0.0,
+      "corrections": 379,
+      "sites": 599,
+      "clippings": 3,
+      "family_counts": {
+        "Decision": 154,
+        "WholeProcess": 213,
+        "clean": 408,
+        "CLEAN": 13,
+        "Execution": 5,
+        "Plan": 7
+      },
+      "checkpoints": [
+        0,
+        250,
+        500,
+        750
+      ],
+      "curve": [
+        0.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "wall_s": 0.07566670002415776,
+      "q_hash": "d56d40f1288b6f8d430428f129194eb0d5f602ae6e2ece42ec666ec6f2ace998"
+    },
+    {
+      "seed": 4600000,
+      "arm": "RepairOracle",
+      "success_auc": 0.8333333333333334,
+      "final_success": 1.0,
+      "wmd": 0.0899029844114791,
+      "kd_innocent": 0.0002698314956911761,
+      "collateral": 0.0,
+      "corrections": 379,
+      "sites": 599,
+      "clippings": 3,
+      "family_counts": {
+        "Decision": 154,
+        "WholeProcess": 213,
+        "clean": 408,
+        "CLEAN": 13,
+        "Execution": 5,
+        "Plan": 7
+      },
+      "checkpoints": [
+        0,
+        250,
+        500,
+        750
+      ],
+      "curve": [
+        0.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "wall_s": 0.07024480000836775,
+      "q_hash": "d56d40f1288b6f8d430428f129194eb0d5f602ae6e2ece42ec666ec6f2ace998"
+    },
+    {
+      "seed": 4600001,
+      "arm": "NoCorruption",
+      "success_auc": 1.0,
+      "final_success": 1.0,
+      "wmd": 0.0,
+      "kd_innocent": 0.0,
+      "collateral": 0.0,
+      "corrections": 0,
+      "sites": 0,
+      "clippings": 0,
+      "family_counts": {
+        "clean": 468,
+        "WholeProcess": 268,
+        "Decision": 48,
+        "Plan": 12,
+        "Execution": 3,
+        "CLEAN": 1
+      },
+      "checkpoints": [
+        0,
+        250,
+        500,
+        750
+      ],
+      "curve": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "wall_s": 0.05282689997693524,
+      "q_hash": "4a63771c1802948a987224875aa3b0108c9154d7bce1bcf4b158ffae8938895b"
+    },
+    {
+      "seed": 4600001,
+      "arm": "NoCorrection",
+      "success_auc": 0.8333333333333334,
+      "final_success": 1.0,
+      "wmd": 0.0,
+      "kd_innocent": 0.0,
+      "collateral": 0.0,
+      "corrections": 0,
+      "sites": 0,
+      "clippings": 0,
+      "family_counts": {
+        "WholeProcess": 259,
+        "Decision": 55,
+        "clean": 472,
+        "Execution": 3,
+        "CLEAN": 1,
+        "Plan": 10
+      },
+      "checkpoints": [
+        0,
+        250,
+        500,
+        750
+      ],
+      "curve": [
+        0.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "wall_s": 0.062405899981968105,
+      "q_hash": "7b688b986a4d607de6a23e488e1da8ff86685da1d4083b5fc9694c349c1c018d"
+    },
+    {
+      "seed": 4600001,
+      "arm": "ModuleOracle",
+      "success_auc": 0.8333333333333334,
+      "final_success": 1.0,
+      "wmd": 0.0,
+      "kd_innocent": 0.0,
+      "collateral": 0.3721185510428101,
+      "corrections": 379,
+      "sites": 1822,
+      "clippings": 0,
+      "family_counts": {
+        "WholeProcess": 342,
+        "Decision": 18,
+        "Execution": 7,
+        "clean": 419,
+        "Plan": 12,
+        "CLEAN": 2
+      },
+      "checkpoints": [
+        0,
+        250,
+        500,
+        750
+      ],
+      "curve": [
+        0.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "wall_s": 0.07469229999696836,
+      "q_hash": "fdc6c84034f679aa600b7e85d491152f4598d30738c590e28174012c1f44780c"
+    },
+    {
+      "seed": 4600001,
+      "arm": "DecisionOracle",
+      "success_auc": 0.67,
+      "final_success": 1.0,
+      "wmd": 0.046430958306096275,
+      "kd_innocent": 0.002973918640389217,
+      "collateral": 0.0,
+      "corrections": 343,
+      "sites": 710,
+      "clippings": 2,
+      "family_counts": {
+        "WholeProcess": 243,
+        "Decision": 26,
+        "CLEAN": 54,
+        "Execution": 66,
+        "Plan": 8,
+        "clean": 403
+      },
+      "checkpoints": [
+        0,
+        250,
+        500,
+        750
+      ],
+      "curve": [
+        0.0,
+        0.51,
+        1.0,
+        1.0
+      ],
+      "wall_s": 0.06478300003800541,
+      "q_hash": "0141ec11bad510f1487895fc4a900a4c363a7b993ce9b3785c0a21a0f7a5e376"
+    },
+    {
+      "seed": 4600001,
+      "arm": "RepairOracle",
+      "success_auc": 0.67,
+      "final_success": 1.0,
+      "wmd": 0.046430958306096275,
+      "kd_innocent": 0.002973918640389217,
+      "collateral": 0.0,
+      "corrections": 343,
+      "sites": 710,
+      "clippings": 2,
+      "family_counts": {
+        "WholeProcess": 243,
+        "Decision": 26,
+        "CLEAN": 54,
+        "Execution": 66,
+        "Plan": 8,
+        "clean": 403
+      },
+      "checkpoints": [
+        0,
+        250,
+        500,
+        750
+      ],
+      "curve": [
+        0.0,
+        0.51,
+        1.0,
+        1.0
+      ],
+      "wall_s": 0.06528239999897778,
+      "q_hash": "0141ec11bad510f1487895fc4a900a4c363a7b993ce9b3785c0a21a0f7a5e376"
+    },
+    {
+      "seed": 4600002,
+      "arm": "NoCorruption",
+      "success_auc": 1.0,
+      "final_success": 1.0,
+      "wmd": 0.0,
+      "kd_innocent": 0.0,
+      "collateral": 0.0,
+      "corrections": 0,
+      "sites": 0,
+      "clippings": 0,
+      "family_counts": {
+        "clean": 443,
+        "WholeProcess": 208,
+        "Decision": 125,
+        "Execution": 6,
+        "CLEAN": 16,
+        "Plan": 2
+      },
+      "checkpoints": [
+        0,
+        250,
+        500,
+        750
+      ],
+      "curve": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "wall_s": 0.05119099997682497,
+      "q_hash": "2034193211f12e2e5334463550d998ce9870a1957b91fdee1b6d0158b6be37b7"
+    },
+    {
+      "seed": 4600002,
+      "arm": "NoCorrection",
+      "success_auc": 0.8333333333333334,
+      "final_success": 1.0,
+      "wmd": 0.0,
+      "kd_innocent": 0.0,
+      "collateral": 0.0,
+      "corrections": 0,
+      "sites": 0,
+      "clippings": 0,
+      "family_counts": {
+        "Decision": 147,
+        "WholeProcess": 209,
+        "Execution": 5,
+        "clean": 421,
+        "CLEAN": 16,
+        "Plan": 2
+      },
+      "checkpoints": [
+        0,
+        250,
+        500,
+        750
+      ],
+      "curve": [
+        0.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "wall_s": 0.06182629999238998,
+      "q_hash": "e95b8c5bcf430ae6cae59b077c6cc6de0f20736353a733943db850b37960fd41"
+    },
+    {
+      "seed": 4600002,
+      "arm": "ModuleOracle",
+      "success_auc": 0.8333333333333334,
+      "final_success": 1.0,
+      "wmd": 0.030689573420039664,
+      "kd_innocent": 0.0006965909676857962,
+      "collateral": 0.5302609661299278,
+      "corrections": 394,
+      "sites": 1801,
+      "clippings": 0,
+      "family_counts": {
+        "Decision": 161,
+        "WholeProcess": 231,
+        "clean": 406,
+        "Plan": 2
+      },
+      "checkpoints": [
+        0,
+        250,
+        500,
+        750
+      ],
+      "curve": [
+        0.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "wall_s": 0.07144929998321459,
+      "q_hash": "3f2081f617c15fa7e7e87609c0d43dfbeee498929959afb617f0c3c81e7f8053"
+    },
+    {
+      "seed": 4600002,
+      "arm": "DecisionOracle",
+      "success_auc": 0.8333333333333334,
+      "final_success": 1.0,
+      "wmd": 0.039368251636225336,
+      "kd_innocent": 0.0004289203589397076,
+      "collateral": 0.0,
+      "corrections": 400,
+      "sites": 622,
+      "clippings": 1,
+      "family_counts": {
+        "Decision": 179,
+        "WholeProcess": 213,
+        "clean": 389,
+        "Execution": 4,
+        "CLEAN": 11,
+        "Plan": 4
+      },
+      "checkpoints": [
+        0,
+        250,
+        500,
+        750
+      ],
+      "curve": [
+        0.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "wall_s": 0.0762333000311628,
+      "q_hash": "1c7168fa69ba42029b46544c901990f7a711c75bfd21b092c5dcd5080500021d"
+    },
+    {
+      "seed": 4600002,
+      "arm": "RepairOracle",
+      "success_auc": 0.8333333333333334,
+      "final_success": 1.0,
+      "wmd": 0.039368251636225336,
+      "kd_innocent": 0.0004289203589397076,
+      "collateral": 0.0,
+      "corrections": 400,
+      "sites": 622,
+      "clippings": 1,
+      "family_counts": {
+        "Decision": 179,
+        "WholeProcess": 213,
+        "clean": 389,
+        "Execution": 4,
+        "CLEAN": 11,
+        "Plan": 4
+      },
+      "checkpoints": [
+        0,
+        250,
+        500,
+        750
+      ],
+      "curve": [
+        0.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "wall_s": 0.06983230001060292,
+      "q_hash": "1c7168fa69ba42029b46544c901990f7a711c75bfd21b092c5dcd5080500021d"
+    },
+    {
+      "seed": 4600003,
+      "arm": "NoCorruption",
+      "success_auc": 1.0,
+      "final_success": 1.0,
+      "wmd": 0.0,
+      "kd_innocent": 0.0,
+      "collateral": 0.0,
+      "corrections": 0,
+      "sites": 0,
+      "clippings": 0,
+      "family_counts": {
+        "CLEAN": 31,
+        "clean": 459,
+        "WholeProcess": 182,
+        "Decision": 71,
+        "Execution": 57
+      },
+      "checkpoints": [
+        0,
+        250,
+        500,
+        750
+      ],
+      "curve": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "wall_s": 0.05529019999084994,
+      "q_hash": "e355311b04bc347629c480d524f30520aa1596ccb163f0a90de7931c5e5e963b"
+    },
+    {
+      "seed": 4600003,
+      "arm": "NoCorrection",
+      "success_auc": 0.8483333333333334,
+      "final_success": 1.0,
+      "wmd": 0.0,
+      "kd_innocent": 0.0,
+      "collateral": 0.0,
+      "corrections": 0,
+      "sites": 0,
+      "clippings": 0,
+      "family_counts": {
+        "WholeProcess": 184,
+        "Decision": 76,
+        "clean": 451,
+        "CLEAN": 32,
+        "Execution": 57
+      },
+      "checkpoints": [
+        0,
+        250,
+        500,
+        750
+      ],
+      "curve": [
+        0.09,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "wall_s": 0.0598687999881804,
+      "q_hash": "b568ffb5609ad8eb991807c92da5fed7a83ff72099ad2fcb3a7134604bdfaea2"
+    },
+    {
+      "seed": 4600003,
+      "arm": "ModuleOracle",
+      "success_auc": 0.8483333333333334,
+      "final_success": 1.0,
+      "wmd": 0.01565597832693804,
+      "kd_innocent": 0.0037380184955027383,
+      "collateral": 0.3671875,
+      "corrections": 374,
+      "sites": 1792,
+      "clippings": 0,
+      "family_counts": {
+        "WholeProcess": 335,
+        "Decision": 23,
+        "clean": 426,
+        "Execution": 3,
+        "Plan": 13
+      },
+      "checkpoints": [
+        0,
+        250,
+        500,
+        750
+      ],
+      "curve": [
+        0.09,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "wall_s": 0.07759909995365888,
+      "q_hash": "eff6519876dd98bbdeee98dcf9836382449303e0d75e36e584d4aaed91124204"
+    },
+    {
+      "seed": 4600003,
+      "arm": "DecisionOracle",
+      "success_auc": 0.8483333333333334,
+      "final_success": 1.0,
+      "wmd": 0.05033510158194328,
+      "kd_innocent": 0.010111358728044754,
+      "collateral": 0.0,
+      "corrections": 414,
+      "sites": 813,
+      "clippings": 1,
+      "family_counts": {
+        "WholeProcess": 290,
+        "Decision": 75,
+        "clean": 347,
+        "CLEAN": 39,
+        "Execution": 42,
+        "Plan": 7
+      },
+      "checkpoints": [
+        0,
+        250,
+        500,
+        750
+      ],
+      "curve": [
+        0.09,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "wall_s": 0.07160039996961132,
+      "q_hash": "80337fc137a14eb1d43b51a23be900fabf2cb110979aa21f3ec45284597eb784"
+    },
+    {
+      "seed": 4600003,
+      "arm": "RepairOracle",
+      "success_auc": 0.8483333333333334,
+      "final_success": 1.0,
+      "wmd": 0.05033510158194328,
+      "kd_innocent": 0.010111358728044754,
+      "collateral": 0.0,
+      "corrections": 414,
+      "sites": 813,
+      "clippings": 1,
+      "family_counts": {
+        "WholeProcess": 290,
+        "Decision": 75,
+        "clean": 347,
+        "CLEAN": 39,
+        "Execution": 42,
+        "Plan": 7
+      },
+      "checkpoints": [
+        0,
+        250,
+        500,
+        750
+      ],
+      "curve": [
+        0.09,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "wall_s": 0.08230650000041351,
+      "q_hash": "80337fc137a14eb1d43b51a23be900fabf2cb110979aa21f3ec45284597eb784"
+    }
+  ],
+  "pooled": {
+    "NoCorruption": {
+      "success_auc": 1.0,
+      "final_success": 1.0,
+      "wmd": 0.0,
+      "kd_innocent": 0.0,
+      "collateral": 0.0,
+      "sites": 0.0
+    },
+    "NoCorrection": {
+      "success_auc": 0.8370833333333334,
+      "final_success": 1.0,
+      "wmd": 0.0,
+      "kd_innocent": 0.0,
+      "collateral": 0.0,
+      "sites": 0.0
+    },
+    "ModuleOracle": {
+      "success_auc": 0.7954166666666667,
+      "final_success": 1.0,
+      "wmd": 0.038854353777513645,
+      "kd_innocent": 0.0014404583067419438,
+      "collateral": 0.43891953207096224,
+      "sites": 1803.75
+    },
+    "DecisionOracle": {
+      "success_auc": 0.7962500000000001,
+      "final_success": 1.0,
+      "wmd": 0.056509323983936,
+      "kd_innocent": 0.0034460073057662136,
+      "collateral": 0.0,
+      "sites": 686.0
+    },
+    "RepairOracle": {
+      "success_auc": 0.7962500000000001,
+      "final_success": 1.0,
+      "wmd": 0.056509323983936,
+      "kd_innocent": 0.0034460073057662136,
+      "collateral": 0.0,
+      "sites": 686.0
+    }
+  },
+  "contrasts": {
+    "DecisionOracle": {
+      "success_auc": {
+        "n_seeds": 4,
+        "mean": 0.0008333333333333526,
+        "median": 0.0,
+        "ci": [
+          -0.1225,
+          0.12500000000000006
+        ],
+        "cohens_dz": 0.006185422385267844,
+        "p_sign_flip": 1.0,
+        "p_wilcoxon": 1.0,
+        "probability_of_improvement": 0.5738
+      },
+      "wmd": {
+        "n_seeds": 4,
+        "mean": 0.01765497020642235,
+        "median": 0.021678900735595454,
+        "ci": [
+          -0.00570687839994702,
+          0.040555040780550757
+        ],
+        "cohens_dz": 0.6050329144033426,
+        "p_sign_flip": 0.3751,
+        "p_wilcoxon": 0.375,
+        "probability_of_improvement": 0.9298
+      },
+      "kd_innocent": {
+        "n_seeds": 4,
+        "mean": 0.00200554899902427,
+        "median": 0.0013531240158215641,
+        "ci": [
+          -0.0006625314384170767,
+          0.004713087522219989
+        ],
+        "cohens_dz": 0.5908522747174579,
+        "p_sign_flip": 0.5053,
+        "p_wilcoxon": 0.625,
+        "probability_of_improvement": 0.924
+      },
+      "collateral": {
+        "n_seeds": 4,
+        "mean": -0.43891953207096224,
+        "median": -0.4291148310769606,
+        "ci": [
+          -0.5081860386205195,
+          -0.369653025521405
+        ],
+        "cohens_dz": -5.351860362620017,
+        "p_sign_flip": 0.1221,
+        "p_wilcoxon": 0.0625,
+        "probability_of_improvement": 0.0
+      }
+    },
+    "RepairOracle": {
+      "success_auc": {
+        "n_seeds": 4,
+        "mean": 0.0008333333333333526,
+        "median": 0.0,
+        "ci": [
+          -0.1225,
+          0.12500000000000006
+        ],
+        "cohens_dz": 0.006185422385267844,
+        "p_sign_flip": 1.0,
+        "p_wilcoxon": 1.0,
+        "probability_of_improvement": 0.5781
+      },
+      "wmd": {
+        "n_seeds": 4,
+        "mean": 0.01765497020642235,
+        "median": 0.021678900735595454,
+        "ci": [
+          -0.00570687839994702,
+          0.040555040780550757
+        ],
+        "cohens_dz": 0.6050329144033426,
+        "p_sign_flip": 0.3726,
+        "p_wilcoxon": 0.375,
+        "probability_of_improvement": 0.9262
+      },
+      "kd_innocent": {
+        "n_seeds": 4,
+        "mean": 0.00200554899902427,
+        "median": 0.0013531240158215641,
+        "ci": [
+          -0.0006625314384170768,
+          0.004713087522219989
+        ],
+        "cohens_dz": 0.5908522747174579,
+        "p_sign_flip": 0.502,
+        "p_wilcoxon": 0.625,
+        "probability_of_improvement": 0.9189
+      },
+      "collateral": {
+        "n_seeds": 4,
+        "mean": -0.43891953207096224,
+        "median": -0.4291148310769606,
+        "ci": [
+          -0.5081860386205195,
+          -0.369653025521405
+        ],
+        "cohens_dz": -5.351860362620017,
+        "p_sign_flip": 0.1278,
+        "p_wilcoxon": 0.0625,
+        "probability_of_improvement": 0.0
+      }
+    }
+  },
+  "screens": {
+    "DecisionOracle": {
+      "noninferior": false,
+      "wmd_relative_decrease": -0.4543884658979941,
+      "wmd_screen_passed": false,
+      "inconclusive_precision": true,
+      "verdict": "INCONCLUSIVE_PRECISION"
+    },
+    "RepairOracle": {
+      "noninferior": false,
+      "wmd_relative_decrease": -0.4543884658979941,
+      "wmd_screen_passed": false,
+      "inconclusive_precision": true,
+      "verdict": "INCONCLUSIVE_PRECISION"
+    }
+  },
+  "preflight": {
+    "ceiling_risk": true,
+    "learning_failure": false,
+    "nocorrection_final_success": 1.0
+  }
+}

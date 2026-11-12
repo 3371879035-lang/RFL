@@ -1,0 +1,620 @@
+{
+  "streams": [
+    {
+      "phase": "wiring",
+      "arm": "F-RP-FT",
+      "stream": "wiring_F-RP-FT",
+      "train_tasks": 2,
+      "train_successes": 0,
+      "train_steps": 2,
+      "counts": {
+        "source_instances": 1,
+        "source_mapping_initializations": 4,
+        "policy_calls": 3,
+        "tie_readout_candidate_scores": 12,
+        "shadow_readout_calls": 2,
+        "shadow_candidate_scores": 8,
+        "rollouts": 4,
+        "train_rollouts": 2,
+        "steps": 6,
+        "train_steps": 2,
+        "observations_consumed": 2,
+        "history_appends": 2,
+        "ordinary_backups": 2,
+        "model_backups": 3,
+        "numeric_changes": 5,
+        "fact_count_updates": 2,
+        "eval_rollouts": 2,
+        "eval_steps": 4
+      },
+      "train_curve": [
+        {
+          "epoch": 1,
+          "uid": 1,
+          "terminal": "COLLISION",
+          "successes": 0,
+          "failures": 1,
+          "train_steps": 1,
+          "ordinary_backups": 1,
+          "replay_backups": 0,
+          "model_backups": 1,
+          "fact_count_updates": 1,
+          "policy_ns": 36700,
+          "update_ns": 56200,
+          "shadow_ns": 0,
+          "state_sha256": "fc407610e7b28788827c01bdc54e693a91cc667bca010ae836887385f18ed39b",
+          "state_serialized_bytes": 261
+        },
+        {
+          "epoch": 2,
+          "uid": 2,
+          "terminal": "COLLISION",
+          "successes": 0,
+          "failures": 2,
+          "train_steps": 2,
+          "ordinary_backups": 2,
+          "replay_backups": 0,
+          "model_backups": 3,
+          "fact_count_updates": 2,
+          "policy_ns": 51200,
+          "update_ns": 81300,
+          "shadow_ns": 0,
+          "state_sha256": "eb6804f30cea308bb885727d8156a81791e225b1823b753ca1fc513333942041",
+          "state_serialized_bytes": 285
+        }
+      ],
+      "eval_banks": [
+        {
+          "checkpoint": 2,
+          "first_uid": 3,
+          "last_uid": 4,
+          "episodes": 2,
+          "successes": 2,
+          "steps": 4,
+          "mean_success": 1.0,
+          "program": [
+            1,
+            0
+          ],
+          "frozen_state_sha256": "eb6804f30cea308bb885727d8156a81791e225b1823b753ca1fc513333942041",
+          "frozen_state_sha256_after": "eb6804f30cea308bb885727d8156a81791e225b1823b753ca1fc513333942041",
+          "train_state_sha256_after": "eb6804f30cea308bb885727d8156a81791e225b1823b753ca1fc513333942041",
+          "learning_writes": 0,
+          "policy_ns": 9400,
+          "planning_edge_expansions": 0
+        }
+      ],
+      "mechanism": {
+        "visited": 2,
+        "Q_ties": 1,
+        "outcome_informative_ties": 0,
+        "FT_diff_old": 0,
+        "CT_diff_old": 0,
+        "FT_diff_CT": 0,
+        "actual_readout_overridden": 1,
+        "actual_changed_from_old_without_exploration": 0,
+        "repeated_collision": 1
+      },
+      "train_behavior_sha256": "50bac63d7588bfc651bdcadaa996bfc055f1510d5c9faaff48dc10b507cb8056",
+      "final_learner": {
+        "type": "TieHybrid",
+        "task": {
+          "rooms": [
+            0,
+            1
+          ],
+          "goal": 2,
+          "horizon": 12
+        },
+        "failure_reward": -1.0,
+        "q": {
+          "0:0": -0.7604166666666667
+        },
+        "buffer": [
+          [
+            1,
+            0,
+            0,
+            0,
+            -1.0,
+            0,
+            true
+          ],
+          [
+            2,
+            0,
+            0,
+            0,
+            -1.0,
+            0,
+            true
+          ]
+        ],
+        "history": [
+          1,
+          2
+        ],
+        "ordinary": 2,
+        "replays": 0,
+        "models": 3,
+        "numeric_changes": 5,
+        "counts": {
+          "0:0": [
+            0,
+            2
+          ]
+        },
+        "tie_mode": "FT"
+      },
+      "source_unchanged": true,
+      "inherited_updates_runtime_identical": true
+    },
+    {
+      "phase": "wiring",
+      "arm": "F-R-FT",
+      "stream": "wiring_F-R-FT",
+      "train_tasks": 2,
+      "train_successes": 0,
+      "train_steps": 2,
+      "counts": {
+        "source_instances": 1,
+        "source_mapping_initializations": 4,
+        "policy_calls": 3,
+        "tie_readout_candidate_scores": 12,
+        "shadow_readout_calls": 2,
+        "shadow_candidate_scores": 8,
+        "rollouts": 4,
+        "train_rollouts": 2,
+        "steps": 6,
+        "train_steps": 2,
+        "observations_consumed": 2,
+        "history_appends": 2,
+        "ordinary_backups": 2,
+        "model_backups": 3,
+        "fact_count_updates": 2,
+        "eval_rollouts": 2,
+        "eval_steps": 4
+      },
+      "train_curve": [
+        {
+          "epoch": 1,
+          "uid": 5,
+          "terminal": "COLLISION",
+          "successes": 0,
+          "failures": 1,
+          "train_steps": 1,
+          "ordinary_backups": 1,
+          "replay_backups": 0,
+          "model_backups": 1,
+          "fact_count_updates": 1,
+          "policy_ns": 8400,
+          "update_ns": 14300,
+          "shadow_ns": 0,
+          "state_sha256": "914fc1070f8374fb9148a3f1a6fa44845ed650b58ebd4e299d5ad5e1845da501",
+          "state_serialized_bytes": 243
+        },
+        {
+          "epoch": 2,
+          "uid": 6,
+          "terminal": "COLLISION",
+          "successes": 0,
+          "failures": 2,
+          "train_steps": 2,
+          "ordinary_backups": 2,
+          "replay_backups": 0,
+          "model_backups": 3,
+          "fact_count_updates": 2,
+          "policy_ns": 17800,
+          "update_ns": 30900,
+          "shadow_ns": 0,
+          "state_sha256": "5676c89348c19230e6304ca81f3ee831236596aba7bd4eee939e1539962c308b",
+          "state_serialized_bytes": 266
+        }
+      ],
+      "eval_banks": [
+        {
+          "checkpoint": 2,
+          "first_uid": 7,
+          "last_uid": 8,
+          "episodes": 2,
+          "successes": 2,
+          "steps": 4,
+          "mean_success": 1.0,
+          "program": [
+            1,
+            0
+          ],
+          "frozen_state_sha256": "5676c89348c19230e6304ca81f3ee831236596aba7bd4eee939e1539962c308b",
+          "frozen_state_sha256_after": "5676c89348c19230e6304ca81f3ee831236596aba7bd4eee939e1539962c308b",
+          "train_state_sha256_after": "5676c89348c19230e6304ca81f3ee831236596aba7bd4eee939e1539962c308b",
+          "learning_writes": 0,
+          "policy_ns": 8800,
+          "planning_edge_expansions": 0
+        }
+      ],
+      "mechanism": {
+        "visited": 2,
+        "Q_ties": 2,
+        "outcome_informative_ties": 1,
+        "FT_diff_old": 1,
+        "CT_diff_old": 1,
+        "FT_diff_CT": 0,
+        "actual_readout_overridden": 1,
+        "actual_changed_from_old_without_exploration": 0,
+        "repeated_collision": 1
+      },
+      "train_behavior_sha256": "50bac63d7588bfc651bdcadaa996bfc055f1510d5c9faaff48dc10b507cb8056",
+      "final_learner": {
+        "type": "TieHybrid",
+        "task": {
+          "rooms": [
+            0,
+            1
+          ],
+          "goal": 2,
+          "horizon": 12
+        },
+        "failure_reward": 0.0,
+        "q": {
+          "0:0": 0.0
+        },
+        "buffer": [
+          [
+            5,
+            0,
+            0,
+            0,
+            0.0,
+            0,
+            true
+          ],
+          [
+            6,
+            0,
+            0,
+            0,
+            0.0,
+            0,
+            true
+          ]
+        ],
+        "history": [
+          5,
+          6
+        ],
+        "ordinary": 2,
+        "replays": 0,
+        "models": 3,
+        "numeric_changes": 0,
+        "counts": {
+          "0:0": [
+            0,
+            2
+          ]
+        },
+        "tie_mode": "FT"
+      },
+      "source_unchanged": true,
+      "inherited_updates_runtime_identical": true
+    },
+    {
+      "phase": "wiring",
+      "arm": "F-RP-CT",
+      "stream": "wiring_F-RP-CT",
+      "train_tasks": 2,
+      "train_successes": 0,
+      "train_steps": 2,
+      "counts": {
+        "source_instances": 1,
+        "source_mapping_initializations": 4,
+        "policy_calls": 3,
+        "tie_readout_candidate_scores": 12,
+        "shadow_readout_calls": 2,
+        "shadow_candidate_scores": 8,
+        "rollouts": 4,
+        "train_rollouts": 2,
+        "steps": 6,
+        "train_steps": 2,
+        "observations_consumed": 2,
+        "history_appends": 2,
+        "ordinary_backups": 2,
+        "model_backups": 3,
+        "numeric_changes": 5,
+        "fact_count_updates": 2,
+        "eval_rollouts": 2,
+        "eval_steps": 4
+      },
+      "train_curve": [
+        {
+          "epoch": 1,
+          "uid": 9,
+          "terminal": "COLLISION",
+          "successes": 0,
+          "failures": 1,
+          "train_steps": 1,
+          "ordinary_backups": 1,
+          "replay_backups": 0,
+          "model_backups": 1,
+          "fact_count_updates": 1,
+          "policy_ns": 8000,
+          "update_ns": 13600,
+          "shadow_ns": 0,
+          "state_sha256": "1428a2e3e85bf5aeb3c1da14023517138f24a9a4b586efe5d1e98158dd7e8f71",
+          "state_serialized_bytes": 261
+        },
+        {
+          "epoch": 2,
+          "uid": 10,
+          "terminal": "COLLISION",
+          "successes": 0,
+          "failures": 2,
+          "train_steps": 2,
+          "ordinary_backups": 2,
+          "replay_backups": 0,
+          "model_backups": 3,
+          "fact_count_updates": 2,
+          "policy_ns": 15600,
+          "update_ns": 28200,
+          "shadow_ns": 0,
+          "state_sha256": "6ae61f84ed2513c9009916a03091352de75263529a29cc9e6d69bd6f8402f811",
+          "state_serialized_bytes": 287
+        }
+      ],
+      "eval_banks": [
+        {
+          "checkpoint": 2,
+          "first_uid": 11,
+          "last_uid": 12,
+          "episodes": 2,
+          "successes": 2,
+          "steps": 4,
+          "mean_success": 1.0,
+          "program": [
+            1,
+            0
+          ],
+          "frozen_state_sha256": "6ae61f84ed2513c9009916a03091352de75263529a29cc9e6d69bd6f8402f811",
+          "frozen_state_sha256_after": "6ae61f84ed2513c9009916a03091352de75263529a29cc9e6d69bd6f8402f811",
+          "train_state_sha256_after": "6ae61f84ed2513c9009916a03091352de75263529a29cc9e6d69bd6f8402f811",
+          "learning_writes": 0,
+          "policy_ns": 7900,
+          "planning_edge_expansions": 0
+        }
+      ],
+      "mechanism": {
+        "visited": 2,
+        "Q_ties": 1,
+        "outcome_informative_ties": 0,
+        "FT_diff_old": 0,
+        "CT_diff_old": 0,
+        "FT_diff_CT": 0,
+        "actual_readout_overridden": 1,
+        "actual_changed_from_old_without_exploration": 0,
+        "repeated_collision": 1
+      },
+      "train_behavior_sha256": "50bac63d7588bfc651bdcadaa996bfc055f1510d5c9faaff48dc10b507cb8056",
+      "final_learner": {
+        "type": "TieHybrid",
+        "task": {
+          "rooms": [
+            0,
+            1
+          ],
+          "goal": 2,
+          "horizon": 12
+        },
+        "failure_reward": -1.0,
+        "q": {
+          "0:0": -0.7604166666666667
+        },
+        "buffer": [
+          [
+            9,
+            0,
+            0,
+            0,
+            -1.0,
+            0,
+            true
+          ],
+          [
+            10,
+            0,
+            0,
+            0,
+            -1.0,
+            0,
+            true
+          ]
+        ],
+        "history": [
+          9,
+          10
+        ],
+        "ordinary": 2,
+        "replays": 0,
+        "models": 3,
+        "numeric_changes": 5,
+        "counts": {
+          "0:0": [
+            0,
+            2
+          ]
+        },
+        "tie_mode": "CT"
+      },
+      "source_unchanged": true,
+      "inherited_updates_runtime_identical": true
+    },
+    {
+      "phase": "wiring",
+      "arm": "F-R-CT",
+      "stream": "wiring_F-R-CT",
+      "train_tasks": 2,
+      "train_successes": 0,
+      "train_steps": 2,
+      "counts": {
+        "source_instances": 1,
+        "source_mapping_initializations": 4,
+        "policy_calls": 3,
+        "tie_readout_candidate_scores": 12,
+        "shadow_readout_calls": 2,
+        "shadow_candidate_scores": 8,
+        "rollouts": 4,
+        "train_rollouts": 2,
+        "steps": 6,
+        "train_steps": 2,
+        "observations_consumed": 2,
+        "history_appends": 2,
+        "ordinary_backups": 2,
+        "model_backups": 3,
+        "fact_count_updates": 2,
+        "eval_rollouts": 2,
+        "eval_steps": 4
+      },
+      "train_curve": [
+        {
+          "epoch": 1,
+          "uid": 13,
+          "terminal": "COLLISION",
+          "successes": 0,
+          "failures": 1,
+          "train_steps": 1,
+          "ordinary_backups": 1,
+          "replay_backups": 0,
+          "model_backups": 1,
+          "fact_count_updates": 1,
+          "policy_ns": 7600,
+          "update_ns": 12000,
+          "shadow_ns": 0,
+          "state_sha256": "fcc4b1cca390c1c9d805ede0f7c17c9aeee3086833f6d5bdb16e16b6a757e572",
+          "state_serialized_bytes": 245
+        },
+        {
+          "epoch": 2,
+          "uid": 14,
+          "terminal": "COLLISION",
+          "successes": 0,
+          "failures": 2,
+          "train_steps": 2,
+          "ordinary_backups": 2,
+          "replay_backups": 0,
+          "model_backups": 3,
+          "fact_count_updates": 2,
+          "policy_ns": 15500,
+          "update_ns": 26100,
+          "shadow_ns": 0,
+          "state_sha256": "0e89892646371c74fef3bff947ccf16be7e6b05518362c3398949f64414c0cbd",
+          "state_serialized_bytes": 270
+        }
+      ],
+      "eval_banks": [
+        {
+          "checkpoint": 2,
+          "first_uid": 15,
+          "last_uid": 16,
+          "episodes": 2,
+          "successes": 2,
+          "steps": 4,
+          "mean_success": 1.0,
+          "program": [
+            1,
+            0
+          ],
+          "frozen_state_sha256": "0e89892646371c74fef3bff947ccf16be7e6b05518362c3398949f64414c0cbd",
+          "frozen_state_sha256_after": "0e89892646371c74fef3bff947ccf16be7e6b05518362c3398949f64414c0cbd",
+          "train_state_sha256_after": "0e89892646371c74fef3bff947ccf16be7e6b05518362c3398949f64414c0cbd",
+          "learning_writes": 0,
+          "policy_ns": 8400,
+          "planning_edge_expansions": 0
+        }
+      ],
+      "mechanism": {
+        "visited": 2,
+        "Q_ties": 2,
+        "outcome_informative_ties": 1,
+        "FT_diff_old": 1,
+        "CT_diff_old": 1,
+        "FT_diff_CT": 0,
+        "actual_readout_overridden": 1,
+        "actual_changed_from_old_without_exploration": 0,
+        "repeated_collision": 1
+      },
+      "train_behavior_sha256": "50bac63d7588bfc651bdcadaa996bfc055f1510d5c9faaff48dc10b507cb8056",
+      "final_learner": {
+        "type": "TieHybrid",
+        "task": {
+          "rooms": [
+            0,
+            1
+          ],
+          "goal": 2,
+          "horizon": 12
+        },
+        "failure_reward": 0.0,
+        "q": {
+          "0:0": 0.0
+        },
+        "buffer": [
+          [
+            13,
+            0,
+            0,
+            0,
+            0.0,
+            0,
+            true
+          ],
+          [
+            14,
+            0,
+            0,
+            0,
+            0.0,
+            0,
+            true
+          ]
+        ],
+        "history": [
+          13,
+          14
+        ],
+        "ordinary": 2,
+        "replays": 0,
+        "models": 3,
+        "numeric_changes": 0,
+        "counts": {
+          "0:0": [
+            0,
+            2
+          ]
+        },
+        "tie_mode": "CT"
+      },
+      "source_unchanged": true,
+      "inherited_updates_runtime_identical": true
+    }
+  ],
+  "counts": {
+    "source_instances": 4,
+    "source_mapping_initializations": 16,
+    "policy_calls": 12,
+    "planning_edge_expansions": 0,
+    "tie_readout_candidate_scores": 48,
+    "shadow_readout_calls": 8,
+    "shadow_candidate_scores": 32,
+    "rollouts": 16,
+    "train_rollouts": 8,
+    "steps": 24,
+    "train_steps": 8,
+    "observations_consumed": 8,
+    "history_appends": 8,
+    "ordinary_backups": 8,
+    "replay_backups": 0,
+    "model_backups": 12,
+    "numeric_changes": 10,
+    "fact_count_updates": 8,
+    "eval_rollouts": 8,
+    "eval_steps": 16
+  }
+}

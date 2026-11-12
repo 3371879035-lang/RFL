@@ -1,0 +1,272 @@
+{
+  "schema": "V142_ORDINARY_EXTRA_CONTROL_RESULT",
+  "date_asia_shanghai": "2026-11-07",
+  "parent_commit": "8b8a5cfdfa6b80a006938eaf6a85c2f66ee6cd1a",
+  "status": "ORDINARY_EXTRA_TRAINING_REPRODUCES_OBSERVED_V141_GAIN_WITHOUT_ATTRIBUTION_OR_REPAIR",
+  "execution": {
+    "native_first_exit": 0,
+    "stored_audit_first_exit": 1,
+    "new_targeted_auditor_first_exit": 0,
+    "native_counts": {
+      "rollout": 50,
+      "step": 336,
+      "transaction": 122
+    },
+    "records": 321,
+    "main_tasks": 40,
+    "extra_tasks": 10,
+    "native_ordinary_updates": 50,
+    "external_ordinary_updates": 10,
+    "ordinary_numeric_TX": 60,
+    "ordinary_policy_TX": 60,
+    "source_install_TX": 2,
+    "source_install_edits": 88,
+    "diagnostic_calls": 0,
+    "candidate_proposals": 0,
+    "Mtraining": 0,
+    "feedback_main_writes": 0,
+    "issued_consumed_observations": 10,
+    "duplicate_rejections_zero_native_delta": 10,
+    "input_pins_native_before_after_equal": 338,
+    "native_instrumented_wall_seconds": 5.547000000020489,
+    "started_at_utc": "2026-11-06T18:19:15.242915+00:00",
+    "completed_at_utc": "2026-11-06T18:19:20.787070+00:00",
+    "new_keys": 0,
+    "new_RNG_or_keyderive_or_DP_or_calibration": 0,
+    "formal_collection": false,
+    "old_checker_or_native_reruns": 0,
+    "automatic_retry": false
+  },
+  "per_case": [
+    {
+      "case": "stable",
+      "arm": "StableOrdinaryExtra",
+      "successes": 17,
+      "main_tasks": 20,
+      "mean_return": 0.549,
+      "mean_difference_vs_main_only": 0.28200000000000003,
+      "extra_events": 3,
+      "extra_episodes": 6,
+      "extra_main_observation_updates": 6,
+      "returns": [
+        -1.18,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.22,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.24,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "main_TRAPs": 0,
+      "extra_failure_terminals": {
+        "TRAP": 3,
+        "SUCCESS": 3
+      }
+    },
+    {
+      "case": "drift",
+      "arm": "DriftOrdinaryExtra",
+      "successes": 17,
+      "main_tasks": 20,
+      "mean_return": 0.5589999999999999,
+      "mean_difference_vs_main_only": 0.09399999999999992,
+      "extra_events": 3,
+      "extra_episodes": 4,
+      "extra_main_observation_updates": 4,
+      "returns": [
+        -1.18,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.22,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        -1.24,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        0.86,
+        0.86
+      ],
+      "main_TRAPs": 0,
+      "extra_failure_terminals": {
+        "TRAP": 1,
+        "SUCCESS": 3
+      }
+    }
+  ],
+  "recorded_main_only_comparison": [
+    {
+      "case": "stable",
+      "recorded_arm": "StableTaskTD",
+      "mode": "patch-adaptive",
+      "successes": 14,
+      "mean_return": 0.267,
+      "main_raw_preserved": true,
+      "initial_persistent_stores_exactly_equal": true
+    },
+    {
+      "case": "drift",
+      "recorded_arm": "DriftTaskTD",
+      "mode": "patch-adaptive",
+      "successes": 16,
+      "mean_return": 0.465,
+      "main_raw_preserved": true,
+      "initial_persistent_stores_exactly_equal": true
+    }
+  ],
+  "comparisons_to_v141": [
+    {
+      "all20main_raw_identical": true,
+      "all20post_extra_R_L_I_identical": true,
+      "all_extra_raw_in_order_identical": true,
+      "case": "stable",
+      "new_arm": "StableOrdinaryExtra",
+      "new_extra_Ksteps": 24,
+      "new_extra_rollouts": 6,
+      "old_mean_return": 0.549,
+      "old_private_Ksteps": 24,
+      "old_private_rollouts": 6,
+      "recorded_arm": "StableExperienceNoWrite"
+    },
+    {
+      "all20main_raw_identical": true,
+      "all20post_extra_R_L_I_identical": true,
+      "all_extra_raw_in_order_identical": true,
+      "case": "stable",
+      "new_arm": "StableOrdinaryExtra",
+      "new_extra_Ksteps": 24,
+      "new_extra_rollouts": 6,
+      "old_mean_return": 0.549,
+      "old_private_Ksteps": 24,
+      "old_private_rollouts": 6,
+      "recorded_arm": "StableExperienceRepair"
+    },
+    {
+      "all20main_raw_identical": true,
+      "all20post_extra_R_L_I_identical": true,
+      "all_extra_raw_in_order_identical": true,
+      "case": "drift",
+      "new_arm": "DriftOrdinaryExtra",
+      "new_extra_Ksteps": 20,
+      "new_extra_rollouts": 4,
+      "old_mean_return": 0.5589999999999999,
+      "old_private_Ksteps": 20,
+      "old_private_rollouts": 4,
+      "recorded_arm": "DriftExperienceNoWrite"
+    },
+    {
+      "all20main_raw_identical": true,
+      "all20post_extra_R_L_I_identical": true,
+      "all_extra_raw_in_order_identical": true,
+      "case": "drift",
+      "new_arm": "DriftOrdinaryExtra",
+      "new_extra_Ksteps": 20,
+      "new_extra_rollouts": 4,
+      "old_mean_return": 0.5589999999999999,
+      "old_private_Ksteps": 20,
+      "old_private_rollouts": 4,
+      "recorded_arm": "DriftExperienceRepair"
+    }
+  ],
+  "measured_two_case_work": {
+    "v141_two_repair_roles": {
+      "rollout": 50,
+      "Kstep": 336,
+      "native_ordinary_updates": 50,
+      "external_ordinary_updates": 6,
+      "ordinary_policy_TX": 56,
+      "private_candidate_TX": 4,
+      "main_feedback_TX": 4,
+      "source_install_TX": 2,
+      "total_TX": 122
+    },
+    "v141_two_experience_NoWrite_roles": {
+      "rollout": 50,
+      "Kstep": 336,
+      "native_ordinary_updates": 50,
+      "external_ordinary_updates": 6,
+      "ordinary_policy_TX": 56,
+      "private_candidate_TX": 4,
+      "main_feedback_TX": 0,
+      "source_install_TX": 2,
+      "total_TX": 118
+    },
+    "v142_two_ordinary_extra_roles": {
+      "rollout": 50,
+      "Kstep": 336,
+      "native_ordinary_updates": 50,
+      "external_ordinary_updates": 10,
+      "ordinary_policy_TX": 60,
+      "private_candidate_TX": 0,
+      "main_feedback_TX": 0,
+      "source_install_TX": 2,
+      "total_TX": 122
+    }
+  },
+  "learning": {
+    "all_ten_actual_extra_observations_consumed_once": true,
+    "numeric_change_observations": 4,
+    "numeric_zero_observations": 6,
+    "observed_TRAPs": 4,
+    "observed_SUCCESSes": 6,
+    "main_clock_each": 20,
+    "external_clocks": {
+      "stable": 6,
+      "drift": 4
+    },
+    "v141_external_clocks_each": 3,
+    "ordinary_math_AST_exact_except_explicit_clock": true,
+    "R_L_I_match_after_each_main_to_v141_both_arms": true
+  },
+  "findings": [
+    "The two fixed patch cases improve versus main-task-only ordinary TD, but ordinary failure-triggered supplemental practice exactly reproduces v141 main raw and post-extra R+L/I without attribution/candidate search/main feedback edits.",
+    "New normal learned policy produces the same ten private raw traces as the old keep+literal candidate menu. Equal observed environment work (50 rolls/336 Ksteps) is established, not assumed.",
+    "Total TX equals the v141 two Repair roles (122), not the experience-NoWrite control (118). New external ordinary updates are 10 versus 6; this is not TD-update-count-matched or a CPU-speed superiority test.",
+    "Four extra failure traces change numeric L; six successful extra traces have zero numeric content change. All successes still receive ordinary learning; no extra failure punishment or success diagnosis was added.",
+    "Drift revisit still uses stale trap experience and chooses WAIT (return .86) after trap disappears; new control does not solve drift-aware invalidation or generalization."
+  ],
+  "limits": [
+    "Two informed fixed development cases, not blind independent seeds or a population result; patch-only new execution. Recorded comparisons are read-only, not new runtime identity reconstruction.",
+    "No attribution-specific advantage is established here; this does not refute reinforcement feedback learning in richer tasks.",
+    "Original negative task rewards remain. This is not a punishment ablation and does not prove failures are always more informative than success.",
+    "No new Retention/Collateral bank or general zero-harm claim; original formal keyed/dense/full-family/400-200 qualification remains unperformed. No borrowed V0.3/V0.4 PASS.",
+    "5.547s is an instrumented two-role harness time; no matched CPU/RAM/IO measurement or production performance claim."
+  ],
+  "preservation": {
+    "old_ledger_values": 80,
+    "old_provenance": 266,
+    "original_frozen_sources_current_hash_matches": 313,
+    "nonledger_declared_native_inputs_still_equal": 337,
+    "first_failed_auditor_and_all_native_bytes_preserved": true,
+    "git_whitespace": {
+      "default_staged_check_exit": 2,
+      "warnings": 12,
+      "reason": "Only the original CRLF ends in first-error stderr (11 lines) and v2 stdout (1 line); no native/source bytes reformatted.",
+      "scoped_gitattributes": "*.log -text",
+      "initial_index_normalization_detected": true,
+      "explicit_renormalization_preserved_actual_CRLF_bytes": true
+    }
+  },
+  "next_actual_gap": "When actual conditions change, retained numeric beliefs can still prevent re-testing an action that has become safe. Address conditional evidence renewal with a simple costed control, not another claim that ordinary extra experience is an attribution-specific gain."
+}

@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v03r\a96_dense\b2_prepare\native_calibration_plan_v54\candidate.py", line 176, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v03r\a96_dense\b2_prepare\native_calibration_plan_v54\candidate.py", line 142, in main
+    ref=match(arch,hid,allstores[fid][arch],h);counts['pre_exact_old_native_reuse' if ref else 'pre_requires_new_measurement']+=1
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v03r\a96_dense\b2_prepare\native_calibration_plan_v54\candidate.py", line 128, in match
+    require(value[0]==sha256(canonical(st)).hexdigest(),'full canonical store exact, not fingerprint only')
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v03r\a96_dense\b2_prepare\native_calibration_plan_v54\candidate.py", line 12, in require
+    if not ok:raise AssertionError(why)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: full canonical store exact, not fingerprint only

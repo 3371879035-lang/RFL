@@ -1,0 +1,238 @@
+"""The three competing credit-unit representations.
+
+These are the arms of Pilot Alpha.  They differ **only** in which entries they
+are allowed to touch; the update rule itself is held fixed at negative-only, so
+Alpha measures credit granularity and nothing else.
+
+    ModuleOracle     coarse: blame the plan unit if the plan was wrong,
+                     otherwise the execution unit; touch every entry the unit
+                     used this episode
+    DecisionOracle   exact: touch only the oracle's minimal critical site(s)
+    RepairOracle     the factual (bad) site of the selected repair candidate
+"""
+
+from __future__ import annotations
+
+from dataclasses import dataclass, field
+
+from .env import ACT, PLAN, reference_action
+
+
+@dataclass
+class Site:
+    """One state-action entry targeted for update."""
+
+    unit: str      # "PLAN" | "DECISION" | "EXECUTION"
+    state: tuple
+    action: int
+    is_factual: bool = True
+
+    @property
+    def key(self) -> tuple:
+        return (self.unit, self.state, self.action)
+
+    @property
+    def write_key(self) -> tuple:
+        """The Q-table entry this site actually writes.
+
+        ``updates._write`` routes every non-PLAN unit to the *same* low-level
+        table, so ``DECISION`` and ``EXECUTION`` sites sharing a state and action
+        are two writes to one entry, not two independent edits.  ``key`` keeps
+        them distinct (the unit names differ); ``write_key`` collapses them onto
+        the entry they collide on, which is what collision detection needs.
+        """
+        bucket = "PLAN" if self.unit == "PLAN" else "LOW"
+        return (bucket, self.state, self.action)
+
+
+@dataclass
+class Credit:
+    representation: str
+    blamed_units: set = field(default_factory=set)
+    sites: list = field(default_factory=list)
+
+    def dedup(self) -> "Credit":
+        seen = set()
+        out = []
+        for s in self.sites:
+            if s.key not in seen:
+                seen.add(s.key)
+                out.append(s)
+        self.sites = out
+        return self
+
+    def collisions(self) -> list:
+        """Groups of sites that write the same Q entry with differing targets.
+
+        With a ``WholeProcess`` repair ``{unstick:t, exec:t}`` the oracle emits a
+        ``DECISION`` site and an ``EXECUTION`` site on the same step.  Both are
+        routed to ``q.low``, so they are successive relative writes to one entry.
+        The value that lands therefore depends on the order they are applied in.
+
+        This is a genuine modelling defect, not a cosmetic one, so it is counted
+        rather than hidden.  Determinism is restored separately by iterating the
+        oracle's primitives in sorted order, which makes the outcome canonical --
+        but a canonical coin flip is still a coin flip, and the count is reported
+        so the affected contrasts can be read with that in mind.
+        """
+        buckets: dict = {}
+        for s in self.sites:
+            buckets.setdefault(s.write_key, []).append(s)
+        return [g for g in buckets.values() if len(g) > 1]
+
+
+def _plan_state(trace) -> tuple:
+    s = trace.steps[0].state
+    return (s[0], s[1], s[2])
+
+
+def _q_key(step) -> tuple:
+    """The low-level Q key for a step: (x, y, o, t).
+
+    The environment's state carries the context lane in slot 0, which is not
+    part of the Q_L key.  Using the raw state as a key silently writes to
+    entries the agent never reads.
+    """
+    return (step.state[1], step.state[2], step.state[3], step.t)
+
+
+def _act_states(trace) -> list:
+    return [_q_key(s) for s in trace.steps
+            if s.state[4] == ACT and s.intent >= 0]
+
+
+def module_oracle(trace, oracle_res) -> Credit:
+    """Coarse representation: one unit blamed, every entry it used."""
+    blamed = set()
+    sites: list = []
+    if oracle_res.family in ("Plan", "WholeProcess"):
+        blamed.add("PLAN")
+        sites.append(Site("PLAN", _plan_state(trace), trace.scene.plan))
+    if oracle_res.family != "Plan":
+        blamed.add("EXECUTION")
+        for st in _act_states(trace):
+            sites.append(Site("EXECUTION", st, reference_action(st[1], st[2], st[3])))
+    if not blamed:
+        blamed.add("EXECUTION")
+        for st in _act_states(trace):
+            sites.append(Site("EXECUTION", st, reference_action(st[1], st[2], st[3])))
+    return Credit("ModuleOracle", blamed, sites).dedup()
+
+
+def decision_oracle(trace, oracle_res) -> Credit:
+    """Exact representation: only the oracle's minimal critical sites."""
+    blamed = set()
+    sites: list = []
+    best = oracle_res.best
+    prims = best.primitives if best is not None else frozenset()
+    if not prims:
+        prims = frozenset().union(*[r.primitives for r in oracle_res.sufficient]) \
+            if oracle_res.sufficient else frozenset()
+    # `prims` is a frozenset of (str, int) tuples, so its iteration order follows
+    # string hashing and therefore PYTHONHASHSEED.  When the repair contains both
+    # a `unstick` and an `exec` primitive they resolve to a DECISION and an
+    # EXECUTION site on the same Q entry, and the order decides which write lands
+    # last.  Sorting removes the run-to-run dependence.
+    for prim in sorted(prims):
+        if prim[0] == "plan":
+            blamed.add("PLAN")
+            sites.append(Site("PLAN", _plan_state(trace), trace.scene.plan))
+        elif prim[0] == "unstick":
+            blamed.add("DECISION")
+            step = next((s for s in trace.steps if s.t == prim[1]), None)
+            if step is not None:
+                sites.append(Site("DECISION", _q_key(step), step.intent))
+        elif prim[0] == "exec":
+            blamed.add("EXECUTION")
+            step = next((s for s in trace.steps if s.t == prim[1]), None)
+            if step is not None:
+                sites.append(Site("EXECUTION", _q_key(step), step.intent))
+    if not sites:
+        return module_oracle(trace, oracle_res)
+    return Credit("DecisionOracle", blamed, sites).dedup()
+
+
+def repair_oracle(trace, oracle_res, selected) -> Credit:
+    """Repair representation: the factual site of the selected candidate."""
+    blamed = set()
+    sites: list = []
+    prims = selected.primitives if selected is not None else frozenset()
+    if not prims:
+        return module_oracle(trace, oracle_res)
+    # Same frozenset-ordering hazard as `decision_oracle`; see the note there.
+    for prim in sorted(prims):
+        if prim[0] == "plan":
+            blamed.add("PLAN")
+            sites.append(Site("PLAN", _plan_state(trace), trace.scene.plan))
+        elif prim[0] == "unstick":
+            blamed.add("DECISION")
+            step = next((s for s in trace.steps if s.t == prim[1]), None)
+            if step is not None:
+                sites.append(Site("DECISION", _q_key(step), step.intent))
+        elif prim[0] == "exec":
+            blamed.add("EXECUTION")
+            step = next((s for s in trace.steps if s.t == prim[1]), None)
+            if step is not None:
+                sites.append(Site("EXECUTION", _q_key(step), step.intent))
+    if not sites:
+        return module_oracle(trace, oracle_res)
+    return Credit("RepairOracle", blamed, sites).dedup()
+
+
+def alternative_sites(trace, oracle_res) -> list:
+    """The verified *alternative* action at each blamed decision site.
+
+    Pilot Beta asks whether raising a counterfactually verified replacement
+    beats merely pushing the factual bad action down.  That needs the site of
+    the bad choice plus the action that should have been taken there.
+    """
+    out: list = []
+    for step in trace.steps:
+        if step.state[4] != ACT or step.intent < 0:
+            continue
+        ref = reference_action(step.state[1], step.state[2], step.state[3])
+        if step.realized != ref:
+            out.append(Site("DECISION", _q_key(step), ref, is_factual=False))
+    if out:
+        return out
+    # A plan-level failure: the alternative is the plan the context calls for.
+    if oracle_res.family in ("Plan", "WholeProcess"):
+        s = trace.steps[0].state
+        return [Site("PLAN", (s[0], s[1], s[2]), trace.scene.g, is_factual=False)]
+    return []
+
+
+REPRESENTATIONS = {
+    "ModuleOracle": module_oracle,
+    "DecisionOracle": decision_oracle,
+    "RepairOracle": repair_oracle,
+}
+
+
+def responsible_units(oracle_res) -> set:
+    """Which units the oracle holds responsible, read off its best repair."""
+    out = set()
+    for repair in ([oracle_res.best] if oracle_res.best else oracle_res.sufficient):
+        if repair is None:
+            continue
+        for prim in repair.primitives:
+            if prim[0] == "plan":
+                out.add("PLAN")
+            elif prim[0] == "unstick":
+                out.add("DECISION")
+            elif prim[0] == "exec":
+                out.add("EXECUTION")
+    return out
+
+
+def selected_repair(trace, oracle_res, *, pick: str = "best"):
+    """Which sufficient repair the learner adopts.
+
+    ``best`` uses the evaluator's long-term ranking.  Alpha is an Oracle-truth
+    pilot, so it is allowed to use it; a learned arm in Delta is not.
+    """
+    if not oracle_res.sufficient:
+        return None
+    if pick == "best" and oracle_res.best is not None:
+        return oracle_res.best
+    return sorted(oracle_res.sufficient, key=lambda r: (r.size, r.describe()))[0]

@@ -1,0 +1,144 @@
+{
+  "schema": "V152_PROSPECTIVE_CONTINUAL_FAILURE_FEEDBACK_AGENT",
+  "date_asia_shanghai": "2026-11-07",
+  "parent_commit": "70a6da0eaa1bfdec84ca646c02448af7d8661156",
+  "question": "Does the assembled agent repeatedly react to actual new failures across one persistent32task R+L stream, keep protective mappings, learn eligible trialdata, and retain earlier repairs onrevisit without first-failure-only gates?",
+  "reference": {
+    "path": "experiments/v03r/a96_dense/b2_prepare/grammar_catalog_v31/evidence/stdout.log",
+    "sha256": "d0aafb6dc20b1cc0c872ac4c48497d94feb707ffe14448bd1c2f3ddd1bbb467b",
+    "q_digest": "d9078b5b5b823df56f998e8c28eb6a3e388bd3ae216f41a21acdb5202d2ec05a"
+  },
+  "ordinary_checkpoint": {
+    "raw": {
+      "path": "experiments/v04r/learned_relative_transfer_v148/evidence/raw.jsonl",
+      "bytes": 1382529,
+      "sha256": "de3796632d9eb8223053d435af5e1f7eeefbf1f87babd0f7557691d102306fd6"
+    },
+    "exit": {
+      "path": "experiments/v04r/learned_relative_transfer_v148/evidence/exit.json",
+      "bytes": 43758,
+      "sha256": "cf14ca352b6469071c65b493964225502bc801f7c302248d3645ded441612513"
+    },
+    "review": {
+      "path": "experiments/v04r/learned_relative_transfer_v148/stored_audit_result.json",
+      "bytes": 10702,
+      "sha256": "14def5237c7a6744c83b4788fff6d2bbfeeef3aa92c89a967f21dacb1efedade"
+    },
+    "selector": {
+      "tag": "PREPARATION_COMPLETE",
+      "field": "state"
+    },
+    "recorded_completed_tasks": 1,
+    "recorded_external_updates": 0,
+    "type": "Construct existing RecordedOrdinaryCheckpoint as explicit ordinary-state DATA only; exact fullI/R/L materialization by original legal3TX. No old source/pair/receipt/issuedidentity restore and no repeat of finished preparatory rollout."
+  },
+  "arms": [
+    "TaskTD",
+    "PrefixRepair",
+    "PrefixRepairLearn"
+  ],
+  "main_tasks_each": 32,
+  "trial_task_budget_each_feedback_arm": 12,
+  "schedule": [
+    {
+      "label": "A",
+      "kappa": 1,
+      "phi": 0,
+      "count": 6,
+      "trap": {
+        "cell": [
+          1,
+          2
+        ],
+        "t": 0
+      }
+    },
+    {
+      "label": "B",
+      "kappa": 1,
+      "phi": 2,
+      "count": 6,
+      "trap": {
+        "cell": [
+          2,
+          2
+        ],
+        "t": 2
+      }
+    },
+    {
+      "label": "C",
+      "kappa": 0,
+      "phi": 3,
+      "count": 6,
+      "trap": {
+        "cell": [
+          1,
+          2
+        ],
+        "t": 0
+      }
+    },
+    {
+      "label": "D",
+      "kappa": 0,
+      "phi": 4,
+      "count": 6,
+      "trap": {
+        "cell": [
+          1,
+          2
+        ],
+        "t": 0
+      }
+    },
+    {
+      "label": "A_return",
+      "kappa": 1,
+      "phi": 0,
+      "count": 4,
+      "trap": {
+        "cell": [
+          1,
+          2
+        ],
+        "t": 0
+      }
+    },
+    {
+      "label": "B_return",
+      "kappa": 1,
+      "phi": 2,
+      "count": 4,
+      "trap": {
+        "cell": [
+          2,
+          2
+        ],
+        "t": 2
+      }
+    }
+  ],
+  "one_original_source": "Pinnedordinarycheckpoint3TX thenoneoriginalstoreTX8edits beforeALLarms: A XSTART WAIT->RIGHT; B DSTART WAIT + X[(1,2),t2,UP]->RIGHT; C DSTART RIGHT + XSTART RIGHT->WAIT + D[(1,2),t2]RIGHT; D DSTART RIGHT; unreadsentinelX[(3,4),t10,k0phi5,WAIT]->UP. AllsharedsourcefullI/R/L cloned independently; no additionalinstall/reset atphaseboundaries.",
+  "agent": "NewContinualFeedbackAgent composesunchangedv151ownedobservationfactory/batch, unchangedv150visibleprefixcompiler, andoldv144ordinarykernel. Everyactualmainfailuremaydiagnose, notonlyfirst. No visiblecmd/realizationmismatch -> keepwithoutprivatequery, ordinaryTDstillperformed. Otherwiseunderbudget actualkeep/deleteoneprefix taskeach, requireactualprefixreach, compareactualreturnskeepontie, originalvisitedsiteXdelete. Successzero diagnosis. Eachfailureown source/chronoepoch/params/ref bound, no source/case/mask indecision.",
+  "learning": "PrefixRepair andPrefixRepairLearn use sameprefixquery/correctionpolicy. Only Learn consumesbothnewactualobservationsviaunchangedv151batch afteractualrepair; incompatibleownPXpathsdeclinedregardlessreward. NoTrialLearningcase stillordinarymainTD, no privateLcopy. AllfullR+L persists32epochs/protectedIunchanged; diagnosticcostcountersoutsideordinarypayload explicitlyaudited, notnewvalueknowledge.",
+  "coordinates": "Mainall32episodes literalMAXcoins, originalepsilon1/10 alpha1/2 andQ*unchanged; finitegreedy engineeringsequence, not sampled epsilonfrequency/formalXi. Onlyfailure-privatequeries useactualobservedprefixcommands asdiagnostic intervention. No adaptive mainexploration/RNG.",
+  "cost": "TaskTDpaysmainordinaryonly; feedbackarms payallactualprivatequeries andsourceTX. Notcompute-matched orfreefeedbackadvantage. Every2private task query consumesbudget beforeK, atmost12perfeedbackarm; exhaustionkeepsandcontinuesordinarylearning, notscienceSTOP. No hiddennativequerycostunderoldrouterquery_calls=0: explicitoutertrialcountseparate.",
+  "expected_extent_not_effect_gate": {
+    "main_tasks": 96,
+    "private_tasks_max": 24,
+    "old_preparation_rollouts": 0,
+    "checkpoint_TX": 3,
+    "source_TX": 1,
+    "source_edits": 8
+  },
+  "budget": {
+    "rollout": 122,
+    "step": 1464,
+    "transaction": 320,
+    "raw_bytes": 67108864,
+    "seconds": 180
+  },
+  "capture": "Newfirstexclusivecapture, noautomaticretry, allfailure/partial/zero/adverse retained. Nooldfixture/checker/native/bankrerun, keys/RNG/keyderive/DP/calibration/formalcollector/collection/automation. Freezeallnewexecutedsource.",
+  "limits": "Informed32taskdeterministic schedule, fixedcandidate/probelanguage/sharedQ*/revisedpatch; notblindseed/populationgain, learnedexperimentplanner/worldmodel/fullB1 orfullV04confirmation. Nonoverlappingfixedfaultcontexts, nojointmulti-errorsearchqualification. Contextlabels/masks onlyrunneraudit, notselectorfeatures; no claimofallfailuresneedreflection."
+}

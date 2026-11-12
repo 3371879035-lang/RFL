@@ -1,0 +1,154 @@
+{
+  "status": "PURE_DESIGN_CHECK_COMPLETE_NOT_NATIVE_LEARNING_EVIDENCE",
+  "historical_example": {
+    "source": "experiments\\v07r\\fact_action_matrix_v174\\mechanism_examples.json",
+    "source_uid": 48814,
+    "actual_old_action": 0,
+    "candidate_same_snapshot_action": 1,
+    "candidate_scores": [
+      0.3333333333333333,
+      0.5
+    ],
+    "runtime_identity_reconstructed": false
+  },
+  "synthetic_downstream_examples": [
+    {
+      "failure_reward": 0,
+      "action": 1,
+      "terms": [
+        {
+          "action": 0,
+          "counts": [
+            18,
+            0
+          ],
+          "probability": 0.95,
+          "successor": 1,
+          "continuation": 0.6,
+          "score": 0.57
+        },
+        {
+          "action": 1,
+          "counts": [
+            7,
+            1
+          ],
+          "probability": 0.8,
+          "successor": 2,
+          "continuation": 0.95,
+          "score": 0.76
+        }
+      ]
+    },
+    {
+      "failure_reward": -1,
+      "action": 1,
+      "terms": [
+        {
+          "action": 0,
+          "counts": [
+            18,
+            0
+          ],
+          "probability": 0.95,
+          "successor": 1,
+          "continuation": 0.2,
+          "score": 0.13999999999999996
+        },
+        {
+          "action": 1,
+          "counts": [
+            7,
+            1
+          ],
+          "probability": 0.8,
+          "successor": 2,
+          "continuation": 0.9,
+          "score": 0.5200000000000001
+        }
+      ]
+    }
+  ],
+  "remaining_wrong_downstream_Q_limit_preserved": true,
+  "world_arithmetic": [
+    {
+      "condition": "chain3",
+      "mirror": 0,
+      "optimal_success_fraction": "729/1000",
+      "optimal_success_decimal": 0.729
+    },
+    {
+      "condition": "chain3",
+      "mirror": 1,
+      "optimal_success_fraction": "729/1000",
+      "optimal_success_decimal": 0.729
+    },
+    {
+      "condition": "branch3",
+      "mirror": 0,
+      "optimal_success_fraction": "6859/15625",
+      "optimal_success_decimal": 0.438976
+    },
+    {
+      "condition": "branch3",
+      "mirror": 1,
+      "optimal_success_fraction": "6859/15625",
+      "optimal_success_decimal": 0.438976
+    },
+    {
+      "condition": "branch5",
+      "mirror": 0,
+      "optimal_success_fraction": "2476099/9765625",
+      "optimal_success_decimal": 0.2535525376
+    },
+    {
+      "condition": "branch5",
+      "mirror": 1,
+      "optimal_success_fraction": "2476099/9765625",
+      "optimal_success_decimal": 0.2535525376
+    }
+  ],
+  "planned_totals": {
+    "matrix_streams": 1728,
+    "matrix_train_rollouts": 442368,
+    "matrix_eval_rollouts": 6193152,
+    "matrix_total_rollouts": 6635520,
+    "combined_rollouts": 6635556,
+    "matrix_maximum_steps": 42024960,
+    "matrix_extra_Q_backups_cap": 4718592,
+    "combined_maximum_steps": 42025032,
+    "combined_extra_Q_backups_cap": 4718784
+  },
+  "planned_random_calls_not_executed": {
+    "train_env": 442368,
+    "train_action": 884736,
+    "eval_env": 884736,
+    "total": 2211840
+  },
+  "actual_new_rollouts": 0,
+  "actual_training": 0,
+  "actual_RNG_draws": 0,
+  "old_runner_or_checker_execution": 0,
+  "inputs": [
+    {
+      "path": "experiments\\v08r\\plan_v175.json",
+      "bytes": 11524,
+      "sha256": "172cb6cdb5eb004b6fcfc2ba20876a1c88b4f593da91b5f0be5f58b027669453"
+    },
+    {
+      "path": "experiments\\v07r\\fact_action_matrix_v174\\mechanism_examples.json",
+      "bytes": 2589,
+      "sha256": "1eee234e99e622c1293a45e1e9d6d02f979dbe21e579286100d8aec1befd5055"
+    },
+    {
+      "path": "experiments\\v08r\\decision_readout_v175\\readout.py",
+      "bytes": 1505,
+      "sha256": "2d4fa026fa78ad164602fbb89453a1502210e68d0f107b8a97906bb801558dee"
+    },
+    {
+      "path": "experiments\\v08r\\decision_readout_v175\\design_check.py",
+      "bytes": 7672,
+      "sha256": "3b64679c8c2cee1e6b2509c737bdf470f8e008e0310d5df069009a05112bc869"
+    }
+  ]
+}

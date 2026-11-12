@@ -1,0 +1,53 @@
+{
+  "schema": "V119_PROSPECTIVE_FACTUAL_ADDRESS_SELECTION",
+  "date_asia_shanghai": "2026-11-06",
+  "parent_commit": "1ffb79bd0adb3cd3652aca060412144c4f2442f9",
+  "purpose": "Isolate finer address selection after failure: train on every declared single-address/keep/clear-all candidate using actual ordinary continuations, freeze, then compare on held-out selector contexts. Not a full causal attribution system.",
+  "representations": {
+    "features": "mode, task-observed terminal, whether any visible a_cmd differs from a_realized. No scenario label, kappa, context identity, fault configuration, evaluator truth or measured held-out outcome enters the selector.",
+    "candidates": "keep; clear one chronological unique factual Q/D entry (single:0..n-1); clear all factual entries. No hidden fault or Q* target is read by candidate generation.",
+    "learner": "Tabular actual mean of two continuation returns per feature/candidate. Features remain mode, task-visible terminal, command/execution mismatch. Freeze before holdout. Choose maximum mean; exact ties prefer fewer attempted address edits, then earlier declared candidate position. Unknown coverage chooses keep. No fitted weight or significance margin.",
+    "cost": "Report task returns, actual address writes/transactions and developmental probes separately; no claim of net wall-time or resource savings, no new weighted utility objective."
+  },
+  "cases": {
+    "development": "Both modes, kappa0/phase2/errorflag0/cause_rank3/base_option1: collision, timeout, external trap and success control; eight factual cases. Train persistent numeric magnitude4 collision /8 timeout; patch uses independent literal actions, not those magnitudes.",
+    "held_out": "Both modes, kappa1/phase2/errorflag0/cause_rank4/base_option1, same four mechanisms. DQ collision magnitude6/timeout6. New kappa and numeric magnitudes, not a blind new family or independent statistical seeds. Patch magnitudes in descriptor are not extra treatments.",
+    "collision": "Install wrong RIGHT at (1,2,t1,current kappa,phase2,z1,m0). DQ Q_RIGHT fixed magnitude; patch D_RIGHT. One unread other-kappa RIGHT sentinel and unread process3->2 preserved.",
+    "timeout": "Install WAIT at START all t0..11/m0,1; DQ Q_WAIT fixed magnitude, patch D_WAIT. Same unread sentinels. These high legal overrides deliberately retain post-TD headroom; this is prospective mechanism engineering, not a screened population.",
+    "external_trap": "Genuinely healthy empty initial stores; task environment trap(1,2) at action-step0 remains present during factual and continuations. Its configuration is evaluator-only, never a diagnostic feature. Ordinary task learning may learn to avoid it.",
+    "success": "DQ START RIGHT value2.0 with correct policy; patch genuinely healthy. Success runs ordinary learning only, no diagnosis/probe/model observation."
+  },
+  "training_protocol": "Eight actual factual tasks with ordinary learning. Only failure opens every keep, single-address and clear-all branch. Each starts from a live full actual post-TD R+L clone and receives two identical ordinary continuations with the same environment. Train from all actual returns including zero/adverse outcomes. Expected 42 branches/84 probes if declared six failures occur. Success starts no attribution or candidate training.",
+  "held_out_protocol": "Freeze the table first. For each of eight held-out cases, independently clone equal initial states into TaskTD, AlwaysClear, LearnedAddress. Same shared 3-episode plan and masks; first task has ordinary learning then arm-specific one-event diagnosis. Next two are ordinary-only continuations for all arms. Actual terminal alone triggers a diagnostic. No evaluation outcomes update the frozen selector. Log all positive/zero/negative differences.",
+  "episode_inputs": "Within a case, chronological e0..2, fixed task kappa/phase/base_option and errorflag0 cause_rank; uint64MAX coins (nonexplore), (MAX,0) rejection tuples available lazily. Common nominal Q*, alpha1/2 epsilon1/10 remain. This is a deterministic finite stream, not stochastic Xi or learned exploration.",
+  "reference": {
+    "path": "experiments/v03r/a96_dense/b2_prepare/grammar_catalog_v31/evidence/stdout.log",
+    "sha256": "d0aafb6dc20b1cc0c872ac4c48497d94feb707ffe14448bd1c2f3ddd1bbb467b",
+    "q_digest": "d9078b5b5b823df56f998e8c28eb6a3e388bd3ae216f41a21acdb5202d2ec05a"
+  },
+  "declared_arms": [
+    "TaskTD",
+    "AlwaysClear",
+    "LearnedAddress"
+  ],
+  "diagnostic_address_budget_per_event": 12,
+  "online_diagnostic_query_capability": false,
+  "developmental_probe_budget_per_failed_factual": 28,
+  "budget": {
+    "rollout": 220,
+    "step": 2640,
+    "transaction": 800,
+    "raw_bytes": 16777216,
+    "seconds": 120
+  },
+  "expected_structural_extent_not_effect_gate": {
+    "development_factual_tasks": 8,
+    "development_branch_continuations_if_declared_failures_occur": 84,
+    "held_out_task_rollouts": 72,
+    "total_expected_rollouts": 164
+  },
+  "capture": "New namespace, new source/contract/launcher bound before first native, exclusive evidence directory, complete task raw and R+L/TD/choice/table/probe receipts before assertions. First failures and partial remain; no retry, no replacing inputs to obtain gains. Original313, V0.3/V0.4 executed modules and all old evidence remain unchanged. New stdlib-only stored review, no old checker execution.",
+  "scope_limits": "This is a learned two-action consequence selector, NOT a learned causal posterior, full repair grammar, general transfer, architecture ranking, statistical confirmation or end-to-end full RFL. One-event comparison, not a full recurrent diagnostic policy. No arbitrary old PASS transfer or new science/workload keys/DP/RNG/native calibration/formal collector. V0.3 remains complete under the human local-stage scope; do not reopen it. Factual-address position choice is not a causal responsibility posterior; it can exploit temporal regularities in this fixed family. Return ties are not statistical equivalence. Candidate and ordinary policy fall back to the same existing Q* prior.",
+  "automation": "User turned scheduling off; do not inspect or change it.",
+  "mechanism_family_reuse": "Same four simple mechanism types as v118, deliberately reused to isolate candidate granularity; not an independent replication or novel-world test. New source captures and higher candidate extent are counted. Do not rerun v118 or alter its files."
+}

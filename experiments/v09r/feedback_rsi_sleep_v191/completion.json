@@ -1,0 +1,64 @@
+{
+  "status": "COMPLETED_BOUNDED_FOUR_GROUP_PILOT_WITH_MIXED_RESULTS",
+  "source_commit": "e42785089c847280921eb5f4c2df903657a3b7f8",
+  "native_exit": 0,
+  "stored_review_exit": 0,
+  "analysis_exit": 0,
+  "utc": "2026-11-08T13:05:04.835111+00:00",
+  "totals": {
+    "train_steps": 393216,
+    "eval_steps": 1176079,
+    "eval_episodes": 16384,
+    "labels": 393027,
+    "optimizer_updates": 5376,
+    "candidate_branches": 192,
+    "changed_policies": 22,
+    "student_weight_changes": 48
+  },
+  "results": {
+    "RL-RP": {
+      "control": 209.3984375,
+      "adaptive": 192.349609375,
+      "difference": -17.048828125,
+      "positive_seeds": 2,
+      "early_difference": 23.421875,
+      "auc_difference": 12.070638020833343
+    },
+    "F0": {
+      "control": 50.52685546875,
+      "adaptive": 54.57373046875,
+      "difference": 4.046875,
+      "positive_seeds": 3,
+      "early_difference": 5.63671875,
+      "auc_difference": -0.3541666666666643
+    },
+    "F-RP": {
+      "control": 207.0380859375,
+      "adaptive": 198.61865234375,
+      "difference": -8.41943359375,
+      "positive_seeds": 1,
+      "early_difference": 22.943359375,
+      "auc_difference": 11.669921875
+    },
+    "F-R": {
+      "control": 114.1337890625,
+      "adaptive": 110.10595703125,
+      "difference": -4.02783203125,
+      "positive_seeds": 2,
+      "early_difference": 12.064453125,
+      "auc_difference": -0.8024088541666714
+    }
+  },
+  "mechanism_diagnostics": {
+    "selected_and_student_better": 21,
+    "selected_but_student_not_better": 14,
+    "final_nonuniform_policies": 8
+  },
+  "limits": [
+    "Four existing development seeds, not a broad confirmatory study.",
+    "Search and distillation combined; final evaluation never used as meta-training feedback.",
+    "Original DreamRSI coding-policy/MoE Sleep not reproduced.",
+    "Historical probe objective and student transfer remain imperfect.",
+    "No new map response rules, no automatic retry, no old64seed or automation restart."
+  ]
+}

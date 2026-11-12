@@ -1,0 +1,140 @@
+{
+  "schema": "V146_PROSPECTIVE_PROTECTIVE_MAPPING_CHALLENGE",
+  "date_asia_shanghai": "2026-11-07",
+  "parent_commit": "0075d41e81e18179e76f5544fb07374cd41ddc14",
+  "question": "Does the cheap direct mismatch-delete rule remove a protective own controller mapping when an unrelated decision error caused failure? Can paired future value keep it, and what does the no-correction baseline already solve?",
+  "checkpoint": {
+    "raw": {
+      "path": "experiments/v04r/ordinary_extra_control_v142/evidence/raw.jsonl",
+      "bytes": 3225077,
+      "sha256": "d4ceca7cff8eb133f4c7779b7225cfa5f3212ef6828552161d2e94e2dffb1bec"
+    },
+    "stored_review": {
+      "path": "experiments/v04r/ordinary_extra_control_v142/stored_audit_v2_result.json",
+      "bytes": 70094,
+      "sha256": "59e37c01425a3c582237c367e9c5eb35642e97d82aa7ccb06bd15fde0d0db3ed"
+    },
+    "contract": {
+      "path": "experiments/v04r/ordinary_extra_control_v142/contract.json",
+      "bytes": 16085,
+      "sha256": "c0133a859f3aedd4e4a683b7de7b9cf6ffa54eafed5a2e0c355307d8c2eaeb8d"
+    },
+    "selector": {
+      "tag": "STREAM_ARM",
+      "arm": "DriftOrdinaryExtra",
+      "field": "final_state"
+    },
+    "recorded_completed_main_tasks": 20,
+    "recorded_external_updates": 4,
+    "restoration": "Explicit recorded ordinary model checkpoint, not source/pair/receipt/issued-observation identity. Rebuild complete I/R/L through original legal store transactions; full wire equality. Fresh task clocks 0..11, never pretend to resume original issued plan/counter/runtime."
+  },
+  "reference": {
+    "path": "experiments/v03r/a96_dense/b2_prepare/grammar_catalog_v31/evidence/stdout.log",
+    "sha256": "d0aafb6dc20b1cc0c872ac4c48497d94feb707ffe14448bd1c2f3ddd1bbb467b",
+    "q_digest": "d9078b5b5b823df56f998e8c28eb6a3e388bd3ae216f41a21acdb5202d2ec05a"
+  },
+  "arms": [
+    "NoWrite",
+    "DirectSite",
+    "PairedValue"
+  ],
+  "main_tasks_each": 6,
+  "source_edits": [
+    {
+      "store": "decision",
+      "context": [
+        0,
+        2,
+        0,
+        0,
+        3,
+        1,
+        0
+      ],
+      "value": 3
+    },
+    {
+      "store": "controller",
+      "state": [
+        0,
+        2,
+        0,
+        0,
+        3
+      ],
+      "cmd": 3,
+      "value": 4
+    },
+    {
+      "store": "decision",
+      "context": [
+        1,
+        2,
+        2,
+        0,
+        3,
+        1,
+        0
+      ],
+      "value": 3
+    }
+  ],
+  "source_meaning": "New original-store oneTX/3edits after exact recorded ordinary I/R/L materialization. Initial D starts RIGHT, X[START,RIGHT]=WAIT protects against persistent Trap((1,2),step0). Later D[(1,2),t2]=RIGHT is the actual task failure hazard at contested postt3. Ordinary visited-D may fix it; do not freeze NoWrite or claim all policy improvements are newly learned values.",
+  "source_truth_boundary": "Descriptions/install config/mask are audit only. Every policy gets actual failed task evidence; DirectSite additionally reads own X mapping, PairedValue scores genuine trial returns. No source label/declared causal role/mask passed as a feature or used to choose a repair.",
+  "coordinates": {
+    "main_explore_epochs": [
+      1
+    ],
+    "private_explore_epochs": [
+      0
+    ],
+    "otherwise": "MAX; actual exploration only atstep0 with coin0/rejection0 selecting RIGHT from real[3,4]. Both candidate plans receive same literal private values, matching next two main exogenous values; private epochs0,1 are explicit engineering coordinates, not impersonated original Xi(main e1,e2).",
+    "qualification": "alpha1/2 epsilon1/10 unchanged. One planned main start exploration per6 tasks and planned trial first-start explore are finite stress coordinates, not a stochastic epsilon-frequency estimate or adaptive exploration."
+  },
+  "policy": "NoWrite keeps, DirectSite reuses frozen v145 direct policy unmodified. PairedValue reuses v144 observed-site candidate and EmpiricalHorizonValue(horizon2) unmodified: actual2 sequential ordinary-learning tasks each for keep and delete, choose orderedmean with keep on tie. One diagnostic trial event cap; no candidate/extra experience after main success.",
+  "ordinary_experience": "All main tasks ordinarylearn. No private observation ingestion in any arm, no privateL copy: candidate-X edits change dynamics at the probed command, so historical keep observations are not silently treated as samples of a newly changed actuator. The missing broader dynamics-aware observation-transfer contract is not declared solved.",
+  "runtime": "Frozen v144 mechanism_loop and v143 recorded checkpoint loader. Same localControllerSite deletion and PX anchor/fullI protection, not original whole-B1/law qualification. New role I is its own installed complete R. Old checkpoint clocks remain provenance only, newmain0..5/private0..1.",
+  "recorded_contrast": {
+    "contract.json": {
+      "path": "experiments/v04r/controller_horizon_value_v144/contract.json",
+      "bytes": 5478,
+      "sha256": "aa1d2394ffcaca2aec4d2d5edf8f4c9a46573432b24766649a0920d4b9206b1b"
+    },
+    "evidence/claim.json": {
+      "path": "experiments/v04r/controller_horizon_value_v144/evidence/claim.json",
+      "bytes": 42797,
+      "sha256": "8b3647ff8720759bf38e6793476879f31ce536e5e71b013944ef30696a46d762"
+    },
+    "evidence/exit.json": {
+      "path": "experiments/v04r/controller_horizon_value_v144/evidence/exit.json",
+      "bytes": 42927,
+      "sha256": "592c27961b4cf2b4ecf9c6ee8ed5b03a17a8821805ac2c32765189392cc8bdaf"
+    },
+    "evidence/raw.jsonl": {
+      "path": "experiments/v04r/controller_horizon_value_v144/evidence/raw.jsonl",
+      "bytes": 4046821,
+      "sha256": "bfeea98c8d3b0d9eb91727eec0f183840167ab83227ab6f85d7f8615b1b9c8a2"
+    },
+    "stored_audit_result.json": {
+      "path": "experiments/v04r/controller_horizon_value_v144/stored_audit_result.json",
+      "bytes": 6784,
+      "sha256": "b0e25e5a1ca4d24da14c1849939776523e61c06da2215813cd6ca097da60894f"
+    }
+  },
+  "expected_extent_not_effect_gate": {
+    "main_tasks": 18,
+    "private_tasks_upper": 4,
+    "checkpoint_restore_TX": 3,
+    "new_source_install_TX": 1,
+    "new_source_edits": 3
+  },
+  "budget": {
+    "rollout": 26,
+    "step": 312,
+    "transaction": 80,
+    "raw_bytes": 16777216,
+    "seconds": 90
+  },
+  "capture": "First exclusive bounded new capture. No auto retry or old native/checker/bank replay. Preserve failed/partial/zero/adverse. No keys/RNG/keyderive/DP/calibration/formalcollector/automation; original313/oldAPIs/guards/laws/registry/evidence unchanged.",
+  "limits": "One informed protective-mapping challenge, not blindseed/general safety. PairedValue pays4 extra tasks, NoWrite0; no equal-cost or superiority-to-NoWrite claim. Old destructive mapping case is a read-only contrast, not new replication."
+}

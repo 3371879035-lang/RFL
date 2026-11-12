@@ -1,0 +1,126 @@
+{
+  "schema": "V122_PROSPECTIVE_RECURRENT_FAILURE_ONLY_STREAM",
+  "date_asia_shanghai": "2026-11-06",
+  "parent_commit": "22ab55578500e5f00041d132d2aacc19644193a8",
+  "question": "Does the frozen evidence-value selector work over multiple failure events in one persistent learner, preserve earlier successful behavior across contexts, and keep task-visible failures as the only diagnostic trigger?",
+  "modes": [
+    "dq",
+    "patch-adaptive"
+  ],
+  "arms": [
+    "TaskTD",
+    "AlwaysClear",
+    "FrozenOrdinal",
+    "EvidenceValue"
+  ],
+  "sources": [
+    {
+      "kappa": 0,
+      "prefix": 3,
+      "cell": [
+        2,
+        1
+      ]
+    },
+    {
+      "kappa": 1,
+      "prefix": 5,
+      "cell": [
+        3,
+        2
+      ]
+    }
+  ],
+  "source_rule": "One fresh state per mode installs both kappa sources at once: WAIT at specified cell for t>=prefix through11, m0,1,z1,phi2; DQ6 or independent literalD WAIT. One phase4 unread wrong-RIGHT sentinel at(1,2,t1,kappa0,z1,m0) plus unread process3->2. Equal full initialR+L cloned independently to four arms; no state resets between tasks.",
+  "schedule": [
+    {
+      "kappa": 0,
+      "trap": false
+    },
+    {
+      "kappa": 0,
+      "trap": false
+    },
+    {
+      "kappa": 1,
+      "trap": false
+    },
+    {
+      "kappa": 1,
+      "trap": false
+    },
+    {
+      "kappa": 0,
+      "trap": false
+    },
+    {
+      "kappa": 1,
+      "trap": false
+    },
+    {
+      "kappa": 0,
+      "trap": true
+    },
+    {
+      "kappa": 0,
+      "trap": true
+    },
+    {
+      "kappa": 0,
+      "trap": true
+    },
+    {
+      "kappa": 1,
+      "trap": false
+    },
+    {
+      "kappa": 0,
+      "trap": false
+    },
+    {
+      "kappa": 0,
+      "trap": false
+    },
+    {
+      "kappa": 1,
+      "trap": false
+    },
+    {
+      "kappa": 1,
+      "trap": false
+    }
+  ],
+  "episode_inputs": "Chronological e0..13, fixedphi2/errorflag0/rank8/base1, fixed shared MAX nonexploration coins; same exogenous kappa and mask schedule all arms. Trap(1,2) on action-step0 is present only e6,7,8, including whatever actual behavior an arm chooses. No configuration or evaluator truth given to model.",
+  "model": "Reuse actual28row evidence value model and42row ordinal model without parameter update. Full candidate grammar and partial-support scoring as previously declared. No new training or candidate probes; prior196 training probe tasks retained as historical cost.",
+  "diagnostic": "Enabled after every actual COLLISION/TRAP/TIMEOUT for corrected arms, not only first task. SUCCESS ordinary-only. Max12addresses and0queries per event; individual consumed epochs, completeR+L and immediateI persist. TaskTD never diagnoses. Keep allowed.",
+  "retention_checkpoints_completed_tasks": [
+    0,
+    2,
+    4,
+    6,
+    9,
+    14
+  ],
+  "retention_protocol": "At each checkpoint ordinary greedy read-only rollouts in kappa0 and1, phi2/rank8/base1/no-fault. No coins, TD, diagnosis, writes or new source identity. Full before/after R+L+I identical; native counts separately. These are outcome checks, not success attribution. They are not training episodes or independent seeds.",
+  "metrics": "All14 chronological task returns, observed outcomes, failure counts, success-conditioned zero diagnostic calls, actual diagnostic transaction/address attempts; read-only return/success by checkpoint. Costs separate, no new weighted objective or post-hoc best window.",
+  "reference": {
+    "path": "experiments/v03r/a96_dense/b2_prepare/grammar_catalog_v31/evidence/stdout.log",
+    "sha256": "d0aafb6dc20b1cc0c872ac4c48497d94feb707ffe14448bd1c2f3ddd1bbb467b",
+    "q_digest": "d9078b5b5b823df56f998e8c28eb6a3e388bd3ae216f41a21acdb5202d2ec05a"
+  },
+  "budget": {
+    "rollout": 220,
+    "step": 2640,
+    "transaction": 512,
+    "raw_bytes": 16777216,
+    "seconds": 120
+  },
+  "expected_extent_not_effect_gate": {
+    "source_installs": 2,
+    "stream_tasks": 112,
+    "read_only_probes": 96,
+    "total_rollouts": 208
+  },
+  "capture": "New exclusive bounded capture and source pins before first execution. Old code/positive/negative/partial results unchanged, no old checker/native rerun, no automatic retry or replacing adverse/unknown outcomes.",
+  "limits": "Fixed scripted stream, not blind population/seeds/general causal posterior. Same sharedQ*, alpha1/2 epsilon1/10 and original rewards. Legal local edits on post-TD current, not original same-pre wholeB1. Trap phases are deliberate environmental changes; compare same-schedule arms, do not label changing-environment return as general collateral. No new science/workload keys, RNG/keyderive, DP/calibration/formal collection. Automation off, not inspected or changed."
+}

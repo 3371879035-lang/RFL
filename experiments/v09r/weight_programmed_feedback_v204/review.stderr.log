@@ -1,0 +1,49 @@
+concurrent.futures.process._RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "C:\Users\huani\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\concurrent\futures\process.py", line 264, in _process_worker
+    r = call_item.fn(*call_item.args, **call_item.kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\huani\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\concurrent\futures\process.py", line 213, in _process_chunk
+    return [fn(*args) for args in chunk]
+            ^^^^^^^^^
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v09r\weight_programmed_feedback_v204\analyze_stored.py", line 124, in review_seed
+    expected_id, expected_checks = select(r['initial_context'], route, r['route_checks'])
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v09r\weight_programmed_feedback_v204\analyze_stored.py", line 66, in select
+    close(weights, recorded['actual_trial_weights'])
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v09r\weight_programmed_feedback_v204\analyze_stored.py", line 21, in close
+    assert np.allclose(a, b, atol=tol, rtol=0.), (a, b)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: (array([8.57418557e-16, 2.02509349e-08, 1.80485139e-35, 1.80485139e-35,
+       1.80485139e-35, 5.07987385e-28, 5.34830169e-26, 5.82505004e-17,
+       1.44330467e-02, 7.36261464e-01, 1.80485139e-35, 1.80485139e-35,
+       1.80485139e-35, 3.73291898e-09, 9.77136487e-01, 1.54327063e-09]), [8.574099478911128e-16, 2.025054612886379e-08, 1.8048513285848406e-35, 1.8048513285848406e-35, 1.8048513285848406e-35, 5.079547783684004e-28, 5.348443657329021e-26, 5.82498469777474e-17, 0.014433050528168678, 0.7362847328186035, 1.8048513285848406e-35, 1.8048513285848406e-35, 1.8048513285848406e-35, 3.732907760678472e-09, 0.9770848155021667, 1.5432380928714906e-09])
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v09r\weight_programmed_feedback_v204\analyze_stored.py", line 334, in <module>
+    main()
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v09r\weight_programmed_feedback_v204\analyze_stored.py", line 300, in main
+    batches = list(pool.map(review_seed, claim['contract']['seeds']))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\huani\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\concurrent\futures\process.py", line 636, in _chain_from_iterable_of_lists
+    for element in iterable:
+                   ^^^^^^^^
+  File "C:\Users\huani\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\concurrent\futures\_base.py", line 619, in result_iterator
+    yield _result_or_cancel(fs.pop())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\huani\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\concurrent\futures\_base.py", line 317, in _result_or_cancel
+    return fut.result(timeout)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\huani\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\concurrent\futures\_base.py", line 456, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\huani\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\concurrent\futures\_base.py", line 401, in __get_result
+    raise self._exception
+AssertionError: (array([8.57418557e-16, 2.02509349e-08, 1.80485139e-35, 1.80485139e-35,
+       1.80485139e-35, 5.07987385e-28, 5.34830169e-26, 5.82505004e-17,
+       1.44330467e-02, 7.36261464e-01, 1.80485139e-35, 1.80485139e-35,
+       1.80485139e-35, 3.73291898e-09, 9.77136487e-01, 1.54327063e-09]), [8.574099478911128e-16, 2.025054612886379e-08, 1.8048513285848406e-35, 1.8048513285848406e-35, 1.8048513285848406e-35, 5.079547783684004e-28, 5.348443657329021e-26, 5.82498469777474e-17, 0.014433050528168678, 0.7362847328186035, 1.8048513285848406e-35, 1.8048513285848406e-35, 1.8048513285848406e-35, 3.732907760678472e-09, 0.9770848155021667, 1.5432380928714906e-09])

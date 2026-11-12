@@ -1,0 +1,56 @@
+{
+  "version": 226,
+  "client_date": "2026-11-12",
+  "status": "PRE_EXECUTION",
+  "authority": "User explicitly requested eight hours and previous RL/feedback control conditions.",
+  "parent_git": "d0edad11137a117f45ab94f5f10cf6f045a61ac3",
+  "groups": [
+    "RL-plain",
+    "RL-outer",
+    "F0",
+    "F-RP",
+    "F-R",
+    "N226"
+  ],
+  "training_seeds": [
+    137,
+    149,
+    163
+  ],
+  "smoke_seed": 179,
+  "wall_seconds": 28800,
+  "final_reserve_seconds": 900,
+  "charged_steps_per_group_seed_round": 64,
+  "artifact_bytes_max": 25769803776,
+  "workers": 3,
+  "torch_threads_per_worker": 1,
+  "evaluation": {
+    "interim_episodes": 16,
+    "final_episodes": 64,
+    "rungs": [
+      1,
+      2,
+      4,
+      8,
+      16,
+      32,
+      64,
+      128,
+      256,
+      512,
+      1024
+    ]
+  },
+  "scope": "Portable common-task reference conditions plus current V225 network. Not resumed game agents or a direct comparison of legacy scores.",
+  "primary": "Maximum common completed preset interaction rung, independent of measured outcomes.",
+  "memory": "Actual raw archive plus at most96 complete-episode active nodes for N226; reference8192 replay samples.",
+  "optimizer": "N226 world1e-4,policy2e-4,critic2e-4 Adam; references3e-4 Adam; clipped groups5; at most3 calls perblock; no automatic retry.",
+  "smoke": {
+    "training_steps": 768,
+    "evaluation_steps": 432,
+    "wall_seconds": 1800
+  },
+  "current_model_training": "Actual positive goal return policy gradient plus factual likelihood, not strict reward-free feedback.",
+  "automation": false,
+  "cloud": false
+}

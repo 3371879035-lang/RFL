@@ -1,0 +1,405 @@
+{
+ "stage": "smoke",
+ "namespace": "v01r_smoke_v2",
+ "n_scenes": 5,
+ "B_Q": 4,
+ "checks": {
+  "all_four_arms_ran_on_every_scene": true,
+  "all_outputs_finite": true,
+  "no_arm_exceeded_B_Q": true,
+  "world_fingerprints_unchanged": true
+ },
+ "dev_only_checks": {
+  "every_fired_cause_has_pos_and_neg": false,
+  "seqthenquery_used_a_query": true,
+  "queryonly_used_a_query": true,
+  "query_changed_inference_on_at_least_one_scene": true,
+  "predictions_not_all_identical_constant": true
+ },
+ "applied_to_this_stage": [
+  "all_four_arms_ran_on_every_scene",
+  "all_outputs_finite",
+  "no_arm_exceeded_B_Q",
+  "world_fingerprints_unchanged"
+ ],
+ "verdict": "PASS",
+ "coverage_positives": [
+  1,
+  0,
+  0,
+  1,
+  0
+ ],
+ "coverage_negatives": [
+  4,
+  5,
+  5,
+  4,
+  5
+ ],
+ "query_used": {
+  "QueryOnly": 5,
+  "SeqThenQuery": 5
+ },
+ "max_trace_len": {
+  "QueryOnly": 4,
+  "SeqThenQuery": 2
+ },
+ "rollouts_memoised": 3678360,
+ "scenes": [
+  {
+   "scene": 0,
+   "world_id": 320972,
+   "block_id": 141,
+   "fire": [
+    1,
+    0,
+    0,
+    0,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     0.31367292225200943,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "QueryOnly": [
+     1.0,
+     0.11111111111110489,
+     0.0,
+     0.09876543209875434,
+     0.020987654320984976
+    ],
+    "SeqThenQuery": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "trace_len": {
+    "QueryOnly": 4,
+    "SeqThenQuery": 1
+   }
+  },
+  {
+   "scene": 1,
+   "world_id": 791226,
+   "block_id": 414,
+   "fire": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     0.31367292225200943,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "QueryOnly": [
+     0.0,
+     0.11111111111110447,
+     0.09876543209875399,
+     0.08779149519888971,
+     0.0
+    ],
+    "SeqThenQuery": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "trace_len": {
+    "QueryOnly": 4,
+    "SeqThenQuery": 1
+   }
+  },
+  {
+   "scene": 2,
+   "world_id": 519949,
+   "block_id": 276,
+   "fire": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     0.1495016611295687,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "QueryOnly": [
+     0.0,
+     0.11111111111110447,
+     0.09876543209875399,
+     0.08779149519888971,
+     0.0
+    ],
+    "SeqThenQuery": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "trace_len": {
+    "QueryOnly": 4,
+    "SeqThenQuery": 1
+   }
+  },
+  {
+   "scene": 3,
+   "world_id": 546843,
+   "block_id": 274,
+   "fire": [
+    0,
+    0,
+    0,
+    1,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     0.252336448598089,
+     0.0,
+     0.5263157894736972,
+     0.473684210526306,
+     0.0
+    ],
+    "QueryOnly": [
+     0.11111111111111105,
+     0.0,
+     0.0,
+     1.0,
+     0.0
+    ],
+    "SeqThenQuery": [
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0
+    ]
+   },
+   "trace_len": {
+    "QueryOnly": 4,
+    "SeqThenQuery": 2
+   }
+  },
+  {
+   "scene": 4,
+   "world_id": 225282,
+   "block_id": 89,
+   "fire": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "predictions": {
+    "DirectFeedback": [
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0
+    ],
+    "SequenceEvidence": [
+     0.29930203914053105,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "QueryOnly": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "SeqThenQuery": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "trace_len": {
+    "QueryOnly": 4,
+    "SeqThenQuery": 1
+   }
+  }
+ ],
+ "metrics_raw_material_only": {
+  "DirectFeedback": {
+   "macro_auprc": NaN,
+   "macro_auroc": NaN,
+   "exact_set_accuracy": 0.6,
+   "hamming": 0.12,
+   "brier": 0.12,
+   "ece": 0.12000000000000002,
+   "auprc": [
+    1.0,
+    NaN,
+    NaN,
+    1.0,
+    NaN
+   ],
+   "auroc": [
+    0.5,
+    NaN,
+    NaN,
+    0.875,
+    NaN
+   ],
+   "ece_per_cause": [
+    0.2,
+    0.0,
+    0.2,
+    0.2,
+    0.0
+   ],
+   "n_scenes": 5
+  },
+  "SequenceEvidence": {
+   "macro_auprc": NaN,
+   "macro_auroc": NaN,
+   "exact_set_accuracy": 0.6,
+   "hamming": 0.12,
+   "brier": 0.05196233283632508,
+   "ece": 0.08505703533246245,
+   "auprc": [
+    1.0,
+    NaN,
+    NaN,
+    1.0,
+    NaN
+   ],
+   "auroc": [
+    0.875,
+    NaN,
+    NaN,
+    1.0,
+    NaN
+   ],
+   "ece_per_cause": [
+    0.21475886087283397,
+    0.0,
+    0.10526315789473945,
+    0.10526315789473882,
+    0.0
+   ],
+   "n_scenes": 5
+  },
+  "QueryOnly": {
+   "macro_auprc": NaN,
+   "macro_auroc": NaN,
+   "exact_set_accuracy": 1.0,
+   "hamming": 0.0,
+   "brier": 0.0037800689069899885,
+   "ece": 0.03749245541837806,
+   "auprc": [
+    1.0,
+    NaN,
+    NaN,
+    1.0,
+    NaN
+   ],
+   "auroc": [
+    1.0,
+    NaN,
+    NaN,
+    1.0,
+    NaN
+   ],
+   "ece_per_cause": [
+    0.022222222222222213,
+    0.06666666666666277,
+    0.0395061728395016,
+    0.05486968449930675,
+    0.004197530864196995
+   ],
+   "n_scenes": 5
+  },
+  "SeqThenQuery": {
+   "macro_auprc": NaN,
+   "macro_auroc": NaN,
+   "exact_set_accuracy": 1.0,
+   "hamming": 0.0,
+   "brier": 0.0,
+   "ece": 0.0,
+   "auprc": [
+    1.0,
+    NaN,
+    NaN,
+    1.0,
+    NaN
+   ],
+   "auroc": [
+    1.0,
+    NaN,
+    NaN,
+    1.0,
+    NaN
+   ],
+   "ece_per_cause": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "n_scenes": 5
+  }
+ },
+ "gate_semantics": "SMOKE = plumbing only, no scientific judgement. DEV = testability only; it deliberately does NOT require SeqThenQuery to beat DirectFeedback.",
+ "discipline": "If this batch exposes a design problem, the same 5 may then NOT be declared calibration-PASS: keep this artifact and re-run under a new namespace."
+}

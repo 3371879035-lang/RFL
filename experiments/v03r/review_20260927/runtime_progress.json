@@ -1,0 +1,19 @@
+{
+  "observed_at": "2026-09-27T11:51:26.7506085+08:00",
+  "pid": 23956,
+  "status": "RUNNING",
+  "phase": "POST_GATES_OPERATIONAL_ACQUISITION",
+  "process_cpu_seconds": 276.3125,
+  "working_set_bytes": 61972480,
+  "runtime_complete": false,
+  "gate_log_snapshot": [
+    "gate 1/6 exit=0: python -m pytest -q",
+    "gate 2/6 exit=0: python scripts/spec_audit.py",
+    "gate 3/6 exit=0: python scripts/b2_view_gate_selfcheck.py",
+    "gate 4/6 exit=0: python scripts/a91_training_gate_selfcheck.py",
+    "gate 5/6 exit=0: python scripts/run_calibration.py",
+    "gate 6/6 exit=0: python scripts/f0_manifest_selfcheck.py"
+  ],
+  "stderr_snapshot": [],
+  "formal_stage_started": false
+}

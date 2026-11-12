@@ -1,0 +1,258 @@
+{
+  "schema": "V03R_ARCHITECTURE_TRAINING_SOURCE_REVIEW_V87",
+  "parent_commit": "4151c42ad7bad80999cbecc71fd736c552ba5db7",
+  "role": "MAIN_AGENT_IMPLEMENTATION_LAYER_STATIC_REVIEW_NOT_INDEPENDENT_EXPERT_OR_NATIVE_SCIENCE_GATE",
+  "source_pins": {
+    "docs/rebuild/12-AMENDMENTS.md": {
+      "bytes": 540800,
+      "sha256": "3721d35f7e7f860ee4ac1f506f876b1a3e22e7ee2224cb1acc369b98fca11170"
+    },
+    "docs/rebuild/34-A96-DENSE-MEASUREMENT.md": {
+      "bytes": 6263,
+      "sha256": "80192208555069d834a83d6050d3dd428412d72c8b3ca14d8429bbb8b03a6553"
+    },
+    "experiments/v03r/a96_dense/dev_lock.json": {
+      "bytes": 35631,
+      "sha256": "7d43ee9ae33a218e1266ab3cd2351e07d7e30922302e4527c65facbddaa3472f"
+    },
+    "scripts/a91_training_gate_selfcheck.py": {
+      "bytes": 6831,
+      "sha256": "79b4fadff74f06ae000e258fc86b9edad440db58667391fc5aa1a14cc835a18a"
+    },
+    "src/rfl_rebuild/b2/environment.py": {
+      "bytes": 8884,
+      "sha256": "c25ed7940489e341e781e47b8d98dd0e6d723985477b71a87611e2007c4a7087"
+    },
+    "src/rfl_rebuild/b2/training.py": {
+      "bytes": 22321,
+      "sha256": "0342626da5a111952873f33028866718a5504c2535e31d8790af952e08c472d6"
+    },
+    "src/rfl_rebuild/env/kernel.py": {
+      "bytes": 42880,
+      "sha256": "2387e15a66beb2d13ebb5aad248c0f5672f49dfed11663419816eec36c571ab8"
+    },
+    "src/rfl_rebuild/learner/store.py": {
+      "bytes": 30097,
+      "sha256": "2c41ce68994020cad87c6ccd6bba4fb6ca231a0cb1ef43ff0f3756b3dbf523c4"
+    }
+  },
+  "function_pins": [
+    {
+      "path": "src/rfl_rebuild/b2/training.py",
+      "name": "_behaviour_provider",
+      "lines": [
+        350,
+        364
+      ],
+      "source_segment_sha256": "575705947afb37a1d85d54b5ce7c5e61206bc81b3de6269d9152a7ff553d1f75",
+      "relevant_expression": "greedy = learner.snapshot().q_decision_provider(q_reference); return greedy(state, control)"
+    },
+    {
+      "path": "src/rfl_rebuild/b2/training.py",
+      "name": "episode_rollout",
+      "lines": [
+        367,
+        383
+      ],
+      "source_segment_sha256": "8f0de7c228c8d4e3b8de0321d910eb4244eb0a9cc114e499eb7c161451a76b7a",
+      "relevant_expression": "command_provider=_behaviour_provider; controller and process from snapshot"
+    },
+    {
+      "path": "src/rfl_rebuild/b2/training.py",
+      "name": "sweep_edits",
+      "lines": [
+        411,
+        444
+      ],
+      "source_segment_sha256": "2e319e820a9857aabcdd3238e7aae390ef0a32ea6b9ed54681edcc16f67c7f21",
+      "relevant_expression": "return tuple(Edit(store=Q, address=q, value=float(overrides[q])) for q in seen)"
+    },
+    {
+      "path": "src/rfl_rebuild/b2/training.py",
+      "name": "train_curve",
+      "lines": [
+        467,
+        495
+      ],
+      "source_segment_sha256": "06a44742352e0e5177a3ee25934e0b5d0737dca922783faff083cadc8f7d8127",
+      "relevant_expression": "range(t_max+1), checkpoint mean before episode, final break; apply_transaction(edits)"
+    },
+    {
+      "path": "src/rfl_rebuild/b2/environment.py",
+      "name": "learner_channels",
+      "lines": [
+        68,
+        77
+      ],
+      "source_segment_sha256": "63de4f86523bb42069571a002675d4ab9ded1d073fb743b4618b4449bf83f3bc",
+      "relevant_expression": "snapshot.decision_provider(snapshot.q_decision_provider(q_reference))"
+    },
+    {
+      "path": "src/rfl_rebuild/b2/environment.py",
+      "name": "learned_rollout",
+      "lines": [
+        80,
+        97
+      ],
+      "source_segment_sha256": "364d024ef2a2aa1279db2afb364396406840792652cd7de892734f92dc37349b",
+      "relevant_expression": "learner_channels(snapshot,q_reference) and snapshot.process_commit_provider()"
+    },
+    {
+      "path": "src/rfl_rebuild/learner/store.py",
+      "name": "_require_decision_store_exclusive",
+      "lines": [
+        254,
+        272
+      ],
+      "source_segment_sha256": "d1b88c8bc4bf905eae2d7dc37db83365cd1f34f6a8c68cdbb689ca63ee953219",
+      "relevant_expression": "if self._decision and self._q: raise LearnerStateError"
+    },
+    {
+      "path": "src/rfl_rebuild/learner/store.py",
+      "name": "decision_provider",
+      "lines": [
+        275,
+        318
+      ],
+      "source_segment_sha256": "fc8453ebac9505530534a123b7a4659bf15f5cf6ed403f2d164964bd48747b54",
+      "relevant_expression": "guard first; read self._decision before base_provider"
+    },
+    {
+      "path": "src/rfl_rebuild/learner/store.py",
+      "name": "q_decision_provider",
+      "lines": [
+        320,
+        358
+      ],
+      "source_segment_sha256": "97f38f53959e2908868a2b812b4b6a5cd08c5ca8011cf7f1f0d5e313506a207a",
+      "relevant_expression": "guard first; effective Q argmax; no self._decision branch"
+    },
+    {
+      "path": "src/rfl_rebuild/learner/store.py",
+      "name": "apply_transaction",
+      "lines": [
+        430,
+        512
+      ],
+      "source_segment_sha256": "7ecfc05b20fde678541b2e745ce85e3ecbe9bfe7f946af7829aa9cbab5a187b9",
+      "relevant_expression": "validate typed/domain/duplicate; canonical Q reference equality deletes; retain D and commit all stores; no provider construction"
+    },
+    {
+      "path": "src/rfl_rebuild/b2/training.py",
+      "name": "is_explore",
+      "lines": [
+        160,
+        168
+      ],
+      "source_segment_sha256": "c26c16e700f3c6f7a9aa7c275267ef7db104c65f58eccf1e0a34dda6e7239873"
+    },
+    {
+      "path": "src/rfl_rebuild/b2/training.py",
+      "name": "uniform_action",
+      "lines": [
+        171,
+        191
+      ],
+      "source_segment_sha256": "007b2ec5b1ce778f41174e3c282016f2954e1b83ffbd85c586e966e4f86ac785"
+    },
+    {
+      "path": "src/rfl_rebuild/b2/training.py",
+      "name": "effective_value",
+      "lines": [
+        194,
+        200
+      ],
+      "source_segment_sha256": "78e021219188853505293465f1ae66eb67e3878786d2ccaf9339d0a99f8f8c5b"
+    },
+    {
+      "path": "src/rfl_rebuild/b2/training.py",
+      "name": "visited_order",
+      "lines": [
+        386,
+        408
+      ],
+      "source_segment_sha256": "76e5fb5cb30cdeaa0d89b0a0f928c01836e2774b37a5245dc164ed93970d6121"
+    },
+    {
+      "path": "src/rfl_rebuild/env/kernel.py",
+      "name": "rollout",
+      "lines": [
+        769,
+        853
+      ],
+      "source_segment_sha256": "ea9221ae092904e5997c6934da7c708df058b569ab5bdf239a93e394e5ccc855"
+    },
+    {
+      "path": "src/rfl_rebuild/env/kernel.py",
+      "name": "continue_rollout",
+      "lines": [
+        856,
+        922
+      ],
+      "source_segment_sha256": "fc25d7f399ef1ce0bbcf5e3502d204455f36285748dbce6280a01bc743936f1d"
+    }
+  ],
+  "normative_read": {
+    "A91": "complete79 section7902..8539",
+    "A75": "complete62.8/62.9 plus62.10..62.14",
+    "A77": "65.1..65.5 including65.4",
+    "A96": "complete34-A96 document",
+    "v86": "complete four artifacts plus unique ledger boundary/provenance physically parsed"
+  },
+  "findings": [
+    {
+      "id": "CONDITIONAL_FOUR_STORE_CONSTRAINT",
+      "strength": "clause/source logical consequence, conditional",
+      "statement": "legal full immediate patch post with D nonempty,Q empty; chronological TD returns an edit whose canonical Q remains nonempty -> retained D and Q-only transaction co-reside; next provider construction correctly rejects",
+      "not": "every episode fails; runtime exception; scientific FAIL"
+    },
+    {
+      "id": "EXPLORATION_ORDER_IS_ARCHITECTURE_SEMANTICS",
+      "strength": "actual code and original epsilon contract",
+      "statement": "decision_provider shadows its base on D hit. Wrapping epsilon fallback suppresses exploration and can shift fallback-index coin. Proposed outer epsilon preserves step distribution, D only on exploit; this remains proposed, not installed."
+    },
+    {
+      "id": "LOGICAL_NEW_STATE_NOT_GUARD_WORKAROUND",
+      "strength": "explicit proposal analysis",
+      "statement": "R/L separation leaves original object guard intact but adds logical state and patch-over-learned-Q composition. New A77/A91 scope is required; not an unchanged four-store repair."
+    },
+    {
+      "id": "LOCALITY_TWO_BOUNDARIES",
+      "strength": "original B1 vs A91 semantics",
+      "statement": "B1 preserves nonowners; ordinary visited Q/L nonowner updates are learning, not added credit. D/P/X declarations remain fixed."
+    },
+    {
+      "id": "F1_QUALIFICATION_TRANSFER_NOT_CERTIFIED",
+      "strength": "prospective proof obligation",
+      "statement": "DQ exact path and empty-D mapped-L restricted equivalence may be provable; nonempty D/new learner cannot borrow old F1 lock by number equality. Six locked threshold records distinct from six A91 mutation targets."
+    }
+  ],
+  "internal_checks": {
+    "no_hidden_state_claim": true,
+    "source_mode_not_outcome_selected": true,
+    "all_roles_including_X_P_residual": true,
+    "TD_and_exploration_not_silently_changed": true,
+    "F1_transfer_not_granted": true,
+    "scope_request_specific_not_jargon_choice": true
+  },
+  "parent_preservation_before": {
+    "commit": "4151c42ad7bad80999cbecc71fd736c552ba5db7",
+    "tracked_paths": 2898,
+    "bytes": 13728952616,
+    "all_actual_Git_blobs_equal": true,
+    "registry_sha256": "0c2f3985a8df02174a73abab3cdf54581146489aead6e4ffcbf99409b7dd517e"
+  },
+  "tool_observations": [
+    "Initial combined v86 read exceeded display context; subsequently all four artifacts and exact ledger fields read separately, full physical JSON/source SHA verified.",
+    "Large combined source/rg output exceeded display budget; remaining required source spans read separately, full files hashed and16 actual AST function spans pinned. Not every unrelated output was visibly read.",
+    "Read-only rg guessed two nonexistent paths kernel.py and scripts/rebuild/run_a96_dense_pipeline.py; actual rg --files established env/kernel.py and scripts/run_a96_pipeline.py. No source, capture or execution was changed."
+  ],
+  "limits": {
+    "new_native_evidence": false,
+    "production_fix": false,
+    "new_backend_implemented": false,
+    "scientific_adoption": false,
+    "external_expert": false
+  }
+}
+

@@ -1,0 +1,49 @@
+{
+  "schema": "V103_ACTUAL_LAZY_ADAPTER_REJECTION_COMPONENT_NOT_SCIENCE",
+  "parent_commit": "440a806d2c122826d9b4df414fa52e9f3a5d6719",
+  "status": "FIRST_CHILD_EXIT0_REAL_V95_ADAPTER_CONSUMED_REJECTED_AND_ACCEPTED_COORDINATES",
+  "native": {
+    "exit_code": 0,
+    "seconds": 0.1408279000024777,
+    "started_at_utc": "2026-10-13T08:06:56.280062+00:00",
+    "completed_at_utc": "2026-10-13T08:06:56.422011+00:00",
+    "stdout_bytes": 509,
+    "stdout_sha256": "eca70cefffea5de48013e780928c53d6825a56418d25aaf850a49b430357f53d",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "inputs_before_after_identical": true,
+    "automatic_retry": false
+  },
+  "actual_component_result": {
+    "admissible_n": 5,
+    "uint64_max_rejected": true,
+    "accepted_draw_coordinate": "(epoch=0, step=0, j=1, c=1)",
+    "accepted_draw": 4,
+    "exact_action_index": 4,
+    "flooring_mutant_action_index": 4,
+    "exact_adapter_calls": [[0, 1, 0, 18446744073709551615], [0, 1, 1, 4]],
+    "flooring_mutant_calls": [[0, 1, 0, 18446744073709551615]],
+    "mutant_detected_by_actual_lazy_coordinate_transcript": true
+  },
+  "counts": {
+    "adapter_instances": 2,
+    "rollout": 0,
+    "step": 0,
+    "B1": 0,
+    "transaction": 0,
+    "RNG_or_keyderive": 0,
+    "DP_or_calibration": 0,
+    "formal_curve_or_collection": 0
+  },
+  "interpretation": "This closes the specific finite n=5 lazy-adapter rejection coordinate gap found in V95's claimed coverage. The V95 source/log/receipt remain unchanged. Same returned action here is intentional: the mutant is caught because it fails to consume c=1. This is not full Xi/keyed-domain coverage or full six-source-mutant qualification.",
+  "stored_audit": {
+    "exit_code": 0,
+    "actual_adapter_coordinate_calls": 2,
+    "floor_mutant_calls": 1,
+    "mutant_rejected": true,
+    "RFL_or_old_checker_executed_by_auditor": false,
+    "independent_expert_or_science_gate": false
+  },
+  "scientific_status": "UNEVALUATED",
+  "research_complete": false
+}

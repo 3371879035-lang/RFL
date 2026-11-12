@@ -1,0 +1,106 @@
+{
+  "schema": "V09_NATIVE_MATRIX_CONTRACT_V179",
+  "recorded_utc": "2026-11-07T13:34:48.424468+00:00",
+  "authority": "Direct human execute and complete V0.9 request; plan_v177 unchanged",
+  "phases": {
+    "prepare": "Generate all 12 fixed maps and kernel-only distance tables once, zero rollouts",
+    "wiring": {
+      "seed": 91000,
+      "arms": 4,
+      "train_steps_each": 1024,
+      "eval_count_per_checkpoint": 2,
+      "checkpoints": [
+        0,
+        1024
+      ],
+      "maximum_steps": 8192,
+      "stage_override": 2
+    },
+    "profile": {
+      "seeds": [
+        91001,
+        91002,
+        91003,
+        91004
+      ],
+      "arms": 4,
+      "train_steps_each": 4096,
+      "eval_episodes_each": 8,
+      "maximum_steps": 98304,
+      "stage_override": 2
+    },
+    "matrix": {
+      "seeds": [
+        9001,
+        9064
+      ],
+      "arms": 4,
+      "train_steps_each": 262144,
+      "stage_override": null,
+      "checkpoints": [
+        0,
+        16384,
+        65536,
+        131072,
+        262144
+      ],
+      "final_bank": 1024,
+      "earlier_bank": 128,
+      "factual_final_ablations": [
+        "H1_only",
+        "no_cross_episode_history_retrieval"
+      ],
+      "ablation_bank_each": 128
+    }
+  },
+  "implementation_choices": {
+    "vision_planes": [
+      "road",
+      "visible_treasure",
+      "visible_ready_buff",
+      "visible_monster_1",
+      "visible_monster_2"
+    ],
+    "common_network_scalars": 184,
+    "outside_distance_bucket_width": 15,
+    "coarse_episode_atlas": "8x8 known and road densities; own observed 64x64 atlas only",
+    "retrieval": "128 evenly spaced self-owned raw history candidates; nearest8 on observable scalar context excluding absolute hero x,z, map ID, seed and score",
+    "retrieval_summary": "24 fields, same interface in all four arms",
+    "factual_heads": "3 independently initialized 80-64-74 MLPs; outcomes10 + predicted64 latent delta; supervised actual visibility masks",
+    "factual_loss": "mean masked MSE + capture BCE + .1 latent MSE; independent deterministic five-of-seven replay masks for heads",
+    "latent_transition": "tanh(current_latent + .1*predicted_delta)",
+    "F0_target": "Actual post-action remaining steps/256 and future pickup/10 on completed own episodes only; no scalar reward packet or Q module",
+    "F0_suffix_proposal": "Current root factual-policy scores reused as open-loop proposal, not free full successor expansions",
+    "forecast_error": "Completed actual own cumulative consequence in same readout units; heuristic, not calibrated confidence proof",
+    "planning_work": "Root prefix reused; <=16 candidate trajectories * <=8 transitions, each of3 heads; unknown branches stop local expansion",
+    "recurrent_replay": "25 observed frames;8 burn-in detached then16 trained positions, next-frame DoubleQ; reset recurrent state at real episode boundaries",
+    "reward": "0.015+actual new treasure per real step, capture -1 for RP only. Valid capture step contributes to finished-step count.",
+    "engineering_override": "C permissions only to exercise and profile max-capability code; real train count remains1024/4096, never presented as a 65536-step trained model"
+  },
+  "capture": "Exclusive gzip binary structured step records, gzip episode JSONL, complete compressed continuation checkpoints. F0 reward record is NaN/not supplied, not a hidden scalar label.",
+  "science_scope": "Four complete methods on new local pursuit task, not official Tencent replica, no original 400/200 confirmation/PASS",
+  "old_runtime_or_evidence_changed": false,
+  "automatic_experiment_retries": false,
+  "global_environment_step_ceiling": 180461568,
+  "resource_caps": {
+    "native_wall_seconds_total": 86400,
+    "aggregate_RAM_gib": 20,
+    "compressed_capture_and_checkpoints_gib": 25,
+    "parallel_seed_units": 12,
+    "threads_per_unit": 1
+  },
+  "actual_before_first_native": {
+    "rollouts": 0,
+    "training": 0,
+    "evaluation": 0
+  },
+  "revision": {
+    "parent": "spatial_feedback_v178",
+    "reason": "Source inspection after engineering execution found next-state Q maxima did not mask unavailable flash actions. Real selected actions and real replay targets were legal; readout tail could still overestimate invalid future flash. Fix before first main seed, not effect-based tuning.",
+    "change": "Mask future Q maxima by predicted exact public cooldown after each candidate action. Physical dynamics, reward, seeds, training, maps and resource plan unchanged.",
+    "old_engineering": "V178 wiring and profile retained, not re-executed or relabeled as V179 native evidence.",
+    "new_map_source": "Read all original fixed prepared maps from V178/evidence_prepare/maps, no regeneration or selection.",
+    "additional_environment_calls_for_fix_check": 0,
+    "pure_check": "Constant-Q/cooldown examples exercise the exact helper, no environment or learner source construction."
+  }
+}

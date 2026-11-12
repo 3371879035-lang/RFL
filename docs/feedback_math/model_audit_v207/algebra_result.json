@@ -1,0 +1,160 @@
+{
+  "status": "ALGEBRA_AND_STATIC_CHECKS_MATCH",
+  "check_groups": 13,
+  "checks": [
+    {
+      "name": "aliasing_bound",
+      "verified": true,
+      "expected_correctness": "1/2"
+    },
+    {
+      "name": "brier_identity",
+      "verified": true,
+      "exact_grid_points": 25
+    },
+    {
+      "name": "prediction_control_mismatch",
+      "verified": true,
+      "excess_brier_a": "1681/1000000",
+      "excess_brier_b": "1/100",
+      "chosen_true_value_a": "1/2",
+      "chosen_true_value_b": "9/10"
+    },
+    {
+      "name": "xor_constructive_network_and_additive_witness",
+      "verified": true,
+      "table": [
+        {
+          "x": 0,
+          "y": 0,
+          "xor": 0,
+          "relu": "0",
+          "additive_or": 0
+        },
+        {
+          "x": 0,
+          "y": 1,
+          "xor": 1,
+          "relu": "1",
+          "additive_or": 1
+        },
+        {
+          "x": 1,
+          "y": 0,
+          "xor": 1,
+          "relu": "1",
+          "additive_or": 1
+        },
+        {
+          "x": 1,
+          "y": 1,
+          "xor": 0,
+          "relu": "0",
+          "additive_or": 1
+        }
+      ],
+      "best_additive_noisy_success_upper_bound": "7/10"
+    },
+    {
+      "name": "coarsening_selection_bias",
+      "verified": true,
+      "observed": [
+        "1/10",
+        "9/10"
+      ],
+      "do_action": [
+        "1/2",
+        "1/2"
+      ],
+      "known_behavior_ips": [
+        "1/2",
+        "1/2"
+      ]
+    },
+    {
+      "name": "dirichlet_algebra",
+      "verified": true,
+      "delta": "1/6",
+      "posterior_variance": "17/468",
+      "next_difference_variance": "17/36",
+      "probability_positive": "13/16"
+    },
+    {
+      "name": "restricted_bellman_exact_value",
+      "verified": true,
+      "trial_value": "52/25",
+      "keep_value": "2"
+    },
+    {
+      "name": "expected_gain_does_not_bound_harm",
+      "verified": true,
+      "mean_delta": "1/100",
+      "harmful_probability": "1/10"
+    },
+    {
+      "name": "known_policy_identity_prior_counterexample",
+      "verified": true,
+      "known_delta": "0",
+      "unconstrained_dirichlet_delta_after_01": "1/5"
+    },
+    {
+      "name": "structure_regime_dependence",
+      "verified": true,
+      "joint": [
+        "1/2",
+        "0",
+        "0",
+        "1/2"
+      ],
+      "product": [
+        "1/4",
+        "1/4",
+        "1/4",
+        "1/4"
+      ],
+      "total_variation": "1/2"
+    },
+    {
+      "name": "eta4_not_plain_exp_concavity_certificate",
+      "verified": true,
+      "lhs": 0.36787944117144233,
+      "rhs": 0.5091578194443671,
+      "does_not_refute_all_regret_bounds": true
+    },
+    {
+      "name": "retained_but_unread_history",
+      "verified": true,
+      "differing_past_index": 12,
+      "selector_count": 27,
+      "visible_equal": true
+    },
+    {
+      "name": "neural_arithmetic_source_boundary",
+      "verified": true,
+      "linear_shapes": [
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          4,
+          3
+        ]
+      ],
+      "parameter_scalars": 14,
+      "expert_state_weights": 81,
+      "factual_count_cells": 972,
+      "runtime_model_imports": 0
+    }
+  ],
+  "source_pins_unchanged": 14,
+  "original_v206_pins_matched": 8,
+  "new_environment_episodes": 0,
+  "new_parameter_updates": 0,
+  "old_fixture_or_checker_runs": 0,
+  "claims": "Exact examples and static mapping only; not an end-to-end corrected-model experiment."
+}

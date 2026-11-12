@@ -1,0 +1,42 @@
+{
+  "schema": "V174_PROSPECTIVE_FACT_ACTION_MATRIX_CONTRACT",
+  "authority": "执行完成这个V0.7",
+  "parent_commit": "1e11a0d3b84080f01c381df706f149c9eef00694",
+  "plan": "experiments/v07r/plan_v173.json",
+  "automatic_retry": false,
+  "exclusive_capture": true,
+  "old_experiment_entry_or_checker_runs": 0,
+  "original_learning_updates_reused_not_modified": true,
+  "paid_resources": false,
+  "automation_changes": false,
+  "inputs": [
+    "experiments/v07r/README.md",
+    "experiments/v07r/plan_v173.json",
+    "experiments/v06r/stochastic_matrix_v172/experiment.py",
+    "experiments/v07r/fact_action_matrix_v174/README.md",
+    "experiments/v07r/fact_action_matrix_v174/experiment.py",
+    "experiments/v07r/fact_action_matrix_v174/stored_semantics.py",
+    "experiments/v07r/fact_action_matrix_v174/audit_stored.py",
+    "experiments/v07r/fact_action_matrix_v174/analyze_stored.py",
+    "experiments/v07r/fact_action_matrix_v174/contract.json"
+  ],
+  "phase_limits": {
+    "wiring": {
+      "rollouts": 16,
+      "steps": 192,
+      "extra_Q_backups": 96,
+      "wall_seconds": 30,
+      "compressed_capture_bytes": 8388608
+    },
+    "matrix": {
+      "rollouts": 1846656,
+      "steps": 22159872,
+      "extra_Q_backups": 786432,
+      "wall_seconds": 5370,
+      "compressed_capture_bytes": 2139095040
+    }
+  },
+  "capture": "Lossless gzip canonical JSONL; per-stream context; full raw and exact chronological updates, no per-eval duplicated training history.",
+  "scope": "All native rollouts are new v174 owned runs. Baseline component methods are reused, old runner/checker/fixtures are not invoked. No original formal collector or science/workload keys.",
+  "pre_result_analysis": "Two primary p=.10 paired comparisons, observed early0..32 AUC; exact evaluator separate;32 seed-block/10000 bootstrap, all comparisons/drops/nulls retained."
+}

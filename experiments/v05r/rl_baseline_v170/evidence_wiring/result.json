@@ -1,0 +1,537 @@
+{
+  "streams": [
+    {
+      "case": "wiring_d1_m0",
+      "decision_points": 1,
+      "arm": "F",
+      "main_tasks": 2,
+      "main_successes": 1,
+      "prefix_successes": {
+        "12": 1,
+        "24": 1,
+        "48": 1
+      },
+      "cold_successes": 1,
+      "continued_successes": 0,
+      "counts": {
+        "source_instances": 1,
+        "source_mapping_initializations": 4,
+        "rollouts": 2,
+        "steps": 2,
+        "fact_field_updates": 4,
+        "observations_consumed": 2
+      },
+      "target": {
+        "status": "NOT_REACHED_RIGHT_CENSORED",
+        "main_index_1based": null,
+        "steps": null,
+        "later_failures": null
+      },
+      "failure_at_exploratory_deviation": 0,
+      "plan_ns": 242000,
+      "update_ns": 105600,
+      "wall_seconds": 0.0016554000321775675,
+      "final_learner": {
+        "type": "FactLearner",
+        "edges": {
+          "[0,1]": {
+            "next_room": 0,
+            "outcome": "COLLISION",
+            "count": 1
+          },
+          "[0,0]": {
+            "next_room": 1,
+            "outcome": "SUCCESS",
+            "count": 1
+          }
+        },
+        "commands": {
+          "[0,\"initial\",0]": 1,
+          "[0,\"initial\",1]": 0
+        },
+        "history": [
+          1,
+          2
+        ],
+        "fact_updates": 2
+      },
+      "final_controller": {
+        "mappings": [
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            4,
+            0,
+            1
+          ],
+          [
+            5,
+            1,
+            0
+          ]
+        ],
+        "protected": [
+          [
+            4,
+            0
+          ],
+          [
+            5,
+            1
+          ]
+        ],
+        "revisions": []
+      },
+      "curve": [
+        {
+          "episode": 0,
+          "uid": 1,
+          "terminal": "COLLISION",
+          "steps": 1,
+          "rollouts": 1,
+          "ordinary_backups": 0,
+          "replay_backups": 0,
+          "fact_field_updates": 2,
+          "failure_at_exploratory_deviation": false,
+          "plan_ns": 110300,
+          "update_ns": 54700,
+          "learner_snapshot_bytes": 170
+        },
+        {
+          "episode": 1,
+          "uid": 2,
+          "terminal": "SUCCESS",
+          "steps": 2,
+          "rollouts": 2,
+          "ordinary_backups": 0,
+          "replay_backups": 0,
+          "fact_field_updates": 4,
+          "failure_at_exploratory_deviation": false,
+          "plan_ns": 242000,
+          "update_ns": 105600,
+          "learner_snapshot_bytes": 258
+        }
+      ]
+    },
+    {
+      "case": "wiring_d1_m0",
+      "decision_points": 1,
+      "arm": "Q-RP",
+      "main_tasks": 2,
+      "main_successes": 1,
+      "prefix_successes": {
+        "12": 1,
+        "24": 1,
+        "48": 1
+      },
+      "cold_successes": 1,
+      "continued_successes": 0,
+      "counts": {
+        "source_instances": 1,
+        "source_mapping_initializations": 4,
+        "rollouts": 2,
+        "steps": 2,
+        "observations_consumed": 2,
+        "ordinary_backups": 2,
+        "numeric_changes": 2
+      },
+      "target": {
+        "status": "NOT_REACHED_RIGHT_CENSORED",
+        "main_index_1based": null,
+        "steps": null,
+        "later_failures": null
+      },
+      "failure_at_exploratory_deviation": 0,
+      "plan_ns": 105900,
+      "update_ns": 122500,
+      "wall_seconds": 0.0014347999822348356,
+      "final_learner": {
+        "type": "DirectQ",
+        "channel": "RP",
+        "replay_backups": 0,
+        "q": {
+          "[0,0]": -0.5,
+          "[0,1]": 0.5
+        },
+        "history": [
+          3,
+          4
+        ],
+        "buffer": [
+          [
+            3,
+            0,
+            0,
+            0,
+            -1.0,
+            0,
+            true
+          ],
+          [
+            4,
+            0,
+            0,
+            1,
+            1.0,
+            1,
+            true
+          ]
+        ],
+        "ordinary_backups": 2,
+        "replay_count": 0,
+        "numeric_changes": 2
+      },
+      "final_controller": {
+        "mappings": [
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            4,
+            0,
+            1
+          ],
+          [
+            5,
+            1,
+            0
+          ]
+        ],
+        "protected": [
+          [
+            4,
+            0
+          ],
+          [
+            5,
+            1
+          ]
+        ],
+        "revisions": []
+      },
+      "curve": [
+        {
+          "episode": 0,
+          "uid": 3,
+          "terminal": "COLLISION",
+          "steps": 1,
+          "rollouts": 1,
+          "ordinary_backups": 1,
+          "replay_backups": 0,
+          "fact_field_updates": 0,
+          "failure_at_exploratory_deviation": false,
+          "plan_ns": 55400,
+          "update_ns": 66700,
+          "learner_snapshot_bytes": 200
+        },
+        {
+          "episode": 1,
+          "uid": 4,
+          "terminal": "SUCCESS",
+          "steps": 2,
+          "rollouts": 2,
+          "ordinary_backups": 2,
+          "replay_backups": 0,
+          "fact_field_updates": 0,
+          "failure_at_exploratory_deviation": false,
+          "plan_ns": 105900,
+          "update_ns": 122500,
+          "learner_snapshot_bytes": 245
+        }
+      ]
+    },
+    {
+      "case": "wiring_d1_m0",
+      "decision_points": 1,
+      "arm": "Q-R",
+      "main_tasks": 2,
+      "main_successes": 0,
+      "prefix_successes": {
+        "12": 0,
+        "24": 0,
+        "48": 0
+      },
+      "cold_successes": 0,
+      "continued_successes": 0,
+      "counts": {
+        "source_instances": 1,
+        "source_mapping_initializations": 4,
+        "rollouts": 2,
+        "steps": 2,
+        "observations_consumed": 2,
+        "ordinary_backups": 2
+      },
+      "target": {
+        "status": "NOT_REACHED_RIGHT_CENSORED",
+        "main_index_1based": null,
+        "steps": null,
+        "later_failures": null
+      },
+      "failure_at_exploratory_deviation": 0,
+      "plan_ns": 98900,
+      "update_ns": 106000,
+      "wall_seconds": 0.001433699973858893,
+      "final_learner": {
+        "type": "DirectQ",
+        "channel": "R",
+        "replay_backups": 0,
+        "q": {
+          "[0,0]": 0.0
+        },
+        "history": [
+          5,
+          6
+        ],
+        "buffer": [
+          [
+            5,
+            0,
+            0,
+            0,
+            0.0,
+            0,
+            true
+          ],
+          [
+            6,
+            0,
+            0,
+            0,
+            0.0,
+            0,
+            true
+          ]
+        ],
+        "ordinary_backups": 2,
+        "replay_count": 0,
+        "numeric_changes": 0
+      },
+      "final_controller": {
+        "mappings": [
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            4,
+            0,
+            1
+          ],
+          [
+            5,
+            1,
+            0
+          ]
+        ],
+        "protected": [
+          [
+            4,
+            0
+          ],
+          [
+            5,
+            1
+          ]
+        ],
+        "revisions": []
+      },
+      "curve": [
+        {
+          "episode": 0,
+          "uid": 5,
+          "terminal": "COLLISION",
+          "steps": 1,
+          "rollouts": 1,
+          "ordinary_backups": 1,
+          "replay_backups": 0,
+          "fact_field_updates": 0,
+          "failure_at_exploratory_deviation": false,
+          "plan_ns": 48800,
+          "update_ns": 52900,
+          "learner_snapshot_bytes": 197
+        },
+        {
+          "episode": 1,
+          "uid": 6,
+          "terminal": "COLLISION",
+          "steps": 2,
+          "rollouts": 2,
+          "ordinary_backups": 2,
+          "replay_backups": 0,
+          "fact_field_updates": 0,
+          "failure_at_exploratory_deviation": false,
+          "plan_ns": 98900,
+          "update_ns": 106000,
+          "learner_snapshot_bytes": 228
+        }
+      ]
+    },
+    {
+      "case": "wiring_d1_m0",
+      "decision_points": 1,
+      "arm": "Q-RP-Replay12",
+      "main_tasks": 2,
+      "main_successes": 1,
+      "prefix_successes": {
+        "12": 1,
+        "24": 1,
+        "48": 1
+      },
+      "cold_successes": 1,
+      "continued_successes": 0,
+      "counts": {
+        "source_instances": 1,
+        "source_mapping_initializations": 4,
+        "rollouts": 2,
+        "steps": 2,
+        "observations_consumed": 2,
+        "ordinary_backups": 2,
+        "replay_backups": 3,
+        "numeric_changes": 5
+      },
+      "target": {
+        "status": "NOT_REACHED_RIGHT_CENSORED",
+        "main_index_1based": null,
+        "steps": null,
+        "later_failures": null
+      },
+      "failure_at_exploratory_deviation": 0,
+      "plan_ns": 97700,
+      "update_ns": 152700,
+      "wall_seconds": 0.001497599994763732,
+      "final_learner": {
+        "type": "DirectQ",
+        "channel": "RP",
+        "replay_backups": 12,
+        "q": {
+          "[0,0]": -0.875,
+          "[0,1]": 0.75
+        },
+        "history": [
+          7,
+          8
+        ],
+        "buffer": [
+          [
+            7,
+            0,
+            0,
+            0,
+            -1.0,
+            0,
+            true
+          ],
+          [
+            8,
+            0,
+            0,
+            1,
+            1.0,
+            1,
+            true
+          ]
+        ],
+        "ordinary_backups": 2,
+        "replay_count": 3,
+        "numeric_changes": 5
+      },
+      "final_controller": {
+        "mappings": [
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            4,
+            0,
+            1
+          ],
+          [
+            5,
+            1,
+            0
+          ]
+        ],
+        "protected": [
+          [
+            4,
+            0
+          ],
+          [
+            5,
+            1
+          ]
+        ],
+        "revisions": []
+      },
+      "curve": [
+        {
+          "episode": 0,
+          "uid": 7,
+          "terminal": "COLLISION",
+          "steps": 1,
+          "rollouts": 1,
+          "ordinary_backups": 1,
+          "replay_backups": 1,
+          "fact_field_updates": 0,
+          "failure_at_exploratory_deviation": false,
+          "plan_ns": 51200,
+          "update_ns": 68800,
+          "learner_snapshot_bytes": 202
+        },
+        {
+          "episode": 1,
+          "uid": 8,
+          "terminal": "SUCCESS",
+          "steps": 2,
+          "rollouts": 2,
+          "ordinary_backups": 2,
+          "replay_backups": 3,
+          "fact_field_updates": 0,
+          "failure_at_exploratory_deviation": false,
+          "plan_ns": 97700,
+          "update_ns": 152700,
+          "learner_snapshot_bytes": 249
+        }
+      ]
+    }
+  ],
+  "counts": {
+    "source_instances": 4,
+    "source_mapping_initializations": 16,
+    "rollouts": 8,
+    "steps": 8,
+    "fact_field_updates": 4,
+    "observations_consumed": 8,
+    "ordinary_backups": 6,
+    "replay_backups": 3,
+    "numeric_changes": 7
+  }
+}

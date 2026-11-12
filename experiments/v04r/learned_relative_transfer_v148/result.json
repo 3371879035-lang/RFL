@@ -1,0 +1,694 @@
+{
+  "schema": "V148_LEARNED_RELATIVE_VALUE_TRANSFER_RESULT",
+  "date_asia_shanghai": "2026-11-07",
+  "parent_commit": "d4a46fceb231a17267e69d5754182534c412b21a",
+  "status": "FROZEN_HISTORY_TRAINED_RELATIVE_VALUE_TRANSFERS_WITHIN_FEATURE_SUPPORT_AND_MATCHES_ONLINE_VALIDATION",
+  "execution": {
+    "native_first_exit": 0,
+    "new_stored_auditor_first_exit": 0,
+    "native_counts": {
+      "rollout": 94,
+      "step": 348,
+      "transaction": 220
+    },
+    "records": 714,
+    "declared_inputs_native_before_after_equal": 338,
+    "shared_preparatory_tasks": 1,
+    "main_tasks": 72,
+    "private_tasks": 21,
+    "native_ordinary_updates": 94,
+    "external_ordinary_updates": 11,
+    "ordinary_numeric_TX": 105,
+    "ordinary_visited_D_policy_TX": 105,
+    "initial_seed_TX": 1,
+    "case_source_TX": 2,
+    "total_seed_and_source_edits": 5,
+    "private_candidate_X_TX": 3,
+    "main_feedback_X_TX": 4,
+    "historical_supervision_points": 3,
+    "historical_private_tasks_underlying_labels": 12,
+    "frozen_tree_fits": 1,
+    "online_validation_empirical_fits": 3,
+    "frozen_model_predictions": 3,
+    "new_test_labels_used_to_fit_frozen_model": 0,
+    "guard_rejections": 1,
+    "authentic_first_keep_observations": 12,
+    "success_diagnosis": 0,
+    "actual_exploration_events": 9,
+    "terminal_counts": {
+      "prep": {
+        "TRAP": 1
+      },
+      "stream": {
+        "TRAP": 34,
+        "SUCCESS": 34,
+        "COLLISION": 4
+      },
+      "private": {
+        "TRAP": 14,
+        "SUCCESS": 7
+      }
+    },
+    "old_native_checker_bank_or_prefix_reruns": 0,
+    "new_keys_RNG_keyderive_DP_calibration_formal_collection": 0,
+    "automatic_retry": false,
+    "started_at_utc": "2026-11-06T19:39:56.772995+00:00",
+    "completed_at_utc": "2026-11-06T19:39:58.774305+00:00",
+    "instrumented_wall_seconds": 2.0
+  },
+  "training": {
+    "source_context": [
+      0,
+      3
+    ],
+    "test_context": [
+      1,
+      0
+    ],
+    "examples": [
+      {
+        "id": "broken",
+        "x": [
+          0,
+          1
+        ],
+        "y": 0.94,
+        "paired_returns": {
+          "keep": [
+            -1.02,
+            -1.02
+          ],
+          "controller-delete": [
+            -1.02,
+            0.86
+          ]
+        },
+        "context": [
+          0,
+          3
+        ],
+        "raw_sha256": "bfeea98c8d3b0d9eb91727eec0f183840167ab83227ab6f85d7f8615b1b9c8a2",
+        "factual_seq": 164
+      },
+      {
+        "id": "plant",
+        "x": [
+          0,
+          0
+        ],
+        "y": 0.0,
+        "paired_returns": {
+          "keep": [
+            -1.02,
+            -1.02
+          ],
+          "controller-delete": [
+            -1.02,
+            -1.02
+          ]
+        },
+        "context": [
+          0,
+          3
+        ],
+        "raw_sha256": "bfeea98c8d3b0d9eb91727eec0f183840167ab83227ab6f85d7f8615b1b9c8a2",
+        "factual_seq": 382
+      },
+      {
+        "id": "protective",
+        "x": [
+          2,
+          1
+        ],
+        "y": -0.94,
+        "paired_returns": {
+          "keep": [
+            0.86,
+            0.86
+          ],
+          "controller-delete": [
+            -1.02,
+            0.86
+          ]
+        },
+        "context": [
+          0,
+          3
+        ],
+        "raw_sha256": "3ab0bac30d7d06f280c5fb451999a9d19370d31dad5916610f1ab0037c769771",
+        "factual_seq": 83
+      }
+    ],
+    "tree": {
+      "feature": 0,
+      "left": {
+        "feature": 1,
+        "left": {
+          "mean": 0.0,
+          "n": 1
+        },
+        "right": {
+          "mean": 0.94,
+          "n": 1
+        },
+        "threshold": 0.5
+      },
+      "right": {
+        "mean": -0.94,
+        "n": 1
+      },
+      "threshold": 1.0
+    },
+    "frozen_digest": "099580b76f86e5d2bd537bd5da3640782a6cc17180515edfb31d424bbb9985f8",
+    "features": [
+      "first_mismatch_steps_before_terminal",
+      "own_controller_entry_present"
+    ],
+    "target": "orderedmean2(controller-delete)-orderedmean2(keep)",
+    "model_file": "frozen_model.json plain standard JSON binary64 roundtrip, native audit uses hex",
+    "before_new_native_work": true,
+    "feature_patterns_seen_at_test": true,
+    "not_a_causal_posterior_or_confidence_calibration": true
+  },
+  "per_case_and_arm": [
+    {
+      "case": "broken",
+      "arm": "NoWrite",
+      "successes": 0,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02
+      ],
+      "outcomes": [
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP"
+      ],
+      "mean_return": -1.02,
+      "external_updates": 1,
+      "rollout": 7,
+      "Kstep": 7,
+      "private_rollouts": 1,
+      "numeric_ordinary_TX": 8,
+      "ordinary_policy_TX": 8,
+      "private_X_TX": 0,
+      "main_X_TX": 0,
+      "TX_excluding_shared_work": 16
+    },
+    {
+      "case": "broken",
+      "arm": "DirectSite",
+      "successes": 5,
+      "returns": [
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "outcomes": [
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.5466666666666666,
+      "external_updates": 1,
+      "rollout": 7,
+      "Kstep": 37,
+      "private_rollouts": 1,
+      "numeric_ordinary_TX": 8,
+      "ordinary_policy_TX": 8,
+      "private_X_TX": 0,
+      "main_X_TX": 1,
+      "TX_excluding_shared_work": 17
+    },
+    {
+      "case": "broken",
+      "arm": "FrozenLearned",
+      "successes": 5,
+      "returns": [
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "outcomes": [
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.5466666666666666,
+      "external_updates": 1,
+      "rollout": 7,
+      "Kstep": 37,
+      "private_rollouts": 1,
+      "numeric_ordinary_TX": 8,
+      "ordinary_policy_TX": 8,
+      "private_X_TX": 0,
+      "main_X_TX": 1,
+      "TX_excluding_shared_work": 17
+    },
+    {
+      "case": "broken",
+      "arm": "Validated",
+      "successes": 5,
+      "returns": [
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "outcomes": [
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.5466666666666666,
+      "external_updates": 1,
+      "rollout": 10,
+      "Kstep": 46,
+      "private_rollouts": 4,
+      "numeric_ordinary_TX": 11,
+      "ordinary_policy_TX": 11,
+      "private_X_TX": 1,
+      "main_X_TX": 1,
+      "TX_excluding_shared_work": 24
+    },
+    {
+      "case": "plant",
+      "arm": "NoWrite",
+      "successes": 0,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02
+      ],
+      "outcomes": [
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP"
+      ],
+      "mean_return": -1.02,
+      "external_updates": 1,
+      "rollout": 7,
+      "Kstep": 7,
+      "private_rollouts": 1,
+      "numeric_ordinary_TX": 8,
+      "ordinary_policy_TX": 8,
+      "private_X_TX": 0,
+      "main_X_TX": 0,
+      "TX_excluding_shared_work": 16
+    },
+    {
+      "case": "plant",
+      "arm": "DirectSite",
+      "successes": 0,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02
+      ],
+      "outcomes": [
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP"
+      ],
+      "mean_return": -1.02,
+      "external_updates": 1,
+      "rollout": 7,
+      "Kstep": 7,
+      "private_rollouts": 1,
+      "numeric_ordinary_TX": 8,
+      "ordinary_policy_TX": 8,
+      "private_X_TX": 0,
+      "main_X_TX": 0,
+      "TX_excluding_shared_work": 16
+    },
+    {
+      "case": "plant",
+      "arm": "FrozenLearned",
+      "successes": 0,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02
+      ],
+      "outcomes": [
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP"
+      ],
+      "mean_return": -1.02,
+      "external_updates": 1,
+      "rollout": 7,
+      "Kstep": 7,
+      "private_rollouts": 1,
+      "numeric_ordinary_TX": 8,
+      "ordinary_policy_TX": 8,
+      "private_X_TX": 0,
+      "main_X_TX": 0,
+      "TX_excluding_shared_work": 16
+    },
+    {
+      "case": "plant",
+      "arm": "Validated",
+      "successes": 0,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02
+      ],
+      "outcomes": [
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP"
+      ],
+      "mean_return": -1.02,
+      "external_updates": 1,
+      "rollout": 10,
+      "Kstep": 10,
+      "private_rollouts": 4,
+      "numeric_ordinary_TX": 11,
+      "ordinary_policy_TX": 11,
+      "private_X_TX": 1,
+      "main_X_TX": 0,
+      "TX_excluding_shared_work": 23
+    },
+    {
+      "case": "protective",
+      "arm": "NoWrite",
+      "successes": 5,
+      "returns": [
+        -1.06,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "outcomes": [
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.5399999999999999,
+      "external_updates": 1,
+      "rollout": 7,
+      "Kstep": 45,
+      "private_rollouts": 1,
+      "numeric_ordinary_TX": 8,
+      "ordinary_policy_TX": 8,
+      "private_X_TX": 0,
+      "main_X_TX": 0,
+      "TX_excluding_shared_work": 16
+    },
+    {
+      "case": "protective",
+      "arm": "DirectSite",
+      "successes": 4,
+      "returns": [
+        -1.06,
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "outcomes": [
+        "COLLISION",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.22666666666666666,
+      "external_updates": 0,
+      "rollout": 7,
+      "Kstep": 39,
+      "private_rollouts": 1,
+      "numeric_ordinary_TX": 7,
+      "ordinary_policy_TX": 7,
+      "private_X_TX": 0,
+      "main_X_TX": 1,
+      "TX_excluding_shared_work": 15
+    },
+    {
+      "case": "protective",
+      "arm": "FrozenLearned",
+      "successes": 5,
+      "returns": [
+        -1.06,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "outcomes": [
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.5399999999999999,
+      "external_updates": 1,
+      "rollout": 7,
+      "Kstep": 45,
+      "private_rollouts": 1,
+      "numeric_ordinary_TX": 8,
+      "ordinary_policy_TX": 8,
+      "private_X_TX": 0,
+      "main_X_TX": 0,
+      "TX_excluding_shared_work": 16
+    },
+    {
+      "case": "protective",
+      "arm": "Validated",
+      "successes": 5,
+      "returns": [
+        -1.06,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "outcomes": [
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.5399999999999999,
+      "external_updates": 1,
+      "rollout": 10,
+      "Kstep": 60,
+      "private_rollouts": 4,
+      "numeric_ordinary_TX": 11,
+      "ordinary_policy_TX": 11,
+      "private_X_TX": 1,
+      "main_X_TX": 0,
+      "TX_excluding_shared_work": 23
+    }
+  ],
+  "matched_prediction_and_future_checks": [
+    {
+      "case": "broken",
+      "predicted_delta": 0.94,
+      "actual_current_paired_delta": 0.94,
+      "feature_pattern_seen_in_training": true,
+      "decision_agrees": true,
+      "all6_main_raw_identical": true,
+      "all6_post_R_L_I_identical": true
+    },
+    {
+      "case": "plant",
+      "predicted_delta": 0.0,
+      "actual_current_paired_delta": 0.0,
+      "feature_pattern_seen_in_training": true,
+      "decision_agrees": true,
+      "all6_main_raw_identical": true,
+      "all6_post_R_L_I_identical": true
+    },
+    {
+      "case": "protective",
+      "predicted_delta": -0.94,
+      "actual_current_paired_delta": -0.94,
+      "feature_pattern_seen_in_training": true,
+      "decision_agrees": true,
+      "all6_main_raw_identical": true,
+      "all6_post_R_L_I_identical": true
+    }
+  ],
+  "online_work_by_strategy_three_case_subsets": {
+    "NoWrite": {
+      "rollout": 21,
+      "Kstep": 59,
+      "private_rollouts": 3,
+      "TX_excluding_shared_work": 48
+    },
+    "DirectSite": {
+      "rollout": 21,
+      "Kstep": 83,
+      "private_rollouts": 3,
+      "TX_excluding_shared_work": 48
+    },
+    "FrozenLearned": {
+      "rollout": 21,
+      "Kstep": 89,
+      "private_rollouts": 3,
+      "TX_excluding_shared_work": 49
+    },
+    "Validated": {
+      "rollout": 30,
+      "Kstep": 116,
+      "private_rollouts": 12,
+      "TX_excluding_shared_work": 70
+    }
+  },
+  "shared_work_not_charged_to_online_subsets": {
+    "prep_rollout": 1,
+    "prep_Kstep": 1,
+    "seed_TX": 1,
+    "prep_ordinary_TX": 2,
+    "case_install_TX": 2,
+    "total_common_TX": 5
+  },
+  "observations": [
+    {
+      "case": "broken",
+      "arm": "NoWrite",
+      "applied": true
+    },
+    {
+      "case": "broken",
+      "arm": "DirectSite",
+      "applied": true
+    },
+    {
+      "case": "broken",
+      "arm": "FrozenLearned",
+      "applied": true
+    },
+    {
+      "case": "broken",
+      "arm": "Validated",
+      "applied": true
+    },
+    {
+      "case": "plant",
+      "arm": "NoWrite",
+      "applied": true
+    },
+    {
+      "case": "plant",
+      "arm": "DirectSite",
+      "applied": true
+    },
+    {
+      "case": "plant",
+      "arm": "FrozenLearned",
+      "applied": true
+    },
+    {
+      "case": "plant",
+      "arm": "Validated",
+      "applied": true
+    },
+    {
+      "case": "protective",
+      "arm": "NoWrite",
+      "applied": true
+    },
+    {
+      "case": "protective",
+      "arm": "DirectSite",
+      "applied": false
+    },
+    {
+      "case": "protective",
+      "arm": "FrozenLearned",
+      "applied": true
+    },
+    {
+      "case": "protective",
+      "arm": "Validated",
+      "applied": true
+    }
+  ],
+  "findings": [
+    "A real regression tree learned delta labels from three prior paid native paired comparisons before any new K task. It used only two visible/self-state features, not coordinates, source/cause/role labels or test outcomes. Learned splits are fitted by strict greedy SSE reduction, independently reviewed.",
+    "At kappa1/phi0, frozen predictions+.94/0/-.94 agree with fresh actual two-step paired values for broken/plant/protective. Those contexts were absent from diagnostic-value training, but feature patterns were seen and common Q* already covers the coordinate.",
+    "Broken case: same-experience NoWrite0/6 versus Direct/FrozenLearned/Validated5/6. Protective case: NoWrite/FrozenLearned/Validated5/6 versus Direct4/6. Plant all0/6. No blanket repair, no requirement to improve every case.",
+    "Across all3 cases, FrozenLearned and Validated have exact matching6 main raw and posttaskR+L/I each. Frozen onlinework21roll/89K/49nonsharedTX versus Validated30/116/70. Historical labels were paid previously; do not claim reduced full discovery cost or matched CPU.",
+    "v147 condition receipts are integrated for every arm: 12 genuine keep observations,11 absorbed; Direct protective sample rejected because that consulted actuator changed. Main ordinary learning continues for all arms and successdiagnosis stays0."
+  ],
+  "limits": [
+    "Only3 supervised feature patterns, with one example per leaf. No estimate of general accuracy/confidence, unseen failure-type extrapolation or a need for ML over a better handwritten rule is established.",
+    "This is informed coordinate transfer within feature support. The kernel, common Q* and human-specified candidate/feature vocabulary are retained; not fromscratch task learning, autonomous world-model discovery or complete taste training.",
+    "Historical supervision consumed at least12 already-paid private tasks plus their source/main work; online budget reduction is not full lifecycle compute superiority. The2.000s timer includes this instrumented complete harness, not strategy-specific production timing.",
+    "Local controller delete executor/conditioned own-PX receipt are explicit versions, not original complete B1 law/receipt/fullkeyed/fullfamily qualification. Pmutation/external drift/partialtotality/Retention/Collateral/newsciencekeys remain unclaimed.",
+    "Plant remains uncorrected by this candidate family and all six tasks fail in every arm; keep is not a successful repair there. All failures/zero/adverse outcomes retained, no automatic retry."
+  ],
+  "preservation": {
+    "old_ledger_fields": 86,
+    "old_provenance": 266,
+    "original313_current_match": true,
+    "old_source_native_checker_or_evidence_modified": false,
+    "not_full_repository_audit": true
+  },
+  "next_actual_gap": "The learned model has no evidence outside these three feature patterns. A useful next challenge must test unsupported or misleading visible features rather than re-run these solved coordinate-equivalent cases or add another gate before learning."
+}

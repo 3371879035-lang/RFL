@@ -1,0 +1,898 @@
+{
+  "family": "single",
+  "seed": 4,
+  "runs": [
+    {
+      "arm": "full",
+      "family": "single",
+      "seed": 4,
+      "episodes": 2880,
+      "steps": 11520,
+      "learned_facts": 1984,
+      "evaluations": 896,
+      "trial_episodes": 1166,
+      "adoptions": 1,
+      "cycles": [
+        {
+          "cycle": 0,
+          "status": "adopt",
+          "trial_pairs": 15,
+          "training_successes": 233,
+          "ordinary_after_trial": 226,
+          "structures": 10,
+          "active_structure": [
+            3
+          ],
+          "memory_facts": 384,
+          "replay_reads": 0
+        },
+        {
+          "cycle": 1,
+          "status": "not_worth_cost",
+          "trial_pairs": 56,
+          "training_successes": 249,
+          "ordinary_after_trial": 144,
+          "structures": 12,
+          "active_structure": [
+            3
+          ],
+          "memory_facts": 704,
+          "replay_reads": 1120
+        },
+        {
+          "cycle": 2,
+          "status": "unresolved_keep",
+          "trial_pairs": 128,
+          "training_successes": 253,
+          "ordinary_after_trial": 0,
+          "structures": 14,
+          "active_structure": [
+            3
+          ],
+          "memory_facts": 1024,
+          "replay_reads": 3168
+        },
+        {
+          "cycle": 3,
+          "status": "unresolved_keep",
+          "trial_pairs": 128,
+          "training_successes": 249,
+          "ordinary_after_trial": 0,
+          "structures": 15,
+          "active_structure": [
+            3
+          ],
+          "memory_facts": 1344,
+          "replay_reads": 4512
+        },
+        {
+          "cycle": 4,
+          "status": "unresolved_keep",
+          "trial_pairs": 128,
+          "training_successes": 269,
+          "ordinary_after_trial": 0,
+          "structures": 15,
+          "active_structure": [
+            3
+          ],
+          "memory_facts": 1664,
+          "replay_reads": 4512
+        },
+        {
+          "cycle": 5,
+          "status": "unresolved_keep",
+          "trial_pairs": 128,
+          "training_successes": 267,
+          "ordinary_after_trial": 0,
+          "structures": 15,
+          "active_structure": [
+            3
+          ],
+          "memory_facts": 1984,
+          "replay_reads": 4512
+        }
+      ],
+      "checkpoints": [
+        {
+          "checkpoint": 0,
+          "cycle": -1,
+          "successes": 63,
+          "episodes": 128,
+          "policy_id": "24f1f01080716a62f3ff688ac1f30221a005dd2f85a2502a0b9d5bc848568d47",
+          "learned_facts": 0
+        },
+        {
+          "checkpoint": 1,
+          "cycle": 0,
+          "successes": 101,
+          "episodes": 128,
+          "policy_id": "cd9f647bc3dd4d4c1e79e696c370db785d09bbe4e4e6699d77fb683ff2eca797",
+          "learned_facts": 384
+        },
+        {
+          "checkpoint": 2,
+          "cycle": 1,
+          "successes": 100,
+          "episodes": 128,
+          "policy_id": "cd9f647bc3dd4d4c1e79e696c370db785d09bbe4e4e6699d77fb683ff2eca797",
+          "learned_facts": 704
+        },
+        {
+          "checkpoint": 3,
+          "cycle": 2,
+          "successes": 102,
+          "episodes": 128,
+          "policy_id": "cd9f647bc3dd4d4c1e79e696c370db785d09bbe4e4e6699d77fb683ff2eca797",
+          "learned_facts": 1024
+        },
+        {
+          "checkpoint": 4,
+          "cycle": 3,
+          "successes": 102,
+          "episodes": 128,
+          "policy_id": "cd9f647bc3dd4d4c1e79e696c370db785d09bbe4e4e6699d77fb683ff2eca797",
+          "learned_facts": 1344
+        },
+        {
+          "checkpoint": 5,
+          "cycle": 4,
+          "successes": 103,
+          "episodes": 128,
+          "policy_id": "cd9f647bc3dd4d4c1e79e696c370db785d09bbe4e4e6699d77fb683ff2eca797",
+          "learned_facts": 1664
+        },
+        {
+          "checkpoint": 6,
+          "cycle": 5,
+          "successes": 89,
+          "episodes": 128,
+          "policy_id": "cd9f647bc3dd4d4c1e79e696c370db785d09bbe4e4e6699d77fb683ff2eca797",
+          "learned_facts": 1984
+        }
+      ],
+      "timings": {
+        "world_and_action_seconds": 0.7720981007732917,
+        "ordinary_observe_seconds": 1.6549530997872353,
+        "paired_update_seconds": 3.0200207998859696,
+        "snapshot_seconds": 0.027354299993021414,
+        "ranking_seconds": 0.5620519999647513,
+        "response_and_growth_seconds": 0.7297946999897249
+      },
+      "growth_seconds": 0.7301799999841023,
+      "replay_reads": 4512,
+      "final_structures": [
+        [
+          0
+        ],
+        [
+          1
+        ],
+        [
+          2
+        ],
+        [
+          3
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          3
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          1,
+          3
+        ],
+        [
+          0,
+          2,
+          3
+        ],
+        [
+          1,
+          2,
+          3
+        ],
+        [
+          0,
+          1,
+          2,
+          3
+        ]
+      ],
+      "parameter_scalars": 720,
+      "buffer_bytes": 166160,
+      "original_parameters_unchanged": true,
+      "wall_seconds": 7.447076399985235,
+      "cpu_seconds": 7.078125
+    },
+    {
+      "arm": "fixed_order",
+      "family": "single",
+      "seed": 4,
+      "episodes": 2880,
+      "steps": 11520,
+      "learned_facts": 1984,
+      "evaluations": 896,
+      "trial_episodes": 1166,
+      "adoptions": 1,
+      "cycles": [
+        {
+          "cycle": 0,
+          "status": "adopt",
+          "trial_pairs": 15,
+          "training_successes": 233,
+          "ordinary_after_trial": 226,
+          "structures": 10,
+          "active_structure": [
+            3
+          ],
+          "memory_facts": 384,
+          "replay_reads": 0
+        },
+        {
+          "cycle": 1,
+          "status": "not_worth_cost",
+          "trial_pairs": 56,
+          "training_successes": 249,
+          "ordinary_after_trial": 144,
+          "structures": 10,
+          "active_structure": [
+            3
+          ],
+          "memory_facts": 704,
+          "replay_reads": 0
+        },
+        {
+          "cycle": 2,
+          "status": "unresolved_keep",
+          "trial_pairs": 128,
+          "training_successes": 253,
+          "ordinary_after_trial": 0,
+          "structures": 10,
+          "active_structure": [
+            3
+          ],
+          "memory_facts": 1024,
+          "replay_reads": 0
+        },
+        {
+          "cycle": 3,
+          "status": "unresolved_keep",
+          "trial_pairs": 128,
+          "training_successes": 249,
+          "ordinary_after_trial": 0,
+          "structures": 10,
+          "active_structure": [
+            3
+          ],
+          "memory_facts": 1344,
+          "replay_reads": 0
+        },
+        {
+          "cycle": 4,
+          "status": "unresolved_keep",
+          "trial_pairs": 128,
+          "training_successes": 269,
+          "ordinary_after_trial": 0,
+          "structures": 10,
+          "active_structure": [
+            3
+          ],
+          "memory_facts": 1664,
+          "replay_reads": 0
+        },
+        {
+          "cycle": 5,
+          "status": "unresolved_keep",
+          "trial_pairs": 128,
+          "training_successes": 267,
+          "ordinary_after_trial": 0,
+          "structures": 10,
+          "active_structure": [
+            3
+          ],
+          "memory_facts": 1984,
+          "replay_reads": 0
+        }
+      ],
+      "checkpoints": [
+        {
+          "checkpoint": 0,
+          "cycle": -1,
+          "successes": 63,
+          "episodes": 128,
+          "policy_id": "24f1f01080716a62f3ff688ac1f30221a005dd2f85a2502a0b9d5bc848568d47",
+          "learned_facts": 0
+        },
+        {
+          "checkpoint": 1,
+          "cycle": 0,
+          "successes": 101,
+          "episodes": 128,
+          "policy_id": "cd9f647bc3dd4d4c1e79e696c370db785d09bbe4e4e6699d77fb683ff2eca797",
+          "learned_facts": 384
+        },
+        {
+          "checkpoint": 2,
+          "cycle": 1,
+          "successes": 100,
+          "episodes": 128,
+          "policy_id": "cd9f647bc3dd4d4c1e79e696c370db785d09bbe4e4e6699d77fb683ff2eca797",
+          "learned_facts": 704
+        },
+        {
+          "checkpoint": 3,
+          "cycle": 2,
+          "successes": 102,
+          "episodes": 128,
+          "policy_id": "cd9f647bc3dd4d4c1e79e696c370db785d09bbe4e4e6699d77fb683ff2eca797",
+          "learned_facts": 1024
+        },
+        {
+          "checkpoint": 4,
+          "cycle": 3,
+          "successes": 102,
+          "episodes": 128,
+          "policy_id": "cd9f647bc3dd4d4c1e79e696c370db785d09bbe4e4e6699d77fb683ff2eca797",
+          "learned_facts": 1344
+        },
+        {
+          "checkpoint": 5,
+          "cycle": 4,
+          "successes": 103,
+          "episodes": 128,
+          "policy_id": "cd9f647bc3dd4d4c1e79e696c370db785d09bbe4e4e6699d77fb683ff2eca797",
+          "learned_facts": 1664
+        },
+        {
+          "checkpoint": 6,
+          "cycle": 5,
+          "successes": 89,
+          "episodes": 128,
+          "policy_id": "cd9f647bc3dd4d4c1e79e696c370db785d09bbe4e4e6699d77fb683ff2eca797",
+          "learned_facts": 1984
+        }
+      ],
+      "timings": {
+        "world_and_action_seconds": 0.7675052006088663,
+        "ordinary_observe_seconds": 1.4067708001239225,
+        "paired_update_seconds": 2.5553067999426275,
+        "snapshot_seconds": 0.021951100032310933,
+        "ranking_seconds": 0.49076620003324933,
+        "response_and_growth_seconds": 0.0010158999939449131
+      },
+      "growth_seconds": 0.0014294999709818512,
+      "replay_reads": 0,
+      "final_structures": [
+        [
+          0
+        ],
+        [
+          1
+        ],
+        [
+          2
+        ],
+        [
+          3
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          3
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          2,
+          3
+        ]
+      ],
+      "parameter_scalars": 288,
+      "buffer_bytes": 68448,
+      "original_parameters_unchanged": true,
+      "wall_seconds": 5.759827300003963,
+      "cpu_seconds": 5.5
+    },
+    {
+      "arm": "pooled_history",
+      "family": "single",
+      "seed": 4,
+      "episodes": 2880,
+      "steps": 11520,
+      "learned_facts": 1984,
+      "evaluations": 896,
+      "trial_episodes": 1166,
+      "adoptions": 1,
+      "cycles": [
+        {
+          "cycle": 0,
+          "status": "adopt",
+          "trial_pairs": 15,
+          "training_successes": 233,
+          "ordinary_after_trial": 226,
+          "structures": 10,
+          "active_structure": [
+            3
+          ],
+          "memory_facts": 384,
+          "replay_reads": 0
+        },
+        {
+          "cycle": 1,
+          "status": "not_worth_cost",
+          "trial_pairs": 56,
+          "training_successes": 249,
+          "ordinary_after_trial": 144,
+          "structures": 12,
+          "active_structure": [
+            3
+          ],
+          "memory_facts": 704,
+          "replay_reads": 1120
+        },
+        {
+          "cycle": 2,
+          "status": "unresolved_keep",
+          "trial_pairs": 128,
+          "training_successes": 253,
+          "ordinary_after_trial": 0,
+          "structures": 14,
+          "active_structure": [
+            3
+          ],
+          "memory_facts": 1024,
+          "replay_reads": 3168
+        },
+        {
+          "cycle": 3,
+          "status": "unresolved_keep",
+          "trial_pairs": 128,
+          "training_successes": 249,
+          "ordinary_after_trial": 0,
+          "structures": 15,
+          "active_structure": [
+            3
+          ],
+          "memory_facts": 1344,
+          "replay_reads": 4512
+        },
+        {
+          "cycle": 4,
+          "status": "unresolved_keep",
+          "trial_pairs": 128,
+          "training_successes": 269,
+          "ordinary_after_trial": 0,
+          "structures": 15,
+          "active_structure": [
+            3
+          ],
+          "memory_facts": 1664,
+          "replay_reads": 4512
+        },
+        {
+          "cycle": 5,
+          "status": "unresolved_keep",
+          "trial_pairs": 128,
+          "training_successes": 267,
+          "ordinary_after_trial": 0,
+          "structures": 15,
+          "active_structure": [
+            3
+          ],
+          "memory_facts": 1984,
+          "replay_reads": 4512
+        }
+      ],
+      "checkpoints": [
+        {
+          "checkpoint": 0,
+          "cycle": -1,
+          "successes": 63,
+          "episodes": 128,
+          "policy_id": "a31f37c02d51a4cc1c1448a584efdd276dcd0947fe6b52c8f08b2db200103b58",
+          "learned_facts": 0
+        },
+        {
+          "checkpoint": 1,
+          "cycle": 0,
+          "successes": 101,
+          "episodes": 128,
+          "policy_id": "45632c4ba6f6f4e0ff49a7d04a95c7d5587ca6b4c1304415152cb4a9bbd7a219",
+          "learned_facts": 384
+        },
+        {
+          "checkpoint": 2,
+          "cycle": 1,
+          "successes": 100,
+          "episodes": 128,
+          "policy_id": "45632c4ba6f6f4e0ff49a7d04a95c7d5587ca6b4c1304415152cb4a9bbd7a219",
+          "learned_facts": 704
+        },
+        {
+          "checkpoint": 3,
+          "cycle": 2,
+          "successes": 102,
+          "episodes": 128,
+          "policy_id": "45632c4ba6f6f4e0ff49a7d04a95c7d5587ca6b4c1304415152cb4a9bbd7a219",
+          "learned_facts": 1024
+        },
+        {
+          "checkpoint": 4,
+          "cycle": 3,
+          "successes": 102,
+          "episodes": 128,
+          "policy_id": "45632c4ba6f6f4e0ff49a7d04a95c7d5587ca6b4c1304415152cb4a9bbd7a219",
+          "learned_facts": 1344
+        },
+        {
+          "checkpoint": 5,
+          "cycle": 4,
+          "successes": 103,
+          "episodes": 128,
+          "policy_id": "45632c4ba6f6f4e0ff49a7d04a95c7d5587ca6b4c1304415152cb4a9bbd7a219",
+          "learned_facts": 1664
+        },
+        {
+          "checkpoint": 6,
+          "cycle": 5,
+          "successes": 89,
+          "episodes": 128,
+          "policy_id": "45632c4ba6f6f4e0ff49a7d04a95c7d5587ca6b4c1304415152cb4a9bbd7a219",
+          "learned_facts": 1984
+        }
+      ],
+      "timings": {
+        "world_and_action_seconds": 0.6633130989794154,
+        "ordinary_observe_seconds": 1.7226480002573226,
+        "paired_update_seconds": 3.2195361998456065,
+        "snapshot_seconds": 0.03666570002678782,
+        "ranking_seconds": 0.5102653999638278,
+        "response_and_growth_seconds": 0.8230074000020977
+      },
+      "growth_seconds": 0.8228681000182405,
+      "replay_reads": 4512,
+      "final_structures": [
+        [
+          0
+        ],
+        [
+          1
+        ],
+        [
+          2
+        ],
+        [
+          3
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          3
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          1,
+          3
+        ],
+        [
+          0,
+          2,
+          3
+        ],
+        [
+          1,
+          2,
+          3
+        ],
+        [
+          0,
+          1,
+          2,
+          3
+        ]
+      ],
+      "parameter_scalars": 720,
+      "buffer_bytes": 2680,
+      "original_parameters_unchanged": true,
+      "wall_seconds": 7.4889005000004545,
+      "cpu_seconds": 7.296875
+    },
+    {
+      "arm": "mean_eight",
+      "family": "single",
+      "seed": 4,
+      "episodes": 2880,
+      "steps": 11520,
+      "learned_facts": 1984,
+      "evaluations": 896,
+      "trial_episodes": 96,
+      "adoptions": 3,
+      "cycles": [
+        {
+          "cycle": 0,
+          "status": "adopt",
+          "trial_pairs": 8,
+          "training_successes": 235,
+          "ordinary_after_trial": 240,
+          "structures": 10,
+          "active_structure": [
+            3
+          ],
+          "memory_facts": 384,
+          "replay_reads": 0
+        },
+        {
+          "cycle": 1,
+          "status": "unresolved_keep",
+          "trial_pairs": 8,
+          "training_successes": 261,
+          "ordinary_after_trial": 240,
+          "structures": 12,
+          "active_structure": [
+            3
+          ],
+          "memory_facts": 704,
+          "replay_reads": 928
+        },
+        {
+          "cycle": 2,
+          "status": "unresolved_keep",
+          "trial_pairs": 8,
+          "training_successes": 253,
+          "ordinary_after_trial": 240,
+          "structures": 14,
+          "active_structure": [
+            3
+          ],
+          "memory_facts": 1024,
+          "replay_reads": 2496
+        },
+        {
+          "cycle": 3,
+          "status": "adopt",
+          "trial_pairs": 8,
+          "training_successes": 249,
+          "ordinary_after_trial": 240,
+          "structures": 14,
+          "active_structure": [
+            3
+          ],
+          "memory_facts": 1344,
+          "replay_reads": 2496
+        },
+        {
+          "cycle": 4,
+          "status": "adopt",
+          "trial_pairs": 8,
+          "training_successes": 269,
+          "ordinary_after_trial": 240,
+          "structures": 14,
+          "active_structure": [
+            3
+          ],
+          "memory_facts": 1664,
+          "replay_reads": 2496
+        },
+        {
+          "cycle": 5,
+          "status": "unresolved_keep",
+          "trial_pairs": 8,
+          "training_successes": 267,
+          "ordinary_after_trial": 240,
+          "structures": 15,
+          "active_structure": [
+            3
+          ],
+          "memory_facts": 1984,
+          "replay_reads": 4240
+        }
+      ],
+      "checkpoints": [
+        {
+          "checkpoint": 0,
+          "cycle": -1,
+          "successes": 63,
+          "episodes": 128,
+          "policy_id": "24f1f01080716a62f3ff688ac1f30221a005dd2f85a2502a0b9d5bc848568d47",
+          "learned_facts": 0
+        },
+        {
+          "checkpoint": 1,
+          "cycle": 0,
+          "successes": 101,
+          "episodes": 128,
+          "policy_id": "cd9f647bc3dd4d4c1e79e696c370db785d09bbe4e4e6699d77fb683ff2eca797",
+          "learned_facts": 384
+        },
+        {
+          "checkpoint": 2,
+          "cycle": 1,
+          "successes": 100,
+          "episodes": 128,
+          "policy_id": "cd9f647bc3dd4d4c1e79e696c370db785d09bbe4e4e6699d77fb683ff2eca797",
+          "learned_facts": 704
+        },
+        {
+          "checkpoint": 3,
+          "cycle": 2,
+          "successes": 102,
+          "episodes": 128,
+          "policy_id": "cd9f647bc3dd4d4c1e79e696c370db785d09bbe4e4e6699d77fb683ff2eca797",
+          "learned_facts": 1024
+        },
+        {
+          "checkpoint": 4,
+          "cycle": 3,
+          "successes": 102,
+          "episodes": 128,
+          "policy_id": "557a8998864af31684ae093508313decec7294588154944e4794b47ce3a7221b",
+          "learned_facts": 1344
+        },
+        {
+          "checkpoint": 5,
+          "cycle": 4,
+          "successes": 103,
+          "episodes": 128,
+          "policy_id": "66235ecf2fc66b0155b28e49496ad910c83f8685060216ecca68b4b3331db447",
+          "learned_facts": 1664
+        },
+        {
+          "checkpoint": 6,
+          "cycle": 5,
+          "successes": 89,
+          "episodes": 128,
+          "policy_id": "66235ecf2fc66b0155b28e49496ad910c83f8685060216ecca68b4b3331db447",
+          "learned_facts": 1984
+        }
+      ],
+      "timings": {
+        "world_and_action_seconds": 0.9058254991832655,
+        "ordinary_observe_seconds": 4.811845500109484,
+        "paired_update_seconds": 0.26005010001244955,
+        "snapshot_seconds": 0.029595800006063655,
+        "ranking_seconds": 0.6682416000403464,
+        "response_and_growth_seconds": 0.8621419999690261
+      },
+      "growth_seconds": 0.8625825000344776,
+      "replay_reads": 4240,
+      "final_structures": [
+        [
+          0
+        ],
+        [
+          1
+        ],
+        [
+          2
+        ],
+        [
+          3
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          3
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          1,
+          3
+        ],
+        [
+          0,
+          2,
+          3
+        ],
+        [
+          1,
+          2,
+          3
+        ],
+        [
+          0,
+          1,
+          2,
+          3
+        ]
+      ],
+      "parameter_scalars": 720,
+      "buffer_bytes": 166160,
+      "original_parameters_unchanged": true,
+      "wall_seconds": 8.296522699994966,
+      "cpu_seconds": 7.859375
+    }
+  ],
+  "records": 11654,
+  "wall_seconds": 29.001395500003127,
+  "input_unchanged": true,
+  "torch_rng_unchanged": true,
+  "gradient_updates": 0,
+  "raw_sha256": "f3a58300176fb6d233c773b74add891b4dae4956b8300737ef92bc651240b53a"
+}

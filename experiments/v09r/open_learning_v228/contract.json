@@ -1,0 +1,27 @@
+{
+  "authority": "Latest direct user: training continues; remove excessive defensive restrictions",
+  "old_run": "V227 unchanged and continues",
+  "experiment": "Two-domain N228 targeted short test, not a new three-hour run",
+  "seed": 199,
+  "domains": [
+    "generic",
+    "pursuit"
+  ],
+  "training_steps_per_domain": 2048,
+  "optimizer_calls_per_domain": 64,
+  "evaluation_episodes_per_phase_per_domain": 4,
+  "maximum_total_environment_steps": 8288,
+  "threads": 1,
+  "automatic_retries": false,
+  "raw_capture": "check, exclusive first creation",
+  "fixes": [
+    "joint factual and effect gradients",
+    "signed mean actual trial learning",
+    "remove intermediate teacher task gate",
+    "one aggregate final actual comparison",
+    "append-only all-history memory with chronology views",
+    "all failed trajectory sources eligible"
+  ],
+  "parameter_size": "same architecture as V227; not a capacity ablation",
+  "scope": "Implementation and finite learning check; no ranking or saturation claim"
+}

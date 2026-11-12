@@ -1,0 +1,479 @@
+{
+  "role": "EXTERNAL_ENGINEERING32_PARALLEL_START_OBSERVATION_NOT_NATIVE_CONTROLLER_RECEIPT",
+  "observed_at": "2026-10-09T08:55:23.6418848Z",
+  "root": "D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009",
+  "current_processes": [
+    {
+      "pid": 9924,
+      "parent_pid": 24856,
+      "command_line": "\"C:\\Users\\huani\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe\" -NoProfile -NonInteractive -WindowStyle Hidden -File \"D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009\\scripts\\launch_a96_pipeline.ps1\"",
+      "start_utc": "2026-10-09T07:48:59.3389540Z",
+      "start_utc_ticks": "639271289393389540",
+      "cpu_seconds": 4.859375,
+      "working_set_bytes": 90116096
+    },
+    {
+      "pid": 26592,
+      "parent_pid": 9924,
+      "command_line": "\"D:\\python\\python.exe\" -u -B -X utf8 \"D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009\\scripts\\run_a96_pipeline.py\"",
+      "start_utc": "2026-10-09T07:49:01.3910189Z",
+      "start_utc_ticks": "639271289413910189",
+      "cpu_seconds": 1.9375,
+      "working_set_bytes": 18894848
+    },
+    {
+      "pid": 38332,
+      "parent_pid": 26592,
+      "command_line": "D:\\python\\python.exe -u -B -X utf8 scripts/benchmark_f0_runtime.py --output-dir D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009\\experiments\\v03r\\a96_dense\\f0_runtime",
+      "start_utc": "2026-10-09T08:07:27.3567858Z",
+      "start_utc_ticks": "639271300473567858",
+      "cpu_seconds": 1.015625,
+      "working_set_bytes": 26365952
+    },
+    {
+      "pid": 40828,
+      "parent_pid": 38332,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=38332, pipe_handle=540)\" \"--multiprocessing-fork\"",
+      "start_utc": "2026-10-09T08:52:53.2244870Z",
+      "start_utc_ticks": "639271327732244870",
+      "cpu_seconds": 90.328125,
+      "working_set_bytes": 70627328
+    },
+    {
+      "pid": 30184,
+      "parent_pid": 38332,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=38332, pipe_handle=536)\" \"--multiprocessing-fork\"",
+      "start_utc": "2026-10-09T08:52:53.2412139Z",
+      "start_utc_ticks": "639271327732412139",
+      "cpu_seconds": 90.015625,
+      "working_set_bytes": 72241152
+    },
+    {
+      "pid": 41772,
+      "parent_pid": 38332,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=38332, pipe_handle=432)\" \"--multiprocessing-fork\"",
+      "start_utc": "2026-10-09T08:52:53.2515784Z",
+      "start_utc_ticks": "639271327732515784",
+      "cpu_seconds": 90.265625,
+      "working_set_bytes": 72048640
+    },
+    {
+      "pid": 39448,
+      "parent_pid": 38332,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=38332, pipe_handle=476)\" \"--multiprocessing-fork\"",
+      "start_utc": "2026-10-09T08:52:53.2614249Z",
+      "start_utc_ticks": "639271327732614249",
+      "cpu_seconds": 88.921875,
+      "working_set_bytes": 72130560
+    },
+    {
+      "pid": 14716,
+      "parent_pid": 38332,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=38332, pipe_handle=488)\" \"--multiprocessing-fork\"",
+      "start_utc": "2026-10-09T08:52:53.2746363Z",
+      "start_utc_ticks": "639271327732746363",
+      "cpu_seconds": 90.046875,
+      "working_set_bytes": 70819840
+    },
+    {
+      "pid": 25000,
+      "parent_pid": 38332,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=38332, pipe_handle=392)\" \"--multiprocessing-fork\"",
+      "start_utc": "2026-10-09T08:52:53.2835576Z",
+      "start_utc_ticks": "639271327732835576",
+      "cpu_seconds": 90.546875,
+      "working_set_bytes": 71114752
+    },
+    {
+      "pid": 41640,
+      "parent_pid": 38332,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=38332, pipe_handle=344)\" \"--multiprocessing-fork\"",
+      "start_utc": "2026-10-09T08:52:53.2961197Z",
+      "start_utc_ticks": "639271327732961197",
+      "cpu_seconds": 89.484375,
+      "working_set_bytes": 72196096
+    },
+    {
+      "pid": 9088,
+      "parent_pid": 38332,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=38332, pipe_handle=584)\" \"--multiprocessing-fork\"",
+      "start_utc": "2026-10-09T08:52:53.3056148Z",
+      "start_utc_ticks": "639271327733056148",
+      "cpu_seconds": 90.109375,
+      "working_set_bytes": 71168000
+    },
+    {
+      "pid": 39808,
+      "parent_pid": 38332,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=38332, pipe_handle=460)\" \"--multiprocessing-fork\"",
+      "start_utc": "2026-10-09T08:52:53.3152093Z",
+      "start_utc_ticks": "639271327733152093",
+      "cpu_seconds": 89.4375,
+      "working_set_bytes": 71725056
+    },
+    {
+      "pid": 42032,
+      "parent_pid": 38332,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=38332, pipe_handle=684)\" \"--multiprocessing-fork\"",
+      "start_utc": "2026-10-09T08:52:53.3253946Z",
+      "start_utc_ticks": "639271327733253946",
+      "cpu_seconds": 90.03125,
+      "working_set_bytes": 72040448
+    },
+    {
+      "pid": 42036,
+      "parent_pid": 38332,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=38332, pipe_handle=712)\" \"--multiprocessing-fork\"",
+      "start_utc": "2026-10-09T08:52:53.3364610Z",
+      "start_utc_ticks": "639271327733364610",
+      "cpu_seconds": 91.21875,
+      "working_set_bytes": 71229440
+    },
+    {
+      "pid": 38476,
+      "parent_pid": 38332,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=38332, pipe_handle=692)\" \"--multiprocessing-fork\"",
+      "start_utc": "2026-10-09T08:52:53.3477049Z",
+      "start_utc_ticks": "639271327733477049",
+      "cpu_seconds": 89.421875,
+      "working_set_bytes": 71798784
+    },
+    {
+      "pid": 34548,
+      "parent_pid": 38332,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=38332, pipe_handle=616)\" \"--multiprocessing-fork\"",
+      "start_utc": "2026-10-09T08:52:53.3572442Z",
+      "start_utc_ticks": "639271327733572442",
+      "cpu_seconds": 89.3125,
+      "working_set_bytes": 72175616
+    },
+    {
+      "pid": 31960,
+      "parent_pid": 38332,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=38332, pipe_handle=756)\" \"--multiprocessing-fork\"",
+      "start_utc": "2026-10-09T08:52:53.3676458Z",
+      "start_utc_ticks": "639271327733676458",
+      "cpu_seconds": 89.046875,
+      "working_set_bytes": 70217728
+    },
+    {
+      "pid": 14972,
+      "parent_pid": 38332,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=38332, pipe_handle=760)\" \"--multiprocessing-fork\"",
+      "start_utc": "2026-10-09T08:52:53.3761664Z",
+      "start_utc_ticks": "639271327733761664",
+      "cpu_seconds": 90.34375,
+      "working_set_bytes": 71421952
+    },
+    {
+      "pid": 15744,
+      "parent_pid": 38332,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=38332, pipe_handle=820)\" \"--multiprocessing-fork\"",
+      "start_utc": "2026-10-09T08:52:53.3855528Z",
+      "start_utc_ticks": "639271327733855528",
+      "cpu_seconds": 89.703125,
+      "working_set_bytes": 71835648
+    }
+  ],
+  "worker_cpu_progress": [
+    {
+      "pid": 40828,
+      "start_utc_ticks": "639271327732244870",
+      "earlier_observed_at": "2026-10-09T08:54:10.4931808Z",
+      "earlier_cpu_seconds": 46.9375,
+      "later_observed_at": "2026-10-09T08:55:23.6418848Z",
+      "later_cpu_seconds": 90.328125
+    },
+    {
+      "pid": 30184,
+      "start_utc_ticks": "639271327732412139",
+      "earlier_observed_at": "2026-10-09T08:54:10.4931808Z",
+      "earlier_cpu_seconds": 46.59375,
+      "later_observed_at": "2026-10-09T08:55:23.6418848Z",
+      "later_cpu_seconds": 90.015625
+    },
+    {
+      "pid": 41772,
+      "start_utc_ticks": "639271327732515784",
+      "earlier_observed_at": "2026-10-09T08:54:10.4931808Z",
+      "earlier_cpu_seconds": 46.890625,
+      "later_observed_at": "2026-10-09T08:55:23.6418848Z",
+      "later_cpu_seconds": 90.265625
+    },
+    {
+      "pid": 39448,
+      "start_utc_ticks": "639271327732614249",
+      "earlier_observed_at": "2026-10-09T08:54:10.4931808Z",
+      "earlier_cpu_seconds": 46.96875,
+      "later_observed_at": "2026-10-09T08:55:23.6418848Z",
+      "later_cpu_seconds": 88.921875
+    },
+    {
+      "pid": 14716,
+      "start_utc_ticks": "639271327732746363",
+      "earlier_observed_at": "2026-10-09T08:54:10.4931808Z",
+      "earlier_cpu_seconds": 47.09375,
+      "later_observed_at": "2026-10-09T08:55:23.6418848Z",
+      "later_cpu_seconds": 90.046875
+    },
+    {
+      "pid": 25000,
+      "start_utc_ticks": "639271327732835576",
+      "earlier_observed_at": "2026-10-09T08:54:10.4931808Z",
+      "earlier_cpu_seconds": 47.390625,
+      "later_observed_at": "2026-10-09T08:55:23.6418848Z",
+      "later_cpu_seconds": 90.546875
+    },
+    {
+      "pid": 41640,
+      "start_utc_ticks": "639271327732961197",
+      "earlier_observed_at": "2026-10-09T08:54:10.4931808Z",
+      "earlier_cpu_seconds": 46.265625,
+      "later_observed_at": "2026-10-09T08:55:23.6418848Z",
+      "later_cpu_seconds": 89.484375
+    },
+    {
+      "pid": 9088,
+      "start_utc_ticks": "639271327733056148",
+      "earlier_observed_at": "2026-10-09T08:54:10.4931808Z",
+      "earlier_cpu_seconds": 46.703125,
+      "later_observed_at": "2026-10-09T08:55:23.6418848Z",
+      "later_cpu_seconds": 90.109375
+    },
+    {
+      "pid": 39808,
+      "start_utc_ticks": "639271327733152093",
+      "earlier_observed_at": "2026-10-09T08:54:10.4931808Z",
+      "earlier_cpu_seconds": 45.734375,
+      "later_observed_at": "2026-10-09T08:55:23.6418848Z",
+      "later_cpu_seconds": 89.4375
+    },
+    {
+      "pid": 42032,
+      "start_utc_ticks": "639271327733253946",
+      "earlier_observed_at": "2026-10-09T08:54:10.4931808Z",
+      "earlier_cpu_seconds": 46.484375,
+      "later_observed_at": "2026-10-09T08:55:23.6418848Z",
+      "later_cpu_seconds": 90.03125
+    },
+    {
+      "pid": 42036,
+      "start_utc_ticks": "639271327733364610",
+      "earlier_observed_at": "2026-10-09T08:54:10.4931808Z",
+      "earlier_cpu_seconds": 47.546875,
+      "later_observed_at": "2026-10-09T08:55:23.6418848Z",
+      "later_cpu_seconds": 91.21875
+    },
+    {
+      "pid": 38476,
+      "start_utc_ticks": "639271327733477049",
+      "earlier_observed_at": "2026-10-09T08:54:10.4931808Z",
+      "earlier_cpu_seconds": 46.25,
+      "later_observed_at": "2026-10-09T08:55:23.6418848Z",
+      "later_cpu_seconds": 89.421875
+    },
+    {
+      "pid": 34548,
+      "start_utc_ticks": "639271327733572442",
+      "earlier_observed_at": "2026-10-09T08:54:10.4931808Z",
+      "earlier_cpu_seconds": 46.9375,
+      "later_observed_at": "2026-10-09T08:55:23.6418848Z",
+      "later_cpu_seconds": 89.3125
+    },
+    {
+      "pid": 31960,
+      "start_utc_ticks": "639271327733676458",
+      "earlier_observed_at": "2026-10-09T08:54:10.4931808Z",
+      "earlier_cpu_seconds": 47,
+      "later_observed_at": "2026-10-09T08:55:23.6418848Z",
+      "later_cpu_seconds": 89.046875
+    },
+    {
+      "pid": 14972,
+      "start_utc_ticks": "639271327733761664",
+      "earlier_observed_at": "2026-10-09T08:54:10.4931808Z",
+      "earlier_cpu_seconds": 46.59375,
+      "later_observed_at": "2026-10-09T08:55:23.6418848Z",
+      "later_cpu_seconds": 90.34375
+    },
+    {
+      "pid": 15744,
+      "start_utc_ticks": "639271327733855528",
+      "earlier_observed_at": "2026-10-09T08:54:10.4931808Z",
+      "earlier_cpu_seconds": 46.40625,
+      "later_observed_at": "2026-10-09T08:55:23.6418848Z",
+      "later_cpu_seconds": 89.703125
+    }
+  ],
+  "engineering5_native_worker_completion_lines": [
+    {
+      "seed": 2026101200,
+      "pid": 44100,
+      "records": 577
+    },
+    {
+      "seed": 2026101201,
+      "pid": 25440,
+      "records": 577
+    },
+    {
+      "seed": 2026101202,
+      "pid": 7944,
+      "records": 577
+    },
+    {
+      "seed": 2026101203,
+      "pid": 43360,
+      "records": 577
+    },
+    {
+      "seed": 2026101204,
+      "pid": 38348,
+      "records": 577
+    }
+  ],
+  "engineering5_total_record_count_from_native_worker_logs": 2885,
+  "currently_started_engineering32_worker_keys": [
+    {
+      "seed": 2026101205,
+      "pid": 9088
+    },
+    {
+      "seed": 2026101206,
+      "pid": 40828
+    },
+    {
+      "seed": 2026101207,
+      "pid": 42032
+    },
+    {
+      "seed": 2026101208,
+      "pid": 15744
+    },
+    {
+      "seed": 2026101209,
+      "pid": 41772
+    },
+    {
+      "seed": 2026101210,
+      "pid": 38476
+    },
+    {
+      "seed": 2026101211,
+      "pid": 41640
+    },
+    {
+      "seed": 2026101212,
+      "pid": 31960
+    },
+    {
+      "seed": 2026101213,
+      "pid": 25000
+    },
+    {
+      "seed": 2026101214,
+      "pid": 14972
+    },
+    {
+      "seed": 2026101215,
+      "pid": 39808
+    },
+    {
+      "seed": 2026101216,
+      "pid": 34548
+    },
+    {
+      "seed": 2026101217,
+      "pid": 14716
+    },
+    {
+      "seed": 2026101218,
+      "pid": 39448
+    },
+    {
+      "seed": 2026101219,
+      "pid": 30184
+    },
+    {
+      "seed": 2026101220,
+      "pid": 42036
+    }
+  ],
+  "native_runtime_stdout": [
+    "gate 1/6 exit=0: python -m pytest -q",
+    "gate 2/6 exit=0: python scripts/spec_audit.py",
+    "gate 3/6 exit=0: python scripts/b2_view_gate_selfcheck.py",
+    "gate 4/6 exit=0: python scripts/a91_training_gate_selfcheck.py",
+    "gate 5/6 exit=0: python scripts/run_calibration.py",
+    "gate 6/6 exit=0: python scripts/f0_manifest_selfcheck.py",
+    "SEED_STARTED seed=2026101200 pid=44100",
+    "SEED_STARTED seed=2026101201 pid=25440",
+    "SEED_STARTED seed=2026101202 pid=7944",
+    "SEED_STARTED seed=2026101203 pid=43360",
+    "SEED_STARTED seed=2026101204 pid=38348",
+    "SEED_COMPLETED seed=2026101203 pid=43360 records=577",
+    "SEED_COMPLETED seed=2026101202 pid=7944 records=577",
+    "SEED_COMPLETED seed=2026101204 pid=38348 records=577",
+    "SEED_COMPLETED seed=2026101201 pid=25440 records=577",
+    "SEED_COMPLETED seed=2026101200 pid=44100 records=577",
+    "SEED_STARTED seed=2026101205 pid=9088",
+    "SEED_STARTED seed=2026101206 pid=40828",
+    "SEED_STARTED seed=2026101207 pid=42032",
+    "SEED_STARTED seed=2026101208 pid=15744",
+    "SEED_STARTED seed=2026101209 pid=41772",
+    "SEED_STARTED seed=2026101210 pid=38476",
+    "SEED_STARTED seed=2026101211 pid=41640",
+    "SEED_STARTED seed=2026101212 pid=31960",
+    "SEED_STARTED seed=2026101213 pid=25000",
+    "SEED_STARTED seed=2026101214 pid=14972",
+    "SEED_STARTED seed=2026101215 pid=39808",
+    "SEED_STARTED seed=2026101216 pid=34548",
+    "SEED_STARTED seed=2026101217 pid=14716",
+    "SEED_STARTED seed=2026101218 pid=39448",
+    "SEED_STARTED seed=2026101219 pid=30184",
+    "SEED_STARTED seed=2026101220 pid=42036"
+  ],
+  "control_sha256": {
+    "controller": "bb9a1989d8e7f67b3dca6065a51f518e72dd87806501f3547c71c7b792673f4d",
+    "launcher": "5d49fe0752cc95caa7dcf1d814f6706a5e927771eac6eebaa3c081adb0a90d17",
+    "benchmark": "79891a6f52084fba060bb07fc2e68956ae5b1ccb0a7fa05a9549f256cb8182a6"
+  },
+  "stable_boundary_verification": {
+    "role": "READ_ONLY_STABLE_BOUNDARY_VERIFICATION_NOT_NATIVE_RECEIPT",
+    "observed_at": "2026-10-09T08:54:18.082527+00:00",
+    "source_count": 313,
+    "sources_digest": "1dfd80ce49255231998b70fca2b7bcd72e0940822a1bf9d4a8e731603ccc4838",
+    "committed_sources_match": true,
+    "old_sources_count": 309,
+    "old_compressed_shards": 32,
+    "old_native_evidence_count": 11,
+    "parent_unchanged": true,
+    "native_gate_codes": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "runtime_receipts_unchanged": true
+  },
+  "prior_milestone": "experiments/v03r/a96_dense/pipeline/parallel_engineering_start_observation.json",
+  "runtime_launch_path": "experiments/v03r/a96_dense/pipeline/full_runtime.launch.json",
+  "interpretation": {
+    "maximum_spawn_workers": 16,
+    "currently_authenticated_spawn_workers": 16,
+    "current_execution_level": "ENGINEERING32_ACQUISITION_FIRST16_SPAWN_WORKERS_RUNNING",
+    "all32_engineering_shards_complete": false,
+    "complete_37_key_native_receipt": false,
+    "fresh_engineering_full_shard_validation_complete": false,
+    "committed_F0_created": false,
+    "formal_scientific_smoke_started": false,
+    "scientific_development_started": false,
+    "treatment_or_confirmation_collected": false,
+    "research_complete": false,
+    "note": "The5 engineering rehearsals emitted native worker completion counts. This is not a formal smoke evaluator PASS. The next32 engineering batch has16 authenticated live workers with CPU progression; partial compressed shards are not complete or verified evidence. No result, runtime, F0 or native controller exit is inferred."
+  },
+  "automatic_retry": false,
+  "external_publish": false
+}

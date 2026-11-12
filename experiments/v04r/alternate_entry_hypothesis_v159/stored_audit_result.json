@@ -1,0 +1,384 @@
+{
+  "schema": "V159_STDLIB_EVENT_HYPOTHESIS_REVIEW",
+  "complete": true,
+  "native_counts": {
+    "public_geometry": 72,
+    "rollout": 14,
+    "step": 84,
+    "transaction": 19
+  },
+  "records": 111,
+  "input_pins": 353,
+  "matched_common_source_pins": 102,
+  "summary": {
+    "arm": "EventProbe",
+    "successes": 10,
+    "mean_return": 0.5383333333333333,
+    "returns": [
+      -1.06,
+      0.86,
+      0.86,
+      0.86,
+      0.86,
+      0.86,
+      -1.08,
+      0.86,
+      0.86,
+      0.86,
+      0.86,
+      0.86
+    ],
+    "outcomes": [
+      "TRAP",
+      "SUCCESS",
+      "SUCCESS",
+      "SUCCESS",
+      "SUCCESS",
+      "SUCCESS",
+      "TRAP",
+      "SUCCESS",
+      "SUCCESS",
+      "SUCCESS",
+      "SUCCESS",
+      "SUCCESS"
+    ],
+    "external_updates": 2,
+    "diagnostic_account": {
+      "algorithm": "EventProbe",
+      "base_queries": 2,
+      "expanded_queries": 0,
+      "trial_task_budget": 12,
+      "trial_tasks_used": 2
+    }
+  },
+  "recorded_controls": [
+    {
+      "arm": "TaskTD",
+      "successes": 9,
+      "mean_return": 0.37833333333333335,
+      "returns": [
+        -1.06,
+        0.86,
+        -1.06,
+        0.86,
+        0.86,
+        0.86,
+        -1.08,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "cost": {
+        "arm": "TaskTD",
+        "main_tasks": 12,
+        "private_tasks": 0,
+        "rollout": 12,
+        "step": 73,
+        "transaction": 12,
+        "shared3TX_excluded": true
+      },
+      "same_full_start_RLI_and_literal_main_inputs": true
+    },
+    {
+      "arm": "GreedyPractice",
+      "successes": 9,
+      "mean_return": 0.37833333333333335,
+      "returns": [
+        -1.06,
+        -1.06,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.08,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "cost": {
+        "arm": "GreedyPractice",
+        "main_tasks": 12,
+        "private_tasks": 3,
+        "rollout": 15,
+        "step": 94,
+        "transaction": 18,
+        "shared3TX_excluded": true
+      },
+      "same_full_start_RLI_and_literal_main_inputs": true
+    },
+    {
+      "arm": "TargetedPractice",
+      "successes": 9,
+      "mean_return": 0.37833333333333335,
+      "returns": [
+        -1.06,
+        -1.06,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.08,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "cost": {
+        "arm": "TargetedPractice",
+        "main_tasks": 12,
+        "private_tasks": 3,
+        "rollout": 15,
+        "step": 94,
+        "transaction": 18,
+        "shared3TX_excluded": true
+      },
+      "same_full_start_RLI_and_literal_main_inputs": true
+    }
+  ],
+  "phase_results": [
+    {
+      "stage": "A_late_upper_trap",
+      "successes": 5,
+      "returns": [
+        -1.06,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.5399999999999999,
+      "private_tasks": 1
+    },
+    {
+      "stage": "B_deeper_upper_trap",
+      "successes": 5,
+      "returns": [
+        -1.08,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.5366666666666666,
+      "private_tasks": 1
+    }
+  ],
+  "online_cost": {
+    "arm": "EventProbe",
+    "main_tasks": 12,
+    "private_tasks": 2,
+    "rollout": 14,
+    "step": 84,
+    "transaction": 16,
+    "shared3TX_excluded": true,
+    "additional_public_geometry_transitions": 72
+  },
+  "hypotheses": [
+    {
+      "epoch": 0,
+      "stage": "A_late_upper_trap",
+      "specification": {
+        "target": {
+          "x": 2,
+          "y": 1,
+          "t": 3,
+          "kappa": 0,
+          "phi": 1
+        },
+        "observed_last_pre": {
+          "x": 1,
+          "y": 1,
+          "t": 2,
+          "kappa": 0,
+          "phi": 1
+        },
+        "observed_last_command": 3,
+        "rows": [
+          {
+            "state": {
+              "x": 0,
+              "y": 2,
+              "t": 0,
+              "kappa": 0,
+              "phi": 1
+            },
+            "control": {
+              "z": 1,
+              "m": 0
+            },
+            "command": 3,
+            "admissible_rank": 0
+          },
+          {
+            "state": {
+              "x": 1,
+              "y": 2,
+              "t": 1,
+              "kappa": 0,
+              "phi": 1
+            },
+            "control": {
+              "z": 1,
+              "m": 0
+            },
+            "command": 3,
+            "admissible_rank": 3
+          },
+          {
+            "state": {
+              "x": 2,
+              "y": 2,
+              "t": 2,
+              "kappa": 0,
+              "phi": 1
+            },
+            "control": {
+              "z": 1,
+              "m": 0
+            },
+            "command": 0,
+            "admissible_rank": 0
+          }
+        ]
+      },
+      "public_search": {
+        "public_candidate_transitions": 14,
+        "target_inference_transitions": 1,
+        "search_exhausted": false,
+        "reason": "alternate_entry_found"
+      },
+      "assessment": {
+        "checked_steps": 3,
+        "reason": "actual_target_TRAP",
+        "status": "consistent_on_tested_alternate"
+      }
+    },
+    {
+      "epoch": 6,
+      "stage": "B_deeper_upper_trap",
+      "specification": {
+        "target": {
+          "x": 3,
+          "y": 1,
+          "t": 4,
+          "kappa": 1,
+          "phi": 4
+        },
+        "observed_last_pre": {
+          "x": 2,
+          "y": 1,
+          "t": 3,
+          "kappa": 1,
+          "phi": 4
+        },
+        "observed_last_command": 3,
+        "rows": [
+          {
+            "state": {
+              "x": 0,
+              "y": 2,
+              "t": 0,
+              "kappa": 1,
+              "phi": 4
+            },
+            "control": {
+              "z": 1,
+              "m": 0
+            },
+            "command": 3,
+            "admissible_rank": 0
+          },
+          {
+            "state": {
+              "x": 1,
+              "y": 2,
+              "t": 1,
+              "kappa": 1,
+              "phi": 4
+            },
+            "control": {
+              "z": 1,
+              "m": 0
+            },
+            "command": 3,
+            "admissible_rank": 3
+          },
+          {
+            "state": {
+              "x": 2,
+              "y": 2,
+              "t": 2,
+              "kappa": 1,
+              "phi": 4
+            },
+            "control": {
+              "z": 1,
+              "m": 0
+            },
+            "command": 3,
+            "admissible_rank": 2
+          },
+          {
+            "state": {
+              "x": 3,
+              "y": 2,
+              "t": 3,
+              "kappa": 1,
+              "phi": 4
+            },
+            "control": {
+              "z": 1,
+              "m": 0
+            },
+            "command": 0,
+            "admissible_rank": 0
+          }
+        ]
+      },
+      "public_search": {
+        "public_candidate_transitions": 56,
+        "target_inference_transitions": 1,
+        "search_exhausted": false,
+        "reason": "alternate_entry_found"
+      },
+      "assessment": {
+        "checked_steps": 4,
+        "reason": "actual_target_TRAP",
+        "status": "consistent_on_tested_alternate"
+      }
+    }
+  ],
+  "accepted": [
+    {
+      "arm": "EventProbe",
+      "epoch": 0,
+      "terminal": "TRAP",
+      "numeric_content_changed": true
+    },
+    {
+      "arm": "EventProbe",
+      "epoch": 6,
+      "terminal": "TRAP",
+      "numeric_content_changed": true
+    }
+  ],
+  "native_ordinary_updates": 14,
+  "ordinary_policy_TX": 0,
+  "external_ordinary_updates": 2,
+  "external_policy_TX": 0,
+  "issued_observations": 2,
+  "consumed_observations": 2,
+  "success_diagnosis": 0,
+  "feedback_TX": 0,
+  "source_install_TX": 0,
+  "control_native_checker_reruns": 0,
+  "new_keys_RNG_DP_calibration_collection": 0,
+  "qualification": false
+}

@@ -1,0 +1,151 @@
+{
+  "schema": "V162_ACTUAL_RESULT",
+  "parent_commit": "7e75975cbb437f667bc0f50da04148af810252fa",
+  "status": "FIRST_NATIVE_REVIEW0_SAME_DATA_MODELS28OF30_ONE_PROBE_SAVED_POLICY_DISCRIMINATION_NOT_EXERCISED",
+  "native_first_exit": 0,
+  "stored_review_first_exit": 0,
+  "wall_seconds_instrumented": 4.186999999976251,
+  "native_counts": {
+    "public_geometry": 231,
+    "query_features": 10,
+    "query_model_fit": 2,
+    "rollout": 124,
+    "step": 753,
+    "transaction": 182
+  },
+  "records": 814,
+  "input_pins": 362,
+  "online_costs": [
+    {
+      "arm": "TaskTD",
+      "main_tasks": 30,
+      "private_tasks": 0,
+      "rollout": 30,
+      "step": 182,
+      "transaction": 42,
+      "shared4TX_excluded": true,
+      "additional_public_geometry_transitions": 0
+    },
+    {
+      "arm": "AlwaysUnified",
+      "main_tasks": 30,
+      "private_tasks": 2,
+      "rollout": 32,
+      "step": 193,
+      "transaction": 48,
+      "shared4TX_excluded": true,
+      "additional_public_geometry_transitions": 77
+    },
+    {
+      "arm": "NumericRetrained",
+      "main_tasks": 30,
+      "private_tasks": 1,
+      "rollout": 31,
+      "step": 189,
+      "transaction": 44,
+      "shared4TX_excluded": true,
+      "additional_public_geometry_transitions": 77
+    },
+    {
+      "arm": "PolicyAware",
+      "main_tasks": 30,
+      "private_tasks": 1,
+      "rollout": 31,
+      "step": 189,
+      "transaction": 44,
+      "shared4TX_excluded": true,
+      "additional_public_geometry_transitions": 77
+    }
+  ],
+  "simple_sums_not_adopted_utility": [
+    {
+      "arm": "TaskTD",
+      "main_successes": 27,
+      "main_return": 20.36,
+      "all_interaction_return": 20.36,
+      "all_interaction_failures": 3,
+      "ordinary_policy_TX": 12,
+      "external_policy_TX": 0
+    },
+    {
+      "arm": "AlwaysUnified",
+      "main_successes": 28,
+      "main_return": 22.28,
+      "all_interaction_return": 20.14,
+      "all_interaction_failures": 4,
+      "ordinary_policy_TX": 13,
+      "external_policy_TX": 1
+    },
+    {
+      "arm": "NumericRetrained",
+      "main_successes": 28,
+      "main_return": 22.28,
+      "all_interaction_return": 21.22,
+      "all_interaction_failures": 3,
+      "ordinary_policy_TX": 12,
+      "external_policy_TX": 0
+    },
+    {
+      "arm": "PolicyAware",
+      "main_successes": 28,
+      "main_return": 22.28,
+      "all_interaction_return": 21.22,
+      "all_interaction_failures": 3,
+      "ordinary_policy_TX": 12,
+      "external_policy_TX": 0
+    }
+  ],
+  "query_decisions": [
+    {
+      "arm": "NumericRetrained",
+      "epoch": 0,
+      "stage": "A_new_early_entry",
+      "x": [
+        0.0,
+        0.0
+      ],
+      "prediction": 1.92,
+      "decision": "supported_probe"
+    },
+    {
+      "arm": "NumericRetrained",
+      "epoch": 12,
+      "stage": "C_new_prefix_ownedD",
+      "x": [
+        0.020000000000000018,
+        -0.020000000000000018
+      ],
+      "prediction": 0.0,
+      "decision": "supported_skip"
+    },
+    {
+      "arm": "PolicyAware",
+      "epoch": 0,
+      "stage": "A_new_early_entry",
+      "x": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "prediction": 1.92,
+      "decision": "supported_probe"
+    },
+    {
+      "arm": "PolicyAware",
+      "epoch": 12,
+      "stage": "C_new_prefix_ownedD",
+      "x": [
+        0.020000000000000018,
+        -0.020000000000000018,
+        0.0
+      ],
+      "prediction": 0.0,
+      "decision": "supported_skip"
+    }
+  ],
+  "same6_training_points_two_fits": true,
+  "limitations": "B/D/E healthy main policy went DOWN then RIGHT and succeeded, bypassing plannedtrap; only A/C diagnosed. Thus no actual new policy-dependent query decision; no claim v161 false skip fixed or thirdfeature causal benefit. Next fixed fresh source-pair must genuinely exercise it, not rerun this bank.",
+  "old_native_checker_reruns": 0,
+  "new_keys_RNG_DP_calibration_collection": 0,
+  "qualification": false
+}

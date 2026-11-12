@@ -1,0 +1,4065 @@
+{
+  "schema": "V137_DISAGREEMENT_COUNTERPROBE_RESULT",
+  "date_asia_shanghai": "2026-11-07",
+  "parent_commit": "e18e597dce763ea69a4df3613290aca490981bd2",
+  "status": "EXTENSION_COMPLETE_DISAGREEMENT_RECOVERS_BETTER_ALTERNATIVE_BUT_CONSENSUS_STILL_MISSES_EARLIER_GAIN",
+  "execution": {
+    "native_first_exit": 0,
+    "new_stored_review_first_exit": 0,
+    "rollout": 114,
+    "step": 1151,
+    "transaction": 150,
+    "records": 805,
+    "declared_input_pins_unchanged": 351,
+    "main_tasks": 80,
+    "practice_tasks": 34,
+    "readonly_rollouts": 0,
+    "main_steps": 854,
+    "practice_steps": 297,
+    "ordinary_full_R_L_updates_verified": 114,
+    "source_install_transactions": 2,
+    "source_install_edits": 88,
+    "live_diagnostic_transactions": 12,
+    "practice_candidate_transactions": 22,
+    "Mtraining_events": 12,
+    "paired_models_per_M": 2,
+    "disagreement_extra_probe_requests": 2,
+    "instrumented_wall_seconds": 13.75,
+    "success_diagnostics": 0,
+    "base_model_updates": 0,
+    "new_keys": 0,
+    "formal_collection": false,
+    "automatic_retry": false,
+    "old_checker_native_or_readonly_bank_reruns": 0
+  },
+  "per_arm_summary": [
+    {
+      "arm": "StableFull",
+      "case": "stable",
+      "investigation": "full-one",
+      "successes": 17,
+      "task_return_sum": 9.280000000000001,
+      "task_return_mean": 0.4640000000000001,
+      "practice_events": 3,
+      "practice_rollouts": 9,
+      "diagnostic_memory_updates": 3,
+      "memory_retrievals": 3,
+      "returns": [
+        -1.24,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        -1.18,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        -1.22,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        0.76
+      ],
+      "outcomes": [
+        "TIMEOUT",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ]
+    },
+    {
+      "arm": "StableDisagree",
+      "case": "stable",
+      "investigation": "disagreement",
+      "successes": 17,
+      "task_return_sum": 9.280000000000001,
+      "task_return_mean": 0.4640000000000001,
+      "practice_events": 3,
+      "practice_rollouts": 8,
+      "diagnostic_memory_updates": 3,
+      "memory_retrievals": 3,
+      "returns": [
+        -1.24,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        -1.18,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        -1.22,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        0.76
+      ],
+      "outcomes": [
+        "TIMEOUT",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ]
+    },
+    {
+      "arm": "DriftFull",
+      "case": "drift",
+      "investigation": "full-one",
+      "successes": 17,
+      "task_return_sum": 10.48,
+      "task_return_mean": 0.524,
+      "practice_events": 3,
+      "practice_rollouts": 9,
+      "diagnostic_memory_updates": 3,
+      "memory_retrievals": 3,
+      "returns": [
+        -1.24,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        -1.18,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        -1.22,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        0.76,
+        0.76
+      ],
+      "outcomes": [
+        "TIMEOUT",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ]
+    },
+    {
+      "arm": "DriftDisagree",
+      "case": "drift",
+      "investigation": "disagreement",
+      "successes": 17,
+      "task_return_sum": 9.88,
+      "task_return_mean": 0.49400000000000005,
+      "practice_events": 3,
+      "practice_rollouts": 8,
+      "diagnostic_memory_updates": 3,
+      "memory_retrievals": 3,
+      "returns": [
+        -1.24,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        -1.18,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        0.76,
+        -1.22,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        0.76,
+        0.76
+      ],
+      "outcomes": [
+        "TIMEOUT",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ]
+    }
+  ],
+  "per_arm_native_work": {
+    "StableFull": {
+      "stream_rollout": 20,
+      "stream_step": 236,
+      "ORDINARY_UPDATE": 29,
+      "practice_rollout": 9,
+      "practice_step": 71,
+      "PRACTICE_TX_END": 6,
+      "DIAGNOSTIC_TX_END": 3,
+      "total_K_steps": 307,
+      "total_rollouts": 29,
+      "transactions_excluding_shared_source": 38
+    },
+    "StableDisagree": {
+      "stream_rollout": 20,
+      "stream_step": 236,
+      "ORDINARY_UPDATE": 28,
+      "practice_rollout": 8,
+      "practice_step": 70,
+      "PRACTICE_TX_END": 5,
+      "DIAGNOSTIC_TX_END": 3,
+      "total_K_steps": 306,
+      "total_rollouts": 28,
+      "transactions_excluding_shared_source": 36
+    },
+    "DriftFull": {
+      "stream_rollout": 20,
+      "stream_step": 176,
+      "ORDINARY_UPDATE": 29,
+      "practice_rollout": 9,
+      "practice_step": 81,
+      "PRACTICE_TX_END": 6,
+      "DIAGNOSTIC_TX_END": 3,
+      "total_K_steps": 257,
+      "total_rollouts": 29,
+      "transactions_excluding_shared_source": 38
+    },
+    "DriftDisagree": {
+      "stream_rollout": 20,
+      "stream_step": 206,
+      "ORDINARY_UPDATE": 28,
+      "practice_rollout": 8,
+      "practice_step": 75,
+      "PRACTICE_TX_END": 5,
+      "DIAGNOSTIC_TX_END": 3,
+      "total_K_steps": 281,
+      "total_rollouts": 28,
+      "transactions_excluding_shared_source": 36
+    }
+  },
+  "failure_counts": {
+    "StableFull": {
+      "stream_TIMEOUT": 1,
+      "practice_TIMEOUT": 1,
+      "practice_TRAP": 3,
+      "practice_SUCCESS": 3,
+      "stream_SUCCESS": 17,
+      "stream_COLLISION": 2,
+      "practice_COLLISION": 2
+    },
+    "StableDisagree": {
+      "stream_TIMEOUT": 1,
+      "practice_TIMEOUT": 1,
+      "practice_TRAP": 2,
+      "practice_SUCCESS": 3,
+      "stream_SUCCESS": 17,
+      "stream_COLLISION": 2,
+      "practice_COLLISION": 2
+    },
+    "DriftFull": {
+      "stream_TIMEOUT": 1,
+      "practice_TIMEOUT": 1,
+      "practice_TRAP": 1,
+      "practice_SUCCESS": 5,
+      "stream_SUCCESS": 17,
+      "stream_COLLISION": 2,
+      "practice_COLLISION": 2
+    },
+    "DriftDisagree": {
+      "stream_TIMEOUT": 1,
+      "practice_TIMEOUT": 1,
+      "practice_TRAP": 1,
+      "practice_SUCCESS": 4,
+      "stream_SUCCESS": 17,
+      "stream_COLLISION": 2,
+      "practice_COLLISION": 2
+    }
+  },
+  "actual_practice_events": [
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "StableFull",
+      "comparison_candidate": null,
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:7": 1
+      },
+      "epoch": 0,
+      "means": {
+        "keep": -1.24,
+        "single:0": -1.02,
+        "single:7": 0.76
+      },
+      "menu": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.24
+        ],
+        "single:0": [
+          -1.02
+        ],
+        "single:7": [
+          0.76
+        ]
+      },
+      "selected": "single:7",
+      "strategy": "full-one",
+      "unprobed": []
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "StableFull",
+      "comparison_candidate": null,
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:7": 1
+      },
+      "epoch": 6,
+      "means": {
+        "keep": -1.18,
+        "single:0": -1.02,
+        "single:7": 0.76
+      },
+      "menu": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.18
+        ],
+        "single:0": [
+          -1.02
+        ],
+        "single:7": [
+          0.76
+        ]
+      },
+      "selected": "single:7",
+      "strategy": "full-one",
+      "unprobed": []
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "StableFull",
+      "comparison_candidate": null,
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:7": 1
+      },
+      "epoch": 12,
+      "means": {
+        "keep": -1.22,
+        "single:0": -1.02,
+        "single:7": 0.76
+      },
+      "menu": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.22
+        ],
+        "single:0": [
+          -1.02
+        ],
+        "single:7": [
+          0.76
+        ]
+      },
+      "selected": "single:7",
+      "strategy": "full-one",
+      "unprobed": []
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "StableDisagree",
+      "comparison_candidate": null,
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:7": 1
+      },
+      "epoch": 0,
+      "means": {
+        "keep": -1.24,
+        "single:0": -1.02,
+        "single:7": 0.76
+      },
+      "menu": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.24
+        ],
+        "single:0": [
+          -1.02
+        ],
+        "single:7": [
+          0.76
+        ]
+      },
+      "selected": "single:7",
+      "strategy": "verify-one",
+      "unprobed": []
+    },
+    {
+      "actions": [
+        "keep",
+        "single:7"
+      ],
+      "arm": "StableDisagree",
+      "comparison_candidate": null,
+      "costs": {
+        "keep": 0,
+        "single:7": 1
+      },
+      "epoch": 6,
+      "means": {
+        "keep": -1.18,
+        "single:7": 0.76
+      },
+      "menu": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.18
+        ],
+        "single:7": [
+          0.76
+        ]
+      },
+      "selected": "single:7",
+      "strategy": "verify-one",
+      "unprobed": [
+        "single:0"
+      ]
+    },
+    {
+      "actions": [
+        "keep",
+        "single:7",
+        "single:0"
+      ],
+      "arm": "StableDisagree",
+      "comparison_candidate": "single:0",
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:7": 1
+      },
+      "epoch": 12,
+      "means": {
+        "keep": -1.22,
+        "single:0": -1.02,
+        "single:7": 0.76
+      },
+      "menu": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.22
+        ],
+        "single:0": [
+          -1.02
+        ],
+        "single:7": [
+          0.76
+        ]
+      },
+      "selected": "single:7",
+      "strategy": "verify-one",
+      "unprobed": []
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "DriftFull",
+      "comparison_candidate": null,
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:7": 1
+      },
+      "epoch": 0,
+      "means": {
+        "keep": -1.24,
+        "single:0": -1.02,
+        "single:7": 0.76
+      },
+      "menu": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.24
+        ],
+        "single:0": [
+          -1.02
+        ],
+        "single:7": [
+          0.76
+        ]
+      },
+      "selected": "single:7",
+      "strategy": "full-one",
+      "unprobed": []
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "DriftFull",
+      "comparison_candidate": null,
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:7": 1
+      },
+      "epoch": 6,
+      "means": {
+        "keep": -1.18,
+        "single:0": 0.88,
+        "single:7": 0.76
+      },
+      "menu": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.18
+        ],
+        "single:0": [
+          0.88
+        ],
+        "single:7": [
+          0.76
+        ]
+      },
+      "selected": "single:0",
+      "strategy": "full-one",
+      "unprobed": []
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "DriftFull",
+      "comparison_candidate": null,
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:7": 1
+      },
+      "epoch": 12,
+      "means": {
+        "keep": -1.22,
+        "single:0": 0.88,
+        "single:7": 0.76
+      },
+      "menu": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.22
+        ],
+        "single:0": [
+          0.88
+        ],
+        "single:7": [
+          0.76
+        ]
+      },
+      "selected": "single:0",
+      "strategy": "full-one",
+      "unprobed": []
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "DriftDisagree",
+      "comparison_candidate": null,
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:7": 1
+      },
+      "epoch": 0,
+      "means": {
+        "keep": -1.24,
+        "single:0": -1.02,
+        "single:7": 0.76
+      },
+      "menu": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.24
+        ],
+        "single:0": [
+          -1.02
+        ],
+        "single:7": [
+          0.76
+        ]
+      },
+      "selected": "single:7",
+      "strategy": "verify-one",
+      "unprobed": []
+    },
+    {
+      "actions": [
+        "keep",
+        "single:7"
+      ],
+      "arm": "DriftDisagree",
+      "comparison_candidate": null,
+      "costs": {
+        "keep": 0,
+        "single:7": 1
+      },
+      "epoch": 6,
+      "means": {
+        "keep": -1.18,
+        "single:7": 0.76
+      },
+      "menu": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.18
+        ],
+        "single:7": [
+          0.76
+        ]
+      },
+      "selected": "single:7",
+      "strategy": "verify-one",
+      "unprobed": [
+        "single:0"
+      ]
+    },
+    {
+      "actions": [
+        "keep",
+        "single:7",
+        "single:0"
+      ],
+      "arm": "DriftDisagree",
+      "comparison_candidate": "single:0",
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:7": 1
+      },
+      "epoch": 12,
+      "means": {
+        "keep": -1.22,
+        "single:0": 0.88,
+        "single:7": 0.76
+      },
+      "menu": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.22
+        ],
+        "single:0": [
+          0.88
+        ],
+        "single:7": [
+          0.76
+        ]
+      },
+      "selected": "single:0",
+      "strategy": "verify-one",
+      "unprobed": []
+    }
+  ],
+  "gate_decisions": [
+    {
+      "arm": "StableFull",
+      "epoch": 0,
+      "strategy": "full-one",
+      "primary": "single:0",
+      "comparison_candidate": null
+    },
+    {
+      "arm": "StableFull",
+      "epoch": 6,
+      "strategy": "full-one",
+      "primary": "single:7",
+      "comparison_candidate": null
+    },
+    {
+      "arm": "StableFull",
+      "epoch": 12,
+      "strategy": "full-one",
+      "primary": "single:7",
+      "comparison_candidate": null
+    },
+    {
+      "arm": "StableDisagree",
+      "epoch": 0,
+      "strategy": "verify-one",
+      "primary": "single:0",
+      "comparison_candidate": null
+    },
+    {
+      "arm": "StableDisagree",
+      "epoch": 6,
+      "strategy": "verify-one",
+      "primary": "single:7",
+      "comparison_candidate": null
+    },
+    {
+      "arm": "StableDisagree",
+      "epoch": 12,
+      "strategy": "verify-one",
+      "primary": "single:7",
+      "comparison_candidate": "single:0"
+    },
+    {
+      "arm": "DriftFull",
+      "epoch": 0,
+      "strategy": "full-one",
+      "primary": "single:0",
+      "comparison_candidate": null
+    },
+    {
+      "arm": "DriftFull",
+      "epoch": 6,
+      "strategy": "full-one",
+      "primary": "single:7",
+      "comparison_candidate": null
+    },
+    {
+      "arm": "DriftFull",
+      "epoch": 12,
+      "strategy": "full-one",
+      "primary": "single:0",
+      "comparison_candidate": null
+    },
+    {
+      "arm": "DriftDisagree",
+      "epoch": 0,
+      "strategy": "verify-one",
+      "primary": "single:0",
+      "comparison_candidate": null
+    },
+    {
+      "arm": "DriftDisagree",
+      "epoch": 6,
+      "strategy": "verify-one",
+      "primary": "single:7",
+      "comparison_candidate": null
+    },
+    {
+      "arm": "DriftDisagree",
+      "epoch": 12,
+      "strategy": "verify-one",
+      "primary": "single:7",
+      "comparison_candidate": "single:0"
+    }
+  ],
+  "memory_lookup_provenance": [
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "StableFull",
+      "epoch": 0,
+      "info": {
+        "comparison": {
+          "info": {
+            "keys": {
+              "keep": [
+                "dq",
+                "TIMEOUT",
+                false,
+                "keep",
+                "run-span",
+                0
+              ],
+              "single:0": [
+                "dq",
+                "TIMEOUT",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                6
+              ],
+              "single:7": [
+                "dq",
+                "TIMEOUT",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                1
+              ]
+            },
+            "missing": [],
+            "models": {
+              "single:0": {
+                "cut": {
+                  "binary64_hex": "0x1.4000000000000p+2"
+                },
+                "left": {
+                  "binary64_hex": "-0x1.69d0369d0369dp-3"
+                },
+                "n": 8,
+                "right": {
+                  "binary64_hex": "0x1.b851eb851eb85p-1"
+                },
+                "squared_error": {
+                  "binary64_hex": "0x1.7ab250022f3d9p+2"
+                }
+              }
+            },
+            "prediction_sources": {
+              "keep": "empirical",
+              "single:0": "stump",
+              "single:7": "empirical"
+            },
+            "provisional_actions": [],
+            "representation": "terminal-backoff",
+            "scores": {
+              "keep": {
+                "binary64_hex": "-0x1.eb851eb851eb8p-3"
+              },
+              "single:0": {
+                "binary64_hex": "0x1.b851eb851eb85p-1"
+              },
+              "single:7": {
+                "binary64_hex": "-0x1.999999999999ap-3"
+              }
+            },
+            "source_keys": {
+              "keep": [
+                [
+                  "dq",
+                  "TIMEOUT",
+                  false,
+                  "keep",
+                  "run-span",
+                  0
+                ]
+              ],
+              "single:0": [
+                [
+                  "dq",
+                  "TIMEOUT",
+                  false,
+                  "single",
+                  4,
+                  false,
+                  "stay",
+                  "run-span",
+                  1
+                ],
+                [
+                  "dq",
+                  "TIMEOUT",
+                  false,
+                  "single",
+                  4,
+                  false,
+                  "stay",
+                  "run-span",
+                  2
+                ],
+                [
+                  "dq",
+                  "TIMEOUT",
+                  false,
+                  "single",
+                  4,
+                  false,
+                  "stay",
+                  "run-span",
+                  8
+                ]
+              ],
+              "single:7": [
+                [
+                  "dq",
+                  "TIMEOUT",
+                  false,
+                  "single",
+                  4,
+                  false,
+                  "stay",
+                  "run-span",
+                  1
+                ]
+              ]
+            },
+            "supported": true
+          },
+          "selected": "single:0"
+        },
+        "coverage": {
+          "keep": {
+            "exact_terminal_point_samples": 4,
+            "matched_other_terminal_point_samples": 0,
+            "same_terminal_family_samples": 4
+          },
+          "single:0": {
+            "exact_terminal_point_samples": 0,
+            "matched_other_terminal_point_samples": 0,
+            "same_terminal_family_samples": 8
+          },
+          "single:7": {
+            "exact_terminal_point_samples": 4,
+            "matched_other_terminal_point_samples": 0,
+            "same_terminal_family_samples": 8
+          }
+        },
+        "keys": {
+          "keep": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "keep",
+            "run-span",
+            0
+          ],
+          "single:0": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            6
+          ],
+          "single:7": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            1
+          ]
+        },
+        "missing": [],
+        "models": {
+          "single:0": {
+            "cut": {
+              "binary64_hex": "0x1.4000000000000p+2"
+            },
+            "left": {
+              "binary64_hex": "-0x1.69d0369d0369dp-3"
+            },
+            "n": 8,
+            "right": {
+              "binary64_hex": "0x1.b851eb851eb85p-1"
+            },
+            "squared_error": {
+              "binary64_hex": "0x1.7ab250022f3d9p+2"
+            }
+          }
+        },
+        "prediction_sources": {
+          "keep": "empirical",
+          "single:0": "stump",
+          "single:7": "empirical"
+        },
+        "provisional_actions": [],
+        "representation": "dual-point-first",
+        "scores": {
+          "keep": {
+            "binary64_hex": "-0x1.eb851eb851eb8p-3"
+          },
+          "single:0": {
+            "binary64_hex": "0x1.b851eb851eb85p-1"
+          },
+          "single:7": {
+            "binary64_hex": "-0x1.999999999999ap-3"
+          }
+        },
+        "source_keys": {
+          "keep": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "keep",
+              "run-span",
+              0
+            ]
+          ],
+          "single:0": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              1
+            ],
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              2
+            ],
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              8
+            ]
+          ],
+          "single:7": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              1
+            ]
+          ]
+        },
+        "supported": true
+      },
+      "mode": "dq",
+      "raw_selected": "single:0",
+      "selected": "single:0",
+      "status": "supported-unique"
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "StableFull",
+      "epoch": 6,
+      "info": {
+        "comparison": {
+          "info": {
+            "keys": {
+              "keep": [
+                "dq",
+                "COLLISION",
+                false,
+                "keep",
+                "run-span",
+                0
+              ],
+              "single:0": [
+                "dq",
+                "COLLISION",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                6
+              ],
+              "single:7": [
+                "dq",
+                "COLLISION",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                1
+              ]
+            },
+            "missing": [],
+            "models": {},
+            "prediction_sources": {
+              "keep": "terminal-backoff-empirical",
+              "single:0": "terminal-backoff-empirical",
+              "single:7": "terminal-backoff-empirical"
+            },
+            "provisional_actions": [
+              "keep",
+              "single:0",
+              "single:7"
+            ],
+            "representation": "terminal-backoff",
+            "scores": {
+              "keep": {
+                "binary64_hex": "-0x1.c28f5c28f5c2ap-2"
+              },
+              "single:0": {
+                "binary64_hex": "-0x1.051eb851eb852p+0"
+              },
+              "single:7": {
+                "binary64_hex": "-0x1.0624dd2f1aa00p-7"
+              }
+            },
+            "source_keys": {
+              "keep": [
+                [
+                  "dq",
+                  "TIMEOUT",
+                  false,
+                  "keep",
+                  "run-span",
+                  0
+                ]
+              ],
+              "single:0": [
+                [
+                  "dq",
+                  "TIMEOUT",
+                  false,
+                  "single",
+                  4,
+                  false,
+                  "stay",
+                  "run-span",
+                  6
+                ]
+              ],
+              "single:7": [
+                [
+                  "dq",
+                  "TIMEOUT",
+                  false,
+                  "single",
+                  4,
+                  false,
+                  "stay",
+                  "run-span",
+                  1
+                ]
+              ]
+            },
+            "supported": true
+          },
+          "selected": "single:7"
+        },
+        "coverage": {
+          "keep": {
+            "exact_terminal_point_samples": 0,
+            "matched_other_terminal_point_samples": 5,
+            "same_terminal_family_samples": 0
+          },
+          "single:0": {
+            "exact_terminal_point_samples": 0,
+            "matched_other_terminal_point_samples": 1,
+            "same_terminal_family_samples": 0
+          },
+          "single:7": {
+            "exact_terminal_point_samples": 0,
+            "matched_other_terminal_point_samples": 5,
+            "same_terminal_family_samples": 0
+          }
+        },
+        "keys": {
+          "keep": [
+            "dq",
+            "COLLISION",
+            false,
+            "keep",
+            "run-span",
+            0
+          ],
+          "single:0": [
+            "dq",
+            "COLLISION",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            6
+          ],
+          "single:7": [
+            "dq",
+            "COLLISION",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            1
+          ]
+        },
+        "missing": [],
+        "models": {},
+        "prediction_sources": {
+          "keep": "terminal-backoff-empirical",
+          "single:0": "terminal-backoff-empirical",
+          "single:7": "terminal-backoff-empirical"
+        },
+        "provisional_actions": [
+          "keep",
+          "single:0",
+          "single:7"
+        ],
+        "representation": "dual-point-first",
+        "scores": {
+          "keep": {
+            "binary64_hex": "-0x1.c28f5c28f5c2ap-2"
+          },
+          "single:0": {
+            "binary64_hex": "-0x1.051eb851eb852p+0"
+          },
+          "single:7": {
+            "binary64_hex": "-0x1.0624dd2f1aa00p-7"
+          }
+        },
+        "source_keys": {
+          "keep": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "keep",
+              "run-span",
+              0
+            ]
+          ],
+          "single:0": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              6
+            ]
+          ],
+          "single:7": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              1
+            ]
+          ]
+        },
+        "supported": true
+      },
+      "mode": "dq",
+      "raw_selected": "single:7",
+      "selected": "single:7",
+      "status": "supported-unique"
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "StableFull",
+      "epoch": 12,
+      "info": {
+        "comparison": {
+          "info": {
+            "keys": {
+              "keep": [
+                "dq",
+                "COLLISION",
+                false,
+                "keep",
+                "run-span",
+                0
+              ],
+              "single:0": [
+                "dq",
+                "COLLISION",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                6
+              ],
+              "single:7": [
+                "dq",
+                "COLLISION",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                1
+              ]
+            },
+            "missing": [],
+            "models": {},
+            "prediction_sources": {
+              "keep": "empirical",
+              "single:0": "empirical",
+              "single:7": "empirical"
+            },
+            "provisional_actions": [],
+            "representation": "terminal-backoff",
+            "scores": {
+              "keep": {
+                "binary64_hex": "-0x1.2e147ae147ae1p+0"
+              },
+              "single:0": {
+                "binary64_hex": "-0x1.051eb851eb852p+0"
+              },
+              "single:7": {
+                "binary64_hex": "0x1.851eb851eb852p-1"
+              }
+            },
+            "source_keys": {
+              "keep": [
+                [
+                  "dq",
+                  "COLLISION",
+                  false,
+                  "keep",
+                  "run-span",
+                  0
+                ]
+              ],
+              "single:0": [
+                [
+                  "dq",
+                  "COLLISION",
+                  false,
+                  "single",
+                  4,
+                  false,
+                  "stay",
+                  "run-span",
+                  6
+                ]
+              ],
+              "single:7": [
+                [
+                  "dq",
+                  "COLLISION",
+                  false,
+                  "single",
+                  4,
+                  false,
+                  "stay",
+                  "run-span",
+                  1
+                ]
+              ]
+            },
+            "supported": true
+          },
+          "selected": "single:7"
+        },
+        "coverage": {
+          "keep": {
+            "exact_terminal_point_samples": 1,
+            "matched_other_terminal_point_samples": 5,
+            "same_terminal_family_samples": 1
+          },
+          "single:0": {
+            "exact_terminal_point_samples": 1,
+            "matched_other_terminal_point_samples": 1,
+            "same_terminal_family_samples": 2
+          },
+          "single:7": {
+            "exact_terminal_point_samples": 1,
+            "matched_other_terminal_point_samples": 5,
+            "same_terminal_family_samples": 2
+          }
+        },
+        "keys": {
+          "keep": [
+            "dq",
+            "COLLISION",
+            false,
+            "keep",
+            "run-span",
+            0
+          ],
+          "single:0": [
+            "dq",
+            "COLLISION",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            6
+          ],
+          "single:7": [
+            "dq",
+            "COLLISION",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            1
+          ]
+        },
+        "missing": [],
+        "models": {},
+        "prediction_sources": {
+          "keep": "empirical",
+          "single:0": "empirical",
+          "single:7": "empirical"
+        },
+        "provisional_actions": [],
+        "representation": "dual-point-first",
+        "scores": {
+          "keep": {
+            "binary64_hex": "-0x1.2e147ae147ae1p+0"
+          },
+          "single:0": {
+            "binary64_hex": "-0x1.051eb851eb852p+0"
+          },
+          "single:7": {
+            "binary64_hex": "0x1.851eb851eb852p-1"
+          }
+        },
+        "source_keys": {
+          "keep": [
+            [
+              "dq",
+              "COLLISION",
+              false,
+              "keep",
+              "run-span",
+              0
+            ]
+          ],
+          "single:0": [
+            [
+              "dq",
+              "COLLISION",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              6
+            ]
+          ],
+          "single:7": [
+            [
+              "dq",
+              "COLLISION",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              1
+            ]
+          ]
+        },
+        "supported": true
+      },
+      "mode": "dq",
+      "raw_selected": "single:7",
+      "selected": "single:7",
+      "status": "supported-unique"
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "StableDisagree",
+      "epoch": 0,
+      "info": {
+        "comparison": {
+          "info": {
+            "keys": {
+              "keep": [
+                "dq",
+                "TIMEOUT",
+                false,
+                "keep",
+                "run-span",
+                0
+              ],
+              "single:0": [
+                "dq",
+                "TIMEOUT",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                6
+              ],
+              "single:7": [
+                "dq",
+                "TIMEOUT",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                1
+              ]
+            },
+            "missing": [],
+            "models": {
+              "single:0": {
+                "cut": {
+                  "binary64_hex": "0x1.4000000000000p+2"
+                },
+                "left": {
+                  "binary64_hex": "-0x1.69d0369d0369dp-3"
+                },
+                "n": 8,
+                "right": {
+                  "binary64_hex": "0x1.b851eb851eb85p-1"
+                },
+                "squared_error": {
+                  "binary64_hex": "0x1.7ab250022f3d9p+2"
+                }
+              }
+            },
+            "prediction_sources": {
+              "keep": "empirical",
+              "single:0": "stump",
+              "single:7": "empirical"
+            },
+            "provisional_actions": [],
+            "representation": "terminal-backoff",
+            "scores": {
+              "keep": {
+                "binary64_hex": "-0x1.eb851eb851eb8p-3"
+              },
+              "single:0": {
+                "binary64_hex": "0x1.b851eb851eb85p-1"
+              },
+              "single:7": {
+                "binary64_hex": "-0x1.999999999999ap-3"
+              }
+            },
+            "source_keys": {
+              "keep": [
+                [
+                  "dq",
+                  "TIMEOUT",
+                  false,
+                  "keep",
+                  "run-span",
+                  0
+                ]
+              ],
+              "single:0": [
+                [
+                  "dq",
+                  "TIMEOUT",
+                  false,
+                  "single",
+                  4,
+                  false,
+                  "stay",
+                  "run-span",
+                  1
+                ],
+                [
+                  "dq",
+                  "TIMEOUT",
+                  false,
+                  "single",
+                  4,
+                  false,
+                  "stay",
+                  "run-span",
+                  2
+                ],
+                [
+                  "dq",
+                  "TIMEOUT",
+                  false,
+                  "single",
+                  4,
+                  false,
+                  "stay",
+                  "run-span",
+                  8
+                ]
+              ],
+              "single:7": [
+                [
+                  "dq",
+                  "TIMEOUT",
+                  false,
+                  "single",
+                  4,
+                  false,
+                  "stay",
+                  "run-span",
+                  1
+                ]
+              ]
+            },
+            "supported": true
+          },
+          "selected": "single:0"
+        },
+        "coverage": {
+          "keep": {
+            "exact_terminal_point_samples": 4,
+            "matched_other_terminal_point_samples": 0,
+            "same_terminal_family_samples": 4
+          },
+          "single:0": {
+            "exact_terminal_point_samples": 0,
+            "matched_other_terminal_point_samples": 0,
+            "same_terminal_family_samples": 8
+          },
+          "single:7": {
+            "exact_terminal_point_samples": 4,
+            "matched_other_terminal_point_samples": 0,
+            "same_terminal_family_samples": 8
+          }
+        },
+        "keys": {
+          "keep": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "keep",
+            "run-span",
+            0
+          ],
+          "single:0": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            6
+          ],
+          "single:7": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            1
+          ]
+        },
+        "missing": [],
+        "models": {
+          "single:0": {
+            "cut": {
+              "binary64_hex": "0x1.4000000000000p+2"
+            },
+            "left": {
+              "binary64_hex": "-0x1.69d0369d0369dp-3"
+            },
+            "n": 8,
+            "right": {
+              "binary64_hex": "0x1.b851eb851eb85p-1"
+            },
+            "squared_error": {
+              "binary64_hex": "0x1.7ab250022f3d9p+2"
+            }
+          }
+        },
+        "prediction_sources": {
+          "keep": "empirical",
+          "single:0": "stump",
+          "single:7": "empirical"
+        },
+        "provisional_actions": [],
+        "representation": "dual-point-first",
+        "scores": {
+          "keep": {
+            "binary64_hex": "-0x1.eb851eb851eb8p-3"
+          },
+          "single:0": {
+            "binary64_hex": "0x1.b851eb851eb85p-1"
+          },
+          "single:7": {
+            "binary64_hex": "-0x1.999999999999ap-3"
+          }
+        },
+        "source_keys": {
+          "keep": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "keep",
+              "run-span",
+              0
+            ]
+          ],
+          "single:0": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              1
+            ],
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              2
+            ],
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              8
+            ]
+          ],
+          "single:7": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              1
+            ]
+          ]
+        },
+        "supported": true
+      },
+      "mode": "dq",
+      "raw_selected": "single:0",
+      "selected": "single:0",
+      "status": "supported-unique"
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "StableDisagree",
+      "epoch": 6,
+      "info": {
+        "comparison": {
+          "info": {
+            "keys": {
+              "keep": [
+                "dq",
+                "COLLISION",
+                false,
+                "keep",
+                "run-span",
+                0
+              ],
+              "single:0": [
+                "dq",
+                "COLLISION",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                6
+              ],
+              "single:7": [
+                "dq",
+                "COLLISION",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                1
+              ]
+            },
+            "missing": [],
+            "models": {},
+            "prediction_sources": {
+              "keep": "terminal-backoff-empirical",
+              "single:0": "terminal-backoff-empirical",
+              "single:7": "terminal-backoff-empirical"
+            },
+            "provisional_actions": [
+              "keep",
+              "single:0",
+              "single:7"
+            ],
+            "representation": "terminal-backoff",
+            "scores": {
+              "keep": {
+                "binary64_hex": "-0x1.c28f5c28f5c2ap-2"
+              },
+              "single:0": {
+                "binary64_hex": "-0x1.051eb851eb852p+0"
+              },
+              "single:7": {
+                "binary64_hex": "-0x1.0624dd2f1aa00p-7"
+              }
+            },
+            "source_keys": {
+              "keep": [
+                [
+                  "dq",
+                  "TIMEOUT",
+                  false,
+                  "keep",
+                  "run-span",
+                  0
+                ]
+              ],
+              "single:0": [
+                [
+                  "dq",
+                  "TIMEOUT",
+                  false,
+                  "single",
+                  4,
+                  false,
+                  "stay",
+                  "run-span",
+                  6
+                ]
+              ],
+              "single:7": [
+                [
+                  "dq",
+                  "TIMEOUT",
+                  false,
+                  "single",
+                  4,
+                  false,
+                  "stay",
+                  "run-span",
+                  1
+                ]
+              ]
+            },
+            "supported": true
+          },
+          "selected": "single:7"
+        },
+        "coverage": {
+          "keep": {
+            "exact_terminal_point_samples": 0,
+            "matched_other_terminal_point_samples": 5,
+            "same_terminal_family_samples": 0
+          },
+          "single:0": {
+            "exact_terminal_point_samples": 0,
+            "matched_other_terminal_point_samples": 1,
+            "same_terminal_family_samples": 0
+          },
+          "single:7": {
+            "exact_terminal_point_samples": 0,
+            "matched_other_terminal_point_samples": 5,
+            "same_terminal_family_samples": 0
+          }
+        },
+        "keys": {
+          "keep": [
+            "dq",
+            "COLLISION",
+            false,
+            "keep",
+            "run-span",
+            0
+          ],
+          "single:0": [
+            "dq",
+            "COLLISION",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            6
+          ],
+          "single:7": [
+            "dq",
+            "COLLISION",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            1
+          ]
+        },
+        "missing": [],
+        "models": {},
+        "prediction_sources": {
+          "keep": "terminal-backoff-empirical",
+          "single:0": "terminal-backoff-empirical",
+          "single:7": "terminal-backoff-empirical"
+        },
+        "provisional_actions": [
+          "keep",
+          "single:0",
+          "single:7"
+        ],
+        "representation": "dual-point-first",
+        "scores": {
+          "keep": {
+            "binary64_hex": "-0x1.c28f5c28f5c2ap-2"
+          },
+          "single:0": {
+            "binary64_hex": "-0x1.051eb851eb852p+0"
+          },
+          "single:7": {
+            "binary64_hex": "-0x1.0624dd2f1aa00p-7"
+          }
+        },
+        "source_keys": {
+          "keep": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "keep",
+              "run-span",
+              0
+            ]
+          ],
+          "single:0": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              6
+            ]
+          ],
+          "single:7": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              1
+            ]
+          ]
+        },
+        "supported": true
+      },
+      "mode": "dq",
+      "raw_selected": "single:7",
+      "selected": "single:7",
+      "status": "supported-unique"
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "StableDisagree",
+      "epoch": 12,
+      "info": {
+        "comparison": {
+          "info": {
+            "keys": {
+              "keep": [
+                "dq",
+                "COLLISION",
+                false,
+                "keep",
+                "run-span",
+                0
+              ],
+              "single:0": [
+                "dq",
+                "COLLISION",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                6
+              ],
+              "single:7": [
+                "dq",
+                "COLLISION",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                1
+              ]
+            },
+            "missing": [],
+            "models": {
+              "single:0": {
+                "cut": null,
+                "left": {
+                  "binary64_hex": "0x1.851eb851eb852p-1"
+                },
+                "n": 1,
+                "right": {
+                  "binary64_hex": "0x1.851eb851eb852p-1"
+                },
+                "squared_error": {
+                  "binary64_hex": "0x0.0p+0"
+                }
+              }
+            },
+            "prediction_sources": {
+              "keep": "empirical",
+              "single:0": "stump",
+              "single:7": "empirical"
+            },
+            "provisional_actions": [],
+            "representation": "terminal-backoff",
+            "scores": {
+              "keep": {
+                "binary64_hex": "-0x1.2e147ae147ae1p+0"
+              },
+              "single:0": {
+                "binary64_hex": "0x1.851eb851eb852p-1"
+              },
+              "single:7": {
+                "binary64_hex": "0x1.851eb851eb852p-1"
+              }
+            },
+            "source_keys": {
+              "keep": [
+                [
+                  "dq",
+                  "COLLISION",
+                  false,
+                  "keep",
+                  "run-span",
+                  0
+                ]
+              ],
+              "single:0": [
+                [
+                  "dq",
+                  "COLLISION",
+                  false,
+                  "single",
+                  4,
+                  false,
+                  "stay",
+                  "run-span",
+                  1
+                ]
+              ],
+              "single:7": [
+                [
+                  "dq",
+                  "COLLISION",
+                  false,
+                  "single",
+                  4,
+                  false,
+                  "stay",
+                  "run-span",
+                  1
+                ]
+              ]
+            },
+            "supported": true
+          },
+          "selected": "single:0"
+        },
+        "coverage": {
+          "keep": {
+            "exact_terminal_point_samples": 1,
+            "matched_other_terminal_point_samples": 5,
+            "same_terminal_family_samples": 1
+          },
+          "single:0": {
+            "exact_terminal_point_samples": 0,
+            "matched_other_terminal_point_samples": 1,
+            "same_terminal_family_samples": 1
+          },
+          "single:7": {
+            "exact_terminal_point_samples": 1,
+            "matched_other_terminal_point_samples": 5,
+            "same_terminal_family_samples": 1
+          }
+        },
+        "keys": {
+          "keep": [
+            "dq",
+            "COLLISION",
+            false,
+            "keep",
+            "run-span",
+            0
+          ],
+          "single:0": [
+            "dq",
+            "COLLISION",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            6
+          ],
+          "single:7": [
+            "dq",
+            "COLLISION",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            1
+          ]
+        },
+        "missing": [],
+        "models": {},
+        "prediction_sources": {
+          "keep": "empirical",
+          "single:0": "terminal-backoff-empirical",
+          "single:7": "empirical"
+        },
+        "provisional_actions": [
+          "single:0"
+        ],
+        "representation": "dual-point-first",
+        "scores": {
+          "keep": {
+            "binary64_hex": "-0x1.2e147ae147ae1p+0"
+          },
+          "single:0": {
+            "binary64_hex": "-0x1.051eb851eb852p+0"
+          },
+          "single:7": {
+            "binary64_hex": "0x1.851eb851eb852p-1"
+          }
+        },
+        "source_keys": {
+          "keep": [
+            [
+              "dq",
+              "COLLISION",
+              false,
+              "keep",
+              "run-span",
+              0
+            ]
+          ],
+          "single:0": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              6
+            ]
+          ],
+          "single:7": [
+            [
+              "dq",
+              "COLLISION",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              1
+            ]
+          ]
+        },
+        "supported": true
+      },
+      "mode": "dq",
+      "raw_selected": "single:7",
+      "selected": "single:7",
+      "status": "supported-unique"
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "DriftFull",
+      "epoch": 0,
+      "info": {
+        "comparison": {
+          "info": {
+            "keys": {
+              "keep": [
+                "dq",
+                "TIMEOUT",
+                false,
+                "keep",
+                "run-span",
+                0
+              ],
+              "single:0": [
+                "dq",
+                "TIMEOUT",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                6
+              ],
+              "single:7": [
+                "dq",
+                "TIMEOUT",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                1
+              ]
+            },
+            "missing": [],
+            "models": {
+              "single:0": {
+                "cut": {
+                  "binary64_hex": "0x1.4000000000000p+2"
+                },
+                "left": {
+                  "binary64_hex": "-0x1.69d0369d0369dp-3"
+                },
+                "n": 8,
+                "right": {
+                  "binary64_hex": "0x1.b851eb851eb85p-1"
+                },
+                "squared_error": {
+                  "binary64_hex": "0x1.7ab250022f3d9p+2"
+                }
+              }
+            },
+            "prediction_sources": {
+              "keep": "empirical",
+              "single:0": "stump",
+              "single:7": "empirical"
+            },
+            "provisional_actions": [],
+            "representation": "terminal-backoff",
+            "scores": {
+              "keep": {
+                "binary64_hex": "-0x1.eb851eb851eb8p-3"
+              },
+              "single:0": {
+                "binary64_hex": "0x1.b851eb851eb85p-1"
+              },
+              "single:7": {
+                "binary64_hex": "-0x1.999999999999ap-3"
+              }
+            },
+            "source_keys": {
+              "keep": [
+                [
+                  "dq",
+                  "TIMEOUT",
+                  false,
+                  "keep",
+                  "run-span",
+                  0
+                ]
+              ],
+              "single:0": [
+                [
+                  "dq",
+                  "TIMEOUT",
+                  false,
+                  "single",
+                  4,
+                  false,
+                  "stay",
+                  "run-span",
+                  1
+                ],
+                [
+                  "dq",
+                  "TIMEOUT",
+                  false,
+                  "single",
+                  4,
+                  false,
+                  "stay",
+                  "run-span",
+                  2
+                ],
+                [
+                  "dq",
+                  "TIMEOUT",
+                  false,
+                  "single",
+                  4,
+                  false,
+                  "stay",
+                  "run-span",
+                  8
+                ]
+              ],
+              "single:7": [
+                [
+                  "dq",
+                  "TIMEOUT",
+                  false,
+                  "single",
+                  4,
+                  false,
+                  "stay",
+                  "run-span",
+                  1
+                ]
+              ]
+            },
+            "supported": true
+          },
+          "selected": "single:0"
+        },
+        "coverage": {
+          "keep": {
+            "exact_terminal_point_samples": 4,
+            "matched_other_terminal_point_samples": 0,
+            "same_terminal_family_samples": 4
+          },
+          "single:0": {
+            "exact_terminal_point_samples": 0,
+            "matched_other_terminal_point_samples": 0,
+            "same_terminal_family_samples": 8
+          },
+          "single:7": {
+            "exact_terminal_point_samples": 4,
+            "matched_other_terminal_point_samples": 0,
+            "same_terminal_family_samples": 8
+          }
+        },
+        "keys": {
+          "keep": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "keep",
+            "run-span",
+            0
+          ],
+          "single:0": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            6
+          ],
+          "single:7": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            1
+          ]
+        },
+        "missing": [],
+        "models": {
+          "single:0": {
+            "cut": {
+              "binary64_hex": "0x1.4000000000000p+2"
+            },
+            "left": {
+              "binary64_hex": "-0x1.69d0369d0369dp-3"
+            },
+            "n": 8,
+            "right": {
+              "binary64_hex": "0x1.b851eb851eb85p-1"
+            },
+            "squared_error": {
+              "binary64_hex": "0x1.7ab250022f3d9p+2"
+            }
+          }
+        },
+        "prediction_sources": {
+          "keep": "empirical",
+          "single:0": "stump",
+          "single:7": "empirical"
+        },
+        "provisional_actions": [],
+        "representation": "dual-point-first",
+        "scores": {
+          "keep": {
+            "binary64_hex": "-0x1.eb851eb851eb8p-3"
+          },
+          "single:0": {
+            "binary64_hex": "0x1.b851eb851eb85p-1"
+          },
+          "single:7": {
+            "binary64_hex": "-0x1.999999999999ap-3"
+          }
+        },
+        "source_keys": {
+          "keep": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "keep",
+              "run-span",
+              0
+            ]
+          ],
+          "single:0": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              1
+            ],
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              2
+            ],
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              8
+            ]
+          ],
+          "single:7": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              1
+            ]
+          ]
+        },
+        "supported": true
+      },
+      "mode": "dq",
+      "raw_selected": "single:0",
+      "selected": "single:0",
+      "status": "supported-unique"
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "DriftFull",
+      "epoch": 6,
+      "info": {
+        "comparison": {
+          "info": {
+            "keys": {
+              "keep": [
+                "dq",
+                "COLLISION",
+                false,
+                "keep",
+                "run-span",
+                0
+              ],
+              "single:0": [
+                "dq",
+                "COLLISION",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                6
+              ],
+              "single:7": [
+                "dq",
+                "COLLISION",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                1
+              ]
+            },
+            "missing": [],
+            "models": {},
+            "prediction_sources": {
+              "keep": "terminal-backoff-empirical",
+              "single:0": "terminal-backoff-empirical",
+              "single:7": "terminal-backoff-empirical"
+            },
+            "provisional_actions": [
+              "keep",
+              "single:0",
+              "single:7"
+            ],
+            "representation": "terminal-backoff",
+            "scores": {
+              "keep": {
+                "binary64_hex": "-0x1.c28f5c28f5c2ap-2"
+              },
+              "single:0": {
+                "binary64_hex": "-0x1.051eb851eb852p+0"
+              },
+              "single:7": {
+                "binary64_hex": "-0x1.0624dd2f1aa00p-7"
+              }
+            },
+            "source_keys": {
+              "keep": [
+                [
+                  "dq",
+                  "TIMEOUT",
+                  false,
+                  "keep",
+                  "run-span",
+                  0
+                ]
+              ],
+              "single:0": [
+                [
+                  "dq",
+                  "TIMEOUT",
+                  false,
+                  "single",
+                  4,
+                  false,
+                  "stay",
+                  "run-span",
+                  6
+                ]
+              ],
+              "single:7": [
+                [
+                  "dq",
+                  "TIMEOUT",
+                  false,
+                  "single",
+                  4,
+                  false,
+                  "stay",
+                  "run-span",
+                  1
+                ]
+              ]
+            },
+            "supported": true
+          },
+          "selected": "single:7"
+        },
+        "coverage": {
+          "keep": {
+            "exact_terminal_point_samples": 0,
+            "matched_other_terminal_point_samples": 5,
+            "same_terminal_family_samples": 0
+          },
+          "single:0": {
+            "exact_terminal_point_samples": 0,
+            "matched_other_terminal_point_samples": 1,
+            "same_terminal_family_samples": 0
+          },
+          "single:7": {
+            "exact_terminal_point_samples": 0,
+            "matched_other_terminal_point_samples": 5,
+            "same_terminal_family_samples": 0
+          }
+        },
+        "keys": {
+          "keep": [
+            "dq",
+            "COLLISION",
+            false,
+            "keep",
+            "run-span",
+            0
+          ],
+          "single:0": [
+            "dq",
+            "COLLISION",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            6
+          ],
+          "single:7": [
+            "dq",
+            "COLLISION",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            1
+          ]
+        },
+        "missing": [],
+        "models": {},
+        "prediction_sources": {
+          "keep": "terminal-backoff-empirical",
+          "single:0": "terminal-backoff-empirical",
+          "single:7": "terminal-backoff-empirical"
+        },
+        "provisional_actions": [
+          "keep",
+          "single:0",
+          "single:7"
+        ],
+        "representation": "dual-point-first",
+        "scores": {
+          "keep": {
+            "binary64_hex": "-0x1.c28f5c28f5c2ap-2"
+          },
+          "single:0": {
+            "binary64_hex": "-0x1.051eb851eb852p+0"
+          },
+          "single:7": {
+            "binary64_hex": "-0x1.0624dd2f1aa00p-7"
+          }
+        },
+        "source_keys": {
+          "keep": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "keep",
+              "run-span",
+              0
+            ]
+          ],
+          "single:0": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              6
+            ]
+          ],
+          "single:7": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              1
+            ]
+          ]
+        },
+        "supported": true
+      },
+      "mode": "dq",
+      "raw_selected": "single:7",
+      "selected": "single:7",
+      "status": "supported-unique"
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "DriftFull",
+      "epoch": 12,
+      "info": {
+        "comparison": {
+          "info": {
+            "keys": {
+              "keep": [
+                "dq",
+                "COLLISION",
+                false,
+                "keep",
+                "run-span",
+                0
+              ],
+              "single:0": [
+                "dq",
+                "COLLISION",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                6
+              ],
+              "single:7": [
+                "dq",
+                "COLLISION",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                1
+              ]
+            },
+            "missing": [],
+            "models": {},
+            "prediction_sources": {
+              "keep": "empirical",
+              "single:0": "empirical",
+              "single:7": "empirical"
+            },
+            "provisional_actions": [],
+            "representation": "terminal-backoff",
+            "scores": {
+              "keep": {
+                "binary64_hex": "-0x1.2e147ae147ae1p+0"
+              },
+              "single:0": {
+                "binary64_hex": "0x1.c28f5c28f5c29p-1"
+              },
+              "single:7": {
+                "binary64_hex": "0x1.851eb851eb852p-1"
+              }
+            },
+            "source_keys": {
+              "keep": [
+                [
+                  "dq",
+                  "COLLISION",
+                  false,
+                  "keep",
+                  "run-span",
+                  0
+                ]
+              ],
+              "single:0": [
+                [
+                  "dq",
+                  "COLLISION",
+                  false,
+                  "single",
+                  4,
+                  false,
+                  "stay",
+                  "run-span",
+                  6
+                ]
+              ],
+              "single:7": [
+                [
+                  "dq",
+                  "COLLISION",
+                  false,
+                  "single",
+                  4,
+                  false,
+                  "stay",
+                  "run-span",
+                  1
+                ]
+              ]
+            },
+            "supported": true
+          },
+          "selected": "single:0"
+        },
+        "coverage": {
+          "keep": {
+            "exact_terminal_point_samples": 1,
+            "matched_other_terminal_point_samples": 5,
+            "same_terminal_family_samples": 1
+          },
+          "single:0": {
+            "exact_terminal_point_samples": 1,
+            "matched_other_terminal_point_samples": 1,
+            "same_terminal_family_samples": 2
+          },
+          "single:7": {
+            "exact_terminal_point_samples": 1,
+            "matched_other_terminal_point_samples": 5,
+            "same_terminal_family_samples": 2
+          }
+        },
+        "keys": {
+          "keep": [
+            "dq",
+            "COLLISION",
+            false,
+            "keep",
+            "run-span",
+            0
+          ],
+          "single:0": [
+            "dq",
+            "COLLISION",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            6
+          ],
+          "single:7": [
+            "dq",
+            "COLLISION",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            1
+          ]
+        },
+        "missing": [],
+        "models": {},
+        "prediction_sources": {
+          "keep": "empirical",
+          "single:0": "empirical",
+          "single:7": "empirical"
+        },
+        "provisional_actions": [],
+        "representation": "dual-point-first",
+        "scores": {
+          "keep": {
+            "binary64_hex": "-0x1.2e147ae147ae1p+0"
+          },
+          "single:0": {
+            "binary64_hex": "0x1.c28f5c28f5c29p-1"
+          },
+          "single:7": {
+            "binary64_hex": "0x1.851eb851eb852p-1"
+          }
+        },
+        "source_keys": {
+          "keep": [
+            [
+              "dq",
+              "COLLISION",
+              false,
+              "keep",
+              "run-span",
+              0
+            ]
+          ],
+          "single:0": [
+            [
+              "dq",
+              "COLLISION",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              6
+            ]
+          ],
+          "single:7": [
+            [
+              "dq",
+              "COLLISION",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              1
+            ]
+          ]
+        },
+        "supported": true
+      },
+      "mode": "dq",
+      "raw_selected": "single:0",
+      "selected": "single:0",
+      "status": "supported-unique"
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "DriftDisagree",
+      "epoch": 0,
+      "info": {
+        "comparison": {
+          "info": {
+            "keys": {
+              "keep": [
+                "dq",
+                "TIMEOUT",
+                false,
+                "keep",
+                "run-span",
+                0
+              ],
+              "single:0": [
+                "dq",
+                "TIMEOUT",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                6
+              ],
+              "single:7": [
+                "dq",
+                "TIMEOUT",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                1
+              ]
+            },
+            "missing": [],
+            "models": {
+              "single:0": {
+                "cut": {
+                  "binary64_hex": "0x1.4000000000000p+2"
+                },
+                "left": {
+                  "binary64_hex": "-0x1.69d0369d0369dp-3"
+                },
+                "n": 8,
+                "right": {
+                  "binary64_hex": "0x1.b851eb851eb85p-1"
+                },
+                "squared_error": {
+                  "binary64_hex": "0x1.7ab250022f3d9p+2"
+                }
+              }
+            },
+            "prediction_sources": {
+              "keep": "empirical",
+              "single:0": "stump",
+              "single:7": "empirical"
+            },
+            "provisional_actions": [],
+            "representation": "terminal-backoff",
+            "scores": {
+              "keep": {
+                "binary64_hex": "-0x1.eb851eb851eb8p-3"
+              },
+              "single:0": {
+                "binary64_hex": "0x1.b851eb851eb85p-1"
+              },
+              "single:7": {
+                "binary64_hex": "-0x1.999999999999ap-3"
+              }
+            },
+            "source_keys": {
+              "keep": [
+                [
+                  "dq",
+                  "TIMEOUT",
+                  false,
+                  "keep",
+                  "run-span",
+                  0
+                ]
+              ],
+              "single:0": [
+                [
+                  "dq",
+                  "TIMEOUT",
+                  false,
+                  "single",
+                  4,
+                  false,
+                  "stay",
+                  "run-span",
+                  1
+                ],
+                [
+                  "dq",
+                  "TIMEOUT",
+                  false,
+                  "single",
+                  4,
+                  false,
+                  "stay",
+                  "run-span",
+                  2
+                ],
+                [
+                  "dq",
+                  "TIMEOUT",
+                  false,
+                  "single",
+                  4,
+                  false,
+                  "stay",
+                  "run-span",
+                  8
+                ]
+              ],
+              "single:7": [
+                [
+                  "dq",
+                  "TIMEOUT",
+                  false,
+                  "single",
+                  4,
+                  false,
+                  "stay",
+                  "run-span",
+                  1
+                ]
+              ]
+            },
+            "supported": true
+          },
+          "selected": "single:0"
+        },
+        "coverage": {
+          "keep": {
+            "exact_terminal_point_samples": 4,
+            "matched_other_terminal_point_samples": 0,
+            "same_terminal_family_samples": 4
+          },
+          "single:0": {
+            "exact_terminal_point_samples": 0,
+            "matched_other_terminal_point_samples": 0,
+            "same_terminal_family_samples": 8
+          },
+          "single:7": {
+            "exact_terminal_point_samples": 4,
+            "matched_other_terminal_point_samples": 0,
+            "same_terminal_family_samples": 8
+          }
+        },
+        "keys": {
+          "keep": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "keep",
+            "run-span",
+            0
+          ],
+          "single:0": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            6
+          ],
+          "single:7": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            1
+          ]
+        },
+        "missing": [],
+        "models": {
+          "single:0": {
+            "cut": {
+              "binary64_hex": "0x1.4000000000000p+2"
+            },
+            "left": {
+              "binary64_hex": "-0x1.69d0369d0369dp-3"
+            },
+            "n": 8,
+            "right": {
+              "binary64_hex": "0x1.b851eb851eb85p-1"
+            },
+            "squared_error": {
+              "binary64_hex": "0x1.7ab250022f3d9p+2"
+            }
+          }
+        },
+        "prediction_sources": {
+          "keep": "empirical",
+          "single:0": "stump",
+          "single:7": "empirical"
+        },
+        "provisional_actions": [],
+        "representation": "dual-point-first",
+        "scores": {
+          "keep": {
+            "binary64_hex": "-0x1.eb851eb851eb8p-3"
+          },
+          "single:0": {
+            "binary64_hex": "0x1.b851eb851eb85p-1"
+          },
+          "single:7": {
+            "binary64_hex": "-0x1.999999999999ap-3"
+          }
+        },
+        "source_keys": {
+          "keep": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "keep",
+              "run-span",
+              0
+            ]
+          ],
+          "single:0": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              1
+            ],
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              2
+            ],
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              8
+            ]
+          ],
+          "single:7": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              1
+            ]
+          ]
+        },
+        "supported": true
+      },
+      "mode": "dq",
+      "raw_selected": "single:0",
+      "selected": "single:0",
+      "status": "supported-unique"
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "DriftDisagree",
+      "epoch": 6,
+      "info": {
+        "comparison": {
+          "info": {
+            "keys": {
+              "keep": [
+                "dq",
+                "COLLISION",
+                false,
+                "keep",
+                "run-span",
+                0
+              ],
+              "single:0": [
+                "dq",
+                "COLLISION",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                6
+              ],
+              "single:7": [
+                "dq",
+                "COLLISION",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                1
+              ]
+            },
+            "missing": [],
+            "models": {},
+            "prediction_sources": {
+              "keep": "terminal-backoff-empirical",
+              "single:0": "terminal-backoff-empirical",
+              "single:7": "terminal-backoff-empirical"
+            },
+            "provisional_actions": [
+              "keep",
+              "single:0",
+              "single:7"
+            ],
+            "representation": "terminal-backoff",
+            "scores": {
+              "keep": {
+                "binary64_hex": "-0x1.c28f5c28f5c2ap-2"
+              },
+              "single:0": {
+                "binary64_hex": "-0x1.051eb851eb852p+0"
+              },
+              "single:7": {
+                "binary64_hex": "-0x1.0624dd2f1aa00p-7"
+              }
+            },
+            "source_keys": {
+              "keep": [
+                [
+                  "dq",
+                  "TIMEOUT",
+                  false,
+                  "keep",
+                  "run-span",
+                  0
+                ]
+              ],
+              "single:0": [
+                [
+                  "dq",
+                  "TIMEOUT",
+                  false,
+                  "single",
+                  4,
+                  false,
+                  "stay",
+                  "run-span",
+                  6
+                ]
+              ],
+              "single:7": [
+                [
+                  "dq",
+                  "TIMEOUT",
+                  false,
+                  "single",
+                  4,
+                  false,
+                  "stay",
+                  "run-span",
+                  1
+                ]
+              ]
+            },
+            "supported": true
+          },
+          "selected": "single:7"
+        },
+        "coverage": {
+          "keep": {
+            "exact_terminal_point_samples": 0,
+            "matched_other_terminal_point_samples": 5,
+            "same_terminal_family_samples": 0
+          },
+          "single:0": {
+            "exact_terminal_point_samples": 0,
+            "matched_other_terminal_point_samples": 1,
+            "same_terminal_family_samples": 0
+          },
+          "single:7": {
+            "exact_terminal_point_samples": 0,
+            "matched_other_terminal_point_samples": 5,
+            "same_terminal_family_samples": 0
+          }
+        },
+        "keys": {
+          "keep": [
+            "dq",
+            "COLLISION",
+            false,
+            "keep",
+            "run-span",
+            0
+          ],
+          "single:0": [
+            "dq",
+            "COLLISION",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            6
+          ],
+          "single:7": [
+            "dq",
+            "COLLISION",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            1
+          ]
+        },
+        "missing": [],
+        "models": {},
+        "prediction_sources": {
+          "keep": "terminal-backoff-empirical",
+          "single:0": "terminal-backoff-empirical",
+          "single:7": "terminal-backoff-empirical"
+        },
+        "provisional_actions": [
+          "keep",
+          "single:0",
+          "single:7"
+        ],
+        "representation": "dual-point-first",
+        "scores": {
+          "keep": {
+            "binary64_hex": "-0x1.c28f5c28f5c2ap-2"
+          },
+          "single:0": {
+            "binary64_hex": "-0x1.051eb851eb852p+0"
+          },
+          "single:7": {
+            "binary64_hex": "-0x1.0624dd2f1aa00p-7"
+          }
+        },
+        "source_keys": {
+          "keep": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "keep",
+              "run-span",
+              0
+            ]
+          ],
+          "single:0": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              6
+            ]
+          ],
+          "single:7": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              1
+            ]
+          ]
+        },
+        "supported": true
+      },
+      "mode": "dq",
+      "raw_selected": "single:7",
+      "selected": "single:7",
+      "status": "supported-unique"
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "DriftDisagree",
+      "epoch": 12,
+      "info": {
+        "comparison": {
+          "info": {
+            "keys": {
+              "keep": [
+                "dq",
+                "COLLISION",
+                false,
+                "keep",
+                "run-span",
+                0
+              ],
+              "single:0": [
+                "dq",
+                "COLLISION",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                6
+              ],
+              "single:7": [
+                "dq",
+                "COLLISION",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                1
+              ]
+            },
+            "missing": [],
+            "models": {
+              "single:0": {
+                "cut": null,
+                "left": {
+                  "binary64_hex": "0x1.851eb851eb852p-1"
+                },
+                "n": 1,
+                "right": {
+                  "binary64_hex": "0x1.851eb851eb852p-1"
+                },
+                "squared_error": {
+                  "binary64_hex": "0x0.0p+0"
+                }
+              }
+            },
+            "prediction_sources": {
+              "keep": "empirical",
+              "single:0": "stump",
+              "single:7": "empirical"
+            },
+            "provisional_actions": [],
+            "representation": "terminal-backoff",
+            "scores": {
+              "keep": {
+                "binary64_hex": "-0x1.2e147ae147ae1p+0"
+              },
+              "single:0": {
+                "binary64_hex": "0x1.851eb851eb852p-1"
+              },
+              "single:7": {
+                "binary64_hex": "0x1.851eb851eb852p-1"
+              }
+            },
+            "source_keys": {
+              "keep": [
+                [
+                  "dq",
+                  "COLLISION",
+                  false,
+                  "keep",
+                  "run-span",
+                  0
+                ]
+              ],
+              "single:0": [
+                [
+                  "dq",
+                  "COLLISION",
+                  false,
+                  "single",
+                  4,
+                  false,
+                  "stay",
+                  "run-span",
+                  1
+                ]
+              ],
+              "single:7": [
+                [
+                  "dq",
+                  "COLLISION",
+                  false,
+                  "single",
+                  4,
+                  false,
+                  "stay",
+                  "run-span",
+                  1
+                ]
+              ]
+            },
+            "supported": true
+          },
+          "selected": "single:0"
+        },
+        "coverage": {
+          "keep": {
+            "exact_terminal_point_samples": 1,
+            "matched_other_terminal_point_samples": 5,
+            "same_terminal_family_samples": 1
+          },
+          "single:0": {
+            "exact_terminal_point_samples": 0,
+            "matched_other_terminal_point_samples": 1,
+            "same_terminal_family_samples": 1
+          },
+          "single:7": {
+            "exact_terminal_point_samples": 1,
+            "matched_other_terminal_point_samples": 5,
+            "same_terminal_family_samples": 1
+          }
+        },
+        "keys": {
+          "keep": [
+            "dq",
+            "COLLISION",
+            false,
+            "keep",
+            "run-span",
+            0
+          ],
+          "single:0": [
+            "dq",
+            "COLLISION",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            6
+          ],
+          "single:7": [
+            "dq",
+            "COLLISION",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            1
+          ]
+        },
+        "missing": [],
+        "models": {},
+        "prediction_sources": {
+          "keep": "empirical",
+          "single:0": "terminal-backoff-empirical",
+          "single:7": "empirical"
+        },
+        "provisional_actions": [
+          "single:0"
+        ],
+        "representation": "dual-point-first",
+        "scores": {
+          "keep": {
+            "binary64_hex": "-0x1.2e147ae147ae1p+0"
+          },
+          "single:0": {
+            "binary64_hex": "-0x1.051eb851eb852p+0"
+          },
+          "single:7": {
+            "binary64_hex": "0x1.851eb851eb852p-1"
+          }
+        },
+        "source_keys": {
+          "keep": [
+            [
+              "dq",
+              "COLLISION",
+              false,
+              "keep",
+              "run-span",
+              0
+            ]
+          ],
+          "single:0": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              6
+            ]
+          ],
+          "single:7": [
+            [
+              "dq",
+              "COLLISION",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "run-span",
+              1
+            ]
+          ]
+        },
+        "supported": true
+      },
+      "mode": "dq",
+      "raw_selected": "single:7",
+      "selected": "single:7",
+      "status": "supported-unique"
+    }
+  ],
+  "recorded_v136_control_metrics": [
+    {
+      "main_tasks": 20,
+      "new_arm": "StableDisagree",
+      "practice_K_steps": 69,
+      "practice_rollouts": 7,
+      "recorded_arm": "StablePoint",
+      "successes": 17,
+      "task_return_mean": 0.4640000000000001,
+      "task_return_sum": 9.280000000000001
+    },
+    {
+      "main_tasks": 20,
+      "new_arm": "DriftDisagree",
+      "practice_K_steps": 69,
+      "practice_rollouts": 7,
+      "recorded_arm": "DriftPoint",
+      "successes": 17,
+      "task_return_mean": 0.4640000000000001,
+      "task_return_sum": 9.280000000000001
+    }
+  ],
+  "recorded_v136_control_bindings": [
+    {
+      "actual_main_raw_identical": true,
+      "new_arm": "StableDisagree",
+      "post_TD_R_L_I_identical": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "post_task_R_L_I_identical": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "recorded_arm": "StablePoint"
+    },
+    {
+      "actual_main_raw_identical": false,
+      "new_arm": "DriftDisagree",
+      "post_TD_R_L_I_identical": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "post_task_R_L_I_identical": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "recorded_arm": "DriftPoint"
+    }
+  ],
+  "stable_full_vs_disagree_all20main_raw_and_R_L_I_identical": true,
+  "drift_e6_consensus_blindspot": {
+    "same_visible_failure": true,
+    "same_Mdataset": true,
+    "primary_and_secondary_prediction": "single:7",
+    "Full_actual_prefix_return": 0.88,
+    "Disagree_actual_selected_return": 0.76
+  },
+  "findings": [
+    "ActualnewDualMemory primaryPointFirst andsecondaryBaseFirst interpretations keepidenticalobservations, independentpredictioncomputationnotindependenttrainingevidence. Gateusesonlytheirrankedchoices/actualfullpointcoverage/menu; hiddenmask/phase/role notgatefeature. Extraactualtrialcanoverturnoldfailureprior withoutglobalpunishment.",
+    "StableFull17/20mean.464,9privateprobes71Ksteps; StableDisagree17/20mean.464,8probes70Ksteps. All20main raw andfullpostTD/posttaskR+L/I identical. Gateadds1trialatee12versusv136Point, withactualTRAP-1.02confirmingoldnegative; itcostsreal1Kstep. Relativefullmenuonly1rollout/1Kstep/2TXsaved.",
+    "DriftDisagree17/20mean.494,8probes75Ksteps vsrecordedv136DriftPoint17/20mean.464,7probes69Ksteps. At e12modelsdisagreeonprefixandhave0exact-terminalprefixsamples; extraactualprefixtrialSUCCESS.88 beatsprimarylate.76, becomesactuallivechoice. Fivefollowingreturns improveby.12each,total.60/mean.03; actualmaintaskstep206vs236, extraprobe6steps ->net24Kstepssavedbut2moreTX/1morerollout.",
+    "DriftFull17/20mean.524,9probes81Ksteps; DriftDisagree17/20mean.494. At e6bothmodelsrecommendlatefromsamepastnegativeTIMEOUTdata; no disagreementextratrial. Fullmenuactuallytestsprefixandobserves.88, Disagreementsuccessfullyvalidateslate.76thenstops. Fullbenefitappears5maintasksearlier, another.60return/mean.03.",
+    "Modelconsensusisnotcoveredalternativeortruth: DriftFull/DriftDisagreeactuale6visiblefailureandMdataset exactlysame. Bothshadowpredictionssingle7; onlyfullcandidateexperimentprovidesmissingcurrentconditionevidence. Sameinitialpredictiondoesnotjustify0uncertainty/zerovalueofinformationclaim.",
+    "DriftFulloverallK257vsDisagree281despite9vs8privateepisodes; 6moreprivateKsteps buy30fewermaintasksteps. Lowerprobe-countaloneisnotnetefficiency. Non-sourceTX38vs36; CPU/dualmodeloverhead/RAM/clone/IOunprofiled, notmatchedtotalcompute.",
+    "AllactualFAIL/TRAP/unknown/unprobed/fullsourceandMprovenanceretained. Successmainzerodiagnosis; privateSUCCESSistheoutcomeof failure-triggeredtests. Bothpoliciesstillboundedfirst2familycandidates/3events/oneepisode, notexhaustiveallactionsorcandidateoptimality.",
+    "V136storedcontrolsmechanicallyreused, notrerunorreconstructedruntimehandles. No outcomeconditionedscene/thresholdchange, automaticretry, newkeys/RNG/keyderive/DP/calibration/collector/automation. Component0notoldsciencePASS."
+  ],
+  "limits": [
+    "Two prior-informed deterministicDQdevelopmentcases, notblindseed/population/familyinference. Additionalgateisprovidedengineeringheuristic, notlearnedoptimalfeedbackvalueorworldmodel.",
+    "Pairedmodelsarecorrelatedinterpretationsofsamehistory, notindependentexpertsorcalibrateduncertainty. Agreementsmaymissbettercandidates anddisagreementmaywastetrials.",
+    "FullOneonlyall3boundedmenuactions, notallvisitedactionsorallpolicies. Privatesimulatorclone assumedrepeatable; oneepisodereturnnotstochasticconfidence, failuresstillrealcost/risk.",
+    "No newCollateral/Retentionmeasurement or exception/partial/formalkeyed/dense/fullV04Rqualification; original400seedPASSnotinherited.",
+    "Mtraining12eventsupdates2interpretations each, no newLLMweightsclaim. Q*/alpha1/2/epsilon1/10/rewardsordinarylearningunchanged. Wall13.750s instrumentednotproductiontiming."
+  ],
+  "preservation": {
+    "old75_ledger_values": true,
+    "old266_provenance": true,
+    "original313_current_sha_match": 313,
+    "current_nonledger_input_pins_match": 350,
+    "old_checker_native_reruns": 0,
+    "automation_inspected_or_modified": false,
+    "whole_repository_audit_claimed": false,
+    "independent_expert_or_sciencegate": false
+  },
+  "next_actual_gap": "Allocation basedonlyoninternalmodeldisagreementmissessharedblindspots; needanactualbudgetedwaytogetcurrentconditionalternativeevidenceevenwhenhistoricalmodelsagree. Do notsilentlydeclarealwaysfull-menuorblindadditionalprobeuniversallyoptimal; netfuturegainandallcostmustbemeasured."
+}

@@ -1,0 +1,87 @@
+{
+  "checks": [
+    {
+      "name": "single_rate_reduces_to_V215_gate",
+      "ok": true,
+      "details": {
+        "R1_matches_original_fixed_rate": true,
+        "max_error": 0.0
+      }
+    },
+    {
+      "name": "all_nested_prequential_updates_match_scalar",
+      "ok": true,
+      "details": {
+        "synthetic_observations": 192,
+        "max_scalar_error": 5.551115123125783e-16
+      }
+    },
+    {
+      "name": "probabilities_and_readonly_gate",
+      "ok": true,
+      "details": {
+        "normalized": true,
+        "read_only": true
+      }
+    },
+    {
+      "name": "one_cell_logloss_mixture_bound",
+      "ok": true,
+      "details": {
+        "mixture_log_loss": 46.44788338468598,
+        "individual_rate_log_losses": [
+          171.3565500993474,
+          46.35543603945916,
+          45.382111511733434,
+          56.07849205554517
+        ],
+        "bound": 46.76840587285332
+      }
+    },
+    {
+      "name": "stable_evidence_and_possible_recovery_synthetic",
+      "ok": true,
+      "details": {
+        "stable_rate_weights": [
+          0.47859517575967747,
+          0.41247419183016293,
+          0.10893014698805971,
+          4.854220999118788e-07
+        ],
+        "history_before": 0.001687946167322134,
+        "history_after_24_reversal_observations": 0.9919785323472808,
+        "artificial_sequence_not_task_evidence": true
+      }
+    },
+    {
+      "name": "do_not_rewrite_unvisited_context_cells",
+      "ok": true,
+      "details": {
+        "unvisited_cells_unchanged": 19,
+        "visited_cells": 8
+      }
+    },
+    {
+      "name": "whole_model_actual_fact_order_and_archive",
+      "ok": true,
+      "details": {
+        "max_scalar_error": 4.440892098500626e-16,
+        "actual_style_synthetic_facts": 48,
+        "fixed_parameters": true,
+        "duplicate_rejected": true
+      }
+    },
+    {
+      "name": "no_gradient_or_random_initialization",
+      "ok": true,
+      "details": {
+        "gradient_updates": 0,
+        "torch_rng_unchanged": true
+      }
+    }
+  ],
+  "passed": 8,
+  "failed": 0,
+  "synthetic_only": true,
+  "actual_environment_interactions": 0
+}

@@ -1,0 +1,217 @@
+{
+  "schema": "V147_STDLIB_MECHANISM_CONDITIONED_REVIEW",
+  "complete": true,
+  "native_counts": {
+    "rollout": 16,
+    "step": 68,
+    "transaction": 47
+  },
+  "records": 148,
+  "input_pins": 333,
+  "summaries": [
+    {
+      "case": "affected",
+      "arm": "Legacy",
+      "successes": 1,
+      "returns": [
+        -1.06,
+        -1.02,
+        0.86
+      ],
+      "outcomes": [
+        "COLLISION",
+        "TRAP",
+        "SUCCESS"
+      ],
+      "mean_return": -0.40666666666666673,
+      "observation_applied": true,
+      "external_updates": 1,
+      "main_closed": false
+    },
+    {
+      "case": "affected",
+      "arm": "Conditioned",
+      "successes": 1,
+      "returns": [
+        -1.06,
+        -1.02,
+        0.86
+      ],
+      "outcomes": [
+        "COLLISION",
+        "TRAP",
+        "SUCCESS"
+      ],
+      "mean_return": -0.40666666666666673,
+      "observation_applied": false,
+      "external_updates": 0,
+      "main_closed": false
+    },
+    {
+      "case": "unaffected",
+      "arm": "Legacy",
+      "successes": 2,
+      "returns": [
+        -1.02,
+        0.86,
+        0.86
+      ],
+      "outcomes": [
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.2333333333333333,
+      "observation_applied": true,
+      "external_updates": 1,
+      "main_closed": false
+    },
+    {
+      "case": "unaffected",
+      "arm": "Conditioned",
+      "successes": 2,
+      "returns": [
+        -1.02,
+        0.86,
+        0.86
+      ],
+      "outcomes": [
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.2333333333333333,
+      "observation_applied": true,
+      "external_updates": 1,
+      "main_closed": false
+    }
+  ],
+  "transfers": [
+    {
+      "case": "affected",
+      "arm": "Legacy",
+      "applied": true,
+      "mechanism_changes": [
+        {
+          "channel": "X",
+          "address": {
+            "state": {
+              "x": 0,
+              "y": 2,
+              "t": 0,
+              "kappa": 0,
+              "phi": 3
+            },
+            "cmd": 3
+          },
+          "origin": 4,
+          "current": 3
+        }
+      ],
+      "source_terminal": "SUCCESS",
+      "RIGHT_before": 0.3949999999999999,
+      "RIGHT_after": 0.6275,
+      "numeric_changed": true,
+      "native_delta": {
+        "rollout": 0,
+        "step": 0,
+        "transaction": 2
+      },
+      "main_closed": false
+    },
+    {
+      "case": "affected",
+      "arm": "Conditioned",
+      "applied": false,
+      "mechanism_changes": [
+        {
+          "channel": "X",
+          "address": {
+            "state": {
+              "x": 0,
+              "y": 2,
+              "t": 0,
+              "kappa": 0,
+              "phi": 3
+            },
+            "cmd": 3
+          },
+          "origin": 4,
+          "current": 3
+        }
+      ],
+      "source_terminal": "SUCCESS",
+      "RIGHT_before": 0.3949999999999999,
+      "RIGHT_after": 0.3949999999999999,
+      "numeric_changed": false,
+      "native_delta": {
+        "rollout": 0,
+        "step": 0,
+        "transaction": 0
+      },
+      "main_closed": false
+    },
+    {
+      "case": "unaffected",
+      "arm": "Legacy",
+      "applied": true,
+      "mechanism_changes": [],
+      "source_terminal": "TRAP",
+      "RIGHT_before": -0.07000000000000006,
+      "RIGHT_after": -0.545,
+      "numeric_changed": true,
+      "native_delta": {
+        "rollout": 0,
+        "step": 0,
+        "transaction": 2
+      },
+      "main_closed": false
+    },
+    {
+      "case": "unaffected",
+      "arm": "Conditioned",
+      "applied": true,
+      "mechanism_changes": [],
+      "source_terminal": "TRAP",
+      "RIGHT_before": -0.07000000000000006,
+      "RIGHT_after": -0.545,
+      "numeric_changed": true,
+      "native_delta": {
+        "rollout": 0,
+        "step": 0,
+        "transaction": 2
+      },
+      "main_closed": false
+    }
+  ],
+  "main_comparisons": [
+    {
+      "case": "affected",
+      "all3_main_raw_identical": true,
+      "all3_post_R_L_I_identical": false
+    },
+    {
+      "case": "unaffected",
+      "all3_main_raw_identical": true,
+      "all3_post_R_L_I_identical": true
+    }
+  ],
+  "authentic_observations_issued": 4,
+  "once_consumed_including_rejection": 4,
+  "duplicate_rejections": 4,
+  "guard_rejections": 1,
+  "guard_acceptances": 1,
+  "legacy_acceptances": 2,
+  "native_ordinary_updates": 16,
+  "ordinary_policy_TX": 16,
+  "external_ordinary_updates": 3,
+  "external_policy_TX": 3,
+  "prefix_and_accepted_ordinary_apply_AST_exact": true,
+  "actual_P_difference_tested": false,
+  "actual_X_consulted_and_unconsulted_difference_tested": true,
+  "new_draws_or_K_on_transfer": 0,
+  "success_diagnosis": 0,
+  "old_native_checker_reruns": 0,
+  "new_keys_RNG_DP_calibration_collection": 0,
+  "formal_B1_or_dynamics_totality_qualification": false
+}

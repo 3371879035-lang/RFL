@@ -1,0 +1,5 @@
+{
+  "utc": "2026-11-08T09:55:36.157761+00:00",
+  "error": "Traceback (most recent call last):\n  File \"D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009\\experiments\\v09r\\reactive_consolidation_v189\\experiment.py\", line 185, in run_case\n    agent.observe(nxt, fact, reward)\n  File \"D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009\\experiments\\v09r\\reactive_consolidation_v189\\learning.py\", line 38, in observe\n    super().observe(nxt, fact, reward)\n  File \"D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009\\experiments\\v09r\\reactive_consolidation_v189\\base_learning.py\", line 361, in observe\n    uid = self.replay.append(image, scalar, key, action, 0. if reward is None else reward,\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009\\experiments\\v09r\\reactive_consolidation_v189\\base_learning.py\", line 90, in append\n    self.future[i] = 0\n    ^^^^^^^^^^^\nAttributeError: 'Replay' object has no attribute 'future'\n",
+  "training_steps": 131072
+}

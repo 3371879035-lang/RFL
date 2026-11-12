@@ -1,0 +1,171 @@
+{
+  "all_ordinary_TD_full_R_L_updates_verified": 104,
+  "complete": true,
+  "declared_input_pins": 326,
+  "descriptive_fixed_case_aggregates": [
+    {
+      "arms": {
+        "AlwaysClear": {
+          "descriptive_mean_future_return_over_four_fixed_cases": 0.64,
+          "future_successes": 7,
+          "future_tasks": 8,
+          "online_diagnostic_address_edits": 15,
+          "online_diagnostic_transactions": 3
+        },
+        "LearnedChoice": {
+          "descriptive_mean_future_return_over_four_fixed_cases": 0.875,
+          "future_successes": 8,
+          "future_tasks": 8,
+          "online_diagnostic_address_edits": 14,
+          "online_diagnostic_transactions": 2
+        },
+        "TaskTD": {
+          "descriptive_mean_future_return_over_four_fixed_cases": 0.105,
+          "future_successes": 5,
+          "future_tasks": 8,
+          "online_diagnostic_address_edits": 0,
+          "online_diagnostic_transactions": 0
+        }
+      },
+      "mode": "dq"
+    },
+    {
+      "arms": {
+        "AlwaysClear": {
+          "descriptive_mean_future_return_over_four_fixed_cases": 0.875,
+          "future_successes": 8,
+          "future_tasks": 8,
+          "online_diagnostic_address_edits": 15,
+          "online_diagnostic_transactions": 3
+        },
+        "LearnedChoice": {
+          "descriptive_mean_future_return_over_four_fixed_cases": 0.875,
+          "future_successes": 8,
+          "future_tasks": 8,
+          "online_diagnostic_address_edits": 0,
+          "online_diagnostic_transactions": 0
+        },
+        "TaskTD": {
+          "descriptive_mean_future_return_over_four_fixed_cases": 0.875,
+          "future_successes": 8,
+          "future_tasks": 8,
+          "online_diagnostic_address_edits": 0,
+          "online_diagnostic_transactions": 0
+        }
+      },
+      "mode": "patch-adaptive"
+    }
+  ],
+  "development_candidate_address_edits": 30,
+  "development_probe_rollouts": 24,
+  "frozen_before_held_out": true,
+  "helper_source_transport_count": 7,
+  "native_counts": {
+    "rollout": 104,
+    "step": 624,
+    "transaction": 148
+  },
+  "native_first_exit": 0,
+  "no_held_out_model_updates": true,
+  "notes": "Four fixed cases per mode, not independent seeds or population inference; no learned causal posterior.",
+  "old_checker_RFL_or_native_reruns": 0,
+  "online_diagnostic_address_edits": 44,
+  "paired_cases": [
+    {
+      "LearnedChoice_minus_AlwaysClear": 0.0,
+      "LearnedChoice_minus_TaskTD": 0.96,
+      "case": "collision",
+      "means": {
+        "AlwaysClear": 0.88,
+        "LearnedChoice": 0.88,
+        "TaskTD": -0.08000000000000002
+      },
+      "mode": "dq"
+    },
+    {
+      "LearnedChoice_minus_AlwaysClear": 0.0,
+      "LearnedChoice_minus_TaskTD": 2.12,
+      "case": "timeout",
+      "means": {
+        "AlwaysClear": 0.88,
+        "LearnedChoice": 0.88,
+        "TaskTD": -1.24
+      },
+      "mode": "dq"
+    },
+    {
+      "LearnedChoice_minus_AlwaysClear": 0.94,
+      "LearnedChoice_minus_TaskTD": 0.0,
+      "case": "external_trap",
+      "means": {
+        "AlwaysClear": -0.08000000000000002,
+        "LearnedChoice": 0.86,
+        "TaskTD": 0.86
+      },
+      "mode": "dq"
+    },
+    {
+      "LearnedChoice_minus_AlwaysClear": 0.0,
+      "LearnedChoice_minus_TaskTD": 0.0,
+      "case": "success",
+      "means": {
+        "AlwaysClear": 0.88,
+        "LearnedChoice": 0.88,
+        "TaskTD": 0.88
+      },
+      "mode": "dq"
+    },
+    {
+      "LearnedChoice_minus_AlwaysClear": 0.0,
+      "LearnedChoice_minus_TaskTD": 0.0,
+      "case": "collision",
+      "means": {
+        "AlwaysClear": 0.88,
+        "LearnedChoice": 0.88,
+        "TaskTD": 0.88
+      },
+      "mode": "patch-adaptive"
+    },
+    {
+      "LearnedChoice_minus_AlwaysClear": 0.0,
+      "LearnedChoice_minus_TaskTD": 0.0,
+      "case": "timeout",
+      "means": {
+        "AlwaysClear": 0.88,
+        "LearnedChoice": 0.88,
+        "TaskTD": 0.88
+      },
+      "mode": "patch-adaptive"
+    },
+    {
+      "LearnedChoice_minus_AlwaysClear": 0.0,
+      "LearnedChoice_minus_TaskTD": 0.0,
+      "case": "external_trap",
+      "means": {
+        "AlwaysClear": 0.86,
+        "LearnedChoice": 0.86,
+        "TaskTD": 0.86
+      },
+      "mode": "patch-adaptive"
+    },
+    {
+      "LearnedChoice_minus_AlwaysClear": 0.0,
+      "LearnedChoice_minus_TaskTD": 0.0,
+      "case": "success",
+      "means": {
+        "AlwaysClear": 0.88,
+        "LearnedChoice": 0.88,
+        "TaskTD": 0.88
+      },
+      "mode": "patch-adaptive"
+    }
+  ],
+  "raw_file": {
+    "bytes": 1984211,
+    "sha256": "bc4d645715cb6c4f6300a1ca15cecaade06c9c2e117b67f7dd7caacd7166aff5"
+  },
+  "records": 586,
+  "schema": "V118_NEW_STDLIB_STORED_LEARNED_SELECTION_REVIEW",
+  "scientific_qualification": false,
+  "training_samples": 12
+}

@@ -1,0 +1,180 @@
+{
+  "schema": "rfl-a96-B2-native-record-preparation-contract-candidate-v3",
+  "role": "IN_MEMORY_RECORD_INTERFACE_NOT_COLLECTION_PREREGISTRATION",
+  "status": "DRAFT_NOT_COLLECTION_AUTHORIZATION",
+  "parent": {
+    "frozen_source_count": 313,
+    "sources_digest": "1dfd80ce49255231998b70fca2b7bcd72e0940822a1bf9d4a8e731603ccc4838",
+    "lock_sha256": "7d43ee9ae33a218e1266ab3cd2351e07d7e30922302e4527c65facbddaa3472f",
+    "base_analysis_preparation_commit": "45e9f5d197251edd5f4ebfa72174c1c2fb4b0db0"
+  },
+  "inherited_available_pair_matrix": [
+    {
+      "architecture": "D_Q",
+      "tier": "L0",
+      "tier_value": "L0_factual",
+      "reference_law": "NoWrite",
+      "treatment_law": "FactualReturnWrite",
+      "treatment_kind": "operation",
+      "alias_of": null,
+      "delivery_fields": [
+        "a_factual",
+        "g_factual"
+      ],
+      "reference_arm": "D_Q/L0/NoWrite",
+      "treatment_arm": "D_Q/L0/FactualReturnWrite",
+      "learner_feasible_L0": true,
+      "ceiling_not_algorithm_ranking": false
+    },
+    {
+      "architecture": "D_Q",
+      "tier": "L2",
+      "tier_value": "L2_counterfactual",
+      "reference_law": "NoWrite",
+      "treatment_law": "CounterfactualReturnWrite",
+      "treatment_kind": "operation",
+      "alias_of": null,
+      "delivery_fields": [
+        "a_factual",
+        "a_plus",
+        "g_cf",
+        "g_factual"
+      ],
+      "reference_arm": "D_Q/L2/NoWrite",
+      "treatment_arm": "D_Q/L2/CounterfactualReturnWrite",
+      "learner_feasible_L0": false,
+      "ceiling_not_algorithm_ranking": true
+    },
+    {
+      "architecture": "D_Q",
+      "tier": "L2",
+      "tier_value": "L2_counterfactual",
+      "reference_law": "NoWrite",
+      "treatment_law": "DualReturnWrite",
+      "treatment_kind": "operation",
+      "alias_of": null,
+      "delivery_fields": [
+        "a_factual",
+        "a_plus",
+        "g_cf",
+        "g_factual"
+      ],
+      "reference_arm": "D_Q/L2/NoWrite",
+      "treatment_arm": "D_Q/L2/DualReturnWrite",
+      "learner_feasible_L0": false,
+      "ceiling_not_algorithm_ranking": true
+    },
+    {
+      "architecture": "D_Q",
+      "tier": "L3",
+      "tier_value": "L3_oracle",
+      "reference_law": "NoWrite",
+      "treatment_law": "LocalOracleRestore",
+      "treatment_kind": "operation",
+      "alias_of": null,
+      "delivery_fields": [],
+      "reference_arm": "D_Q/L3/NoWrite",
+      "treatment_arm": "D_Q/L3/LocalOracleRestore",
+      "learner_feasible_L0": false,
+      "ceiling_not_algorithm_ranking": true
+    },
+    {
+      "architecture": "X",
+      "tier": "L0",
+      "tier_value": "L0_factual",
+      "reference_law": "NoWrite",
+      "treatment_law": "X_id",
+      "treatment_kind": "operation",
+      "alias_of": null,
+      "delivery_fields": [
+        "a_cmd"
+      ],
+      "reference_arm": "X/L0/NoWrite",
+      "treatment_arm": "X/L0/X_id",
+      "learner_feasible_L0": true,
+      "ceiling_not_algorithm_ranking": false
+    },
+    {
+      "architecture": "X",
+      "tier": "L3",
+      "tier_value": "L3_oracle",
+      "reference_law": "NoWrite",
+      "treatment_law": "LocalOracleRestore",
+      "treatment_kind": "alias",
+      "alias_of": "X_id",
+      "delivery_fields": [],
+      "reference_arm": "X/L3/NoWrite",
+      "treatment_arm": "X/L3/LocalOracleRestore",
+      "learner_feasible_L0": false,
+      "ceiling_not_algorithm_ranking": true
+    },
+    {
+      "architecture": "P",
+      "tier": "L1",
+      "tier_value": "L1_corrective",
+      "reference_law": "NoWrite",
+      "treatment_law": "P_id",
+      "treatment_kind": "operation",
+      "alias_of": null,
+      "delivery_fields": [
+        "z_proposal"
+      ],
+      "reference_arm": "P/L1/NoWrite",
+      "treatment_arm": "P/L1/P_id",
+      "learner_feasible_L0": false,
+      "ceiling_not_algorithm_ranking": false
+    },
+    {
+      "architecture": "P",
+      "tier": "L3",
+      "tier_value": "L3_oracle",
+      "reference_law": "NoWrite",
+      "treatment_law": "LocalOracleRestore",
+      "treatment_kind": "alias",
+      "alias_of": "P_id",
+      "delivery_fields": [],
+      "reference_arm": "P/L3/NoWrite",
+      "treatment_arm": "P/L3/LocalOracleRestore",
+      "learner_feasible_L0": false,
+      "ceiling_not_algorithm_ranking": true
+    }
+  ],
+  "matrix_role": "Original registry enumeration only. Not selection of a study population, confirmatory contrast family or new treatment.",
+  "candidate_interfaces": [
+    "native_record_candidate.frozen_matrix",
+    "native_record_candidate.registered_pair",
+    "native_record_candidate.TraceCapture",
+    "native_record_candidate.extract_paired_record"
+  ],
+  "record_to_seed_cell_bridge": {
+    "requires": "Exact original PairedSceneRecord, canonical same-tier original registry ArmSpecs, one shared original FutureTrainingProtocol and complete ten-event recorder trace; ordered complete two-arm maps/observations; one singleton credited receipt and state/set/protocol bindings.",
+    "full_future_grid": "Original integer training episodes0..465,466 levels per arm, locked100 ordered scenes, alpha1/2,epsilon1/10 and the shared B2 healthy reference, not the1024 F1 master reference.",
+    "arithmetic": "Original FutureUtility.from_curve and select_form with original locked Retention parameters; finite float guards and exact hex equality for utility/Retention, no tolerance, moment reconstitution or reordered sum. Signed-zero substitution is rejected.",
+    "right_censoring": "All non-recovery seeds remain defined with restricted timeT and total all-seed Retention; no tau-conditioned denominator.",
+    "separate_dimensions": "P scalar rows RMST/DeficitAUC/BehavioralCollateral/Retention; T registered statistical rows RMST/DeficitAUC; all four per-arm values retained in input payload as separate dimensions, never weighted composite.",
+    "scalar_input_role": "Already supplied measurements -> one explicit seed/cell row per registered endpoint -> independently preregistered within-seed aggregation. No cells become independent statistical seeds.",
+    "success_route": "SUCCESS/NoReflectionResult is rejected by this reflected-pair extractor, never zero-filled or silently counted as a pair. Actual cohort/factual stream preregistration must separately define the complete success/failure routing and denominators.",
+    "payload_digest_surface": "Sorted compact UTF8 JSON over explicit float.hex full curves, original canonical ledgers, both arm values and parent/reference/cell/seed identities. Portable digest excludes process-specific object IDs. Canonical reference payload digest is not the actual reference-file SHA.",
+    "input_only_no_origin_authentication": true
+  },
+  "unresolved_authority_and_measurement_surfaces": [
+    "Native record/recorder Python types can be constructed by fixtures and are not actual acquisition-origin authentication.",
+    "No factual trajectory generator or native failure origin attestation is implemented; a failure string is not proof of a factual observed failure.",
+    "Original recorder emits collateral state and set/pre-map metadata but not pre/post scalar maps, so raw BehavioralCollateral recomputation is explicitly false.",
+    "Original native eligibility-from-pair-prestate is not independently recomputed by this bridge; a nominal unaffected object does not prove its membership was correctly derived.",
+    "The bridge authenticates nominal registry bindings, not a frozen whole-study contrast family, population, disjoint seed registry, committed addon inventory or single-use collection gate.",
+    "Complete final qualified conjunction, Collateral/Retention bounds, full serial integration/mutation gates and actual dense B2 resource certification still remain open."
+  ],
+  "scientific_failure_population": null,
+  "prospective_cell_order_and_weights": null,
+  "prospective_primary_secondary_contrast_family": null,
+  "science_and_engineering_seed_registry": null,
+  "scientific_environment_draws": 0,
+  "scientific_training_episodes": 0,
+  "treatment_collected": false,
+  "confirmatory_collected": false,
+  "collection_authorized": false,
+  "scientific_claim_authorized": false,
+  "research_complete": false,
+  "independent_agent_or_external_expert_review_performed": false
+}

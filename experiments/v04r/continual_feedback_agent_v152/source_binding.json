@@ -1,0 +1,132 @@
+{
+  "schema": "V152_CONTINUAL_AGENT_SOURCE_BINDING",
+  "parent_commit": "70a6da0eaa1bfdec84ca646c02448af7d8661156",
+  "artifacts": {
+    "contract.json": {
+      "bytes": 5926,
+      "sha256": "7341d1e1dc21fc9f01972f7ae8ed4642b5a45f7374d08955704f4871e56db0eb"
+    },
+    "continual_agent.py": {
+      "bytes": 4569,
+      "sha256": "19285413644508bb534b8311a392bec47aa4a4bf8e92fef7ae924014a27cadb7"
+    },
+    "workload.py": {
+      "bytes": 8941,
+      "sha256": "de01b78ff41e7010ea3a84d15ee04ca7756ae5031766e280ed3949d82d90fdd1"
+    },
+    "execute.py": {
+      "bytes": 4312,
+      "sha256": "8bb81eccbec360e9ede5e4815708295d009ba0eb6fd19d8167c26cf96d239690"
+    },
+    "audit_stored.py": {
+      "bytes": 30199,
+      "sha256": "27465b559638de8ed000dd89c24b5b77693ede056b0d6e04a5a914cec9d8eaef"
+    },
+    "evidence/claim.json": {
+      "bytes": 43308,
+      "sha256": "5ef66ef79f3dd3cab34d55de7588fbb9624debf8295769cc56a808528a396dad"
+    },
+    "evidence/exit.json": {
+      "bytes": 43440,
+      "sha256": "59c5f36e1f3c903b857d8e05bd626372d681b7a50d0dfa734d6b26e1cfb1b602"
+    },
+    "evidence/raw.jsonl": {
+      "bytes": 2714213,
+      "sha256": "704dfa4ac561de215466c7fc97228df7dc0bcf3df93db3cd4a14d5b31af0fcb3"
+    },
+    "evidence_audit/claim.json": {
+      "bytes": 327,
+      "sha256": "b9cb00c43e90ffad0bd7919254648bb7d3ea9065e2c82ba2e425a48a7b888749"
+    },
+    "evidence_audit/exit.json": {
+      "bytes": 201,
+      "sha256": "3d27b5ec54e38a3b90e99b6af5e43f5603babe519a21bbbf3681dc065aeb71b6"
+    },
+    "stored_audit_result.json": {
+      "bytes": 16240,
+      "sha256": "d8a1e330a746d49a6377d1c277283363dd3ee693f7ca883776a76399ab9145e1"
+    },
+    "audit_process_exit.json": {
+      "bytes": 47,
+      "sha256": "b1a7f77f0ca5a5c674b5fcb95a62aef81cd620d063fcd489b1fa5d2d5b7e2b90"
+    }
+  },
+  "ordinary_checkpoint": {
+    "raw": {
+      "path": "experiments/v04r/learned_relative_transfer_v148/evidence/raw.jsonl",
+      "bytes": 1382529,
+      "sha256": "de3796632d9eb8223053d435af5e1f7eeefbf1f87babd0f7557691d102306fd6"
+    },
+    "exit": {
+      "path": "experiments/v04r/learned_relative_transfer_v148/evidence/exit.json",
+      "bytes": 43758,
+      "sha256": "cf14ca352b6469071c65b493964225502bc801f7c302248d3645ded441612513"
+    },
+    "review": {
+      "path": "experiments/v04r/learned_relative_transfer_v148/stored_audit_result.json",
+      "bytes": 10702,
+      "sha256": "14def5237c7a6744c83b4788fff6d2bbfeeef3aa92c89a967f21dacb1efedade"
+    },
+    "selector": {
+      "tag": "PREPARATION_COMPLETE",
+      "field": "state"
+    },
+    "recorded_completed_tasks": 1,
+    "recorded_external_updates": 0,
+    "type": "Construct existing RecordedOrdinaryCheckpoint as explicit ordinary-state DATA only; exact fullI/R/L materialization by original legal3TX. No old source/pair/receipt/issuedidentity restore and no repeat of finished preparatory rollout."
+  },
+  "constructor_flow": "Pinnedordinarydata -> original3materializationTX -> oneoriginalsource8editsTX ->3independentfullR+L agents -> each32chronomain/tasks withoutreset -> actualvisiblefailure -> v150prefix + v151realownedsourceactualtrial -> raw-return keep/repair -> optionalunchangedv151batch -> ordinaryTD underselectedmechanism. Externalmaskusedonlyexecutiontransport; selector_diagnose AST hasno mask/case/stage name input.",
+  "dependencies": {
+    "experiments/v04r/intervention_trial_learning_v151/intervention_experience.py": {
+      "bytes": 16042,
+      "sha256": "7409a146c54acd40be7b6996723b3c1388782b49de372a5a414468f2fe9a85af"
+    },
+    "experiments/v04r/observed_prefix_probe_v150/prefix_probe.py": {
+      "bytes": 2370,
+      "sha256": "b978b7ddcd3d716b02a4ec517ee1868303049c6703762450718b01e1cb6614bd"
+    },
+    "experiments/v04r/controller_horizon_value_v144/mechanism_loop.py": {
+      "bytes": 19023,
+      "sha256": "9de6c1766c54b1ec6f32f52826c6c85c3140c624477c9e0978a84b964fedf0d3"
+    },
+    "experiments/v04r/controller_horizon_value_v144/value_policy.py": {
+      "bytes": 1023,
+      "sha256": "db878027185f28ff48037b6da5e73aa1ff08255d68a0bd883e882cdcdaa5c4cb"
+    }
+  },
+  "input_scope": {
+    "native_pins": 336,
+    "before_after_equal": true,
+    "actual_parent_blobs_equal": 331,
+    "actual_parent_blob_bytes": 11382494,
+    "new_prospective_inputs": {
+      "experiments/v04r/continual_feedback_agent_v152/audit_stored.py": {
+        "bytes": 30199,
+        "sha256": "27465b559638de8ed000dd89c24b5b77693ede056b0d6e04a5a914cec9d8eaef"
+      },
+      "experiments/v04r/continual_feedback_agent_v152/continual_agent.py": {
+        "bytes": 4569,
+        "sha256": "19285413644508bb534b8311a392bec47aa4a4bf8e92fef7ae924014a27cadb7"
+      },
+      "experiments/v04r/continual_feedback_agent_v152/contract.json": {
+        "bytes": 5926,
+        "sha256": "7341d1e1dc21fc9f01972f7ae8ed4642b5a45f7374d08955704f4871e56db0eb"
+      },
+      "experiments/v04r/continual_feedback_agent_v152/execute.py": {
+        "bytes": 4312,
+        "sha256": "8bb81eccbec360e9ede5e4815708295d009ba0eb6fd19d8167c26cf96d239690"
+      },
+      "experiments/v04r/continual_feedback_agent_v152/workload.py": {
+        "bytes": 8941,
+        "sha256": "de01b78ff41e7010ea3a84d15ee04ca7756ae5031766e280ed3949d82d90fdd1"
+      }
+    },
+    "nonledger_pins_to_preserve_after_append": 335
+  },
+  "ledger_preservation": {
+    "old_fields": 90,
+    "old_provenance": 266
+  },
+  "independent_expert_or_science_gate": false,
+  "all_tracked_bytes_audited": false
+}

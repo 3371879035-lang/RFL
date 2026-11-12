@@ -1,0 +1,31 @@
+{
+  "episodes_measured": 10000,
+  "horizon": 8,
+  "p_hazard": 0.25,
+  "single_process_episodes_per_s": 66607.20863392382,
+  "single_process_wall_s": 0.20105850003892556,
+  "workers": 21,
+  "parallel_aggregate_episodes_per_s": null,
+  "parallel_wall_s": null,
+  "parallel_error": "BrokenProcessPool: A process in the process pool was terminated abruptly while the future was running or pending.",
+  "speedup": null,
+  "aggregate_rate_used_for_budget": 66607.20863392382,
+  "planned_budgets": {
+    "beta_formal_20_seeds_x_7_cond_x_5000_ep": {
+      "episodes": 700000,
+      "estimated_wall_s": 10.509372999658808,
+      "estimated_wall_min": 0.17515621666098014
+    },
+    "stage4_formal_30_seeds_x_6_arms_x_5000_ep": {
+      "episodes": 900000,
+      "estimated_wall_s": 13.512050999561325,
+      "estimated_wall_min": 0.22520084999268875
+    },
+    "stage3_formal_40_seeds_x_4_cells_x_5000_ep": {
+      "episodes": 800000,
+      "estimated_wall_s": 12.010711999610066,
+      "estimated_wall_min": 0.20017853332683444
+    }
+  },
+  "note": "Estimates cover TRAINING episodes only, not the greedy evaluation passes, which are roughly comparable in cost."
+}

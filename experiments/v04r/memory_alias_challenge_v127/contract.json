@@ -1,0 +1,180 @@
+{
+  "schema": "V127_PROSPECTIVE_MEMORY_KEY_ALIAS_CHALLENGE",
+  "date_asia_shanghai": "2026-11-06",
+  "parent_commit": "16103febeb8e118cb8d6dc5c39ae5183a038f754",
+  "question": "Can retained practice memory misgeneralize when two current actions share the same learned key, and can explicit local applicability checking plus real re-practice avoid the unsupported tie?",
+  "modes": [
+    "dq",
+    "patch-adaptive"
+  ],
+  "arms": [
+    "TaskTD",
+    "FrozenPractice",
+    "NaiveMemory",
+    "AwareMemory"
+  ],
+  "sources": [
+    {
+      "kappa": 0,
+      "phi": 2,
+      "prefix": 3,
+      "cell": [
+        2,
+        1
+      ]
+    },
+    {
+      "kappa": 1,
+      "phi": 1,
+      "prefix": 1,
+      "cell": [
+        1,
+        2
+      ]
+    }
+  ],
+  "source_rule": "Install both source contexts together: wrong WAIT value6/literalD at declared cell for t>=prefix,m0/1,z1 and its own kappa/phi. Unread phase4 RIGHT sentinel and process3->2 unchanged. No source choice based on new results. In second context additionally install highWAIT at START t0,1 for bothm. The second context always has trap(1,2,step0); that initial wait can protect against the trap but a later persistentWAIT still prevents success. This deliberately creates two repeated-run candidates with the same existing memory key, not a blindly sampled population.",
+  "schedule": [
+    {
+      "kappa": 0,
+      "phi": 2,
+      "trap": false
+    },
+    {
+      "kappa": 0,
+      "phi": 2,
+      "trap": false
+    },
+    {
+      "kappa": 0,
+      "phi": 2,
+      "trap": true
+    },
+    {
+      "kappa": 0,
+      "phi": 2,
+      "trap": true
+    },
+    {
+      "kappa": 0,
+      "phi": 2,
+      "trap": true
+    },
+    {
+      "kappa": 0,
+      "phi": 2,
+      "trap": false
+    },
+    {
+      "kappa": 0,
+      "phi": 2,
+      "trap": false
+    },
+    {
+      "kappa": 0,
+      "phi": 2,
+      "trap": false
+    },
+    {
+      "kappa": 1,
+      "phi": 1,
+      "trap": true
+    },
+    {
+      "kappa": 1,
+      "phi": 1,
+      "trap": true
+    },
+    {
+      "kappa": 1,
+      "phi": 1,
+      "trap": true
+    },
+    {
+      "kappa": 1,
+      "phi": 1,
+      "trap": true
+    },
+    {
+      "kappa": 1,
+      "phi": 1,
+      "trap": true
+    },
+    {
+      "kappa": 1,
+      "phi": 1,
+      "trap": true
+    },
+    {
+      "kappa": 1,
+      "phi": 1,
+      "trap": true
+    },
+    {
+      "kappa": 1,
+      "phi": 1,
+      "trap": true
+    }
+  ],
+  "episode_inputs": "Main e0..15, contextA first8tasks(kappa0/phi2), then contextB8tasks(kappa1/phi1), errorflag0/rank12/base1/MAXcoins. Trap onlyA e2,3,4 and allB tasks. Same exogenous script all arms; no environment truth passed to model.",
+  "model": "Shared frozen base28row model and ordinary learner unchanged. Additional online diagnostic memory is explicit new learned component; no neural-weight/self-RSI claim.",
+  "diagnostic": "Enabled after every actual COLLISION/TRAP/TIMEOUT for corrected arms, not only first task. SUCCESS ordinary-only. Max12addresses and0queries per event; individual consumed epochs, completeR+L and immediateI persist. TaskTD never diagnoses. Keep allowed.",
+  "retention_checkpoints_completed_tasks": [
+    0,
+    2,
+    5,
+    8,
+    12,
+    16
+  ],
+  "retention_protocol": "Six read-only banks per role, fixed contexts(kappa0,phi2)/(kappa1,phi1), nofault/rank11. CompleteR+L+I unchanged,0draw/TD/diagnostic/write. Not independent seeds or success attribution.",
+  "metrics": "Whole16task main returns/successes, memory transfer/misuse/refusal and conflict records, full practice costs, six clean retention banks. Preserve any adverse or neutral result; no assumption aware policy must beat naive policy.",
+  "reference": {
+    "path": "experiments/v03r/a96_dense/b2_prepare/grammar_catalog_v31/evidence/stdout.log",
+    "sha256": "d0aafb6dc20b1cc0c872ac4c48497d94feb707ffe14448bd1c2f3ddd1bbb467b",
+    "q_digest": "d9078b5b5b823df56f998e8c28eb6a3e388bd3ae216f41a21acdb5202d2ec05a"
+  },
+  "budget": {
+    "rollout": 320,
+    "step": 3840,
+    "transaction": 1024,
+    "raw_bytes": 33554432,
+    "seconds": 120
+  },
+  "expected_extent_not_effect_gate": {
+    "main_tasks": 128,
+    "read_only_rollouts": 96,
+    "practice_rollouts_upper_bound": 72,
+    "total_rollouts_upper_bound": 296
+  },
+  "capture": "New exclusive bounded capture and source pins before first execution. Old code/positive/negative/partial results unchanged, no old checker/native rerun, no automatic retry or replacing adverse/unknown outcomes.",
+  "limits": "Fixed scripted stream, not blind population/seeds/general causal posterior. Same sharedQ*, alpha1/2 epsilon1/10 and original rewards. Legal local edits on post-TD current, not original same-pre wholeB1. Trap phases are deliberate environmental changes; compare same-schedule arms, do not label changing-environment return as general collateral. No new science/workload keys, RNG/keyderive, DP/calibration/formal collection. Automation off, not inspected or changed. This is a new action-intervention practice capability in the revised V04 experiment, not an assertion that v122 already had it. Only the tested aliased candidates are adjudicated; no total compute matching or universal attribution claim. Two sequential context exposures in one fixed stream, not independent statistical seeds. Any practice saving is simulator-work saving in this run, not an exact total-compute or generic real-world memory benefit. v124 local closure and all prior positive/negative evidence remain unchanged. Targeted alias stress case motivated by earlier favorable transfer, not a blind generalization rate. Same-key reuse can be invalid; any local guard benefit need not generalize or save compute.",
+  "practice": {
+    "trigger": "PracticeValue only, actual failed task after ordinary learning, chosen single-address has at least2 top-scored single candidates with identical feature key. No truth/location label, future schedule or environment configuration is passed to request/choice policy.",
+    "cap": "At most2 practice events per stream role, consumed before first branch. At most2 eligible singles (canonical order), plus keep; exactly2 ordinary tasks per branch. Extra eligible/unprobed candidates explicitly retained. No outcome-conditioned rerun or persistent scorer update.",
+    "execution": "Runner-private current-task environment capability binds current observed kappa/phase and current actual mask, never future masks. Clone actual complete live post-TD R+L into separate branches; candidate edits on branch,2repeat-current-condition tasks, no diagnostics inside branches. Origin and its I stay unchanged. New typed data/branches, not restored issuedB1handles.",
+    "decision": "Choose greatest actual two-task mean from keep and tested singles; exact ties prefer fewer attempted address edits then declared order. Apply chosen original proposal once to live post-TD state. Scores remain frozen; practice outcomes are ephemeral event evidence.",
+    "cost": "All branch rollouts/steps/ordinary transactions and candidate writes counted separately; task and retention comparison shares task schedule but NOT total compute. No net efficiency or full-menu optimality claim. Standard query API remains0; these new practice operations are not claimed free or nonexistent."
+  },
+  "online_memory": {
+    "state": "NaiveMemory and AwareMemory each own initiallyempty DiagnosticMemory, plus AwareMemory explicit contested-key set. OrdinaryR+L and base28row table unchanged; memory learned from own failed-task practice only.",
+    "features": "Base visible candidate feature plus whether the contiguous same-cell/same-action run containing it spans multiple observed steps. No absolute x/y/t/kappa/phi, ordinal identity or fault truth stored. Representation supplied; empirical values learned.",
+    "training": "After actual ambiguity practice, everykeep/tested single branch actual2return outcomes update mean table; no success attribution, future main returns or held-out truth labels train it. New memory state/version/updates captured.",
+    "recall": "NaiveMemory uses existing covered-key mean/order tie rule. AwareMemory additionally declines direct recall if selected best score is shared by multiple actions with the same key, or a requested key has previously shown conflicting intervention means in one real practice event. It then uses the same finite practice capability, not a hidden correct-answer rule.",
+    "comparison": "FrozenPractice re-tests every supported ambiguity. NaiveMemory and AwareMemory share supplied run-span representation and own data. All have cap2events/role,3branches(event),2tasks/branch; ordinary learning always on. Aware re-testing costs counted separately.",
+    "hypothesis_not_effect_gate": "Memory may or may not transfer; preserve fallback probes, failures and imperfect value predictions. Second context differs in kappa/phase, installed error position and possible healthy route; not a blind population or universal invariance test.",
+    "conflict_learning": "AwareMemory records a key as contested only after two tested actions in the same actual event map to that key and have different actual two-task means. Full samples retained, no erasing/collapsing conflicts into a confident mean. This is a local representation-ambiguity flag, not statistical uncertainty calibration."
+  },
+  "prefix_wait_source": {
+    "kappa": 1,
+    "phi": 1,
+    "cell": [
+      0,
+      2
+    ],
+    "times": [
+      0,
+      1
+    ]
+  }
+}

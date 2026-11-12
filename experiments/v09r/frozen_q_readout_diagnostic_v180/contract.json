@@ -1,0 +1,41 @@
+{
+  "schema": "V09_POSTHOC_FROZEN_Q_READOUT_DIAG_V180",
+  "utc": "2026-11-07T17:31:59.022320+00:00",
+  "reason": "Fixed first12completed seed blocks show substantial feedback-system deficit. Existing H1/history frozen ablations do not close the gap. Diagnose readout priority without retraining or changing main matrix.",
+  "preregistered_primary_comparison": false,
+  "selection": "All first12seed blocks9001..9012, both hybrid arms, no outcome-based seed choice",
+  "arms": [
+    "F-RP",
+    "F-R"
+  ],
+  "seeds": [
+    9001,
+    9002,
+    9003,
+    9004,
+    9005,
+    9006,
+    9007,
+    9008,
+    9009,
+    9010,
+    9011,
+    9012
+  ],
+  "episodes_per_model": 128,
+  "total_evaluation_episodes": 3072,
+  "maximum_steps": 786432,
+  "training_steps": 0,
+  "weights": "Use own saved complete final checkpoint; extract only own agent, discard serialized donor world. QOnlyFrozenReadout is a new explicit type, not monkeypatch/fake old interface.",
+  "physical_source": "New genuine World instances on existing fixed maps, same evaluation j0..127 for CRN against already measured full readout, no environment oracle input to policy.",
+  "permissions": "Same observation/history/legal16actions; actor chooses masked argmax of its own online Q. No fact readout or planning. Episodic working memory allowed; parameters/history frozen.",
+  "parallelism": "Temporarily suspend four verified child workers of main PID33964, run4 independent diagnostic seed workers, then resume exact original processes in finally. At most12active environment worker units, no restarted main prefixes.",
+  "resource": "No change to original24h/20GiB/25GiB limits; unused guaranteed actual-step headroom absorbs supplementary evaluations.",
+  "completed_main_cases_when_budget_checked": 84,
+  "guaranteed_main_steps_freed_from_worst_case": 30410157,
+  "tightened_global_step_upper_including_diag": 150837843,
+  "approved_original_global_step_ceiling": 180461568,
+  "case_limit": "Only a frozen readout intervention on these12trained seeds, not retrained causal attribution or final64seed conclusion.",
+  "new_extra_experience_for_learners": false,
+  "failure_policy": "Exclusive output, first failure retained, no automatic retry. Resume main processes even if diagnostic fails."
+}

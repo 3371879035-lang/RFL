@@ -1,0 +1,57 @@
+{
+  "start": 1794474267.1014073,
+  "contract": {
+    "version": "v230",
+    "authority": "Latest direct user: solve the identified neural feedback learning problems",
+    "after_observing": "Completed V229 pilot, including learned-selector losses; no V229 artifacts changed",
+    "changed_mechanism": "Add actual completed trajectory return supervision to the existing proposal head",
+    "groups": [
+      "dense-random",
+      "dense-learned"
+    ],
+    "domains": [
+      "generic",
+      "pursuit"
+    ],
+    "seeds": [
+      271,
+      277,
+      283
+    ],
+    "rounds": 6,
+    "actual_steps_per_model_per_round": 4096,
+    "optimizer_calls_per_model_per_round": 256,
+    "total_training_steps": 294912,
+    "evaluation_rounds": [
+      0,
+      3,
+      6
+    ],
+    "evaluation_episodes_per_seed_group_round_mode": 32,
+    "evaluation_epsilon": [
+      0.0,
+      0.1
+    ],
+    "maximum_evaluation_steps": 301824,
+    "maximum_total_steps": 596736,
+    "wall_seconds": 1200,
+    "workers": 6,
+    "torch_threads_per_worker": 1,
+    "parameter_count_each": 213329,
+    "unchanged_from_v229": [
+      "task and reward",
+      "architecture",
+      "initial weights",
+      "read budget",
+      "full paired trial",
+      "one final actual comparison",
+      "ordinary optimizer",
+      "evaluation cases"
+    ],
+    "reused_comparators": "V229 stored results, not rerun",
+    "automatic_retry": false,
+    "outcome_dependent_extension": false,
+    "limitation": "Result-informed development test with three seeds, same evaluation cases; not independent confirmation or a solution for pure-feedback F0"
+  },
+  "input_count": 808
+}

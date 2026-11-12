@@ -1,0 +1,299 @@
+{
+  "schema": "V145_DIRECT_CONTROLLER_CONTROL_RESULT",
+  "date_asia_shanghai": "2026-11-07",
+  "parent_commit": "bf60d82c401fb4d67ac74af6bec069871b5c1054",
+  "status": "DIRECT_CORRECTION_PLUS_ONE_REAL_EXPERIENCE_REPRODUCES_TWO_STEP_GAIN_WITH_LESS_NATIVE_WORK",
+  "execution": {
+    "native_first_exit": 0,
+    "new_stored_auditor_first_exit": 0,
+    "native_counts": {
+      "rollout": 26,
+      "step": 80,
+      "transaction": 62
+    },
+    "records": 207,
+    "declared_native_inputs_before_after_equal": 338,
+    "main_tasks": 24,
+    "private_keep_tasks": 2,
+    "native_ordinary_updates": 26,
+    "external_ordinary_updates": 2,
+    "ordinary_numeric_TX": 28,
+    "ordinary_policy_TX": 28,
+    "checkpoint_restore_TX": 3,
+    "extra_source_X_install_TX": 1,
+    "extra_source_X_install_edits": 1,
+    "main_controller_feedback_TX": 2,
+    "private_X_candidate_TX": 0,
+    "M_fit_events": 0,
+    "success_diagnosis": 0,
+    "diagnostic_calls": 15,
+    "real_observations_issued_and_consumed_once": 2,
+    "terminal_counts": {
+      "stream": {
+        "TRAP": 15,
+        "SUCCESS": 9
+      },
+      "practice": {
+        "TRAP": 2
+      }
+    },
+    "old_prefix_native_checker_or_bank_reruns": 0,
+    "new_keys_RNG_keyderive_DP_calibration_formal_collection": 0,
+    "automatic_retry": false,
+    "started_at_utc": "2026-11-06T18:55:27.339729+00:00",
+    "completed_at_utc": "2026-11-06T18:55:30.793646+00:00",
+    "instrumented_wall_seconds": 3.452999999979511
+  },
+  "summaries": [
+    {
+      "case": "controller",
+      "arm": "DirectSite",
+      "successes": 4,
+      "returns": [
+        -1.02,
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "outcomes": [
+        "TRAP",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.2333333333333333,
+      "external_updates": 0
+    },
+    {
+      "case": "controller",
+      "arm": "DirectSitePlusExperience",
+      "successes": 5,
+      "returns": [
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "outcomes": [
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.5466666666666666,
+      "external_updates": 1
+    },
+    {
+      "case": "plant",
+      "arm": "DirectSite",
+      "successes": 0,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02
+      ],
+      "outcomes": [
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP"
+      ],
+      "mean_return": -1.02,
+      "external_updates": 0
+    },
+    {
+      "case": "plant",
+      "arm": "DirectSitePlusExperience",
+      "successes": 0,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02
+      ],
+      "outcomes": [
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP"
+      ],
+      "mean_return": -1.02,
+      "external_updates": 1
+    }
+  ],
+  "direct_policy_actual_decisions": [
+    {
+      "case": "controller",
+      "arm": "DirectSite",
+      "own_store_present": true,
+      "proposal": {
+        "action": "apply",
+        "edits": [
+          {
+            "store": "controller",
+            "address": {
+              "state": {
+                "x": 0,
+                "y": 2,
+                "t": 0,
+                "kappa": 0,
+                "phi": 3
+              },
+              "cmd": 4
+            },
+            "value": null
+          }
+        ]
+      }
+    },
+    {
+      "case": "controller",
+      "arm": "DirectSitePlusExperience",
+      "own_store_present": true,
+      "proposal": {
+        "action": "apply",
+        "edits": [
+          {
+            "store": "controller",
+            "address": {
+              "state": {
+                "x": 0,
+                "y": 2,
+                "t": 0,
+                "kappa": 0,
+                "phi": 3
+              },
+              "cmd": 4
+            },
+            "value": null
+          }
+        ]
+      }
+    },
+    {
+      "case": "plant",
+      "arm": "DirectSite",
+      "own_store_present": false,
+      "proposal": {
+        "action": "keep",
+        "edits": []
+      }
+    },
+    {
+      "case": "plant",
+      "arm": "DirectSitePlusExperience",
+      "own_store_present": false,
+      "proposal": {
+        "action": "keep",
+        "edits": []
+      }
+    }
+  ],
+  "comparisons_to_v144": [
+    {
+      "case": "controller",
+      "recorded_arm": "TwoStepValue",
+      "new_arm": "DirectSitePlusExperience",
+      "all6_main_raw_identical": true,
+      "all6_post_experience_R_L_I_identical": true,
+      "ingested_first_keep_trace_identical": true,
+      "initial_R_L_I_identical": true
+    },
+    {
+      "case": "plant",
+      "recorded_arm": "TwoStepValue",
+      "new_arm": "DirectSitePlusExperience",
+      "all6_main_raw_identical": true,
+      "all6_post_experience_R_L_I_identical": true,
+      "ingested_first_keep_trace_identical": true,
+      "initial_R_L_I_identical": true
+    }
+  ],
+  "actual_two_case_role_subsets": {
+    "v144_TwoStepValue": {
+      "roles": 2,
+      "main_tasks": 12,
+      "private_tasks": 8,
+      "rollout": 20,
+      "Kstep": 56,
+      "ordinary_numeric_TX": 22,
+      "ordinary_policy_TX": 22,
+      "private_X_TX": 2,
+      "main_feedback_X_TX": 1,
+      "common_checkpoint_TX": 3,
+      "common_source_X_install_TX": 1,
+      "total_TX_with_common_bootstrap": 51,
+      "source": "Actual recorded subset of two roles plus actual shared checkpoint/source work; not a separately timed two-role rerun."
+    },
+    "v145_DirectSite": {
+      "roles": 2,
+      "main_tasks": 12,
+      "private_tasks": 0,
+      "rollout": 12,
+      "Kstep": 36,
+      "ordinary_numeric_TX": 12,
+      "ordinary_policy_TX": 12,
+      "private_X_TX": 0,
+      "main_feedback_X_TX": 1,
+      "common_checkpoint_TX": 3,
+      "common_source_X_install_TX": 1,
+      "total_TX_with_common_bootstrap": 29,
+      "source": "Actual recorded subset of two roles plus actual shared checkpoint/source work; not a separately timed two-role rerun."
+    },
+    "v145_DirectSitePlusExperience": {
+      "roles": 2,
+      "main_tasks": 12,
+      "private_tasks": 2,
+      "rollout": 14,
+      "Kstep": 44,
+      "ordinary_numeric_TX": 16,
+      "ordinary_policy_TX": 16,
+      "private_X_TX": 0,
+      "main_feedback_X_TX": 1,
+      "common_checkpoint_TX": 3,
+      "common_source_X_install_TX": 1,
+      "total_TX_with_common_bootstrap": 37,
+      "source": "Actual recorded subset of two roles plus actual shared checkpoint/source work; not a separately timed two-role rerun."
+    }
+  },
+  "findings": [
+    "Controller: direct site correction without extra experience reaches4/6, mean.2333333333333333. Add one actual keep observation and it reaches5/6, mean.5466666666666666, exactly matching all v144 TwoStepValue main traces and post-experience R+L/I.",
+    "Plant: own controller entry is absent; direct policy keeps without trying deletion. Both direct versions remain0/6, mean-1.02. PlusExperience still matches old TwoStepValue main raw/state exactly; no claim to fix the plant.",
+    "Matched PlusExperience uses only two real private tasks for the two cases instead of eight; same first keep trace is consumed exactly once per case, no private L copy and no NoWrite ordinary-learning freeze.",
+    "TwoStepValue is not necessary to obtain the recorded benefit in these cases. Mechanism correction and one real ordinary experience explain it; a simpler explicit own-state policy supplies the selection.",
+    "The initial task-visible evidence across mechanisms was identical, but the complete learner-owned X state was not: one case has the site override, the other does not. Reading this available own state distinguishes them without paid candidate tests, not by leaking evaluator truth."
+  ],
+  "limits": [
+    "New direct baseline is an explicitly unvalidated local heuristic: a present nonidentity controller mapping is not universally wrong. Do not globally adopt deletion without testing desired/compensating mappings and alternative causal mechanisms.",
+    "Own-controller access is a richer policy input than the old evidence-only candidate generator exploited, although the same own state was physically available to all learners. This is not a proof that no learning or experiment can add value on harder inputs.",
+    "One ordinary patch checkpoint, two informed fixed cases, manualMAX stream; not blind independent seeds, architecture ranking, general causal inference or formal science confirmation.",
+    "Controller correction in both studies uses explicit v144 local-substrate executor, not qualified original whole-B1 laws/receipts; original API/guard/law/registry unchanged.",
+    "Cost comparisons aggregate corresponding two-role recorded subsets plus common3checkpoint+1sourceTX, not new timed reruns; overall v14526/80/62 includes four roles. No matched CPU/RAM/IO claim or Retention/Collateral bank."
+  ],
+  "preservation": {
+    "old_ledger_fields": 83,
+    "old_provenance": 266,
+    "original313_current_hash_match": true,
+    "reused_v144_runtime_unchanged": true,
+    "old_failed_partial_zero_adverse_evidence_unchanged": true,
+    "not_full_repository_audit": true
+  },
+  "next_actual_gap": "Present nonidentity mappings may be intentional or protective. The direct heuristic must face a meaningful same-capability challenge before candidate-value evaluation is claimed necessary or discarded generally; do not keep adding cost to these already solved examples."
+}

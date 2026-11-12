@@ -1,0 +1,707 @@
+{
+  "schema": "B2_V69_BOUND_NATIVE_READPOINT_CONTROLLER_STORED_REFINEMENT_REPORT",
+  "scientific_result": "UNEVALUATED",
+  "scientific_PASS": false,
+  "scientific_rules_adopted": false,
+  "collection_authorized": false,
+  "collector_executed": false,
+  "keys_allocated": 0,
+  "random_draws": 0,
+  "future_training": 0,
+  "research_complete": false,
+  "mechanism_direction_falsified": false,
+  "valid_current_scientific_STOP": false,
+  "independent_expert_approval": false,
+  "original_sources_changed": false,
+  "old_evidence_changed": false,
+  "F1_changed": false,
+  "population_reduced": false,
+  "version": 69,
+  "parent_commit": "c09e3e54d5e89d27672ea6b9c115868372035604",
+  "observed_at_utc": "2026-10-11T11:06:03+00:00",
+  "receipts": {
+    "candidate": {
+      "role": "STDLIB_BOUND_NATIVE_READPOINT_CONTROLLER_STORED_REFINEMENT",
+      "command": [
+        "D:\\python\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009\\experiments\\v03r\\a96_dense\\b2_prepare\\v20_native_readpoint_controller_refinement_v69\\candidate.py"
+      ],
+      "start_utc": "2026-10-11T10:56:04.863011+00:00",
+      "cwd": "D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009",
+      "inputs": {
+        "contract.json": "9f5ee9a0629b94b0dcfd3db386c8ce60036fd1c6e4a8f6a68128c43bc48f7509",
+        "candidate.py": "956c3879a5e85eb6aaa2f76a887a1f7423aebe1104044172803d0fa3447ff2ed",
+        "execute.py": "adb5edc495f7cb476987bba5c31d0bdf8f8bcd4f0d6bbe438b921cfc487adc98",
+        "check_stored.py": "b9618923bc5e7ad5d9297840a7cc112a439478e18284498383dbaf6975ae418c"
+      },
+      "finish_utc": "2026-10-11T10:57:13.724259+00:00",
+      "native_child_exit_code": 0,
+      "files": {
+        "stdout.log": {
+          "bytes": 1329692,
+          "sha256": "477e91f0b44ed18cb71fbcddd02650a1aa48fc239a8ee98f52ad78c23e797c2c"
+        },
+        "stderr.log": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "scientific_PASS": false,
+      "collection_authorized": false
+    },
+    "checker": {
+      "role": "STDLIB_BOUND_NATIVE_READPOINT_CONTROLLER_STORED_CHECK",
+      "command": [
+        "D:\\python\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009\\experiments\\v03r\\a96_dense\\b2_prepare\\v20_native_readpoint_controller_refinement_v69\\check_stored.py"
+      ],
+      "start_utc": "2026-10-11T10:57:49.659121+00:00",
+      "cwd": "D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009",
+      "inputs": {
+        "contract.json": "9f5ee9a0629b94b0dcfd3db386c8ce60036fd1c6e4a8f6a68128c43bc48f7509",
+        "candidate.py": "956c3879a5e85eb6aaa2f76a887a1f7423aebe1104044172803d0fa3447ff2ed",
+        "execute.py": "adb5edc495f7cb476987bba5c31d0bdf8f8bcd4f0d6bbe438b921cfc487adc98",
+        "check_stored.py": "b9618923bc5e7ad5d9297840a7cc112a439478e18284498383dbaf6975ae418c",
+        "evidence/claim.json": "cdd77b872227f76a09cb8346501deba200603fe9395ab01de02ccee4b691d58a",
+        "evidence/exit.json": "9973be3fcc85b0826da8c5ba176d4c7faa40b0aaf3bd9ba0904c58319894a05c",
+        "evidence/stdout.log": "477e91f0b44ed18cb71fbcddd02650a1aa48fc239a8ee98f52ad78c23e797c2c",
+        "evidence/stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "finish_utc": "2026-10-11T10:59:00.092958+00:00",
+      "native_child_exit_code": 0,
+      "files": {
+        "stdout.log": {
+          "bytes": 1566,
+          "sha256": "a01b2f439014099f62eeb44fa123bb84476f88757fbc5f1006472fdad46549b0"
+        },
+        "stderr.log": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "scientific_PASS": false,
+      "collection_authorized": false
+    }
+  },
+  "complete_component_result": {
+    "ALL_complete_old_raw_fullinput_index_closed": false,
+    "ALL_history_closed": false,
+    "ALL_pending_unique_keys": 153792,
+    "all_mutated_store_object_compatibility_closed": false,
+    "bound_fiveclass_actual_native_input_excluded_total": 279158,
+    "bound_fiveclass_native_readpoint_exclusion_complete": true,
+    "collection_authorized": false,
+    "four_refinement_registry_sha256": "d44ea2b456fc0663635d3790688c85727760e1ab1125dc61090c512922407210",
+    "initialfailed_targeted26_runtime_raw_gap_pending": true,
+    "missing_old_raw_restored": false,
+    "mutated_store_object_compatibility_UNRESOLVED": [
+      114714,
+      114716,
+      114718,
+      114720
+    ],
+    "new_bound_actual_native_readpoint_excluded_indices": [
+      114714,
+      114716,
+      114718,
+      114720
+    ],
+    "new_native_calibration": 0,
+    "old125366_native_refs_unchanged": true,
+    "old_Q_scalars_returns_aggregates_recomputed": false,
+    "other11_modules424_methods_pending": true,
+    "prior_bounded_object_source_exclusions_reused_without_reclassification": 279154,
+    "research_complete": false,
+    "scientific_PASS": false,
+    "source_readpoint_proof_sha256": "9c31c861a2bceee9d697296f3eb015e32b75dc60d076c7bdcdf001bff72ad65c"
+  },
+  "complete_checker_result": {
+    "RFL_candidate_oldchecker_solver_main_imported_or_executed": false,
+    "checker_distinct_inputs": 2745,
+    "complete_candidate_rows": 8,
+    "final": {
+      "ALL_complete_old_raw_fullinput_index_closed": false,
+      "ALL_history_closed": false,
+      "ALL_pending_unique_keys": 153792,
+      "all_mutated_store_object_compatibility_closed": false,
+      "bound_fiveclass_actual_native_input_excluded_total": 279158,
+      "bound_fiveclass_native_readpoint_exclusion_complete": true,
+      "collection_authorized": false,
+      "four_refinement_registry_sha256": "d44ea2b456fc0663635d3790688c85727760e1ab1125dc61090c512922407210",
+      "initialfailed_targeted26_runtime_raw_gap_pending": true,
+      "missing_old_raw_restored": false,
+      "mutated_store_object_compatibility_UNRESOLVED": [
+        114714,
+        114716,
+        114718,
+        114720
+      ],
+      "new_bound_actual_native_readpoint_excluded_indices": [
+        114714,
+        114716,
+        114718,
+        114720
+      ],
+      "new_native_calibration": 0,
+      "old125366_native_refs_unchanged": true,
+      "old_Q_scalars_returns_aggregates_recomputed": false,
+      "other11_modules424_methods_pending": true,
+      "prior_bounded_object_source_exclusions_reused_without_reclassification": 279154,
+      "research_complete": false,
+      "scientific_PASS": false,
+      "source_readpoint_proof_sha256": "9c31c861a2bceee9d697296f3eb015e32b75dc60d076c7bdcdf001bff72ad65c"
+    },
+    "independence": "IMPLEMENTATION_ONLY binary EOF offsets and keyed ordered entry checker vs list predicate; shared mechanical byteJSONGitASTsource proof not expert/sciencePASS",
+    "independent_four_keyed_ordered_entry_checks": 4,
+    "original_plan_rows_full_EOF": 279158,
+    "result": "BOUND_NATIVE_READPOINT_FOUR_X_VALUE_CONTRADICTIONS_NOT_ALL_HISTORY_OR_OBJECT_STORE_COMPATIBILITY"
+  },
+  "scope": {
+    "kind": "ONLY_ORIGINAL_FULLSUITE_FIVECLASS183_ACTUAL_NATIVE_READPOINT_FOUR_X_VALUE_CONTRADICTIONS_NOT_ALL_OBJECTS_OR_ALL_HISTORY",
+    "original_fullsuite_case_IDs": 806,
+    "original_modules": 21,
+    "prior_closed_method_families": 199,
+    "bound_necessary_support_methods": 183,
+    "scoped_class_counts": {
+      "test_fixture_source_candidate": 52,
+      "test_native_record_candidate": 46,
+      "test_pair_source_candidate": 32,
+      "test_pre_census_source_candidate": 24,
+      "test_single_map_source_candidate": 29
+    },
+    "original_fullsuite_before_after_bindings": 210,
+    "original_initial_and_targeted_binding_raw_gap_retained": true,
+    "original_v67_concrete_support_exclusions_reused": 279150,
+    "original_v68_Qz2_P1to2_exclusions_reused": [
+      115096,
+      115098,
+      140678,
+      143838
+    ],
+    "prior_bounded_exclusions_reused_without_reclassification": 279154,
+    "new_actual_native_readpoint_excluded_indices": [
+      114714,
+      114716,
+      114718,
+      114720
+    ],
+    "bounded_fiveclass_actual_native_readpoint_excluded_total": 279158,
+    "bounded_fiveclass_actual_native_readpoint_compatibility_exclusion_complete": true,
+    "native_readpoint_unresolved_inputs": 0,
+    "all_mutated_store_object_compatibility_closed": false,
+    "mutated_store_object_compatibility_UNRESOLVED": [
+      114714,
+      114716,
+      114718,
+      114720
+    ],
+    "new_actual_overlap_confirmed": false,
+    "all_original_old_exact_refs_in_original8_preserved": [
+      114716,
+      115098
+    ],
+    "four_original_plan_refs": [
+      {
+        "index": 114714,
+        "old_native_ref": {
+          "exact_old_native_v46_v47_reference": null,
+          "first_descriptor_reference": {
+            "complete_descriptor_sha256": "efe72b1fdc7b0e20ee88dfdb5def6a35b27a08c7c15c7a477a98d44322fcf4fa",
+            "kind": "pre",
+            "line": 57157,
+            "task_slot": [
+              0
+            ],
+            "v54_capture": "native_calibration_plan_v54/evidence_completed"
+          }
+        }
+      },
+      {
+        "index": 114716,
+        "old_native_ref": {
+          "exact_old_native_v46_v47_reference": {
+            "capture": "mixed_projection_v47/evidence_repaired",
+            "full_store_sha256": "96bd27565210eb90d182e3d9cc2d35f1880b1f871f5dd61706814f1c5c0def4c",
+            "installation": "D_Q",
+            "line": 12460,
+            "measurement_role": "factual",
+            "original_fingerprint": "4ba819cfadde0a9eec74c76375576e4057fc41a2f4b13145ca685fb563a08816",
+            "payload_sha256": "f54d22ea675ac5523e51abc953fbe07f62d6833b0ee67f6f9e08c6ff1112efdb",
+            "record_id": 148,
+            "record_sha256": "e4b2ec809792bad2a5fbe86a5ee78e06f036d15c7afebc75531521c93ee93d56"
+          },
+          "first_descriptor_reference": {
+            "complete_descriptor_sha256": "3b1cdd8de560a326918d6f1c5ecfba40c315c986baab89cb0196e83a262d5ee7",
+            "kind": "pre",
+            "line": 57158,
+            "task_slot": [
+              0
+            ],
+            "v54_capture": "native_calibration_plan_v54/evidence_completed"
+          }
+        }
+      },
+      {
+        "index": 114718,
+        "old_native_ref": {
+          "exact_old_native_v46_v47_reference": null,
+          "first_descriptor_reference": {
+            "complete_descriptor_sha256": "9e768186639d138ae936b81faba5eb389a27c485a8453a43082aa5f481644a2e",
+            "kind": "pre",
+            "line": 57159,
+            "task_slot": [
+              0
+            ],
+            "v54_capture": "native_calibration_plan_v54/evidence_completed"
+          }
+        }
+      },
+      {
+        "index": 114720,
+        "old_native_ref": {
+          "exact_old_native_v46_v47_reference": null,
+          "first_descriptor_reference": {
+            "complete_descriptor_sha256": "4a934b5d3674eadffaa43ec06bd133967bb3c7c7b7a72423dd441ff9c1d81b28",
+            "kind": "pre",
+            "line": 57160,
+            "task_slot": [
+              0
+            ],
+            "v54_capture": "native_calibration_plan_v54/evidence_completed"
+          }
+        }
+      }
+    ],
+    "remaining_modules": 11,
+    "remaining_methods": 424,
+    "remaining_module_counts": {
+      "test_aggregate_cells_candidate": 17,
+      "test_collateral_evidence_candidate": 37,
+      "test_dense_curve_pair_candidate": 40,
+      "test_future_inputs_candidate": 28,
+      "test_history_large_json_candidate": 57,
+      "test_history_schedule_candidate": 59,
+      "test_history_seed_audit_candidate": 39,
+      "test_history_stream_candidate": 52,
+      "test_preparation": 26,
+      "test_report_candidate": 33,
+      "test_seed_plan_candidate": 36
+    },
+    "original_v46_v47_refs_preserved": 125366,
+    "ALL_pending_unique_keys": 153792,
+    "ALL_history_closed": false,
+    "native_measurement_count": null,
+    "raw_step_count": null,
+    "unprinted_fullstores_Q_scalars_raw_reconstructed": false,
+    "necessary_constraint": {
+      "scope": "ONLY actual native rollout/CF replay/pre-census/map/B1 dispatch input readpoints of original fullsuite fiveclass183 and four Diagnostic helpers, not every mutated stored object",
+      "condition": "Every nonidentity persistent X value at these native readpoints is WAIT4; categorical identity writes canonical-delete. Four WAIT4->RIGHT3 test mutants are constructed after default D_Q L0 FRW pair; subsequent paths only L0 stored audit/clone/guard, not native reader dispatch of mutated object.",
+      "mutated_object_fullstore_compatibility": "UNRESOLVED for four planned literals; preserve all four mutants, do not calculate FRW scalar or reconstruct unprinted stores",
+      "no_rollback_or_raw_reconstruction": true
+    },
+    "actual_branch_summary": [
+      "Retain v68 complete original806 IDs, scoped183 IDs and all199 explicit Edit/transaction inventory; append complete all199 call-expression inventory, all41 source641 AST bindings. Bind original fullsuite210 before/after actualsource and original313 readiness.load_parent; do not repair earlierinitial/targeted runtime gaps.",
+      "All actual persistent X constructors among these fiveclasses and four externalhelpers write nonWAIT commands -> WAIT4; SingleMap actual persistent branch is P0->1 + X(RIGHT3)->WAIT4 + Qz1t1..11. Default waiting has Xempty; controller fixture Qempty. X_id writes address.cmd identity canonical deletion; D_Q FRW/Dual owner-local Q writes never create X entries. Clone/snapshot/readonly readers preserve X values.",
+      "Exact exhaustive explicit nonWAIT X target call inventory contains only four PairSourceTests methods listed in mutation_methods. Each begins self.pair() with no override, which is original default architecture D_Q/tierL0/FactualReturnWrite/methodTrajectoryCredit, complete same-pre native NoWrite/treatment first; full prior work preserved, not zero native.",
+      "export_fresh: treatment exported clone first/second created after pair; first then XWAIT->RIGHT. Following calls audit originalpair and fingerprint first/second. Neither first nor its mutant store is handed to rollout/CF/pre-census/map/B1; unchanged pinned pair audit L0 not L2.",
+      "export_refuses: wrong_state is treatment pinned clone after pair, then XWAIT->RIGHT; patched LearnerPersistentState.clone returns one of five actualbadobjects during clone_immediate_post only. _checked_pair uses unchanged originalsource and L0 factual cell; export guard fingerprints returned object and rejects. No mutated-object native dispatch. All five badobjects complete preserved, no ProtocolError-as-zero inference.",
+      "pinned_post: after complete defaultpair, mutate pinned treatment XWAIT->RIGHT; pair_audit -> _checked_pair does originalsource diagnostic continuity and L0 _cell_payload only, then _ledger_payload checks ledger fingerprint_post against mutant clone before further result handling. These functions have no learner rollout/CF/nativecensus/map/B1 dispatch for L0. Stored scalar accounting source retained but not executed here.",
+      "source_change: after complete defaultpair, mutate sourcepre XWAIT->RIGHT; pair_audit->_checked_pair->diagnostic._checked_run->owned._checked fingerprint pre rejects before factual config/replay. snapshot original remains preserved. Exact call graph and order, not generic native0/refusal/title filter.",
+      "No later bound method receives these local mutant handles. Original method locals/weak registries and same-source guards retained; other source constructors fresh. This is reviewed finite actual fullsuite call graph, not hostile Python or arbitrary helper caller proof. Other11/424 and ALL earlier callers remain pending.",
+      "At actual native readpoints four originalplanned X entry address [0,2,0,0,0,4] value RIGHT3 contradicts WAIT-only necessaryvalue. Planned fullQ/P/D/X, requested/provider/scene/reference/twoarchitecture/descriptor and original114716 v47ref retained. Object compatibility of post-FRW mutants remains unproved; no scalar/return/behavior/count/FP shortcut.",
+      "Combine only previously saved279154 exclusions with four new native-readpoint Xvalue witnesses. Boundfiveclass actualnativeinput exclusion complete; not complete actualraw/fullstore index, not all fiveclassobjectcompatibility, initialfailed/targeted26 remains pending; ALL153792pendingunique/old125366refs unchanged; no launch/scientific authority."
+    ]
+  },
+  "source_proof": {
+    "all41_source641_pins": true,
+    "original_fullsuite210_actual_before_after": true,
+    "full806_retained": 806,
+    "scoped183_retained": 183,
+    "all199_actual_call_expression_entries": 199,
+    "selected_complete_AST_bodies": 31,
+    "four_complete_actual_case_receipt_rows": [
+      {
+        "case_ID": "test_pair_source_candidate.PairSourceTests.test_export_fresh_clones_cannot_mutate_pinned_post_or_other_arm",
+        "complete_case_receipt_line": "test_export_fresh_clones_cannot_mutate_pinned_post_or_other_arm (test_pair_source_candidate.PairSourceTests.test_export_fresh_clones_cannot_mutate_pinned_post_or_other_arm) ... ok\r\n",
+        "row_sha256": "40600a1df04af1373c691aa407a29e2b1e913ac3b15cbc488b149dab22c2e4e2",
+        "stderr_line": 608
+      },
+      {
+        "case_ID": "test_pair_source_candidate.PairSourceTests.test_export_refuses_pinned_source_other_arm_wrong_state_and_type",
+        "complete_case_receipt_line": "test_export_refuses_pinned_source_other_arm_wrong_state_and_type (test_pair_source_candidate.PairSourceTests.test_export_refuses_pinned_source_other_arm_wrong_state_and_type) ... ok\r\n",
+        "row_sha256": "ae4e51088e6af284dbcd4358f943d267fc34de9254d0f2bb1c7edbc541d020f7",
+        "stderr_line": 609
+      },
+      {
+        "case_ID": "test_pair_source_candidate.PairSourceTests.test_pinned_post_state_change_refused",
+        "complete_case_receipt_line": "test_pinned_post_state_change_refused (test_pair_source_candidate.PairSourceTests.test_pinned_post_state_change_refused) ... ok\r\n",
+        "row_sha256": "2d4d797789efcfee29bc4769cfbc8ca456aa57f4a2776f46d9a73b5e8b0035c0",
+        "stderr_line": 620
+      },
+      {
+        "case_ID": "test_pair_source_candidate.PairSourceTests.test_source_change_after_native_pair_refused",
+        "complete_case_receipt_line": "test_source_change_after_native_pair_refused (test_pair_source_candidate.PairSourceTests.test_source_change_after_native_pair_refused) ... ok\r\n",
+        "row_sha256": "720bad36d878599dea72ca388d0952b08843abd79a58fee1e24d8cdd957e9195",
+        "stderr_line": 626
+      }
+    ],
+    "complete15_original_payload_line_bindings": 15,
+    "complete8_original_log_byte_bindings": 8,
+    "mutants_fullstore_compatibility_UNRESOLVED": [
+      114714,
+      114716,
+      114718,
+      114720
+    ],
+    "source_readpoint_proof_canonicalJSON_plus_LF_sha256": "9c31c861a2bceee9d697296f3eb015e32b75dc60d076c7bdcdf001bff72ad65c",
+    "four_refinement_registry_sha256": "d44ea2b456fc0663635d3790688c85727760e1ab1125dc61090c512922407210",
+    "original_v67_registry_sha256": "2c7ef4ce87bf7a3601de7314c2ff89a03615e93e90debf041fc94ea73282545d",
+    "original_v67_proof_canonicalJSON_plus_LF_sha256": "fe4970b5f7a29f6c29ea8478878077828a282c4e03c1f75157d87caddc801896",
+    "original_v68_conditional_proof_canonicalJSON_plus_LF_sha256": "029464f3c49e402827939db5b6ac74153375d26662c4f19d73367f3ca95af2ff",
+    "original_v68_eight_refinement_registry_sha256": "356fb7e27f042960eae0db6633a6d83866e8c199e034ea5e4c8762ca6ed1f5ca",
+    "all199_full_call_expressions_retained": true,
+    "all_actual_explicit_X_Edit_calls_retained": true,
+    "all_four_complete_method_timelines_and_aftercalls_retained": true,
+    "original19_preparation_fullsuite210_actual_bindings": 19,
+    "original22_core313_frozen_loadparent_bindings": 22,
+    "original_native_work_before_mutations_retained": true,
+    "reviewed_finite_actual_call_graph_not_arbitrary_Python_totality": true,
+    "Q_value_used_for_selection": false,
+    "scalar_recomputed": false,
+    "return_behavior_outcome_count_FP_used_as_compatibility_criterion": false,
+    "complete_EOF_original_v55_rows_read_fullrowSHA_keyed_join": 279158,
+    "prior279154_exclusions_reclassified": false,
+    "postnative_mutant_complete_Q_store_values_not_reconstructed": true,
+    "original_fullsuite_stdout": {
+      "bytes": 9467903,
+      "sha256": "30d875614f7fd3efb2939aabd5bab62a25165f9ba008cb0e5df8f8d5a6f05760"
+    },
+    "original_fullsuite_stderr": {
+      "bytes": 132548,
+      "sha256": "effc486d59f5e63e41a14076b935692a359730e48a2cd361e74d41b5b90119e0"
+    }
+  },
+  "preservation": {
+    "frozen_sources": 313,
+    "native_files": 153,
+    "frozen_source_digest": "1dfd80ce49255231998b70fca2b7bcd72e0940822a1bf9d4a8e731603ccc4838",
+    "F1_lock_sha256": "7d43ee9ae33a218e1266ab3cd2351e07d7e30922302e4527c65facbddaa3472f",
+    "parent_preparation": 1019,
+    "parent_provenance": 247,
+    "parent_tree": 2737,
+    "candidate_before_after_distinct_inputs": 2741,
+    "checker_distinct_validation_inputs": 2745,
+    "expected_new_preparation_files": 15,
+    "expected_preparation": 1034,
+    "expected_source_preparation_ledger_bindings": 1348,
+    "expected_postcommit_tree": 2752,
+    "expected_provenance": 248,
+    "full_parent_HEAD_index_working_bytes_before_new_source_audit": 0,
+    "parent_nonledger_blobs_preserved": true,
+    "baseline64_actual_compressed_SHA_only_audit": 0,
+    "baseline64_compressed_bytes": 1645138932,
+    "gzip_validator_rerun": false,
+    "baseline_exclusion_recomputed": false,
+    "outside_two_unexecuted_original_sources_exact": true,
+    "old_v41_empty_evidence_preserved": true,
+    "old_zero_adverse_all_support_measure_and_frozen_F1_preserved": true,
+    "original_v55_world_scene_Gamma_S_sentinels_unread_zero_mass_refs_preserved": {
+      "worlds": 68586,
+      "roots": 48,
+      "scenes": 5760,
+      "E": 67725,
+      "six_refinements": 406350,
+      "null": 861,
+      "SUCCESS_diagnostic": 45358,
+      "nonempty_failure": 23196,
+      "empty_own": 26,
+      "empty_Gamma": 6
+    },
+    "fixed2988_all_zero145failure_RIGHT3_to_WAIT4": "UNCERTIFIED; no other nonzero substitutes",
+    "no_new_RFL_kernel_learner_B1_DP_installer_prediction_aggregate_key_RNG_training_collector_acquisition": true,
+    "completed_native_source_fixtures_or_old_checker_rerun": false
+  },
+  "execution_observations": {
+    "only_new_stdlib_stored_components": 2,
+    "first_child_exit_codes": [
+      0,
+      0
+    ],
+    "child_failures": 0,
+    "child_retries": 0,
+    "candidate_complete_canonical_rows": 8,
+    "checker_complete_canonical_rows": 1,
+    "candidate_list_presence_value_predicate": true,
+    "checker_full_candidate_EOF_binary_actual_tell_readline_offsets_then_original_v55_EOF_keyed_ordered_entries": true,
+    "shared_mechanical_helpers": "stdlib byte/JSON/Git/AST/source-proof helpers; candidate/checker independent only at implementation layer",
+    "expert_or_scientific_approval": false,
+    "RFL_candidate_oldchecker_main_solver_import_or_execution": false,
+    "AST_stdlib_shadow_parent_exclusive_preflight_exit": 0,
+    "preflight_is_runtime_or_science_certificate": false,
+    "complete_JSON_canonical_EOF_claim_receipt_source_byte_audit": 0,
+    "no_PID_point_observation_this_turn": true,
+    "completion_basis": "Complete original claims/exits/stdout/stderr and complete byte/JSON/EOF audit, not PID or file presence",
+    "guards": {
+      "max_output_bytes": 5000000,
+      "max_planned": 300000
+    },
+    "guards_triggered": false,
+    "guards_are_dense_scientific_resource_certificate": false,
+    "executed_source_and_capture_rewritten": false
+  },
+  "supplemental_capture_audit": {
+    "evidence": {
+      "claim": {
+        "role": "STDLIB_BOUND_NATIVE_READPOINT_CONTROLLER_STORED_REFINEMENT",
+        "command": [
+          "D:\\python\\python.exe",
+          "-X",
+          "utf8",
+          "-B",
+          "D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009\\experiments\\v03r\\a96_dense\\b2_prepare\\v20_native_readpoint_controller_refinement_v69\\candidate.py"
+        ],
+        "start_utc": "2026-10-11T10:56:04.863011+00:00",
+        "cwd": "D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009",
+        "inputs": {
+          "contract.json": "9f5ee9a0629b94b0dcfd3db386c8ce60036fd1c6e4a8f6a68128c43bc48f7509",
+          "candidate.py": "956c3879a5e85eb6aaa2f76a887a1f7423aebe1104044172803d0fa3447ff2ed",
+          "execute.py": "adb5edc495f7cb476987bba5c31d0bdf8f8bcd4f0d6bbe438b921cfc487adc98",
+          "check_stored.py": "b9618923bc5e7ad5d9297840a7cc112a439478e18284498383dbaf6975ae418c"
+        }
+      },
+      "exit": {
+        "role": "STDLIB_BOUND_NATIVE_READPOINT_CONTROLLER_STORED_REFINEMENT",
+        "command": [
+          "D:\\python\\python.exe",
+          "-X",
+          "utf8",
+          "-B",
+          "D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009\\experiments\\v03r\\a96_dense\\b2_prepare\\v20_native_readpoint_controller_refinement_v69\\candidate.py"
+        ],
+        "start_utc": "2026-10-11T10:56:04.863011+00:00",
+        "cwd": "D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009",
+        "inputs": {
+          "contract.json": "9f5ee9a0629b94b0dcfd3db386c8ce60036fd1c6e4a8f6a68128c43bc48f7509",
+          "candidate.py": "956c3879a5e85eb6aaa2f76a887a1f7423aebe1104044172803d0fa3447ff2ed",
+          "execute.py": "adb5edc495f7cb476987bba5c31d0bdf8f8bcd4f0d6bbe438b921cfc487adc98",
+          "check_stored.py": "b9618923bc5e7ad5d9297840a7cc112a439478e18284498383dbaf6975ae418c"
+        },
+        "finish_utc": "2026-10-11T10:57:13.724259+00:00",
+        "native_child_exit_code": 0,
+        "files": {
+          "stdout.log": {
+            "bytes": 1329692,
+            "sha256": "477e91f0b44ed18cb71fbcddd02650a1aa48fc239a8ee98f52ad78c23e797c2c"
+          },
+          "stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        "scientific_PASS": false,
+        "collection_authorized": false
+      },
+      "canonical_rows": 8,
+      "complete_JSON_EOF_byte_source_audit": 0
+    },
+    "evidence_check": {
+      "claim": {
+        "role": "STDLIB_BOUND_NATIVE_READPOINT_CONTROLLER_STORED_CHECK",
+        "command": [
+          "D:\\python\\python.exe",
+          "-X",
+          "utf8",
+          "-B",
+          "D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009\\experiments\\v03r\\a96_dense\\b2_prepare\\v20_native_readpoint_controller_refinement_v69\\check_stored.py"
+        ],
+        "start_utc": "2026-10-11T10:57:49.659121+00:00",
+        "cwd": "D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009",
+        "inputs": {
+          "contract.json": "9f5ee9a0629b94b0dcfd3db386c8ce60036fd1c6e4a8f6a68128c43bc48f7509",
+          "candidate.py": "956c3879a5e85eb6aaa2f76a887a1f7423aebe1104044172803d0fa3447ff2ed",
+          "execute.py": "adb5edc495f7cb476987bba5c31d0bdf8f8bcd4f0d6bbe438b921cfc487adc98",
+          "check_stored.py": "b9618923bc5e7ad5d9297840a7cc112a439478e18284498383dbaf6975ae418c",
+          "evidence/claim.json": "cdd77b872227f76a09cb8346501deba200603fe9395ab01de02ccee4b691d58a",
+          "evidence/exit.json": "9973be3fcc85b0826da8c5ba176d4c7faa40b0aaf3bd9ba0904c58319894a05c",
+          "evidence/stdout.log": "477e91f0b44ed18cb71fbcddd02650a1aa48fc239a8ee98f52ad78c23e797c2c",
+          "evidence/stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "exit": {
+        "role": "STDLIB_BOUND_NATIVE_READPOINT_CONTROLLER_STORED_CHECK",
+        "command": [
+          "D:\\python\\python.exe",
+          "-X",
+          "utf8",
+          "-B",
+          "D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009\\experiments\\v03r\\a96_dense\\b2_prepare\\v20_native_readpoint_controller_refinement_v69\\check_stored.py"
+        ],
+        "start_utc": "2026-10-11T10:57:49.659121+00:00",
+        "cwd": "D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009",
+        "inputs": {
+          "contract.json": "9f5ee9a0629b94b0dcfd3db386c8ce60036fd1c6e4a8f6a68128c43bc48f7509",
+          "candidate.py": "956c3879a5e85eb6aaa2f76a887a1f7423aebe1104044172803d0fa3447ff2ed",
+          "execute.py": "adb5edc495f7cb476987bba5c31d0bdf8f8bcd4f0d6bbe438b921cfc487adc98",
+          "check_stored.py": "b9618923bc5e7ad5d9297840a7cc112a439478e18284498383dbaf6975ae418c",
+          "evidence/claim.json": "cdd77b872227f76a09cb8346501deba200603fe9395ab01de02ccee4b691d58a",
+          "evidence/exit.json": "9973be3fcc85b0826da8c5ba176d4c7faa40b0aaf3bd9ba0904c58319894a05c",
+          "evidence/stdout.log": "477e91f0b44ed18cb71fbcddd02650a1aa48fc239a8ee98f52ad78c23e797c2c",
+          "evidence/stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "finish_utc": "2026-10-11T10:59:00.092958+00:00",
+        "native_child_exit_code": 0,
+        "files": {
+          "stdout.log": {
+            "bytes": 1566,
+            "sha256": "a01b2f439014099f62eeb44fa123bb84476f88757fbc5f1006472fdad46549b0"
+          },
+          "stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        "scientific_PASS": false,
+        "collection_authorized": false
+      },
+      "canonical_rows": 1,
+      "complete_JSON_EOF_byte_source_audit": 0
+    }
+  },
+  "reporting_observations": [
+    "Initial readonly old metadata helper tried json.loads on complete TAG=JSON line and raised JSONDecodeError exit1 (tool chunk3a5cc8); corrected exact '=' parser before any new source execution.",
+    "Readonly old provenance manifest helper resolved root-relative paths against old namespace and raised AssertionError exit1 (chunk8f3f79); corrected explicit ROOT-relative complete15 manifest audit0 (chunk21afea). First printed audit label was not an actual manifest loop; later complete loop is the evidence.",
+    "Combined old report/background and source outputs exceeded display budgets. Full JSON/byte/manifest parsing and bounded unique fields supplemented; do not claim every undisplayed repeated item was visually read.",
+    "Pair source separately read completely; SingleMap complete standalone read and selected owned/diagnostic/creditdelivery/core clone/transaction helper bodies separately read. Full41/641 sourceAST binding remains mechanical, not a claim all giant display lines were visible.",
+    "Baseline metadata display repeated64 keys and v41 schema truncated; bounded actual firstrow metadata plus complete64 actualcompressedSHA/1645138932byte audit and outside2 sources/empty evidence audit0 supplemented. No gzipvalidator or source-exclusion/native rerun.",
+    "rg AGENTS no-match exit1 is normal absence, not Git/native failure. No subagent delegation or goal creation.",
+    "AST/stdlib/helper-shadow/source/exclusive preflight exit0 does not guarantee absence of runtime faults or a scientific certificate.",
+    "No new child failed or retried and no executed source/capture was modified. All inherited v65/v64/v63 failures and all earlier unfavorable/zero evidence remain.",
+    "Executed contract retains one inherited v68 limits paragraph saying four Q/P co-occurrence exclusions and four unresolved; that paragraph describes prior v68 object-support history, not v69 native-readpoint result. Operative v69 necessary_constraint/source_reasoning/FINAL distinguish native readpoints from still-UNRESOLVED mutant object fullstores.",
+    "Git whitespace check is limited to explicit Windows cr-at-eol,-blank-at-eof profile; it is not a default Git or scientific gate."
+  ],
+  "limits": [
+    "Only original fullsuite these5 modules183 actual methods and full setup/helpers; prior WholeCell26, Diagnostic35 and CF48/Credit50/Factual40 alreadyclosed families not rerun. Other11 modules424 methods remain PENDING.",
+    "Original initial failed setup and targeted26 missing original210 runtime bindings/fullraw/fullstore stays PENDING; later original full806 beforeafter snapshot never repairs earlier executions.",
+    "Source-family necessary inequality not complete old actual native raw/fullinput index; unprinted stores/Qscalars/raw/native counts not reconstructed.",
+    "ALL279158 identity/fullrowSHA/old125366v46-v47refs unchanged;153792pendingunique remains PENDING ALL other historical compatibility, not launch gate.",
+    "All68586world/fullGamma/S/48roots/5760scenes/67725E/406350six/861null/45358SUCCESSdiagnostic/23196nonemptyfailure/26emptyown/6emptyGamma/sentinels/unread/zero/zero-mass/adverse/measure remain originalv55 refs.",
+    "All2988fixedzero incl145failure RIGHT3->WAIT4 UNCERTIFIED; other nonzero evidence never covers them. No scientific law/scalar/vector/threshold/delta/family/weight/grammar/key/RNG/training/collector/acquisition.",
+    "Only shared mechanical stdlib byteJSONGitAST/proof helpers; candidate/checker independent implementations only not expert/sciencePASS. Engineering output/keyguards not dense scientific resource certificates.",
+    "V69 differentiates actual native readpoint from postnative mutation objects. Full mutant Q values/stores are unprinted and not reconstructed; object-only overlap stays UNRESOLVED, four actualnativeinputs excluded only under exact bound original fullsuite call graph.",
+    "Necessary WAIT-only bound is new explicit call-order proof, not retrospectively applying v65/v66 WAIT-only support to v67 arbitrary objects. All native work before mutation retained and originalreceipt fourcase ok preserved."
+  ],
+  "next_allowed_scope": [
+    "Do not repeat v69 four native-readpoint witnesses, v68 four Q/P witnesses, v67 original279150 classifications, previously closed source families or completed native fixtures/checkers to accumulate PASS.",
+    "Continue other11 original modules424 actual methods and all setup/helper/constructor/clone/receipt/source/read arguments; preserve completeALL153792 pendingkeys and all earlier arbitrary callers/failed unprintedraw families.",
+    "Keep full mutated object store compatibility and initialfailed/targeted26 missing runtime/raw separate UNRESOLVED/PENDING; no later snapshot or reconstructed scalar substitutes for original missing evidence.",
+    "Only complete ALL historical compatibility closure can permit truly unmeasured input once in exclusive no-key actualnativecalibration with fullALLstore/readpath/argmax/raw/receipt/source binding. V69 is not that launchgate.",
+    "Whole-credit ownstore addon/serial mutation/empty entry, science highk/P mixed totality/delta/fullfamily conjunction/dense resources/prospective preregistration remain unclosed; collection staysclosed."
+  ],
+  "automation": {
+    "id": "rfl-a96",
+    "kind": "heartbeat",
+    "status": "ACTIVE",
+    "cadence_minutes": 15,
+    "same_thread_id": "01a04e31-be68-7c23-8958-542a4ea9cfda",
+    "official_documentation": "https://learn.chatgpt.com/docs/automations?surface=app",
+    "official_documentation_scope": "OpenAI Docs skill used only for PRODUCT samechat/minute cadence/durable prompt; no scientific authority",
+    "old_prompt_chars": 209309,
+    "old_prompt_sha256": "2e5bf93cb0120f69ae6cf59f9b50083b19de0b4cc72a423fc5f76cb3cf7c5bbb",
+    "new_prefix_chars": 6578,
+    "new_prompt_chars": 215887,
+    "new_prompt_sha256": "062409be683c059b8890a225c1a10b6487183a91b4c351fb1e81672d341ab104",
+    "actual_config_sha256": "9168bf381b9c3ce9b641cdcdd7944e25cc8172f2029d8ba5ff0f5cb9689f3fc2",
+    "old_actual27chunks_session_exact": true,
+    "new_actual27chunks_session_exact": true,
+    "whole_old209309_exact_suffix": true,
+    "all_metadata_except_updated_at_preserved": true,
+    "only_meaningful_actionable_changes_notify": true,
+    "actual_readback_verified": true
+  },
+  "role": "MAIN_AGENT_INTERNAL_SOURCE_AND_RECEIPT_REVIEW_NOT_INDEPENDENT_EXPERT",
+  "internal_review": {
+    "reviewer": "MAIN_AGENT",
+    "review_level": "Bound original actual fullsuite call-order source/AST/receipt reasoning plus independent stored implementation; no independent expert or scientific approval",
+    "result": "ACCEPT_BOUNDED_NATIVE_READPOINT_CONTRADICTIONS_WITH_OBJECT_COMPATIBILITY_AND_ALL_HISTORY_PENDING",
+    "critical_checks": [
+      "Distinguish actual learner native reader inputs from mutable test handles after native work. Four explicit WAIT4->RIGHT3 mutations remain fully retained and objects are not called nonexistent or incompatible merely for refusal.",
+      "Each mutant starts default self.pair() D_Q/L0/FRW. The full source factual, NoWrite and treatment native work precedes mutation. Default tierL0 means _cell_payload does not execute L2 CF replay.",
+      "Review all actual aftercalls, complete helper AST bodies and original four case receipts. exportfirst is only fingerprinted with originalpair audit; wrongstate exportguard refuses after clone; pinnedpost ledger fingerprintguard; mutated source preguard rejects before replay.",
+      "All other bound actual X constructors write nonWAITcmd->WAIT4. Identity XId writes canonical-delete; Q-only FRW/Dual does not create X; clone/read-only paths preserve X. Preserve SingleMap P0->1/XRIGHT->WAIT/Qz1 and all mixed/invalid/partial branches.",
+      "X literal value RIGHT3, not old Q scalar, return, outcome, store count, hash alone, native0 or role/title, supplies each new necessary-input contradiction. Complete original fourstore and original refs preserved.",
+      "Only31 selected complete AST bodies do not alone prove arbitrary Python totality. Complete199 actualcall inventory/all41/641 bindings and reviewed finite originalmethod call graph bound the claim; earlier arbitraryhelpers and other11/424 remain pending.",
+      "No full post-FRW Qscalar/store reconstruction, no missing raw restoration, no complete actualnative input/raw index, no permission for calibration or collection. Initialfailed/targeted26 gap stays pending.",
+      "Preserve old114716 v47exact measurement and115098 olderexactref. This family exclusion cannot contradict their actual measurements in a different source branch or decrease ALL153792 pending."
+    ],
+    "unresolved_and_risks": [
+      "Postnative mutant store compatibility for114714/114716/114718/114720 stays UNRESOLVED and may require originalstore/call/receipt evidence; native-readpoint proof must not be promoted to fullobject compatibility.",
+      "Proof is finite source-review plus bound oldactual receipts, not independent formal proof or scientific experiment. Shared sourceproof mechanics do not confer epistemic independence.",
+      "Remaining11modules424, earlier arbitrarycaller scopes and otherfailed/unprintedraw history prevent ALL closure or one-time new calibration launch.",
+      "Original2988alltargetzero/145failure RIGHT3->WAIT4 remains UNCERTIFIED, and jointB2/delta/fullfamily/dense resources/wholecredit prospective closure is untouched."
+    ],
+    "inherited_contract_limit_paragraph_interpretation": "One v68 cooccurrence paragraph remains byte-for-byte in executed v69 contract.limits as historical prior boundary; it is not v69 operative result. Operative necessary_constraint/source_reasoning/FINAL and this report explicitly separate actualnative readpoint exclusions from unresolved full mutant objects.",
+    "native_workload_or_scientific_totality_inferred": false,
+    "new_scientific_rules_accepted": false,
+    "authorized_next_step": "Other original11module424 actualcall families and ALL earlier history, no native calibration before ALL closure"
+  },
+  "files_before_review": {
+    "experiments/v03r/a96_dense/b2_prepare/v20_native_readpoint_controller_refinement_v69/candidate.py": {
+      "bytes": 16091,
+      "sha256": "956c3879a5e85eb6aaa2f76a887a1f7423aebe1104044172803d0fa3447ff2ed"
+    },
+    "experiments/v03r/a96_dense/b2_prepare/v20_native_readpoint_controller_refinement_v69/check_stored.py": {
+      "bytes": 18137,
+      "sha256": "b9618923bc5e7ad5d9297840a7cc112a439478e18284498383dbaf6975ae418c"
+    },
+    "experiments/v03r/a96_dense/b2_prepare/v20_native_readpoint_controller_refinement_v69/contract.json": {
+      "bytes": 115804,
+      "sha256": "9f5ee9a0629b94b0dcfd3db386c8ce60036fd1c6e4a8f6a68128c43bc48f7509"
+    },
+    "experiments/v03r/a96_dense/b2_prepare/v20_native_readpoint_controller_refinement_v69/evidence/claim.json": {
+      "bytes": 858,
+      "sha256": "cdd77b872227f76a09cb8346501deba200603fe9395ab01de02ccee4b691d58a"
+    },
+    "experiments/v03r/a96_dense/b2_prepare/v20_native_readpoint_controller_refinement_v69/evidence/exit.json": {
+      "bytes": 1282,
+      "sha256": "9973be3fcc85b0826da8c5ba176d4c7faa40b0aaf3bd9ba0904c58319894a05c"
+    },
+    "experiments/v03r/a96_dense/b2_prepare/v20_native_readpoint_controller_refinement_v69/evidence/stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "experiments/v03r/a96_dense/b2_prepare/v20_native_readpoint_controller_refinement_v69/evidence/stdout.log": {
+      "bytes": 1329692,
+      "sha256": "477e91f0b44ed18cb71fbcddd02650a1aa48fc239a8ee98f52ad78c23e797c2c"
+    },
+    "experiments/v03r/a96_dense/b2_prepare/v20_native_readpoint_controller_refinement_v69/evidence_check/claim.json": {
+      "bytes": 1235,
+      "sha256": "90f367a12d9709bce239098e319e32bc9b89c53fcad21e640bee238953a47475"
+    },
+    "experiments/v03r/a96_dense/b2_prepare/v20_native_readpoint_controller_refinement_v69/evidence_check/exit.json": {
+      "bytes": 1656,
+      "sha256": "296201860613869cbc91467e918278998e98f9da5bce382f21f81dde4d430408"
+    },
+    "experiments/v03r/a96_dense/b2_prepare/v20_native_readpoint_controller_refinement_v69/evidence_check/stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "experiments/v03r/a96_dense/b2_prepare/v20_native_readpoint_controller_refinement_v69/evidence_check/stdout.log": {
+      "bytes": 1566,
+      "sha256": "a01b2f439014099f62eeb44fa123bb84476f88757fbc5f1006472fdad46549b0"
+    },
+    "experiments/v03r/a96_dense/b2_prepare/v20_native_readpoint_controller_refinement_v69/execute.py": {
+      "bytes": 1981,
+      "sha256": "adb5edc495f7cb476987bba5c31d0bdf8f8bcd4f0d6bbe438b921cfc487adc98"
+    },
+    "experiments/v03r/a96_dense/b2_prepare/v20_native_readpoint_controller_refinement_v69/result_summary.json": {
+      "bytes": 38629,
+      "sha256": "426463aa529dae9d80a44bb9ec2951850b0d914a890e087f5a2a1cdc44f9181e"
+    }
+  }
+}

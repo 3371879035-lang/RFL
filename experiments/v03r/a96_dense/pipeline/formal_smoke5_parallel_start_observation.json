@@ -1,0 +1,326 @@
+{
+  "schema": "a96-formal-smoke-parallel-start-observation-v1",
+  "role": "EXTERNAL_LIVE_PROCESS_AND_SOURCE_BINDING_OBSERVATION_NOT_NATIVE_SMOKE_COMPLETION_RECEIPT",
+  "observed_at_utc": "2026-10-09T11:25:02.0927371Z",
+  "root": "D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009",
+  "branch": "study/v03r-dense-measurement-20261009",
+  "head_before_auxiliary_commit": "0e617e7cd6544514e64305aedc87b8ec67202ba9",
+  "phase": "FRESH_SIX_SERIAL_GATES_NATIVE_ZERO_THEN_FORMAL_SMOKE5_REAL_SPAWN_RUNNING",
+  "source_inventory_excludes_this_observation": true,
+  "postgate_binding_audit": {
+    "role": "READ_ONLY_POST_SMOKE_GATES_FROZEN_BINDING_AUDIT_NOT_SMOKE_COMPLETION",
+    "checked_at": "2026-10-09T11:24:30.257215+00:00",
+    "complete_frozen_sources_match": true,
+    "source_count": 313,
+    "sources_digest": "1dfd80ce49255231998b70fca2b7bcd72e0940822a1bf9d4a8e731603ccc4838",
+    "head": "0e617e7cd6544514e64305aedc87b8ec67202ba9",
+    "manifest_sha256": "22f122736bc60e9a94f7e5083b92116fda9ff4e39f3d157f69cf2406ed28a144",
+    "manifest_instrument_commit": "8cb8f0e7b7286e42f4d817010787244d4e624172",
+    "manifest_f0_commit": "8872469972fe660f2a5381dc6535cb05144a1df2",
+    "gate_artifacts_match_new_F0": true,
+    "parent_preservation_unchanged": true,
+    "gates_serial_checked": true,
+    "gate_receipts": [
+      {
+        "name": "gate-01",
+        "sha256": "ee2250706524ca60845202eefb3c0fa8d2be24e32b9be6ae01bc5c1c4140c5d1",
+        "receipt": {
+          "argv": [
+            "D:\\python\\python.exe",
+            "-m",
+            "pytest",
+            "-q",
+            "--junitxml=D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009\\experiments\\v03r\\a96_dense\\smoke_gates\\regression.xml"
+          ],
+          "finished_unix": 1791544855.325095,
+          "native_exit_code": 0,
+          "receipt_origin": "native_subprocess_wait",
+          "started_unix": 1791544003.323644
+        },
+        "stdout_sha256": "e27b2886e67442f224eab8410e446af1a4082da5118878d2017155b478efee8e",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "gate-02",
+        "sha256": "b325bad39c6dfd12d29df41f7c61b245ca0ea41dfdac91b270b9e49f589388cd",
+        "receipt": {
+          "argv": [
+            "D:\\python\\python.exe",
+            "scripts/spec_audit.py"
+          ],
+          "finished_unix": 1791544855.6722953,
+          "native_exit_code": 0,
+          "receipt_origin": "native_subprocess_wait",
+          "started_unix": 1791544855.327689
+        },
+        "stdout_sha256": "a9096eb3091f1c0ef23d9c7f1aee912052981ab2d6ac5698e0d9e30b6c4e47ea",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "gate-03",
+        "sha256": "2024889aa2496813993ebbde0271ee48c35f5d56904350fb09b2822d24768608",
+        "receipt": {
+          "argv": [
+            "D:\\python\\python.exe",
+            "scripts/b2_view_gate_selfcheck.py"
+          ],
+          "finished_unix": 1791544924.8474555,
+          "native_exit_code": 0,
+          "receipt_origin": "native_subprocess_wait",
+          "started_unix": 1791544855.6745026
+        },
+        "stdout_sha256": "8a8e7b6b2920657f87c209ee7f0f2862c40d4a20faebfa885a7091cd1592176f",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "gate-04",
+        "sha256": "9103febbc24c91ef8e4d3ea86f65a7328f263b11f7af969f196f75daee4f257f",
+        "receipt": {
+          "argv": [
+            "D:\\python\\python.exe",
+            "scripts/a91_training_gate_selfcheck.py"
+          ],
+          "finished_unix": 1791544934.4400973,
+          "native_exit_code": 0,
+          "receipt_origin": "native_subprocess_wait",
+          "started_unix": 1791544924.8504627
+        },
+        "stdout_sha256": "21b912ee2b48330a9a814ef1a47c5387952042642a1a6628aa19d2f0d65a0d5c",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "gate-05",
+        "sha256": "d3e723c436b9523abb303bca99cc1589efe843b59a0b6dc5864c21ca055d2a14",
+        "receipt": {
+          "argv": [
+            "D:\\python\\python.exe",
+            "scripts/run_calibration.py"
+          ],
+          "finished_unix": 1791545000.8578455,
+          "native_exit_code": 0,
+          "receipt_origin": "native_subprocess_wait",
+          "started_unix": 1791544934.4461741
+        },
+        "stdout_sha256": "144f9825d84ab80117d8903abc7bc6b4365254aacfb8d238fd846e7d98f25db5",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "gate-06",
+        "sha256": "9a8104d6f1a7d7184088826834664bb53426cb02f5426b2ecded4845ea8efb02",
+        "receipt": {
+          "argv": [
+            "D:\\python\\python.exe",
+            "scripts/f0_manifest_selfcheck.py"
+          ],
+          "finished_unix": 1791545003.4184253,
+          "native_exit_code": 0,
+          "receipt_origin": "native_subprocess_wait",
+          "started_unix": 1791545000.8638372
+        },
+        "stdout_sha256": "dd2504a3c011d0c9cf9d56064366f5264b8f8b70182c79be4b5a62b0f8398ee8",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "regression_counts": {
+      "tests": 1624,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1,
+      "passed": 1623,
+      "skipped_cases": [
+        {
+          "classname": "tests.rebuild.test_b2_acquisition",
+          "name": "test_12_a_site_no_episode_consults_shares_the_generic_value[P]"
+        }
+      ]
+    },
+    "smoke_log_seeds_started": [
+      {
+        "seed": 2026101100,
+        "pid": 44052
+      },
+      {
+        "seed": 2026101101,
+        "pid": 18876
+      },
+      {
+        "seed": 2026101102,
+        "pid": 25440
+      },
+      {
+        "seed": 2026101103,
+        "pid": 34632
+      },
+      {
+        "seed": 2026101104,
+        "pid": 26124
+      }
+    ],
+    "smoke_log_completed": [],
+    "smoke_stderr_bytes": 0,
+    "scientific_result_claimed": false
+  },
+  "control_hashes": {
+    "controller": "bb9a1989d8e7f67b3dca6065a51f518e72dd87806501f3547c71c7b792673f4d",
+    "launcher": "5d49fe0752cc95caa7dcf1d814f6706a5e927771eac6eebaa3c081adb0a90d17"
+  },
+  "current_processes": [
+    {
+      "pid": 9924,
+      "parent_pid": 24856,
+      "command_line": "\"C:\\Users\\huani\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe\" -NoProfile -NonInteractive -WindowStyle Hidden -File \"D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009\\scripts\\launch_a96_pipeline.ps1\"",
+      "start_utc": "2026-10-09T07:48:59.3389540Z",
+      "start_utc_ticks": "639271289393389540",
+      "cpu_seconds": 5.875,
+      "working_set_bytes": 90980352
+    },
+    {
+      "pid": 25192,
+      "parent_pid": 9924,
+      "command_line": "\\??\\C:\\WINDOWS\\system32\\conhost.exe 0x4",
+      "start_utc": "2026-10-09T07:48:59.3850869Z",
+      "start_utc_ticks": "639271289393850869",
+      "cpu_seconds": 0.0625,
+      "working_set_bytes": 15667200
+    },
+    {
+      "pid": 26592,
+      "parent_pid": 9924,
+      "command_line": "\"D:\\python\\python.exe\" -u -B -X utf8 \"D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009\\scripts\\run_a96_pipeline.py\"",
+      "start_utc": "2026-10-09T07:49:01.3910189Z",
+      "start_utc_ticks": "639271289413910189",
+      "cpu_seconds": 4.71875,
+      "working_set_bytes": 31522816
+    },
+    {
+      "pid": 21004,
+      "parent_pid": 26592,
+      "command_line": "\\??\\C:\\WINDOWS\\system32\\conhost.exe 0x4",
+      "start_utc": "2026-10-09T07:49:01.4145087Z",
+      "start_utc_ticks": "639271289414145087",
+      "cpu_seconds": 0.625,
+      "working_set_bytes": 10149888
+    },
+    {
+      "pid": 33652,
+      "parent_pid": 26592,
+      "command_line": "D:\\python\\python.exe -u -B -X utf8 scripts/run_smoke.py --seeds-file D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009\\experiments\\v03r\\a96_dense\\smoke_seeds.txt",
+      "start_utc": "2026-10-09T11:06:42.6603450Z",
+      "start_utc_ticks": "639271408026603450",
+      "cpu_seconds": 0.5625,
+      "working_set_bytes": 29409280
+    },
+    {
+      "pid": 44052,
+      "parent_pid": 33652,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=33652, pipe_handle=412)\" \"--multiprocessing-fork\"",
+      "start_utc": "2026-10-09T11:23:23.5920197Z",
+      "start_utc_ticks": "639271418035920197",
+      "cpu_seconds": 95.546875,
+      "working_set_bytes": 61759488
+    },
+    {
+      "pid": 18876,
+      "parent_pid": 33652,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=33652, pipe_handle=360)\" \"--multiprocessing-fork\"",
+      "start_utc": "2026-10-09T11:23:23.6094264Z",
+      "start_utc_ticks": "639271418036094264",
+      "cpu_seconds": 95.390625,
+      "working_set_bytes": 61796352
+    },
+    {
+      "pid": 25440,
+      "parent_pid": 33652,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=33652, pipe_handle=452)\" \"--multiprocessing-fork\"",
+      "start_utc": "2026-10-09T11:23:23.6246054Z",
+      "start_utc_ticks": "639271418036246054",
+      "cpu_seconds": 95.5,
+      "working_set_bytes": 61980672
+    },
+    {
+      "pid": 34632,
+      "parent_pid": 33652,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=33652, pipe_handle=408)\" \"--multiprocessing-fork\"",
+      "start_utc": "2026-10-09T11:23:23.6382305Z",
+      "start_utc_ticks": "639271418036382305",
+      "cpu_seconds": 95.671875,
+      "working_set_bytes": 61808640
+    },
+    {
+      "pid": 26124,
+      "parent_pid": 33652,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=33652, pipe_handle=504)\" \"--multiprocessing-fork\"",
+      "start_utc": "2026-10-09T11:23:23.6488520Z",
+      "start_utc_ticks": "639271418036488520",
+      "cpu_seconds": 95.34375,
+      "working_set_bytes": 61722624
+    }
+  ],
+  "previous_process_observation_utc": "2026-10-09T11:23:53.3322168Z",
+  "worker_cpu_progress": [
+    {
+      "seed": 2026101100,
+      "pid": 44052,
+      "start_utc_ticks": "639271418035920197",
+      "previous_cpu_seconds": 29,
+      "current_cpu_seconds": 95.546875,
+      "cpu_delta_seconds": 66.546875
+    },
+    {
+      "seed": 2026101101,
+      "pid": 18876,
+      "start_utc_ticks": "639271418036094264",
+      "previous_cpu_seconds": 29.03125,
+      "current_cpu_seconds": 95.390625,
+      "cpu_delta_seconds": 66.359375
+    },
+    {
+      "seed": 2026101102,
+      "pid": 25440,
+      "start_utc_ticks": "639271418036246054",
+      "previous_cpu_seconds": 29.03125,
+      "current_cpu_seconds": 95.5,
+      "cpu_delta_seconds": 66.46875
+    },
+    {
+      "seed": 2026101103,
+      "pid": 34632,
+      "start_utc_ticks": "639271418036382305",
+      "previous_cpu_seconds": 28.9375,
+      "current_cpu_seconds": 95.671875,
+      "cpu_delta_seconds": 66.734375
+    },
+    {
+      "seed": 2026101104,
+      "pid": 26124,
+      "start_utc_ticks": "639271418036488520",
+      "previous_cpu_seconds": 28.90625,
+      "current_cpu_seconds": 95.34375,
+      "cpu_delta_seconds": 66.4375
+    }
+  ],
+  "worker_seed_identity_method": "native SEED_STARTED log PID matched to authenticated full spawn command, real StartTime ticks, parent and CPU progression across two snapshots",
+  "smoke_seeds": [
+    2026101100,
+    2026101101,
+    2026101102,
+    2026101103,
+    2026101104
+  ],
+  "active_spawn_workers": 5,
+  "all_gates_finished_before_worker_start": true,
+  "seed_internal_order": "serial",
+  "automatic_retry": false,
+  "seed_reuse": false,
+  "smoke_receipt_present": false,
+  "smoke_log_completed": [],
+  "smoke_PASS_claimed": false,
+  "independent_evaluator_completed": false,
+  "development_started": false,
+  "F1_result": null,
+  "native_controller_exit_code": null,
+  "scientific_effect_result": null,
+  "research_complete": false,
+  "prior_engineering_F0_observation": "experiments/v03r/a96_dense/pipeline/engineering_F0_complete_smoke_start_observation.json",
+  "old_A95_preservation_unchanged": true
+}

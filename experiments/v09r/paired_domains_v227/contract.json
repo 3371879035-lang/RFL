@@ -1,0 +1,59 @@
+{
+  "version": "v227",
+  "authority": "2026-11-12 latest direct user: math and network repair then concurrent 3h pursuit and generic training",
+  "prior_runs_immutable": true,
+  "training": {
+    "domains": [
+      "pursuit",
+      "generic"
+    ],
+    "seeds": [
+      137,
+      149,
+      163
+    ],
+    "groups": [
+      "RL-plain",
+      "RL-outer",
+      "F0",
+      "F-RP",
+      "F-R",
+      "N227"
+    ],
+    "wall_seconds_including_evaluation": 10800,
+    "workers": 6,
+    "torch_threads_per_worker": 1,
+    "steps_per_group_round": 4096,
+    "optimizer_calls_per_group_round": 256,
+    "eval_episodes_per_seed_mode": 32,
+    "eval_modes": [
+      0.0,
+      0.1
+    ],
+    "resume": false,
+    "retry": false
+  },
+  "bounded_diagnostic": {
+    "seed": 197,
+    "actual_steps": 480,
+    "optimizer_calls": 120
+  },
+  "smoke": {
+    "seed": 191,
+    "domains": [
+      "generic",
+      "pursuit"
+    ],
+    "rounds": 1,
+    "steps_per_group": 4096,
+    "optimizer_calls_per_group": 256,
+    "max_seconds": 1800,
+    "eval_episodes_per_seed_mode": 4
+  },
+  "source_scope": "Existing pursuit maps and V198 physical kernel, V226 generic physical kernel; revised generic reward; six fresh capacity-matched policies; no formal old V03 collector",
+  "adoption": "two fresh paired 16-step actual trials, then two full-task teacher pairs, then two different full-task student pairs; all costs charged; negative kept",
+  "F0": "No reward packet or Q target; goal-related physical measures include observable distance-derived quality. Not an objective-free learner.",
+  "memory": "16 actual event nodes; replay 8192; past events reused without independent evidence recount",
+  "fairness": "Exact total tensor architecture; small inactive heads and actual active parameter counts reported; equal interaction and optimizer quotas, not equal FLOPs",
+  "completion": "Stop opening common rounds early enough to evaluate final common checkpoint inside 3h; no automatic retries"
+}

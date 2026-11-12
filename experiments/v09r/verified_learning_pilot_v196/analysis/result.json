@@ -1,0 +1,3544 @@
+{
+  "status": "PASS_STORED_CONSISTENCY",
+  "native": {
+    "exit_code": 0,
+    "interruption": null,
+    "wall_seconds": 335.8058683000054,
+    "peak_tree_rss": 3887362048,
+    "finished_utc": "2026-11-08T16:06:22.714159+00:00"
+  },
+  "inputs_checked": 53,
+  "changed_inputs": [],
+  "jobs": [
+    {
+      "seed": 93001,
+      "arm": "RL-RP",
+      "raw_rows": 45636,
+      "events": 767,
+      "rollouts": 572,
+      "optimizer_updates": 176,
+      "step_counts": {
+        "source": 1171,
+        "trial": 98,
+        "reference_probe": 2070,
+        "teacher_probe": 3661,
+        "student_wake": 1096,
+        "reference_gate": 2206,
+        "student_gate": 2993,
+        "reference_report": 8521,
+        "teacher_report": 12105,
+        "deployed_report": 6503,
+        "rejected_student_report": 5212
+      },
+      "decisions": [
+        {
+          "seed": 93001,
+          "arm": "RL-RP",
+          "cycle": 0,
+          "cases": 2,
+          "preferences": 0,
+          "reference": 116.546875,
+          "deployed": 199.2890625,
+          "selected": "weak",
+          "adopted": true,
+          "teacher": 222.5546875,
+          "student": 199.2890625,
+          "dream_order": "weak",
+          "candidates": 2,
+          "deployed_gain": 82.7421875,
+          "teacher_gain": 106.0078125,
+          "student_gain": 82.7421875,
+          "consolidation_loss": 23.265625,
+          "gate_gain": 96.0625,
+          "scope": {
+            "seen": {
+              "reference": 126.96875,
+              "deployed": 212.890625,
+              "gain": 85.921875
+            },
+            "heldout": {
+              "reference": 106.125,
+              "deployed": 185.6875,
+              "gain": 79.5625
+            }
+          }
+        },
+        {
+          "seed": 93001,
+          "arm": "RL-RP",
+          "cycle": 1,
+          "cases": 2,
+          "preferences": 0,
+          "reference": 151.9140625,
+          "deployed": 151.9140625,
+          "selected": "weak",
+          "adopted": false,
+          "teacher": 140.84375,
+          "student": 153.40625,
+          "dream_order": "weak",
+          "candidates": 1,
+          "deployed_gain": 0.0,
+          "teacher_gain": -11.0703125,
+          "student_gain": 1.4921875,
+          "consolidation_loss": -12.5625,
+          "gate_gain": -22.28125,
+          "scope": {
+            "seen": {
+              "reference": 157.8125,
+              "deployed": 157.8125,
+              "gain": 0.0
+            },
+            "heldout": {
+              "reference": 146.015625,
+              "deployed": 146.015625,
+              "gain": 0.0
+            }
+          }
+        }
+      ],
+      "branch_differences": {
+        "n": 8,
+        "mean": 6.5625,
+        "positive": 2,
+        "zero": 6,
+        "negative": 0,
+        "values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.5,
+          51.0,
+          0.0
+        ]
+      },
+      "preference_margin_changes": {
+        "n": 0,
+        "mean": null,
+        "positive": 0,
+        "zero": 0,
+        "negative": 0,
+        "values": []
+      }
+    },
+    {
+      "seed": 93001,
+      "arm": "F0",
+      "raw_rows": 13509,
+      "events": 565,
+      "rollouts": 404,
+      "optimizer_updates": 144,
+      "step_counts": {
+        "source": 374,
+        "trial": 92,
+        "reference_probe": 1259,
+        "teacher_probe": 1516,
+        "reference_report": 3883,
+        "student_wake": 264,
+        "reference_gate": 723,
+        "student_gate": 680,
+        "teacher_report": 2354,
+        "deployed_report": 2364
+      },
+      "decisions": [
+        {
+          "seed": 93001,
+          "arm": "F0",
+          "cycle": 0,
+          "cases": 2,
+          "preferences": 4,
+          "reference": 47.0,
+          "deployed": 47.0,
+          "selected": null,
+          "adopted": false,
+          "teacher": null,
+          "student": null,
+          "dream_order": "weak",
+          "candidates": 2,
+          "deployed_gain": 0.0,
+          "teacher_gain": null,
+          "student_gain": null,
+          "consolidation_loss": null,
+          "scope": {
+            "seen": {
+              "reference": 52.609375,
+              "deployed": 52.609375,
+              "gain": 0.0
+            },
+            "heldout": {
+              "reference": 41.390625,
+              "deployed": 41.390625,
+              "gain": 0.0
+            }
+          }
+        },
+        {
+          "seed": 93001,
+          "arm": "F0",
+          "cycle": 1,
+          "cases": 2,
+          "preferences": 0,
+          "reference": 56.5078125,
+          "deployed": 63.21875,
+          "selected": "weak",
+          "adopted": true,
+          "teacher": 62.984375,
+          "student": 63.21875,
+          "dream_order": "weak",
+          "candidates": 1,
+          "deployed_gain": 6.7109375,
+          "teacher_gain": 6.4765625,
+          "student_gain": 6.7109375,
+          "consolidation_loss": -0.234375,
+          "gate_gain": 2.21875,
+          "scope": {
+            "seen": {
+              "reference": 55.9375,
+              "deployed": 67.921875,
+              "gain": 11.984375
+            },
+            "heldout": {
+              "reference": 57.078125,
+              "deployed": 58.515625,
+              "gain": 1.4375
+            }
+          }
+        }
+      ],
+      "branch_differences": {
+        "n": 8,
+        "mean": -0.75,
+        "positive": 2,
+        "zero": 4,
+        "negative": 2,
+        "values": [
+          1.5,
+          -1.5,
+          1.5,
+          -7.5,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "preference_margin_changes": {
+        "n": 8,
+        "mean": 0.6412727683782578,
+        "positive": 8,
+        "zero": 0,
+        "negative": 0,
+        "values": [
+          0.8598094880580902,
+          0.6109040081501007,
+          0.8148346245288849,
+          0.5304389894008636,
+          0.6026234328746796,
+          0.5794830620288849,
+          0.5830662548542023,
+          0.5490222871303558
+        ]
+      }
+    },
+    {
+      "seed": 93001,
+      "arm": "F-RP",
+      "raw_rows": 27739,
+      "events": 598,
+      "rollouts": 420,
+      "optimizer_updates": 160,
+      "step_counts": {
+        "source": 1112,
+        "trial": 66,
+        "reference_probe": 2121,
+        "teacher_probe": 3838,
+        "student_wake": 428,
+        "reference_gate": 822,
+        "student_gate": 1177,
+        "reference_report": 8011,
+        "teacher_report": 5861,
+        "deployed_report": 4303
+      },
+      "decisions": [
+        {
+          "seed": 93001,
+          "arm": "F-RP",
+          "cycle": 0,
+          "cases": 2,
+          "preferences": 0,
+          "reference": 116.546875,
+          "deployed": 130.5390625,
+          "selected": "weak",
+          "adopted": true,
+          "teacher": 176.4296875,
+          "student": 130.5390625,
+          "dream_order": "weak",
+          "candidates": 2,
+          "deployed_gain": 13.9921875,
+          "teacher_gain": 59.8828125,
+          "student_gain": 13.9921875,
+          "consolidation_loss": 45.890625,
+          "gate_gain": 33.28125,
+          "scope": {
+            "seen": {
+              "reference": 126.96875,
+              "deployed": 127.25,
+              "gain": 0.28125
+            },
+            "heldout": {
+              "reference": 106.125,
+              "deployed": 133.828125,
+              "gain": 27.703125
+            }
+          }
+        },
+        {
+          "seed": 93001,
+          "arm": "F-RP",
+          "cycle": 1,
+          "cases": 2,
+          "preferences": 2,
+          "reference": 135.2734375,
+          "deployed": 135.2734375,
+          "selected": null,
+          "adopted": false,
+          "teacher": null,
+          "student": null,
+          "dream_order": "weak",
+          "candidates": 2,
+          "deployed_gain": 0.0,
+          "teacher_gain": null,
+          "student_gain": null,
+          "consolidation_loss": null,
+          "scope": {
+            "seen": {
+              "reference": 127.140625,
+              "deployed": 127.140625,
+              "gain": 0.0
+            },
+            "heldout": {
+              "reference": 143.40625,
+              "deployed": 143.40625,
+              "gain": 0.0
+            }
+          }
+        }
+      ],
+      "branch_differences": {
+        "n": 8,
+        "mean": 0.0,
+        "positive": 1,
+        "zero": 6,
+        "negative": 1,
+        "values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          -1.5,
+          1.5,
+          0.0
+        ]
+      },
+      "preference_margin_changes": {
+        "n": 4,
+        "mean": 1.3454367741942406,
+        "positive": 4,
+        "zero": 0,
+        "negative": 0,
+        "values": [
+          0.8272189497947693,
+          1.4395654648542404,
+          1.3281897902488708,
+          1.7867728918790817
+        ]
+      }
+    },
+    {
+      "seed": 93001,
+      "arm": "F-R",
+      "raw_rows": 10117,
+      "events": 396,
+      "rollouts": 252,
+      "optimizer_updates": 128,
+      "step_counts": {
+        "source": 712,
+        "trial": 81,
+        "reference_probe": 1513,
+        "teacher_probe": 2433,
+        "reference_report": 5378
+      },
+      "decisions": [
+        {
+          "seed": 93001,
+          "arm": "F-R",
+          "cycle": 0,
+          "cases": 2,
+          "preferences": 0,
+          "reference": 72.6484375,
+          "deployed": 72.6484375,
+          "selected": null,
+          "adopted": false,
+          "teacher": null,
+          "student": null,
+          "dream_order": "weak",
+          "candidates": 2,
+          "deployed_gain": 0.0,
+          "teacher_gain": null,
+          "student_gain": null,
+          "consolidation_loss": null,
+          "scope": {
+            "seen": {
+              "reference": 59.859375,
+              "deployed": 59.859375,
+              "gain": 0.0
+            },
+            "heldout": {
+              "reference": 85.4375,
+              "deployed": 85.4375,
+              "gain": 0.0
+            }
+          }
+        },
+        {
+          "seed": 93001,
+          "arm": "F-R",
+          "cycle": 1,
+          "cases": 2,
+          "preferences": 1,
+          "reference": 78.3984375,
+          "deployed": 78.3984375,
+          "selected": null,
+          "adopted": false,
+          "teacher": null,
+          "student": null,
+          "dream_order": "weak",
+          "candidates": 2,
+          "deployed_gain": 0.0,
+          "teacher_gain": null,
+          "student_gain": null,
+          "consolidation_loss": null,
+          "scope": {
+            "seen": {
+              "reference": 90.140625,
+              "deployed": 90.140625,
+              "gain": 0.0
+            },
+            "heldout": {
+              "reference": 66.65625,
+              "deployed": 66.65625,
+              "gain": 0.0
+            }
+          }
+        }
+      ],
+      "branch_differences": {
+        "n": 8,
+        "mean": 0.5625,
+        "positive": 1,
+        "zero": 7,
+        "negative": 0,
+        "values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          4.5,
+          0.0
+        ]
+      },
+      "preference_margin_changes": {
+        "n": 2,
+        "mean": 0.9163825213909149,
+        "positive": 2,
+        "zero": 0,
+        "negative": 0,
+        "values": [
+          0.803930938243866,
+          1.0288341045379639
+        ]
+      }
+    },
+    {
+      "seed": 93002,
+      "arm": "RL-RP",
+      "raw_rows": 43120,
+      "events": 767,
+      "rollouts": 572,
+      "optimizer_updates": 176,
+      "step_counts": {
+        "source": 1516,
+        "trial": 56,
+        "reference_probe": 2379,
+        "teacher_probe": 4332,
+        "student_wake": 883,
+        "reference_gate": 2078,
+        "student_gate": 2955,
+        "reference_report": 8384,
+        "teacher_report": 10680,
+        "deployed_report": 5022,
+        "rejected_student_report": 4835
+      },
+      "decisions": [
+        {
+          "seed": 93002,
+          "arm": "RL-RP",
+          "cycle": 0,
+          "cases": 2,
+          "preferences": 0,
+          "reference": 114.015625,
+          "deployed": 148.953125,
+          "selected": "weak",
+          "adopted": true,
+          "teacher": 201.0,
+          "student": 148.953125,
+          "dream_order": "weak",
+          "candidates": 2,
+          "deployed_gain": 34.9375,
+          "teacher_gain": 86.984375,
+          "student_gain": 34.9375,
+          "consolidation_loss": 52.046875,
+          "gate_gain": 106.15625,
+          "scope": {
+            "seen": {
+              "reference": 123.0,
+              "deployed": 158.421875,
+              "gain": 35.421875
+            },
+            "heldout": {
+              "reference": 105.03125,
+              "deployed": 139.484375,
+              "gain": 34.453125
+            }
+          }
+        },
+        {
+          "seed": 93002,
+          "arm": "RL-RP",
+          "cycle": 1,
+          "cases": 2,
+          "preferences": 0,
+          "reference": 124.671875,
+          "deployed": 124.671875,
+          "selected": "weak",
+          "adopted": false,
+          "teacher": 138.375,
+          "student": 143.0078125,
+          "dream_order": "weak",
+          "candidates": 1,
+          "deployed_gain": 0.0,
+          "teacher_gain": 13.703125,
+          "student_gain": 18.3359375,
+          "consolidation_loss": -4.6328125,
+          "gate_gain": 38.5625,
+          "scope": {
+            "seen": {
+              "reference": 147.765625,
+              "deployed": 147.765625,
+              "gain": 0.0
+            },
+            "heldout": {
+              "reference": 101.578125,
+              "deployed": 101.578125,
+              "gain": 0.0
+            }
+          }
+        }
+      ],
+      "branch_differences": {
+        "n": 8,
+        "mean": -0.1875,
+        "positive": 0,
+        "zero": 7,
+        "negative": 1,
+        "values": [
+          -1.5,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "preference_margin_changes": {
+        "n": 0,
+        "mean": null,
+        "positive": 0,
+        "zero": 0,
+        "negative": 0,
+        "values": []
+      }
+    },
+    {
+      "seed": 93002,
+      "arm": "F0",
+      "raw_rows": 12772,
+      "events": 767,
+      "rollouts": 572,
+      "optimizer_updates": 176,
+      "step_counts": {
+        "source": 399,
+        "trial": 64,
+        "reference_probe": 684,
+        "teacher_probe": 1097,
+        "student_wake": 490,
+        "reference_gate": 833,
+        "student_gate": 770,
+        "reference_report": 2891,
+        "teacher_report": 2772,
+        "deployed_report": 1338,
+        "rejected_student_report": 1434
+      },
+      "decisions": [
+        {
+          "seed": 93002,
+          "arm": "F0",
+          "cycle": 0,
+          "cases": 2,
+          "preferences": 1,
+          "reference": 37.6875,
+          "deployed": 34.484375,
+          "selected": "weak",
+          "adopted": true,
+          "teacher": 34.484375,
+          "student": 34.484375,
+          "dream_order": "weak",
+          "candidates": 2,
+          "deployed_gain": -3.203125,
+          "teacher_gain": -3.203125,
+          "student_gain": -3.203125,
+          "consolidation_loss": 0.0,
+          "gate_gain": 6.28125,
+          "scope": {
+            "seen": {
+              "reference": 42.859375,
+              "deployed": 26.53125,
+              "gain": -16.328125
+            },
+            "heldout": {
+              "reference": 32.515625,
+              "deployed": 42.4375,
+              "gain": 9.921875
+            }
+          }
+        },
+        {
+          "seed": 93002,
+          "arm": "F0",
+          "cycle": 1,
+          "cases": 2,
+          "preferences": 0,
+          "reference": 36.3203125,
+          "deployed": 36.3203125,
+          "selected": "weak",
+          "adopted": false,
+          "teacher": 39.859375,
+          "student": 39.859375,
+          "dream_order": "weak",
+          "candidates": 1,
+          "deployed_gain": 0.0,
+          "teacher_gain": 3.5390625,
+          "student_gain": 3.5390625,
+          "consolidation_loss": 0.0,
+          "gate_gain": -18.4375,
+          "scope": {
+            "seen": {
+              "reference": 38.71875,
+              "deployed": 38.71875,
+              "gain": 0.0
+            },
+            "heldout": {
+              "reference": 33.921875,
+              "deployed": 33.921875,
+              "gain": 0.0
+            }
+          }
+        }
+      ],
+      "branch_differences": {
+        "n": 8,
+        "mean": 0.1875,
+        "positive": 1,
+        "zero": 7,
+        "negative": 0,
+        "values": [
+          0.0,
+          1.5,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "preference_margin_changes": {
+        "n": 2,
+        "mean": 2.1579761505126953,
+        "positive": 2,
+        "zero": 0,
+        "negative": 0,
+        "values": [
+          1.952731430530548,
+          2.3632208704948425
+        ]
+      }
+    },
+    {
+      "seed": 93002,
+      "arm": "F-RP",
+      "raw_rows": 23922,
+      "events": 598,
+      "rollouts": 420,
+      "optimizer_updates": 160,
+      "step_counts": {
+        "source": 1479,
+        "trial": 80,
+        "reference_probe": 2481,
+        "teacher_probe": 2705,
+        "reference_report": 9243,
+        "student_wake": 465,
+        "reference_gate": 1225,
+        "student_gate": 667,
+        "teacher_report": 3269,
+        "rejected_student_report": 2308
+      },
+      "decisions": [
+        {
+          "seed": 93002,
+          "arm": "F-RP",
+          "cycle": 0,
+          "cases": 2,
+          "preferences": 1,
+          "reference": 172.7265625,
+          "deployed": 172.7265625,
+          "selected": null,
+          "adopted": false,
+          "teacher": null,
+          "student": null,
+          "dream_order": "weak",
+          "candidates": 2,
+          "deployed_gain": 0.0,
+          "teacher_gain": null,
+          "student_gain": null,
+          "consolidation_loss": null,
+          "scope": {
+            "seen": {
+              "reference": 195.140625,
+              "deployed": 195.140625,
+              "gain": 0.0
+            },
+            "heldout": {
+              "reference": 150.3125,
+              "deployed": 150.3125,
+              "gain": 0.0
+            }
+          }
+        },
+        {
+          "seed": 93002,
+          "arm": "F-RP",
+          "cycle": 1,
+          "cases": 2,
+          "preferences": 2,
+          "reference": 100.15625,
+          "deployed": 100.15625,
+          "selected": "strong",
+          "adopted": false,
+          "teacher": 87.5546875,
+          "student": 63.46875,
+          "dream_order": "weak",
+          "candidates": 2,
+          "deployed_gain": 0.0,
+          "teacher_gain": -12.6015625,
+          "student_gain": -36.6875,
+          "consolidation_loss": 24.0859375,
+          "gate_gain": -64.8125,
+          "scope": {
+            "seen": {
+              "reference": 121.953125,
+              "deployed": 121.953125,
+              "gain": 0.0
+            },
+            "heldout": {
+              "reference": 78.359375,
+              "deployed": 78.359375,
+              "gain": 0.0
+            }
+          }
+        }
+      ],
+      "branch_differences": {
+        "n": 8,
+        "mean": 5.4375,
+        "positive": 2,
+        "zero": 5,
+        "negative": 1,
+        "values": [
+          -1.5,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          12.0,
+          33.0
+        ]
+      },
+      "preference_margin_changes": {
+        "n": 6,
+        "mean": 1.5972350041071575,
+        "positive": 6,
+        "zero": 0,
+        "negative": 0,
+        "values": [
+          2.1296964287757874,
+          3.0779693722724915,
+          0.9437129497528076,
+          0.8886892199516296,
+          1.3422023057937622,
+          1.201139748096466
+        ]
+      }
+    },
+    {
+      "seed": 93002,
+      "arm": "F-R",
+      "raw_rows": 13242,
+      "events": 396,
+      "rollouts": 252,
+      "optimizer_updates": 128,
+      "step_counts": {
+        "source": 1001,
+        "trial": 98,
+        "reference_probe": 2323,
+        "teacher_probe": 1992,
+        "reference_report": 7828
+      },
+      "decisions": [
+        {
+          "seed": 93002,
+          "arm": "F-R",
+          "cycle": 0,
+          "cases": 2,
+          "preferences": 0,
+          "reference": 115.0078125,
+          "deployed": 115.0078125,
+          "selected": null,
+          "adopted": false,
+          "teacher": null,
+          "student": null,
+          "dream_order": "weak",
+          "candidates": 2,
+          "deployed_gain": 0.0,
+          "teacher_gain": null,
+          "student_gain": null,
+          "consolidation_loss": null,
+          "scope": {
+            "seen": {
+              "reference": 102.125,
+              "deployed": 102.125,
+              "gain": 0.0
+            },
+            "heldout": {
+              "reference": 127.890625,
+              "deployed": 127.890625,
+              "gain": 0.0
+            }
+          }
+        },
+        {
+          "seed": 93002,
+          "arm": "F-R",
+          "cycle": 1,
+          "cases": 2,
+          "preferences": 1,
+          "reference": 126.2734375,
+          "deployed": 126.2734375,
+          "selected": null,
+          "adopted": false,
+          "teacher": null,
+          "student": null,
+          "dream_order": "weak",
+          "candidates": 2,
+          "deployed_gain": 0.0,
+          "teacher_gain": null,
+          "student_gain": null,
+          "consolidation_loss": null,
+          "scope": {
+            "seen": {
+              "reference": 139.28125,
+              "deployed": 139.28125,
+              "gain": 0.0
+            },
+            "heldout": {
+              "reference": 113.265625,
+              "deployed": 113.265625,
+              "gain": 0.0
+            }
+          }
+        }
+      ],
+      "branch_differences": {
+        "n": 8,
+        "mean": 5.4375,
+        "positive": 1,
+        "zero": 7,
+        "negative": 0,
+        "values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          43.5,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "preference_margin_changes": {
+        "n": 2,
+        "mean": 1.3454004228115082,
+        "positive": 2,
+        "zero": 0,
+        "negative": 0,
+        "values": [
+          1.316116601228714,
+          1.3746842443943024
+        ]
+      }
+    },
+    {
+      "seed": 93003,
+      "arm": "RL-RP",
+      "raw_rows": 37850,
+      "events": 767,
+      "rollouts": 572,
+      "optimizer_updates": 176,
+      "step_counts": {
+        "source": 1161,
+        "trial": 76,
+        "reference_probe": 2396,
+        "teacher_probe": 3370,
+        "student_wake": 719,
+        "reference_gate": 2573,
+        "student_gate": 2365,
+        "reference_report": 8485,
+        "teacher_report": 8214,
+        "rejected_student_report": 8491
+      },
+      "decisions": [
+        {
+          "seed": 93003,
+          "arm": "RL-RP",
+          "cycle": 0,
+          "cases": 2,
+          "preferences": 0,
+          "reference": 110.734375,
+          "deployed": 110.734375,
+          "selected": "strong",
+          "adopted": false,
+          "teacher": 107.234375,
+          "student": 112.0703125,
+          "dream_order": "weak",
+          "candidates": 2,
+          "deployed_gain": 0.0,
+          "teacher_gain": -3.5,
+          "student_gain": 1.3359375,
+          "consolidation_loss": -4.8359375,
+          "gate_gain": -29.40625,
+          "scope": {
+            "seen": {
+              "reference": 110.421875,
+              "deployed": 110.421875,
+              "gain": 0.0
+            },
+            "heldout": {
+              "reference": 111.046875,
+              "deployed": 111.046875,
+              "gain": 0.0
+            }
+          }
+        },
+        {
+          "seed": 93003,
+          "arm": "RL-RP",
+          "cycle": 1,
+          "cases": 2,
+          "preferences": 0,
+          "reference": 147.5078125,
+          "deployed": 147.5078125,
+          "selected": "strong",
+          "adopted": false,
+          "teacher": 136.84375,
+          "student": 138.5,
+          "dream_order": "strong",
+          "candidates": 1,
+          "deployed_gain": 0.0,
+          "teacher_gain": -10.6640625,
+          "student_gain": -9.0078125,
+          "consolidation_loss": -1.65625,
+          "gate_gain": -52.59375,
+          "scope": {
+            "seen": {
+              "reference": 163.796875,
+              "deployed": 163.796875,
+              "gain": 0.0
+            },
+            "heldout": {
+              "reference": 131.21875,
+              "deployed": 131.21875,
+              "gain": 0.0
+            }
+          }
+        }
+      ],
+      "branch_differences": {
+        "n": 8,
+        "mean": 0.75,
+        "positive": 2,
+        "zero": 5,
+        "negative": 1,
+        "values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          -1.5,
+          1.5,
+          6.0,
+          0.0
+        ]
+      },
+      "preference_margin_changes": {
+        "n": 0,
+        "mean": null,
+        "positive": 0,
+        "zero": 0,
+        "negative": 0,
+        "values": []
+      }
+    },
+    {
+      "seed": 93003,
+      "arm": "F0",
+      "raw_rows": 8818,
+      "events": 598,
+      "rollouts": 420,
+      "optimizer_updates": 160,
+      "step_counts": {
+        "source": 328,
+        "trial": 88,
+        "reference_probe": 535,
+        "teacher_probe": 1026,
+        "reference_report": 3517,
+        "student_wake": 125,
+        "reference_gate": 362,
+        "student_gate": 256,
+        "teacher_report": 1289,
+        "rejected_student_report": 1292
+      },
+      "decisions": [
+        {
+          "seed": 93003,
+          "arm": "F0",
+          "cycle": 0,
+          "cases": 2,
+          "preferences": 1,
+          "reference": 40.1484375,
+          "deployed": 40.1484375,
+          "selected": null,
+          "adopted": false,
+          "teacher": null,
+          "student": null,
+          "dream_order": "weak",
+          "candidates": 2,
+          "deployed_gain": 0.0,
+          "teacher_gain": null,
+          "student_gain": null,
+          "consolidation_loss": null,
+          "scope": {
+            "seen": {
+              "reference": 40.828125,
+              "deployed": 40.828125,
+              "gain": 0.0
+            },
+            "heldout": {
+              "reference": 39.46875,
+              "deployed": 39.46875,
+              "gain": 0.0
+            }
+          }
+        },
+        {
+          "seed": 93003,
+          "arm": "F0",
+          "cycle": 1,
+          "cases": 2,
+          "preferences": 2,
+          "reference": 48.53125,
+          "deployed": 48.53125,
+          "selected": "strong",
+          "adopted": false,
+          "teacher": 31.7734375,
+          "student": 31.84375,
+          "dream_order": "weak",
+          "candidates": 2,
+          "deployed_gain": 0.0,
+          "teacher_gain": -16.7578125,
+          "student_gain": -16.6875,
+          "consolidation_loss": -0.0703125,
+          "gate_gain": -9.9375,
+          "scope": {
+            "seen": {
+              "reference": 44.0,
+              "deployed": 44.0,
+              "gain": 0.0
+            },
+            "heldout": {
+              "reference": 53.0625,
+              "deployed": 53.0625,
+              "gain": 0.0
+            }
+          }
+        }
+      ],
+      "branch_differences": {
+        "n": 8,
+        "mean": 0.1875,
+        "positive": 2,
+        "zero": 5,
+        "negative": 1,
+        "values": [
+          0.0,
+          0.0,
+          0.0,
+          1.5,
+          3.0,
+          0.0,
+          -3.0,
+          0.0
+        ]
+      },
+      "preference_margin_changes": {
+        "n": 6,
+        "mean": 1.2907548248767853,
+        "positive": 6,
+        "zero": 0,
+        "negative": 0,
+        "values": [
+          1.7257870733737946,
+          2.190522223711014,
+          1.0506024360656738,
+          0.5962033867835999,
+          1.3400793075561523,
+          0.8413345217704773
+        ]
+      }
+    },
+    {
+      "seed": 93003,
+      "arm": "F-RP",
+      "raw_rows": 25544,
+      "events": 598,
+      "rollouts": 420,
+      "optimizer_updates": 160,
+      "step_counts": {
+        "source": 1161,
+        "trial": 76,
+        "reference_probe": 2396,
+        "teacher_probe": 3282,
+        "student_wake": 397,
+        "reference_gate": 1286,
+        "student_gate": 1239,
+        "reference_report": 8150,
+        "teacher_report": 3842,
+        "rejected_student_report": 3715
+      },
+      "decisions": [
+        {
+          "seed": 93003,
+          "arm": "F-RP",
+          "cycle": 0,
+          "cases": 2,
+          "preferences": 0,
+          "reference": 110.734375,
+          "deployed": 110.734375,
+          "selected": "strong",
+          "adopted": false,
+          "teacher": 107.234375,
+          "student": 112.0703125,
+          "dream_order": "weak",
+          "candidates": 2,
+          "deployed_gain": 0.0,
+          "teacher_gain": -3.5,
+          "student_gain": 1.3359375,
+          "consolidation_loss": -4.8359375,
+          "gate_gain": -29.40625,
+          "scope": {
+            "seen": {
+              "reference": 110.421875,
+              "deployed": 110.421875,
+              "gain": 0.0
+            },
+            "heldout": {
+              "reference": 111.046875,
+              "deployed": 111.046875,
+              "gain": 0.0
+            }
+          }
+        },
+        {
+          "seed": 93003,
+          "arm": "F-RP",
+          "cycle": 1,
+          "cases": 2,
+          "preferences": 3,
+          "reference": 125.59375,
+          "deployed": 125.59375,
+          "selected": null,
+          "adopted": false,
+          "teacher": null,
+          "student": null,
+          "dream_order": "strong",
+          "candidates": 2,
+          "deployed_gain": 0.0,
+          "teacher_gain": null,
+          "student_gain": null,
+          "consolidation_loss": null,
+          "scope": {
+            "seen": {
+              "reference": 138.1875,
+              "deployed": 138.1875,
+              "gain": 0.0
+            },
+            "heldout": {
+              "reference": 113.0,
+              "deployed": 113.0,
+              "gain": 0.0
+            }
+          }
+        }
+      ],
+      "branch_differences": {
+        "n": 8,
+        "mean": 0.75,
+        "positive": 2,
+        "zero": 5,
+        "negative": 1,
+        "values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          -1.5,
+          1.5,
+          6.0,
+          0.0
+        ]
+      },
+      "preference_margin_changes": {
+        "n": 6,
+        "mean": 1.2494587848583858,
+        "positive": 6,
+        "zero": 0,
+        "negative": 0,
+        "values": [
+          1.3848479390144348,
+          1.175398051738739,
+          1.504270300269127,
+          1.0636938214302063,
+          1.1307207942008972,
+          1.23782180249691
+        ]
+      }
+    },
+    {
+      "seed": 93003,
+      "arm": "F-R",
+      "raw_rows": 7180,
+      "events": 396,
+      "rollouts": 252,
+      "optimizer_updates": 128,
+      "step_counts": {
+        "source": 456,
+        "trial": 158,
+        "reference_probe": 875,
+        "teacher_probe": 1122,
+        "reference_report": 4569
+      },
+      "decisions": [
+        {
+          "seed": 93003,
+          "arm": "F-R",
+          "cycle": 0,
+          "cases": 2,
+          "preferences": 3,
+          "reference": 53.5859375,
+          "deployed": 53.5859375,
+          "selected": null,
+          "adopted": false,
+          "teacher": null,
+          "student": null,
+          "dream_order": "weak",
+          "candidates": 2,
+          "deployed_gain": 0.0,
+          "teacher_gain": null,
+          "student_gain": null,
+          "consolidation_loss": null,
+          "scope": {
+            "seen": {
+              "reference": 58.171875,
+              "deployed": 58.171875,
+              "gain": 0.0
+            },
+            "heldout": {
+              "reference": 49.0,
+              "deployed": 49.0,
+              "gain": 0.0
+            }
+          }
+        },
+        {
+          "seed": 93003,
+          "arm": "F-R",
+          "cycle": 1,
+          "cases": 2,
+          "preferences": 2,
+          "reference": 69.125,
+          "deployed": 69.125,
+          "selected": null,
+          "adopted": false,
+          "teacher": null,
+          "student": null,
+          "dream_order": "weak",
+          "candidates": 2,
+          "deployed_gain": 0.0,
+          "teacher_gain": null,
+          "student_gain": null,
+          "consolidation_loss": null,
+          "scope": {
+            "seen": {
+              "reference": 70.015625,
+              "deployed": 70.015625,
+              "gain": 0.0
+            },
+            "heldout": {
+              "reference": 68.234375,
+              "deployed": 68.234375,
+              "gain": 0.0
+            }
+          }
+        }
+      ],
+      "branch_differences": {
+        "n": 8,
+        "mean": 18.9375,
+        "positive": 4,
+        "zero": 3,
+        "negative": 1,
+        "values": [
+          -3.0,
+          0.0,
+          4.5,
+          142.5,
+          4.5,
+          0.0,
+          3.0,
+          0.0
+        ]
+      },
+      "preference_margin_changes": {
+        "n": 10,
+        "mean": 0.795959934592247,
+        "positive": 10,
+        "zero": 0,
+        "negative": 0,
+        "values": [
+          0.7088321149349213,
+          0.6835286170244217,
+          0.6283974051475525,
+          1.0301609933376312,
+          0.8344066888093948,
+          1.0663670897483826,
+          0.6381825804710388,
+          0.6134923100471497,
+          0.8626502752304077,
+          0.8935812711715698
+        ]
+      }
+    },
+    {
+      "seed": 93004,
+      "arm": "RL-RP",
+      "raw_rows": 19455,
+      "events": 396,
+      "rollouts": 252,
+      "optimizer_updates": 128,
+      "step_counts": {
+        "source": 1533,
+        "trial": 159,
+        "reference_probe": 3241,
+        "teacher_probe": 5177,
+        "reference_report": 9345
+      },
+      "decisions": [
+        {
+          "seed": 93004,
+          "arm": "RL-RP",
+          "cycle": 0,
+          "cases": 2,
+          "preferences": 0,
+          "reference": 132.78125,
+          "deployed": 132.78125,
+          "selected": null,
+          "adopted": false,
+          "teacher": null,
+          "student": null,
+          "dream_order": "weak",
+          "candidates": 2,
+          "deployed_gain": 0.0,
+          "teacher_gain": null,
+          "student_gain": null,
+          "consolidation_loss": null,
+          "scope": {
+            "seen": {
+              "reference": 145.5,
+              "deployed": 145.5,
+              "gain": 0.0
+            },
+            "heldout": {
+              "reference": 120.0625,
+              "deployed": 120.0625,
+              "gain": 0.0
+            }
+          }
+        },
+        {
+          "seed": 93004,
+          "arm": "RL-RP",
+          "cycle": 1,
+          "cases": 2,
+          "preferences": 0,
+          "reference": 137.8046875,
+          "deployed": 137.8046875,
+          "selected": null,
+          "adopted": false,
+          "teacher": null,
+          "student": null,
+          "dream_order": "weak",
+          "candidates": 2,
+          "deployed_gain": 0.0,
+          "teacher_gain": null,
+          "student_gain": null,
+          "consolidation_loss": null,
+          "scope": {
+            "seen": {
+              "reference": 136.265625,
+              "deployed": 136.265625,
+              "gain": 0.0
+            },
+            "heldout": {
+              "reference": 139.34375,
+              "deployed": 139.34375,
+              "gain": 0.0
+            }
+          }
+        }
+      ],
+      "branch_differences": {
+        "n": 8,
+        "mean": 27.125,
+        "positive": 4,
+        "zero": 3,
+        "negative": 1,
+        "values": [
+          0.0,
+          51.0,
+          -1.5,
+          4.5,
+          0.0,
+          145.0,
+          18.0,
+          0.0
+        ]
+      },
+      "preference_margin_changes": {
+        "n": 0,
+        "mean": null,
+        "positive": 0,
+        "zero": 0,
+        "negative": 0,
+        "values": []
+      }
+    },
+    {
+      "seed": 93004,
+      "arm": "F0",
+      "raw_rows": 15602,
+      "events": 767,
+      "rollouts": 572,
+      "optimizer_updates": 176,
+      "step_counts": {
+        "source": 731,
+        "trial": 69,
+        "reference_probe": 860,
+        "teacher_probe": 1651,
+        "student_wake": 373,
+        "reference_gate": 991,
+        "student_gate": 878,
+        "reference_report": 3671,
+        "teacher_report": 3166,
+        "rejected_student_report": 1971,
+        "deployed_report": 1241
+      },
+      "decisions": [
+        {
+          "seed": 93004,
+          "arm": "F0",
+          "cycle": 0,
+          "cases": 2,
+          "preferences": 0,
+          "reference": 57.203125,
+          "deployed": 57.203125,
+          "selected": "strong",
+          "adopted": false,
+          "teacher": 60.7421875,
+          "student": 61.8203125,
+          "dream_order": "weak",
+          "candidates": 2,
+          "deployed_gain": 0.0,
+          "teacher_gain": 3.5390625,
+          "student_gain": 4.6171875,
+          "consolidation_loss": -1.078125,
+          "gate_gain": -20.6875,
+          "scope": {
+            "seen": {
+              "reference": 65.140625,
+              "deployed": 65.140625,
+              "gain": 0.0
+            },
+            "heldout": {
+              "reference": 49.265625,
+              "deployed": 49.265625,
+              "gain": 0.0
+            }
+          }
+        },
+        {
+          "seed": 93004,
+          "arm": "F0",
+          "cycle": 1,
+          "cases": 2,
+          "preferences": 2,
+          "reference": 50.7109375,
+          "deployed": 30.6484375,
+          "selected": "strong",
+          "adopted": true,
+          "teacher": 30.6484375,
+          "student": 30.6484375,
+          "dream_order": "strong",
+          "candidates": 1,
+          "deployed_gain": -20.0625,
+          "teacher_gain": -20.0625,
+          "student_gain": -20.0625,
+          "consolidation_loss": 0.0,
+          "gate_gain": 10.09375,
+          "scope": {
+            "seen": {
+              "reference": 46.296875,
+              "deployed": 28.6875,
+              "gain": -17.609375
+            },
+            "heldout": {
+              "reference": 55.125,
+              "deployed": 32.609375,
+              "gain": -22.515625
+            }
+          }
+        }
+      ],
+      "branch_differences": {
+        "n": 8,
+        "mean": 0.0,
+        "positive": 1,
+        "zero": 6,
+        "negative": 1,
+        "values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.5,
+          -1.5,
+          0.0,
+          0.0
+        ]
+      },
+      "preference_margin_changes": {
+        "n": 2,
+        "mean": 1.2436721250414848,
+        "positive": 2,
+        "zero": 0,
+        "negative": 0,
+        "values": [
+          1.6227006018161774,
+          0.8646436482667923
+        ]
+      }
+    },
+    {
+      "seed": 93004,
+      "arm": "F-RP",
+      "raw_rows": 16701,
+      "events": 396,
+      "rollouts": 252,
+      "optimizer_updates": 128,
+      "step_counts": {
+        "source": 1533,
+        "trial": 159,
+        "reference_probe": 3241,
+        "teacher_probe": 2423,
+        "reference_report": 9345
+      },
+      "decisions": [
+        {
+          "seed": 93004,
+          "arm": "F-RP",
+          "cycle": 0,
+          "cases": 2,
+          "preferences": 3,
+          "reference": 132.78125,
+          "deployed": 132.78125,
+          "selected": null,
+          "adopted": false,
+          "teacher": null,
+          "student": null,
+          "dream_order": "weak",
+          "candidates": 2,
+          "deployed_gain": 0.0,
+          "teacher_gain": null,
+          "student_gain": null,
+          "consolidation_loss": null,
+          "scope": {
+            "seen": {
+              "reference": 145.5,
+              "deployed": 145.5,
+              "gain": 0.0
+            },
+            "heldout": {
+              "reference": 120.0625,
+              "deployed": 120.0625,
+              "gain": 0.0
+            }
+          }
+        },
+        {
+          "seed": 93004,
+          "arm": "F-RP",
+          "cycle": 1,
+          "cases": 2,
+          "preferences": 2,
+          "reference": 137.8046875,
+          "deployed": 137.8046875,
+          "selected": null,
+          "adopted": false,
+          "teacher": null,
+          "student": null,
+          "dream_order": "weak",
+          "candidates": 2,
+          "deployed_gain": 0.0,
+          "teacher_gain": null,
+          "student_gain": null,
+          "consolidation_loss": null,
+          "scope": {
+            "seen": {
+              "reference": 136.265625,
+              "deployed": 136.265625,
+              "gain": 0.0
+            },
+            "heldout": {
+              "reference": 139.34375,
+              "deployed": 139.34375,
+              "gain": 0.0
+            }
+          }
+        }
+      ],
+      "branch_differences": {
+        "n": 8,
+        "mean": 27.125,
+        "positive": 4,
+        "zero": 3,
+        "negative": 1,
+        "values": [
+          0.0,
+          51.0,
+          -1.5,
+          4.5,
+          0.0,
+          145.0,
+          18.0,
+          0.0
+        ]
+      },
+      "preference_margin_changes": {
+        "n": 10,
+        "mean": 0.8643479645252228,
+        "positive": 10,
+        "zero": 0,
+        "negative": 0,
+        "values": [
+          0.7009497955441475,
+          0.6366494297981262,
+          0.6948820352554321,
+          1.34608805924654,
+          0.7664852142333984,
+          1.1107025146484375,
+          1.1856284439563751,
+          0.23999295383691788,
+          1.6022651493549347,
+          0.35983604937791824
+        ]
+      }
+    },
+    {
+      "seed": 93004,
+      "arm": "F-R",
+      "raw_rows": 18755,
+      "events": 598,
+      "rollouts": 420,
+      "optimizer_updates": 160,
+      "step_counts": {
+        "source": 1226,
+        "trial": 69,
+        "reference_probe": 1610,
+        "teacher_probe": 3154,
+        "reference_report": 5356,
+        "student_wake": 296,
+        "reference_gate": 782,
+        "student_gate": 858,
+        "teacher_report": 2450,
+        "deployed_report": 2954
+      },
+      "decisions": [
+        {
+          "seed": 93004,
+          "arm": "F-R",
+          "cycle": 0,
+          "cases": 2,
+          "preferences": 0,
+          "reference": 77.2421875,
+          "deployed": 77.2421875,
+          "selected": null,
+          "adopted": false,
+          "teacher": null,
+          "student": null,
+          "dream_order": "weak",
+          "candidates": 2,
+          "deployed_gain": 0.0,
+          "teacher_gain": null,
+          "student_gain": null,
+          "consolidation_loss": null,
+          "scope": {
+            "seen": {
+              "reference": 80.796875,
+              "deployed": 80.796875,
+              "gain": 0.0
+            },
+            "heldout": {
+              "reference": 73.6875,
+              "deployed": 73.6875,
+              "gain": 0.0
+            }
+          }
+        },
+        {
+          "seed": 93004,
+          "arm": "F-R",
+          "cycle": 1,
+          "cases": 2,
+          "preferences": 0,
+          "reference": 73.2890625,
+          "deployed": 83.296875,
+          "selected": "strong",
+          "adopted": true,
+          "teacher": 71.484375,
+          "student": 83.296875,
+          "dream_order": "weak",
+          "candidates": 2,
+          "deployed_gain": 10.0078125,
+          "teacher_gain": -1.8046875,
+          "student_gain": 10.0078125,
+          "consolidation_loss": -11.8125,
+          "gate_gain": 7.125,
+          "scope": {
+            "seen": {
+              "reference": 86.953125,
+              "deployed": 92.34375,
+              "gain": 5.390625
+            },
+            "heldout": {
+              "reference": 59.625,
+              "deployed": 74.25,
+              "gain": 14.625
+            }
+          }
+        }
+      ],
+      "branch_differences": {
+        "n": 8,
+        "mean": 0.0,
+        "positive": 0,
+        "zero": 8,
+        "negative": 0,
+        "values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "preference_margin_changes": {
+        "n": 0,
+        "mean": null,
+        "positive": 0,
+        "zero": 0,
+        "negative": 0,
+        "values": []
+      }
+    }
+  ],
+  "groups": [
+    {
+      "arm": "RL-RP",
+      "cycle": 0,
+      "seeds": 4,
+      "ordinary_reference": 118.51953125,
+      "deployed": 147.939453125,
+      "deployed_gain": {
+        "n": 4,
+        "mean": 29.419921875,
+        "positive": 2,
+        "zero": 2,
+        "negative": 0,
+        "values": [
+          82.7421875,
+          34.9375,
+          0.0,
+          0.0
+        ]
+      },
+      "eligible_teachers": 3,
+      "adopted": 2,
+      "seen_gain": 30.3359375,
+      "heldout_gain": 28.50390625
+    },
+    {
+      "arm": "F0",
+      "cycle": 0,
+      "seeds": 4,
+      "ordinary_reference": 45.509765625,
+      "deployed": 44.708984375,
+      "deployed_gain": {
+        "n": 4,
+        "mean": -0.80078125,
+        "positive": 0,
+        "zero": 3,
+        "negative": 1,
+        "values": [
+          0.0,
+          -3.203125,
+          0.0,
+          0.0
+        ]
+      },
+      "eligible_teachers": 2,
+      "adopted": 1,
+      "seen_gain": -4.08203125,
+      "heldout_gain": 2.48046875
+    },
+    {
+      "arm": "F-RP",
+      "cycle": 0,
+      "seeds": 4,
+      "ordinary_reference": 133.197265625,
+      "deployed": 136.6953125,
+      "deployed_gain": {
+        "n": 4,
+        "mean": 3.498046875,
+        "positive": 1,
+        "zero": 3,
+        "negative": 0,
+        "values": [
+          13.9921875,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "eligible_teachers": 2,
+      "adopted": 1,
+      "seen_gain": 0.0703125,
+      "heldout_gain": 6.92578125
+    },
+    {
+      "arm": "F-R",
+      "cycle": 0,
+      "seeds": 4,
+      "ordinary_reference": 79.62109375,
+      "deployed": 79.62109375,
+      "deployed_gain": {
+        "n": 4,
+        "mean": 0.0,
+        "positive": 0,
+        "zero": 4,
+        "negative": 0,
+        "values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "eligible_teachers": 0,
+      "adopted": 0,
+      "seen_gain": 0.0,
+      "heldout_gain": 0.0
+    },
+    {
+      "arm": "RL-RP",
+      "cycle": 1,
+      "seeds": 4,
+      "ordinary_reference": 140.474609375,
+      "deployed": 140.474609375,
+      "deployed_gain": {
+        "n": 4,
+        "mean": 0.0,
+        "positive": 0,
+        "zero": 4,
+        "negative": 0,
+        "values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "eligible_teachers": 3,
+      "adopted": 0,
+      "seen_gain": 0.0,
+      "heldout_gain": 0.0
+    },
+    {
+      "arm": "F0",
+      "cycle": 1,
+      "seeds": 4,
+      "ordinary_reference": 48.017578125,
+      "deployed": 44.6796875,
+      "deployed_gain": {
+        "n": 4,
+        "mean": -3.337890625,
+        "positive": 1,
+        "zero": 2,
+        "negative": 1,
+        "values": [
+          6.7109375,
+          0.0,
+          0.0,
+          -20.0625
+        ]
+      },
+      "eligible_teachers": 4,
+      "adopted": 2,
+      "seen_gain": -1.40625,
+      "heldout_gain": -5.26953125
+    },
+    {
+      "arm": "F-RP",
+      "cycle": 1,
+      "seeds": 4,
+      "ordinary_reference": 124.70703125,
+      "deployed": 124.70703125,
+      "deployed_gain": {
+        "n": 4,
+        "mean": 0.0,
+        "positive": 0,
+        "zero": 4,
+        "negative": 0,
+        "values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "eligible_teachers": 1,
+      "adopted": 0,
+      "seen_gain": 0.0,
+      "heldout_gain": 0.0
+    },
+    {
+      "arm": "F-R",
+      "cycle": 1,
+      "seeds": 4,
+      "ordinary_reference": 86.771484375,
+      "deployed": 89.2734375,
+      "deployed_gain": {
+        "n": 4,
+        "mean": 2.501953125,
+        "positive": 1,
+        "zero": 3,
+        "negative": 0,
+        "values": [
+          0.0,
+          0.0,
+          0.0,
+          10.0078125
+        ]
+      },
+      "eligible_teachers": 1,
+      "adopted": 1,
+      "seen_gain": 1.34765625,
+      "heldout_gain": 3.65625
+    }
+  ],
+  "decisions": [
+    {
+      "seed": 93001,
+      "arm": "RL-RP",
+      "cycle": 0,
+      "cases": 2,
+      "preferences": 0,
+      "reference": 116.546875,
+      "deployed": 199.2890625,
+      "selected": "weak",
+      "adopted": true,
+      "teacher": 222.5546875,
+      "student": 199.2890625,
+      "dream_order": "weak",
+      "candidates": 2,
+      "deployed_gain": 82.7421875,
+      "teacher_gain": 106.0078125,
+      "student_gain": 82.7421875,
+      "consolidation_loss": 23.265625,
+      "gate_gain": 96.0625,
+      "scope": {
+        "seen": {
+          "reference": 126.96875,
+          "deployed": 212.890625,
+          "gain": 85.921875
+        },
+        "heldout": {
+          "reference": 106.125,
+          "deployed": 185.6875,
+          "gain": 79.5625
+        }
+      }
+    },
+    {
+      "seed": 93001,
+      "arm": "RL-RP",
+      "cycle": 1,
+      "cases": 2,
+      "preferences": 0,
+      "reference": 151.9140625,
+      "deployed": 151.9140625,
+      "selected": "weak",
+      "adopted": false,
+      "teacher": 140.84375,
+      "student": 153.40625,
+      "dream_order": "weak",
+      "candidates": 1,
+      "deployed_gain": 0.0,
+      "teacher_gain": -11.0703125,
+      "student_gain": 1.4921875,
+      "consolidation_loss": -12.5625,
+      "gate_gain": -22.28125,
+      "scope": {
+        "seen": {
+          "reference": 157.8125,
+          "deployed": 157.8125,
+          "gain": 0.0
+        },
+        "heldout": {
+          "reference": 146.015625,
+          "deployed": 146.015625,
+          "gain": 0.0
+        }
+      }
+    },
+    {
+      "seed": 93001,
+      "arm": "F0",
+      "cycle": 0,
+      "cases": 2,
+      "preferences": 4,
+      "reference": 47.0,
+      "deployed": 47.0,
+      "selected": null,
+      "adopted": false,
+      "teacher": null,
+      "student": null,
+      "dream_order": "weak",
+      "candidates": 2,
+      "deployed_gain": 0.0,
+      "teacher_gain": null,
+      "student_gain": null,
+      "consolidation_loss": null,
+      "scope": {
+        "seen": {
+          "reference": 52.609375,
+          "deployed": 52.609375,
+          "gain": 0.0
+        },
+        "heldout": {
+          "reference": 41.390625,
+          "deployed": 41.390625,
+          "gain": 0.0
+        }
+      }
+    },
+    {
+      "seed": 93001,
+      "arm": "F0",
+      "cycle": 1,
+      "cases": 2,
+      "preferences": 0,
+      "reference": 56.5078125,
+      "deployed": 63.21875,
+      "selected": "weak",
+      "adopted": true,
+      "teacher": 62.984375,
+      "student": 63.21875,
+      "dream_order": "weak",
+      "candidates": 1,
+      "deployed_gain": 6.7109375,
+      "teacher_gain": 6.4765625,
+      "student_gain": 6.7109375,
+      "consolidation_loss": -0.234375,
+      "gate_gain": 2.21875,
+      "scope": {
+        "seen": {
+          "reference": 55.9375,
+          "deployed": 67.921875,
+          "gain": 11.984375
+        },
+        "heldout": {
+          "reference": 57.078125,
+          "deployed": 58.515625,
+          "gain": 1.4375
+        }
+      }
+    },
+    {
+      "seed": 93001,
+      "arm": "F-RP",
+      "cycle": 0,
+      "cases": 2,
+      "preferences": 0,
+      "reference": 116.546875,
+      "deployed": 130.5390625,
+      "selected": "weak",
+      "adopted": true,
+      "teacher": 176.4296875,
+      "student": 130.5390625,
+      "dream_order": "weak",
+      "candidates": 2,
+      "deployed_gain": 13.9921875,
+      "teacher_gain": 59.8828125,
+      "student_gain": 13.9921875,
+      "consolidation_loss": 45.890625,
+      "gate_gain": 33.28125,
+      "scope": {
+        "seen": {
+          "reference": 126.96875,
+          "deployed": 127.25,
+          "gain": 0.28125
+        },
+        "heldout": {
+          "reference": 106.125,
+          "deployed": 133.828125,
+          "gain": 27.703125
+        }
+      }
+    },
+    {
+      "seed": 93001,
+      "arm": "F-RP",
+      "cycle": 1,
+      "cases": 2,
+      "preferences": 2,
+      "reference": 135.2734375,
+      "deployed": 135.2734375,
+      "selected": null,
+      "adopted": false,
+      "teacher": null,
+      "student": null,
+      "dream_order": "weak",
+      "candidates": 2,
+      "deployed_gain": 0.0,
+      "teacher_gain": null,
+      "student_gain": null,
+      "consolidation_loss": null,
+      "scope": {
+        "seen": {
+          "reference": 127.140625,
+          "deployed": 127.140625,
+          "gain": 0.0
+        },
+        "heldout": {
+          "reference": 143.40625,
+          "deployed": 143.40625,
+          "gain": 0.0
+        }
+      }
+    },
+    {
+      "seed": 93001,
+      "arm": "F-R",
+      "cycle": 0,
+      "cases": 2,
+      "preferences": 0,
+      "reference": 72.6484375,
+      "deployed": 72.6484375,
+      "selected": null,
+      "adopted": false,
+      "teacher": null,
+      "student": null,
+      "dream_order": "weak",
+      "candidates": 2,
+      "deployed_gain": 0.0,
+      "teacher_gain": null,
+      "student_gain": null,
+      "consolidation_loss": null,
+      "scope": {
+        "seen": {
+          "reference": 59.859375,
+          "deployed": 59.859375,
+          "gain": 0.0
+        },
+        "heldout": {
+          "reference": 85.4375,
+          "deployed": 85.4375,
+          "gain": 0.0
+        }
+      }
+    },
+    {
+      "seed": 93001,
+      "arm": "F-R",
+      "cycle": 1,
+      "cases": 2,
+      "preferences": 1,
+      "reference": 78.3984375,
+      "deployed": 78.3984375,
+      "selected": null,
+      "adopted": false,
+      "teacher": null,
+      "student": null,
+      "dream_order": "weak",
+      "candidates": 2,
+      "deployed_gain": 0.0,
+      "teacher_gain": null,
+      "student_gain": null,
+      "consolidation_loss": null,
+      "scope": {
+        "seen": {
+          "reference": 90.140625,
+          "deployed": 90.140625,
+          "gain": 0.0
+        },
+        "heldout": {
+          "reference": 66.65625,
+          "deployed": 66.65625,
+          "gain": 0.0
+        }
+      }
+    },
+    {
+      "seed": 93002,
+      "arm": "RL-RP",
+      "cycle": 0,
+      "cases": 2,
+      "preferences": 0,
+      "reference": 114.015625,
+      "deployed": 148.953125,
+      "selected": "weak",
+      "adopted": true,
+      "teacher": 201.0,
+      "student": 148.953125,
+      "dream_order": "weak",
+      "candidates": 2,
+      "deployed_gain": 34.9375,
+      "teacher_gain": 86.984375,
+      "student_gain": 34.9375,
+      "consolidation_loss": 52.046875,
+      "gate_gain": 106.15625,
+      "scope": {
+        "seen": {
+          "reference": 123.0,
+          "deployed": 158.421875,
+          "gain": 35.421875
+        },
+        "heldout": {
+          "reference": 105.03125,
+          "deployed": 139.484375,
+          "gain": 34.453125
+        }
+      }
+    },
+    {
+      "seed": 93002,
+      "arm": "RL-RP",
+      "cycle": 1,
+      "cases": 2,
+      "preferences": 0,
+      "reference": 124.671875,
+      "deployed": 124.671875,
+      "selected": "weak",
+      "adopted": false,
+      "teacher": 138.375,
+      "student": 143.0078125,
+      "dream_order": "weak",
+      "candidates": 1,
+      "deployed_gain": 0.0,
+      "teacher_gain": 13.703125,
+      "student_gain": 18.3359375,
+      "consolidation_loss": -4.6328125,
+      "gate_gain": 38.5625,
+      "scope": {
+        "seen": {
+          "reference": 147.765625,
+          "deployed": 147.765625,
+          "gain": 0.0
+        },
+        "heldout": {
+          "reference": 101.578125,
+          "deployed": 101.578125,
+          "gain": 0.0
+        }
+      }
+    },
+    {
+      "seed": 93002,
+      "arm": "F0",
+      "cycle": 0,
+      "cases": 2,
+      "preferences": 1,
+      "reference": 37.6875,
+      "deployed": 34.484375,
+      "selected": "weak",
+      "adopted": true,
+      "teacher": 34.484375,
+      "student": 34.484375,
+      "dream_order": "weak",
+      "candidates": 2,
+      "deployed_gain": -3.203125,
+      "teacher_gain": -3.203125,
+      "student_gain": -3.203125,
+      "consolidation_loss": 0.0,
+      "gate_gain": 6.28125,
+      "scope": {
+        "seen": {
+          "reference": 42.859375,
+          "deployed": 26.53125,
+          "gain": -16.328125
+        },
+        "heldout": {
+          "reference": 32.515625,
+          "deployed": 42.4375,
+          "gain": 9.921875
+        }
+      }
+    },
+    {
+      "seed": 93002,
+      "arm": "F0",
+      "cycle": 1,
+      "cases": 2,
+      "preferences": 0,
+      "reference": 36.3203125,
+      "deployed": 36.3203125,
+      "selected": "weak",
+      "adopted": false,
+      "teacher": 39.859375,
+      "student": 39.859375,
+      "dream_order": "weak",
+      "candidates": 1,
+      "deployed_gain": 0.0,
+      "teacher_gain": 3.5390625,
+      "student_gain": 3.5390625,
+      "consolidation_loss": 0.0,
+      "gate_gain": -18.4375,
+      "scope": {
+        "seen": {
+          "reference": 38.71875,
+          "deployed": 38.71875,
+          "gain": 0.0
+        },
+        "heldout": {
+          "reference": 33.921875,
+          "deployed": 33.921875,
+          "gain": 0.0
+        }
+      }
+    },
+    {
+      "seed": 93002,
+      "arm": "F-RP",
+      "cycle": 0,
+      "cases": 2,
+      "preferences": 1,
+      "reference": 172.7265625,
+      "deployed": 172.7265625,
+      "selected": null,
+      "adopted": false,
+      "teacher": null,
+      "student": null,
+      "dream_order": "weak",
+      "candidates": 2,
+      "deployed_gain": 0.0,
+      "teacher_gain": null,
+      "student_gain": null,
+      "consolidation_loss": null,
+      "scope": {
+        "seen": {
+          "reference": 195.140625,
+          "deployed": 195.140625,
+          "gain": 0.0
+        },
+        "heldout": {
+          "reference": 150.3125,
+          "deployed": 150.3125,
+          "gain": 0.0
+        }
+      }
+    },
+    {
+      "seed": 93002,
+      "arm": "F-RP",
+      "cycle": 1,
+      "cases": 2,
+      "preferences": 2,
+      "reference": 100.15625,
+      "deployed": 100.15625,
+      "selected": "strong",
+      "adopted": false,
+      "teacher": 87.5546875,
+      "student": 63.46875,
+      "dream_order": "weak",
+      "candidates": 2,
+      "deployed_gain": 0.0,
+      "teacher_gain": -12.6015625,
+      "student_gain": -36.6875,
+      "consolidation_loss": 24.0859375,
+      "gate_gain": -64.8125,
+      "scope": {
+        "seen": {
+          "reference": 121.953125,
+          "deployed": 121.953125,
+          "gain": 0.0
+        },
+        "heldout": {
+          "reference": 78.359375,
+          "deployed": 78.359375,
+          "gain": 0.0
+        }
+      }
+    },
+    {
+      "seed": 93002,
+      "arm": "F-R",
+      "cycle": 0,
+      "cases": 2,
+      "preferences": 0,
+      "reference": 115.0078125,
+      "deployed": 115.0078125,
+      "selected": null,
+      "adopted": false,
+      "teacher": null,
+      "student": null,
+      "dream_order": "weak",
+      "candidates": 2,
+      "deployed_gain": 0.0,
+      "teacher_gain": null,
+      "student_gain": null,
+      "consolidation_loss": null,
+      "scope": {
+        "seen": {
+          "reference": 102.125,
+          "deployed": 102.125,
+          "gain": 0.0
+        },
+        "heldout": {
+          "reference": 127.890625,
+          "deployed": 127.890625,
+          "gain": 0.0
+        }
+      }
+    },
+    {
+      "seed": 93002,
+      "arm": "F-R",
+      "cycle": 1,
+      "cases": 2,
+      "preferences": 1,
+      "reference": 126.2734375,
+      "deployed": 126.2734375,
+      "selected": null,
+      "adopted": false,
+      "teacher": null,
+      "student": null,
+      "dream_order": "weak",
+      "candidates": 2,
+      "deployed_gain": 0.0,
+      "teacher_gain": null,
+      "student_gain": null,
+      "consolidation_loss": null,
+      "scope": {
+        "seen": {
+          "reference": 139.28125,
+          "deployed": 139.28125,
+          "gain": 0.0
+        },
+        "heldout": {
+          "reference": 113.265625,
+          "deployed": 113.265625,
+          "gain": 0.0
+        }
+      }
+    },
+    {
+      "seed": 93003,
+      "arm": "RL-RP",
+      "cycle": 0,
+      "cases": 2,
+      "preferences": 0,
+      "reference": 110.734375,
+      "deployed": 110.734375,
+      "selected": "strong",
+      "adopted": false,
+      "teacher": 107.234375,
+      "student": 112.0703125,
+      "dream_order": "weak",
+      "candidates": 2,
+      "deployed_gain": 0.0,
+      "teacher_gain": -3.5,
+      "student_gain": 1.3359375,
+      "consolidation_loss": -4.8359375,
+      "gate_gain": -29.40625,
+      "scope": {
+        "seen": {
+          "reference": 110.421875,
+          "deployed": 110.421875,
+          "gain": 0.0
+        },
+        "heldout": {
+          "reference": 111.046875,
+          "deployed": 111.046875,
+          "gain": 0.0
+        }
+      }
+    },
+    {
+      "seed": 93003,
+      "arm": "RL-RP",
+      "cycle": 1,
+      "cases": 2,
+      "preferences": 0,
+      "reference": 147.5078125,
+      "deployed": 147.5078125,
+      "selected": "strong",
+      "adopted": false,
+      "teacher": 136.84375,
+      "student": 138.5,
+      "dream_order": "strong",
+      "candidates": 1,
+      "deployed_gain": 0.0,
+      "teacher_gain": -10.6640625,
+      "student_gain": -9.0078125,
+      "consolidation_loss": -1.65625,
+      "gate_gain": -52.59375,
+      "scope": {
+        "seen": {
+          "reference": 163.796875,
+          "deployed": 163.796875,
+          "gain": 0.0
+        },
+        "heldout": {
+          "reference": 131.21875,
+          "deployed": 131.21875,
+          "gain": 0.0
+        }
+      }
+    },
+    {
+      "seed": 93003,
+      "arm": "F0",
+      "cycle": 0,
+      "cases": 2,
+      "preferences": 1,
+      "reference": 40.1484375,
+      "deployed": 40.1484375,
+      "selected": null,
+      "adopted": false,
+      "teacher": null,
+      "student": null,
+      "dream_order": "weak",
+      "candidates": 2,
+      "deployed_gain": 0.0,
+      "teacher_gain": null,
+      "student_gain": null,
+      "consolidation_loss": null,
+      "scope": {
+        "seen": {
+          "reference": 40.828125,
+          "deployed": 40.828125,
+          "gain": 0.0
+        },
+        "heldout": {
+          "reference": 39.46875,
+          "deployed": 39.46875,
+          "gain": 0.0
+        }
+      }
+    },
+    {
+      "seed": 93003,
+      "arm": "F0",
+      "cycle": 1,
+      "cases": 2,
+      "preferences": 2,
+      "reference": 48.53125,
+      "deployed": 48.53125,
+      "selected": "strong",
+      "adopted": false,
+      "teacher": 31.7734375,
+      "student": 31.84375,
+      "dream_order": "weak",
+      "candidates": 2,
+      "deployed_gain": 0.0,
+      "teacher_gain": -16.7578125,
+      "student_gain": -16.6875,
+      "consolidation_loss": -0.0703125,
+      "gate_gain": -9.9375,
+      "scope": {
+        "seen": {
+          "reference": 44.0,
+          "deployed": 44.0,
+          "gain": 0.0
+        },
+        "heldout": {
+          "reference": 53.0625,
+          "deployed": 53.0625,
+          "gain": 0.0
+        }
+      }
+    },
+    {
+      "seed": 93003,
+      "arm": "F-RP",
+      "cycle": 0,
+      "cases": 2,
+      "preferences": 0,
+      "reference": 110.734375,
+      "deployed": 110.734375,
+      "selected": "strong",
+      "adopted": false,
+      "teacher": 107.234375,
+      "student": 112.0703125,
+      "dream_order": "weak",
+      "candidates": 2,
+      "deployed_gain": 0.0,
+      "teacher_gain": -3.5,
+      "student_gain": 1.3359375,
+      "consolidation_loss": -4.8359375,
+      "gate_gain": -29.40625,
+      "scope": {
+        "seen": {
+          "reference": 110.421875,
+          "deployed": 110.421875,
+          "gain": 0.0
+        },
+        "heldout": {
+          "reference": 111.046875,
+          "deployed": 111.046875,
+          "gain": 0.0
+        }
+      }
+    },
+    {
+      "seed": 93003,
+      "arm": "F-RP",
+      "cycle": 1,
+      "cases": 2,
+      "preferences": 3,
+      "reference": 125.59375,
+      "deployed": 125.59375,
+      "selected": null,
+      "adopted": false,
+      "teacher": null,
+      "student": null,
+      "dream_order": "strong",
+      "candidates": 2,
+      "deployed_gain": 0.0,
+      "teacher_gain": null,
+      "student_gain": null,
+      "consolidation_loss": null,
+      "scope": {
+        "seen": {
+          "reference": 138.1875,
+          "deployed": 138.1875,
+          "gain": 0.0
+        },
+        "heldout": {
+          "reference": 113.0,
+          "deployed": 113.0,
+          "gain": 0.0
+        }
+      }
+    },
+    {
+      "seed": 93003,
+      "arm": "F-R",
+      "cycle": 0,
+      "cases": 2,
+      "preferences": 3,
+      "reference": 53.5859375,
+      "deployed": 53.5859375,
+      "selected": null,
+      "adopted": false,
+      "teacher": null,
+      "student": null,
+      "dream_order": "weak",
+      "candidates": 2,
+      "deployed_gain": 0.0,
+      "teacher_gain": null,
+      "student_gain": null,
+      "consolidation_loss": null,
+      "scope": {
+        "seen": {
+          "reference": 58.171875,
+          "deployed": 58.171875,
+          "gain": 0.0
+        },
+        "heldout": {
+          "reference": 49.0,
+          "deployed": 49.0,
+          "gain": 0.0
+        }
+      }
+    },
+    {
+      "seed": 93003,
+      "arm": "F-R",
+      "cycle": 1,
+      "cases": 2,
+      "preferences": 2,
+      "reference": 69.125,
+      "deployed": 69.125,
+      "selected": null,
+      "adopted": false,
+      "teacher": null,
+      "student": null,
+      "dream_order": "weak",
+      "candidates": 2,
+      "deployed_gain": 0.0,
+      "teacher_gain": null,
+      "student_gain": null,
+      "consolidation_loss": null,
+      "scope": {
+        "seen": {
+          "reference": 70.015625,
+          "deployed": 70.015625,
+          "gain": 0.0
+        },
+        "heldout": {
+          "reference": 68.234375,
+          "deployed": 68.234375,
+          "gain": 0.0
+        }
+      }
+    },
+    {
+      "seed": 93004,
+      "arm": "RL-RP",
+      "cycle": 0,
+      "cases": 2,
+      "preferences": 0,
+      "reference": 132.78125,
+      "deployed": 132.78125,
+      "selected": null,
+      "adopted": false,
+      "teacher": null,
+      "student": null,
+      "dream_order": "weak",
+      "candidates": 2,
+      "deployed_gain": 0.0,
+      "teacher_gain": null,
+      "student_gain": null,
+      "consolidation_loss": null,
+      "scope": {
+        "seen": {
+          "reference": 145.5,
+          "deployed": 145.5,
+          "gain": 0.0
+        },
+        "heldout": {
+          "reference": 120.0625,
+          "deployed": 120.0625,
+          "gain": 0.0
+        }
+      }
+    },
+    {
+      "seed": 93004,
+      "arm": "RL-RP",
+      "cycle": 1,
+      "cases": 2,
+      "preferences": 0,
+      "reference": 137.8046875,
+      "deployed": 137.8046875,
+      "selected": null,
+      "adopted": false,
+      "teacher": null,
+      "student": null,
+      "dream_order": "weak",
+      "candidates": 2,
+      "deployed_gain": 0.0,
+      "teacher_gain": null,
+      "student_gain": null,
+      "consolidation_loss": null,
+      "scope": {
+        "seen": {
+          "reference": 136.265625,
+          "deployed": 136.265625,
+          "gain": 0.0
+        },
+        "heldout": {
+          "reference": 139.34375,
+          "deployed": 139.34375,
+          "gain": 0.0
+        }
+      }
+    },
+    {
+      "seed": 93004,
+      "arm": "F0",
+      "cycle": 0,
+      "cases": 2,
+      "preferences": 0,
+      "reference": 57.203125,
+      "deployed": 57.203125,
+      "selected": "strong",
+      "adopted": false,
+      "teacher": 60.7421875,
+      "student": 61.8203125,
+      "dream_order": "weak",
+      "candidates": 2,
+      "deployed_gain": 0.0,
+      "teacher_gain": 3.5390625,
+      "student_gain": 4.6171875,
+      "consolidation_loss": -1.078125,
+      "gate_gain": -20.6875,
+      "scope": {
+        "seen": {
+          "reference": 65.140625,
+          "deployed": 65.140625,
+          "gain": 0.0
+        },
+        "heldout": {
+          "reference": 49.265625,
+          "deployed": 49.265625,
+          "gain": 0.0
+        }
+      }
+    },
+    {
+      "seed": 93004,
+      "arm": "F0",
+      "cycle": 1,
+      "cases": 2,
+      "preferences": 2,
+      "reference": 50.7109375,
+      "deployed": 30.6484375,
+      "selected": "strong",
+      "adopted": true,
+      "teacher": 30.6484375,
+      "student": 30.6484375,
+      "dream_order": "strong",
+      "candidates": 1,
+      "deployed_gain": -20.0625,
+      "teacher_gain": -20.0625,
+      "student_gain": -20.0625,
+      "consolidation_loss": 0.0,
+      "gate_gain": 10.09375,
+      "scope": {
+        "seen": {
+          "reference": 46.296875,
+          "deployed": 28.6875,
+          "gain": -17.609375
+        },
+        "heldout": {
+          "reference": 55.125,
+          "deployed": 32.609375,
+          "gain": -22.515625
+        }
+      }
+    },
+    {
+      "seed": 93004,
+      "arm": "F-RP",
+      "cycle": 0,
+      "cases": 2,
+      "preferences": 3,
+      "reference": 132.78125,
+      "deployed": 132.78125,
+      "selected": null,
+      "adopted": false,
+      "teacher": null,
+      "student": null,
+      "dream_order": "weak",
+      "candidates": 2,
+      "deployed_gain": 0.0,
+      "teacher_gain": null,
+      "student_gain": null,
+      "consolidation_loss": null,
+      "scope": {
+        "seen": {
+          "reference": 145.5,
+          "deployed": 145.5,
+          "gain": 0.0
+        },
+        "heldout": {
+          "reference": 120.0625,
+          "deployed": 120.0625,
+          "gain": 0.0
+        }
+      }
+    },
+    {
+      "seed": 93004,
+      "arm": "F-RP",
+      "cycle": 1,
+      "cases": 2,
+      "preferences": 2,
+      "reference": 137.8046875,
+      "deployed": 137.8046875,
+      "selected": null,
+      "adopted": false,
+      "teacher": null,
+      "student": null,
+      "dream_order": "weak",
+      "candidates": 2,
+      "deployed_gain": 0.0,
+      "teacher_gain": null,
+      "student_gain": null,
+      "consolidation_loss": null,
+      "scope": {
+        "seen": {
+          "reference": 136.265625,
+          "deployed": 136.265625,
+          "gain": 0.0
+        },
+        "heldout": {
+          "reference": 139.34375,
+          "deployed": 139.34375,
+          "gain": 0.0
+        }
+      }
+    },
+    {
+      "seed": 93004,
+      "arm": "F-R",
+      "cycle": 0,
+      "cases": 2,
+      "preferences": 0,
+      "reference": 77.2421875,
+      "deployed": 77.2421875,
+      "selected": null,
+      "adopted": false,
+      "teacher": null,
+      "student": null,
+      "dream_order": "weak",
+      "candidates": 2,
+      "deployed_gain": 0.0,
+      "teacher_gain": null,
+      "student_gain": null,
+      "consolidation_loss": null,
+      "scope": {
+        "seen": {
+          "reference": 80.796875,
+          "deployed": 80.796875,
+          "gain": 0.0
+        },
+        "heldout": {
+          "reference": 73.6875,
+          "deployed": 73.6875,
+          "gain": 0.0
+        }
+      }
+    },
+    {
+      "seed": 93004,
+      "arm": "F-R",
+      "cycle": 1,
+      "cases": 2,
+      "preferences": 0,
+      "reference": 73.2890625,
+      "deployed": 83.296875,
+      "selected": "strong",
+      "adopted": true,
+      "teacher": 71.484375,
+      "student": 83.296875,
+      "dream_order": "weak",
+      "candidates": 2,
+      "deployed_gain": 10.0078125,
+      "teacher_gain": -1.8046875,
+      "student_gain": 10.0078125,
+      "consolidation_loss": -11.8125,
+      "gate_gain": 7.125,
+      "scope": {
+        "seen": {
+          "reference": 86.953125,
+          "deployed": 92.34375,
+          "gain": 5.390625
+        },
+        "heldout": {
+          "reference": 59.625,
+          "deployed": 74.25,
+          "gain": 14.625
+        }
+      }
+    }
+  ],
+  "totals": {
+    "environment_steps": 339962,
+    "actual_rollouts": 6624,
+    "optimizer_updates": 2464
+  },
+  "total_events": 9370,
+  "diagnosis": {
+    "cycles": 32,
+    "eligible_teachers": 16,
+    "adopted": 7,
+    "teachers_positive_report": 7,
+    "students_positive_report": 11,
+    "adopted_positive_report": 5,
+    "adopted_negative_report": 2,
+    "rejected_positive_report": 6,
+    "teacher_positive_student_nonpositive": 0,
+    "dream_order_changes": 3
+  },
+  "artifact_bytes": 413987354,
+  "artifacts": [
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/claim.json",
+      "bytes": 8374,
+      "sha256": "da487b344b4cc7e7250c60060dbf793f0e283e5a7a5ad2e3e5ad4e19ea9f77b5"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/summary.json",
+      "bytes": 1975249,
+      "sha256": "706030d366d4cded436e4f8178596885abce578db8bff941420e8988104f334b"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93001/F-R/checkpoint_cycle0.pt.gz",
+      "bytes": 11555862,
+      "sha256": "c02db53d894202d0c20033943059b0a4ba1499df9694f9d66bd385793fba563f"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93001/F-R/checkpoint_cycle1.pt.gz",
+      "bytes": 12771823,
+      "sha256": "3496aac13f0470e248275dfa0f1e8deb67a91502bef97bcefa63340c9671a952"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93001/F-R/data.pt.gz",
+      "bytes": 371989,
+      "sha256": "dcf8e563e9b820de0e797d9791555bc71c3cc314d84d11bbcf86c3ee11f08725"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93001/F-R/events.jsonl.gz",
+      "bytes": 10476,
+      "sha256": "d8d6d0ee110fb7fceb746e246f1b6ca4def58b721a80e81a34beef86c90140bf"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93001/F-R/raw.jsonl.gz",
+      "bytes": 235589,
+      "sha256": "fb3bdffd72f7e5b14b8fa01f303e4c5fa572d529ff7d2cdd34611dd8acbfe5ba"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93001/F-R/result.json",
+      "bytes": 74442,
+      "sha256": "f829bfa80afc22cf412d4d6aa6ace8f2629a64fa1e6e5fa029b646a9366cc5c0"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93001/F-RP/checkpoint_cycle0.pt.gz",
+      "bytes": 12196429,
+      "sha256": "f8299aaf0e884c7d8a387f7e3d4854666cb6f74a27caaa12fc468a4a60b1bfc5"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93001/F-RP/checkpoint_cycle1.pt.gz",
+      "bytes": 13413996,
+      "sha256": "870b58133d43f5caa042d74f8a46b4cd6a6a659b33696f5a822f0db05a370367"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93001/F-RP/data.pt.gz",
+      "bytes": 817510,
+      "sha256": "afd109bbcdb26dc7b810f0d0ca066e558271965111c90dcf3f66a64b2b7e1f0c"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93001/F-RP/events.jsonl.gz",
+      "bytes": 15595,
+      "sha256": "9fd2a04be211ff2defcb035a014df0ac782f7acdcf4ab83aabf3d04fdc95b4f2"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93001/F-RP/raw.jsonl.gz",
+      "bytes": 671932,
+      "sha256": "a96a71c1dc1ed0b986e2866d1f075188c4108649a3f94f25dfaaf91b64a0e930"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93001/F-RP/result.json",
+      "bytes": 109038,
+      "sha256": "c7dd5776939fa7f1766414d1d26e0df74f72a59e34325f1f60679bd50a0ab5c7"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93001/F0/checkpoint_cycle0.pt.gz",
+      "bytes": 11066111,
+      "sha256": "d161af3f0e1e7f41cb42d1e0c65e0255d0430515f67ab91b48675f60cb4839ca"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93001/F0/checkpoint_cycle1.pt.gz",
+      "bytes": 12475386,
+      "sha256": "6dbd1844bd8adf47671a9c22d34f8f0727f27fe463587a202a8529c942bb0dda"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93001/F0/data.pt.gz",
+      "bytes": 363618,
+      "sha256": "b08337163703f21335e300e386384b6235079c87c9996637130e13f97dceb536"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93001/F0/events.jsonl.gz",
+      "bytes": 13847,
+      "sha256": "9fa3543651819c9b660e87676c87d79e32c7426d66ca5229526232842d9ce490"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93001/F0/raw.jsonl.gz",
+      "bytes": 276347,
+      "sha256": "2d7f13e7814ec4c422ba0ad804136aabba6b563f89cb11a2ec9b47a3335f7fc4"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93001/F0/result.json",
+      "bytes": 104471,
+      "sha256": "9ddb42986049959195be82b83b0fd12c420b9d67ba37839a9b0c43d67159804a"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93001/RL-RP/checkpoint_cycle0.pt.gz",
+      "bytes": 11384056,
+      "sha256": "76a28204e55ed1743d25385325159b41433999dc57929a48e683bede4f29a095"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93001/RL-RP/checkpoint_cycle1.pt.gz",
+      "bytes": 12375515,
+      "sha256": "7e2d5aff68d657a306a161cd06a83a4f8fae4653d50f209095e953b48429a3dd"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93001/RL-RP/data.pt.gz",
+      "bytes": 1255334,
+      "sha256": "c1bc7cf5bab268783e15add1c01cb4a6385a84238e454a5151da0f53feea01d7"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93001/RL-RP/events.jsonl.gz",
+      "bytes": 19183,
+      "sha256": "30041f74859a31f6942260278c7fd55496007b63b8680ee3fcab4dddd4045fb4"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93001/RL-RP/raw.jsonl.gz",
+      "bytes": 1132249,
+      "sha256": "eb76861be55062768e851e1a2a8b8c3060c02349d87b3870d313e77e7a3866fd"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93001/RL-RP/result.json",
+      "bytes": 138582,
+      "sha256": "97b138616f97c62387b94b25e56666d406f28c34161f5c56c6c0b208bcb6b6fd"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93002/F-R/checkpoint_cycle0.pt.gz",
+      "bytes": 11633210,
+      "sha256": "c725870f0c86abd2743746a43cc5f94b84b6aa648906e6d68eb14e43cf1b21b3"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93002/F-R/checkpoint_cycle1.pt.gz",
+      "bytes": 12851274,
+      "sha256": "b52e474f0e164beb054a5dfd514237c111165b13ced537bcf84d252d298a27ac"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93002/F-R/data.pt.gz",
+      "bytes": 516987,
+      "sha256": "90eb563c34e4a77596bf8461a78da50a8b9587bc913da5bba295ea62824b0f56"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93002/F-R/events.jsonl.gz",
+      "bytes": 10662,
+      "sha256": "a33f3a3664a7df60cd9146ac73e1c167b1bac7867e9e7bd20b4ab7d612513335"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93002/F-R/raw.jsonl.gz",
+      "bytes": 318774,
+      "sha256": "85fce5738aa0b8a3ad9dac78c858f4c7cb7250f96358332601ea51ff485059bd"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93002/F-R/result.json",
+      "bytes": 74562,
+      "sha256": "9cfff1ee0064fe95b3b4fb808086c43ae9450e31de21cef1ac39dcbf6adffb68"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93002/F-RP/checkpoint_cycle0.pt.gz",
+      "bytes": 11668167,
+      "sha256": "7b469447d1016b11633a275a3341cba7895796c43df9f7645f2a2df7163bef84"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93002/F-RP/checkpoint_cycle1.pt.gz",
+      "bytes": 13493317,
+      "sha256": "cf1d52bf55cca2bf4eff286157f1dfda27c898c89a8177a36789ef68dbd5d21e"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93002/F-RP/data.pt.gz",
+      "bytes": 1023162,
+      "sha256": "f86857620855a9f73c26df50fd4b0b625f088331149ab9e6874dc15ec9279606"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93002/F-RP/events.jsonl.gz",
+      "bytes": 15925,
+      "sha256": "032049f4e7986459f63928156738008807da31cc0ddbf9f7bdf57b49c7bbca37"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93002/F-RP/raw.jsonl.gz",
+      "bytes": 558741,
+      "sha256": "dcc8ab4f02c66be84e259d2cb2d7bd5e73b34c3042277df0b0d9e0e5ff411d46"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93002/F-RP/result.json",
+      "bytes": 109199,
+      "sha256": "34c0caddfc5f3dc78ac983935e24fb424ac4c694e3fa69a01113235f56731e51"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93002/F0/checkpoint_cycle0.pt.gz",
+      "bytes": 11727443,
+      "sha256": "50078e5543f227b6b1e631859cbe6ded079d8ebff41f6e52ccc9f842037077c4"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93002/F0/checkpoint_cycle1.pt.gz",
+      "bytes": 13135306,
+      "sha256": "88f34e6ff5e0237a50ca5030f07292ba3478d0885b9c377854488d6948e73339"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93002/F0/data.pt.gz",
+      "bytes": 491213,
+      "sha256": "61493cc1638b524ae69ac9499c02357a1228d3021e4846ac62e0ad96be1dd17c"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93002/F0/events.jsonl.gz",
+      "bytes": 17885,
+      "sha256": "ac0c83f39d862bbcc28dd52f32538834ba04a7dfde9865f955f4017724dd7b3e"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93002/F0/raw.jsonl.gz",
+      "bytes": 263819,
+      "sha256": "eede45a00e59560b18b9ad4c751d9005110677bd9bc4472c46db1b06b4767d68"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93002/F0/result.json",
+      "bytes": 138056,
+      "sha256": "d7ea4388ddf4676e94a7b5fbe4c2dfd78cf6153285a563fb65e72bb2103c6261"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93002/RL-RP/checkpoint_cycle0.pt.gz",
+      "bytes": 11461546,
+      "sha256": "3628f7e190892caa4c1600ff82733e06f6d0ef5b54b31728984e063aa538dd62"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93002/RL-RP/checkpoint_cycle1.pt.gz",
+      "bytes": 12450684,
+      "sha256": "b6554dcd3aa7c51ec5c8620e6546bc194892fabfb6af77a77a3c1f342dcebdcb"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93002/RL-RP/data.pt.gz",
+      "bytes": 1272028,
+      "sha256": "8d28e9b58202f69d9fed16b2b814d6bacc06d1549dda93687d5ad61ed678551a"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93002/RL-RP/events.jsonl.gz",
+      "bytes": 19225,
+      "sha256": "e642553a0fa211fffdb3b40ae4d9f257c15edf071258708636ba542921f6f45d"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93002/RL-RP/raw.jsonl.gz",
+      "bytes": 1059319,
+      "sha256": "07b1933f9d43d24819fa8e8c732f4513d62215e3181624c46ad11e6ee2a99a91"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93002/RL-RP/result.json",
+      "bytes": 138502,
+      "sha256": "5e25b804194ca9e61e7e03f75c444ce32e12b53728392dd3801391b4cc70b99c"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93003/F-R/checkpoint_cycle0.pt.gz",
+      "bytes": 11491833,
+      "sha256": "f98ee725be1ef0822469da1bb88aa0bb133c2bdd9f7b370eaa6d237f46eabe77"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93003/F-R/checkpoint_cycle1.pt.gz",
+      "bytes": 12708198,
+      "sha256": "d53b58ff9fefece36b8f37c73adc18498b69426c28d80ef6db0217cac8293851"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93003/F-R/data.pt.gz",
+      "bytes": 286584,
+      "sha256": "2545e15ca83f188de38bf84a56d7073517cd21733d59914bf6b27a1d6e2d0620"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93003/F-R/events.jsonl.gz",
+      "bytes": 10971,
+      "sha256": "e306f61bc958ab6cd2b3d503813729b219d44b011823caff9ce518e839d84c16"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93003/F-R/raw.jsonl.gz",
+      "bytes": 157744,
+      "sha256": "144676d144db7693bdf3404bac565c7852b187efc3806a7d98e20edf5db8fbfb"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93003/F-R/result.json",
+      "bytes": 74999,
+      "sha256": "8b940ae611d11a9053fe4367b7a3b43f7d823c5c24bb8252b727c0ed895dfdf6"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93003/F-RP/checkpoint_cycle0.pt.gz",
+      "bytes": 12150897,
+      "sha256": "569cb8a18a82577965b604bbe67bd509b835fd6b710db00582b8bce6a5ee5fe9"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93003/F-RP/checkpoint_cycle1.pt.gz",
+      "bytes": 13368184,
+      "sha256": "c6c903bb922163a528e8e82af254d9fd22687694b1b53dbc6999a374d78a0630"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93003/F-RP/data.pt.gz",
+      "bytes": 817713,
+      "sha256": "056da69cc405d0c4dd16aef64717db6330ac4862ad9eb0b3bf3091a28dbb9c3e"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93003/F-RP/events.jsonl.gz",
+      "bytes": 15604,
+      "sha256": "d57a8f05e09cb32b6c1339609951e0d29e5b6f642d0a9c7cec68bf96b2819861"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93003/F-RP/raw.jsonl.gz",
+      "bytes": 627764,
+      "sha256": "01ebb4e0920074adc6ee499f9ee076a114f17b488e9ca6e5e8a2febdda305c75"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93003/F-RP/result.json",
+      "bytes": 109162,
+      "sha256": "5a7fbbe9286a72a1b28646f062f8c7a944fad9edc67fbbe33530be8af6de4a58"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93003/F0/checkpoint_cycle0.pt.gz",
+      "bytes": 11134460,
+      "sha256": "d2cc47ce7f1503eeec86316dab6b91226e3461d955f760bbd8dcb05a16b9d7fe"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93003/F0/checkpoint_cycle1.pt.gz",
+      "bytes": 13246625,
+      "sha256": "cb463b54a6a382c53f39b584eda3a68cd441d17a31c071f5ee13e3adcf74af15"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93003/F0/data.pt.gz",
+      "bytes": 271485,
+      "sha256": "cb399d509bf16264f253a99b6070bcece126b48127a9a5013e366af849a0933b"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93003/F0/events.jsonl.gz",
+      "bytes": 14879,
+      "sha256": "1c0d81011be490a11ecc380f53cf504384d6c92c885d2bdc94c8a56cf37f4dcf"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93003/F0/raw.jsonl.gz",
+      "bytes": 179021,
+      "sha256": "685a15c0eff1bed3d198143aba97131e7ae79a89a289110a3cfd7eb4a07e2364"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93003/F0/result.json",
+      "bytes": 108840,
+      "sha256": "c345ac4dfb3fdd90a1427696b948838127bfeedaf59f6ef95501185e7c6f9dba"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93003/RL-RP/checkpoint_cycle0.pt.gz",
+      "bytes": 11338647,
+      "sha256": "af7a42b59c7993a7de61966cf659c10e7229e66b74c630ae8bb8479c7cfea641"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93003/RL-RP/checkpoint_cycle1.pt.gz",
+      "bytes": 12328455,
+      "sha256": "f6f3839fc846212191d48c90a84d95269a6616142702fbc0ebc14c84fde27da8"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93003/RL-RP/data.pt.gz",
+      "bytes": 1010634,
+      "sha256": "3993657e22e7ac81be5939499f322c8f0cfc80cde351dc9900502fbe9ef0b245"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93003/RL-RP/events.jsonl.gz",
+      "bytes": 18866,
+      "sha256": "5f9973a68f81ddef705f51fcfed0378ff01328371957ec68a689ac94b9597e01"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93003/RL-RP/raw.jsonl.gz",
+      "bytes": 939366,
+      "sha256": "a0badb28b5bab6cc0ac1e801c26260e356cd6f8aa41652df95bbb0ce004c8ef0"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93003/RL-RP/result.json",
+      "bytes": 138433,
+      "sha256": "b6af73d9688ef33bb71215aec95af032e66cba3c03855d927ab6494f5c71f64c"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93004/F-R/checkpoint_cycle0.pt.gz",
+      "bytes": 11448987,
+      "sha256": "1baa6e419f1820311819af1565afae4755dc8d3c2002b888734e91de9f5b9d7f"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93004/F-R/checkpoint_cycle1.pt.gz",
+      "bytes": 13271579,
+      "sha256": "7110072822ca1695c8d0f3b7087bcaf26f242164f49f674a59b028004378ed19"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93004/F-R/data.pt.gz",
+      "bytes": 772003,
+      "sha256": "106026e90c405abe4f40be04e5defc6fabdbb51d048ce54096a500a28ce40eb6"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93004/F-R/events.jsonl.gz",
+      "bytes": 14552,
+      "sha256": "1a855304d31d4e73d06bd06da34a2ba4102dd00ec42098863e0b1b5121af9a72"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93004/F-R/raw.jsonl.gz",
+      "bytes": 436247,
+      "sha256": "7ae15d0c496ff634915a46b0f7d6c54abe89ef4c974686092413dc051e9e72d0"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93004/F-R/result.json",
+      "bytes": 108475,
+      "sha256": "64b3e0568dd7a4602e2282b7aa18d17f36e612b20a3ede75896da9a0526aef9c"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93004/F-RP/checkpoint_cycle0.pt.gz",
+      "bytes": 11587371,
+      "sha256": "2857a4f09443090326725f6193e639f4f6b37b30fc4a5a4ae14573a1147ce6e2"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93004/F-RP/checkpoint_cycle1.pt.gz",
+      "bytes": 12802636,
+      "sha256": "7a54b7e9e396c3b884246315e3edb5dcc2f5801b4d9a17eb30a9bfc8dba4c054"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93004/F-RP/data.pt.gz",
+      "bytes": 810783,
+      "sha256": "4f4940c6efe50a013c55284fa9a3ed9e294c8944edd084e3a6b29f7c4b29f729"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93004/F-RP/events.jsonl.gz",
+      "bytes": 11388,
+      "sha256": "6ca169e1513f917f6d0fb5470df4069b64220e58a872863c59b12e088487869e"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93004/F-RP/raw.jsonl.gz",
+      "bytes": 408519,
+      "sha256": "0657119a8c7e82b510061b9e7cb4de16a01bcc7fe555bfcb6399a07e5297c190"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93004/F-RP/result.json",
+      "bytes": 75234,
+      "sha256": "dd41d731ea15d007267e4371b1c0ebb16d9ad311d24d74ea046bcf89775e1a17"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93004/F0/checkpoint_cycle0.pt.gz",
+      "bytes": 11908069,
+      "sha256": "6f8c073d38e51061a83506bec9a285280d66cf93142bb777ecae2388794e58f7"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93004/F0/checkpoint_cycle1.pt.gz",
+      "bytes": 13319419,
+      "sha256": "606d3aa7e13b89129f03bdfca8f60f6a032605ee94f355e812e84e5e0d2cd83c"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93004/F0/data.pt.gz",
+      "bytes": 568809,
+      "sha256": "8f9b8fbe2793a1ed3144aa4f5b7b7a34fecc098a2dccc64088b5bb879ba1b265"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93004/F0/events.jsonl.gz",
+      "bytes": 17947,
+      "sha256": "87f5324ca2fd9f76620c488e12a3bae32d54230e514b884a72ec2c5abab3908b"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93004/F0/raw.jsonl.gz",
+      "bytes": 325515,
+      "sha256": "6d43a8465b7f6040d19dbf236e6e2b32420a86ab7c5e7815440990e28800fd9f"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93004/F0/result.json",
+      "bytes": 138048,
+      "sha256": "9af100983e852fb6a41f9348f85dd7285e5d1fa21c1a91769e40f01372fedf79"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93004/RL-RP/checkpoint_cycle0.pt.gz",
+      "bytes": 10881978,
+      "sha256": "7bbeee9681005b0444b40ca0da5ab96a951c85ebddde52fbd2f9ce2205c9b9ed"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93004/RL-RP/checkpoint_cycle1.pt.gz",
+      "bytes": 11870437,
+      "sha256": "4d3be4446a5cdee7cd2ff4db74985fd29e2c3dbecd84d717880c15b2e232cbed"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93004/RL-RP/data.pt.gz",
+      "bytes": 810794,
+      "sha256": "db3c503c852ecbe02f3236a4dce8e5a0bc7bce17f965701aa306e3dfddd469e1"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93004/RL-RP/events.jsonl.gz",
+      "bytes": 10284,
+      "sha256": "1f607611d7b77240994bdb318d94c558f233f83985f0cf937ffd14abd0fb1e82"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93004/RL-RP/raw.jsonl.gz",
+      "bytes": 482442,
+      "sha256": "139959221aa7d2a495cbd0606b9a5af5a02b06554d1b7bd1a2925b4f90066ff9"
+    },
+    {
+      "path": "experiments/v09r/verified_learning_pilot_v196/evidence/seed93004/RL-RP/result.json",
+      "bytes": 74465,
+      "sha256": "897ec15ff427f1e57dac12ee996d6ad3fd0c6dd7a04141b616bc004619da7846"
+    }
+  ],
+  "limitations": [
+    "Not a kernel re-execution or independent scientific gate.",
+    "Four existing seeds; cycle1 ordinary references inherit the prior deployed parent.",
+    "Shared Sleep data/update counts do not equalize total search and validation resources.",
+    "F0 has no reward packet/Q, but receives goal-conditioned action preferences and task-score selection.",
+    "Actual intervention alternatives are fixed externally, not autonomous causal explanation."
+  ]
+}

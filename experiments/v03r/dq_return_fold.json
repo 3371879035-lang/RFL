@@ -1,0 +1,157 @@
+{
+  "check": "reverse-fold bit-exactness against the reference DP",
+  "n_trajectories": 48,
+  "trace_length_histogram": {
+    "2": 3,
+    "4": 9,
+    "5": 6,
+    "6": 16,
+    "7": 2,
+    "8": 12
+  },
+  "decision_addresses": 278,
+  "negative_zero_rewards": 0,
+  "no_reference_entry": 0,
+  "exact_by_fold": {
+    "A_literal_zero_start": 278,
+    "B_dp_terminal_branch": 278,
+    "left_to_right": 186,
+    "fsum": 186
+  },
+  "mismatch_by_fold": {
+    "A_literal_zero_start": 0,
+    "B_dp_terminal_branch": 0,
+    "left_to_right": 92,
+    "fsum": 92
+  },
+  "A_vs_B_differing_bit_patterns": 0,
+  "sample_mismatches": [
+    {
+      "fold": "left_to_right",
+      "kappa": 0,
+      "phi": 0,
+      "z0": 1,
+      "t": 0,
+      "T": 6,
+      "ref": "0x1.c28f5c28f5c28p-1",
+      "got": "0x1.c28f5c28f5c29p-1"
+    },
+    {
+      "fold": "fsum",
+      "kappa": 0,
+      "phi": 0,
+      "z0": 1,
+      "t": 0,
+      "T": 6,
+      "ref": "0x1.c28f5c28f5c28p-1",
+      "got": "0x1.c28f5c28f5c29p-1"
+    },
+    {
+      "fold": "left_to_right",
+      "kappa": 0,
+      "phi": 0,
+      "z0": 1,
+      "t": 1,
+      "T": 6,
+      "ref": "0x1.cccccccccccccp-1",
+      "got": "0x1.ccccccccccccdp-1"
+    },
+    {
+      "fold": "fsum",
+      "kappa": 0,
+      "phi": 0,
+      "z0": 1,
+      "t": 1,
+      "T": 6,
+      "ref": "0x1.cccccccccccccp-1",
+      "got": "0x1.ccccccccccccdp-1"
+    },
+    {
+      "fold": "left_to_right",
+      "kappa": 0,
+      "phi": 0,
+      "z0": 2,
+      "t": 0,
+      "T": 5,
+      "ref": "0x1.cccccccccccccp-1",
+      "got": "0x1.ccccccccccccdp-1"
+    },
+    {
+      "fold": "fsum",
+      "kappa": 0,
+      "phi": 0,
+      "z0": 2,
+      "t": 0,
+      "T": 5,
+      "ref": "0x1.cccccccccccccp-1",
+      "got": "0x1.ccccccccccccdp-1"
+    },
+    {
+      "fold": "left_to_right",
+      "kappa": 0,
+      "phi": 0,
+      "z0": 3,
+      "t": 0,
+      "T": 8,
+      "ref": "0x1.ae147ae147ae0p-1",
+      "got": "0x1.ae147ae147ae1p-1"
+    },
+    {
+      "fold": "fsum",
+      "kappa": 0,
+      "phi": 0,
+      "z0": 3,
+      "t": 0,
+      "T": 8,
+      "ref": "0x1.ae147ae147ae0p-1",
+      "got": "0x1.ae147ae147ae1p-1"
+    },
+    {
+      "fold": "left_to_right",
+      "kappa": 0,
+      "phi": 0,
+      "z0": 3,
+      "t": 1,
+      "T": 8,
+      "ref": "0x1.b851eb851eb84p-1",
+      "got": "0x1.b851eb851eb85p-1"
+    },
+    {
+      "fold": "fsum",
+      "kappa": 0,
+      "phi": 0,
+      "z0": 3,
+      "t": 1,
+      "T": 8,
+      "ref": "0x1.b851eb851eb84p-1",
+      "got": "0x1.b851eb851eb85p-1"
+    },
+    {
+      "fold": "left_to_right",
+      "kappa": 0,
+      "phi": 0,
+      "z0": 3,
+      "t": 2,
+      "T": 8,
+      "ref": "0x1.c28f5c28f5c28p-1",
+      "got": "0x1.c28f5c28f5c29p-1"
+    },
+    {
+      "fold": "fsum",
+      "kappa": 0,
+      "phi": 0,
+      "z0": 3,
+      "t": 2,
+      "T": 8,
+      "ref": "0x1.c28f5c28f5c28p-1",
+      "got": "0x1.c28f5c28f5c29p-1"
+    }
+  ],
+  "sample_A_vs_B": [],
+  "verdict": {
+    "clause_as_written_exact": true,
+    "dp_terminal_branch_exact": true,
+    "clause_is_necessary": true
+  },
+  "obligation": "healthy-trajectory exhaustive-support invariant: after any change to the solver, the reward function or the grid, re-measure; a nonzero mismatch means a healthy write would leave a non-canonical override"
+}

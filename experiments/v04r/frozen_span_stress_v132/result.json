@@ -1,0 +1,1951 @@
+{
+  "schema": "V132_FROZEN_MODEL_NEGATIVE_TRANSFER_RESULT",
+  "date_asia_shanghai": "2026-11-07",
+  "parent_commit": "dc7722cab7b2ab8ec046dcfcc1be80648b833d30",
+  "status": "EXTENSION_COMPLETE_FROZEN_MODEL_NEGATIVE_TRANSFER_RETAINED",
+  "question": "With v131 learnedparameters genuinely frozen, does a previously unseen longprotective prefix get mistaken for a harmful stall, and how do actual failure review and ordinarylearning compare with exactsupport refusal?",
+  "execution": {
+    "native_first_exit": 0,
+    "new_stored_review_first_exit_observed": 0,
+    "rollout": 62,
+    "step": 711,
+    "transaction": 60,
+    "records": 326,
+    "input_pins_unchanged": 338,
+    "main_tasks": 32,
+    "practice_tasks_all_arms": 18,
+    "read_only_rollouts": 12,
+    "ordinary_full_R_L_updates_checked": 50,
+    "main_steps": 362,
+    "practice_steps": 205,
+    "read_only_steps": 144,
+    "source_install_transactions": 1,
+    "source_install_addresses": 16,
+    "ordinary_numeric_transactions": 50,
+    "ordinary_policy_transactions": 0,
+    "live_diagnostic_transactions": 3,
+    "practice_candidate_transactions": 6,
+    "instrumented_wall_seconds": 3.25,
+    "diagnostic_model_parameter_updates": 0,
+    "base_model_parameter_updates": 0,
+    "observed_failed_prediction_reviews": 2,
+    "actual_review_triggered_retests": 2,
+    "success_diagnostics": 0,
+    "new_keys": 0,
+    "formal_collection": false,
+    "automatic_retry": false,
+    "patch_executed": false
+  },
+  "summary": [
+    {
+      "arm": "FrozenCoarse",
+      "tasks": 8,
+      "successes": 5,
+      "task_return_sum": 0.30000000000000004,
+      "task_return_mean": 0.037500000000000006,
+      "practice_events": 1,
+      "practice_rollouts": 6,
+      "memory_hits": 1,
+      "diagnostic_calls": 3,
+      "diagnostic_transactions": 1,
+      "diagnostic_edit_attempts": 1
+    },
+    {
+      "arm": "FrozenExact",
+      "tasks": 8,
+      "successes": 7,
+      "task_return_sum": 4.08,
+      "task_return_mean": 0.51,
+      "practice_events": 1,
+      "practice_rollouts": 6,
+      "memory_hits": 0,
+      "diagnostic_calls": 1,
+      "diagnostic_transactions": 1,
+      "diagnostic_edit_attempts": 1
+    },
+    {
+      "arm": "FrozenStump",
+      "tasks": 8,
+      "successes": 5,
+      "task_return_sum": 0.30000000000000004,
+      "task_return_mean": 0.037500000000000006,
+      "practice_events": 1,
+      "practice_rollouts": 6,
+      "memory_hits": 1,
+      "diagnostic_calls": 3,
+      "diagnostic_transactions": 1,
+      "diagnostic_edit_attempts": 1
+    },
+    {
+      "arm": "TaskTD",
+      "tasks": 8,
+      "successes": 6,
+      "task_return_sum": 2.08,
+      "task_return_mean": 0.26,
+      "practice_events": 0,
+      "practice_rollouts": 0,
+      "memory_hits": 0,
+      "diagnostic_calls": 0,
+      "diagnostic_transactions": 0,
+      "diagnostic_edit_attempts": 0
+    }
+  ],
+  "complete_stream_metrics": [
+    {
+      "arms": {
+        "FrozenCoarse": {
+          "contested_keys": [],
+          "diagnostic_calls": 3,
+          "diagnostic_edit_attempts": 1,
+          "diagnostic_transactions": 1,
+          "final_diagnostic_memory": [
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "keep",
+                "global"
+              ],
+              4,
+              {
+                "binary64_hex": "-0x1.eb851eb851eb8p-3"
+              }
+            ],
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "repeated-run"
+              ],
+              4,
+              {
+                "binary64_hex": "0x1.75c28f5c28f5cp-2"
+              }
+            ],
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "single-step"
+              ],
+              4,
+              {
+                "binary64_hex": "-0x1.999999999999ap-3"
+              }
+            ]
+          ],
+          "memory_hits": 1,
+          "needs_retest": [],
+          "outcomes": [
+            "TIMEOUT",
+            "TRAP",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "pending_recall": null,
+          "practice_events": 1,
+          "practice_rollouts": 6,
+          "retention_banks": [
+            {
+              "completed_tasks": 0,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "phi": 1,
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 4,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.76
+                }
+              ]
+            },
+            {
+              "completed_tasks": 8,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.76
+                }
+              ]
+            }
+          ],
+          "returns": [
+            -1.24,
+            -1.02,
+            -1.24,
+            0.76,
+            0.76,
+            0.76,
+            0.76,
+            0.76
+          ],
+          "successes": 5,
+          "task_return_mean": 0.037500000000000006,
+          "task_return_sum": 0.30000000000000004,
+          "tasks": 8
+        },
+        "FrozenExact": {
+          "contested_keys": [],
+          "diagnostic_calls": 1,
+          "diagnostic_edit_attempts": 1,
+          "diagnostic_transactions": 1,
+          "final_diagnostic_memory": [
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "keep",
+                "run-span",
+                0
+              ],
+              4,
+              {
+                "binary64_hex": "-0x1.eb851eb851eb8p-3"
+              }
+            ],
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                1
+              ],
+              4,
+              {
+                "binary64_hex": "-0x1.999999999999ap-3"
+              }
+            ],
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                2
+              ],
+              2,
+              {
+                "binary64_hex": "-0x1.0a3d70a3d70a4p-3"
+              }
+            ],
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                8
+              ],
+              2,
+              {
+                "binary64_hex": "0x1.b851eb851eb85p-1"
+              }
+            ]
+          ],
+          "memory_hits": 0,
+          "needs_retest": [],
+          "outcomes": [
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "pending_recall": null,
+          "practice_events": 1,
+          "practice_rollouts": 6,
+          "retention_banks": [
+            {
+              "completed_tasks": 0,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "phi": 1,
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 4,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.76
+                }
+              ]
+            },
+            {
+              "completed_tasks": 8,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.76
+                }
+              ]
+            }
+          ],
+          "returns": [
+            -1.24,
+            0.76,
+            0.76,
+            0.76,
+            0.76,
+            0.76,
+            0.76,
+            0.76
+          ],
+          "successes": 7,
+          "task_return_mean": 0.51,
+          "task_return_sum": 4.08,
+          "tasks": 8
+        },
+        "FrozenStump": {
+          "contested_keys": [],
+          "diagnostic_calls": 3,
+          "diagnostic_edit_attempts": 1,
+          "diagnostic_transactions": 1,
+          "final_diagnostic_memory": [
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "keep",
+                "run-span",
+                0
+              ],
+              4,
+              {
+                "binary64_hex": "-0x1.eb851eb851eb8p-3"
+              }
+            ],
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                1
+              ],
+              4,
+              {
+                "binary64_hex": "-0x1.999999999999ap-3"
+              }
+            ],
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                2
+              ],
+              2,
+              {
+                "binary64_hex": "-0x1.0a3d70a3d70a4p-3"
+              }
+            ],
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                8
+              ],
+              2,
+              {
+                "binary64_hex": "0x1.b851eb851eb85p-1"
+              }
+            ]
+          ],
+          "memory_hits": 1,
+          "needs_retest": [],
+          "outcomes": [
+            "TIMEOUT",
+            "TRAP",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "pending_recall": null,
+          "practice_events": 1,
+          "practice_rollouts": 6,
+          "retention_banks": [
+            {
+              "completed_tasks": 0,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "phi": 1,
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 4,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.76
+                }
+              ]
+            },
+            {
+              "completed_tasks": 8,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.76
+                }
+              ]
+            }
+          ],
+          "returns": [
+            -1.24,
+            -1.02,
+            -1.24,
+            0.76,
+            0.76,
+            0.76,
+            0.76,
+            0.76
+          ],
+          "successes": 5,
+          "task_return_mean": 0.037500000000000006,
+          "task_return_sum": 0.30000000000000004,
+          "tasks": 8
+        },
+        "TaskTD": {
+          "contested_keys": [],
+          "diagnostic_calls": 0,
+          "diagnostic_edit_attempts": 0,
+          "diagnostic_transactions": 0,
+          "final_diagnostic_memory": [],
+          "memory_hits": 0,
+          "needs_retest": [],
+          "outcomes": [
+            "TIMEOUT",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "pending_recall": null,
+          "practice_events": 0,
+          "practice_rollouts": 0,
+          "retention_banks": [
+            {
+              "completed_tasks": 0,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "phi": 1,
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 4,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.76
+                }
+              ]
+            },
+            {
+              "completed_tasks": 8,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.76
+                }
+              ]
+            }
+          ],
+          "returns": [
+            -1.24,
+            -1.24,
+            0.76,
+            0.76,
+            0.76,
+            0.76,
+            0.76,
+            0.76
+          ],
+          "successes": 6,
+          "task_return_mean": 0.26,
+          "task_return_sum": 2.08,
+          "tasks": 8
+        }
+      },
+      "mode": "dq"
+    }
+  ],
+  "per_role_native_work": [
+    {
+      "arm": "TaskTD",
+      "readonly_rollout": 3,
+      "readonly_step": 36,
+      "stream_rollout": 8,
+      "stream_step": 96,
+      "ordinary_numeric_tx": 8,
+      "ordinary_policy_tx": 0,
+      "total_rollout": 11,
+      "total_step": 132,
+      "total_transaction_excluding_common_install": 8
+    },
+    {
+      "arm": "FrozenCoarse",
+      "readonly_rollout": 3,
+      "readonly_step": 36,
+      "stream_rollout": 8,
+      "stream_step": 85,
+      "ordinary_numeric_tx": 14,
+      "ordinary_policy_tx": 0,
+      "live_diagnostic_tx": 1,
+      "practice_rollout": 6,
+      "practice_step": 72,
+      "practice_candidate_tx": 2,
+      "total_rollout": 17,
+      "total_step": 193,
+      "total_transaction_excluding_common_install": 17
+    },
+    {
+      "arm": "FrozenExact",
+      "readonly_rollout": 3,
+      "readonly_step": 36,
+      "stream_rollout": 8,
+      "stream_step": 96,
+      "ordinary_numeric_tx": 14,
+      "ordinary_policy_tx": 0,
+      "practice_rollout": 6,
+      "practice_step": 61,
+      "practice_candidate_tx": 2,
+      "live_diagnostic_tx": 1,
+      "total_rollout": 17,
+      "total_step": 193,
+      "total_transaction_excluding_common_install": 17
+    },
+    {
+      "arm": "FrozenStump",
+      "readonly_rollout": 3,
+      "readonly_step": 36,
+      "stream_rollout": 8,
+      "stream_step": 85,
+      "ordinary_numeric_tx": 14,
+      "ordinary_policy_tx": 0,
+      "live_diagnostic_tx": 1,
+      "practice_rollout": 6,
+      "practice_step": 72,
+      "practice_candidate_tx": 2,
+      "total_rollout": 17,
+      "total_step": 193,
+      "total_transaction_excluding_common_install": 17
+    }
+  ],
+  "matched_initial_actual_roots": [
+    {
+      "epoch": 0,
+      "arms": [
+        "TaskTD",
+        "FrozenCoarse"
+      ],
+      "actual_raw_identical": true,
+      "ordinary_after_R_L_I_identical": true
+    },
+    {
+      "epoch": 0,
+      "arms": [
+        "TaskTD",
+        "FrozenExact"
+      ],
+      "actual_raw_identical": true,
+      "ordinary_after_R_L_I_identical": true
+    },
+    {
+      "epoch": 0,
+      "arms": [
+        "TaskTD",
+        "FrozenStump"
+      ],
+      "actual_raw_identical": true,
+      "ordinary_after_R_L_I_identical": true
+    }
+  ],
+  "memory_lookup_chronology": [
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "FrozenCoarse",
+      "epoch": 0,
+      "info": {
+        "keys": {
+          "keep": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "keep",
+            "global"
+          ],
+          "single:0": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "repeated-run"
+          ],
+          "single:7": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "single-step"
+          ]
+        },
+        "representation": "coarse",
+        "scores": {
+          "keep": {
+            "binary64_hex": "-0x1.eb851eb851eb8p-3"
+          },
+          "single:0": {
+            "binary64_hex": "0x1.75c28f5c28f5cp-2"
+          },
+          "single:7": {
+            "binary64_hex": "-0x1.999999999999ap-3"
+          }
+        },
+        "supported": true
+      },
+      "mode": "dq",
+      "raw_selected": "single:0",
+      "selected": "single:0",
+      "status": "supported-unique"
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "FrozenCoarse",
+      "epoch": 2,
+      "info": {
+        "keys": {
+          "keep": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "keep",
+            "global"
+          ],
+          "single:0": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "repeated-run"
+          ],
+          "single:7": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "single-step"
+          ]
+        },
+        "representation": "coarse",
+        "scores": {
+          "keep": {
+            "binary64_hex": "-0x1.eb851eb851eb8p-3"
+          },
+          "single:0": {
+            "binary64_hex": "0x1.75c28f5c28f5cp-2"
+          },
+          "single:7": {
+            "binary64_hex": "-0x1.999999999999ap-3"
+          }
+        },
+        "supported": true
+      },
+      "mode": "dq",
+      "raw_selected": "single:0",
+      "selected": null,
+      "status": "observed-failure-review"
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "FrozenExact",
+      "epoch": 0,
+      "info": {
+        "keys": {
+          "keep": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "keep",
+            "run-span",
+            0
+          ],
+          "single:0": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            6
+          ],
+          "single:7": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            1
+          ]
+        },
+        "representation": "exact-span",
+        "supported": false
+      },
+      "mode": "dq",
+      "raw_selected": null,
+      "selected": null,
+      "status": "unsupported"
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "FrozenStump",
+      "epoch": 0,
+      "info": {
+        "keys": {
+          "keep": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "keep",
+            "run-span",
+            0
+          ],
+          "single:0": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            6
+          ],
+          "single:7": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            1
+          ]
+        },
+        "models": {
+          "keep": {
+            "cut": null,
+            "left": {
+              "binary64_hex": "-0x1.eb851eb851eb8p-3"
+            },
+            "n": 4,
+            "right": {
+              "binary64_hex": "-0x1.eb851eb851eb8p-3"
+            },
+            "squared_error": {
+              "binary64_hex": "0x1.0000000000000p+2"
+            }
+          },
+          "single:0": {
+            "cut": {
+              "binary64_hex": "0x1.4000000000000p+2"
+            },
+            "left": {
+              "binary64_hex": "-0x1.69d0369d0369dp-3"
+            },
+            "n": 8,
+            "right": {
+              "binary64_hex": "0x1.b851eb851eb85p-1"
+            },
+            "squared_error": {
+              "binary64_hex": "0x1.7ab250022f3d9p+2"
+            }
+          },
+          "single:7": {
+            "cut": {
+              "binary64_hex": "0x1.4000000000000p+2"
+            },
+            "left": {
+              "binary64_hex": "-0x1.69d0369d0369dp-3"
+            },
+            "n": 8,
+            "right": {
+              "binary64_hex": "0x1.b851eb851eb85p-1"
+            },
+            "squared_error": {
+              "binary64_hex": "0x1.7ab250022f3d9p+2"
+            }
+          }
+        },
+        "representation": "learned-stump",
+        "scores": {
+          "keep": {
+            "binary64_hex": "-0x1.eb851eb851eb8p-3"
+          },
+          "single:0": {
+            "binary64_hex": "0x1.b851eb851eb85p-1"
+          },
+          "single:7": {
+            "binary64_hex": "-0x1.69d0369d0369dp-3"
+          }
+        },
+        "supported": true
+      },
+      "mode": "dq",
+      "raw_selected": "single:0",
+      "selected": "single:0",
+      "status": "supported-unique"
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "FrozenStump",
+      "epoch": 2,
+      "info": {
+        "keys": {
+          "keep": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "keep",
+            "run-span",
+            0
+          ],
+          "single:0": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            6
+          ],
+          "single:7": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            1
+          ]
+        },
+        "models": {
+          "keep": {
+            "cut": null,
+            "left": {
+              "binary64_hex": "-0x1.eb851eb851eb8p-3"
+            },
+            "n": 4,
+            "right": {
+              "binary64_hex": "-0x1.eb851eb851eb8p-3"
+            },
+            "squared_error": {
+              "binary64_hex": "0x1.0000000000000p+2"
+            }
+          },
+          "single:0": {
+            "cut": {
+              "binary64_hex": "0x1.4000000000000p+2"
+            },
+            "left": {
+              "binary64_hex": "-0x1.69d0369d0369dp-3"
+            },
+            "n": 8,
+            "right": {
+              "binary64_hex": "0x1.b851eb851eb85p-1"
+            },
+            "squared_error": {
+              "binary64_hex": "0x1.7ab250022f3d9p+2"
+            }
+          },
+          "single:7": {
+            "cut": {
+              "binary64_hex": "0x1.4000000000000p+2"
+            },
+            "left": {
+              "binary64_hex": "-0x1.69d0369d0369dp-3"
+            },
+            "n": 8,
+            "right": {
+              "binary64_hex": "0x1.b851eb851eb85p-1"
+            },
+            "squared_error": {
+              "binary64_hex": "0x1.7ab250022f3d9p+2"
+            }
+          }
+        },
+        "representation": "learned-stump",
+        "scores": {
+          "keep": {
+            "binary64_hex": "-0x1.eb851eb851eb8p-3"
+          },
+          "single:0": {
+            "binary64_hex": "0x1.b851eb851eb85p-1"
+          },
+          "single:7": {
+            "binary64_hex": "-0x1.69d0369d0369dp-3"
+          }
+        },
+        "supported": true
+      },
+      "mode": "dq",
+      "raw_selected": "single:0",
+      "selected": null,
+      "status": "observed-failure-review"
+    }
+  ],
+  "actual_practice_events": [
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "FrozenCoarse",
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:7": 1
+      },
+      "epoch": 2,
+      "means": {
+        "keep": 0.76,
+        "single:0": 0.76,
+        "single:7": 0.76
+      },
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          0.76,
+          0.76
+        ],
+        "single:0": [
+          0.76,
+          0.76
+        ],
+        "single:7": [
+          0.76,
+          0.76
+        ]
+      },
+      "selected": "keep"
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "FrozenExact",
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:7": 1
+      },
+      "epoch": 0,
+      "means": {
+        "keep": -0.24,
+        "single:0": -1.13,
+        "single:7": 0.76
+      },
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.24,
+          0.76
+        ],
+        "single:0": [
+          -1.02,
+          -1.24
+        ],
+        "single:7": [
+          0.76,
+          0.76
+        ]
+      },
+      "selected": "single:7"
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "FrozenStump",
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:7": 1
+      },
+      "epoch": 2,
+      "means": {
+        "keep": 0.76,
+        "single:0": 0.76,
+        "single:7": 0.76
+      },
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          0.76,
+          0.76
+        ],
+        "single:0": [
+          0.76,
+          0.76
+        ],
+        "single:7": [
+          0.76,
+          0.76
+        ]
+      },
+      "selected": "keep"
+    }
+  ],
+  "raw_context_bound_reviews": [
+    {
+      "seq": 57,
+      "arm": "FrozenCoarse",
+      "after": [
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "single",
+          4,
+          false,
+          "stay",
+          "repeated-run"
+        ]
+      ],
+      "before": [],
+      "context": [
+        0,
+        1
+      ],
+      "epoch": 1,
+      "memory_unchanged": [
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "keep",
+            "global"
+          ],
+          4,
+          {
+            "binary64_hex": "-0x1.eb851eb851eb8p-3"
+          }
+        ],
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "repeated-run"
+          ],
+          4,
+          {
+            "binary64_hex": "0x1.75c28f5c28f5cp-2"
+          }
+        ],
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "single-step"
+          ],
+          4,
+          {
+            "binary64_hex": "-0x1.999999999999ap-3"
+          }
+        ]
+      ],
+      "pending": {
+        "candidate": "single:0",
+        "context": [
+          0,
+          1
+        ],
+        "epoch": 0,
+        "key": [
+          "dq",
+          "TIMEOUT",
+          false,
+          "single",
+          4,
+          false,
+          "stay",
+          "repeated-run"
+        ],
+        "predicted_mean": {
+          "binary64_hex": "0x1.75c28f5c28f5cp-2"
+        }
+      },
+      "requires_retest": true,
+      "terminal": "TRAP"
+    },
+    {
+      "seq": 243,
+      "arm": "FrozenStump",
+      "after": [
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "single",
+          4,
+          false,
+          "stay",
+          "run-span",
+          6
+        ]
+      ],
+      "before": [],
+      "context": [
+        0,
+        1
+      ],
+      "epoch": 1,
+      "memory_unchanged": [
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "keep",
+            "run-span",
+            0
+          ],
+          4,
+          {
+            "binary64_hex": "-0x1.eb851eb851eb8p-3"
+          }
+        ],
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            1
+          ],
+          4,
+          {
+            "binary64_hex": "-0x1.999999999999ap-3"
+          }
+        ],
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            2
+          ],
+          2,
+          {
+            "binary64_hex": "-0x1.0a3d70a3d70a4p-3"
+          }
+        ],
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            8
+          ],
+          2,
+          {
+            "binary64_hex": "0x1.b851eb851eb85p-1"
+          }
+        ]
+      ],
+      "pending": {
+        "candidate": "single:0",
+        "context": [
+          0,
+          1
+        ],
+        "epoch": 0,
+        "key": [
+          "dq",
+          "TIMEOUT",
+          false,
+          "single",
+          4,
+          false,
+          "stay",
+          "run-span",
+          6
+        ],
+        "predicted_mean": {
+          "binary64_hex": "0x1.b851eb851eb85p-1"
+        }
+      },
+      "requires_retest": true,
+      "terminal": "TRAP"
+    }
+  ],
+  "unused_new_practice_labels": [
+    {
+      "seq": 103,
+      "arm": "FrozenCoarse",
+      "after": [
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "keep",
+            "global"
+          ],
+          4,
+          {
+            "binary64_hex": "-0x1.eb851eb851eb8p-3"
+          }
+        ],
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "repeated-run"
+          ],
+          4,
+          {
+            "binary64_hex": "0x1.75c28f5c28f5cp-2"
+          }
+        ],
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "single-step"
+          ],
+          4,
+          {
+            "binary64_hex": "-0x1.999999999999ap-3"
+          }
+        ]
+      ],
+      "before": [
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "keep",
+            "global"
+          ],
+          4,
+          {
+            "binary64_hex": "-0x1.eb851eb851eb8p-3"
+          }
+        ],
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "repeated-run"
+          ],
+          4,
+          {
+            "binary64_hex": "0x1.75c28f5c28f5cp-2"
+          }
+        ],
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "single-step"
+          ],
+          4,
+          {
+            "binary64_hex": "-0x1.999999999999ap-3"
+          }
+        ]
+      ],
+      "epoch": 2,
+      "samples": [
+        {
+          "key": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "keep",
+            "global"
+          ],
+          "returns": [
+            {
+              "binary64_hex": "0x1.851eb851eb852p-1"
+            },
+            {
+              "binary64_hex": "0x1.851eb851eb852p-1"
+            }
+          ]
+        },
+        {
+          "key": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "repeated-run"
+          ],
+          "returns": [
+            {
+              "binary64_hex": "0x1.851eb851eb852p-1"
+            },
+            {
+              "binary64_hex": "0x1.851eb851eb852p-1"
+            }
+          ]
+        },
+        {
+          "key": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "single-step"
+          ],
+          "returns": [
+            {
+              "binary64_hex": "0x1.851eb851eb852p-1"
+            },
+            {
+              "binary64_hex": "0x1.851eb851eb852p-1"
+            }
+          ]
+        }
+      ],
+      "trained": false
+    },
+    {
+      "seq": 180,
+      "arm": "FrozenExact",
+      "after": [
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "keep",
+            "run-span",
+            0
+          ],
+          4,
+          {
+            "binary64_hex": "-0x1.eb851eb851eb8p-3"
+          }
+        ],
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            1
+          ],
+          4,
+          {
+            "binary64_hex": "-0x1.999999999999ap-3"
+          }
+        ],
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            2
+          ],
+          2,
+          {
+            "binary64_hex": "-0x1.0a3d70a3d70a4p-3"
+          }
+        ],
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            8
+          ],
+          2,
+          {
+            "binary64_hex": "0x1.b851eb851eb85p-1"
+          }
+        ]
+      ],
+      "before": [
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "keep",
+            "run-span",
+            0
+          ],
+          4,
+          {
+            "binary64_hex": "-0x1.eb851eb851eb8p-3"
+          }
+        ],
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            1
+          ],
+          4,
+          {
+            "binary64_hex": "-0x1.999999999999ap-3"
+          }
+        ],
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            2
+          ],
+          2,
+          {
+            "binary64_hex": "-0x1.0a3d70a3d70a4p-3"
+          }
+        ],
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            8
+          ],
+          2,
+          {
+            "binary64_hex": "0x1.b851eb851eb85p-1"
+          }
+        ]
+      ],
+      "epoch": 0,
+      "samples": [
+        {
+          "key": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "keep",
+            "run-span",
+            0
+          ],
+          "returns": [
+            {
+              "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+            },
+            {
+              "binary64_hex": "0x1.851eb851eb852p-1"
+            }
+          ]
+        },
+        {
+          "key": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            6
+          ],
+          "returns": [
+            {
+              "binary64_hex": "-0x1.051eb851eb852p+0"
+            },
+            {
+              "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+            }
+          ]
+        },
+        {
+          "key": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            1
+          ],
+          "returns": [
+            {
+              "binary64_hex": "0x1.851eb851eb852p-1"
+            },
+            {
+              "binary64_hex": "0x1.851eb851eb852p-1"
+            }
+          ]
+        }
+      ],
+      "trained": false
+    },
+    {
+      "seq": 289,
+      "arm": "FrozenStump",
+      "after": [
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "keep",
+            "run-span",
+            0
+          ],
+          4,
+          {
+            "binary64_hex": "-0x1.eb851eb851eb8p-3"
+          }
+        ],
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            1
+          ],
+          4,
+          {
+            "binary64_hex": "-0x1.999999999999ap-3"
+          }
+        ],
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            2
+          ],
+          2,
+          {
+            "binary64_hex": "-0x1.0a3d70a3d70a4p-3"
+          }
+        ],
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            8
+          ],
+          2,
+          {
+            "binary64_hex": "0x1.b851eb851eb85p-1"
+          }
+        ]
+      ],
+      "before": [
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "keep",
+            "run-span",
+            0
+          ],
+          4,
+          {
+            "binary64_hex": "-0x1.eb851eb851eb8p-3"
+          }
+        ],
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            1
+          ],
+          4,
+          {
+            "binary64_hex": "-0x1.999999999999ap-3"
+          }
+        ],
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            2
+          ],
+          2,
+          {
+            "binary64_hex": "-0x1.0a3d70a3d70a4p-3"
+          }
+        ],
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            8
+          ],
+          2,
+          {
+            "binary64_hex": "0x1.b851eb851eb85p-1"
+          }
+        ]
+      ],
+      "epoch": 2,
+      "samples": [
+        {
+          "key": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "keep",
+            "run-span",
+            0
+          ],
+          "returns": [
+            {
+              "binary64_hex": "0x1.851eb851eb852p-1"
+            },
+            {
+              "binary64_hex": "0x1.851eb851eb852p-1"
+            }
+          ]
+        },
+        {
+          "key": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            6
+          ],
+          "returns": [
+            {
+              "binary64_hex": "0x1.851eb851eb852p-1"
+            },
+            {
+              "binary64_hex": "0x1.851eb851eb852p-1"
+            }
+          ]
+        },
+        {
+          "key": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            1
+          ],
+          "returns": [
+            {
+              "binary64_hex": "0x1.851eb851eb852p-1"
+            },
+            {
+              "binary64_hex": "0x1.851eb851eb852p-1"
+            }
+          ]
+        }
+      ],
+      "trained": false
+    }
+  ],
+  "adverse_prediction": {
+    "model": "FrozenStump",
+    "episode": 0,
+    "candidate": "single:0",
+    "predicted_return": 0.86,
+    "matchedroot_actual_practice_returns": [
+      -1.02,
+      -1.24
+    ],
+    "actual_mean": -1.13,
+    "cut_remained": 5.0
+  },
+  "findings": [
+    "NewDQ kappa0/phi1/observedprefixlength6 stressinput was not inpriorv131maintraining. Allmodelweights and5.0cut fixedbeforefirstnewnative,0testmodeltraining. Targeted adversarialcase, not blindpopulationtest.",
+    "TaskTD6/8success/mean0.26/trials0; FrozenExact7/8/mean0.51/trials6; FrozenCoarse5/8/mean0.037500000000000006/trials6; FrozenStump same5/8/mean0.037500000000000006/trials6. Frozen learnedmodel isworse thanordinarybaseline here.",
+    "Atcommonactuale0postTD R+L+I, learnedmodelpredicts firstcandidate0.86 but actualsame-root exactarm practice gives[-1.02,-1.24],mean-1.13. Clearinglatercandidategives[0.76,0.76]. Length6is betweenobserved2and8, not anout-of-minmax feature; interpolationstillwrong becausecausalrole/contextisomitted.",
+    "FrozenStump/Coarse deletefirstprotectiveWAIT, actuale1TRAP triggersreview; e2practice findsALLthree branches[0.76,0.76], selectskeep byfeweredits. Ordinarylearning alreadyrecovers, so review didnot repair orproduce thelater5successes. Itspent6extra tasks toconfirmkeep afteran avoidablebadtransfer.",
+    "Exactmodeldeclines unseenlength6 instead ofmakingan estimate, actuallypractices ate0, selectslateraddress, achieves7successes. Thiscasebenefitsfromthat extraevidence; v131exactmodelhadhighertrialcost, so no claimalwaysrefuse/generalize isbest.",
+    "AllfourfinalcleanchecksSUCCESS0.76; badtransferinitialcost isnot erased bysameendpoint. Firstlongrunonlycontainsa protectivefirstdecision; other5WAITs arenot provennecessaryoroptimal. Candidate0deletionharm doesnot mean all longwaitshouldbe keptforever.",
+    "FrozenStump mainsteps85 less thanTaskTD96 onlybecauseearlyTRAP isshort; totalnativework193vs132steps and17vs11rollouts aftertrial/readonly. Notanefficiencywin. Correctedarmsall193nativeKsteps, yetdifferentquality.",
+    "This is a realconditionalmodelnegative-transfer result, not instrumentfailure, not universalrefutation ofRFL andnot scientificSTOP. Priorv131positive developmentresult remains, but its5.0rulecannotbe soldasreliablecausalknowledge.",
+    "Next gap isconditional applicability oftheinterventionvalue, notretuningcut onthissamecase. Newtestlabels retainedunused andoldsample/failedprediction preserved; no posthoccutchange or rerun."
+  ],
+  "limits": [
+    "Onefixednewphase/lengthstresscasechosenafterseeingtrainedmodel. Prospectiveexecution/frozenweights do notmakeit anunbiasedgeneralizationfrequency orindependentseedconfirmatorysample.",
+    "Onlydiagnosticweights frozen. OrdinaryDQ learning andfailure-review/practice remainactive; thisdoesnot measure adaptationofanunfrozenv131model acrossnewtestlabels.",
+    "Representation anddepth-one predictorare supplied, so failurelimits itsinterventionvalue transfer; it doesnot show no richerfeedbacklearner canwork.",
+    "Sameoneevent practicecap,keep+first2eligible single-addresscandidates,2ordinarytasks/branch. Otheraddressesinthe6-step runare nottested; nooptimalityclaim or permanentactionban.",
+    "Newtestlabels areloggedunused; no modelmeanpenalty, thresholdretune, successdiagnosis, automaticretry ormenuexpansion. Latepracticekeepalreadyworks, so recoverycreditmuststaywithordinarylearning.",
+    "DQonly; patchnotrun andoldpatchzeroresultsnotborrowed. SharedQ*/alpha1/2/epsilon1/10/originalrewards unchanged; not punishmentablation, fullmodel/worldknowledge claim, inheritedF1PASS or originalfullV04Rqualification.",
+    "NativeK/storework actual; CPU/RAM/IO/clone/modellookupcostnot separatelyprofiled.3.25s is wholeinstrumentedrun time, not productionbenchmark. Storedstdlibreview not independentexpert/sciencegate.",
+    "Original313/API/guard/law/registry/alloldexecutedbytes andalloldpositivezero/adverseevidence/266prov preserved. No oldchecker/nativefixture rerun, freshsciencekeys/RNG/keyderive/DP/calibration/collector or automationchange."
+  ],
+  "patch_this_round": "NOT_MEASURED",
+  "prior_v131_positive_result_preserved": true,
+  "original_full_V04R_qualified": false,
+  "preservation": {
+    "old70_ledger_values_preserved": true,
+    "old266_provenance_preserved": true,
+    "old_executed_bytes_edited": false,
+    "old_checker_native_reruns": 0,
+    "automation_inspected_or_modified": false
+  }
+}

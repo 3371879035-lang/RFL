@@ -1,0 +1,104 @@
+RFL-CausalChase V0.3R — 当前冻结 rev5 协议的有效停止报告
+日期：2026-10-08（北京时间）
+
+结论
+当前冻结协议在 F1 设计与阈值锁定阶段有效结束：NO_ADMISSIBLE_RETENTION。
+这不是崩溃、缺 seed、部分运行或操作无效；原始 F1、控制器及启动器均记录真实退出码 3。
+原始 F1 在北京时间 22:33:45 开始，22:58:34 结束，历时 1,489.29791 秒。
+没有发布 dev_lock.json，也没有授权后续 B2 治疗/确认采集。
+本轮已经完成合法的协议停止，但没有完成“RFL 更新是否提高学习收益”的治疗效应研究。
+不得将此结果写成“RFL 无效”“RFL 有效”“已完成整个 v0.3 科学验证”或“零伤害”。
+
+1. 真实执行层级与工程验收
+原 37-key 工程计时已实际完成，保持其原路径、原 source commit、原字节和时长。
+正式 smoke5 已完成，真实 native 0，单独 evaluator PASS。
+正式 development32 已完成：seed 1000..1031、episode 0..576、bank 1024，
+共 18,464 条记录、241,339,812 个 incidence pair，全部 32 个分片均保留。
+这不是 18,464 个独立统计样本；统计单位仍是 seed。
+F1 新执行后端跨独立 seed 最多 16 个 spawn worker；每 seed 原算术与回合顺序不变，
+按固定 seed 次序合并最大值、未定义状态与整数 multiplicity，而非浮点 moment 合并。
+新源绑定内部操作审查的 fresh 组合检查：109 通过、0 失败、0 错误、0 跳过。
+这是内部审查，不是独立新代理审查或外部专家认可；旧回归和计时未冒充 fresh。
+
+F1 --plan 有一次独立全量校验；完整 F1 有两次 fresh 全量校验后计算设计。
+每一次均有 32 个完整 worker 回执、18,464 记录、241,339,812 pair、原始 index/
+压缩字节/descriptor/source/control 绑定。负结果不进入正结果的第三次复核与发布分支。
+全量校验耗时依次为 551.237960 秒（plan）、538.069289 秒、417.539302 秒（F1）。
+随后 32-seed 全量设计计算与固定顺序合并耗时 512.094392 秒。
+这些是本次运行记录，不是不同电源/后端之间的受控速度比较。
+
+2. 原始 F1 诊断（不是部分设计锁）
+f_T：ADMISSIBLE，T=6，32 个 convergence_time 均在 cap 内；第 29 顺位为 5。
+f_N：ADMISSIBLE，N=100。
+f_C：ADMISSIBLE，eligible_all。
+f_G：ADMISSIBLE，候选网格 [0,1,5,6]。
+f_R：NO_ADMISSIBLE_RETENTION，endpoint=null。
+以上 T/N/C/G 只是冻结函数返回的开发诊断，不可作为已发布的部分锁使用。
+
+两个且仅两个预注册候选均未通过：
+  RetentionAtH(H=6)
+    stability = 0.13150431950362598 > 0.10；redundancy = undefined/null。
+  LateWindowRetention(H1=1,H2=6)
+    stability = 0.08946968109725323 <= 0.10；redundancy = undefined/null。
+冻结规则要求稳定性 <=0.10 且有定义的 redundancy <=0.90，条件必须全部满足。
+任一相关序列为常数时 Spearman 无定义，必须拒绝，不能填成 0。
+
+3. 机制核查（已有数据的有界描述性读回，不是新实验或新的全量校验）
+闭合审计仅额外读取每 seed 的 episode 0..6，共 224 条既有记录；没有重训或新增 seed。
+使用原 numerics.mean、健康参考计算、FutureUtility、Retention 估计器与 Spearman 函数，
+逐 seed 重建当前已选定诊断网格上的数值。两候选 values、stability、redundancy
+与原生 F1 结果完全一致；未重新搜索 T、网格、端点、阈值或 cap。
+
+健康参考平均水平 v_pre = 0.7630078124999966。
+持续恢复阈值 0.95*v_pre = 0.7248574218749967。
+32 seed 在 episode 0..6 上的曲线平均水平总范围为
+[0.5144140624999989, 0.5923046874999983]，均低于该阈值。
+因此当前诊断窗口内 recovered=0/32，restricted_time 全部为 6。
+Retention 值本身不是常数；是与其比较的 restricted_time 序列零方差，使相关无定义。
+convergence_time 用于检测变化/趋稳，不等同于恢复至健康参考；T=6 的可识别性
+不能保证恢复时间在该窗口内有区分度。此处表现为“较低水平趋稳”和恢复时间全删失。
+不据此断言整个 576 回合内均未恢复，也不将该开发现象推广到未经采集的治疗组。
+
+另外，已有定义的描述性 Spearman(Retention, DeficitAUC) 为：
+  RetentionAtH：-0.9680208460390782；
+  LateWindowRetention：-0.9994489514683362。
+两者绝对值均超过 0.90，显示这些开发端点与已有亏损量高度冗余。
+这只是按原函数的机制读回；没有以单项相关替代原 max/未定义门禁，也没有调整门禁。
+
+4. 证据、身份与保全
+原 295 项科学 source/spec/test 字节摘要仍为
+1359a1ae11cf54407a9b976b53219e30134173d255c985908f838cb057171bd2。
+原 P16 instrument 源提交：bde83b4e650cf3fde603a73c6be1960cf490a1f4。
+新分析调度确实发生行为变更，另外绑定 7 项操作/分析文件，不能称“执行后端未变”：
+源与预注册提交 b34f21f80729ddf35ebf6ffc82f769ef58de943e；
+内部操作审查提交 6fcad68；分析 backend identity
+24012d369d4f917e89055779e69e5f6302f20d1e4b8617f3f7b294f3d6b26380。
+原生 F1/attestation/completed 证据已本地提交
+ac8eed55a6e1f304b1872edf1538345c408df8f8。
+f1_execution.json SHA256：9812c23ca2c467ed8a7a61a807e45d3c00adf07d9db8d3921ea833bd48f43b1e。
+development index SHA256：705fd606911352250ba4e9241782b8a37f778f4ecffeebaa44628eb54df11fc4。
+原 F0 SHA256：1aea2695a417e52c98fe61bdf8cc2cb7a9485dcd901bee459df4b22c65cbb959。
+当前 closure_audit.json 绑定 191 个当前操作/资源证据文件，并逐 SHA 复核
+178 个已保存的旧操作及 development 文件。旧中断、旧失败和旧 raw 保留不覆盖。
+之前受控中断的旧分析 native 2 属于授权工程切换，不能当作本次科学停止或科学 FAIL。
+descriptor SHA 是未压缩 canonical JSONL，不与 .gz 压缩字节 SHA 混淆。
+closure_audit.json 是事后审计，不是假冒原生 controller receipt，也不是再一次全量校验。
+
+5. 资源恢复和停止边界
+用户授权的临时 Windows 最佳性能设置已经在 F1 退出后自动恢复：
+北京时间 22:58:38，AC/DC Set API 均 native 0，读回均为原 00000000.. 平衡设置。
+闭合审计于 UTC 2026-10-08T15:09:14 再次查询 API，仍与 lease 中原设置一致。
+没有改基础电源计划、科学参数或种子，不宣称电源模式带来某个倍率提升。
+
+唯一当前结果账本：experiments/rebuild_status_current.json。
+当前冻结协议 CLOSED_VALID_STOP，治疗、确认和最终效应分析均 NOT_RUN_NO_F1_LOCK。
+不放宽稳定性/冗余阈值，不扩大 cap，不换初始化，不发布部分锁，不复用科学 seed。
+1.5 RMST 仍只作数量基准，不宣称实用意义、等效或零伤害。
+自动续接应在本报告与账本保存后删除，不能自动进入 B2 或追 PASS。
+若要继续新研究，须另立前瞻性协议，明确可识别性问题、端点/时间设计及权限边界，
+完成新的预注册、测试与单独门禁之后才采集新的治疗/确认数据。
+本次没有进行 GitHub push 或外部发布，所有新证据仅本地保存与提交。
+
+机器可审计附件：closure_audit.json、mechanism_diagnostics.json、audit_stop.py。
+原生结果附件：../f1_parallel_design_20261008/pipeline_result.json、f1_execution.json、
+f1_execution_attestation.json、design_lock.receipt.json、pipeline_exit.json。

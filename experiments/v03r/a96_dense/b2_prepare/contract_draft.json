@@ -1,0 +1,123 @@
+{
+  "schema": "rfl-a96-B2-preparation-contract-draft-v1",
+  "status": "DRAFT_NOT_COLLECTION_PREREGISTRATION",
+  "role": "PROSPECTIVE_ENGINEERING_PREPARATION_ONLY",
+  "parent": {
+    "root": "D:/强化反馈学习/RFL-CausalChase-v0.3-dense-20261009",
+    "source_count": 313,
+    "sources_digest": "1dfd80ce49255231998b70fca2b7bcd72e0940822a1bf9d4a8e731603ccc4838",
+    "native_F1_evidence_commit": "a506712f9c65fd27d4b5bcd0963d5c22ef45d602",
+    "F1_terminal_audit_commit": "015e0a89189bdf9de187bdeb37b19626da5d1ae6",
+    "lock_path": "experiments/v03r/a96_dense/dev_lock.json",
+    "lock_sha256": "7d43ee9ae33a218e1266ab3cd2351e07d7e30922302e4527c65facbddaa3472f",
+    "manifest_sha256": "22f122736bc60e9a94f7e5083b92116fda9ff4e39f3d157f69cf2406ed28a144",
+    "full_F1_validation_proofs": [
+      "cc42f5fa90e344458070505f0fc03117d755a28f022c75f27c2133fe1ae90af1",
+      "9bc4d0f4d7c944f04aea742e3fc280ce27fa2d5e5e8fa47a6a7b434dc4155852",
+      "31665a22341140dafa94c9bc3fc2a8c06af424ac27785b1dcd7a882abbcb4d31"
+    ],
+    "design_result_sha256": "283bad66480b8194b616a7b3d4f569a9e762d4f98773bc289076517982e484e4"
+  },
+  "isolated_addon": "experiments/v03r/a96_dense/b2_prepare",
+  "parent_source_inventory_must_remain_313": true,
+  "bound_design": {
+    "measurement_profile": "v03r-a96-dense-measurement-v1",
+    "T": 465,
+    "N_eval": 100,
+    "grid_law": "every integer0..465",
+    "retention": {
+      "form": "LateWindowRetention",
+      "parameters": {
+        "H1": 387,
+        "H2": 465
+      }
+    },
+    "refinement": "eligible_all",
+    "thresholds_role": "Read the six keyed F1 registry entries. No endpoint/threshold selection in this addon.",
+    "unchanged_learning_constants": {
+      "alpha": "1/2",
+      "epsilon": "1/10"
+    },
+    "same_seed_chronology": "serial",
+    "maximum_spawn_workers": 16,
+    "mutation_gates": "serial"
+  },
+  "seedless_reference_candidate": {
+    "path": "experiments/v03r/a96_dense/b2_prepare/healthy_reference_candidate.json",
+    "N_eval": 100,
+    "evaluation_sample_sha256": "2687229d31bec0afd233dd9fc32ada7117a4f81da6cfd837e6eec13f330f4cd2",
+    "q_reference_sha256": "d9078b5b5b823df56f998e8c28eb6a3e388bd3ae216f41a21acdb5202d2ec05a",
+    "v_pre": 0.7642000000000008,
+    "master_design_v_pre": 0.7630078124999966,
+    "rule": "A85 same-scenes health reference: Q* on locked prefix100, compute/fingerprint once before any collection and inject the same object/value to paired arms.",
+    "approved_for_collection": false,
+    "scientific_seed_draws": 0,
+    "training_episodes": 0
+  },
+  "analysis_procedure_candidate": {
+    "status": "UNFROZEN_CANDIDATE_REQUIRES_FAMILY_AND_ORIENTATION_REGISTRATION",
+    "unit": "one independently generated complete seed; cells/episodes aggregate first",
+    "primary_N": 400,
+    "primary_blocks": [
+      100,
+      100,
+      100,
+      100
+    ],
+    "secondary_N": 200,
+    "secondary_blocks": [
+      100,
+      100
+    ],
+    "only_final_primary_N400_confirmatory": true,
+    "mandatory_cumulative_and_fresh_block": true,
+    "paired_CRN": true,
+    "T_and_P_separate": true,
+    "same_tier_references_only": true,
+    "L2_and_L3_roles": "evaluator-assisted/constructional ceilings, not L0 learner capability",
+    "orientation": "explicit per endpoint and named treatment/reference, never lexical arm order",
+    "bootstrap": {
+      "resamples": 10000,
+      "confidence": 0.95,
+      "method": "paired-seed-percentile-linear-Python-Random",
+      "algorithm_seed": 960031,
+      "algorithm_seed_is_not_scientific_environment_key": true
+    },
+    "sign_test": "two-sided exact binomial on exact non-ties; all ties null",
+    "wilcoxon": "two-sided conditional-exact signed-rank, average ranks for ties, discard exact zeros; all zeros null",
+    "probability_of_improvement": "number of strictly favorable seed-level differences divided by complete N, not bootstrap probability of mean",
+    "trimmed_mean": "remove floor(.05*N) at each end",
+    "effect_size": "Cohen dz with sample SD; zero spread null with reason",
+    "tail_candidate_convention": "five largest contributions aligned with net direction, frozen-seed-order tie-break; zero net share null; report their share of net sum and mean without them",
+    "holm": "complete prospectively frozen within-version contrast family; absent p/family cannot imply PASS",
+    "finding_rule": "All original direction/sign-test, top5<0.50, CI/margin, companion and multiplicity guards remain. This module emits no verdict.",
+    "RMST": "1.5 quantitative benchmark only; P strict margin interval and separate T lowerCI>=-1.5 inclusive; no practical/equivalence/zero-harm claim",
+    "conjunction": "FutureUtility benefit and Collateral bound and Retention persistence/non-inferiority and separate T harm; no weighted score"
+  },
+  "scientific_seeds": {
+    "treatment": null,
+    "primary_confirmatory": null,
+    "secondary_confirmatory": null
+  },
+  "collection_authorized": false,
+  "research_complete": false,
+  "remaining_prerequisites": [
+    "Declare exact population/fault/scene generation and factual failure-trigger stream before data",
+    "Freeze all inherited contrast cells, tiers, orientations, primary/secondary roles and Holm family",
+    "Prospectively allocate disjoint science and engineering keys with all prior exclusions, including interrupted reservations",
+    "Implement exact paired B2 acquisition with native per-seed raw artifacts and complete index-last publication",
+    "Implement final conjunction/multiplicity/direction/tail decision and scheduled cumulative/fresh block report",
+    "Run full new-addon/B1/B2 integration and serial mutation gates; source-bound internal review",
+    "Certify actual complete dense B2 engineering workload/resources; never use baseline timing as its substitute",
+    "Freeze/commit addon code, tests, reference, population/analysis preregistration and single-use collection gate before scientific seeds"
+  ],
+  "prohibited": [
+    "No collection via this preparation module",
+    "No migration of parent F0 as B2 authorization",
+    "No old science seed reuse",
+    "No threshold/grid/horizon/initializer optimization",
+    "No automated retry/partial lock/partial PASS",
+    "No legacy output or legacy stats_ext result relabeled as A96"
+  ],
+  "internal_review_is_not_independent_agent_or_external_expert": true
+}

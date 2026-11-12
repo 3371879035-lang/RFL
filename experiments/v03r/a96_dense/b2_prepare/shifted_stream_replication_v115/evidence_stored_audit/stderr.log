@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v03r\a96_dense\b2_prepare\shifted_stream_replication_v115\audit_stored.py", line 1312, in <module>
+    main()
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v03r\a96_dense\b2_prepare\shifted_stream_replication_v115\audit_stored.py", line 1269, in main
+    summaries=[audit_child(mode,c,rows,pins,healthy) for mode in MODES
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v03r\a96_dense\b2_prepare\shifted_stream_replication_v115\audit_stored.py", line 926, in audit_child
+    initial,plan,source_detail=verify_prepared(p,source_records,rows,c,mode,healthy)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v03r\a96_dense\b2_prepare\shifted_stream_replication_v115\audit_stored.py", line 606, in verify_prepared
+    assert p['engineering_n_eval']==100 and p['stream_offset']==STREAM_OFFSET
+           ~^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'engineering_n_eval'

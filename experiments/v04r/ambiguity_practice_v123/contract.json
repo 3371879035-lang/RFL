@@ -1,0 +1,142 @@
+{
+  "schema": "V123_PROSPECTIVE_BOUNDED_AMBIGUITY_PRACTICE",
+  "date_asia_shanghai": "2026-11-06",
+  "parent_commit": "73178774bb6c2e4075a88e2fba427cd4b1835b01",
+  "question": "When top-valued single-address candidates share an aliased feature, can small actual branch practice resolve the ambiguity and preserve improvement in a separately fixed recurrent task stream?",
+  "modes": [
+    "dq",
+    "patch-adaptive"
+  ],
+  "arms": [
+    "TaskTD",
+    "AlwaysClear",
+    "EvidenceValue",
+    "PracticeValue"
+  ],
+  "sources": [
+    {
+      "kappa": 0,
+      "prefix": 3,
+      "cell": [
+        2,
+        1
+      ]
+    },
+    {
+      "kappa": 1,
+      "prefix": 5,
+      "cell": [
+        3,
+        2
+      ]
+    }
+  ],
+  "source_rule": "One fresh state per mode installs both kappa sources at once: WAIT at specified cell for t>=prefix through11, m0,1,z1,phi2; DQ6 or independent literalD WAIT. One phase4 unread wrong-RIGHT sentinel at(1,2,t1,kappa0,z1,m0) plus unread process3->2. Equal full initialR+L cloned independently to four arms; no state resets between tasks.",
+  "schedule": [
+    {
+      "kappa": 0,
+      "trap": false
+    },
+    {
+      "kappa": 1,
+      "trap": false
+    },
+    {
+      "kappa": 0,
+      "trap": false
+    },
+    {
+      "kappa": 1,
+      "trap": false
+    },
+    {
+      "kappa": 0,
+      "trap": true
+    },
+    {
+      "kappa": 0,
+      "trap": true
+    },
+    {
+      "kappa": 0,
+      "trap": true
+    },
+    {
+      "kappa": 1,
+      "trap": false
+    },
+    {
+      "kappa": 0,
+      "trap": false
+    },
+    {
+      "kappa": 1,
+      "trap": false
+    },
+    {
+      "kappa": 0,
+      "trap": false
+    },
+    {
+      "kappa": 1,
+      "trap": false
+    },
+    {
+      "kappa": 0,
+      "trap": false
+    },
+    {
+      "kappa": 1,
+      "trap": false
+    },
+    {
+      "kappa": 0,
+      "trap": false
+    },
+    {
+      "kappa": 1,
+      "trap": false
+    }
+  ],
+  "episode_inputs": "Chronological e0..15, fixedphi2/errorflag0/rank9/base1, fixed shared MAX nonexploration coins; same exogenous kappa and mask schedule all arms. Trap(1,2) on action-step0 is present only e4,5,6, including whatever actual behavior an arm chooses. No configuration or evaluator truth given to model.",
+  "model": "Same frozen28row evidence model all corrected selective arms; no model training. PracticeValue adds the explicit finite practice policy above; no task epsilon change, adaptive task exploration, new RNG or from-scratch learner.",
+  "diagnostic": "Enabled after every actual COLLISION/TRAP/TIMEOUT for corrected arms, not only first task. SUCCESS ordinary-only. Max12addresses and0queries per event; individual consumed epochs, completeR+L and immediateI persist. TaskTD never diagnoses. Keep allowed.",
+  "retention_checkpoints_completed_tasks": [
+    0,
+    2,
+    4,
+    8,
+    12,
+    16
+  ],
+  "retention_protocol": "At each checkpoint ordinary greedy read-only rollouts in kappa0 and1, phi2/rank8/base1/no-fault. No coins, TD, diagnosis, writes or new source identity. Full before/after R+L+I identical; native counts separately. These are outcome checks, not success attribution. They are not training episodes or independent seeds.",
+  "metrics": "All16 chronological task returns, observed outcomes, failure counts, success-conditioned zero diagnostic calls, actual diagnostic transaction/address attempts; read-only return/success by checkpoint. Costs separate, no new weighted objective or post-hoc best window.",
+  "reference": {
+    "path": "experiments/v03r/a96_dense/b2_prepare/grammar_catalog_v31/evidence/stdout.log",
+    "sha256": "d0aafb6dc20b1cc0c872ac4c48497d94feb707ffe14448bd1c2f3ddd1bbb467b",
+    "q_digest": "d9078b5b5b823df56f998e8c28eb6a3e388bd3ae216f41a21acdb5202d2ec05a"
+  },
+  "budget": {
+    "rollout": 260,
+    "step": 3120,
+    "transaction": 768,
+    "raw_bytes": 25165824,
+    "seconds": 120
+  },
+  "expected_extent_not_effect_gate": {
+    "source_installs": 2,
+    "stream_tasks": 128,
+    "read_only_probes": 96,
+    "practice_rollouts_upper_bound": 24,
+    "total_rollouts_upper_bound": 248
+  },
+  "capture": "New exclusive bounded capture and source pins before first execution. Old code/positive/negative/partial results unchanged, no old checker/native rerun, no automatic retry or replacing adverse/unknown outcomes.",
+  "limits": "Fixed scripted stream, not blind population/seeds/general causal posterior. Same sharedQ*, alpha1/2 epsilon1/10 and original rewards. Legal local edits on post-TD current, not original same-pre wholeB1. Trap phases are deliberate environmental changes; compare same-schedule arms, do not label changing-environment return as general collateral. No new science/workload keys, RNG/keyderive, DP/calibration/formal collection. Automation off, not inspected or changed. This is a new action-intervention practice capability in the revised V04 experiment, not an assertion that v122 already had it. Only the tested aliased candidates are adjudicated; no total compute matching or universal attribution claim.",
+  "practice": {
+    "trigger": "PracticeValue only, actual failed task after ordinary learning, chosen single-address has at least2 top-scored single candidates with identical feature key. No truth/location label, future schedule or environment configuration is passed to request/choice policy.",
+    "cap": "At most2 practice events per stream role, consumed before first branch. At most2 eligible singles (canonical order), plus keep; exactly2 ordinary tasks per branch. Extra eligible/unprobed candidates explicitly retained. No outcome-conditioned rerun or persistent scorer update.",
+    "execution": "Runner-private current-task environment capability binds current observed kappa/phase and current actual mask, never future masks. Clone actual complete live post-TD R+L into separate branches; candidate edits on branch,2repeat-current-condition tasks, no diagnostics inside branches. Origin and its I stay unchanged. New typed data/branches, not restored issuedB1handles.",
+    "decision": "Choose greatest actual two-task mean from keep and tested singles; exact ties prefer fewer attempted address edits then declared order. Apply chosen original proposal once to live post-TD state. Scores remain frozen; practice outcomes are ephemeral event evidence.",
+    "cost": "All branch rollouts/steps/ordinary transactions and candidate writes counted separately; task and retention comparison shares task schedule but NOT total compute. No net efficiency or full-menu optimality claim. Standard query API remains0; these new practice operations are not claimed free or nonexistent."
+  }
+}

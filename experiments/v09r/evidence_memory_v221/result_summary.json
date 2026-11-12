@@ -1,0 +1,108 @@
+{
+  "status": "COMPLETED_UNTRAINED_MEMORY_PRACTICE_PROBE",
+  "trainable_parameters": 10220095,
+  "parameter_tensors_with_finite_nonzero_gradient": 176,
+  "checks": 14,
+  "native_first": {
+    "first_run_exit": 0,
+    "audit_exit": 0,
+    "timeout": false,
+    "automatic_retries": 0,
+    "wall_seconds": 56.81673800000135,
+    "input_count": 583,
+    "changed_inputs": [],
+    "utc": "2026-11-11T12:19:36.956230+00:00"
+  },
+  "counts": {
+    "task_steps": 216,
+    "trial_steps": 118,
+    "baseline_trials": 25,
+    "candidate_trials": 93,
+    "failure_sessions": 46,
+    "adoptions": 20
+  },
+  "completed_main_episodes": 72,
+  "actual_probe_calls": 334,
+  "fixture_calls_separately_counted": 7,
+  "total_environment_calls": 341,
+  "unique_actual_probe_facts": 334,
+  "repeated_arm_trials": 37,
+  "arms_with_repeated_trials": 29,
+  "arms_with_both_success_and_failure": 13,
+  "paired_baseline_candidate_sessions": 15,
+  "adoptions_with_no_fresh_baseline_trial": 12,
+  "adoptions_with_fresh_baseline_trial": 8,
+  "main_policy_max_deviation_uniform": 0.0002583831548690907,
+  "main_policy_mean_normalized_entropy": 0.999999928221168,
+  "families": {
+    "stable_noisy": {
+      "main_episodes": 36,
+      "main_successes": 11,
+      "counts": {
+        "task_steps": 108,
+        "trial_steps": 65,
+        "baseline_trials": 10,
+        "candidate_trials": 55,
+        "failure_sessions": 25,
+        "adoptions": 13
+      },
+      "comparison_examples": 6
+    },
+    "changed_noisy": {
+      "main_episodes": 36,
+      "main_successes": 15,
+      "counts": {
+        "task_steps": 108,
+        "trial_steps": 53,
+        "baseline_trials": 15,
+        "candidate_trials": 38,
+        "failure_sessions": 21,
+        "adoptions": 7
+      },
+      "comparison_examples": 9
+    }
+  },
+  "optimizer_steps": 0,
+  "checkpoint_readback": [
+    {
+      "seed": 11,
+      "model_id": "8c22e3d1fd28d1652efb0f12ee08ce0a58df4084c185cc9aa8c2728897e12422",
+      "sha256": "7f9af8f6b1402764833a46a17ea803ffd030d2cb9ffdba2325515b2abae0af4b",
+      "bytes": 40940831
+    },
+    {
+      "seed": 23,
+      "model_id": "f34570422e796dfa980ae96f39ff6d121dfc634f113f52c845d78123058c5d88",
+      "sha256": "33baba7737988bd9ebb71bfe2fbc7e0110cf6d826414622f40940586e05c8acb",
+      "bytes": 40940831
+    },
+    {
+      "seed": 37,
+      "model_id": "d7b73889824f764bebf98f45e2741dd920acb59a3e50a5678d05774e6eba7f96",
+      "sha256": "a3de4e9bb8a63665a70cb515710f1905ad1a1758ca3f86b220a8a186272607b4",
+      "bytes": 40940831
+    }
+  ],
+  "checkpoint_readback_model_forwards": 0,
+  "post_summary_environment_calls": 0,
+  "input_pins_unchanged": 583,
+  "stored_audit_status": "STORED_REVIEW_PASSED",
+  "jsonl_records": 1283,
+  "actual_head": "d0edad11137a117f45ab94f5f10cf6f045a61ac3",
+  "warning": "One scalar-report conversion of requires_grad tensor in symmetry check; no optimizer or modified evidence; original stderr retained.",
+  "source_sha256": {
+    "src/feedback_program_v221/losses.py": "795f5650a2d06885b8bf8c8affe4289796741b89d3e3bba272533d6f71926a96",
+    "src/feedback_program_v221/memory.py": "74a250d946960d32506948f697ca9c741591fc806515da7e0a5c188fe2516ba2",
+    "src/feedback_program_v221/network.py": "1bd4633d6c94a18d04a7135dd76fa2f0d0153f623eee1df2ae72f13bcd3fc9f6",
+    "src/feedback_program_v221/runtime.py": "7dd9b077c7d68038fa4795ce176a59ba7b56087500e9eef76bb1d8aebb27e800",
+    "src/feedback_program_v221/__init__.py": "f40383d44d900e10ef4cc637bdde5b4f67a463de49568cb8a536372b06eae35b"
+  },
+  "evidence_sha256": {
+    "experiments/v09r/evidence_memory_v221/capture/probe_summary.json": "4385e17ee957a5bf5a97835900bc6539add4995e24ab76030ad45842d7a09e1a",
+    "experiments/v09r/evidence_memory_v221/capture/stored_audit.json": "e06e0ffbe9c7a7e10b75354032a644419ff0c79b5fb8f89ce56cc43dd17071a8",
+    "experiments/v09r/evidence_memory_v221/capture/exit.json": "4415eec8f5bbe1cb5486aaeeb77ef94e7e100e3792f89c1f8cae54bd470a0973",
+    "experiments/v09r/evidence_memory_v221/capture/events.jsonl": "6a6d850b5044bd1245f5d2fd45d20f2183c79b4f8e063ba192914a39daf83c02",
+    "experiments/v09r/evidence_memory_v221/contract.json": "20126fec86d8ca587b7f386aa2a653b8de376ff720e039721053785c8fb4e54e"
+  },
+  "interpretation": "Untrained structure and complete practice evidence. Adopting, repeating and comparing are not themselves learning improvements."
+}

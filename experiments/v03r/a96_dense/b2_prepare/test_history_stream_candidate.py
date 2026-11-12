@@ -1,0 +1,306 @@
+"""Seed-free stream parser/boundary tests, not historical or scientific reruns."""
+import hashlib
+import inspect
+import io
+import json
+from pathlib import Path
+import sys
+import tempfile
+import unittest
+from unittest.mock import patch
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import history_stream_candidate as stream
+import readiness as ready
+
+
+def encoded(value):
+    return json.dumps(value, ensure_ascii=False, allow_nan=False).encode("utf-8")
+
+
+class StreamTests(unittest.TestCase):
+    def parse(self, blob, width=3):
+        return stream.inspect_jsonl_chunks(blob[i:i+width] for i in range(0, len(blob), width))
+
+    def identities(self, result):
+        return [r["original_integer_decimal"] for r in result["claims"]]
+
+    def refused(self, blob, width=3):
+        result = self.parse(blob, width)
+        self.assertFalse(result["parse_complete"])
+        self.assertEqual(result["claims"], [])
+        self.assertEqual(result["conservative_exclusion_intervals_decimal_inclusive"], [])
+        self.assertEqual(result["bytes"], len(blob))
+        self.assertEqual(result["sha256"], hashlib.sha256(blob).hexdigest())
+        self.assertEqual(result["valid_object_record_count"] + result["invalid_record_count"],
+                         result["physical_record_count"])
+        return result
+
+    def test_valid_final_unterminated_object(self):
+        result = self.parse(b'{"seed":7}')
+        self.assertTrue(result["parse_complete"])
+        self.assertEqual(self.identities(result), ["7"])
+        self.assertEqual(result["physical_record_count"], 1)
+
+    def test_one_final_LF_does_not_make_blank_record(self):
+        result = self.parse(b'{"seed":7}\n')
+        self.assertEqual(result["physical_record_count"], 1)
+        self.assertTrue(result["parse_complete"])
+
+    def test_CRLF_and_final_whitespace_object(self):
+        result = self.parse(b' {"seed":7} \r\n\t{"seed":8}  ')
+        self.assertTrue(result["parse_complete"])
+        self.assertEqual(self.identities(result), ["7", "8"])
+
+    def test_chunk_boundaries_preserve_all_bytes_and_claims(self):
+        blob = encoded({"中文/~": {"seed": 8}, "message": "line\ninside"}) + b'\r\n{"seed":9}\n'
+        expected = self.parse(blob, len(blob))
+        for width in range(1, len(blob) + 1):
+            self.assertEqual(self.parse(blob, width), expected)
+
+    def test_lone_CR_is_not_record_separator(self):
+        self.refused(b'{"seed":7}\r{"seed":8}\n')
+
+    def test_vertical_tab_is_not_record_separator(self):
+        self.refused(b'{"seed":7}\x0b{"seed":8}\n')
+
+    def test_UTF8_BOM_first_record_only(self):
+        result = self.parse(b'\xef\xbb\xbf{"seed":7}\n{"seed":8}\n')
+        self.assertTrue(result["parse_complete"])
+        self.assertEqual(self.identities(result), ["7", "8"])
+
+    def test_UTF8_BOM_later_record_invalidates_entire_file(self):
+        self.refused(b'{"seed":7}\n\xef\xbb\xbf{"seed":8}\n')
+
+    def test_empty_file_refused(self):
+        result = self.refused(b'')
+        self.assertEqual(result["physical_record_count"], 0)
+
+    def test_blank_first_line_refused(self):
+        self.refused(b'\n{"seed":8}\n')
+
+    def test_blank_middle_line_discards_prefix_and_suffix(self):
+        result = self.refused(b'{"seed":7}\n \t\r\n{"seed":8}\n')
+        self.assertEqual(result["physical_record_count"], 3)
+        self.assertEqual(result["valid_object_record_count"], 2)
+
+    def test_blank_extra_final_line_refused(self):
+        self.refused(b'{"seed":7}\n\n')
+
+    def test_whitespace_final_record_refused(self):
+        self.refused(b'{"seed":7}\n ')
+
+    def test_scalar_record_refused_not_count_identity(self):
+        for blob in (b'7', b'null', b'true', b'"seed"'):
+            self.refused(b'{"seed":7}\n' + blob + b'\n')
+
+    def test_array_record_refused_even_with_declared_seed(self):
+        self.refused(b'{"seed":7}\n[{"seed":8}]\n')
+
+    def test_malformed_last_record_discards_all_prior_claims(self):
+        self.refused(b'{"seed":7}\n{"seed":8')
+
+    def test_malformed_first_record_and_valid_suffix_no_prefix_PASS(self):
+        self.refused(b'{"seed":7,}\n{"seed":8}\n')
+
+    def test_trailing_data_refuses_entire_file(self):
+        self.refused(b'{"seed":7}{}\n{"seed":8}\n')
+
+    def test_duplicate_members_refuse_entire_file(self):
+        self.refused(b'{"seed":7}\n{"seed":8,"seed":9}\n')
+
+    def test_nested_duplicate_member_refuses_entire_file(self):
+        self.refused(b'{"seed":7}\n{"seed":8,"data":{"x":1,"x":2}}\n')
+
+    def test_nonfinite_number_refuses_entire_file(self):
+        for number in (b'NaN', b'Infinity', b'-Infinity', b'1e999'):
+            self.refused(b'{"seed":7}\n{"seed":8,"data":' + number + b'}\n')
+
+    def test_invalid_UTF8_refuses_entire_file(self):
+        self.refused(b'{"seed":7}\n{"seed":8,"data":"\xff"}\n')
+
+    def test_UTF16_not_guessed(self):
+        self.refused('{"seed":7}'.encode("utf-16"))
+
+    def test_escaped_pointer_and_first_record(self):
+        result = self.parse(b'{}\n' + encoded({"中文/~": {"seed": 8}}))
+        row = result["claims"][0]
+        self.assertEqual(row["first_record"], 2)
+        self.assertEqual(row["example_pointer"], "/中文~1~0/seed")
+
+    def test_record_counts_and_repetition_are_not_independent_N(self):
+        result = self.parse(b'{"seed":7}\n{"seed":7}\n{"seeds":[7,7]}\n')
+        self.assertEqual(result["physical_record_count"], 3)
+        self.assertEqual(len(result["claims"]), 2)
+        self.assertEqual([r["occurrences"] for r in result["claims"]], [2, 2])
+        self.assertIn("NOT_VALID_RUN_OR_STATISTICAL_N", result["identity_role"])
+
+    def test_different_fields_not_lost_in_occurrence_aggregation(self):
+        result = self.parse(b'{"seed":7,"algorithm_seed":7}\n')
+        self.assertEqual([r["field"] for r in result["claims"]], ["algorithm_seed", "seed"])
+        self.assertEqual(result["conservative_exclusion_intervals_decimal_inclusive"], [["7", "7"]])
+
+    def test_outcomes_PIDs_counts_not_identities(self):
+        result = self.parse(encoded({"RMST": 465, "pid": 9924, "ticks": 639271289393389540,
+            "n_seeds": 400, "seed_index": 9, "seeds": 200, "seed_draws": 16}) + b'\n')
+        self.assertFalse(result["claims"])
+        self.assertTrue(result["parse_complete"])
+        self.assertTrue(result["issues"])
+
+    def test_unknown_seed_field_retained_as_semantic_gap(self):
+        result = self.parse(b'{"mystery_seed_identity":99}\n')
+        self.assertFalse(result["claims"])
+        self.assertTrue(result["parse_complete"])
+        self.assertIn("unknown-seed-related-field-not-resolved", [r["reason"] for r in result["issues"]])
+
+    def test_noninteger_declared_seed_not_normalized(self):
+        for value in (True, False, 7.0, "7", None):
+            result = self.parse(encoded({"seed": value}))
+            self.assertFalse(result["claims"])
+            self.assertTrue(result["issues"])
+
+    def test_uint64_max_exported_losslessly_as_decimal_string(self):
+        result = self.parse(encoded({"seed": (1 << 64) - 1}))
+        row = result["claims"][0]
+        self.assertEqual(row["original_integer_decimal"], "18446744073709551615")
+        self.assertEqual(row["canonical_modulo64_exclusion_decimal"], "18446744073709551615")
+        self.assertTrue(row["original_is_canonical_uint64"])
+
+    def test_historical_negative_alias_not_new_plan_normalization(self):
+        result = self.parse(encoded({"seeds": [-1, (1 << 64) + 7]}))
+        self.assertEqual(self.identities(result), ["-1", "18446744073709551623"])
+        self.assertEqual([r["canonical_modulo64_exclusion_decimal"] for r in result["claims"]],
+                         ["18446744073709551615", "7"])
+        self.assertTrue(all(not r["original_is_canonical_uint64"] for r in result["claims"]))
+
+    def test_declared_intervals_compact_not_expanded(self):
+        blob = encoded({"permanent_exclusions": {"old_engineering_ranges": [[0, (1 << 64) - 1]]}})
+        result = self.parse(blob)
+        self.assertEqual(result["conservative_exclusion_intervals_decimal_inclusive"],
+                         [["0", "18446744073709551615"]])
+
+    def test_bad_suffix_discards_declared_intervals_as_well_as_claims(self):
+        good = encoded({"permanent_exclusions": {"old_engineering_ranges": [[7, 9]]}})
+        self.refused(good + b'\n{"seed":8,}\n')
+
+    def test_exact_record_size_boundary_accepted(self):
+        blob = b'{"seed":7}'
+        with patch.object(stream, "_LINE_LIMIT", len(blob)):
+            self.assertTrue(self.parse(blob)["parse_complete"])
+
+    def test_oversized_record_drained_hashed_and_whole_file_refused(self):
+        blob = b'{"seed":7}\n' + encoded({"data": "x" * 1000}) + b'\n{"seed":8}\n'
+        with patch.object(stream, "_LINE_LIMIT", 32):
+            result = self.refused(blob)
+        self.assertEqual(result["physical_record_count"], 3)
+        self.assertEqual(result["invalid_record_count"], 1)
+        self.assertGreater(result["maximum_record_bytes_without_LF"], 32)
+
+    def test_oversized_unterminated_record_still_full_hash(self):
+        blob = b'{"seed":7}\n' + b'x' * 1000
+        with patch.object(stream, "_LINE_LIMIT", 16):
+            self.refused(blob)
+
+    def test_file_limit_discards_all_claims_but_not_byte_hash(self):
+        blob = b'{"seed":7}\n{"seed":8}\n'
+        with patch.object(stream, "_FILE_LIMIT", 10):
+            result = self.refused(blob)
+        self.assertEqual(result["valid_object_record_count"], 2)
+
+    def test_unique_claim_resource_limit_refuses_no_prefix(self):
+        with patch.object(stream, "_CLAIM_LIMIT", 1):
+            self.refused(b'{"seed":7}\n{"seed":8}\n')
+
+    def test_interval_resource_limit_refuses_no_prefix(self):
+        blob = encoded({"permanent_exclusions": {"old_engineering_ranges": [[7, 7], [9, 9]]}})
+        with patch.object(stream, "_CLAIM_LIMIT", 1):
+            self.refused(blob)
+
+    def test_repeated_claim_does_not_overrun_unique_claim_limit(self):
+        with patch.object(stream, "_CLAIM_LIMIT", 1):
+            result = self.parse(b'{"seed":7}\n{"seed":7}\n')
+        self.assertTrue(result["parse_complete"])
+        self.assertEqual(result["claims"][0]["occurrences"], 2)
+
+    def test_default_claim_capacity_fixed_and_file_refusal_guard_retained(self):
+        self.assertEqual(stream._CLAIM_LIMIT, 262144)
+        self.assertEqual(stream._LINE_LIMIT, 16 * 1024 * 1024)
+        self.assertEqual(stream._FILE_LIMIT, 512 * 1024 * 1024)
+
+    def test_hash_all_chunks_empty_and_odd_boundaries(self):
+        blob = b'\x00\xff\xef\xbb\xbf\r\n'
+        self.assertEqual(stream.hash_chunks([b'', blob[:3], blob[3:], b'']),
+                         {"bytes": len(blob), "sha256": hashlib.sha256(blob).hexdigest()})
+
+    def test_hash_is_actual_bytes_not_descriptor(self):
+        blob = b'{"seed":7}\n'
+        result = self.parse(blob)
+        self.assertNotEqual(result["sha256"], hashlib.sha256(encoded({"bytes": len(blob)})).hexdigest())
+
+    def test_nonbyte_chunks_refused(self):
+        for value in (None, "{}", bytearray(b'{}'), {}):
+            for function in (stream.hash_chunks, stream.inspect_jsonl_chunks):
+                with self.assertRaises(ready.ProtocolError):
+                    function([value])
+
+    def test_chunks_read_bounded_from_binary_handle(self):
+        with patch.object(stream, "_CHUNK", 3):
+            self.assertEqual(list(stream._chunks(io.BytesIO(b'1234567'))), [b'123', b'456', b'7'])
+
+    def test_canonical_relative_path_only(self):
+        for relative in ("../x", "/x", "a/../b", "a//b", "a/./b", "C:/x", "a\\b", "", 1):
+            with self.assertRaises((ready.ProtocolError, OSError)):
+                stream._safe_path(Path("D:/no-root"), "retained", relative)
+
+    def test_regular_file_root_boundary_checked(self):
+        with tempfile.TemporaryDirectory() as directory:
+            base = Path(directory)
+            root = base / "retained"
+            root.mkdir()
+            # Existing stdlib-created temporary empty file, no history modification.
+            with tempfile.NamedTemporaryFile(dir=root, delete=False) as handle:
+                filename = Path(handle.name).name
+            path = root / filename
+            try:
+                self.assertEqual(stream._safe_path(base, "retained", filename), path)
+                with self.assertRaises(ready.ProtocolError):
+                    stream._safe_path(base, "retained", ".")
+            finally:
+                path.unlink()
+
+    def test_reparse_any_path_component_refused(self):
+        with tempfile.TemporaryDirectory() as directory:
+            base = Path(directory)
+            (base / "retained").mkdir()
+            with patch.object(stream.history, "_reparse", return_value=True):
+                with self.assertRaises(ready.ProtocolError):
+                    stream._safe_path(base, "retained", "x.jsonl")
+
+    def test_closed_snapshot_API_no_overrides(self):
+        self.assertEqual(str(inspect.signature(stream.snapshot_stream_history)), "()")
+        for kwargs in ({"root": Path.cwd()}, {"seed": 1}, {"output": "x"}):
+            with self.assertRaises(TypeError):
+                stream.snapshot_stream_history(**kwargs)
+
+    def test_no_historical_eval_or_system_execution(self):
+        with patch("builtins.eval", side_effect=AssertionError("historical eval forbidden")), \
+                patch("os.system", side_effect=AssertionError("historical execution forbidden")):
+            result = self.parse(b'{"seed":7,"program":"danger()"}\n')
+        self.assertEqual(self.identities(result), ["7"])
+
+    def test_parent_snapshot_hash_guard_refuses_drift(self):
+        with patch.object(stream.ready, "file_hash", return_value="0" * 64):
+            with self.assertRaises(ready.ProtocolError):
+                stream._guard()
+
+    def test_contract_and_fixed_snapshot_bound_to_existing_parent(self):
+        contract = json.loads(stream._CONTRACT.read_bytes())
+        self.assertFalse(contract["collection_authorized"])
+        self.assertFalse(contract["complete_historical_usage_freshness_audit"])
+        self.assertFalse(contract["keys_allocated_or_reserved"])
+        self.assertEqual(contract["parent_preparation_commit"], "1a1c3e175675072e07bb54c76b3baae0a5e5ceaf")
+        self.assertEqual(stream.ready.file_hash(stream._SNAPSHOT), stream._SNAPSHOT_SHA)
+
+
+if __name__ == "__main__":
+    unittest.main(verbosity=2)

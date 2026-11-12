@@ -1,0 +1,77 @@
+{
+  "checks": [
+    {
+      "name": "linear_goal_readout_and_common_exploration",
+      "ok": true,
+      "details": {
+        "grids": 9,
+        "tie_break": "first_action",
+        "epsilon": 0.2
+      }
+    },
+    {
+      "name": "remove_predictive_weight_mandatory_action_quota",
+      "ok": true,
+      "details": {
+        "old_policy_mixture_value": 0.78126877584033,
+        "new_decision_value": 0.8200000000000001,
+        "lambda_unchanged": 0.06051753774948417
+      }
+    },
+    {
+      "name": "same_prediction_decision_inequality",
+      "ok": true,
+      "details": {
+        "finite_cases": 243,
+        "minimum_predicted_value_difference": 0.0,
+        "true_return_dominance_claimed": false
+      }
+    },
+    {
+      "name": "conditional_regret_bound_not_truth_guarantee",
+      "ok": true,
+      "details": {
+        "finite_cases": 81,
+        "unknown_prediction_error_is_not_estimated_confidence": true
+      }
+    },
+    {
+      "name": "weak_reference_not_mislabeled_as_high_confidence",
+      "ok": true,
+      "details": {
+        "weak_reference_can_select_a_provisional_action": true,
+        "estimated_margin": 0.008000000000000007,
+        "verified_causal_answer": false
+      }
+    },
+    {
+      "name": "only_readout_changes_under_identical_facts",
+      "ok": true,
+      "details": {
+        "same_supplied_facts_same_predictive_learning": true,
+        "behavior_changes": 26,
+        "max_independent_scalar_error": 5.551115123125783e-16
+      }
+    },
+    {
+      "name": "prequential_readonly_and_once_preserved",
+      "ok": true,
+      "details": {
+        "read_only_evaluation": true,
+        "one_fact_one_learning_update": true
+      }
+    },
+    {
+      "name": "analytic_network_parameters_and_rng_unchanged",
+      "ok": true,
+      "details": {
+        "gradient_updates": 0,
+        "torch_rng_unchanged": true
+      }
+    }
+  ],
+  "passed": 8,
+  "failed": 0,
+  "synthetic_only": true,
+  "new_environment_interactions": 0
+}

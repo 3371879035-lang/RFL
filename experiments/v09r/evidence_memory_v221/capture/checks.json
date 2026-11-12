@@ -1,0 +1,289 @@
+{
+  "capacity_and_trainability": {
+    "trainable_parameters": 10220095,
+    "parameter_tensors": 176,
+    "by_module": {
+      "null_memory": 256,
+      "hypothesis_embeddings": 2048,
+      "base_code": 256,
+      "proposal_keys": 768,
+      "work_nodes": 16384,
+      "evidence_null": 256,
+      "event_encoder": 285440,
+      "source_embedding": 768,
+      "parent_merge": 393984,
+      "memory_blocks": 4741632,
+      "query_encoder": 72192,
+      "action_encoder": 68096,
+      "reader": 459777,
+      "context_fusion": 393984,
+      "action_fusion": 525056,
+      "mixture_head": 67848,
+      "world_decoder": 157234,
+      "actor": 265216,
+      "proposal_net": 398592,
+      "trial_score": 265217,
+      "trial_keep": 132097,
+      "adoption_score": 264192,
+      "evidence_query": 197120,
+      "evidence_reader": 459777,
+      "evidence_fusion": 525568,
+      "contrast_mean": 263168,
+      "contrast_scale": 263169
+    }
+  },
+  "long_memory_actual_attention_shapes": {
+    "profiles": [
+      {
+        "fixture_nodes": 128,
+        "wall_seconds": 1.1122127999988152,
+        "attention_shapes": [
+          [
+            64,
+            129
+          ],
+          [
+            64,
+            64
+          ],
+          [
+            129,
+            64
+          ],
+          [
+            64,
+            129
+          ],
+          [
+            64,
+            64
+          ],
+          [
+            129,
+            64
+          ]
+        ],
+        "attention_pair_count_per_head": 41732,
+        "raw_fact_count_after": 128
+      },
+      {
+        "fixture_nodes": 512,
+        "wall_seconds": 0.07939700000133598,
+        "attention_shapes": [
+          [
+            64,
+            513
+          ],
+          [
+            64,
+            64
+          ],
+          [
+            513,
+            64
+          ],
+          [
+            64,
+            513
+          ],
+          [
+            64,
+            64
+          ],
+          [
+            513,
+            64
+          ]
+        ],
+        "attention_pair_count_per_head": 141572,
+        "raw_fact_count_after": 512
+      },
+      {
+        "fixture_nodes": 2048,
+        "wall_seconds": 0.2926865999979782,
+        "attention_shapes": [
+          [
+            64,
+            2049
+          ],
+          [
+            64,
+            64
+          ],
+          [
+            2049,
+            64
+          ],
+          [
+            64,
+            2049
+          ],
+          [
+            64,
+            64
+          ],
+          [
+            2049,
+            64
+          ]
+        ],
+        "attention_pair_count_per_head": 540932,
+        "raw_fact_count_after": 2048
+      },
+      {
+        "fixture_nodes": 4096,
+        "wall_seconds": 0.7672152000013739,
+        "attention_shapes": [
+          [
+            64,
+            4097
+          ],
+          [
+            64,
+            64
+          ],
+          [
+            4097,
+            64
+          ],
+          [
+            64,
+            4097
+          ],
+          [
+            64,
+            64
+          ],
+          [
+            4097,
+            64
+          ]
+        ],
+        "attention_pair_count_per_head": 1073412,
+        "raw_fact_count_after": 4096
+      }
+    ],
+    "old_v220_forwards": 0,
+    "no_n_by_n_memory_attention": true,
+    "note": "Synthetic nodes, not new environment data; no training or production scaling claim"
+  },
+  "unique_facts_chronological_prefix_and_restore": {
+    "reimport_and_replay_new_facts": 0,
+    "restored_prediction_exact": true,
+    "target_excluded": true
+  },
+  "repeated_trial_evidence_not_overwritten": {
+    "per_arm_actual_trials": [
+      2,
+      2,
+      0,
+      0
+    ],
+    "all_receipts": 4,
+    "trigger_failure_in_trial_set": false,
+    "candidate_mixed_outcomes": [
+      false,
+      true
+    ],
+    "fixture_environment_calls_so_far": 5,
+    "fixture_trials_manually_scheduled": true
+  },
+  "earlier_practice_reaches_network": {
+    "earlier_trial_affects_learned_representation": true,
+    "state_max_difference": 0.013864291831851006,
+    "not_a_quality_claim": true
+  },
+  "symmetric_comparison_and_arm_treatment": {
+    "mean_antisymmetric": true,
+    "variance_symmetric": true,
+    "arm_permutation_max_error": 5.960464477539063e-08,
+    "untested_candidate_masked": true
+  },
+  "comparison_support_query_time_split": {
+    "support_nodes": 1,
+    "target_events": [
+      "protocol_fixture/event/1",
+      "protocol_fixture/event/3"
+    ],
+    "targets_excluded_from_memory_and_practice_support": true
+  },
+  "comparison_likelihood_and_uncertainty_direction": {
+    "nll_absolute_error": 0.0,
+    "logvariance_gradient_small_and_large_error": [
+      0.5,
+      -1.5
+    ],
+    "variance_target": "new paired outcomes, not an effect confidence interval"
+  },
+  "candidate_world_boundary_preserved": {
+    "candidate_does_not_rewrite_fixed_action_world": true,
+    "policy_max_difference": 0.0003159642219543457
+  },
+  "full_gradient_routes_no_parameter_update": {
+    "all_parameter_tensors_with_finite_nonzero_gradient": 176,
+    "group_l2_norms": {
+      "null_memory": 0.3886832614170113,
+      "hypothesis_embeddings": 0.14917750113004566,
+      "base_code": 0.0056946652488840165,
+      "proposal_keys": 0.0013347924144109578,
+      "work_nodes": 0.005241276220527143,
+      "evidence_null": 0.0006269103311429101,
+      "event_encoder": 0.020155578208841035,
+      "source_embedding": 0.006357194423818441,
+      "parent_merge": 0.36135041512059124,
+      "memory_blocks": 0.6218924091468354,
+      "query_encoder": 0.14220497038675048,
+      "action_encoder": 0.2752062571630504,
+      "reader": 0.20679803727250473,
+      "context_fusion": 0.0779788584759854,
+      "action_fusion": 0.9686417913376487,
+      "mixture_head": 0.007655053331559594,
+      "world_decoder": 3.0651141900887455,
+      "actor": 0.061773442044402764,
+      "proposal_net": 0.008267096156147378,
+      "trial_score": 0.18305447249757878,
+      "trial_keep": 0.15373317633064226,
+      "adoption_score": 0.04808923941600025,
+      "evidence_query": 0.00020769755777880918,
+      "evidence_reader": 0.05163744141107308,
+      "evidence_fusion": 0.12141786803204564,
+      "contrast_mean": 0.05513557201456374,
+      "contrast_scale": 0.31166437452788964
+    },
+    "loss": 18.0919132232666,
+    "optimizer_steps": 0
+  },
+  "imagination_remains_nonfactual": {
+    "imagination_factual_writes": 0,
+    "one_step_interface_preserved": true
+  },
+  "online_observation_and_success_not_offline_failure": {
+    "extra_fixture_environment_calls": 2,
+    "total_fixture_environment_calls": 7,
+    "nonterminal_and_success_reflections": 0,
+    "both_events_remain_for_ordinary_learning": true
+  },
+  "parameter_version_change_retains_facts_not_old_authority": {
+    "explicit_model_replacement_fixture": 1,
+    "old_raw_facts_preserved": 7,
+    "old_receipts_preserved": 4,
+    "stale_code_cleared": true,
+    "new_candidate_requires_new_actual_practice": true,
+    "optimizer_steps": 0
+  },
+  "configurable_schema_empty_memory_and_actions": {
+    "alternative_schema": [
+      5,
+      3,
+      2,
+      4
+    ],
+    "actions": [
+      1,
+      4,
+      7
+    ],
+    "slots_configurable": 7,
+    "default_model_parameters_unchanged": true
+  }
+}

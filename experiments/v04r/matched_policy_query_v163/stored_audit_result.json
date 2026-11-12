@@ -1,0 +1,969 @@
+{
+  "schema": "V163_STDLIB_MATCHED_POLICY_QUERY_REVIEW",
+  "complete": true,
+  "records": 406,
+  "input_pins": 366,
+  "native_counts": {
+    "transaction": 90,
+    "public_geometry": 342,
+    "query_features": 4,
+    "rollout": 53,
+    "step": 329
+  },
+  "cases": [
+    {
+      "case": "good_policy",
+      "source_center_command": 0,
+      "complete": true,
+      "native_counts": {
+        "public_geometry": 171,
+        "query_features": 2,
+        "rollout": 26,
+        "step": 164,
+        "transaction": 41
+      },
+      "records_including_common": 197,
+      "online_costs": [
+        {
+          "arm": "TaskTD",
+          "main_tasks": 6,
+          "private_tasks": 0,
+          "rollout": 6,
+          "step": 39,
+          "transaction": 8,
+          "shared_checkpoint_and_sourceTX_excluded": true,
+          "additional_public_geometry_transitions": 0
+        },
+        {
+          "arm": "AlwaysUnified",
+          "main_tasks": 6,
+          "private_tasks": 1,
+          "rollout": 7,
+          "step": 43,
+          "transaction": 12,
+          "shared_checkpoint_and_sourceTX_excluded": true,
+          "additional_public_geometry_transitions": 57
+        },
+        {
+          "arm": "NumericRetrained",
+          "main_tasks": 6,
+          "private_tasks": 1,
+          "rollout": 7,
+          "step": 43,
+          "transaction": 12,
+          "shared_checkpoint_and_sourceTX_excluded": true,
+          "additional_public_geometry_transitions": 57
+        },
+        {
+          "arm": "PolicyAware",
+          "main_tasks": 6,
+          "private_tasks": 0,
+          "rollout": 6,
+          "step": 39,
+          "transaction": 8,
+          "shared_checkpoint_and_sourceTX_excluded": true,
+          "additional_public_geometry_transitions": 57
+        }
+      ],
+      "simple_sums_not_adopted_utility": [
+        {
+          "arm": "TaskTD",
+          "main_successes": 5,
+          "main_return": 3.2199999999999998,
+          "all_interaction_return": 3.2199999999999998,
+          "all_interaction_failures": 1,
+          "ordinary_policy_TX": 2,
+          "external_policy_TX": 0
+        },
+        {
+          "arm": "AlwaysUnified",
+          "main_successes": 5,
+          "main_return": 3.2199999999999998,
+          "all_interaction_return": 2.1399999999999997,
+          "all_interaction_failures": 2,
+          "ordinary_policy_TX": 3,
+          "external_policy_TX": 1
+        },
+        {
+          "arm": "NumericRetrained",
+          "main_successes": 5,
+          "main_return": 3.2199999999999998,
+          "all_interaction_return": 2.1399999999999997,
+          "all_interaction_failures": 2,
+          "ordinary_policy_TX": 3,
+          "external_policy_TX": 1
+        },
+        {
+          "arm": "PolicyAware",
+          "main_successes": 5,
+          "main_return": 3.2199999999999998,
+          "all_interaction_return": 3.2199999999999998,
+          "all_interaction_failures": 1,
+          "ordinary_policy_TX": 2,
+          "external_policy_TX": 0
+        }
+      ],
+      "query_decisions": [
+        {
+          "arm": "NumericRetrained",
+          "epoch": 0,
+          "stage": "matched_new_center_policy",
+          "x": [
+            0.040000000000000036,
+            0.0
+          ],
+          "prediction": 0.6466666666666666,
+          "decision": "supported_probe"
+        },
+        {
+          "arm": "PolicyAware",
+          "epoch": 0,
+          "stage": "matched_new_center_policy",
+          "x": [
+            0.040000000000000036,
+            0.0,
+            0.0
+          ],
+          "prediction": 0.0,
+          "decision": "supported_skip"
+        }
+      ],
+      "skip_comparisons": [
+        {
+          "arm": "PolicyAware",
+          "epoch": 0,
+          "stage": "matched_new_center_policy",
+          "first_factual_equal": true,
+          "following_AlwaysUnified_returns": [
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86
+          ],
+          "following_gated_returns": [
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86
+          ],
+          "Always_minus_Gated_future_sum": 0.0
+        }
+      ],
+      "hypotheses": [
+        {
+          "arm": "AlwaysUnified",
+          "epoch": 0,
+          "stage": "matched_new_center_policy",
+          "specification": {
+            "target": {
+              "x": 3,
+              "y": 1,
+              "t": 4,
+              "kappa": 0,
+              "phi": 4
+            },
+            "observed_last_pre": {
+              "x": 2,
+              "y": 1,
+              "t": 3,
+              "kappa": 0,
+              "phi": 4
+            },
+            "observed_last_command": 3,
+            "rows": [
+              {
+                "state": {
+                  "x": 0,
+                  "y": 2,
+                  "t": 0,
+                  "kappa": 0,
+                  "phi": 4
+                },
+                "control": {
+                  "z": 1,
+                  "m": 0
+                },
+                "command": 3,
+                "admissible_rank": 0
+              },
+              {
+                "state": {
+                  "x": 1,
+                  "y": 2,
+                  "t": 1,
+                  "kappa": 0,
+                  "phi": 4
+                },
+                "control": {
+                  "z": 1,
+                  "m": 0
+                },
+                "command": 3,
+                "admissible_rank": 3
+              },
+              {
+                "state": {
+                  "x": 2,
+                  "y": 2,
+                  "t": 2,
+                  "kappa": 0,
+                  "phi": 4
+                },
+                "control": {
+                  "z": 1,
+                  "m": 0
+                },
+                "command": 3,
+                "admissible_rank": 2
+              },
+              {
+                "state": {
+                  "x": 3,
+                  "y": 2,
+                  "t": 3,
+                  "kappa": 0,
+                  "phi": 4
+                },
+                "control": {
+                  "z": 1,
+                  "m": 0
+                },
+                "command": 0,
+                "admissible_rank": 0
+              }
+            ]
+          },
+          "public_search": {
+            "public_candidate_transitions": 56,
+            "target_inference_transitions": 1,
+            "search_exhausted": false,
+            "reason": "alternate_entry_found"
+          },
+          "assessment": {
+            "checked_steps": 4,
+            "reason": "actual_target_TRAP",
+            "status": "consistent_on_tested_alternate"
+          }
+        },
+        {
+          "arm": "NumericRetrained",
+          "epoch": 0,
+          "stage": "matched_new_center_policy",
+          "specification": {
+            "target": {
+              "x": 3,
+              "y": 1,
+              "t": 4,
+              "kappa": 0,
+              "phi": 4
+            },
+            "observed_last_pre": {
+              "x": 2,
+              "y": 1,
+              "t": 3,
+              "kappa": 0,
+              "phi": 4
+            },
+            "observed_last_command": 3,
+            "rows": [
+              {
+                "state": {
+                  "x": 0,
+                  "y": 2,
+                  "t": 0,
+                  "kappa": 0,
+                  "phi": 4
+                },
+                "control": {
+                  "z": 1,
+                  "m": 0
+                },
+                "command": 3,
+                "admissible_rank": 0
+              },
+              {
+                "state": {
+                  "x": 1,
+                  "y": 2,
+                  "t": 1,
+                  "kappa": 0,
+                  "phi": 4
+                },
+                "control": {
+                  "z": 1,
+                  "m": 0
+                },
+                "command": 3,
+                "admissible_rank": 3
+              },
+              {
+                "state": {
+                  "x": 2,
+                  "y": 2,
+                  "t": 2,
+                  "kappa": 0,
+                  "phi": 4
+                },
+                "control": {
+                  "z": 1,
+                  "m": 0
+                },
+                "command": 3,
+                "admissible_rank": 2
+              },
+              {
+                "state": {
+                  "x": 3,
+                  "y": 2,
+                  "t": 3,
+                  "kappa": 0,
+                  "phi": 4
+                },
+                "control": {
+                  "z": 1,
+                  "m": 0
+                },
+                "command": 0,
+                "admissible_rank": 0
+              }
+            ]
+          },
+          "public_search": {
+            "public_candidate_transitions": 56,
+            "target_inference_transitions": 1,
+            "search_exhausted": false,
+            "reason": "alternate_entry_found"
+          },
+          "assessment": {
+            "checked_steps": 4,
+            "reason": "actual_target_TRAP",
+            "status": "consistent_on_tested_alternate"
+          }
+        },
+        {
+          "arm": "PolicyAware",
+          "epoch": 0,
+          "stage": "matched_new_center_policy",
+          "specification": {
+            "target": {
+              "x": 3,
+              "y": 1,
+              "t": 4,
+              "kappa": 0,
+              "phi": 4
+            },
+            "observed_last_pre": {
+              "x": 2,
+              "y": 1,
+              "t": 3,
+              "kappa": 0,
+              "phi": 4
+            },
+            "observed_last_command": 3,
+            "rows": [
+              {
+                "state": {
+                  "x": 0,
+                  "y": 2,
+                  "t": 0,
+                  "kappa": 0,
+                  "phi": 4
+                },
+                "control": {
+                  "z": 1,
+                  "m": 0
+                },
+                "command": 3,
+                "admissible_rank": 0
+              },
+              {
+                "state": {
+                  "x": 1,
+                  "y": 2,
+                  "t": 1,
+                  "kappa": 0,
+                  "phi": 4
+                },
+                "control": {
+                  "z": 1,
+                  "m": 0
+                },
+                "command": 3,
+                "admissible_rank": 3
+              },
+              {
+                "state": {
+                  "x": 2,
+                  "y": 2,
+                  "t": 2,
+                  "kappa": 0,
+                  "phi": 4
+                },
+                "control": {
+                  "z": 1,
+                  "m": 0
+                },
+                "command": 3,
+                "admissible_rank": 2
+              },
+              {
+                "state": {
+                  "x": 3,
+                  "y": 2,
+                  "t": 3,
+                  "kappa": 0,
+                  "phi": 4
+                },
+                "control": {
+                  "z": 1,
+                  "m": 0
+                },
+                "command": 0,
+                "admissible_rank": 0
+              }
+            ]
+          },
+          "public_search": {
+            "public_candidate_transitions": 56,
+            "target_inference_transitions": 1,
+            "search_exhausted": false,
+            "reason": "alternate_entry_found"
+          }
+        }
+      ],
+      "accepted": [
+        {
+          "arm": "AlwaysUnified",
+          "epoch": 0,
+          "terminal": "TRAP",
+          "numeric_content_changed": true
+        },
+        {
+          "arm": "NumericRetrained",
+          "epoch": 0,
+          "terminal": "TRAP",
+          "numeric_content_changed": true
+        }
+      ],
+      "native_ordinary_updates": 26,
+      "ordinary_policy_TX": 10,
+      "external_updates": 2,
+      "external_policy_TX": 2,
+      "observations_issued_consumed": 2,
+      "source": {
+        "D": [
+          {
+            "address": {
+              "m": 0,
+              "state": {
+                "kappa": 1,
+                "phi": 0,
+                "t": 0,
+                "x": 0,
+                "y": 2
+              },
+              "z": 1
+            },
+            "value": 4
+          },
+          {
+            "address": {
+              "m": 0,
+              "state": {
+                "kappa": 0,
+                "phi": 4,
+                "t": 2,
+                "x": 2,
+                "y": 2
+              },
+              "z": 1
+            },
+            "value": 0
+          }
+        ],
+        "P": [],
+        "Q": [],
+        "X": []
+      }
+    },
+    {
+      "case": "shifted_policy",
+      "source_center_command": 3,
+      "complete": true,
+      "native_counts": {
+        "public_geometry": 171,
+        "query_features": 2,
+        "rollout": 27,
+        "step": 165,
+        "transaction": 46
+      },
+      "records_including_common": 210,
+      "online_costs": [
+        {
+          "arm": "TaskTD",
+          "main_tasks": 6,
+          "private_tasks": 0,
+          "rollout": 6,
+          "step": 36,
+          "transaction": 9,
+          "shared_checkpoint_and_sourceTX_excluded": true,
+          "additional_public_geometry_transitions": 0
+        },
+        {
+          "arm": "AlwaysUnified",
+          "main_tasks": 6,
+          "private_tasks": 1,
+          "rollout": 7,
+          "step": 43,
+          "transaction": 12,
+          "shared_checkpoint_and_sourceTX_excluded": true,
+          "additional_public_geometry_transitions": 57
+        },
+        {
+          "arm": "NumericRetrained",
+          "main_tasks": 6,
+          "private_tasks": 1,
+          "rollout": 7,
+          "step": 43,
+          "transaction": 12,
+          "shared_checkpoint_and_sourceTX_excluded": true,
+          "additional_public_geometry_transitions": 57
+        },
+        {
+          "arm": "PolicyAware",
+          "main_tasks": 6,
+          "private_tasks": 1,
+          "rollout": 7,
+          "step": 43,
+          "transaction": 12,
+          "shared_checkpoint_and_sourceTX_excluded": true,
+          "additional_public_geometry_transitions": 57
+        }
+      ],
+      "simple_sums_not_adopted_utility": [
+        {
+          "arm": "TaskTD",
+          "main_successes": 4,
+          "main_return": 1.2799999999999998,
+          "all_interaction_return": 1.2799999999999998,
+          "all_interaction_failures": 2,
+          "ordinary_policy_TX": 3,
+          "external_policy_TX": 0
+        },
+        {
+          "arm": "AlwaysUnified",
+          "main_successes": 5,
+          "main_return": 3.2199999999999998,
+          "all_interaction_return": 2.1399999999999997,
+          "all_interaction_failures": 2,
+          "ordinary_policy_TX": 3,
+          "external_policy_TX": 1
+        },
+        {
+          "arm": "NumericRetrained",
+          "main_successes": 5,
+          "main_return": 3.2199999999999998,
+          "all_interaction_return": 2.1399999999999997,
+          "all_interaction_failures": 2,
+          "ordinary_policy_TX": 3,
+          "external_policy_TX": 1
+        },
+        {
+          "arm": "PolicyAware",
+          "main_successes": 5,
+          "main_return": 3.2199999999999998,
+          "all_interaction_return": 2.1399999999999997,
+          "all_interaction_failures": 2,
+          "ordinary_policy_TX": 3,
+          "external_policy_TX": 1
+        }
+      ],
+      "query_decisions": [
+        {
+          "arm": "NumericRetrained",
+          "epoch": 0,
+          "stage": "matched_new_center_policy",
+          "x": [
+            0.040000000000000036,
+            0.0
+          ],
+          "prediction": 0.6466666666666666,
+          "decision": "supported_probe"
+        },
+        {
+          "arm": "PolicyAware",
+          "epoch": 0,
+          "stage": "matched_new_center_policy",
+          "x": [
+            0.040000000000000036,
+            0.0,
+            0.040000000000000036
+          ],
+          "prediction": 1.94,
+          "decision": "supported_probe"
+        }
+      ],
+      "skip_comparisons": [],
+      "hypotheses": [
+        {
+          "arm": "AlwaysUnified",
+          "epoch": 0,
+          "stage": "matched_new_center_policy",
+          "specification": {
+            "target": {
+              "x": 3,
+              "y": 1,
+              "t": 4,
+              "kappa": 0,
+              "phi": 4
+            },
+            "observed_last_pre": {
+              "x": 2,
+              "y": 1,
+              "t": 3,
+              "kappa": 0,
+              "phi": 4
+            },
+            "observed_last_command": 3,
+            "rows": [
+              {
+                "state": {
+                  "x": 0,
+                  "y": 2,
+                  "t": 0,
+                  "kappa": 0,
+                  "phi": 4
+                },
+                "control": {
+                  "z": 1,
+                  "m": 0
+                },
+                "command": 3,
+                "admissible_rank": 0
+              },
+              {
+                "state": {
+                  "x": 1,
+                  "y": 2,
+                  "t": 1,
+                  "kappa": 0,
+                  "phi": 4
+                },
+                "control": {
+                  "z": 1,
+                  "m": 0
+                },
+                "command": 3,
+                "admissible_rank": 3
+              },
+              {
+                "state": {
+                  "x": 2,
+                  "y": 2,
+                  "t": 2,
+                  "kappa": 0,
+                  "phi": 4
+                },
+                "control": {
+                  "z": 1,
+                  "m": 0
+                },
+                "command": 3,
+                "admissible_rank": 2
+              },
+              {
+                "state": {
+                  "x": 3,
+                  "y": 2,
+                  "t": 3,
+                  "kappa": 0,
+                  "phi": 4
+                },
+                "control": {
+                  "z": 1,
+                  "m": 0
+                },
+                "command": 0,
+                "admissible_rank": 0
+              }
+            ]
+          },
+          "public_search": {
+            "public_candidate_transitions": 56,
+            "target_inference_transitions": 1,
+            "search_exhausted": false,
+            "reason": "alternate_entry_found"
+          },
+          "assessment": {
+            "checked_steps": 4,
+            "reason": "actual_target_TRAP",
+            "status": "consistent_on_tested_alternate"
+          }
+        },
+        {
+          "arm": "NumericRetrained",
+          "epoch": 0,
+          "stage": "matched_new_center_policy",
+          "specification": {
+            "target": {
+              "x": 3,
+              "y": 1,
+              "t": 4,
+              "kappa": 0,
+              "phi": 4
+            },
+            "observed_last_pre": {
+              "x": 2,
+              "y": 1,
+              "t": 3,
+              "kappa": 0,
+              "phi": 4
+            },
+            "observed_last_command": 3,
+            "rows": [
+              {
+                "state": {
+                  "x": 0,
+                  "y": 2,
+                  "t": 0,
+                  "kappa": 0,
+                  "phi": 4
+                },
+                "control": {
+                  "z": 1,
+                  "m": 0
+                },
+                "command": 3,
+                "admissible_rank": 0
+              },
+              {
+                "state": {
+                  "x": 1,
+                  "y": 2,
+                  "t": 1,
+                  "kappa": 0,
+                  "phi": 4
+                },
+                "control": {
+                  "z": 1,
+                  "m": 0
+                },
+                "command": 3,
+                "admissible_rank": 3
+              },
+              {
+                "state": {
+                  "x": 2,
+                  "y": 2,
+                  "t": 2,
+                  "kappa": 0,
+                  "phi": 4
+                },
+                "control": {
+                  "z": 1,
+                  "m": 0
+                },
+                "command": 3,
+                "admissible_rank": 2
+              },
+              {
+                "state": {
+                  "x": 3,
+                  "y": 2,
+                  "t": 3,
+                  "kappa": 0,
+                  "phi": 4
+                },
+                "control": {
+                  "z": 1,
+                  "m": 0
+                },
+                "command": 0,
+                "admissible_rank": 0
+              }
+            ]
+          },
+          "public_search": {
+            "public_candidate_transitions": 56,
+            "target_inference_transitions": 1,
+            "search_exhausted": false,
+            "reason": "alternate_entry_found"
+          },
+          "assessment": {
+            "checked_steps": 4,
+            "reason": "actual_target_TRAP",
+            "status": "consistent_on_tested_alternate"
+          }
+        },
+        {
+          "arm": "PolicyAware",
+          "epoch": 0,
+          "stage": "matched_new_center_policy",
+          "specification": {
+            "target": {
+              "x": 3,
+              "y": 1,
+              "t": 4,
+              "kappa": 0,
+              "phi": 4
+            },
+            "observed_last_pre": {
+              "x": 2,
+              "y": 1,
+              "t": 3,
+              "kappa": 0,
+              "phi": 4
+            },
+            "observed_last_command": 3,
+            "rows": [
+              {
+                "state": {
+                  "x": 0,
+                  "y": 2,
+                  "t": 0,
+                  "kappa": 0,
+                  "phi": 4
+                },
+                "control": {
+                  "z": 1,
+                  "m": 0
+                },
+                "command": 3,
+                "admissible_rank": 0
+              },
+              {
+                "state": {
+                  "x": 1,
+                  "y": 2,
+                  "t": 1,
+                  "kappa": 0,
+                  "phi": 4
+                },
+                "control": {
+                  "z": 1,
+                  "m": 0
+                },
+                "command": 3,
+                "admissible_rank": 3
+              },
+              {
+                "state": {
+                  "x": 2,
+                  "y": 2,
+                  "t": 2,
+                  "kappa": 0,
+                  "phi": 4
+                },
+                "control": {
+                  "z": 1,
+                  "m": 0
+                },
+                "command": 3,
+                "admissible_rank": 2
+              },
+              {
+                "state": {
+                  "x": 3,
+                  "y": 2,
+                  "t": 3,
+                  "kappa": 0,
+                  "phi": 4
+                },
+                "control": {
+                  "z": 1,
+                  "m": 0
+                },
+                "command": 0,
+                "admissible_rank": 0
+              }
+            ]
+          },
+          "public_search": {
+            "public_candidate_transitions": 56,
+            "target_inference_transitions": 1,
+            "search_exhausted": false,
+            "reason": "alternate_entry_found"
+          },
+          "assessment": {
+            "checked_steps": 4,
+            "reason": "actual_target_TRAP",
+            "status": "consistent_on_tested_alternate"
+          }
+        }
+      ],
+      "accepted": [
+        {
+          "arm": "AlwaysUnified",
+          "epoch": 0,
+          "terminal": "TRAP",
+          "numeric_content_changed": true
+        },
+        {
+          "arm": "NumericRetrained",
+          "epoch": 0,
+          "terminal": "TRAP",
+          "numeric_content_changed": true
+        },
+        {
+          "arm": "PolicyAware",
+          "epoch": 0,
+          "terminal": "TRAP",
+          "numeric_content_changed": true
+        }
+      ],
+      "native_ordinary_updates": 27,
+      "ordinary_policy_TX": 12,
+      "external_updates": 3,
+      "external_policy_TX": 3,
+      "observations_issued_consumed": 3,
+      "source": {
+        "D": [
+          {
+            "address": {
+              "m": 0,
+              "state": {
+                "kappa": 1,
+                "phi": 0,
+                "t": 0,
+                "x": 0,
+                "y": 2
+              },
+              "z": 1
+            },
+            "value": 4
+          },
+          {
+            "address": {
+              "m": 0,
+              "state": {
+                "kappa": 0,
+                "phi": 4,
+                "t": 2,
+                "x": 2,
+                "y": 2
+              },
+              "z": 1
+            },
+            "value": 3
+          }
+        ],
+        "P": [],
+        "Q": [],
+        "X": []
+      }
+    }
+  ],
+  "same6point_frozen_models_exact": true,
+  "new_native_model_fits": 0,
+  "historical_label_interactions_reused_not_free": 78,
+  "success_diagnosis": 0,
+  "feedback_TX": 0,
+  "checkpoint_TX": 3,
+  "source_install_TX": 2,
+  "source_edits": 2,
+  "old_native_checker_reruns": 0,
+  "new_keys_RNG_DP_calibration_collection": 0,
+  "qualification": false
+}

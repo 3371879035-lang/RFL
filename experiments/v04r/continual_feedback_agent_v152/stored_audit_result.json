@@ -1,0 +1,880 @@
+{
+  "schema": "V152_STDLIB_CONTINUAL_AGENT_REVIEW",
+  "complete": true,
+  "native_counts": {
+    "rollout": 108,
+    "step": 577,
+    "transaction": 236
+  },
+  "records": 754,
+  "input_pins": 336,
+  "summaries": [
+    {
+      "arm": "TaskTD",
+      "successes": 19,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.06,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        -1.06,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        0.88,
+        0.88,
+        0.88,
+        0.88
+      ],
+      "outcomes": [
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.09937499999999999,
+      "external_updates": 0,
+      "diagnostic_account": {
+        "feedback_enabled": false,
+        "feedback_queries": 0,
+        "learn_from_trials": false,
+        "trial_task_budget": 0,
+        "trial_tasks_used": 0
+      }
+    },
+    {
+      "arm": "PrefixRepair",
+      "successes": 27,
+      "returns": [
+        -1.02,
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.06,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        -1.06,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.88,
+        0.88,
+        0.88,
+        0.88
+      ],
+      "outcomes": [
+        "TRAP",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.569375,
+      "external_updates": 0,
+      "diagnostic_account": {
+        "feedback_enabled": true,
+        "feedback_queries": 3,
+        "learn_from_trials": false,
+        "trial_task_budget": 12,
+        "trial_tasks_used": 6
+      }
+    },
+    {
+      "arm": "PrefixRepairLearn",
+      "successes": 28,
+      "returns": [
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.06,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        -1.06,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.88,
+        0.88,
+        0.88,
+        0.88
+      ],
+      "outcomes": [
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.628125,
+      "external_updates": 3,
+      "diagnostic_account": {
+        "feedback_enabled": true,
+        "feedback_queries": 3,
+        "learn_from_trials": true,
+        "trial_task_budget": 12,
+        "trial_tasks_used": 6
+      }
+    }
+  ],
+  "phase_results": [
+    {
+      "arm": "TaskTD",
+      "stage": "A",
+      "start_epoch": 0,
+      "tasks": 6,
+      "successes": 0,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02
+      ],
+      "mean_return": -1.02,
+      "query_epochs": []
+    },
+    {
+      "arm": "TaskTD",
+      "stage": "B",
+      "start_epoch": 6,
+      "tasks": 6,
+      "successes": 5,
+      "returns": [
+        -1.06,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        0.88
+      ],
+      "mean_return": 0.5566666666666666,
+      "query_epochs": []
+    },
+    {
+      "arm": "TaskTD",
+      "stage": "C",
+      "start_epoch": 12,
+      "tasks": 6,
+      "successes": 5,
+      "returns": [
+        -1.06,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.5399999999999999,
+      "query_epochs": []
+    },
+    {
+      "arm": "TaskTD",
+      "stage": "D",
+      "start_epoch": 18,
+      "tasks": 6,
+      "successes": 5,
+      "returns": [
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.5466666666666666,
+      "query_epochs": []
+    },
+    {
+      "arm": "TaskTD",
+      "stage": "A_return",
+      "start_epoch": 24,
+      "tasks": 4,
+      "successes": 0,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02
+      ],
+      "mean_return": -1.02,
+      "query_epochs": []
+    },
+    {
+      "arm": "TaskTD",
+      "stage": "B_return",
+      "start_epoch": 28,
+      "tasks": 4,
+      "successes": 4,
+      "returns": [
+        0.88,
+        0.88,
+        0.88,
+        0.88
+      ],
+      "mean_return": 0.88,
+      "query_epochs": []
+    },
+    {
+      "arm": "PrefixRepair",
+      "stage": "A",
+      "start_epoch": 0,
+      "tasks": 6,
+      "successes": 4,
+      "returns": [
+        -1.02,
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.2333333333333333,
+      "query_epochs": [
+        0
+      ]
+    },
+    {
+      "arm": "PrefixRepair",
+      "stage": "B",
+      "start_epoch": 6,
+      "tasks": 6,
+      "successes": 5,
+      "returns": [
+        -1.06,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        0.88
+      ],
+      "mean_return": 0.5566666666666666,
+      "query_epochs": [
+        6
+      ]
+    },
+    {
+      "arm": "PrefixRepair",
+      "stage": "C",
+      "start_epoch": 12,
+      "tasks": 6,
+      "successes": 5,
+      "returns": [
+        -1.06,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.5399999999999999,
+      "query_epochs": [
+        12
+      ]
+    },
+    {
+      "arm": "PrefixRepair",
+      "stage": "D",
+      "start_epoch": 18,
+      "tasks": 6,
+      "successes": 5,
+      "returns": [
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.5466666666666666,
+      "query_epochs": []
+    },
+    {
+      "arm": "PrefixRepair",
+      "stage": "A_return",
+      "start_epoch": 24,
+      "tasks": 4,
+      "successes": 4,
+      "returns": [
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.86,
+      "query_epochs": []
+    },
+    {
+      "arm": "PrefixRepair",
+      "stage": "B_return",
+      "start_epoch": 28,
+      "tasks": 4,
+      "successes": 4,
+      "returns": [
+        0.88,
+        0.88,
+        0.88,
+        0.88
+      ],
+      "mean_return": 0.88,
+      "query_epochs": []
+    },
+    {
+      "arm": "PrefixRepairLearn",
+      "stage": "A",
+      "start_epoch": 0,
+      "tasks": 6,
+      "successes": 5,
+      "returns": [
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.5466666666666666,
+      "query_epochs": [
+        0
+      ]
+    },
+    {
+      "arm": "PrefixRepairLearn",
+      "stage": "B",
+      "start_epoch": 6,
+      "tasks": 6,
+      "successes": 5,
+      "returns": [
+        -1.06,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        0.88
+      ],
+      "mean_return": 0.5566666666666666,
+      "query_epochs": [
+        6
+      ]
+    },
+    {
+      "arm": "PrefixRepairLearn",
+      "stage": "C",
+      "start_epoch": 12,
+      "tasks": 6,
+      "successes": 5,
+      "returns": [
+        -1.06,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.5399999999999999,
+      "query_epochs": [
+        12
+      ]
+    },
+    {
+      "arm": "PrefixRepairLearn",
+      "stage": "D",
+      "start_epoch": 18,
+      "tasks": 6,
+      "successes": 5,
+      "returns": [
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.5466666666666666,
+      "query_epochs": []
+    },
+    {
+      "arm": "PrefixRepairLearn",
+      "stage": "A_return",
+      "start_epoch": 24,
+      "tasks": 4,
+      "successes": 4,
+      "returns": [
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.86,
+      "query_epochs": []
+    },
+    {
+      "arm": "PrefixRepairLearn",
+      "stage": "B_return",
+      "start_epoch": 28,
+      "tasks": 4,
+      "successes": 4,
+      "returns": [
+        0.88,
+        0.88,
+        0.88,
+        0.88
+      ],
+      "mean_return": 0.88,
+      "query_epochs": []
+    }
+  ],
+  "online_costs": [
+    {
+      "arm": "TaskTD",
+      "main_tasks": 32,
+      "private_tasks": 0,
+      "rollout": 32,
+      "step": 141,
+      "transaction": 64,
+      "shared4TX_excluded": true
+    },
+    {
+      "arm": "PrefixRepair",
+      "main_tasks": 32,
+      "private_tasks": 6,
+      "rollout": 38,
+      "step": 215,
+      "transaction": 81,
+      "shared4TX_excluded": true
+    },
+    {
+      "arm": "PrefixRepairLearn",
+      "main_tasks": 32,
+      "private_tasks": 6,
+      "rollout": 38,
+      "step": 221,
+      "transaction": 87,
+      "shared4TX_excluded": true
+    }
+  ],
+  "queries": [
+    {
+      "arm": "PrefixRepair",
+      "epoch": 0,
+      "stage": "A",
+      "observed": {
+        "keep": [
+          -1.02
+        ],
+        "controller-delete": [
+          0.86
+        ]
+      },
+      "choice": "controller-delete",
+      "target_delta": 1.88,
+      "target_index": 0
+    },
+    {
+      "arm": "PrefixRepair",
+      "epoch": 6,
+      "stage": "B",
+      "observed": {
+        "keep": [
+          -1.06
+        ],
+        "controller-delete": [
+          0.86
+        ]
+      },
+      "choice": "controller-delete",
+      "target_delta": 1.92,
+      "target_index": 2
+    },
+    {
+      "arm": "PrefixRepair",
+      "epoch": 12,
+      "stage": "C",
+      "observed": {
+        "keep": [
+          0.86
+        ],
+        "controller-delete": [
+          -1.02
+        ]
+      },
+      "choice": "keep",
+      "target_delta": -1.88,
+      "target_index": 0
+    },
+    {
+      "arm": "PrefixRepairLearn",
+      "epoch": 0,
+      "stage": "A",
+      "observed": {
+        "keep": [
+          -1.02
+        ],
+        "controller-delete": [
+          0.86
+        ]
+      },
+      "choice": "controller-delete",
+      "target_delta": 1.88,
+      "target_index": 0
+    },
+    {
+      "arm": "PrefixRepairLearn",
+      "epoch": 6,
+      "stage": "B",
+      "observed": {
+        "keep": [
+          -1.06
+        ],
+        "controller-delete": [
+          0.86
+        ]
+      },
+      "choice": "controller-delete",
+      "target_delta": 1.92,
+      "target_index": 2
+    },
+    {
+      "arm": "PrefixRepairLearn",
+      "epoch": 12,
+      "stage": "C",
+      "observed": {
+        "keep": [
+          0.86
+        ],
+        "controller-delete": [
+          -1.02
+        ]
+      },
+      "choice": "keep",
+      "target_delta": -1.88,
+      "target_index": 0
+    }
+  ],
+  "diagnoses": [
+    {
+      "arm": "PrefixRepair",
+      "epoch": 0,
+      "stage": "A",
+      "terminal": "TRAP"
+    },
+    {
+      "arm": "PrefixRepair",
+      "epoch": 1,
+      "stage": "A",
+      "terminal": "TRAP"
+    },
+    {
+      "arm": "PrefixRepair",
+      "epoch": 6,
+      "stage": "B",
+      "terminal": "TRAP"
+    },
+    {
+      "arm": "PrefixRepair",
+      "epoch": 12,
+      "stage": "C",
+      "terminal": "COLLISION"
+    },
+    {
+      "arm": "PrefixRepair",
+      "epoch": 18,
+      "stage": "D",
+      "terminal": "TRAP"
+    },
+    {
+      "arm": "PrefixRepairLearn",
+      "epoch": 0,
+      "stage": "A",
+      "terminal": "TRAP"
+    },
+    {
+      "arm": "PrefixRepairLearn",
+      "epoch": 6,
+      "stage": "B",
+      "terminal": "TRAP"
+    },
+    {
+      "arm": "PrefixRepairLearn",
+      "epoch": 12,
+      "stage": "C",
+      "terminal": "COLLISION"
+    },
+    {
+      "arm": "PrefixRepairLearn",
+      "epoch": 18,
+      "stage": "D",
+      "terminal": "TRAP"
+    }
+  ],
+  "accepted": [
+    {
+      "epoch": 0,
+      "stage": "A",
+      "candidate": "controller-delete",
+      "terminal": "SUCCESS",
+      "numeric_content_changed": true
+    },
+    {
+      "epoch": 6,
+      "stage": "B",
+      "candidate": "controller-delete",
+      "terminal": "SUCCESS",
+      "numeric_content_changed": true
+    },
+    {
+      "epoch": 12,
+      "stage": "C",
+      "candidate": "keep",
+      "terminal": "SUCCESS",
+      "numeric_content_changed": true
+    }
+  ],
+  "rejected": [
+    {
+      "epoch": 0,
+      "stage": "A",
+      "candidate": "keep",
+      "terminal": "TRAP",
+      "mechanism_changes": [
+        {
+          "channel": "X",
+          "address": {
+            "state": {
+              "x": 0,
+              "y": 2,
+              "t": 0,
+              "kappa": 1,
+              "phi": 0
+            },
+            "cmd": 4
+          },
+          "origin": 3,
+          "current": 4
+        }
+      ]
+    },
+    {
+      "epoch": 6,
+      "stage": "B",
+      "candidate": "keep",
+      "terminal": "TRAP",
+      "mechanism_changes": [
+        {
+          "channel": "X",
+          "address": {
+            "state": {
+              "kappa": 1,
+              "phi": 2,
+              "t": 2,
+              "x": 1,
+              "y": 2
+            },
+            "cmd": 0
+          },
+          "origin": 3,
+          "current": 0
+        }
+      ]
+    },
+    {
+      "epoch": 12,
+      "stage": "C",
+      "candidate": "controller-delete",
+      "terminal": "TRAP",
+      "mechanism_changes": [
+        {
+          "channel": "X",
+          "address": {
+            "state": {
+              "x": 0,
+              "y": 2,
+              "t": 0,
+              "kappa": 0,
+              "phi": 3
+            },
+            "cmd": 3
+          },
+          "origin": 3,
+          "current": 4
+        }
+      ]
+    }
+  ],
+  "preservation": [
+    {
+      "arm": "TaskTD",
+      "all32_I_preserved": true,
+      "unread_sentinel_preserved": true,
+      "protective_X_preserved": true,
+      "phase_boundary_resets": 0
+    },
+    {
+      "arm": "PrefixRepair",
+      "all32_I_preserved": true,
+      "unread_sentinel_preserved": true,
+      "protective_X_preserved": true,
+      "phase_boundary_resets": 0
+    },
+    {
+      "arm": "PrefixRepairLearn",
+      "all32_I_preserved": true,
+      "unread_sentinel_preserved": true,
+      "protective_X_preserved": true,
+      "phase_boundary_resets": 0
+    }
+  ],
+  "native_ordinary_updates": 108,
+  "ordinary_policy_TX": 108,
+  "external_ordinary_updates": 3,
+  "external_policy_TX": 3,
+  "private_candidate_X_TX": 6,
+  "main_feedback_X_TX": 4,
+  "issued_observations": 12,
+  "consumed_observations": 6,
+  "unconsumed_observations": 6,
+  "actual_explore_events": 20,
+  "success_diagnosis": 0,
+  "no_mismatch_keeps": 3,
+  "budget_keeps": 0,
+  "old_native_checker_bank_reruns": 0,
+  "new_keys_RNG_DP_calibration_collection": 0,
+  "formal_B1_or_science_qualification": false
+}

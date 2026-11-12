@@ -1,0 +1,255 @@
+{
+  "schema": "V09_Q_BEHAVIOR_DIAGNOSTIC_COMPLETION_V184",
+  "utc": "2026-11-08T07:03:12.754261+00:00",
+  "source_commit": "c422160b4bc122b07fc8c34aaa256e116e493bf7",
+  "status": "COMPLETE_SMALL_Q_BEHAVIOR_DIAGNOSTIC_NOT_FULL_V09",
+  "native_exit": 0,
+  "stored_review_exit": 0,
+  "analysis_first_exit": 0,
+  "actual": {
+    "training_steps": 1048576,
+    "evaluation_episodes": 9216,
+    "evaluation_steps": 216317,
+    "all_environment_steps": 1264893,
+    "completed_training_episodes": 41646,
+    "source_instances": 50870,
+    "optimizer_steps": 8072,
+    "factual_update_steps": 8072,
+    "wall_seconds": 444.50692509999953,
+    "old_native_or_checker_calls": 0
+  },
+  "paired_effects": [
+    {
+      "arm": "F-RP",
+      "training_controller_effect_fixed_full": {
+        "mean": -4.8857421875,
+        "minimum": -8.71484375,
+        "maximum": -1.30859375,
+        "positive_seeds": 0,
+        "per_seed": [
+          -1.609375,
+          -7.91015625,
+          -1.30859375,
+          -8.71484375
+        ]
+      },
+      "training_controller_effect_fixed_Q": {
+        "mean": 5.150390625,
+        "minimum": -9.97265625,
+        "maximum": 27.5078125,
+        "positive_seeds": 2,
+        "per_seed": [
+          4.71484375,
+          27.5078125,
+          -9.97265625,
+          -1.6484375
+        ]
+      },
+      "new_full_minus_own_Q": {
+        "mean": -21.2099609375,
+        "minimum": -30.47265625,
+        "maximum": -11.54296875,
+        "positive_seeds": 0,
+        "per_seed": [
+          -24.98828125,
+          -17.8359375,
+          -11.54296875,
+          -30.47265625
+        ]
+      },
+      "new_own_Q_minus_pure_RL": {
+        "mean": -101.3154296875,
+        "minimum": -117.17578125,
+        "maximum": -69.1796875,
+        "positive_seeds": 0,
+        "per_seed": [
+          -69.1796875,
+          -117.17578125,
+          -103.6796875,
+          -115.2265625
+        ]
+      },
+      "old_own_Q_minus_pure_RL": {
+        "mean": -106.4658203125,
+        "minimum": -144.68359375,
+        "maximum": -73.89453125,
+        "positive_seeds": 0,
+        "per_seed": [
+          -73.89453125,
+          -144.68359375,
+          -93.70703125,
+          -113.578125
+        ]
+      },
+      "late_training": {
+        "old": {
+          "mean_length_of_episodes_ending_in_window": 24.533324967110318,
+          "immobile_fraction": 0.4733123779296875,
+          "at_or_beyond_step64_fraction": 0.071807861328125,
+          "pickups_per1000steps": 3.0517578125
+        },
+        "Q": {
+          "mean_length_of_episodes_ending_in_window": 31.788307766911938,
+          "immobile_fraction": 0.47823333740234375,
+          "at_or_beyond_step64_fraction": 0.1096649169921875,
+          "pickups_per1000steps": 2.73895263671875
+        }
+      }
+    },
+    {
+      "arm": "F-R",
+      "training_controller_effect_fixed_full": {
+        "mean": -5.484375,
+        "minimum": -11.921875,
+        "maximum": 4.82421875,
+        "positive_seeds": 1,
+        "per_seed": [
+          -11.48828125,
+          -3.3515625,
+          4.82421875,
+          -11.921875
+        ]
+      },
+      "training_controller_effect_fixed_Q": {
+        "mean": 6.271484375,
+        "minimum": -6.02734375,
+        "maximum": 15.43359375,
+        "positive_seeds": 3,
+        "per_seed": [
+          15.43359375,
+          12.62109375,
+          3.05859375,
+          -6.02734375
+        ]
+      },
+      "new_full_minus_own_Q": {
+        "mean": -19.8046875,
+        "minimum": -34.84765625,
+        "maximum": -9.62890625,
+        "positive_seeds": 0,
+        "per_seed": [
+          -34.84765625,
+          -21.44921875,
+          -9.62890625,
+          -13.29296875
+        ]
+      },
+      "new_own_Q_minus_pure_RL": {
+        "mean": -104.25,
+        "minimum": -136.6875,
+        "maximum": -60.91796875,
+        "positive_seeds": 0,
+        "per_seed": [
+          -60.91796875,
+          -116.6953125,
+          -102.69921875,
+          -136.6875
+        ]
+      },
+      "old_own_Q_minus_pure_RL": {
+        "mean": -110.521484375,
+        "minimum": -130.66015625,
+        "maximum": -76.3515625,
+        "positive_seeds": 0,
+        "per_seed": [
+          -76.3515625,
+          -129.31640625,
+          -105.7578125,
+          -130.66015625
+        ]
+      },
+      "late_training": {
+        "old": {
+          "mean_length_of_episodes_ending_in_window": 24.752124215940007,
+          "immobile_fraction": 0.47473907470703125,
+          "at_or_beyond_step64_fraction": 0.0762786865234375,
+          "pickups_per1000steps": 2.84576416015625
+        },
+        "Q": {
+          "mean_length_of_episodes_ending_in_window": 26.894526505374333,
+          "immobile_fraction": 0.5320205688476562,
+          "at_or_beyond_step64_fraction": 0.08648681640625,
+          "pickups_per1000steps": 2.79998779296875
+        }
+      }
+    }
+  ],
+  "audit": {
+    "cases": 8,
+    "all_Q_training_actions_checked": true,
+    "all_initial_parameters_and_zero_banks_match_old": true,
+    "wall_seconds": 1.7258974000005765
+  },
+  "limits": [
+    "Old controls are read-only V183 same seeds, initialization and budget; not fresh randomized confirmation.",
+    "Training-controller effect includes the changed encountered data/history/targets, not a mediation-isolated distribution effect.",
+    "F-R vs pureRL also differs in punishment; F-RP is the closest reward-matched hybrid comparison.",
+    "Auxiliary-gradient/representation interference is not identified solely by a remaining pureRL gap.",
+    "F0 is unchanged; hybridQ intervention does not repair pure-feedback planning.",
+    "Planner still computes during training; no claim of compute savings or final algorithm adoption.",
+    "Factual and Q updates use one shared optimizer step, not two independent update costs."
+  ],
+  "claims": {
+    "training_controller_change_not_sufficient": true,
+    "full_readout_worse_than_ownQ_all8": true,
+    "gradient_conflict_proven": false,
+    "pure_feedback_fixed": false,
+    "V09_complete": false,
+    "next_experiment_started": false,
+    "old_run_restarted": false
+  },
+  "evidence": [
+    {
+      "path": "experiments/v09r/q_behavior_diagnostic_v184/analysis/result.json",
+      "bytes": 102904,
+      "sha256": "4dd5029ec6f8ff9f522d38126425c9378a99379734125a20133b56dcddb33931"
+    },
+    {
+      "path": "experiments/v09r/q_behavior_diagnostic_v184/analysis/result.md",
+      "bytes": 2376,
+      "sha256": "94b3c96c8122580cdb486289508f473ed8bf31e9bd23a08ab0d36ed8ce38ea70"
+    },
+    {
+      "path": "experiments/v09r/q_behavior_diagnostic_v184/interpretation.md",
+      "bytes": 5863,
+      "sha256": "d6fe40cb43bc7e3e3fdab050db71aed086d82bc12974479fe3147aaa107423ec"
+    },
+    {
+      "path": "experiments/v09r/q_behavior_diagnostic_v184/evidence_pilot/exit.json",
+      "bytes": 1944,
+      "sha256": "c2b0b25731153b4ca0222a210b6bc1de7ede1ed94f5c6a031d5afab11f03245f"
+    },
+    {
+      "path": "experiments/v09r/q_behavior_diagnostic_v184/evidence_pilot/stored_review_result.json",
+      "bytes": 5290,
+      "sha256": "05596c6edbc4db2ede17504280508ff6c90fde0f7f9d67cc08bbe3532724d5f1"
+    },
+    {
+      "path": "experiments/v09r/q_behavior_diagnostic_v184/source_binding.json",
+      "bytes": 2134,
+      "sha256": "0f356495b493eb6d419409dee463843e64ad89d5601167ab769cb1b37c6d5277"
+    },
+    {
+      "path": "experiments/v09r/q_behavior_diagnostic_v184/control_binding.json",
+      "bytes": 13145,
+      "sha256": "45246c698e451479cd6b145e811f88194fac45119777d784b6cd2332b07c73ec"
+    },
+    {
+      "path": "experiments/v09r/q_behavior_diagnostic_v184/storage_receipt.json",
+      "bytes": 675,
+      "sha256": "7242a22e09773ee8bf0bb9b62aa162450a03580b9624f4838160de0530268618"
+    }
+  ],
+  "storage": {
+    "utc": "2026-11-08T07:05:10.219546+00:00",
+    "result_commit": "6aa732f2657d4d368da21ed5fb3b5e9b59d5192d",
+    "physical_equals_actual_git": true,
+    "committed_files": 98,
+    "committed_bytes": 291838382,
+    "checkpoint_files_committed": 32,
+    "checkpoint_bytes": 261472889,
+    "default_diff_check_exit": 2,
+    "whitespace_warning_count": 4393,
+    "note": "This namespace is not covered by the older spatial_feedback checkpoint ignore pattern. All32checkpoints were committed and retained, contrary to the precommit storage assumption. Metadata correction only, no native/checker/training rerun. CRLF whitespace warnings retained without rewriting executed outputs."
+  }
+}

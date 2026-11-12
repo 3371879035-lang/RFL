@@ -1,0 +1,2843 @@
+{
+  "schema": "V131_LEARNED_SPAN_MEMORY_RESULT",
+  "date_asia_shanghai": "2026-11-06",
+  "parent_commit": "ad6ad84c3108fb1e22eeb774df5a4f74d45ef482",
+  "status": "EXTENSION_COMPLETE_LEARNED_CONDITIONAL_MEMORY_AND_COST_RESULT",
+  "modes": [
+    "dq"
+  ],
+  "question": "Can diagnostic memory learn a conditional run-length partition from its own actual practice returns, instead of treating all repeated waits identically, and what is its quality/trial-cost tradeoff against coarse and exact-length hybrid memory?",
+  "execution": {
+    "native_first_exit": 0,
+    "new_stored_review_first_exit_observed": 0,
+    "rollout": 234,
+    "step": 2007,
+    "transaction": 212,
+    "records": 1110,
+    "input_pins_unchanged": 336,
+    "main_tasks": 120,
+    "practice_tasks_all_arms": 54,
+    "read_only_rollouts": 60,
+    "ordinary_full_R_L_updates_checked": 174,
+    "main_steps": 943,
+    "practice_steps": 524,
+    "read_only_steps": 540,
+    "source_install_transactions": 1,
+    "source_install_addresses": 92,
+    "ordinary_numeric_transactions": 174,
+    "ordinary_policy_transactions": 0,
+    "live_diagnostic_transactions": 19,
+    "practice_candidate_transactions": 18,
+    "instrumented_wall_seconds": 45.17200000002049,
+    "base_model_parameter_updates": 0,
+    "online_memory_update_events": 9,
+    "observed_failed_prediction_reviews": 2,
+    "actual_review_triggered_retests": 2,
+    "success_diagnostics": 0,
+    "historical_base_training_probe_tasks": 196,
+    "automatic_retry": false,
+    "new_keys": 0,
+    "formal_collection": false,
+    "patch_executed": false
+  },
+  "summary": [
+    {
+      "arm": "ExactSpanHybrid",
+      "tasks": 40,
+      "successes": 32,
+      "task_return_sum": 17.72,
+      "task_return_mean": 0.44299999999999995,
+      "practice_events": 4,
+      "practice_rollouts": 24,
+      "memory_hits": 0,
+      "diagnostic_calls": 8,
+      "diagnostic_transactions": 6,
+      "diagnostic_edit_attempts": 6
+    },
+    {
+      "arm": "HybridMemory",
+      "tasks": 40,
+      "successes": 30,
+      "task_return_sum": 13.78,
+      "task_return_mean": 0.3445,
+      "practice_events": 3,
+      "practice_rollouts": 18,
+      "memory_hits": 2,
+      "diagnostic_calls": 10,
+      "diagnostic_transactions": 7,
+      "diagnostic_edit_attempts": 7
+    },
+    {
+      "arm": "StumpHybrid",
+      "tasks": 40,
+      "successes": 31,
+      "task_return_sum": 15.639999999999999,
+      "task_return_mean": 0.39099999999999996,
+      "practice_events": 2,
+      "practice_rollouts": 12,
+      "memory_hits": 3,
+      "diagnostic_calls": 9,
+      "diagnostic_transactions": 6,
+      "diagnostic_edit_attempts": 6
+    }
+  ],
+  "prospective_phase_metrics": [
+    {
+      "arm": "ExactSpanHybrid",
+      "phase": "formation_A",
+      "tasks": 8,
+      "successes": 5,
+      "return_sum": 0.82,
+      "return_mean": 0.1025
+    },
+    {
+      "arm": "ExactSpanHybrid",
+      "phase": "favorable_B",
+      "tasks": 8,
+      "successes": 5,
+      "return_sum": 0.82,
+      "return_mean": 0.1025
+    },
+    {
+      "arm": "ExactSpanHybrid",
+      "phase": "unique_invalid_D",
+      "tasks": 12,
+      "successes": 11,
+      "return_sum": 8.0,
+      "return_mean": 0.6666666666666666
+    },
+    {
+      "arm": "ExactSpanHybrid",
+      "phase": "duplicate_C",
+      "tasks": 8,
+      "successes": 7,
+      "return_sum": 4.64,
+      "return_mean": 0.58
+    },
+    {
+      "arm": "ExactSpanHybrid",
+      "phase": "return_AB",
+      "tasks": 4,
+      "successes": 4,
+      "return_sum": 3.44,
+      "return_mean": 0.86
+    },
+    {
+      "arm": "HybridMemory",
+      "phase": "formation_A",
+      "tasks": 8,
+      "successes": 5,
+      "return_sum": 0.82,
+      "return_mean": 0.1025
+    },
+    {
+      "arm": "HybridMemory",
+      "phase": "favorable_B",
+      "tasks": 8,
+      "successes": 5,
+      "return_sum": 0.82,
+      "return_mean": 0.1025
+    },
+    {
+      "arm": "HybridMemory",
+      "phase": "unique_invalid_D",
+      "tasks": 12,
+      "successes": 9,
+      "return_sum": 4.06,
+      "return_mean": 0.3383333333333333
+    },
+    {
+      "arm": "HybridMemory",
+      "phase": "duplicate_C",
+      "tasks": 8,
+      "successes": 7,
+      "return_sum": 4.64,
+      "return_mean": 0.58
+    },
+    {
+      "arm": "HybridMemory",
+      "phase": "return_AB",
+      "tasks": 4,
+      "successes": 4,
+      "return_sum": 3.44,
+      "return_mean": 0.86
+    },
+    {
+      "arm": "StumpHybrid",
+      "phase": "formation_A",
+      "tasks": 8,
+      "successes": 5,
+      "return_sum": 0.82,
+      "return_mean": 0.1025
+    },
+    {
+      "arm": "StumpHybrid",
+      "phase": "favorable_B",
+      "tasks": 8,
+      "successes": 5,
+      "return_sum": 0.82,
+      "return_mean": 0.1025
+    },
+    {
+      "arm": "StumpHybrid",
+      "phase": "unique_invalid_D",
+      "tasks": 12,
+      "successes": 10,
+      "return_sum": 5.92,
+      "return_mean": 0.49333333333333335
+    },
+    {
+      "arm": "StumpHybrid",
+      "phase": "duplicate_C",
+      "tasks": 8,
+      "successes": 7,
+      "return_sum": 4.64,
+      "return_mean": 0.58
+    },
+    {
+      "arm": "StumpHybrid",
+      "phase": "return_AB",
+      "tasks": 4,
+      "successes": 4,
+      "return_sum": 3.44,
+      "return_mean": 0.86
+    }
+  ],
+  "complete_stream_metrics": [
+    {
+      "arms": {
+        "ExactSpanHybrid": {
+          "contested_keys": [],
+          "diagnostic_calls": 8,
+          "diagnostic_edit_attempts": 6,
+          "diagnostic_transactions": 6,
+          "final_diagnostic_memory": [
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "keep",
+                "run-span",
+                0
+              ],
+              8,
+              {
+                "binary64_hex": "-0x1.fae147ae147aep-1"
+              }
+            ],
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                1
+              ],
+              6,
+              {
+                "binary64_hex": "-0x1.17e4b17e4b17fp-1"
+              }
+            ],
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                2
+              ],
+              4,
+              {
+                "binary64_hex": "-0x1.2147ae147ae14p+0"
+              }
+            ],
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                8
+              ],
+              2,
+              {
+                "binary64_hex": "0x1.b851eb851eb85p-1"
+              }
+            ],
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                9
+              ],
+              2,
+              {
+                "binary64_hex": "0x1.ae147ae147ae1p-1"
+              }
+            ],
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                10
+              ],
+              2,
+              {
+                "binary64_hex": "0x1.b851eb851eb85p-1"
+              }
+            ]
+          ],
+          "memory_hits": 0,
+          "needs_retest": [],
+          "outcomes": [
+            "TIMEOUT",
+            "SUCCESS",
+            "TRAP",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "TIMEOUT",
+            "SUCCESS",
+            "TRAP",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "pending_recall": null,
+          "practice_events": 4,
+          "practice_rollouts": 24,
+          "retention_banks": [
+            {
+              "completed_tasks": 0,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "phi": 2,
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 1,
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 2,
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 4,
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 16,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 2,
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 4,
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 28,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.84
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 4,
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 36,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.84
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 4,
+                  "return": 0.84
+                }
+              ]
+            },
+            {
+              "completed_tasks": 40,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.84
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 4,
+                  "return": 0.84
+                }
+              ]
+            }
+          ],
+          "returns": [
+            -1.24,
+            0.88,
+            -1.02,
+            -1.24,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            -1.24,
+            0.88,
+            -1.02,
+            -1.24,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            -1.24,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            -1.24,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.86,
+            0.86,
+            0.86,
+            0.86
+          ],
+          "successes": 32,
+          "task_return_mean": 0.44299999999999995,
+          "task_return_sum": 17.72,
+          "tasks": 40
+        },
+        "HybridMemory": {
+          "contested_keys": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "repeated-run"
+            ]
+          ],
+          "diagnostic_calls": 10,
+          "diagnostic_edit_attempts": 7,
+          "diagnostic_transactions": 7,
+          "final_diagnostic_memory": [
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "keep",
+                "global"
+              ],
+              6,
+              {
+                "binary64_hex": "-0x1.258bf258bf259p-1"
+              }
+            ],
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "repeated-run"
+              ],
+              8,
+              {
+                "binary64_hex": "0x1.547ae147ae148p-2"
+              }
+            ],
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "single-step"
+              ],
+              4,
+              {
+                "binary64_hex": "-0x1.999999999999ap-3"
+              }
+            ]
+          ],
+          "memory_hits": 2,
+          "needs_retest": [],
+          "outcomes": [
+            "TIMEOUT",
+            "SUCCESS",
+            "TRAP",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "TIMEOUT",
+            "SUCCESS",
+            "TRAP",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "TIMEOUT",
+            "TRAP",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "pending_recall": null,
+          "practice_events": 3,
+          "practice_rollouts": 18,
+          "retention_banks": [
+            {
+              "completed_tasks": 0,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "phi": 2,
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 1,
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 2,
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 4,
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 16,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 2,
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 4,
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 28,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.84
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 4,
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 36,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.84
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 4,
+                  "return": 0.84
+                }
+              ]
+            },
+            {
+              "completed_tasks": 40,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.84
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 4,
+                  "return": 0.84
+                }
+              ]
+            }
+          ],
+          "returns": [
+            -1.24,
+            0.88,
+            -1.02,
+            -1.24,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            -1.24,
+            0.88,
+            -1.02,
+            -1.24,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            -1.24,
+            -1.02,
+            -1.24,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            -1.24,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.86,
+            0.86,
+            0.86,
+            0.86
+          ],
+          "successes": 30,
+          "task_return_mean": 0.3445,
+          "task_return_sum": 13.78,
+          "tasks": 40
+        },
+        "StumpHybrid": {
+          "contested_keys": [],
+          "diagnostic_calls": 9,
+          "diagnostic_edit_attempts": 6,
+          "diagnostic_transactions": 6,
+          "final_diagnostic_memory": [
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "keep",
+                "run-span",
+                0
+              ],
+              4,
+              {
+                "binary64_hex": "-0x1.eb851eb851eb8p-3"
+              }
+            ],
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                1
+              ],
+              4,
+              {
+                "binary64_hex": "-0x1.999999999999ap-3"
+              }
+            ],
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                2
+              ],
+              2,
+              {
+                "binary64_hex": "-0x1.0a3d70a3d70a4p-3"
+              }
+            ],
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                8
+              ],
+              2,
+              {
+                "binary64_hex": "0x1.b851eb851eb85p-1"
+              }
+            ]
+          ],
+          "memory_hits": 3,
+          "needs_retest": [],
+          "outcomes": [
+            "TIMEOUT",
+            "SUCCESS",
+            "TRAP",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "TIMEOUT",
+            "SUCCESS",
+            "TRAP",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "TIMEOUT",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "pending_recall": null,
+          "practice_events": 2,
+          "practice_rollouts": 12,
+          "retention_banks": [
+            {
+              "completed_tasks": 0,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "phi": 2,
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 1,
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 2,
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 4,
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 16,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 2,
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 4,
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 28,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.84
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 4,
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 36,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.84
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 4,
+                  "return": 0.84
+                }
+              ]
+            },
+            {
+              "completed_tasks": 40,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.84
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 4,
+                  "return": 0.84
+                }
+              ]
+            }
+          ],
+          "returns": [
+            -1.24,
+            0.88,
+            -1.02,
+            -1.24,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            -1.24,
+            0.88,
+            -1.02,
+            -1.24,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            -1.24,
+            -1.24,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            -1.24,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.86,
+            0.86,
+            0.86,
+            0.86
+          ],
+          "successes": 31,
+          "task_return_mean": 0.39099999999999996,
+          "task_return_sum": 15.639999999999999,
+          "tasks": 40
+        }
+      },
+      "mode": "dq"
+    }
+  ],
+  "per_role_native_work": [
+    {
+      "arm": "HybridMemory",
+      "readonly_rollout": 20,
+      "readonly_step": 180,
+      "stream_rollout": 40,
+      "stream_step": 311,
+      "ordinary_numeric_tx": 58,
+      "ordinary_policy_tx": 0,
+      "live_diagnostic_tx": 7,
+      "practice_rollout": 18,
+      "practice_step": 179,
+      "practice_candidate_tx": 6,
+      "total_rollout": 78,
+      "total_step": 670,
+      "total_store_transaction_excluding_shared_source": 71
+    },
+    {
+      "arm": "ExactSpanHybrid",
+      "readonly_rollout": 20,
+      "readonly_step": 180,
+      "stream_rollout": 40,
+      "stream_step": 314,
+      "ordinary_numeric_tx": 64,
+      "ordinary_policy_tx": 0,
+      "live_diagnostic_tx": 6,
+      "practice_rollout": 24,
+      "practice_step": 230,
+      "practice_candidate_tx": 8,
+      "total_rollout": 84,
+      "total_step": 724,
+      "total_store_transaction_excluding_shared_source": 78
+    },
+    {
+      "arm": "StumpHybrid",
+      "readonly_rollout": 20,
+      "readonly_step": 180,
+      "stream_rollout": 40,
+      "stream_step": 318,
+      "ordinary_numeric_tx": 52,
+      "ordinary_policy_tx": 0,
+      "live_diagnostic_tx": 6,
+      "practice_rollout": 12,
+      "practice_step": 115,
+      "practice_candidate_tx": 4,
+      "total_rollout": 72,
+      "total_step": 613,
+      "total_store_transaction_excluding_shared_source": 62
+    }
+  ],
+  "learned_model_lookup_chronology": [
+    {
+      "seq": 807,
+      "arm": "StumpHybrid",
+      "actions": [
+        "keep",
+        "single:0",
+        "single:4"
+      ],
+      "contested_keys": [],
+      "epoch": 3,
+      "info": {
+        "keys": {
+          "keep": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "keep",
+            "run-span",
+            0
+          ],
+          "single:0": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            1
+          ],
+          "single:4": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            8
+          ]
+        },
+        "representation": "learned-stump",
+        "supported": false
+      },
+      "needs_retest": [],
+      "raw_selected": null,
+      "selected": null,
+      "status": "unsupported",
+      "table": []
+    },
+    {
+      "seq": 900,
+      "arm": "StumpHybrid",
+      "actions": [
+        "keep",
+        "single:0",
+        "single:2"
+      ],
+      "contested_keys": [],
+      "epoch": 11,
+      "info": {
+        "keys": {
+          "keep": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "keep",
+            "run-span",
+            0
+          ],
+          "single:0": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            1
+          ],
+          "single:2": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            10
+          ]
+        },
+        "models": {
+          "keep": {
+            "cut": null,
+            "left": {
+              "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+            },
+            "n": 2,
+            "right": {
+              "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+            },
+            "squared_error": {
+              "binary64_hex": "0x0.0p+0"
+            }
+          },
+          "single:0": {
+            "cut": {
+              "binary64_hex": "0x1.2000000000000p+2"
+            },
+            "left": {
+              "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+            },
+            "n": 4,
+            "right": {
+              "binary64_hex": "0x1.b851eb851eb85p-1"
+            },
+            "squared_error": {
+              "binary64_hex": "0x0.0p+0"
+            }
+          },
+          "single:2": {
+            "cut": {
+              "binary64_hex": "0x1.2000000000000p+2"
+            },
+            "left": {
+              "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+            },
+            "n": 4,
+            "right": {
+              "binary64_hex": "0x1.b851eb851eb85p-1"
+            },
+            "squared_error": {
+              "binary64_hex": "0x0.0p+0"
+            }
+          }
+        },
+        "representation": "learned-stump",
+        "scores": {
+          "keep": {
+            "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+          },
+          "single:0": {
+            "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+          },
+          "single:2": {
+            "binary64_hex": "0x1.b851eb851eb85p-1"
+          }
+        },
+        "supported": true
+      },
+      "needs_retest": [],
+      "raw_selected": "single:2",
+      "selected": "single:2",
+      "status": "supported-unique",
+      "table": [
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "keep",
+            "run-span",
+            0
+          ],
+          2,
+          {
+            "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+          }
+        ],
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            1
+          ],
+          2,
+          {
+            "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+          }
+        ],
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            8
+          ],
+          2,
+          {
+            "binary64_hex": "0x1.b851eb851eb85p-1"
+          }
+        ]
+      ]
+    },
+    {
+      "seq": 932,
+      "arm": "StumpHybrid",
+      "actions": [
+        "keep",
+        "single:0",
+        "single:3"
+      ],
+      "contested_keys": [],
+      "epoch": 16,
+      "info": {
+        "keys": {
+          "keep": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "keep",
+            "run-span",
+            0
+          ],
+          "single:0": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            2
+          ],
+          "single:3": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            1
+          ]
+        },
+        "models": {
+          "keep": {
+            "cut": null,
+            "left": {
+              "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+            },
+            "n": 2,
+            "right": {
+              "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+            },
+            "squared_error": {
+              "binary64_hex": "0x0.0p+0"
+            }
+          },
+          "single:0": {
+            "cut": {
+              "binary64_hex": "0x1.2000000000000p+2"
+            },
+            "left": {
+              "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+            },
+            "n": 4,
+            "right": {
+              "binary64_hex": "0x1.b851eb851eb85p-1"
+            },
+            "squared_error": {
+              "binary64_hex": "0x0.0p+0"
+            }
+          },
+          "single:3": {
+            "cut": {
+              "binary64_hex": "0x1.2000000000000p+2"
+            },
+            "left": {
+              "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+            },
+            "n": 4,
+            "right": {
+              "binary64_hex": "0x1.b851eb851eb85p-1"
+            },
+            "squared_error": {
+              "binary64_hex": "0x0.0p+0"
+            }
+          }
+        },
+        "representation": "learned-stump",
+        "scores": {
+          "keep": {
+            "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+          },
+          "single:0": {
+            "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+          },
+          "single:3": {
+            "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+          }
+        },
+        "supported": true
+      },
+      "needs_retest": [],
+      "raw_selected": "keep",
+      "selected": "keep",
+      "status": "supported-unique",
+      "table": [
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "keep",
+            "run-span",
+            0
+          ],
+          2,
+          {
+            "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+          }
+        ],
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            1
+          ],
+          2,
+          {
+            "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+          }
+        ],
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            8
+          ],
+          2,
+          {
+            "binary64_hex": "0x1.b851eb851eb85p-1"
+          }
+        ]
+      ]
+    },
+    {
+      "seq": 942,
+      "arm": "StumpHybrid",
+      "actions": [
+        "keep",
+        "single:0",
+        "single:3"
+      ],
+      "contested_keys": [],
+      "epoch": 17,
+      "info": {
+        "keys": {
+          "keep": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "keep",
+            "run-span",
+            0
+          ],
+          "single:0": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            2
+          ],
+          "single:3": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            1
+          ]
+        },
+        "models": {
+          "keep": {
+            "cut": null,
+            "left": {
+              "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+            },
+            "n": 2,
+            "right": {
+              "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+            },
+            "squared_error": {
+              "binary64_hex": "0x0.0p+0"
+            }
+          },
+          "single:0": {
+            "cut": {
+              "binary64_hex": "0x1.2000000000000p+2"
+            },
+            "left": {
+              "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+            },
+            "n": 4,
+            "right": {
+              "binary64_hex": "0x1.b851eb851eb85p-1"
+            },
+            "squared_error": {
+              "binary64_hex": "0x0.0p+0"
+            }
+          },
+          "single:3": {
+            "cut": {
+              "binary64_hex": "0x1.2000000000000p+2"
+            },
+            "left": {
+              "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+            },
+            "n": 4,
+            "right": {
+              "binary64_hex": "0x1.b851eb851eb85p-1"
+            },
+            "squared_error": {
+              "binary64_hex": "0x0.0p+0"
+            }
+          }
+        },
+        "representation": "learned-stump",
+        "scores": {
+          "keep": {
+            "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+          },
+          "single:0": {
+            "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+          },
+          "single:3": {
+            "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+          }
+        },
+        "supported": true
+      },
+      "needs_retest": [
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "keep",
+          "run-span",
+          0
+        ]
+      ],
+      "raw_selected": "keep",
+      "selected": null,
+      "status": "observed-failure-review",
+      "table": [
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "keep",
+            "run-span",
+            0
+          ],
+          2,
+          {
+            "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+          }
+        ],
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            1
+          ],
+          2,
+          {
+            "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+          }
+        ],
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            8
+          ],
+          2,
+          {
+            "binary64_hex": "0x1.b851eb851eb85p-1"
+          }
+        ]
+      ]
+    },
+    {
+      "seq": 1043,
+      "arm": "StumpHybrid",
+      "actions": [
+        "keep",
+        "single:0",
+        "single:3"
+      ],
+      "contested_keys": [],
+      "epoch": 28,
+      "info": {
+        "keys": {
+          "keep": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "keep",
+            "run-span",
+            0
+          ],
+          "single:0": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            2
+          ],
+          "single:3": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            9
+          ]
+        },
+        "models": {
+          "keep": {
+            "cut": null,
+            "left": {
+              "binary64_hex": "-0x1.eb851eb851eb8p-3"
+            },
+            "n": 4,
+            "right": {
+              "binary64_hex": "-0x1.eb851eb851eb8p-3"
+            },
+            "squared_error": {
+              "binary64_hex": "0x1.0000000000000p+2"
+            }
+          },
+          "single:0": {
+            "cut": {
+              "binary64_hex": "0x1.4000000000000p+2"
+            },
+            "left": {
+              "binary64_hex": "-0x1.69d0369d0369dp-3"
+            },
+            "n": 8,
+            "right": {
+              "binary64_hex": "0x1.b851eb851eb85p-1"
+            },
+            "squared_error": {
+              "binary64_hex": "0x1.7ab250022f3d9p+2"
+            }
+          },
+          "single:3": {
+            "cut": {
+              "binary64_hex": "0x1.4000000000000p+2"
+            },
+            "left": {
+              "binary64_hex": "-0x1.69d0369d0369dp-3"
+            },
+            "n": 8,
+            "right": {
+              "binary64_hex": "0x1.b851eb851eb85p-1"
+            },
+            "squared_error": {
+              "binary64_hex": "0x1.7ab250022f3d9p+2"
+            }
+          }
+        },
+        "representation": "learned-stump",
+        "scores": {
+          "keep": {
+            "binary64_hex": "-0x1.eb851eb851eb8p-3"
+          },
+          "single:0": {
+            "binary64_hex": "-0x1.69d0369d0369dp-3"
+          },
+          "single:3": {
+            "binary64_hex": "0x1.b851eb851eb85p-1"
+          }
+        },
+        "supported": true
+      },
+      "needs_retest": [],
+      "raw_selected": "single:3",
+      "selected": "single:3",
+      "status": "supported-unique",
+      "table": [
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "keep",
+            "run-span",
+            0
+          ],
+          4,
+          {
+            "binary64_hex": "-0x1.eb851eb851eb8p-3"
+          }
+        ],
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            1
+          ],
+          4,
+          {
+            "binary64_hex": "-0x1.999999999999ap-3"
+          }
+        ],
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            2
+          ],
+          2,
+          {
+            "binary64_hex": "-0x1.0a3d70a3d70a4p-3"
+          }
+        ],
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            8
+          ],
+          2,
+          {
+            "binary64_hex": "0x1.b851eb851eb85p-1"
+          }
+        ]
+      ]
+    }
+  ],
+  "raw_context_bound_reviews": [
+    {
+      "seq": 168,
+      "arm": "HybridMemory",
+      "after": [
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "single",
+          4,
+          false,
+          "stay",
+          "repeated-run"
+        ]
+      ],
+      "before": [],
+      "context": [
+        1,
+        2
+      ],
+      "epoch": 17,
+      "memory_unchanged": [
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "keep",
+            "global"
+          ],
+          2,
+          {
+            "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+          }
+        ],
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "repeated-run"
+          ],
+          2,
+          {
+            "binary64_hex": "0x1.b851eb851eb85p-1"
+          }
+        ],
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "single-step"
+          ],
+          2,
+          {
+            "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+          }
+        ]
+      ],
+      "pending": {
+        "candidate": "single:0",
+        "context": [
+          1,
+          2
+        ],
+        "epoch": 16,
+        "key": [
+          "dq",
+          "TIMEOUT",
+          false,
+          "single",
+          4,
+          false,
+          "stay",
+          "repeated-run"
+        ],
+        "predicted_mean": {
+          "binary64_hex": "0x1.b851eb851eb85p-1"
+        }
+      },
+      "requires_retest": true,
+      "terminal": "TRAP"
+    },
+    {
+      "seq": 941,
+      "arm": "StumpHybrid",
+      "after": [
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "keep",
+          "run-span",
+          0
+        ]
+      ],
+      "before": [],
+      "context": [
+        1,
+        2
+      ],
+      "epoch": 17,
+      "memory_unchanged": [
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "keep",
+            "run-span",
+            0
+          ],
+          2,
+          {
+            "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+          }
+        ],
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            1
+          ],
+          2,
+          {
+            "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+          }
+        ],
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            8
+          ],
+          2,
+          {
+            "binary64_hex": "0x1.b851eb851eb85p-1"
+          }
+        ]
+      ],
+      "pending": {
+        "candidate": "keep",
+        "context": [
+          1,
+          2
+        ],
+        "epoch": 16,
+        "key": [
+          "dq",
+          "TIMEOUT",
+          false,
+          "keep",
+          "run-span",
+          0
+        ],
+        "predicted_mean": {
+          "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+        }
+      },
+      "requires_retest": true,
+      "terminal": "TIMEOUT"
+    }
+  ],
+  "raw_context_bound_retests": [
+    {
+      "seq": 70,
+      "arm": "HybridMemory",
+      "after": [],
+      "before": [],
+      "epoch": 3,
+      "tested_keys": [
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "keep",
+          "global"
+        ],
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "single",
+          4,
+          false,
+          "stay",
+          "repeated-run"
+        ],
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "single",
+          4,
+          false,
+          "stay",
+          "single-step"
+        ]
+      ]
+    },
+    {
+      "seq": 215,
+      "arm": "HybridMemory",
+      "after": [],
+      "before": [
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "single",
+          4,
+          false,
+          "stay",
+          "repeated-run"
+        ]
+      ],
+      "epoch": 18,
+      "tested_keys": [
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "keep",
+          "global"
+        ],
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "single",
+          4,
+          false,
+          "stay",
+          "repeated-run"
+        ],
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "single",
+          4,
+          false,
+          "stay",
+          "single-step"
+        ]
+      ]
+    },
+    {
+      "seq": 311,
+      "arm": "HybridMemory",
+      "after": [],
+      "before": [],
+      "epoch": 28,
+      "tested_keys": [
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "keep",
+          "global"
+        ],
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "single",
+          4,
+          false,
+          "stay",
+          "repeated-run"
+        ]
+      ]
+    },
+    {
+      "seq": 443,
+      "arm": "ExactSpanHybrid",
+      "after": [],
+      "before": [],
+      "epoch": 3,
+      "tested_keys": [
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "keep",
+          "run-span",
+          0
+        ],
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "single",
+          4,
+          false,
+          "stay",
+          "run-span",
+          1
+        ],
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "single",
+          4,
+          false,
+          "stay",
+          "run-span",
+          8
+        ]
+      ]
+    },
+    {
+      "seq": 536,
+      "arm": "ExactSpanHybrid",
+      "after": [],
+      "before": [],
+      "epoch": 11,
+      "tested_keys": [
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "keep",
+          "run-span",
+          0
+        ],
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "single",
+          4,
+          false,
+          "stay",
+          "run-span",
+          1
+        ],
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "single",
+          4,
+          false,
+          "stay",
+          "run-span",
+          10
+        ]
+      ]
+    },
+    {
+      "seq": 607,
+      "arm": "ExactSpanHybrid",
+      "after": [],
+      "before": [],
+      "epoch": 16,
+      "tested_keys": [
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "keep",
+          "run-span",
+          0
+        ],
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "single",
+          4,
+          false,
+          "stay",
+          "run-span",
+          1
+        ],
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "single",
+          4,
+          false,
+          "stay",
+          "run-span",
+          2
+        ]
+      ]
+    },
+    {
+      "seq": 713,
+      "arm": "ExactSpanHybrid",
+      "after": [],
+      "before": [],
+      "epoch": 28,
+      "tested_keys": [
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "keep",
+          "run-span",
+          0
+        ],
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "single",
+          4,
+          false,
+          "stay",
+          "run-span",
+          2
+        ],
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "single",
+          4,
+          false,
+          "stay",
+          "run-span",
+          9
+        ]
+      ]
+    },
+    {
+      "seq": 845,
+      "arm": "StumpHybrid",
+      "after": [],
+      "before": [],
+      "epoch": 3,
+      "tested_keys": [
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "keep",
+          "run-span",
+          0
+        ],
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "single",
+          4,
+          false,
+          "stay",
+          "run-span",
+          1
+        ],
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "single",
+          4,
+          false,
+          "stay",
+          "run-span",
+          8
+        ]
+      ]
+    },
+    {
+      "seq": 980,
+      "arm": "StumpHybrid",
+      "after": [],
+      "before": [
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "keep",
+          "run-span",
+          0
+        ]
+      ],
+      "epoch": 17,
+      "tested_keys": [
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "keep",
+          "run-span",
+          0
+        ],
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "single",
+          4,
+          false,
+          "stay",
+          "run-span",
+          1
+        ],
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "single",
+          4,
+          false,
+          "stay",
+          "run-span",
+          2
+        ]
+      ]
+    }
+  ],
+  "matched_actual_roots": [
+    {
+      "epoch": 16,
+      "arms": [
+        "HybridMemory",
+        "ExactSpanHybrid"
+      ],
+      "actual_raw_identical": true,
+      "ordinary_after_R_L_I_identical": true
+    },
+    {
+      "epoch": 16,
+      "arms": [
+        "HybridMemory",
+        "StumpHybrid"
+      ],
+      "actual_raw_identical": true,
+      "ordinary_after_R_L_I_identical": true
+    }
+  ],
+  "actual_practice_events": [
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:4"
+      ],
+      "arm": "HybridMemory",
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:4": 1
+      },
+      "epoch": 3,
+      "means": {
+        "keep": -1.24,
+        "single:0": -1.24,
+        "single:4": 0.86
+      },
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.24,
+          -1.24
+        ],
+        "single:0": [
+          -1.24,
+          -1.24
+        ],
+        "single:4": [
+          0.86,
+          0.86
+        ]
+      },
+      "selected": "single:4"
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:3"
+      ],
+      "arm": "HybridMemory",
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:3": 1
+      },
+      "epoch": 18,
+      "means": {
+        "keep": 0.76,
+        "single:0": 0.76,
+        "single:3": 0.84
+      },
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          0.76,
+          0.76
+        ],
+        "single:0": [
+          0.76,
+          0.76
+        ],
+        "single:3": [
+          0.84,
+          0.84
+        ]
+      },
+      "selected": "single:3"
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:3"
+      ],
+      "arm": "HybridMemory",
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:3": 1
+      },
+      "epoch": 28,
+      "means": {
+        "keep": -1.24,
+        "single:0": -1.13,
+        "single:3": 0.84
+      },
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.24,
+          -1.24
+        ],
+        "single:0": [
+          -1.02,
+          -1.24
+        ],
+        "single:3": [
+          0.84,
+          0.84
+        ]
+      },
+      "selected": "single:3"
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:4"
+      ],
+      "arm": "ExactSpanHybrid",
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:4": 1
+      },
+      "epoch": 3,
+      "means": {
+        "keep": -1.24,
+        "single:0": -1.24,
+        "single:4": 0.86
+      },
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.24,
+          -1.24
+        ],
+        "single:0": [
+          -1.24,
+          -1.24
+        ],
+        "single:4": [
+          0.86,
+          0.86
+        ]
+      },
+      "selected": "single:4"
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:2"
+      ],
+      "arm": "ExactSpanHybrid",
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:2": 1
+      },
+      "epoch": 11,
+      "means": {
+        "keep": -1.24,
+        "single:0": -1.24,
+        "single:2": 0.86
+      },
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.24,
+          -1.24
+        ],
+        "single:0": [
+          -1.24,
+          -1.24
+        ],
+        "single:2": [
+          0.86,
+          0.86
+        ]
+      },
+      "selected": "single:2"
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:3"
+      ],
+      "arm": "ExactSpanHybrid",
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:3": 1
+      },
+      "epoch": 16,
+      "means": {
+        "keep": -0.24,
+        "single:0": -1.13,
+        "single:3": 0.84
+      },
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.24,
+          0.76
+        ],
+        "single:0": [
+          -1.02,
+          -1.24
+        ],
+        "single:3": [
+          0.84,
+          0.84
+        ]
+      },
+      "selected": "single:3"
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:3"
+      ],
+      "arm": "ExactSpanHybrid",
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:3": 1
+      },
+      "epoch": 28,
+      "means": {
+        "keep": -1.24,
+        "single:0": -1.13,
+        "single:3": 0.84
+      },
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.24,
+          -1.24
+        ],
+        "single:0": [
+          -1.02,
+          -1.24
+        ],
+        "single:3": [
+          0.84,
+          0.84
+        ]
+      },
+      "selected": "single:3"
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:4"
+      ],
+      "arm": "StumpHybrid",
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:4": 1
+      },
+      "epoch": 3,
+      "means": {
+        "keep": -1.24,
+        "single:0": -1.24,
+        "single:4": 0.86
+      },
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.24,
+          -1.24
+        ],
+        "single:0": [
+          -1.24,
+          -1.24
+        ],
+        "single:4": [
+          0.86,
+          0.86
+        ]
+      },
+      "selected": "single:4"
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:3"
+      ],
+      "arm": "StumpHybrid",
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:3": 1
+      },
+      "epoch": 17,
+      "means": {
+        "keep": 0.76,
+        "single:0": -0.13,
+        "single:3": 0.84
+      },
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          0.76,
+          0.76
+        ],
+        "single:0": [
+          -1.02,
+          0.76
+        ],
+        "single:3": [
+          0.84,
+          0.84
+        ]
+      },
+      "selected": "single:3"
+    }
+  ],
+  "findings": [
+    "DQ40task coarseHybrid30success/mean0.3445/trials18, ExactSpan32/mean0.44299999999999995/trials24, LearnedStump31/mean0.39099999999999996/trials12. Allthree have samehybridguards and ordinaryR+L learning; no oldcontrolfreeze.",
+    "Learnedstump uses6observed task-visible lengths/outcomes per practiceevent tofit aonecut model, not a manual dangerlength. FirstownA practicelearns a4.5cut betweenobserved1and8 withmeans-1.24/0.86. AtB e11 it extrapolates tolength10and makes correctsingle:2 recall.",
+    "AtD e16, threshold4.5predicts bothshortcandidate consequences-1.24; keepwins theoldfewer-edits tie rule. It doesnot knowcurrentcorrectanswer, andactuale17TIMEOUT occurs. Failedkeepclaim triggersrealpractice e17: keep[0.76,0.76],first[-1.02,0.76],later[0.84,0.84]. Choose lateractualbranch, not a fabricated label.",
+    "After ownD practice the fittedcut is5.0 withlowleaf-0.17666666666666667/right0.86. AtC e28, observedprefixlength2andstalllength9 nowreceive differentscores; single:3 chosen without additionalpractice. Predictions remain imperfectactualvalues, not calibratedconfidence orcorrectcauseproof.",
+    "RelativecoarseHybrid, learnedstump gets1more mainsuccess with6fewertrialrollouts and57fewer totalnativeKsteps (613vs670),9fewer storetransactions excludingcommoninstall (62vs71). Its mainsteps actuallyincrease7 because quality/outcomesdiffer, trialstepsdecrease64; do notjudgequality fromshortfailures.",
+    "Relativeexactspan, learnedstump halvestrialwork24to12 but has1fewer mainsuccess31vs32. Exactspan unknownlength refusals causepractice inB/D/C; no universalwinner or equal-quality50percent claim.",
+    "Allthree returnedAB4/4success andfinal4cleancontextsSUCCESS0.86/0.86/0.84/0.84. Ordinarylearning andrawcosts retained. Dkeeptrial already succeeds0.76, soallfuture successes are notattributed todiagnosis.",
+    "ThisroundtargetsDQonly because newMactuallyacts there. Patchnotexecuted orqualified; previouspatchzeroresultsremain historical. No architecturecomparison, punishmentablation or generalRFL claim.",
+    "Knownv130 challenge reused as adevelopmentbenchmark, modeldesignedafterthosefailures; runtimeMstill emptyinitiallyandtrainedfromfreshownsample only. Improvementis exploratory, not independentheldoutpopulation evidence."
+  ],
+  "limits": [
+    "The runlength feature anddepth-one modelclass are supplied; onlycut/leafvalues learnfromactualconsequences. This is not autonomousfeaturediscovery, newworldmodel, causalposterior or neuralweightselfimprovement.",
+    "Exactspanvsstump sharesnumericfeatures, differing support/extrapolation. Coarsehybridvsstump changesbothrepresentationandprediction, so itsgain cannotbe assigned solely tofittingthecut.",
+    "Stumpcanextrapolate incorrectly onotherlong/shortwait meanings; no Ucalibration, guarantee or independentnewcontexttest. Knownbenchmark results influenced modelchoice; no preregisteredglobalPASS.",
+    "Onlyownfailure-triggered practice outcomestrainM; no futuretasklabel, hiddenfault, absolutecoordinate/ordinal/kappa/phi as scoringfeature, mainfailurepenalty or successattribution. Allold/new samplesretained.",
+    "Cap4practiceevents/role, keep+first2eligible singles,2ordinarytasks/branch unchanged. Unprobedcandidates andbudgetlimitationspreserved; no retry/menuexpansion afterresults.",
+    "Krollout/step/storework is measured. Per-model CPU/RAM/hash/clone/IO forfittingnot productionprofiled;45.172s wholeinstrumentedrun cannot establishtotalcompute savings orcomparepreviousdifferentworkloads.",
+    "Internalstoredchecker usesonlystdlib and verifiesallactualfitparameters/scores chronologically; not independentexpert/sciencegate anddoesnotrecover runtimeidentity fromserializedbytes.",
+    "Original313/API/guard/law/registry andoldexecutedbytes/positivezero/adverseevidence/266provremain. No oldchecker/native rerun, newkeys/RNG/keyderive/DP/calibration/formalcollector or automationchange. OriginalfullV04R qualification notinherited."
+  ],
+  "patch_this_round": "NOT_MEASURED",
+  "prior_v124_local_stage_completion_preserved": true,
+  "prior_v126_v127_v128_v129_v130_results_preserved": true,
+  "original_full_V04R_qualified": false,
+  "preservation": {
+    "old69_ledger_values_preserved": true,
+    "old266_provenance_preserved": true,
+    "old_executed_bytes_edited": false,
+    "old_checker_native_reruns": 0,
+    "automation_inspected_or_modified": false
+  }
+}

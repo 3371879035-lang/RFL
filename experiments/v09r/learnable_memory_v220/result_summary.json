@@ -1,0 +1,106 @@
+{
+  "status": "COMPLETED_UNTRAINED_ARCHITECTURE_PROBE",
+  "parameter_count": 2870271,
+  "all_parameters_trainable": true,
+  "gradient_tensors_checked": 95,
+  "structural_checks": 14,
+  "native_first": {
+    "first_run_exit": 0,
+    "audit_exit": 0,
+    "timeout": false,
+    "wall_seconds": 17.932980600002338,
+    "input_count": 565,
+    "changed_inputs": [],
+    "utc": "2026-11-11T10:13:39.560312+00:00",
+    "automatic_retries": 0
+  },
+  "factual_nodes": 264,
+  "main_episodes": 192,
+  "actual_trials": 72,
+  "fixture_calls_separately_counted": 3,
+  "total_environment_calls": 267,
+  "reflections": 99,
+  "adoptions": 24,
+  "optimizer_steps": 0,
+  "families": {
+    "stable": {
+      "tasks": 48,
+      "task_success": 25,
+      "trials": 16,
+      "trial_success": 9,
+      "reflections": 23,
+      "adoptions": 4
+    },
+    "changed": {
+      "tasks": 48,
+      "task_success": 21,
+      "trials": 19,
+      "trial_success": 7,
+      "reflections": 27,
+      "adoptions": 7
+    },
+    "noisy": {
+      "tasks": 48,
+      "task_success": 24,
+      "trials": 16,
+      "trial_success": 8,
+      "reflections": 24,
+      "adoptions": 5
+    },
+    "missing": {
+      "tasks": 48,
+      "task_success": 23,
+      "trials": 21,
+      "trial_success": 12,
+      "reflections": 25,
+      "adoptions": 8
+    }
+  },
+  "main_successes": 93,
+  "adopted_successful_trial": 11,
+  "adopted_failed_trial": 13,
+  "main_probability_max_deviation_uniform": 0.00035736958185833556,
+  "main_normalized_entropy_mean": 0.9999998201919559,
+  "stored_audit_status": "STORED_RECORD_REVIEW_PASSED",
+  "full_jsonl_records": 1382,
+  "checkpoint_readback": [
+    {
+      "seed": 7,
+      "model_id": "6e15bdff6cce836e1218fde1fcaa2685da3c93ce2d292f4390d6139a617f6f63",
+      "checkpoint_sha256": "785d47d6f5d25396e54e9203a552eb77cd842562a3cdb2a139a5bc65975ea3b6",
+      "state_tensors": 95
+    },
+    {
+      "seed": 19,
+      "model_id": "d8521b3e2c7a2f4c3d498083de5238b7a0df5d88bdd28efe878a4a51b89d33c3",
+      "checkpoint_sha256": "584ae901623d00d125e15a208193907c78c565d7e97e43be08e6f563a7a0fc56",
+      "state_tensors": 95
+    },
+    {
+      "seed": 31,
+      "model_id": "ccfe95c94124161e2e9facfd4a5bd94519ba379baa1062f747ceeed9aa5ce888",
+      "checkpoint_sha256": "22fd0410e612636ca88b467a01a5df59a925c9bbf1990e3e1c07b7e7b191e392",
+      "state_tensors": 95
+    }
+  ],
+  "checkpoint_readback_model_forwards": 0,
+  "post_summary_environment_calls": 0,
+  "inputs_unchanged_after_delivery": 565,
+  "actual_head": "d0edad11137a117f45ab94f5f10cf6f045a61ac3",
+  "source_sha256": {
+    "src/feedback_program_v220/losses.py": "e205cc12558309299c78c87ca80a5b25d995e8dfd31d2733bdf12936f790a6d6",
+    "src/feedback_program_v220/memory.py": "26037fa5fb0dc19680a22c6c74915996d47fbaed5d758846ca1a65b8d2a698c8",
+    "src/feedback_program_v220/network.py": "156f81648ffe2b744dd619158bd74dd3805dad410a4b925dbcd833c47796201b",
+    "src/feedback_program_v220/runtime.py": "7d4bb2a64427449bf818de4e2adb53ceb94c5a62744e65ad9aaf83ead6ec441b",
+    "src/feedback_program_v220/__init__.py": "4fbcfc37fa5b044294ef78edc9c82f142197f6110a95ed6ea7edb8b0c2f66977"
+  },
+  "evidence_sha256": {
+    "experiments/v09r/learnable_memory_v220/capture/probe_summary.json": "519d5f78277148574b76a2222cd3ba24df39f8286480ba2d4ecbdb3cfca8c65d",
+    "experiments/v09r/learnable_memory_v220/capture/checks.json": "0c15f5c7fc2ef4dcb58419f8209536f710b1909c80c9efb1f4d7c335179728ad",
+    "experiments/v09r/learnable_memory_v220/capture/stored_audit.json": "49f3b4bdfae2d1ea8391f67af107bc1c0e569b06a16b6c64e30afff574976f29",
+    "experiments/v09r/learnable_memory_v220/capture/exit.json": "143d8431f3471b62669a3eda1b2a48c99adb7e2d977081039902b734fab3cdd0",
+    "experiments/v09r/learnable_memory_v220/capture/events.jsonl": "d10d1354a65d2128e7691504c093f585df84889cbbdee1ce6ac2078d0b82f04d",
+    "experiments/v09r/learnable_memory_v220/contract.json": "6ad0583bf7ad0f873708b5f87472fc16fbd0729fe8b005f48d58a7353f38196c"
+  },
+  "interpretation": "Trainable structure and real practice/provenance verified within bounded probes. Untrained, uncalibrated; no causal or general performance claim."
+}

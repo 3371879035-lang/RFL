@@ -1,0 +1,19 @@
+schema_version: "0.3.0"
+environment:
+  horizon: 8
+  gamma: 1.0
+  p_hazard: 0.25
+generation:
+  n_total: 12000
+  n_train: 6000
+  p_hazard: 0.25
+learning:
+  alpha_diag: 0.10
+# K_CF from the research plan. Only two distinct counterfactual hypotheses exist
+# in this design ("perfect low-level execution" and "the other option"), so
+# K=4 saturates at 2 -- reported rather than papered over.
+budgets: [1, 2, 4]
+experiment:
+  name: v03_gamma_formal
+  seeds: 8
+  seed_base: 4200000

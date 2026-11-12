@@ -1,0 +1,312 @@
+{
+  "schema": "V147_MECHANISM_CONDITIONED_EXPERIENCE_RESULT",
+  "date_asia_shanghai": "2026-11-07",
+  "parent_commit": "3070621940e6f4749dcc9da79dfba6d1b280b9b0",
+  "status": "VERSIONED_PATH_CONDITION_REJECTS_AFFECTED_EXPERIENCE_AND_PRESERVES_UNAFFECTED_EXPERIENCE",
+  "execution": {
+    "native_first_exit": 0,
+    "new_stored_auditor_first_exit": 0,
+    "native_counts": {
+      "rollout": 16,
+      "step": 68,
+      "transaction": 47
+    },
+    "records": 148,
+    "native_declared_inputs_before_after_equal": 333,
+    "main_tasks": 12,
+    "new_real_private_sources": 4,
+    "private_rollouts": 4,
+    "native_ordinary_updates": 16,
+    "external_ordinary_updates": 3,
+    "ordinary_numeric_TX": 19,
+    "ordinary_policy_TX": 19,
+    "checkpoint_restore_TX": 3,
+    "source_install_TX": 2,
+    "source_install_edits": 4,
+    "main_local_X_feedback_TX": 4,
+    "typed_guard_rejections": 1,
+    "typed_guard_acceptances": 1,
+    "legacy_acceptances": 2,
+    "duplicate_rejections_zero_native_delta": 4,
+    "success_diagnosis": 0,
+    "new_K_or_draws_on_transfer": 0,
+    "terminal_counts": {
+      "stream": {
+        "COLLISION": 2,
+        "TRAP": 4,
+        "SUCCESS": 6
+      },
+      "private": {
+        "SUCCESS": 2,
+        "TRAP": 2
+      }
+    },
+    "old_native_checker_bank_or_prefix_reruns": 0,
+    "new_keys_RNG_keyderive_DP_calibration_formal_collection": 0,
+    "automatic_retry": false,
+    "started_at_utc": "2026-11-06T19:21:21.282788+00:00",
+    "completed_at_utc": "2026-11-06T19:21:24.225413+00:00",
+    "instrumented_wall_seconds": 2.952999999979511
+  },
+  "transfers": [
+    {
+      "case": "affected",
+      "arm": "Legacy",
+      "applied": true,
+      "mechanism_changes": [
+        {
+          "channel": "X",
+          "address": {
+            "state": {
+              "x": 0,
+              "y": 2,
+              "t": 0,
+              "kappa": 0,
+              "phi": 3
+            },
+            "cmd": 3
+          },
+          "origin": 4,
+          "current": 3
+        }
+      ],
+      "source_terminal": "SUCCESS",
+      "RIGHT_before": 0.3949999999999999,
+      "RIGHT_after": 0.6275,
+      "numeric_changed": true,
+      "native_delta": {
+        "rollout": 0,
+        "step": 0,
+        "transaction": 2
+      },
+      "main_closed": false
+    },
+    {
+      "case": "affected",
+      "arm": "Conditioned",
+      "applied": false,
+      "mechanism_changes": [
+        {
+          "channel": "X",
+          "address": {
+            "state": {
+              "x": 0,
+              "y": 2,
+              "t": 0,
+              "kappa": 0,
+              "phi": 3
+            },
+            "cmd": 3
+          },
+          "origin": 4,
+          "current": 3
+        }
+      ],
+      "source_terminal": "SUCCESS",
+      "RIGHT_before": 0.3949999999999999,
+      "RIGHT_after": 0.3949999999999999,
+      "numeric_changed": false,
+      "native_delta": {
+        "rollout": 0,
+        "step": 0,
+        "transaction": 0
+      },
+      "main_closed": false
+    },
+    {
+      "case": "unaffected",
+      "arm": "Legacy",
+      "applied": true,
+      "mechanism_changes": [],
+      "source_terminal": "TRAP",
+      "RIGHT_before": -0.07000000000000006,
+      "RIGHT_after": -0.545,
+      "numeric_changed": true,
+      "native_delta": {
+        "rollout": 0,
+        "step": 0,
+        "transaction": 2
+      },
+      "main_closed": false
+    },
+    {
+      "case": "unaffected",
+      "arm": "Conditioned",
+      "applied": true,
+      "mechanism_changes": [],
+      "source_terminal": "TRAP",
+      "RIGHT_before": -0.07000000000000006,
+      "RIGHT_after": -0.545,
+      "numeric_changed": true,
+      "native_delta": {
+        "rollout": 0,
+        "step": 0,
+        "transaction": 2
+      },
+      "main_closed": false
+    }
+  ],
+  "main_summaries": [
+    {
+      "case": "affected",
+      "arm": "Legacy",
+      "successes": 1,
+      "returns": [
+        -1.06,
+        -1.02,
+        0.86
+      ],
+      "outcomes": [
+        "COLLISION",
+        "TRAP",
+        "SUCCESS"
+      ],
+      "mean_return": -0.40666666666666673,
+      "observation_applied": true,
+      "external_updates": 1,
+      "main_closed": false
+    },
+    {
+      "case": "affected",
+      "arm": "Conditioned",
+      "successes": 1,
+      "returns": [
+        -1.06,
+        -1.02,
+        0.86
+      ],
+      "outcomes": [
+        "COLLISION",
+        "TRAP",
+        "SUCCESS"
+      ],
+      "mean_return": -0.40666666666666673,
+      "observation_applied": false,
+      "external_updates": 0,
+      "main_closed": false
+    },
+    {
+      "case": "unaffected",
+      "arm": "Legacy",
+      "successes": 2,
+      "returns": [
+        -1.02,
+        0.86,
+        0.86
+      ],
+      "outcomes": [
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.2333333333333333,
+      "observation_applied": true,
+      "external_updates": 1,
+      "main_closed": false
+    },
+    {
+      "case": "unaffected",
+      "arm": "Conditioned",
+      "successes": 2,
+      "returns": [
+        -1.02,
+        0.86,
+        0.86
+      ],
+      "outcomes": [
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.2333333333333333,
+      "observation_applied": true,
+      "external_updates": 1,
+      "main_closed": false
+    }
+  ],
+  "main_comparisons": [
+    {
+      "case": "affected",
+      "all3_main_raw_identical": true,
+      "all3_post_R_L_I_identical": false
+    },
+    {
+      "case": "unaffected",
+      "all3_main_raw_identical": true,
+      "all3_post_R_L_I_identical": true
+    }
+  ],
+  "actual_per_role_work": [
+    {
+      "case": "affected",
+      "arm": "Legacy",
+      "rollout": 4,
+      "Kstep": 18,
+      "numeric_TX": 5,
+      "policy_TX": 5,
+      "main_X_TX": 1,
+      "TX_excluding_shared_sources": 11
+    },
+    {
+      "case": "affected",
+      "arm": "Conditioned",
+      "rollout": 4,
+      "Kstep": 18,
+      "numeric_TX": 4,
+      "policy_TX": 4,
+      "main_X_TX": 1,
+      "TX_excluding_shared_sources": 9
+    },
+    {
+      "case": "unaffected",
+      "arm": "Legacy",
+      "rollout": 4,
+      "Kstep": 16,
+      "numeric_TX": 5,
+      "policy_TX": 5,
+      "main_X_TX": 1,
+      "TX_excluding_shared_sources": 11
+    },
+    {
+      "case": "unaffected",
+      "arm": "Conditioned",
+      "rollout": 4,
+      "Kstep": 16,
+      "numeric_TX": 5,
+      "policy_TX": 5,
+      "main_X_TX": 1,
+      "TX_excluding_shared_sources": 11
+    }
+  ],
+  "new_API": {
+    "class": "ConditionedObservationLoop(NativeLoop)",
+    "method": "consume_trial_observation",
+    "result_type": "ObservationTransferResult(applied,reason,observation_id,mechanism_changes)",
+    "original_binding_checks_AST_unchanged": true,
+    "accepted_ordinary_update_body_AST_unchanged": true,
+    "rejection": "Typed normal rejection, consumedonce,0TD/0TX/0externalclock,main remainsopen; rawretained. Duplicate rejected by original once prefix.",
+    "condition": "Own effective process map at the observed base option, and own controller at actual chronological prestate/command path. Protected source I versus actual consumer current R, after authentic old nominal issuer/consumer/epoch/L checks.",
+    "old_API_modified": false
+  },
+  "findings": [
+    "Affected authentic SUCCESS observation commanded RIGHT but old ownX realized WAIT. Current main had already deleted this X. Legacy nevertheless raised Q_RIGHT .3949999999999999 -> .6275 from that old-actuator observation. New consumer records a touched-site difference and rejects it, preserving .3949999999999999 with no TD.",
+    "Unaffected authentic TRAP observation commanded RIGHT while the feedback changed only the WAIT site. New consumer admits it, matching Legacy Q_RIGHT -.07000000000000006 -> -.545. Therefore own-X changed does not blanket-discard all experience, and outcome SUCCESS/TRAP is not the eligibility criterion.",
+    "All three main raw traces per case match between Legacy and Conditioned; no reward improvement is established. Affected numeric states differ as intended; unaffected all posttask R+L/I match exactly.",
+    "Accepted and declined observations are each once-consumed; all4 duplicate attempts reject with0K/0TX/no state change. Rejected main continues through two additional actual tasks and finalSUCCESS; unsupported data is not scientificSTOP.",
+    "Targeted read-only checks of actual v144 six and v145 two stored ingestions find no ownP/X consulted-site conflict under this new predicate. This is not runtime identity restoration, old checker execution, full re-audit or broad qualification."
+  ],
+  "limits": [
+    "Finite two X paths, four genuine fresh observations; P difference branch was not actually mutated/tested. No complete source/exception/partial/forgery/totality qualification.",
+    "Only learner-controlled P/X compatibility is checked. External environment drift, transient shadowing faults, reward/tape changes and full dynamics equality remain outside this result; reason strings deliberately do not claim complete dynamics equality.",
+    "Main action/return sequences do not improve here. The numeric comparison is an engineering-state audit, not a new metric feature or scientific utility estimate. No Retention/Collateral/resource production certificate.",
+    "New result type is an explicit versioned API extension, not a promise old consume return type was unchanged. Old v144 runtime/guard/law/registry and every previous executed byte remain untouched.",
+    "Ordinary state comes from a real stored checkpoint materialized via legal transactions; no old source/pair/receipt/issued-observation identity is reconstructed. Manual finite plans, no new scientific keys/formalcollection."
+  ],
+  "preservation": {
+    "old_ledger_values": 85,
+    "old_provenance": 266,
+    "original313_current_match": true,
+    "not_full_repository_audit": true
+  },
+  "next_actual_gap": "Use the explicit conditioned receipt in subsequent end-to-end feedback work; do not reinstate unconditioned keep experience after a consulted mechanism changes. Learned relative-value transfer/generalization remains separate from this local engineering fix."
+}

@@ -1,0 +1,75 @@
+{
+  "started_utc": "2026-11-09T17:05:00.126220+00:00",
+  "attempt": 1,
+  "inputs": {
+    "experiments/v09r/weight_programmed_feedback_v204/run.py": "9fedb87fb61b893f4df61762bade1143d10984f0a513789b63b9592a4860d5f8",
+    "experiments/v09r/weight_programmed_feedback_v204/tasks.py": "a7c24842780bf98518835cf3d151d9224d49a5b1617b65f6150c0496ab29b83d",
+    "experiments/v09r/weight_programmed_feedback_v204/checks.py": "db9d03241fb9d4a08792a1249a3f288aa9c1664bf4e7b2817561218d0408395c",
+    "experiments/v09r/weight_programmed_feedback_v204/launch.py": "ff21bfc512fc92bb3befd80a1ae8ca339beefcf73ad91324f499a579824c64d9",
+    "experiments/v09r/weight_programmed_feedback_v204/contract.json": "9edd2786f9ee4f3f3bdb26bae19225acebe215feec9b4fd5cd2745e732079963",
+    "experiments/v09r/weight_programmed_feedback_v204/DERIVATION.md": "b2495410d1540eebc37ee8d4b33831393326035acb13c27500fc8519fbc6565e",
+    "src/feedback_program_v204/network.py": "41a1935e429dda3d31b542e2bb846ec02691ac0d296832959db34cead4a49449",
+    "src/feedback_program_v204/__init__.py": "34f73d217d47412a6b1322473b9b5f291d5d76646a4402976eb8ffac39b3416e",
+    "experiments/v09r/weight_programmed_feedback_v203/model.py": "65aeb011b21141b7a2246de662c2110506a8d30609cca6bd8e5bc159f6f3fde1",
+    "experiments/v09r/weight_programmed_feedback_v202/model.py": "507d8b743d32afc296405d18cdc779d4ff558006a0b3069aa1d9351da597c88c",
+    "experiments/v09r/weight_programmed_feedback_v203/evidence/initial_written.pt": "45b946ad8127d9af6fc86912bda8d4be40d26bd31879adb56ebf4c0ed087f58d"
+  },
+  "contract": {
+    "version": "v204_prequential_memory_and_continuous_scope",
+    "source_package": "src/feedback_program_v204",
+    "old_source": "experiments/v09r/weight_programmed_feedback_v203/model.py",
+    "old_base_source": "experiments/v09r/weight_programmed_feedback_v202/model.py",
+    "old_checkpoint": "experiments/v09r/weight_programmed_feedback_v203/evidence/initial_written.pt",
+    "seeds": [
+      204001,
+      204002,
+      204003,
+      204004,
+      204005,
+      204006,
+      204007,
+      204008,
+      204009,
+      204010,
+      204011,
+      204012,
+      204013,
+      204014,
+      204015,
+      204016
+    ],
+    "families": [
+      "stationary",
+      "abrupt_change",
+      "continuous_delayed",
+      "continuous_abrupt",
+      "continuous_joint"
+    ],
+    "variants": [
+      "v204_full",
+      "v204_fixed_age",
+      "v204_exact_gate",
+      "v204_no_gate",
+      "v203_original"
+    ],
+    "cycles": 16,
+    "budget": {
+      "discovery_per_cycle": 4,
+      "actual_pairs_per_cycle": 16,
+      "evaluation_after_per_cycle": 8,
+      "evaluation_before_per_cycle": 8,
+      "total_episodes": 332800,
+      "max_transitions": 1664000,
+      "per_seed_max_transitions": 104000,
+      "workers": 4,
+      "torch_threads_per_worker": 1,
+      "wall_seconds": 1200
+    },
+    "trial_noise": "independent_outcome_streams_same_initial_observation_and_tie_tape",
+    "evaluation_noise": "paired_report_only_never_absorbed",
+    "parameter_updates": 0,
+    "game_calls": 0,
+    "first_attempt_only": true,
+    "goal_status": "active_general_feedback_model_work_not_claimed_complete"
+  }
+}

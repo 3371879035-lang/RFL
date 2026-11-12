@@ -1,0 +1,54 @@
+{
+  "version": "V199 additional six-hour all-arm continuation",
+  "created_utc": "2026-11-09T04:25:50.416038+00:00",
+  "authority": "User: 那我们继续增加时间预算？再加6个小时？因为现在展示出来的数据有点神奇。这12个小时结束好像也不能得到比较准确的结论",
+  "parent": "experiments/v09r/overnight_five_arm_v198",
+  "extension_decision": "After interim outcomes, exploratory extension; original twelve-hour endpoint remains intact.",
+  "groups": [
+    "RL-plain",
+    "RL-outer",
+    "F0",
+    "F-RP",
+    "F-R"
+  ],
+  "seeds": [
+    93001,
+    93002,
+    93003,
+    93004
+  ],
+  "additional_wall_seconds": 21600,
+  "dependency_wait_max_seconds": 7200,
+  "workers": 8,
+  "ram_bytes": 25769803776,
+  "new_artifact_bytes": 34359738368,
+  "source_rule": "Use ALL twenty genuine last common V198 checkpoints after successful native and full final analysis. Never choose a best checkpoint or drop an arm.",
+  "state_rule": "Load whole original serialized state with no initial_state/configure_v198 call; retain parameters, target, optimizer, replay and RNG state, histories, episode counters and pending episode. Read-only resume checks precede new environment calls.",
+  "unchanged_learning": [
+    "V198 Agent.learn and actual train/eval readout",
+    "run_task and ordinary practice chronology",
+    "source and paired real intervention generation",
+    "historical action and candidate-order proposals",
+    "teacher trial and Sleep/reference/gate adoption",
+    "131072 charged steps and 1024 optimizer updates per block"
+  ],
+  "measurement_change": "Intermediate fixed128 reporting every8 additional common blocks. Original final512 results reused as baseline, same final512 bank repeated only for new endpoint; reports never select policies.",
+  "stop": "Time/resource only. Reserve900sec for final work. Last complete common block defines endpoint. No performance-based extension/retry.",
+  "report": [
+    "all five absolute scores",
+    "within-seed twelve-hour to extended endpoint changes",
+    "current ordinary RL contrasts",
+    "ordinary online loss windows",
+    "history/trial/Sleep/adoption counts",
+    "all actual environment and optimizer work"
+  ],
+  "limits": [
+    "More time does not add independent training seeds.",
+    "No claim of convergence from stable training loss alone.",
+    "Different objectives and initial pretrained levels across feedback methods.",
+    "Combined longer ordinary learning/history/outer loop; not a Sleep-only causal estimate."
+  ],
+  "validation": "New three glue-only unit tests. Real resume audit0 environment calls; appended native blocks are genuinely new. No old fixture or old native rerun.",
+  "automation_created": false,
+  "cloud_resources": false
+}

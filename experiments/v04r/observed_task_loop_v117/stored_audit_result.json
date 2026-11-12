@@ -1,0 +1,138 @@
+{
+  "all_declared_inputs_preserved": 324,
+  "complete": true,
+  "completed_at_utc": "2026-11-06T11:38:57.082712+00:00",
+  "completed_tasks": [
+    {
+      "case": "test_01_success_real_TD_no_diagnosis",
+      "counters": {
+        "diagnostic_calls": 0,
+        "diagnostic_edit_addresses": 0,
+        "diagnostic_transactions": 0,
+        "ordinary_updates": 1,
+        "query_calls": 0
+      },
+      "decision": "none",
+      "epoch": 0,
+      "terminal": "SUCCESS"
+    },
+    {
+      "case": "test_02_patch_success_no_diagnosis",
+      "counters": {
+        "diagnostic_calls": 0,
+        "diagnostic_edit_addresses": 0,
+        "diagnostic_transactions": 0,
+        "ordinary_updates": 1,
+        "query_calls": 0
+      },
+      "decision": "none",
+      "epoch": 0,
+      "terminal": "SUCCESS"
+    },
+    {
+      "case": "test_03_collision_apply_then_real_success",
+      "counters": {
+        "diagnostic_calls": 1,
+        "diagnostic_edit_addresses": 1,
+        "diagnostic_transactions": 1,
+        "ordinary_updates": 1,
+        "query_calls": 0
+      },
+      "decision": "apply",
+      "epoch": 0,
+      "terminal": "COLLISION"
+    },
+    {
+      "case": "test_03_collision_apply_then_real_success",
+      "counters": {
+        "diagnostic_calls": 0,
+        "diagnostic_edit_addresses": 0,
+        "diagnostic_transactions": 0,
+        "ordinary_updates": 1,
+        "query_calls": 0
+      },
+      "decision": "none",
+      "epoch": 1,
+      "terminal": "SUCCESS"
+    },
+    {
+      "case": "test_04_patch_collision_keep",
+      "counters": {
+        "diagnostic_calls": 1,
+        "diagnostic_edit_addresses": 0,
+        "diagnostic_transactions": 0,
+        "ordinary_updates": 1,
+        "query_calls": 0
+      },
+      "decision": "keep",
+      "epoch": 0,
+      "terminal": "COLLISION"
+    },
+    {
+      "case": "test_05_actual_timeout_keep",
+      "counters": {
+        "diagnostic_calls": 1,
+        "diagnostic_edit_addresses": 0,
+        "diagnostic_transactions": 0,
+        "ordinary_updates": 1,
+        "query_calls": 0
+      },
+      "decision": "keep",
+      "epoch": 0,
+      "terminal": "TIMEOUT"
+    },
+    {
+      "case": "test_06_actual_environment_trap_keep",
+      "counters": {
+        "diagnostic_calls": 1,
+        "diagnostic_edit_addresses": 0,
+        "diagnostic_transactions": 0,
+        "ordinary_updates": 1,
+        "query_calls": 0
+      },
+      "decision": "keep",
+      "epoch": 0,
+      "terminal": "TRAP"
+    }
+  ],
+  "errors": 0,
+  "failures": 0,
+  "native_counts": {
+    "rollout": 10,
+    "step": 41,
+    "transaction": 22
+  },
+  "old_checker_RFL_or_native_executed": false,
+  "ordinary_numeric_policy_state_checks": 10,
+  "planned_partial_tasks": [
+    {
+      "case": "test_07_write_budget_prevents_real_transaction",
+      "error": "ProtocolError",
+      "no_complete_receipt": true,
+      "ordinary_committed": true
+    },
+    {
+      "case": "test_08_unvisited_write_rejected",
+      "error": "ProtocolError",
+      "no_complete_receipt": true,
+      "ordinary_committed": true
+    },
+    {
+      "case": "test_09_diagnostic_failure_retains_ordinary_and_closes",
+      "error": "RuntimeError",
+      "no_complete_receipt": true,
+      "ordinary_committed": true
+    }
+  ],
+  "queries_available": false,
+  "real_diagnostic_edit_addresses": 1,
+  "real_diagnostic_transactions": 1,
+  "records": 86,
+  "runtime_identity_reconstructed": false,
+  "schema": "V117_STDLIB_REAL_TASK_STORED_CHECK",
+  "scientific_qualification": false,
+  "scope": "Structured budgeted post-TD edit, not an original B1 pair or learned diagnosis result.",
+  "started_at_utc": "2026-11-06T11:38:56.909466+00:00",
+  "successful_task_actual_learning_changed": 2,
+  "tests": 10
+}

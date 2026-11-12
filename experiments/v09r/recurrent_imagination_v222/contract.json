@@ -1,0 +1,31 @@
+{
+  "version": "V222_RECURRENT_IMAGINATION_INTERFACE_PROBE",
+  "scope": "Untrained architecture and gradient-path validation; not performance comparison or confirmation research",
+  "model_seeds": [61, 73],
+  "families": ["stationary", "masked_shift"],
+  "episodes_per_run": 4,
+  "main_steps_per_episode": 3,
+  "trials_per_terminal_failure_maximum": 2,
+  "thought_depth": 3,
+  "hypotheses": 8,
+  "candidate_arms_including_baseline": 4,
+  "actual_main_steps": 48,
+  "actual_trial_steps_maximum": 32,
+  "actual_environment_calls_maximum": 80,
+  "additional_actual_fixture_calls": 0,
+  "internal_checks_maximum_depth": 3,
+  "synthetic_gradient_objectives_not_training": true,
+  "optimizer_steps": 0,
+  "torch_threads": 1,
+  "wall_budget_seconds": 600,
+  "automatic_retry": false,
+  "old_bank_fixture_checker_native_reruns": 0,
+  "scientific_collection": false,
+  "frozen_rules": [
+    "Save first failure and partial output; do not edit executed sources or retry automatically",
+    "Imagination never enters factual bank, actual receipt counts or adoption eligibility",
+    "Shared latent hypothesis per path; same imagined action across all live hypotheses of an arm",
+    "Use actual outcome only for world NLL; policy gradients do not modify physical predictor",
+    "No model training, no superiority claim, no game-specific adapter"
+  ]
+}

@@ -1,0 +1,45 @@
+{
+ "n_worlds": 1038960,
+ "checks": {
+  "pi_credit_total": true,
+  "agent_writeable_complete": true,
+  "strategy_never_credit_truth": true,
+  "gamma_star_never_empty": true,
+  "external_plant_rule_holds": true,
+  "unknown_nowrite_rule_holds": true,
+  "one_primitive_per_cause_per_world": true
+ },
+ "detail": {
+  "gamma_star_distribution": {
+   "ProcessCommit": 171360,
+   "Decision_t": 127440,
+   "ControllerSite|ProcessCommit": 122880,
+   "ExternalPlant|ProcessCommit": 121920,
+   "Decision_t|ProcessCommit": 102480,
+   "ControllerSite": 70920,
+   "Decision_t|ExternalPlant": 60480,
+   "ExternalPlant": 49680,
+   "ControllerSite|Decision_t": 45360,
+   "Decision_t|ExternalPlant|ProcessCommit": 44880,
+   "ControllerSite|Decision_t|ProcessCommit": 29520,
+   "ControllerSite|ExternalPlant|ProcessCommit": 22800,
+   "Decision_t|ProcessCommit|Unknown/NoWrite": 19200,
+   "ControllerSite|ExternalPlant": 17640,
+   "Unknown/NoWrite": 17280,
+   "ExternalPlant|ProcessCommit|Unknown/NoWrite": 7680,
+   "ControllerSite|ProcessCommit|Unknown/NoWrite": 3840,
+   "ProcessCommit|Unknown/NoWrite": 1440,
+   "Decision_t|ExternalPlant|ProcessCommit|Unknown/NoWrite": 1200,
+   "ControllerSite|Decision_t|ProcessCommit|Unknown/NoWrite": 720,
+   "ControllerSite|ExternalPlant|ProcessCommit|Unknown/NoWrite": 240
+  },
+  "n_distinct_gamma_star": 21,
+  "pres_vs_fire_disagreements": 1541400,
+  "pres_vs_fire_agreement_note": "Counts (world, cause) pairs where presence differs from fire. The A66 census built Gamma* from PRESENCE for P/D/X/E; A67's frozen rules are on FIRE. This is the size of that discrepancy.",
+  "strategy_leak": 0,
+  "per_cause_multiplicity_violations": 0
+ },
+ "status": "PASS",
+ "basis": "FIRE (A67/A65). The A66 census used PRESENCE for P/D/X/E; the disagreement is measured above.",
+ "no_rollouts": true
+}

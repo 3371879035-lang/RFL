@@ -1,0 +1,38 @@
+concurrent.futures.process._RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "C:\Users\huani\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\concurrent\futures\process.py", line 264, in _process_worker
+    r = call_item.fn(*call_item.args, **call_item.kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\huani\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\concurrent\futures\process.py", line 213, in _process_chunk
+    return [fn(*args) for args in chunk]
+            ^^^^^^^^^
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v09r\adaptive_feedback_v211\audit_and_analyze.py", line 292, in audit_shard
+    assert chosen == record['chosen']
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v09r\adaptive_feedback_v211\audit_and_analyze.py", line 443, in <module>
+    main()
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v09r\adaptive_feedback_v211\audit_and_analyze.py", line 397, in main
+    shards = list(pool.map(audit_shard, jobs))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\huani\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\concurrent\futures\process.py", line 636, in _chain_from_iterable_of_lists
+    for element in iterable:
+                   ^^^^^^^^
+  File "C:\Users\huani\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\concurrent\futures\_base.py", line 619, in result_iterator
+    yield _result_or_cancel(fs.pop())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\huani\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\concurrent\futures\_base.py", line 317, in _result_or_cancel
+    return fut.result(timeout)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\huani\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\concurrent\futures\_base.py", line 449, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\huani\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\concurrent\futures\_base.py", line 401, in __get_result
+    raise self._exception
+AssertionError

@@ -1,0 +1,363 @@
+{
+  "schema": "V170_PROSPECTIVE_FIXED_INTERFACE_BASELINE",
+  "parent_commit": "cad6752eacf75bef64e39a1aa9431e49ae4e9202",
+  "authority": "User: 你可以先补一下这个基础对照; preserve the tiny original 255/254 difference, defer stochastic outcomes and emergent taste",
+  "arms": [
+    "F",
+    "Q-RP",
+    "Q-R",
+    "Q-RP-Replay12"
+  ],
+  "cases": [
+    {
+      "id": "d1_m0",
+      "index": 0,
+      "decision_points": 1,
+      "mirror": 0,
+      "passable_exits": [
+        0
+      ],
+      "controller_mappings": [
+        [
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          4,
+          0,
+          1
+        ],
+        [
+          5,
+          1,
+          0
+        ]
+      ],
+      "protected_addresses": [
+        [
+          4,
+          0
+        ],
+        [
+          5,
+          1
+        ]
+      ]
+    },
+    {
+      "id": "d1_m1",
+      "index": 1,
+      "decision_points": 1,
+      "mirror": 1,
+      "passable_exits": [
+        1
+      ],
+      "controller_mappings": [
+        [
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          4,
+          0,
+          1
+        ],
+        [
+          5,
+          1,
+          0
+        ]
+      ],
+      "protected_addresses": [
+        [
+          4,
+          0
+        ],
+        [
+          5,
+          1
+        ]
+      ]
+    },
+    {
+      "id": "d3_m0",
+      "index": 2,
+      "decision_points": 3,
+      "mirror": 0,
+      "passable_exits": [
+        0,
+        1,
+        0
+      ],
+      "controller_mappings": [
+        [
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          6,
+          0,
+          1
+        ],
+        [
+          7,
+          1,
+          0
+        ]
+      ],
+      "protected_addresses": [
+        [
+          6,
+          0
+        ],
+        [
+          7,
+          1
+        ]
+      ]
+    },
+    {
+      "id": "d3_m1",
+      "index": 3,
+      "decision_points": 3,
+      "mirror": 1,
+      "passable_exits": [
+        1,
+        0,
+        1
+      ],
+      "controller_mappings": [
+        [
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          6,
+          0,
+          1
+        ],
+        [
+          7,
+          1,
+          0
+        ]
+      ],
+      "protected_addresses": [
+        [
+          6,
+          0
+        ],
+        [
+          7,
+          1
+        ]
+      ]
+    },
+    {
+      "id": "d5_m0",
+      "index": 4,
+      "decision_points": 5,
+      "mirror": 0,
+      "passable_exits": [
+        0,
+        1,
+        0,
+        1,
+        0
+      ],
+      "controller_mappings": [
+        [
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          8,
+          0,
+          1
+        ],
+        [
+          9,
+          1,
+          0
+        ]
+      ],
+      "protected_addresses": [
+        [
+          8,
+          0
+        ],
+        [
+          9,
+          1
+        ]
+      ]
+    },
+    {
+      "id": "d5_m1",
+      "index": 5,
+      "decision_points": 5,
+      "mirror": 1,
+      "passable_exits": [
+        1,
+        0,
+        1,
+        0,
+        1
+      ],
+      "controller_mappings": [
+        [
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          8,
+          0,
+          1
+        ],
+        [
+          9,
+          1,
+          0
+        ]
+      ],
+      "protected_addresses": [
+        [
+          8,
+          0
+        ],
+        [
+          9,
+          1
+        ]
+      ]
+    }
+  ],
+  "wiring_case": {
+    "id": "wiring_d1_m0",
+    "index": 0,
+    "decision_points": 1,
+    "mirror": 0,
+    "passable_exits": [
+      0
+    ],
+    "controller_mappings": [
+      [
+        0,
+        0,
+        1
+      ],
+      [
+        0,
+        1,
+        0
+      ],
+      [
+        4,
+        0,
+        1
+      ],
+      [
+        5,
+        1,
+        0
+      ]
+    ],
+    "protected_addresses": [
+      [
+        4,
+        0
+      ],
+      [
+        5,
+        1
+      ]
+    ]
+  },
+  "main_tasks": 48,
+  "ordinary_extra_trials": 0,
+  "controller_edits": 0,
+  "F": "Unchanged V169 FactLearner; actual physical-transition and command execution facts, known goal/layered topology; no scalar reward/Q/value tree.",
+  "Q": "New DirectQ(room,command), zero init, chronological alpha .5 gamma 1. No FactLearner inheritance, no command model or diagnosis. R/RP differ only on failure reward.",
+  "replay": "Own latest 64 real transitions; at most 12 newest-first extra Q backups after each actual episode, ordinary chronological backups first. No fake samples/native or RNG. Replay counts as computation, not new observations.",
+  "coordinate_rule": "At room r in main episode e, explore iff (e+3*r+case_index)%10==7; exploratory command=(e//10+r+case_index)%2. No additional trials; common predeclared finite engineering coordinates, not iid seeds or full Xi qualification.",
+  "fixed_interface": "Independent engines, identical fixed controller initial maps/hidden doors within case. No edits/diagnosis/old Source handles. Fresh owned episodes, not stored trace replay.",
+  "metrics": [
+    "successes/failures at12/24/48",
+    "cold24/continued24",
+    "first12consecutive main successes + full cost/right censor",
+    "later failures",
+    "pairwise common actual step budgets at25/50/75/100 percent",
+    "ordinary/replay backups and fact writes separately",
+    "instrumented planning/update time and serialized learner size"
+  ],
+  "target_rule": "First end of 12 consecutive main successes. NOT_REACHED=null/right censored; no later-failure deletion.",
+  "limits": {
+    "wiring": {
+      "rollouts": 8,
+      "steps": 96,
+      "replay_backups": 24
+    },
+    "matrix": {
+      "rollouts": 1152,
+      "steps": 13824,
+      "replay_backups": 3456
+    },
+    "combined": {
+      "rollouts": 1160,
+      "steps": 13920,
+      "replay_backups": 3480
+    }
+  },
+  "wall_seconds_cap": 300,
+  "capture_bytes_cap": 67108864,
+  "inputs": [
+    "experiments/v05r/rl_baseline_v170/README.md",
+    "experiments/v05r/rl_baseline_v170/experiment.py",
+    "experiments/v05r/rl_baseline_v170/audit_stored.py",
+    "experiments/v05r/rl_baseline_v170/analyze_stored.py",
+    "experiments/v05r/rl_baseline_v170/contract.json",
+    "experiments/v05r/feedback_matrix_v169/experiment.py",
+    "experiments/v05r/feedback_matrix_v169/contract.json"
+  ],
+  "old_fixture_checker_native_runs": 0,
+  "new_science_keys_RNG_collector": false,
+  "automations_changed": false,
+  "paid_resources": false,
+  "scope": "Six already known, deliberately reused fixed engineering cases. Whole-method comparison F vs Q, not reward-only ablation, stochastic evidence, broad RL superiority or independent seed statistics. No tuning/retry after results."
+}

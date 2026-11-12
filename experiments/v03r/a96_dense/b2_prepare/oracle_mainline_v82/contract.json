@@ -1,0 +1,1305 @@
+{
+  "schema": "V03R_ORIGINAL_P_MULTI_OWNER_L2_OWNED_BANK_CONTRACT_V82",
+  "parent_commit": "c58db0d0c6b544a07c3903213b11dd32025d0194",
+  "human_instruction": "那就按照V0.3的主线继续推进",
+  "role": "FINITE_NEW_ORIGINAL_P_MULTI_OWNER_L2_CHAIN_NOT_SCIENCE",
+  "implementation_reused_immutable": [
+    {
+      "path": "../oracle_mainline_v74.py",
+      "sha256": "1635523ef1591a51424a7b74d53c328b61e6c77bcdef3d6dbc514f5c6c9e525a",
+      "bytes": 33143
+    },
+    {
+      "path": "../oracle_mainline_v75.py",
+      "sha256": "7944c6136f1637da13d8686f10578288e99fab3edcc7647e316865aea5b42812",
+      "bytes": 12757
+    },
+    {
+      "path": "../oracle_mainline_v77.py",
+      "sha256": "435bd13e9ab54f47e53ed6aeb214f2dc9c574f26c257ef439686200ea826fbfc",
+      "bytes": 9241
+    }
+  ],
+  "original_requirements": [
+    "A75 original regime P full baseline manifestations with all residuals preserved; no T structural filter substitution",
+    "A76 63.3 all-owner shared full optimal-minus-factual and A77 65.7 same full pre/reference/P/X configuration full t0 CF replay",
+    "A76/A78 each original law whole group one samepre transaction/all owner receipts/same-tier L2 NoWrite; v75 full starts -> v77 original ordinary locked bank100"
+  ],
+  "necessary_gap_evidence": [
+    {
+      "version": 74,
+      "sources": [
+        {
+          "label": "D_Q",
+          "regime": "P",
+          "scene": [
+            1,
+            1,
+            0,
+            0,
+            2
+          ],
+          "cf": true
+        },
+        {
+          "label": "D_patch",
+          "regime": "P",
+          "scene": [
+            1,
+            1,
+            0,
+            0,
+            2
+          ],
+          "cf": false
+        },
+        {
+          "label": "T_HEALTHY",
+          "regime": "T",
+          "scene": [
+            1,
+            1,
+            0,
+            0,
+            2
+          ],
+          "cf": false
+        }
+      ],
+      "pairs": [
+        {
+          "architecture": "D_Q",
+          "tier": "L2_COUNTERFACTUAL",
+          "original_laws": [
+            "NoWrite",
+            "CounterfactualReturnWrite"
+          ],
+          "cell_units": [
+            "Decision_2",
+            "Decision_5",
+            "Decision_7"
+          ],
+          "residual_units_preserved": [],
+          "native_B1_arm_calls": 2
+        },
+        {
+          "architecture": "D_Q",
+          "tier": "L2_COUNTERFACTUAL",
+          "original_laws": [
+            "NoWrite",
+            "DualReturnWrite"
+          ],
+          "cell_units": [
+            "Decision_2",
+            "Decision_5",
+            "Decision_7"
+          ],
+          "residual_units_preserved": [],
+          "native_B1_arm_calls": 2
+        },
+        {
+          "architecture": "D_patch",
+          "tier": "L1_CORRECTIVE",
+          "original_laws": [
+            "NoWrite",
+            "SetAlternative"
+          ],
+          "cell_units": [
+            "Decision_2",
+            "Decision_5",
+            "Decision_7"
+          ],
+          "residual_units_preserved": [],
+          "native_B1_arm_calls": 2
+        },
+        {
+          "architecture": "D_patch",
+          "tier": "L3_ORACLE",
+          "original_laws": [
+            "NoWrite",
+            "LocalOracleRestore"
+          ],
+          "cell_units": [
+            "Decision_2",
+            "Decision_5",
+            "Decision_7"
+          ],
+          "residual_units_preserved": [],
+          "native_B1_arm_calls": 2
+        }
+      ]
+    },
+    {
+      "version": 75,
+      "sources": [
+        {
+          "label": "P_MIXED_D_Q",
+          "regime": "P",
+          "scene": [
+            1,
+            4,
+            0,
+            7,
+            0
+          ],
+          "cf": false
+        },
+        {
+          "label": "P_MIXED_D_patch",
+          "regime": "P",
+          "scene": [
+            1,
+            4,
+            0,
+            7,
+            0
+          ],
+          "cf": false
+        },
+        {
+          "label": "T_MIXED",
+          "regime": "T",
+          "scene": [
+            1,
+            4,
+            0,
+            7,
+            0
+          ],
+          "cf": false
+        }
+      ],
+      "pairs": [
+        {
+          "architecture": "D_Q",
+          "tier": "L0_FACTUAL",
+          "original_laws": [
+            "NoWrite",
+            "FactualReturnWrite"
+          ],
+          "cell_units": [
+            "Decision_0",
+            "Decision_1",
+            "Decision_2",
+            "Decision_3",
+            "Decision_4",
+            "Decision_5",
+            "Decision_6",
+            "Decision_8"
+          ],
+          "residual_units_preserved": [
+            "ProcessCommit",
+            "ControllerSite_0_2_0_4",
+            "ControllerSite_1_2_1_4"
+          ],
+          "native_B1_arm_calls": 2
+        },
+        {
+          "architecture": "X",
+          "tier": "L0_FACTUAL",
+          "original_laws": [
+            "NoWrite",
+            "X_id"
+          ],
+          "cell_units": [
+            "ControllerSite_0_2_0_4",
+            "ControllerSite_1_2_1_4"
+          ],
+          "residual_units_preserved": [
+            "ProcessCommit",
+            "Decision_0",
+            "Decision_1",
+            "Decision_2",
+            "Decision_3",
+            "Decision_4",
+            "Decision_5",
+            "Decision_6",
+            "Decision_8"
+          ],
+          "native_B1_arm_calls": 2
+        },
+        {
+          "architecture": "P",
+          "tier": "L1_CORRECTIVE",
+          "original_laws": [
+            "NoWrite",
+            "P_id"
+          ],
+          "cell_units": [
+            "ProcessCommit"
+          ],
+          "residual_units_preserved": [
+            "Decision_0",
+            "Decision_1",
+            "Decision_2",
+            "Decision_3",
+            "Decision_4",
+            "Decision_5",
+            "Decision_6",
+            "Decision_8",
+            "ControllerSite_0_2_0_4",
+            "ControllerSite_1_2_1_4"
+          ],
+          "native_B1_arm_calls": 2
+        },
+        {
+          "architecture": "D_patch",
+          "tier": "L0_FACTUAL",
+          "original_laws": [
+            "NoWrite",
+            "DeleteFactualPatch"
+          ],
+          "cell_units": [
+            "Decision_0",
+            "Decision_1",
+            "Decision_2",
+            "Decision_3",
+            "Decision_4",
+            "Decision_5",
+            "Decision_6",
+            "Decision_8"
+          ],
+          "residual_units_preserved": [
+            "ProcessCommit",
+            "ControllerSite_0_2_0_4",
+            "ControllerSite_1_2_1_4"
+          ],
+          "native_B1_arm_calls": 2
+        },
+        {
+          "architecture": "X",
+          "tier": "L3_ORACLE",
+          "original_laws": [
+            "NoWrite",
+            "LocalOracleRestore"
+          ],
+          "cell_units": [
+            "ControllerSite_0_2_0_4",
+            "ControllerSite_1_2_1_4"
+          ],
+          "residual_units_preserved": [
+            "ProcessCommit",
+            "Decision_0",
+            "Decision_1",
+            "Decision_2",
+            "Decision_3",
+            "Decision_4",
+            "Decision_5",
+            "Decision_6",
+            "Decision_8"
+          ],
+          "native_B1_arm_calls": 2
+        },
+        {
+          "architecture": "P",
+          "tier": "L3_ORACLE",
+          "original_laws": [
+            "NoWrite",
+            "LocalOracleRestore"
+          ],
+          "cell_units": [
+            "ProcessCommit"
+          ],
+          "residual_units_preserved": [
+            "Decision_0",
+            "Decision_1",
+            "Decision_2",
+            "Decision_3",
+            "Decision_4",
+            "Decision_5",
+            "Decision_6",
+            "Decision_8",
+            "ControllerSite_0_2_0_4",
+            "ControllerSite_1_2_1_4"
+          ],
+          "native_B1_arm_calls": 2
+        },
+        {
+          "architecture": "D_Q",
+          "tier": "L0_FACTUAL",
+          "original_laws": [
+            "NoWrite",
+            "FactualReturnWrite"
+          ],
+          "cell_units": [
+            "Decision_0"
+          ],
+          "residual_units_preserved": [
+            "ProcessCommit",
+            "ExternalPlant",
+            "Unknown/NoWrite",
+            "ControllerSite_0_2_0_4"
+          ],
+          "native_B1_arm_calls": 2
+        },
+        {
+          "architecture": "D_patch",
+          "tier": "L0_FACTUAL",
+          "original_laws": [
+            "NoWrite",
+            "DeleteFactualPatch"
+          ],
+          "cell_units": [
+            "Decision_0"
+          ],
+          "residual_units_preserved": [
+            "ProcessCommit",
+            "ExternalPlant",
+            "Unknown/NoWrite",
+            "ControllerSite_0_2_0_4"
+          ],
+          "native_B1_arm_calls": 2
+        },
+        {
+          "architecture": "X",
+          "tier": "L0_FACTUAL",
+          "original_laws": [
+            "NoWrite",
+            "X_id"
+          ],
+          "cell_units": [
+            "ControllerSite_0_2_0_4"
+          ],
+          "residual_units_preserved": [
+            "ProcessCommit",
+            "ExternalPlant",
+            "Unknown/NoWrite",
+            "Decision_0"
+          ],
+          "native_B1_arm_calls": 2
+        },
+        {
+          "architecture": "P",
+          "tier": "L1_CORRECTIVE",
+          "original_laws": [
+            "NoWrite",
+            "P_id"
+          ],
+          "cell_units": [
+            "ProcessCommit"
+          ],
+          "residual_units_preserved": [
+            "ExternalPlant",
+            "Unknown/NoWrite",
+            "Decision_0",
+            "ControllerSite_0_2_0_4"
+          ],
+          "native_B1_arm_calls": 2
+        }
+      ]
+    },
+    {
+      "version": 77,
+      "sources": [
+        {
+          "label": "P_Q_MIXED",
+          "regime": "P",
+          "scene": [
+            1,
+            3,
+            0,
+            9,
+            0
+          ],
+          "cf": false
+        },
+        {
+          "label": "P_PATCH_MIXED",
+          "regime": "P",
+          "scene": [
+            1,
+            3,
+            0,
+            9,
+            0
+          ],
+          "cf": false
+        },
+        {
+          "label": "T_UNKNOWN_ONLY",
+          "regime": "T",
+          "scene": [
+            0,
+            3,
+            0,
+            11,
+            0
+          ],
+          "cf": false
+        },
+        {
+          "label": "T_SUCCESS",
+          "regime": "T",
+          "scene": [
+            0,
+            3,
+            0,
+            11,
+            0
+          ],
+          "cf": false
+        },
+        {
+          "label": "P_NO_MANIFEST_FAILURE",
+          "regime": "P",
+          "scene": [
+            0,
+            2,
+            0,
+            13,
+            0
+          ],
+          "cf": false
+        }
+      ],
+      "pairs": [
+        {
+          "architecture": "D_Q",
+          "tier": "L0_FACTUAL",
+          "original_laws": [
+            "NoWrite",
+            "FactualReturnWrite"
+          ],
+          "cell_units": [
+            "Decision_2",
+            "Decision_3",
+            "Decision_5",
+            "Decision_6",
+            "Decision_8"
+          ],
+          "residual_units_preserved": [
+            "ProcessCommit",
+            "ControllerSite_0_2_0_4",
+            "ControllerSite_1_2_1_4"
+          ],
+          "native_B1_arm_calls": 2
+        },
+        {
+          "architecture": "X",
+          "tier": "L0_FACTUAL",
+          "original_laws": [
+            "NoWrite",
+            "X_id"
+          ],
+          "cell_units": [
+            "ControllerSite_0_2_0_4",
+            "ControllerSite_1_2_1_4"
+          ],
+          "residual_units_preserved": [
+            "ProcessCommit",
+            "Decision_2",
+            "Decision_3",
+            "Decision_5",
+            "Decision_6",
+            "Decision_8"
+          ],
+          "native_B1_arm_calls": 2
+        },
+        {
+          "architecture": "P",
+          "tier": "L1_CORRECTIVE",
+          "original_laws": [
+            "NoWrite",
+            "P_id"
+          ],
+          "cell_units": [
+            "ProcessCommit"
+          ],
+          "residual_units_preserved": [
+            "Decision_2",
+            "Decision_3",
+            "Decision_5",
+            "Decision_6",
+            "Decision_8",
+            "ControllerSite_0_2_0_4",
+            "ControllerSite_1_2_1_4"
+          ],
+          "native_B1_arm_calls": 2
+        },
+        {
+          "architecture": "D_patch",
+          "tier": "L0_FACTUAL",
+          "original_laws": [
+            "NoWrite",
+            "DeleteFactualPatch"
+          ],
+          "cell_units": [
+            "Decision_2",
+            "Decision_3",
+            "Decision_5",
+            "Decision_6",
+            "Decision_8"
+          ],
+          "residual_units_preserved": [
+            "ProcessCommit",
+            "ControllerSite_0_2_0_4",
+            "ControllerSite_1_2_1_4"
+          ],
+          "native_B1_arm_calls": 2
+        },
+        {
+          "architecture": "X",
+          "tier": "L3_ORACLE",
+          "original_laws": [
+            "NoWrite",
+            "LocalOracleRestore"
+          ],
+          "cell_units": [
+            "ControllerSite_0_2_0_4",
+            "ControllerSite_1_2_1_4"
+          ],
+          "residual_units_preserved": [
+            "ProcessCommit",
+            "Decision_2",
+            "Decision_3",
+            "Decision_5",
+            "Decision_6",
+            "Decision_8"
+          ],
+          "native_B1_arm_calls": 2
+        },
+        {
+          "architecture": "P",
+          "tier": "L3_ORACLE",
+          "original_laws": [
+            "NoWrite",
+            "LocalOracleRestore"
+          ],
+          "cell_units": [
+            "ProcessCommit"
+          ],
+          "residual_units_preserved": [
+            "Decision_2",
+            "Decision_3",
+            "Decision_5",
+            "Decision_6",
+            "Decision_8",
+            "ControllerSite_0_2_0_4",
+            "ControllerSite_1_2_1_4"
+          ],
+          "native_B1_arm_calls": 2
+        },
+        {
+          "architecture": "D_Q",
+          "tier": "L0_FACTUAL",
+          "original_laws": [
+            "NoWrite",
+            "FactualReturnWrite"
+          ],
+          "cell_units": [],
+          "residual_units_preserved": [
+            "Unknown/NoWrite"
+          ],
+          "native_B1_arm_calls": 0
+        },
+        {
+          "architecture": "D_Q",
+          "tier": "L0_FACTUAL",
+          "original_laws": [
+            "NoWrite",
+            "FactualReturnWrite"
+          ],
+          "cell_units": null,
+          "residual_units_preserved": null,
+          "native_B1_arm_calls": 0
+        },
+        {
+          "architecture": "D_Q",
+          "tier": "L0_FACTUAL",
+          "original_laws": [
+            "NoWrite",
+            "FactualReturnWrite"
+          ],
+          "cell_units": null,
+          "residual_units_preserved": null,
+          "native_B1_arm_calls": 0
+        }
+      ]
+    },
+    {
+      "version": 78,
+      "sources": [
+        {
+          "label": "T_ALL_FIVE_PRIMARY",
+          "regime": "T",
+          "scene": [
+            0,
+            5,
+            0,
+            23,
+            0
+          ],
+          "cf": false
+        },
+        {
+          "label": "T_ALL_FIVE_FOREIGN_DESCRIPTOR",
+          "regime": "T",
+          "scene": [
+            0,
+            5,
+            0,
+            24,
+            0
+          ],
+          "cf": false
+        }
+      ],
+      "pairs": [
+        {
+          "architecture": "D_Q",
+          "tier": "L0_FACTUAL",
+          "original_laws": [
+            "NoWrite",
+            "FactualReturnWrite"
+          ],
+          "cell_units": [
+            "Decision_0"
+          ],
+          "residual_units_preserved": [
+            "ProcessCommit",
+            "ExternalPlant",
+            "Unknown/NoWrite",
+            "ControllerSite_0_2_0_4"
+          ],
+          "native_B1_arm_calls": 2
+        },
+        {
+          "architecture": "D_patch",
+          "tier": "L0_FACTUAL",
+          "original_laws": [
+            "NoWrite",
+            "DeleteFactualPatch"
+          ],
+          "cell_units": [
+            "Decision_0"
+          ],
+          "residual_units_preserved": [
+            "ProcessCommit",
+            "ExternalPlant",
+            "Unknown/NoWrite",
+            "ControllerSite_0_2_0_4"
+          ],
+          "native_B1_arm_calls": 2
+        },
+        {
+          "architecture": "X",
+          "tier": "L0_FACTUAL",
+          "original_laws": [
+            "NoWrite",
+            "X_id"
+          ],
+          "cell_units": [
+            "ControllerSite_0_2_0_4"
+          ],
+          "residual_units_preserved": [
+            "ProcessCommit",
+            "ExternalPlant",
+            "Unknown/NoWrite",
+            "Decision_0"
+          ],
+          "native_B1_arm_calls": 2
+        },
+        {
+          "architecture": "P",
+          "tier": "L1_CORRECTIVE",
+          "original_laws": [
+            "NoWrite",
+            "P_id"
+          ],
+          "cell_units": [
+            "ProcessCommit"
+          ],
+          "residual_units_preserved": [
+            "ExternalPlant",
+            "Unknown/NoWrite",
+            "Decision_0",
+            "ControllerSite_0_2_0_4"
+          ],
+          "native_B1_arm_calls": 2
+        }
+      ]
+    },
+    {
+      "version": 79,
+      "sources": [
+        {
+          "label": "T_L2_CONFIG_PRIMARY",
+          "regime": "T",
+          "scene": [
+            0,
+            2,
+            0,
+            29,
+            0
+          ],
+          "cf": true
+        },
+        {
+          "label": "T_L2_CONFIG_FOREIGN",
+          "regime": "T",
+          "scene": [
+            0,
+            2,
+            0,
+            30,
+            0
+          ],
+          "cf": true
+        }
+      ],
+      "pairs": [
+        {
+          "architecture": "D_Q",
+          "tier": "L2_COUNTERFACTUAL",
+          "original_laws": [
+            "NoWrite",
+            "CounterfactualReturnWrite"
+          ],
+          "cell_units": [
+            "Decision_1"
+          ],
+          "residual_units_preserved": [
+            "ProcessCommit",
+            "ExternalPlant",
+            "Unknown/NoWrite",
+            "ControllerSite_1_2_1_4"
+          ],
+          "native_B1_arm_calls": 2
+        },
+        {
+          "architecture": "D_Q",
+          "tier": "L2_COUNTERFACTUAL",
+          "original_laws": [
+            "NoWrite",
+            "DualReturnWrite"
+          ],
+          "cell_units": [
+            "Decision_1"
+          ],
+          "residual_units_preserved": [
+            "ProcessCommit",
+            "ExternalPlant",
+            "Unknown/NoWrite",
+            "ControllerSite_1_2_1_4"
+          ],
+          "native_B1_arm_calls": 2
+        }
+      ]
+    },
+    {
+      "version": 80,
+      "sources": [
+        {
+          "label": "T_L2_NO_ALT_COFAULT",
+          "regime": "T",
+          "scene": [
+            0,
+            3,
+            0,
+            31,
+            1
+          ],
+          "cf": true
+        }
+      ],
+      "pairs": [
+        {
+          "architecture": "D_Q",
+          "tier": "L2_COUNTERFACTUAL",
+          "original_laws": [
+            "NoWrite",
+            "CounterfactualReturnWrite"
+          ],
+          "cell_units": [
+            "Decision_1"
+          ],
+          "residual_units_preserved": [
+            "ProcessCommit",
+            "ExternalPlant",
+            "Unknown/NoWrite"
+          ],
+          "native_B1_arm_calls": 2
+        },
+        {
+          "architecture": "D_Q",
+          "tier": "L2_COUNTERFACTUAL",
+          "original_laws": [
+            "NoWrite",
+            "DualReturnWrite"
+          ],
+          "cell_units": [
+            "Decision_1"
+          ],
+          "residual_units_preserved": [
+            "ProcessCommit",
+            "ExternalPlant",
+            "Unknown/NoWrite"
+          ],
+          "native_B1_arm_calls": 2
+        }
+      ]
+    },
+    {
+      "version": 81,
+      "sources": [
+        {
+          "label": "T_L2_TIED_OPTIMAL_WITH_ALTERNATIVE",
+          "regime": "T",
+          "scene": [
+            0,
+            3,
+            0,
+            32,
+            1
+          ],
+          "cf": true
+        }
+      ],
+      "pairs": [
+        {
+          "architecture": "D_Q",
+          "tier": "L2_COUNTERFACTUAL",
+          "original_laws": [
+            "NoWrite",
+            "CounterfactualReturnWrite"
+          ],
+          "cell_units": [
+            "Decision_1"
+          ],
+          "residual_units_preserved": [
+            "ExternalPlant",
+            "Unknown/NoWrite"
+          ],
+          "native_B1_arm_calls": 2
+        },
+        {
+          "architecture": "D_Q",
+          "tier": "L2_COUNTERFACTUAL",
+          "original_laws": [
+            "NoWrite",
+            "DualReturnWrite"
+          ],
+          "cell_units": [
+            "Decision_1"
+          ],
+          "residual_units_preserved": [
+            "ExternalPlant",
+            "Unknown/NoWrite"
+          ],
+          "native_B1_arm_calls": 2
+        }
+      ]
+    }
+  ],
+  "selection": "Fixed new P scene[1,4,0,33,0], no transient faults/option_fault/do; literal P0->2,3->1; complete original catalog kappa1/phi4/z2 m0/m1 288 contexts: only original legal WAIT 276 contexts get independently literal max(row)+1 Q, 12 illegal WAIT retained uninstalled; separate kappa0/phi4/START/z2m0 WAIT max+2 sentinel. Original controller START t0 WAIT->RIGHT/(1,2)t1 WAIT->LEFT and kappa0 START sentinel. Full-domain serving-context legality proved by complete readonly catalog. Selected for original P multi-owner L2 gap, not old v81 zero/adverse or any new outcome; no retry/old fixture/healthy extra rollout.",
+  "source": {
+    "label": "P_Q_X_L2_MULTI_OWNER",
+    "scene": [
+      1,
+      4,
+      0,
+      33,
+      0
+    ],
+    "regime": "P",
+    "counterfactual": true,
+    "D_patch_empty": true,
+    "P": [
+      [
+        0,
+        2
+      ],
+      [
+        3,
+        1
+      ]
+    ],
+    "Q_rule": "Each complete k1 phi4 z2 m0/1 legalWAIT context max(original row)+1, separate k0 START max+2",
+    "Q_entries": 277,
+    "X": [
+      {
+        "site": [
+          0,
+          2,
+          0,
+          1,
+          4,
+          4
+        ],
+        "target": 3,
+        "all_domain_serving_contexts": [
+          [
+            0,
+            2,
+            0,
+            1,
+            4,
+            1,
+            0
+          ],
+          [
+            0,
+            2,
+            0,
+            1,
+            4,
+            1,
+            1
+          ],
+          [
+            0,
+            2,
+            0,
+            1,
+            4,
+            2,
+            0
+          ],
+          [
+            0,
+            2,
+            0,
+            1,
+            4,
+            2,
+            1
+          ],
+          [
+            0,
+            2,
+            0,
+            1,
+            4,
+            3,
+            0
+          ],
+          [
+            0,
+            2,
+            0,
+            1,
+            4,
+            3,
+            1
+          ]
+        ],
+        "target_allowed_in_all": true
+      },
+      {
+        "site": [
+          1,
+          2,
+          1,
+          1,
+          4,
+          4
+        ],
+        "target": 2,
+        "all_domain_serving_contexts": [
+          [
+            1,
+            2,
+            1,
+            1,
+            4,
+            1,
+            0
+          ],
+          [
+            1,
+            2,
+            1,
+            1,
+            4,
+            1,
+            1
+          ],
+          [
+            1,
+            2,
+            1,
+            1,
+            4,
+            2,
+            0
+          ],
+          [
+            1,
+            2,
+            1,
+            1,
+            4,
+            2,
+            1
+          ],
+          [
+            1,
+            2,
+            1,
+            1,
+            4,
+            3,
+            0
+          ],
+          [
+            1,
+            2,
+            1,
+            1,
+            4,
+            3,
+            1
+          ]
+        ],
+        "target_allowed_in_all": true
+      },
+      {
+        "site": [
+          0,
+          2,
+          0,
+          0,
+          4,
+          4
+        ],
+        "target": 3,
+        "all_domain_serving_contexts": [
+          [
+            0,
+            2,
+            0,
+            0,
+            4,
+            1,
+            0
+          ],
+          [
+            0,
+            2,
+            0,
+            0,
+            4,
+            1,
+            1
+          ],
+          [
+            0,
+            2,
+            0,
+            0,
+            4,
+            2,
+            0
+          ],
+          [
+            0,
+            2,
+            0,
+            0,
+            4,
+            2,
+            1
+          ],
+          [
+            0,
+            2,
+            0,
+            0,
+            4,
+            3,
+            0
+          ],
+          [
+            0,
+            2,
+            0,
+            0,
+            4,
+            3,
+            1
+          ]
+        ],
+        "target_allowed_in_all": true
+      }
+    ],
+    "mask_all_empty": true,
+    "option_fault": null,
+    "do": []
+  },
+  "original_scope_counts": {
+    "all_contexts": 288,
+    "legal_WAIT": 276,
+    "illegal_WAIT_preserved": [
+      [
+        2,
+        2,
+        0,
+        1,
+        4,
+        2,
+        0
+      ],
+      [
+        2,
+        2,
+        1,
+        1,
+        4,
+        2,
+        0
+      ],
+      [
+        2,
+        2,
+        2,
+        1,
+        4,
+        2,
+        0
+      ],
+      [
+        2,
+        2,
+        3,
+        1,
+        4,
+        2,
+        0
+      ],
+      [
+        2,
+        2,
+        4,
+        1,
+        4,
+        2,
+        0
+      ],
+      [
+        2,
+        2,
+        5,
+        1,
+        4,
+        2,
+        0
+      ],
+      [
+        2,
+        2,
+        6,
+        1,
+        4,
+        2,
+        0
+      ],
+      [
+        2,
+        2,
+        7,
+        1,
+        4,
+        2,
+        0
+      ],
+      [
+        2,
+        2,
+        8,
+        1,
+        4,
+        2,
+        0
+      ],
+      [
+        2,
+        2,
+        9,
+        1,
+        4,
+        2,
+        0
+      ],
+      [
+        2,
+        2,
+        10,
+        1,
+        4,
+        2,
+        0
+      ],
+      [
+        2,
+        2,
+        11,
+        1,
+        4,
+        2,
+        0
+      ]
+    ]
+  },
+  "cell_pairs": [
+    [
+      "D_Q",
+      "L2",
+      "CounterfactualReturnWrite"
+    ],
+    [
+      "D_Q",
+      "L2",
+      "DualReturnWrite"
+    ]
+  ],
+  "whole_rule": "Each original cell independently from identical full P pre, one original entry per arm with every original owner; residual Process/X and all nonowned/sentinel entries retained. No serial hybrid, no new law/registry/guard, no Q replacement for nonempty patch. Not independent architecture science fair-budget comparison.",
+  "bank_rule": "4 actual fresh full roles/100 original ordered ordinary rollouts each. No transient mask/optionfault/do, but full persistent P/X/Q remain. Original healthy locked v_pre is shared template reference, NOT bad P baseline bank mean or treatment score. Round-zero raw ingredient not future learning/Collateral/science seeds.",
+  "capture": "Exclusive once full inputs beforeafter, full original source raw before truth; 4 all-owner envelopes/8 valid original validators/4 law plans, all full CF begin/end/raw/config/prefix/reverse-fold, full pre/post/owner receipts/effectiveQ and actual whole transaction. Original builder + internal validator + runner validator three full CF per owner per arm not deduplicated and not scienceN.",
+  "tests": 4,
+  "budgets": {
+    "source_count": 1,
+    "complete_pairs": 2,
+    "owner_upper_bound": 12,
+    "rollout": 550,
+    "step": 6600,
+    "transaction": 3,
+    "B1": 4,
+    "CF_replay": 145,
+    "validator": 8,
+    "plan": 4,
+    "mean_started": 4,
+    "stdout_bytes": 20000000
+  },
+  "new_checks": [
+    "Original P full baseline credit and complete Process/X residuals, explicit D/Q exclusion",
+    "All owner original CF/full t0 prefix/same snapshot/P/X/config/reference and exact reverse folds",
+    "Each original law whole group once/full owner receipts/actual effectiveQ sparse identity/canonical/no nonowned edits",
+    "Owned ordinary bank100 roles/full P/X persistent configuration/no T borrowing/no healthy-baseline substitution"
+  ],
+  "no_science": {
+    "DP": 0,
+    "native_calibration": 0,
+    "keys": 0,
+    "RNG": 0,
+    "training": 0,
+    "FutureTrainingProtocol": false,
+    "Curve": false,
+    "collector": false,
+    "acquisition": false,
+    "scientific_effect_statistics": 0,
+    "primary_Collateral": null,
+    "scientific_effect": null,
+    "scientific_rules_adopted": false,
+    "scientific_PASS": false,
+    "research_complete": false,
+    "automatic_retry": false
+  },
+  "preservation": "All old 313/153/F1/executed sources/contracts/tests/captures/failures/adverse/Gamma/S/world/cell/sentinel/unread/zero-mass preserved. No v80 six/v79 seven/v78 ten/v77 seventeen/v74/v75/806 or completed/failed fixture/checker native reruns. ALL153792/125366refs unchanged, no new calibration before ALL closure. Original CfEpisode Q-only nonempty patch refusal remains. All completed v81 four checks also preserved and not rerun. No previous source fixture copied or executed; only mechanical capture/launcher helpers reused with new source/test assertions.",
+  "remaining": [
+    "Finite one tied-optimal T source/two original L2 cells/four new cases not production all T/P/mixed/tier/error/status/receipt/source measurement totality",
+    "whole primary Collateral beyond original singleton E(c) undefined; no E(S)/intersection/per-address aggregate/delta_joint/family/weights/thresholds adopted",
+    "full original k/shape/extensional independent DQ/patch fair budget/family interactions unclosed",
+    "dense B2 full resource/prospective freeze/once collection gate/keyed future/formal400/200 final conjunction unclosed",
+    "ALL old initialsetup/targeted26 runtime/raw and four postnative fullstores unresolved; no reconstruction"
+  ]
+}

@@ -1,0 +1,6080 @@
+{
+  "status": "COMPLETED_LOCAL_PROTOTYPE",
+  "started_inputs": {
+    "model.py": "ade0b125b8ad2a6690213c7db7f9dde87cd0cacf21eb39d4f857e2df6ba83906",
+    "run.py": "935909bf8ff23e97bd5510041b62190b3b78b66600e9ed6343abb5e88452240f",
+    "launch.py": "f7fc6717eba634229a150b152c18593c0c4b5b341e2f144d9c065dffebe22957",
+    "contract.json": "ef46ebf817df7ac8df2174f1371b76f5ae76aedaa8cdec2b114f3e3f489214aa"
+  },
+  "changed_inputs": [],
+  "checks": {
+    "status": "PASS_LIMITED_ENGINEERING_CHECKS",
+    "checks": 8,
+    "feedback_preferred_action": 1,
+    "changed_goal_preferred_action": 0,
+    "missing_fact_prediction": 0.5,
+    "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+    "optimizer_steps": 0,
+    "no_old_model_or_environment_imports": true
+  },
+  "results": [
+    {
+      "seed": 200001,
+      "family": "deterministic_context",
+      "variant": "written",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.8125,
+        "optimal": 0.8125,
+        "regret": 0.1875
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.953125,
+        "optimal": 0.953125,
+        "regret": 0.046875
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.9375,
+        "optimal": 0.9375,
+        "regret": 0.0625
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.90625,
+        "optimal": 0.90625,
+        "regret": 0.09375
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.91015625,
+        "optimal": 0.91015625,
+        "regret": 0.08984375
+      }
+    },
+    {
+      "seed": 200001,
+      "family": "deterministic_context",
+      "variant": "written_no_history",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.25,
+        "optimal": 0.25,
+        "regret": 0.75
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.1875,
+        "optimal": 0.1875,
+        "regret": 0.8125
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.28125,
+        "optimal": 0.28125,
+        "regret": 0.71875
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.15625,
+        "optimal": 0.15625,
+        "regret": 0.84375
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.23046875,
+        "optimal": 0.23046875,
+        "regret": 0.76953125
+      }
+    },
+    {
+      "seed": 200001,
+      "family": "deterministic_context",
+      "variant": "random_untrained",
+      "parameter_hash": "6db5e254419b4e9e8e75124b45e081c965eec97ce36f01ff3c1f9fa8c26b1bd6",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.1875,
+        "optimal": 0.1875,
+        "regret": 0.8125
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.265625,
+        "optimal": 0.265625,
+        "regret": 0.734375
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.21875,
+        "optimal": 0.21875,
+        "regret": 0.78125
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.1875,
+        "optimal": 0.1875,
+        "regret": 0.8125
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.24609375,
+        "optimal": 0.24609375,
+        "regret": 0.75390625
+      }
+    },
+    {
+      "seed": 200002,
+      "family": "deterministic_context",
+      "variant": "written",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.90625,
+        "optimal": 0.90625,
+        "regret": 0.09375
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.9375,
+        "optimal": 0.9375,
+        "regret": 0.0625
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.90625,
+        "optimal": 0.90625,
+        "regret": 0.09375
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.96875,
+        "optimal": 0.96875,
+        "regret": 0.03125
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.90234375,
+        "optimal": 0.90234375,
+        "regret": 0.09765625
+      }
+    },
+    {
+      "seed": 200002,
+      "family": "deterministic_context",
+      "variant": "written_no_history",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.25,
+        "optimal": 0.25,
+        "regret": 0.75
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.21875,
+        "optimal": 0.21875,
+        "regret": 0.78125
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.25,
+        "optimal": 0.25,
+        "regret": 0.75
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.21875,
+        "optimal": 0.21875,
+        "regret": 0.78125
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.2265625,
+        "optimal": 0.2265625,
+        "regret": 0.7734375
+      }
+    },
+    {
+      "seed": 200002,
+      "family": "deterministic_context",
+      "variant": "random_untrained",
+      "parameter_hash": "02a645a38faadebe6b758fc13cdbe94f2acda0a9d9f8941f7a3e222d4352fb21",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.265625,
+        "optimal": 0.265625,
+        "regret": 0.734375
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.28125,
+        "optimal": 0.28125,
+        "regret": 0.71875
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.25,
+        "optimal": 0.25,
+        "regret": 0.75
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.28125,
+        "optimal": 0.28125,
+        "regret": 0.71875
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.25390625,
+        "optimal": 0.25390625,
+        "regret": 0.74609375
+      }
+    },
+    {
+      "seed": 200003,
+      "family": "deterministic_context",
+      "variant": "written",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.859375,
+        "optimal": 0.859375,
+        "regret": 0.140625
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.9375,
+        "optimal": 0.9375,
+        "regret": 0.0625
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.90625,
+        "optimal": 0.90625,
+        "regret": 0.09375
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.90625,
+        "optimal": 0.90625,
+        "regret": 0.09375
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.91796875,
+        "optimal": 0.91796875,
+        "regret": 0.08203125
+      }
+    },
+    {
+      "seed": 200003,
+      "family": "deterministic_context",
+      "variant": "written_no_history",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.140625,
+        "optimal": 0.140625,
+        "regret": 0.859375
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.3125,
+        "optimal": 0.3125,
+        "regret": 0.6875
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.25,
+        "optimal": 0.25,
+        "regret": 0.75
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.28125,
+        "optimal": 0.28125,
+        "regret": 0.71875
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.24609375,
+        "optimal": 0.24609375,
+        "regret": 0.75390625
+      }
+    },
+    {
+      "seed": 200003,
+      "family": "deterministic_context",
+      "variant": "random_untrained",
+      "parameter_hash": "e0d16cc3e8b814f33ea748e2ef39efbc7dfce99774011d7f2f990659914a18ec",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.21875,
+        "optimal": 0.21875,
+        "regret": 0.78125
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.234375,
+        "optimal": 0.234375,
+        "regret": 0.765625
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.25,
+        "optimal": 0.25,
+        "regret": 0.75
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.28125,
+        "optimal": 0.28125,
+        "regret": 0.71875
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.21484375,
+        "optimal": 0.21484375,
+        "regret": 0.78515625
+      }
+    },
+    {
+      "seed": 200004,
+      "family": "deterministic_context",
+      "variant": "written",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.8125,
+        "optimal": 0.8125,
+        "regret": 0.1875
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.9375,
+        "optimal": 0.9375,
+        "regret": 0.0625
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.9375,
+        "optimal": 0.9375,
+        "regret": 0.0625
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.96875,
+        "optimal": 0.96875,
+        "regret": 0.03125
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.890625,
+        "optimal": 0.890625,
+        "regret": 0.109375
+      }
+    },
+    {
+      "seed": 200004,
+      "family": "deterministic_context",
+      "variant": "written_no_history",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.3125,
+        "optimal": 0.3125,
+        "regret": 0.6875
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.328125,
+        "optimal": 0.328125,
+        "regret": 0.671875
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.09375,
+        "optimal": 0.09375,
+        "regret": 0.90625
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.34375,
+        "optimal": 0.34375,
+        "regret": 0.65625
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.25390625,
+        "optimal": 0.25390625,
+        "regret": 0.74609375
+      }
+    },
+    {
+      "seed": 200004,
+      "family": "deterministic_context",
+      "variant": "random_untrained",
+      "parameter_hash": "75429ff9568d4198d9380a782190b291fc6bb429348758d473796d2677bd2411",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.359375,
+        "optimal": 0.359375,
+        "regret": 0.640625
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.234375,
+        "optimal": 0.234375,
+        "regret": 0.765625
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.25,
+        "optimal": 0.25,
+        "regret": 0.75
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.25,
+        "optimal": 0.25,
+        "regret": 0.75
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.27734375,
+        "optimal": 0.27734375,
+        "regret": 0.72265625
+      }
+    },
+    {
+      "seed": 200005,
+      "family": "deterministic_context",
+      "variant": "written",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.859375,
+        "optimal": 0.859375,
+        "regret": 0.140625
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.921875,
+        "optimal": 0.921875,
+        "regret": 0.078125
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.875,
+        "optimal": 0.875,
+        "regret": 0.125
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.90625,
+        "optimal": 0.90625,
+        "regret": 0.09375
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.890625,
+        "optimal": 0.890625,
+        "regret": 0.109375
+      }
+    },
+    {
+      "seed": 200005,
+      "family": "deterministic_context",
+      "variant": "written_no_history",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.296875,
+        "optimal": 0.296875,
+        "regret": 0.703125
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.296875,
+        "optimal": 0.296875,
+        "regret": 0.703125
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.21875,
+        "optimal": 0.21875,
+        "regret": 0.78125
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.3125,
+        "optimal": 0.3125,
+        "regret": 0.6875
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.28125,
+        "optimal": 0.28125,
+        "regret": 0.71875
+      }
+    },
+    {
+      "seed": 200005,
+      "family": "deterministic_context",
+      "variant": "random_untrained",
+      "parameter_hash": "f373ca78429bd0fa237f6abfa347606563b563cdeeaf6cffebb3cf603e0e12c9",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.234375,
+        "optimal": 0.234375,
+        "regret": 0.765625
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.234375,
+        "optimal": 0.234375,
+        "regret": 0.765625
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.3125,
+        "optimal": 0.3125,
+        "regret": 0.6875
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.21875,
+        "optimal": 0.21875,
+        "regret": 0.78125
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.25,
+        "optimal": 0.25,
+        "regret": 0.75
+      }
+    },
+    {
+      "seed": 200006,
+      "family": "deterministic_context",
+      "variant": "written",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.84375,
+        "optimal": 0.84375,
+        "regret": 0.15625
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.953125,
+        "optimal": 0.953125,
+        "regret": 0.046875
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.875,
+        "optimal": 0.875,
+        "regret": 0.125
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.96875,
+        "optimal": 0.96875,
+        "regret": 0.03125
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.9140625,
+        "optimal": 0.9140625,
+        "regret": 0.0859375
+      }
+    },
+    {
+      "seed": 200006,
+      "family": "deterministic_context",
+      "variant": "written_no_history",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.25,
+        "optimal": 0.25,
+        "regret": 0.75
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.265625,
+        "optimal": 0.265625,
+        "regret": 0.734375
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.28125,
+        "optimal": 0.28125,
+        "regret": 0.71875
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.28125,
+        "optimal": 0.28125,
+        "regret": 0.71875
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.234375,
+        "optimal": 0.234375,
+        "regret": 0.765625
+      }
+    },
+    {
+      "seed": 200006,
+      "family": "deterministic_context",
+      "variant": "random_untrained",
+      "parameter_hash": "7630469ad9b7415383bc008576f667b21de8eaf20ee795b7d33440cac69610c6",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.34375,
+        "optimal": 0.34375,
+        "regret": 0.65625
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.03125,
+        "optimal": 0.03125,
+        "regret": 0.96875
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.28125,
+        "optimal": 0.28125,
+        "regret": 0.71875
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.0,
+        "optimal": 0.0,
+        "regret": 1.0
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.23046875,
+        "optimal": 0.23046875,
+        "regret": 0.76953125
+      }
+    },
+    {
+      "seed": 200007,
+      "family": "deterministic_context",
+      "variant": "written",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.765625,
+        "optimal": 0.765625,
+        "regret": 0.234375
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.890625,
+        "optimal": 0.890625,
+        "regret": 0.109375
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.90625,
+        "optimal": 0.90625,
+        "regret": 0.09375
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.96875,
+        "optimal": 0.96875,
+        "regret": 0.03125
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.875,
+        "optimal": 0.875,
+        "regret": 0.125
+      }
+    },
+    {
+      "seed": 200007,
+      "family": "deterministic_context",
+      "variant": "written_no_history",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.1875,
+        "optimal": 0.1875,
+        "regret": 0.8125
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.203125,
+        "optimal": 0.203125,
+        "regret": 0.796875
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.21875,
+        "optimal": 0.21875,
+        "regret": 0.78125
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.25,
+        "optimal": 0.25,
+        "regret": 0.75
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.23046875,
+        "optimal": 0.23046875,
+        "regret": 0.76953125
+      }
+    },
+    {
+      "seed": 200007,
+      "family": "deterministic_context",
+      "variant": "random_untrained",
+      "parameter_hash": "1a87979ce9f359bfd1b8f0828b7b647301a7bfe17876d4df15f67d36ac0b64e9",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.21875,
+        "optimal": 0.21875,
+        "regret": 0.78125
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.296875,
+        "optimal": 0.296875,
+        "regret": 0.703125
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.15625,
+        "optimal": 0.15625,
+        "regret": 0.84375
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.34375,
+        "optimal": 0.34375,
+        "regret": 0.65625
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.23828125,
+        "optimal": 0.23828125,
+        "regret": 0.76171875
+      }
+    },
+    {
+      "seed": 200008,
+      "family": "deterministic_context",
+      "variant": "written",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.84375,
+        "optimal": 0.84375,
+        "regret": 0.15625
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.90625,
+        "optimal": 0.90625,
+        "regret": 0.09375
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.96875,
+        "optimal": 0.96875,
+        "regret": 0.03125
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.875,
+        "optimal": 0.875,
+        "regret": 0.125
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.91796875,
+        "optimal": 0.91796875,
+        "regret": 0.08203125
+      }
+    },
+    {
+      "seed": 200008,
+      "family": "deterministic_context",
+      "variant": "written_no_history",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.296875,
+        "optimal": 0.296875,
+        "regret": 0.703125
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.28125,
+        "optimal": 0.28125,
+        "regret": 0.71875
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.15625,
+        "optimal": 0.15625,
+        "regret": 0.84375
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.21875,
+        "optimal": 0.21875,
+        "regret": 0.78125
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.25,
+        "optimal": 0.25,
+        "regret": 0.75
+      }
+    },
+    {
+      "seed": 200008,
+      "family": "deterministic_context",
+      "variant": "random_untrained",
+      "parameter_hash": "851f15725ba706b4ecb040dab02e81add24ad8b0fcc2a79c13abaf6c9678e584",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.1875,
+        "optimal": 0.1875,
+        "regret": 0.8125
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.203125,
+        "optimal": 0.203125,
+        "regret": 0.796875
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.28125,
+        "optimal": 0.28125,
+        "regret": 0.71875
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.25,
+        "optimal": 0.25,
+        "regret": 0.75
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.23828125,
+        "optimal": 0.23828125,
+        "regret": 0.76171875
+      }
+    },
+    {
+      "seed": 200001,
+      "family": "noisy_context",
+      "variant": "written",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.453125,
+        "optimal": 0.390625,
+        "regret": 0.36562500544823706
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.78125,
+        "optimal": 0.953125,
+        "regret": 0.02812500041909516
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.53125,
+        "optimal": 0.59375,
+        "regret": 0.24375000363215804
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.6875,
+        "optimal": 0.90625,
+        "regret": 0.05625000083819032
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.6171875,
+        "optimal": 0.6875,
+        "regret": 0.18750000279396772
+      }
+    },
+    {
+      "seed": 200001,
+      "family": "noisy_context",
+      "variant": "written_no_history",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.359375,
+        "optimal": 0.25,
+        "regret": 0.45000000670552254
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.34375,
+        "optimal": 0.1875,
+        "regret": 0.4875000072643161
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.4375,
+        "optimal": 0.28125,
+        "regret": 0.43125000642612576
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.28125,
+        "optimal": 0.15625,
+        "regret": 0.5062500075437129
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.359375,
+        "optimal": 0.23046875,
+        "regret": 0.4617187568801455
+      }
+    },
+    {
+      "seed": 200001,
+      "family": "noisy_context",
+      "variant": "random_untrained",
+      "parameter_hash": "6db5e254419b4e9e8e75124b45e081c965eec97ce36f01ff3c1f9fa8c26b1bd6",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.3125,
+        "optimal": 0.1875,
+        "regret": 0.4875000072643161
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.359375,
+        "optimal": 0.265625,
+        "regret": 0.44062500656582415
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.21875,
+        "optimal": 0.21875,
+        "regret": 0.4687500069849193
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.3125,
+        "optimal": 0.1875,
+        "regret": 0.4875000072643161
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.33203125,
+        "optimal": 0.24609375,
+        "regret": 0.45234375674044713
+      }
+    },
+    {
+      "seed": 200002,
+      "family": "noisy_context",
+      "variant": "written",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.59375,
+        "optimal": 0.765625,
+        "regret": 0.1406250020954758
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.671875,
+        "optimal": 0.9375,
+        "regret": 0.037500000558793545
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.6875,
+        "optimal": 0.90625,
+        "regret": 0.05625000083819032
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.75,
+        "optimal": 0.96875,
+        "regret": 0.018750000279396772
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.6875,
+        "optimal": 0.8515625,
+        "regret": 0.08906250132713467
+      }
+    },
+    {
+      "seed": 200002,
+      "family": "noisy_context",
+      "variant": "written_no_history",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.390625,
+        "optimal": 0.25,
+        "regret": 0.45000000670552254
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.375,
+        "optimal": 0.21875,
+        "regret": 0.4687500069849193
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.46875,
+        "optimal": 0.25,
+        "regret": 0.45000000670552254
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.5,
+        "optimal": 0.21875,
+        "regret": 0.4687500069849193
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.37890625,
+        "optimal": 0.2265625,
+        "regret": 0.4640625069150701
+      }
+    },
+    {
+      "seed": 200002,
+      "family": "noisy_context",
+      "variant": "random_untrained",
+      "parameter_hash": "02a645a38faadebe6b758fc13cdbe94f2acda0a9d9f8941f7a3e222d4352fb21",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.390625,
+        "optimal": 0.265625,
+        "regret": 0.44062500656582415
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.421875,
+        "optimal": 0.28125,
+        "regret": 0.43125000642612576
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.3125,
+        "optimal": 0.25,
+        "regret": 0.45000000670552254
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.5,
+        "optimal": 0.28125,
+        "regret": 0.43125000642612576
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.36328125,
+        "optimal": 0.25390625,
+        "regret": 0.44765625667059794
+      }
+    },
+    {
+      "seed": 200003,
+      "family": "noisy_context",
+      "variant": "written",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.5625,
+        "optimal": 0.578125,
+        "regret": 0.2531250037718564
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.734375,
+        "optimal": 0.921875,
+        "regret": 0.04687500069849193
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.6875,
+        "optimal": 0.6875,
+        "regret": 0.18750000279396772
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.6875,
+        "optimal": 0.875,
+        "regret": 0.07500000111758709
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.6640625,
+        "optimal": 0.75,
+        "regret": 0.15000000223517418
+      }
+    },
+    {
+      "seed": 200003,
+      "family": "noisy_context",
+      "variant": "written_no_history",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.265625,
+        "optimal": 0.140625,
+        "regret": 0.5156250076834112
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.390625,
+        "optimal": 0.3125,
+        "regret": 0.412500006146729
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.375,
+        "optimal": 0.25,
+        "regret": 0.45000000670552254
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.40625,
+        "optimal": 0.28125,
+        "regret": 0.43125000642612576
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.3515625,
+        "optimal": 0.24609375,
+        "regret": 0.45234375674044713
+      }
+    },
+    {
+      "seed": 200003,
+      "family": "noisy_context",
+      "variant": "random_untrained",
+      "parameter_hash": "e0d16cc3e8b814f33ea748e2ef39efbc7dfce99774011d7f2f990659914a18ec",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.265625,
+        "optimal": 0.21875,
+        "regret": 0.4687500069849193
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.359375,
+        "optimal": 0.234375,
+        "regret": 0.4593750068452209
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.34375,
+        "optimal": 0.25,
+        "regret": 0.45000000670552254
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.375,
+        "optimal": 0.28125,
+        "regret": 0.43125000642612576
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.33203125,
+        "optimal": 0.21484375,
+        "regret": 0.4710937570198439
+      }
+    },
+    {
+      "seed": 200004,
+      "family": "noisy_context",
+      "variant": "written",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.53125,
+        "optimal": 0.609375,
+        "regret": 0.23437500349245965
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.75,
+        "optimal": 0.796875,
+        "regret": 0.12187500181607902
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.625,
+        "optimal": 0.65625,
+        "regret": 0.2062500030733645
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.78125,
+        "optimal": 0.9375,
+        "regret": 0.037500000558793545
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.6328125,
+        "optimal": 0.67578125,
+        "regret": 0.1945312528987415
+      }
+    },
+    {
+      "seed": 200004,
+      "family": "noisy_context",
+      "variant": "written_no_history",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.375,
+        "optimal": 0.3125,
+        "regret": 0.412500006146729
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.453125,
+        "optimal": 0.328125,
+        "regret": 0.4031250060070306
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.3125,
+        "optimal": 0.09375,
+        "regret": 0.5437500081025064
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.40625,
+        "optimal": 0.34375,
+        "regret": 0.3937500058673322
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.359375,
+        "optimal": 0.25390625,
+        "regret": 0.44765625667059794
+      }
+    },
+    {
+      "seed": 200004,
+      "family": "noisy_context",
+      "variant": "random_untrained",
+      "parameter_hash": "75429ff9568d4198d9380a782190b291fc6bb429348758d473796d2677bd2411",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.4375,
+        "optimal": 0.375,
+        "regret": 0.37500000558793545
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.328125,
+        "optimal": 0.234375,
+        "regret": 0.4593750068452209
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.3125,
+        "optimal": 0.25,
+        "regret": 0.45000000670552254
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.375,
+        "optimal": 0.25,
+        "regret": 0.45000000670552254
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.3984375,
+        "optimal": 0.28125,
+        "regret": 0.43125000642612576
+      }
+    },
+    {
+      "seed": 200005,
+      "family": "noisy_context",
+      "variant": "written",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.5625,
+        "optimal": 0.625,
+        "regret": 0.22500000335276127
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.78125,
+        "optimal": 0.859375,
+        "regret": 0.08437500125728548
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.75,
+        "optimal": 0.875,
+        "regret": 0.07500000111758709
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.875,
+        "optimal": 0.84375,
+        "regret": 0.09375000139698386
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.703125,
+        "optimal": 0.8046875,
+        "regret": 0.11718750174622983
+      }
+    },
+    {
+      "seed": 200005,
+      "family": "noisy_context",
+      "variant": "written_no_history",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.328125,
+        "optimal": 0.296875,
+        "regret": 0.4218750062864274
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.453125,
+        "optimal": 0.296875,
+        "regret": 0.4218750062864274
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.46875,
+        "optimal": 0.21875,
+        "regret": 0.4687500069849193
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.5,
+        "optimal": 0.3125,
+        "regret": 0.412500006146729
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.359375,
+        "optimal": 0.28125,
+        "regret": 0.43125000642612576
+      }
+    },
+    {
+      "seed": 200005,
+      "family": "noisy_context",
+      "variant": "random_untrained",
+      "parameter_hash": "f373ca78429bd0fa237f6abfa347606563b563cdeeaf6cffebb3cf603e0e12c9",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.375,
+        "optimal": 0.265625,
+        "regret": 0.44062500656582415
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.453125,
+        "optimal": 0.234375,
+        "regret": 0.4593750068452209
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.46875,
+        "optimal": 0.3125,
+        "regret": 0.412500006146729
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.46875,
+        "optimal": 0.21875,
+        "regret": 0.4687500069849193
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.40625,
+        "optimal": 0.2578125,
+        "regret": 0.44531250663567334
+      }
+    },
+    {
+      "seed": 200006,
+      "family": "noisy_context",
+      "variant": "written",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.453125,
+        "optimal": 0.421875,
+        "regret": 0.3468750051688403
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.71875,
+        "optimal": 0.875,
+        "regret": 0.07500000111758709
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.65625,
+        "optimal": 0.71875,
+        "regret": 0.16875000251457095
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.84375,
+        "optimal": 0.9375,
+        "regret": 0.037500000558793545
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.60546875,
+        "optimal": 0.64453125,
+        "regret": 0.21328125317813829
+      }
+    },
+    {
+      "seed": 200006,
+      "family": "noisy_context",
+      "variant": "written_no_history",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.40625,
+        "optimal": 0.25,
+        "regret": 0.45000000670552254
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.453125,
+        "optimal": 0.265625,
+        "regret": 0.44062500656582415
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.25,
+        "optimal": 0.28125,
+        "regret": 0.43125000642612576
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.59375,
+        "optimal": 0.28125,
+        "regret": 0.43125000642612576
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.3828125,
+        "optimal": 0.234375,
+        "regret": 0.4593750068452209
+      }
+    },
+    {
+      "seed": 200006,
+      "family": "noisy_context",
+      "variant": "random_untrained",
+      "parameter_hash": "7630469ad9b7415383bc008576f667b21de8eaf20ee795b7d33440cac69610c6",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.390625,
+        "optimal": 0.34375,
+        "regret": 0.3937500058673322
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.1875,
+        "optimal": 0.03125,
+        "regret": 0.5812500086612999
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.40625,
+        "optimal": 0.28125,
+        "regret": 0.43125000642612576
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.21875,
+        "optimal": 0.0,
+        "regret": 0.6000000089406967
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.34375,
+        "optimal": 0.23046875,
+        "regret": 0.4617187568801455
+      }
+    },
+    {
+      "seed": 200007,
+      "family": "noisy_context",
+      "variant": "written",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.515625,
+        "optimal": 0.46875,
+        "regret": 0.31875000474974513
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.671875,
+        "optimal": 0.875,
+        "regret": 0.07500000111758709
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.5625,
+        "optimal": 0.59375,
+        "regret": 0.24375000363215804
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.75,
+        "optimal": 0.96875,
+        "regret": 0.018750000279396772
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.60546875,
+        "optimal": 0.6796875,
+        "regret": 0.19218750286381692
+      }
+    },
+    {
+      "seed": 200007,
+      "family": "noisy_context",
+      "variant": "written_no_history",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.328125,
+        "optimal": 0.1875,
+        "regret": 0.4875000072643161
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.3125,
+        "optimal": 0.203125,
+        "regret": 0.4781250071246177
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.40625,
+        "optimal": 0.21875,
+        "regret": 0.4687500069849193
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.3125,
+        "optimal": 0.25,
+        "regret": 0.45000000670552254
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.34375,
+        "optimal": 0.23046875,
+        "regret": 0.4617187568801455
+      }
+    },
+    {
+      "seed": 200007,
+      "family": "noisy_context",
+      "variant": "random_untrained",
+      "parameter_hash": "1a87979ce9f359bfd1b8f0828b7b647301a7bfe17876d4df15f67d36ac0b64e9",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.25,
+        "optimal": 0.203125,
+        "regret": 0.4781250071246177
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.328125,
+        "optimal": 0.296875,
+        "regret": 0.4218750062864274
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.34375,
+        "optimal": 0.15625,
+        "regret": 0.5062500075437129
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.40625,
+        "optimal": 0.34375,
+        "regret": 0.3937500058673322
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.328125,
+        "optimal": 0.234375,
+        "regret": 0.4593750068452209
+      }
+    },
+    {
+      "seed": 200008,
+      "family": "noisy_context",
+      "variant": "written",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.671875,
+        "optimal": 0.65625,
+        "regret": 0.2062500030733645
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.796875,
+        "optimal": 0.90625,
+        "regret": 0.05625000083819032
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.84375,
+        "optimal": 0.9375,
+        "regret": 0.037500000558793545
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.75,
+        "optimal": 0.875,
+        "regret": 0.07500000111758709
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.73828125,
+        "optimal": 0.85546875,
+        "regret": 0.08671875129221007
+      }
+    },
+    {
+      "seed": 200008,
+      "family": "noisy_context",
+      "variant": "written_no_history",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.4375,
+        "optimal": 0.296875,
+        "regret": 0.4218750062864274
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.359375,
+        "optimal": 0.28125,
+        "regret": 0.43125000642612576
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.28125,
+        "optimal": 0.15625,
+        "regret": 0.5062500075437129
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.3125,
+        "optimal": 0.21875,
+        "regret": 0.4687500069849193
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.35546875,
+        "optimal": 0.25,
+        "regret": 0.45000000670552254
+      }
+    },
+    {
+      "seed": 200008,
+      "family": "noisy_context",
+      "variant": "random_untrained",
+      "parameter_hash": "851f15725ba706b4ecb040dab02e81add24ad8b0fcc2a79c13abaf6c9678e584",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.375,
+        "optimal": 0.171875,
+        "regret": 0.49687500740401447
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.328125,
+        "optimal": 0.203125,
+        "regret": 0.4781250071246177
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.3125,
+        "optimal": 0.28125,
+        "regret": 0.43125000642612576
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.375,
+        "optimal": 0.25,
+        "regret": 0.45000000670552254
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.33984375,
+        "optimal": 0.234375,
+        "regret": 0.4593750068452209
+      }
+    },
+    {
+      "seed": 200001,
+      "family": "changed_dynamics",
+      "variant": "written",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.8125,
+        "optimal": 0.8125,
+        "regret": 0.1875
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.6875,
+        "optimal": 0.6875,
+        "regret": 0.3125
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.125,
+        "optimal": 0.125,
+        "regret": 0.875
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.8125,
+        "optimal": 0.8125,
+        "regret": 0.1875
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.6796875,
+        "optimal": 0.6796875,
+        "regret": 0.3203125
+      }
+    },
+    {
+      "seed": 200001,
+      "family": "changed_dynamics",
+      "variant": "written_no_history",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.25,
+        "optimal": 0.25,
+        "regret": 0.75
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.203125,
+        "optimal": 0.203125,
+        "regret": 0.796875
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.25,
+        "optimal": 0.25,
+        "regret": 0.75
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.21875,
+        "optimal": 0.21875,
+        "regret": 0.78125
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.21484375,
+        "optimal": 0.21484375,
+        "regret": 0.78515625
+      }
+    },
+    {
+      "seed": 200001,
+      "family": "changed_dynamics",
+      "variant": "random_untrained",
+      "parameter_hash": "6db5e254419b4e9e8e75124b45e081c965eec97ce36f01ff3c1f9fa8c26b1bd6",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.1875,
+        "optimal": 0.1875,
+        "regret": 0.8125
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.28125,
+        "optimal": 0.28125,
+        "regret": 0.71875
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.1875,
+        "optimal": 0.1875,
+        "regret": 0.8125
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.28125,
+        "optimal": 0.28125,
+        "regret": 0.71875
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.2421875,
+        "optimal": 0.2421875,
+        "regret": 0.7578125
+      }
+    },
+    {
+      "seed": 200002,
+      "family": "changed_dynamics",
+      "variant": "written",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.90625,
+        "optimal": 0.90625,
+        "regret": 0.09375
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.6875,
+        "optimal": 0.6875,
+        "regret": 0.3125
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.15625,
+        "optimal": 0.15625,
+        "regret": 0.84375
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.875,
+        "optimal": 0.875,
+        "regret": 0.125
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.66796875,
+        "optimal": 0.66796875,
+        "regret": 0.33203125
+      }
+    },
+    {
+      "seed": 200002,
+      "family": "changed_dynamics",
+      "variant": "written_no_history",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.25,
+        "optimal": 0.25,
+        "regret": 0.75
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.359375,
+        "optimal": 0.359375,
+        "regret": 0.640625
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.125,
+        "optimal": 0.125,
+        "regret": 0.875
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.40625,
+        "optimal": 0.40625,
+        "regret": 0.59375
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.2578125,
+        "optimal": 0.2578125,
+        "regret": 0.7421875
+      }
+    },
+    {
+      "seed": 200002,
+      "family": "changed_dynamics",
+      "variant": "random_untrained",
+      "parameter_hash": "02a645a38faadebe6b758fc13cdbe94f2acda0a9d9f8941f7a3e222d4352fb21",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.265625,
+        "optimal": 0.265625,
+        "regret": 0.734375
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.25,
+        "optimal": 0.25,
+        "regret": 0.75
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.21875,
+        "optimal": 0.21875,
+        "regret": 0.78125
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.15625,
+        "optimal": 0.15625,
+        "regret": 0.84375
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.26171875,
+        "optimal": 0.26171875,
+        "regret": 0.73828125
+      }
+    },
+    {
+      "seed": 200003,
+      "family": "changed_dynamics",
+      "variant": "written",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.859375,
+        "optimal": 0.859375,
+        "regret": 0.140625
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.796875,
+        "optimal": 0.796875,
+        "regret": 0.203125
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.53125,
+        "optimal": 0.53125,
+        "regret": 0.46875
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.8125,
+        "optimal": 0.8125,
+        "regret": 0.1875
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.80078125,
+        "optimal": 0.80078125,
+        "regret": 0.19921875
+      }
+    },
+    {
+      "seed": 200003,
+      "family": "changed_dynamics",
+      "variant": "written_no_history",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.140625,
+        "optimal": 0.140625,
+        "regret": 0.859375
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.25,
+        "optimal": 0.25,
+        "regret": 0.75
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.0625,
+        "optimal": 0.0625,
+        "regret": 0.9375
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.25,
+        "optimal": 0.25,
+        "regret": 0.75
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.20703125,
+        "optimal": 0.20703125,
+        "regret": 0.79296875
+      }
+    },
+    {
+      "seed": 200003,
+      "family": "changed_dynamics",
+      "variant": "random_untrained",
+      "parameter_hash": "e0d16cc3e8b814f33ea748e2ef39efbc7dfce99774011d7f2f990659914a18ec",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.21875,
+        "optimal": 0.21875,
+        "regret": 0.78125
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.359375,
+        "optimal": 0.359375,
+        "regret": 0.640625
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.3125,
+        "optimal": 0.3125,
+        "regret": 0.6875
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.375,
+        "optimal": 0.375,
+        "regret": 0.625
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.265625,
+        "optimal": 0.265625,
+        "regret": 0.734375
+      }
+    },
+    {
+      "seed": 200004,
+      "family": "changed_dynamics",
+      "variant": "written",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.8125,
+        "optimal": 0.8125,
+        "regret": 0.1875
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.390625,
+        "optimal": 0.390625,
+        "regret": 0.609375
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.34375,
+        "optimal": 0.34375,
+        "regret": 0.65625
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.25,
+        "optimal": 0.25,
+        "regret": 0.75
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.640625,
+        "optimal": 0.640625,
+        "regret": 0.359375
+      }
+    },
+    {
+      "seed": 200004,
+      "family": "changed_dynamics",
+      "variant": "written_no_history",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.3125,
+        "optimal": 0.3125,
+        "regret": 0.6875
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.265625,
+        "optimal": 0.265625,
+        "regret": 0.734375
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.15625,
+        "optimal": 0.15625,
+        "regret": 0.84375
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.21875,
+        "optimal": 0.21875,
+        "regret": 0.78125
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.2421875,
+        "optimal": 0.2421875,
+        "regret": 0.7578125
+      }
+    },
+    {
+      "seed": 200004,
+      "family": "changed_dynamics",
+      "variant": "random_untrained",
+      "parameter_hash": "75429ff9568d4198d9380a782190b291fc6bb429348758d473796d2677bd2411",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.359375,
+        "optimal": 0.359375,
+        "regret": 0.640625
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.203125,
+        "optimal": 0.203125,
+        "regret": 0.796875
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.21875,
+        "optimal": 0.21875,
+        "regret": 0.78125
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.125,
+        "optimal": 0.125,
+        "regret": 0.875
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.28515625,
+        "optimal": 0.28515625,
+        "regret": 0.71484375
+      }
+    },
+    {
+      "seed": 200005,
+      "family": "changed_dynamics",
+      "variant": "written",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.859375,
+        "optimal": 0.859375,
+        "regret": 0.140625
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.671875,
+        "optimal": 0.671875,
+        "regret": 0.328125
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.3125,
+        "optimal": 0.3125,
+        "regret": 0.6875
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.6875,
+        "optimal": 0.6875,
+        "regret": 0.3125
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.734375,
+        "optimal": 0.734375,
+        "regret": 0.265625
+      }
+    },
+    {
+      "seed": 200005,
+      "family": "changed_dynamics",
+      "variant": "written_no_history",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.296875,
+        "optimal": 0.296875,
+        "regret": 0.703125
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.171875,
+        "optimal": 0.171875,
+        "regret": 0.828125
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.3125,
+        "optimal": 0.3125,
+        "regret": 0.6875
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.125,
+        "optimal": 0.125,
+        "regret": 0.875
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.25,
+        "optimal": 0.25,
+        "regret": 0.75
+      }
+    },
+    {
+      "seed": 200005,
+      "family": "changed_dynamics",
+      "variant": "random_untrained",
+      "parameter_hash": "f373ca78429bd0fa237f6abfa347606563b563cdeeaf6cffebb3cf603e0e12c9",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.234375,
+        "optimal": 0.234375,
+        "regret": 0.765625
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.15625,
+        "optimal": 0.15625,
+        "regret": 0.84375
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.21875,
+        "optimal": 0.21875,
+        "regret": 0.78125
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.15625,
+        "optimal": 0.15625,
+        "regret": 0.84375
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.23046875,
+        "optimal": 0.23046875,
+        "regret": 0.76953125
+      }
+    },
+    {
+      "seed": 200006,
+      "family": "changed_dynamics",
+      "variant": "written",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.84375,
+        "optimal": 0.84375,
+        "regret": 0.15625
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.9375,
+        "optimal": 0.9375,
+        "regret": 0.0625
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.40625,
+        "optimal": 0.40625,
+        "regret": 0.59375
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.96875,
+        "optimal": 0.96875,
+        "regret": 0.03125
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.8359375,
+        "optimal": 0.8359375,
+        "regret": 0.1640625
+      }
+    },
+    {
+      "seed": 200006,
+      "family": "changed_dynamics",
+      "variant": "written_no_history",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.25,
+        "optimal": 0.25,
+        "regret": 0.75
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.265625,
+        "optimal": 0.265625,
+        "regret": 0.734375
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.3125,
+        "optimal": 0.3125,
+        "regret": 0.6875
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.25,
+        "optimal": 0.25,
+        "regret": 0.75
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.23828125,
+        "optimal": 0.23828125,
+        "regret": 0.76171875
+      }
+    },
+    {
+      "seed": 200006,
+      "family": "changed_dynamics",
+      "variant": "random_untrained",
+      "parameter_hash": "7630469ad9b7415383bc008576f667b21de8eaf20ee795b7d33440cac69610c6",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.34375,
+        "optimal": 0.34375,
+        "regret": 0.65625
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.0625,
+        "optimal": 0.0625,
+        "regret": 0.9375
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.21875,
+        "optimal": 0.21875,
+        "regret": 0.78125
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.09375,
+        "optimal": 0.09375,
+        "regret": 0.90625
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.2109375,
+        "optimal": 0.2109375,
+        "regret": 0.7890625
+      }
+    },
+    {
+      "seed": 200007,
+      "family": "changed_dynamics",
+      "variant": "written",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.765625,
+        "optimal": 0.765625,
+        "regret": 0.234375
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.703125,
+        "optimal": 0.703125,
+        "regret": 0.296875
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.34375,
+        "optimal": 0.34375,
+        "regret": 0.65625
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.84375,
+        "optimal": 0.84375,
+        "regret": 0.15625
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.6953125,
+        "optimal": 0.6953125,
+        "regret": 0.3046875
+      }
+    },
+    {
+      "seed": 200007,
+      "family": "changed_dynamics",
+      "variant": "written_no_history",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.1875,
+        "optimal": 0.1875,
+        "regret": 0.8125
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.296875,
+        "optimal": 0.296875,
+        "regret": 0.703125
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.25,
+        "optimal": 0.25,
+        "regret": 0.75
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.34375,
+        "optimal": 0.34375,
+        "regret": 0.65625
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.23828125,
+        "optimal": 0.23828125,
+        "regret": 0.76171875
+      }
+    },
+    {
+      "seed": 200007,
+      "family": "changed_dynamics",
+      "variant": "random_untrained",
+      "parameter_hash": "1a87979ce9f359bfd1b8f0828b7b647301a7bfe17876d4df15f67d36ac0b64e9",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.21875,
+        "optimal": 0.21875,
+        "regret": 0.78125
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.28125,
+        "optimal": 0.28125,
+        "regret": 0.71875
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.21875,
+        "optimal": 0.21875,
+        "regret": 0.78125
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.28125,
+        "optimal": 0.28125,
+        "regret": 0.71875
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.234375,
+        "optimal": 0.234375,
+        "regret": 0.765625
+      }
+    },
+    {
+      "seed": 200008,
+      "family": "changed_dynamics",
+      "variant": "written",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.84375,
+        "optimal": 0.84375,
+        "regret": 0.15625
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.609375,
+        "optimal": 0.609375,
+        "regret": 0.390625
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.1875,
+        "optimal": 0.1875,
+        "regret": 0.8125
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.65625,
+        "optimal": 0.65625,
+        "regret": 0.34375
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.66796875,
+        "optimal": 0.66796875,
+        "regret": 0.33203125
+      }
+    },
+    {
+      "seed": 200008,
+      "family": "changed_dynamics",
+      "variant": "written_no_history",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.296875,
+        "optimal": 0.296875,
+        "regret": 0.703125
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.203125,
+        "optimal": 0.203125,
+        "regret": 0.796875
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.375,
+        "optimal": 0.375,
+        "regret": 0.625
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.1875,
+        "optimal": 0.1875,
+        "regret": 0.8125
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.25,
+        "optimal": 0.25,
+        "regret": 0.75
+      }
+    },
+    {
+      "seed": 200008,
+      "family": "changed_dynamics",
+      "variant": "random_untrained",
+      "parameter_hash": "851f15725ba706b4ecb040dab02e81add24ad8b0fcc2a79c13abaf6c9678e584",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.1875,
+        "optimal": 0.1875,
+        "regret": 0.8125
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.25,
+        "optimal": 0.25,
+        "regret": 0.75
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.25,
+        "optimal": 0.25,
+        "regret": 0.75
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.15625,
+        "optimal": 0.15625,
+        "regret": 0.84375
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.2734375,
+        "optimal": 0.2734375,
+        "regret": 0.7265625
+      }
+    },
+    {
+      "seed": 200001,
+      "family": "changed_goal",
+      "variant": "written",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.8804687513038516,
+        "optimal": 0.828125,
+        "regret": 0.1195312486961484
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.9445312507450581,
+        "optimal": 0.921875,
+        "regret": 0.05546874925494194
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.9343750011175871,
+        "optimal": 0.90625,
+        "regret": 0.06562499888241291
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.9328125007450581,
+        "optimal": 0.90625,
+        "regret": 0.06718749925494194
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.9291015632916242,
+        "optimal": 0.90234375,
+        "regret": 0.07089843670837581
+      }
+    },
+    {
+      "seed": 200001,
+      "family": "changed_goal",
+      "variant": "written_no_history",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.482812506146729,
+        "optimal": 0.265625,
+        "regret": 0.517187493853271
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.46796875540167093,
+        "optimal": 0.28125,
+        "regret": 0.5320312445983291
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.5234375074505806,
+        "optimal": 0.28125,
+        "regret": 0.4765624925494194
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.5171875040978193,
+        "optimal": 0.375,
+        "regret": 0.48281249590218067
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.46250000572763383,
+        "optimal": 0.26953125,
+        "regret": 0.5374999942723662
+      }
+    },
+    {
+      "seed": 200001,
+      "family": "changed_goal",
+      "variant": "random_untrained",
+      "parameter_hash": "6db5e254419b4e9e8e75124b45e081c965eec97ce36f01ff3c1f9fa8c26b1bd6",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.8820312516763806,
+        "optimal": 0.828125,
+        "regret": 0.11796874832361937
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.02265625074505806,
+        "optimal": 0.0,
+        "regret": 0.9773437492549419
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.05937500111758709,
+        "optimal": 0.03125,
+        "regret": 0.9406249988824129
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.02656250074505806,
+        "optimal": 0.0,
+        "regret": 0.9734374992549419
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.47636718838475645,
+        "optimal": 0.44921875,
+        "regret": 0.5236328116152436
+      }
+    },
+    {
+      "seed": 200002,
+      "family": "changed_goal",
+      "variant": "written",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.8546875016763806,
+        "optimal": 0.796875,
+        "regret": 0.14531249832361937
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.954687500372529,
+        "optimal": 0.9375,
+        "regret": 0.04531249962747097
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.9109375011175871,
+        "optimal": 0.875,
+        "regret": 0.08906249888241291
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.954687500372529,
+        "optimal": 0.9375,
+        "regret": 0.04531249962747097
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.9164062510244548,
+        "optimal": 0.87890625,
+        "regret": 0.08359374897554517
+      }
+    },
+    {
+      "seed": 200002,
+      "family": "changed_goal",
+      "variant": "written_no_history",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.4273437578231096,
+        "optimal": 0.171875,
+        "regret": 0.5726562421768904
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.3484375048428774,
+        "optimal": 0.1875,
+        "regret": 0.6515624951571226
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.42187500558793545,
+        "optimal": 0.25,
+        "regret": 0.5781249944120646
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.3359375037252903,
+        "optimal": 0.21875,
+        "regret": 0.6640624962747097
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.44082031841389835,
+        "optimal": 0.2421875,
+        "regret": 0.5591796815861017
+      }
+    },
+    {
+      "seed": 200002,
+      "family": "changed_goal",
+      "variant": "random_untrained",
+      "parameter_hash": "02a645a38faadebe6b758fc13cdbe94f2acda0a9d9f8941f7a3e222d4352fb21",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.5023437617346644,
+        "optimal": 0.0,
+        "regret": 0.49765623826533556
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.5468750111758709,
+        "optimal": 0.03125,
+        "regret": 0.4531249888241291
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.5171875115483999,
+        "optimal": 0.0,
+        "regret": 0.4828124884516001
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.5328125115483999,
+        "optimal": 0.0,
+        "regret": 0.4671874884516001
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.5312500114087015,
+        "optimal": 0.01953125,
+        "regret": 0.46874998859129846
+      }
+    },
+    {
+      "seed": 200003,
+      "family": "changed_goal",
+      "variant": "written",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.9296875009313226,
+        "optimal": 0.90625,
+        "regret": 0.07031249906867743
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.9437500005587935,
+        "optimal": 0.921875,
+        "regret": 0.056249999441206455
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.9062500018626451,
+        "optimal": 0.84375,
+        "regret": 0.09374999813735485
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.9187500011175871,
+        "optimal": 0.875,
+        "regret": 0.08124999888241291
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.9476562507916242,
+        "optimal": 0.921875,
+        "regret": 0.05234374920837581
+      }
+    },
+    {
+      "seed": 200003,
+      "family": "changed_goal",
+      "variant": "written_no_history",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.44687500689178705,
+        "optimal": 0.21875,
+        "regret": 0.553124993108213
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.468750006519258,
+        "optimal": 0.234375,
+        "regret": 0.531249993480742
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.4640625063329935,
+        "optimal": 0.25,
+        "regret": 0.5359374936670065
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.46562500670552254,
+        "optimal": 0.21875,
+        "regret": 0.5343749932944775
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.4679687567986548,
+        "optimal": 0.23046875,
+        "regret": 0.5320312432013452
+      }
+    },
+    {
+      "seed": 200003,
+      "family": "changed_goal",
+      "variant": "random_untrained",
+      "parameter_hash": "e0d16cc3e8b814f33ea748e2ef39efbc7dfce99774011d7f2f990659914a18ec",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.9351562513038516,
+        "optimal": 0.890625,
+        "regret": 0.0648437486961484
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.021875000558793545,
+        "optimal": 0.0,
+        "regret": 0.9781249994412065
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.04531250149011612,
+        "optimal": 0.0,
+        "regret": 0.9546874985098839
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.04375000111758709,
+        "optimal": 0.0,
+        "regret": 0.9562499988824129
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.4976562508381903,
+        "optimal": 0.46875,
+        "regret": 0.5023437491618097
+      }
+    },
+    {
+      "seed": 200004,
+      "family": "changed_goal",
+      "variant": "written",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.9492187509313226,
+        "optimal": 0.90625,
+        "regret": 0.050781249068677425
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.9453125009313226,
+        "optimal": 0.90625,
+        "regret": 0.054687499068677425
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.9250000007450581,
+        "optimal": 0.90625,
+        "regret": 0.07499999925494194
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.96875,
+        "optimal": 0.96875,
+        "regret": 0.03125
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.9427734382916242,
+        "optimal": 0.91015625,
+        "regret": 0.05722656170837581
+      }
+    },
+    {
+      "seed": 200004,
+      "family": "changed_goal",
+      "variant": "written_no_history",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.4820312559604645,
+        "optimal": 0.25,
+        "regret": 0.5179687440395355
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.42656250670552254,
+        "optimal": 0.1875,
+        "regret": 0.5734374932944775
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.41562500409781933,
+        "optimal": 0.28125,
+        "regret": 0.5843749959021807
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.4937500059604645,
+        "optimal": 0.28125,
+        "regret": 0.5062499940395355
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.4476562556810677,
+        "optimal": 0.24609375,
+        "regret": 0.5523437443189323
+      }
+    },
+    {
+      "seed": 200004,
+      "family": "changed_goal",
+      "variant": "random_untrained",
+      "parameter_hash": "75429ff9568d4198d9380a782190b291fc6bb429348758d473796d2677bd2411",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.3328125113621354,
+        "optimal": 0.03125,
+        "regret": 0.6671874886378646
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.31093751173466444,
+        "optimal": 0.0,
+        "regret": 0.6890624882653356
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.2906250115483999,
+        "optimal": 0.0,
+        "regret": 0.7093749884516001
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.2906250115483999,
+        "optimal": 0.0,
+        "regret": 0.7093749884516001
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.3210937613621354,
+        "optimal": 0.0234375,
+        "regret": 0.6789062386378646
+      }
+    },
+    {
+      "seed": 200005,
+      "family": "changed_goal",
+      "variant": "written",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.9460937511175871,
+        "optimal": 0.90625,
+        "regret": 0.05390624888241291
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.9789062505587935,
+        "optimal": 0.953125,
+        "regret": 0.021093749441206455
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.9015625007450581,
+        "optimal": 0.875,
+        "regret": 0.09843749925494194
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.9718750007450581,
+        "optimal": 0.9375,
+        "regret": 0.02812499925494194
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.9560546881984919,
+        "optimal": 0.9296875,
+        "regret": 0.04394531180150807
+      }
+    },
+    {
+      "seed": 200005,
+      "family": "changed_goal",
+      "variant": "written_no_history",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.6125000063329935,
+        "optimal": 0.375,
+        "regret": 0.3874999936670065
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.5546875055879354,
+        "optimal": 0.34375,
+        "regret": 0.44531249441206455
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.4078125059604645,
+        "optimal": 0.21875,
+        "regret": 0.5921874940395355
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.5656250044703484,
+        "optimal": 0.40625,
+        "regret": 0.43437499552965164
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.5357421934604645,
+        "optimal": 0.31640625,
+        "regret": 0.4642578065395355
+      }
+    },
+    {
+      "seed": 200005,
+      "family": "changed_goal",
+      "variant": "random_untrained",
+      "parameter_hash": "f373ca78429bd0fa237f6abfa347606563b563cdeeaf6cffebb3cf603e0e12c9",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.1296875011175871,
+        "optimal": 0.09375,
+        "regret": 0.8703124988824129
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.9789062505587935,
+        "optimal": 0.953125,
+        "regret": 0.021093749441206455
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.923437500372529,
+        "optimal": 0.90625,
+        "regret": 0.07656249962747097
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.9718750007450581,
+        "optimal": 0.9375,
+        "regret": 0.02812499925494194
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.5281250006519258,
+        "optimal": 0.50390625,
+        "regret": 0.4718749993480742
+      }
+    },
+    {
+      "seed": 200006,
+      "family": "changed_goal",
+      "variant": "written",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.8960937513038516,
+        "optimal": 0.84375,
+        "regret": 0.1039062486961484
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.9515625005587935,
+        "optimal": 0.9375,
+        "regret": 0.048437499441206455
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.9265625011175871,
+        "optimal": 0.875,
+        "regret": 0.07343749888241291
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.978125000372529,
+        "optimal": 0.96875,
+        "regret": 0.02187499962747097
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.9408203132916242,
+        "optimal": 0.91015625,
+        "regret": 0.05917968670837581
+      }
+    },
+    {
+      "seed": 200006,
+      "family": "changed_goal",
+      "variant": "written_no_history",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.49609375558793545,
+        "optimal": 0.296875,
+        "regret": 0.5039062444120646
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.5039062555879354,
+        "optimal": 0.328125,
+        "regret": 0.49609374441206455
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.5156250074505806,
+        "optimal": 0.21875,
+        "regret": 0.4843749925494194
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.5281250048428774,
+        "optimal": 0.375,
+        "regret": 0.4718749951571226
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.49980469327419996,
+        "optimal": 0.296875,
+        "regret": 0.5001953067258
+      }
+    },
+    {
+      "seed": 200006,
+      "family": "changed_goal",
+      "variant": "random_untrained",
+      "parameter_hash": "7630469ad9b7415383bc008576f667b21de8eaf20ee795b7d33440cac69610c6",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.9375000009313226,
+        "optimal": 0.90625,
+        "regret": 0.062499999068677425
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.33046875707805157,
+        "optimal": 0.015625,
+        "regret": 0.6695312429219484
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.05156250111758709,
+        "optimal": 0.0,
+        "regret": 0.9484374988824129
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.4046875089406967,
+        "optimal": 0.0,
+        "regret": 0.5953124910593033
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.5839843775611371,
+        "optimal": 0.47265625,
+        "regret": 0.4160156224388629
+      }
+    },
+    {
+      "seed": 200007,
+      "family": "changed_goal",
+      "variant": "written",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.8828125018626451,
+        "optimal": 0.8125,
+        "regret": 0.11718749813735485
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.9359375005587935,
+        "optimal": 0.921875,
+        "regret": 0.06406249944120646
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 1.0,
+        "optimal": 1.0,
+        "regret": 0.0
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.978125000372529,
+        "optimal": 0.96875,
+        "regret": 0.02187499962747097
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.9351562508381903,
+        "optimal": 0.90625,
+        "regret": 0.06484374916180968
+      }
+    },
+    {
+      "seed": 200007,
+      "family": "changed_goal",
+      "variant": "written_no_history",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.4671875052154064,
+        "optimal": 0.28125,
+        "regret": 0.5328124947845936
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.5375000052154064,
+        "optimal": 0.34375,
+        "regret": 0.4624999947845936
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.5062500052154064,
+        "optimal": 0.3125,
+        "regret": 0.4937499947845936
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.5625000055879354,
+        "optimal": 0.34375,
+        "regret": 0.43749999441206455
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.4953125056345016,
+        "optimal": 0.29296875,
+        "regret": 0.5046874943654984
+      }
+    },
+    {
+      "seed": 200007,
+      "family": "changed_goal",
+      "variant": "random_untrained",
+      "parameter_hash": "1a87979ce9f359bfd1b8f0828b7b647301a7bfe17876d4df15f67d36ac0b64e9",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.5242187613621354,
+        "optimal": 0.015625,
+        "regret": 0.4757812386378646
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.8265625024214387,
+        "optimal": 0.765625,
+        "regret": 0.1734374975785613
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.7812500037252903,
+        "optimal": 0.6875,
+        "regret": 0.2187499962747097
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.8687500022351742,
+        "optimal": 0.8125,
+        "regret": 0.13124999776482582
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.66796875721775,
+        "optimal": 0.37109375,
+        "regret": 0.33203124278225005
+      }
+    },
+    {
+      "seed": 200008,
+      "family": "changed_goal",
+      "variant": "written",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.8718750011175871,
+        "optimal": 0.828125,
+        "regret": 0.1281249988824129
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.9398437505587935,
+        "optimal": 0.921875,
+        "regret": 0.060156249441206455
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.9640625007450581,
+        "optimal": 0.9375,
+        "regret": 0.03593749925494194
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.9015625007450581,
+        "optimal": 0.875,
+        "regret": 0.09843749925494194
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.9283203131053597,
+        "optimal": 0.90625,
+        "regret": 0.07167968689464033
+      }
+    },
+    {
+      "seed": 200008,
+      "family": "changed_goal",
+      "variant": "written_no_history",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.46406250540167093,
+        "optimal": 0.265625,
+        "regret": 0.5359374945983291
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.45156250707805157,
+        "optimal": 0.203125,
+        "regret": 0.5484374929219484
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.5359375048428774,
+        "optimal": 0.34375,
+        "regret": 0.4640624951571226
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.4953125063329935,
+        "optimal": 0.25,
+        "regret": 0.5046874936670065
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.4705078185070306,
+        "optimal": 0.25390625,
+        "regret": 0.5294921814929694
+      }
+    },
+    {
+      "seed": 200008,
+      "family": "changed_goal",
+      "variant": "random_untrained",
+      "parameter_hash": "851f15725ba706b4ecb040dab02e81add24ad8b0fcc2a79c13abaf6c9678e584",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.07734375167638063,
+        "optimal": 0.015625,
+        "regret": 0.9226562483236194
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.28281250689178705,
+        "optimal": 0.03125,
+        "regret": 0.717187493108213
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.2890625074505806,
+        "optimal": 0.0,
+        "regret": 0.7109374925494194
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.27812500670552254,
+        "optimal": 0.03125,
+        "regret": 0.7218749932944775
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.1648437539115548,
+        "optimal": 0.015625,
+        "regret": 0.8351562460884452
+      }
+    },
+    {
+      "seed": 200001,
+      "family": "continuous_context",
+      "variant": "written",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.578125,
+        "optimal": 0.359375,
+        "regret": 0.14653850719332695
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.65625,
+        "optimal": 0.359375,
+        "regret": 0.1450773641699925
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.5625,
+        "optimal": 0.40625,
+        "regret": 0.15882697142660618
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.6875,
+        "optimal": 0.46875,
+        "regret": 0.10705477744340897
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.59375,
+        "optimal": 0.3984375,
+        "regret": 0.14493082373519428
+      }
+    },
+    {
+      "seed": 200001,
+      "family": "continuous_context",
+      "variant": "written_no_history",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.484375,
+        "optimal": 0.25,
+        "regret": 0.2143500279635191
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.59375,
+        "optimal": 0.34375,
+        "regret": 0.1999764412175864
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.375,
+        "optimal": 0.21875,
+        "regret": 0.2507208101451397
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.59375,
+        "optimal": 0.40625,
+        "regret": 0.14642393495887518
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.54296875,
+        "optimal": 0.31640625,
+        "regret": 0.2054931165475864
+      }
+    },
+    {
+      "seed": 200001,
+      "family": "continuous_context",
+      "variant": "random_untrained",
+      "parameter_hash": "6db5e254419b4e9e8e75124b45e081c965eec97ce36f01ff3c1f9fa8c26b1bd6",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.59375,
+        "optimal": 0.234375,
+        "regret": 0.20352409919723868
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.515625,
+        "optimal": 0.296875,
+        "regret": 0.2018570122309029
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.59375,
+        "optimal": 0.21875,
+        "regret": 0.225399199873209
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.46875,
+        "optimal": 0.3125,
+        "regret": 0.15931437956169248
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.53125,
+        "optimal": 0.25,
+        "regret": 0.21007121619186364
+      }
+    },
+    {
+      "seed": 200002,
+      "family": "continuous_context",
+      "variant": "written",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.609375,
+        "optimal": 0.28125,
+        "regret": 0.191193920756632
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.703125,
+        "optimal": 0.65625,
+        "regret": 0.08170014969073236
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.6875,
+        "optimal": 0.53125,
+        "regret": 0.07704500947147608
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.65625,
+        "optimal": 0.65625,
+        "regret": 0.10514308093115687
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.6875,
+        "optimal": 0.53125,
+        "regret": 0.11731860657710058
+      }
+    },
+    {
+      "seed": 200002,
+      "family": "continuous_context",
+      "variant": "written_no_history",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.4375,
+        "optimal": 0.15625,
+        "regret": 0.3048040841240436
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.5,
+        "optimal": 0.265625,
+        "regret": 0.2835251537617296
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.78125,
+        "optimal": 0.28125,
+        "regret": 0.2139289272017777
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.53125,
+        "optimal": 0.34375,
+        "regret": 0.2995489779859781
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.5390625,
+        "optimal": 0.21484375,
+        "regret": 0.2767230707104318
+      }
+    },
+    {
+      "seed": 200002,
+      "family": "continuous_context",
+      "variant": "random_untrained",
+      "parameter_hash": "02a645a38faadebe6b758fc13cdbe94f2acda0a9d9f8941f7a3e222d4352fb21",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.4375,
+        "optimal": 0.1875,
+        "regret": 0.3087607089764788
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.5625,
+        "optimal": 0.3125,
+        "regret": 0.2183444513939321
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.5625,
+        "optimal": 0.21875,
+        "regret": 0.24322119215503335
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.53125,
+        "optimal": 0.375,
+        "regret": 0.22170906513929367
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.51953125,
+        "optimal": 0.24609375,
+        "regret": 0.2652235265904892
+      }
+    },
+    {
+      "seed": 200003,
+      "family": "continuous_context",
+      "variant": "written",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.546875,
+        "optimal": 0.21875,
+        "regret": 0.21936336916405708
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.625,
+        "optimal": 0.40625,
+        "regret": 0.1215582643635571
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.625,
+        "optimal": 0.28125,
+        "regret": 0.18188320007175207
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.59375,
+        "optimal": 0.34375,
+        "regret": 0.15028583351522684
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.59765625,
+        "optimal": 0.390625,
+        "regret": 0.143871749722166
+      }
+    },
+    {
+      "seed": 200003,
+      "family": "continuous_context",
+      "variant": "written_no_history",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.515625,
+        "optimal": 0.1875,
+        "regret": 0.29399642476346344
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.53125,
+        "optimal": 0.25,
+        "regret": 0.23877772374544293
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.5,
+        "optimal": 0.15625,
+        "regret": 0.30004948657006025
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.59375,
+        "optimal": 0.21875,
+        "regret": 0.2496080391574651
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.52734375,
+        "optimal": 0.2109375,
+        "regret": 0.25418600224656984
+      }
+    },
+    {
+      "seed": 200003,
+      "family": "continuous_context",
+      "variant": "random_untrained",
+      "parameter_hash": "e0d16cc3e8b814f33ea748e2ef39efbc7dfce99774011d7f2f990659914a18ec",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.484375,
+        "optimal": 0.203125,
+        "regret": 0.2744716048473492
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.515625,
+        "optimal": 0.234375,
+        "regret": 0.21081386553123593
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.53125,
+        "optimal": 0.25,
+        "regret": 0.22707245219498873
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.4375,
+        "optimal": 0.1875,
+        "regret": 0.2290376122109592
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.51171875,
+        "optimal": 0.21875,
+        "regret": 0.23632203615852632
+      }
+    },
+    {
+      "seed": 200004,
+      "family": "continuous_context",
+      "variant": "written",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.625,
+        "optimal": 0.5,
+        "regret": 0.12443845754023641
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.703125,
+        "optimal": 0.546875,
+        "regret": 0.07745479512959719
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.59375,
+        "optimal": 0.53125,
+        "regret": 0.12883443105965853
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.71875,
+        "optimal": 0.65625,
+        "regret": 0.03491085767745972
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.66796875,
+        "optimal": 0.546875,
+        "regret": 0.10282721710973419
+      }
+    },
+    {
+      "seed": 200004,
+      "family": "continuous_context",
+      "variant": "written_no_history",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.53125,
+        "optimal": 0.265625,
+        "regret": 0.2543452148674987
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.578125,
+        "optimal": 0.171875,
+        "regret": 0.28210210881661624
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.5,
+        "optimal": 0.1875,
+        "regret": 0.29991195461479947
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.625,
+        "optimal": 0.1875,
+        "regret": 0.2956923635210842
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.515625,
+        "optimal": 0.2421875,
+        "regret": 0.2573270108405268
+      }
+    },
+    {
+      "seed": 200004,
+      "family": "continuous_context",
+      "variant": "random_untrained",
+      "parameter_hash": "75429ff9568d4198d9380a782190b291fc6bb429348758d473796d2677bd2411",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.53125,
+        "optimal": 0.265625,
+        "regret": 0.2384256380610168
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.609375,
+        "optimal": 0.21875,
+        "regret": 0.26899450982455164
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.53125,
+        "optimal": 0.15625,
+        "regret": 0.27770198648795485
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.65625,
+        "optimal": 0.21875,
+        "regret": 0.28634254704229534
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.53125,
+        "optimal": 0.2421875,
+        "regret": 0.2499581051088171
+      }
+    },
+    {
+      "seed": 200005,
+      "family": "continuous_context",
+      "variant": "written",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.421875,
+        "optimal": 0.390625,
+        "regret": 0.17556112620513886
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.65625,
+        "optimal": 0.578125,
+        "regret": 0.09984063869342208
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.65625,
+        "optimal": 0.59375,
+        "regret": 0.09384449338540435
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.6875,
+        "optimal": 0.71875,
+        "regret": 0.05894216988235712
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.6015625,
+        "optimal": 0.53125,
+        "regret": 0.1187847551482264
+      }
+    },
+    {
+      "seed": 200005,
+      "family": "continuous_context",
+      "variant": "written_no_history",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.421875,
+        "optimal": 0.25,
+        "regret": 0.23038576473481953
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.578125,
+        "optimal": 0.3125,
+        "regret": 0.21086806652601808
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.5625,
+        "optimal": 0.21875,
+        "regret": 0.28313276858534664
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.6875,
+        "optimal": 0.375,
+        "regret": 0.17614265345036983
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.515625,
+        "optimal": 0.28125,
+        "regret": 0.22978308047458995
+      }
+    },
+    {
+      "seed": 200005,
+      "family": "continuous_context",
+      "variant": "random_untrained",
+      "parameter_hash": "f373ca78429bd0fa237f6abfa347606563b563cdeeaf6cffebb3cf603e0e12c9",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.453125,
+        "optimal": 0.234375,
+        "regret": 0.2427401429740712
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.578125,
+        "optimal": 0.25,
+        "regret": 0.2525462821358815
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.59375,
+        "optimal": 0.125,
+        "regret": 0.21787012461572886
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.59375,
+        "optimal": 0.25,
+        "regret": 0.23378259292803705
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.52734375,
+        "optimal": 0.25390625,
+        "regret": 0.2297478012915235
+      }
+    },
+    {
+      "seed": 200006,
+      "family": "continuous_context",
+      "variant": "written",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.59375,
+        "optimal": 0.46875,
+        "regret": 0.1735767491045408
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.671875,
+        "optimal": 0.578125,
+        "regret": 0.10060796479228884
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.53125,
+        "optimal": 0.5625,
+        "regret": 0.1216359999962151
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.65625,
+        "optimal": 0.46875,
+        "regret": 0.13334088237024844
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.59765625,
+        "optimal": 0.5,
+        "regret": 0.1403974001732422
+      }
+    },
+    {
+      "seed": 200006,
+      "family": "continuous_context",
+      "variant": "written_no_history",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.515625,
+        "optimal": 0.328125,
+        "regret": 0.22579045488964766
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.625,
+        "optimal": 0.25,
+        "regret": 0.2639342965558171
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.28125,
+        "optimal": 0.3125,
+        "regret": 0.2560111965285614
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.65625,
+        "optimal": 0.1875,
+        "regret": 0.2461463874205947
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.52734375,
+        "optimal": 0.265625,
+        "regret": 0.2590996075014118
+      }
+    },
+    {
+      "seed": 200006,
+      "family": "continuous_context",
+      "variant": "random_untrained",
+      "parameter_hash": "7630469ad9b7415383bc008576f667b21de8eaf20ee795b7d33440cac69610c6",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.5,
+        "optimal": 0.265625,
+        "regret": 0.21693546138703823
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.59375,
+        "optimal": 0.390625,
+        "regret": 0.17550706397742033
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.5,
+        "optimal": 0.3125,
+        "regret": 0.2570184376090765
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.625,
+        "optimal": 0.34375,
+        "regret": 0.17302323505282402
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.51953125,
+        "optimal": 0.3046875,
+        "regret": 0.2233010764757637
+      }
+    },
+    {
+      "seed": 200007,
+      "family": "continuous_context",
+      "variant": "written",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.640625,
+        "optimal": 0.40625,
+        "regret": 0.18784898123703897
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.484375,
+        "optimal": 0.28125,
+        "regret": 0.1919385566143319
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.59375,
+        "optimal": 0.375,
+        "regret": 0.14941680943593383
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.5,
+        "optimal": 0.3125,
+        "regret": 0.1833726200275123
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.58984375,
+        "optimal": 0.40234375,
+        "regret": 0.15959950952674262
+      }
+    },
+    {
+      "seed": 200007,
+      "family": "continuous_context",
+      "variant": "written_no_history",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.546875,
+        "optimal": 0.265625,
+        "regret": 0.27156797057250515
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.59375,
+        "optimal": 0.265625,
+        "regret": 0.20025280548725277
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.59375,
+        "optimal": 0.3125,
+        "regret": 0.2324497359804809
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.6875,
+        "optimal": 0.28125,
+        "regret": 0.1655968027189374
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.515625,
+        "optimal": 0.2421875,
+        "regret": 0.24897846634848975
+      }
+    },
+    {
+      "seed": 200007,
+      "family": "continuous_context",
+      "variant": "random_untrained",
+      "parameter_hash": "1a87979ce9f359bfd1b8f0828b7b647301a7bfe17876d4df15f67d36ac0b64e9",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.421875,
+        "optimal": 0.234375,
+        "regret": 0.2802739521721378
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.609375,
+        "optimal": 0.3125,
+        "regret": 0.22593788453377783
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.34375,
+        "optimal": 0.15625,
+        "regret": 0.2635108239483088
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.71875,
+        "optimal": 0.34375,
+        "regret": 0.17763445153832436
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.5,
+        "optimal": 0.2578125,
+        "regret": 0.26587793976068497
+      }
+    },
+    {
+      "seed": 200008,
+      "family": "continuous_context",
+      "variant": "written",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.484375,
+        "optimal": 0.46875,
+        "regret": 0.14496795856393874
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.671875,
+        "optimal": 0.578125,
+        "regret": 0.13282401295145974
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.6875,
+        "optimal": 0.59375,
+        "regret": 0.14356452506035566
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.71875,
+        "optimal": 0.59375,
+        "regret": 0.14254660857841372
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.59765625,
+        "optimal": 0.58203125,
+        "regret": 0.11225674026354682
+      }
+    },
+    {
+      "seed": 200008,
+      "family": "continuous_context",
+      "variant": "written_no_history",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.4375,
+        "optimal": 0.21875,
+        "regret": 0.25299291720148176
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.515625,
+        "optimal": 0.21875,
+        "regret": 0.2595097469165921
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.5,
+        "optimal": 0.3125,
+        "regret": 0.21896668686531484
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.5,
+        "optimal": 0.15625,
+        "regret": 0.3021111013367772
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.48046875,
+        "optimal": 0.265625,
+        "regret": 0.23735671292524785
+      }
+    },
+    {
+      "seed": 200008,
+      "family": "continuous_context",
+      "variant": "random_untrained",
+      "parameter_hash": "851f15725ba706b4ecb040dab02e81add24ad8b0fcc2a79c13abaf6c9678e584",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.453125,
+        "optimal": 0.171875,
+        "regret": 0.24593354889657348
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.546875,
+        "optimal": 0.25,
+        "regret": 0.2474751085974276
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.5625,
+        "optimal": 0.34375,
+        "regret": 0.1818311745300889
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.53125,
+        "optimal": 0.125,
+        "regret": 0.30686075473204255
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.5078125,
+        "optimal": 0.265625,
+        "regret": 0.23204817043733783
+      }
+    },
+    {
+      "seed": 200001,
+      "family": "delayed_credit",
+      "variant": "written",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.515625,
+        "optimal": 0.515625,
+        "regret": 0.484375
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.515625,
+        "optimal": 0.515625,
+        "regret": 0.484375
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.53125,
+        "optimal": 0.53125,
+        "regret": 0.46875
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.46875,
+        "optimal": 0.46875,
+        "regret": 0.53125
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.5078125,
+        "optimal": 0.5078125,
+        "regret": 0.4921875
+      }
+    },
+    {
+      "seed": 200001,
+      "family": "delayed_credit",
+      "variant": "written_no_history",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.484375,
+        "optimal": 0.484375,
+        "regret": 0.515625
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.484375,
+        "optimal": 0.484375,
+        "regret": 0.515625
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.5625,
+        "optimal": 0.5625,
+        "regret": 0.4375
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.4375,
+        "optimal": 0.4375,
+        "regret": 0.5625
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.51953125,
+        "optimal": 0.51953125,
+        "regret": 0.48046875
+      }
+    },
+    {
+      "seed": 200001,
+      "family": "delayed_credit",
+      "variant": "random_untrained",
+      "parameter_hash": "6db5e254419b4e9e8e75124b45e081c965eec97ce36f01ff3c1f9fa8c26b1bd6",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.03125,
+        "optimal": 0.03125,
+        "regret": 0.96875
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.046875,
+        "optimal": 0.046875,
+        "regret": 0.953125
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.0625,
+        "optimal": 0.0625,
+        "regret": 0.9375
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.03125,
+        "optimal": 0.03125,
+        "regret": 0.96875
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.05078125,
+        "optimal": 0.05078125,
+        "regret": 0.94921875
+      }
+    },
+    {
+      "seed": 200002,
+      "family": "delayed_credit",
+      "variant": "written",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.5,
+        "optimal": 0.5,
+        "regret": 0.5
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.484375,
+        "optimal": 0.484375,
+        "regret": 0.515625
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.5,
+        "optimal": 0.5,
+        "regret": 0.5
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.46875,
+        "optimal": 0.46875,
+        "regret": 0.53125
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.484375,
+        "optimal": 0.484375,
+        "regret": 0.515625
+      }
+    },
+    {
+      "seed": 200002,
+      "family": "delayed_credit",
+      "variant": "written_no_history",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.515625,
+        "optimal": 0.515625,
+        "regret": 0.484375
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.484375,
+        "optimal": 0.484375,
+        "regret": 0.515625
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.4375,
+        "optimal": 0.4375,
+        "regret": 0.5625
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.46875,
+        "optimal": 0.46875,
+        "regret": 0.53125
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.47265625,
+        "optimal": 0.47265625,
+        "regret": 0.52734375
+      }
+    },
+    {
+      "seed": 200002,
+      "family": "delayed_credit",
+      "variant": "random_untrained",
+      "parameter_hash": "02a645a38faadebe6b758fc13cdbe94f2acda0a9d9f8941f7a3e222d4352fb21",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.90625,
+        "optimal": 0.90625,
+        "regret": 0.09375
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.953125,
+        "optimal": 0.953125,
+        "regret": 0.046875
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.9375,
+        "optimal": 0.9375,
+        "regret": 0.0625
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.96875,
+        "optimal": 0.96875,
+        "regret": 0.03125
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.9453125,
+        "optimal": 0.9453125,
+        "regret": 0.0546875
+      }
+    },
+    {
+      "seed": 200003,
+      "family": "delayed_credit",
+      "variant": "written",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.5,
+        "optimal": 0.5,
+        "regret": 0.5
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.46875,
+        "optimal": 0.46875,
+        "regret": 0.53125
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.5,
+        "optimal": 0.5,
+        "regret": 0.5
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.40625,
+        "optimal": 0.40625,
+        "regret": 0.59375
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.4921875,
+        "optimal": 0.4921875,
+        "regret": 0.5078125
+      }
+    },
+    {
+      "seed": 200003,
+      "family": "delayed_credit",
+      "variant": "written_no_history",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.484375,
+        "optimal": 0.484375,
+        "regret": 0.515625
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.421875,
+        "optimal": 0.421875,
+        "regret": 0.578125
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.4375,
+        "optimal": 0.4375,
+        "regret": 0.5625
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.25,
+        "optimal": 0.25,
+        "regret": 0.75
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.48046875,
+        "optimal": 0.48046875,
+        "regret": 0.51953125
+      }
+    },
+    {
+      "seed": 200003,
+      "family": "delayed_credit",
+      "variant": "random_untrained",
+      "parameter_hash": "e0d16cc3e8b814f33ea748e2ef39efbc7dfce99774011d7f2f990659914a18ec",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.0625,
+        "optimal": 0.0625,
+        "regret": 0.9375
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.046875,
+        "optimal": 0.046875,
+        "regret": 0.953125
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.09375,
+        "optimal": 0.09375,
+        "regret": 0.90625
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.0625,
+        "optimal": 0.0625,
+        "regret": 0.9375
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.0546875,
+        "optimal": 0.0546875,
+        "regret": 0.9453125
+      }
+    },
+    {
+      "seed": 200004,
+      "family": "delayed_credit",
+      "variant": "written",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.484375,
+        "optimal": 0.484375,
+        "regret": 0.515625
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.515625,
+        "optimal": 0.515625,
+        "regret": 0.484375
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.5625,
+        "optimal": 0.5625,
+        "regret": 0.4375
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.5625,
+        "optimal": 0.5625,
+        "regret": 0.4375
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.5,
+        "optimal": 0.5,
+        "regret": 0.5
+      }
+    },
+    {
+      "seed": 200004,
+      "family": "delayed_credit",
+      "variant": "written_no_history",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.484375,
+        "optimal": 0.484375,
+        "regret": 0.515625
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.453125,
+        "optimal": 0.453125,
+        "regret": 0.546875
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.53125,
+        "optimal": 0.53125,
+        "regret": 0.46875
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.59375,
+        "optimal": 0.59375,
+        "regret": 0.40625
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.48046875,
+        "optimal": 0.48046875,
+        "regret": 0.51953125
+      }
+    },
+    {
+      "seed": 200004,
+      "family": "delayed_credit",
+      "variant": "random_untrained",
+      "parameter_hash": "75429ff9568d4198d9380a782190b291fc6bb429348758d473796d2677bd2411",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.9375,
+        "optimal": 0.9375,
+        "regret": 0.0625
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.9375,
+        "optimal": 0.9375,
+        "regret": 0.0625
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.9375,
+        "optimal": 0.9375,
+        "regret": 0.0625
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.96875,
+        "optimal": 0.96875,
+        "regret": 0.03125
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.94921875,
+        "optimal": 0.94921875,
+        "regret": 0.05078125
+      }
+    },
+    {
+      "seed": 200005,
+      "family": "delayed_credit",
+      "variant": "written",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.5,
+        "optimal": 0.5,
+        "regret": 0.5
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.515625,
+        "optimal": 0.515625,
+        "regret": 0.484375
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.53125,
+        "optimal": 0.53125,
+        "regret": 0.46875
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.59375,
+        "optimal": 0.59375,
+        "regret": 0.40625
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.4921875,
+        "optimal": 0.4921875,
+        "regret": 0.5078125
+      }
+    },
+    {
+      "seed": 200005,
+      "family": "delayed_credit",
+      "variant": "written_no_history",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.46875,
+        "optimal": 0.46875,
+        "regret": 0.53125
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.546875,
+        "optimal": 0.546875,
+        "regret": 0.453125
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.46875,
+        "optimal": 0.46875,
+        "regret": 0.53125
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.6875,
+        "optimal": 0.6875,
+        "regret": 0.3125
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.45703125,
+        "optimal": 0.45703125,
+        "regret": 0.54296875
+      }
+    },
+    {
+      "seed": 200005,
+      "family": "delayed_credit",
+      "variant": "random_untrained",
+      "parameter_hash": "f373ca78429bd0fa237f6abfa347606563b563cdeeaf6cffebb3cf603e0e12c9",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.953125,
+        "optimal": 0.953125,
+        "regret": 0.046875
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.953125,
+        "optimal": 0.953125,
+        "regret": 0.046875
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.9375,
+        "optimal": 0.9375,
+        "regret": 0.0625
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.90625,
+        "optimal": 0.90625,
+        "regret": 0.09375
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.94140625,
+        "optimal": 0.94140625,
+        "regret": 0.05859375
+      }
+    },
+    {
+      "seed": 200006,
+      "family": "delayed_credit",
+      "variant": "written",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.484375,
+        "optimal": 0.484375,
+        "regret": 0.515625
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.453125,
+        "optimal": 0.453125,
+        "regret": 0.546875
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.53125,
+        "optimal": 0.53125,
+        "regret": 0.46875
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.5,
+        "optimal": 0.5,
+        "regret": 0.5
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.48046875,
+        "optimal": 0.48046875,
+        "regret": 0.51953125
+      }
+    },
+    {
+      "seed": 200006,
+      "family": "delayed_credit",
+      "variant": "written_no_history",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.4375,
+        "optimal": 0.4375,
+        "regret": 0.5625
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.40625,
+        "optimal": 0.40625,
+        "regret": 0.59375
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.53125,
+        "optimal": 0.53125,
+        "regret": 0.46875
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.4375,
+        "optimal": 0.4375,
+        "regret": 0.5625
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.4375,
+        "optimal": 0.4375,
+        "regret": 0.5625
+      }
+    },
+    {
+      "seed": 200006,
+      "family": "delayed_credit",
+      "variant": "random_untrained",
+      "parameter_hash": "7630469ad9b7415383bc008576f667b21de8eaf20ee795b7d33440cac69610c6",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.03125,
+        "optimal": 0.03125,
+        "regret": 0.96875
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.953125,
+        "optimal": 0.953125,
+        "regret": 0.046875
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.875,
+        "optimal": 0.875,
+        "regret": 0.125
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.96875,
+        "optimal": 0.96875,
+        "regret": 0.03125
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.6328125,
+        "optimal": 0.6328125,
+        "regret": 0.3671875
+      }
+    },
+    {
+      "seed": 200007,
+      "family": "delayed_credit",
+      "variant": "written",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.5,
+        "optimal": 0.5,
+        "regret": 0.5
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.5,
+        "optimal": 0.5,
+        "regret": 0.5
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.5,
+        "optimal": 0.5,
+        "regret": 0.5
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.5625,
+        "optimal": 0.5625,
+        "regret": 0.4375
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.5,
+        "optimal": 0.5,
+        "regret": 0.5
+      }
+    },
+    {
+      "seed": 200007,
+      "family": "delayed_credit",
+      "variant": "written_no_history",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.53125,
+        "optimal": 0.53125,
+        "regret": 0.46875
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.46875,
+        "optimal": 0.46875,
+        "regret": 0.53125
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.53125,
+        "optimal": 0.53125,
+        "regret": 0.46875
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.59375,
+        "optimal": 0.59375,
+        "regret": 0.40625
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.51171875,
+        "optimal": 0.51171875,
+        "regret": 0.48828125
+      }
+    },
+    {
+      "seed": 200007,
+      "family": "delayed_credit",
+      "variant": "random_untrained",
+      "parameter_hash": "1a87979ce9f359bfd1b8f0828b7b647301a7bfe17876d4df15f67d36ac0b64e9",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.875,
+        "optimal": 0.875,
+        "regret": 0.125
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.890625,
+        "optimal": 0.890625,
+        "regret": 0.109375
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.90625,
+        "optimal": 0.90625,
+        "regret": 0.09375
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.96875,
+        "optimal": 0.96875,
+        "regret": 0.03125
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.92578125,
+        "optimal": 0.92578125,
+        "regret": 0.07421875
+      }
+    },
+    {
+      "seed": 200008,
+      "family": "delayed_credit",
+      "variant": "written",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.484375,
+        "optimal": 0.484375,
+        "regret": 0.515625
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.515625,
+        "optimal": 0.515625,
+        "regret": 0.484375
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.4375,
+        "optimal": 0.4375,
+        "regret": 0.5625
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.46875,
+        "optimal": 0.46875,
+        "regret": 0.53125
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.5078125,
+        "optimal": 0.5078125,
+        "regret": 0.4921875
+      }
+    },
+    {
+      "seed": 200008,
+      "family": "delayed_credit",
+      "variant": "written_no_history",
+      "parameter_hash": "f798fadb5487d76b15118ba107ac7f87a27d597f3bd4ca412efc0007a1795e8c",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.453125,
+        "optimal": 0.453125,
+        "regret": 0.546875
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.53125,
+        "optimal": 0.53125,
+        "regret": 0.46875
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.46875,
+        "optimal": 0.46875,
+        "regret": 0.53125
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.5,
+        "optimal": 0.5,
+        "regret": 0.5
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.515625,
+        "optimal": 0.515625,
+        "regret": 0.484375
+      }
+    },
+    {
+      "seed": 200008,
+      "family": "delayed_credit",
+      "variant": "random_untrained",
+      "parameter_hash": "851f15725ba706b4ecb040dab02e81add24ad8b0fcc2a79c13abaf6c9678e584",
+      "weights_unchanged": true,
+      "initial": {
+        "n": 64,
+        "observed": 0.109375,
+        "optimal": 0.109375,
+        "regret": 0.890625
+      },
+      "final": {
+        "n": 64,
+        "observed": 0.0625,
+        "optimal": 0.0625,
+        "regret": 0.9375
+      },
+      "after_change_early": {
+        "n": 32,
+        "observed": 0.03125,
+        "optimal": 0.03125,
+        "regret": 0.96875
+      },
+      "after_change_late": {
+        "n": 32,
+        "observed": 0.125,
+        "optimal": 0.125,
+        "regret": 0.875
+      },
+      "whole": {
+        "n": 256,
+        "observed": 0.0546875,
+        "optimal": 0.0546875,
+        "regret": 0.9453125
+      }
+    }
+  ],
+  "aggregates": [
+    {
+      "family": "deterministic_context",
+      "variant": "written",
+      "seeds": 8,
+      "initial": {
+        "observed": 0.837890625,
+        "optimal": 0.837890625,
+        "regret": 0.162109375
+      },
+      "final": {
+        "observed": 0.9296875,
+        "optimal": 0.9296875,
+        "regret": 0.0703125
+      },
+      "whole": {
+        "observed": 0.90234375,
+        "optimal": 0.90234375,
+        "regret": 0.09765625
+      },
+      "after_change_early": {
+        "observed": 0.9140625,
+        "optimal": 0.9140625,
+        "regret": 0.0859375
+      },
+      "after_change_late": {
+        "observed": 0.93359375,
+        "optimal": 0.93359375,
+        "regret": 0.06640625
+      },
+      "seed_final_observed": [
+        0.953125,
+        0.9375,
+        0.9375,
+        0.9375,
+        0.921875,
+        0.953125,
+        0.890625,
+        0.90625
+      ]
+    },
+    {
+      "family": "deterministic_context",
+      "variant": "written_no_history",
+      "seeds": 8,
+      "initial": {
+        "observed": 0.248046875,
+        "optimal": 0.248046875,
+        "regret": 0.751953125
+      },
+      "final": {
+        "observed": 0.26171875,
+        "optimal": 0.26171875,
+        "regret": 0.73828125
+      },
+      "whole": {
+        "observed": 0.244140625,
+        "optimal": 0.244140625,
+        "regret": 0.755859375
+      },
+      "after_change_early": {
+        "observed": 0.21875,
+        "optimal": 0.21875,
+        "regret": 0.78125
+      },
+      "after_change_late": {
+        "observed": 0.2578125,
+        "optimal": 0.2578125,
+        "regret": 0.7421875
+      },
+      "seed_final_observed": [
+        0.1875,
+        0.21875,
+        0.3125,
+        0.328125,
+        0.296875,
+        0.265625,
+        0.203125,
+        0.28125
+      ]
+    },
+    {
+      "family": "deterministic_context",
+      "variant": "random_untrained",
+      "seeds": 8,
+      "initial": {
+        "observed": 0.251953125,
+        "optimal": 0.251953125,
+        "regret": 0.748046875
+      },
+      "final": {
+        "observed": 0.22265625,
+        "optimal": 0.22265625,
+        "regret": 0.77734375
+      },
+      "whole": {
+        "observed": 0.24365234375,
+        "optimal": 0.24365234375,
+        "regret": 0.75634765625
+      },
+      "after_change_early": {
+        "observed": 0.25,
+        "optimal": 0.25,
+        "regret": 0.75
+      },
+      "after_change_late": {
+        "observed": 0.2265625,
+        "optimal": 0.2265625,
+        "regret": 0.7734375
+      },
+      "seed_final_observed": [
+        0.265625,
+        0.28125,
+        0.234375,
+        0.234375,
+        0.234375,
+        0.03125,
+        0.296875,
+        0.203125
+      ]
+    },
+    {
+      "family": "noisy_context",
+      "variant": "written",
+      "seeds": 8,
+      "initial": {
+        "observed": 0.54296875,
+        "optimal": 0.564453125,
+        "regret": 0.2613281288940925
+      },
+      "final": {
+        "observed": 0.73828125,
+        "optimal": 0.890625,
+        "regret": 0.0656250009778887
+      },
+      "whole": {
+        "observed": 0.65673828125,
+        "optimal": 0.74365234375,
+        "regret": 0.15380859604192665
+      },
+      "after_change_early": {
+        "observed": 0.66796875,
+        "optimal": 0.74609375,
+        "regret": 0.15234375227009878
+      },
+      "after_change_late": {
+        "observed": 0.765625,
+        "optimal": 0.9140625,
+        "regret": 0.051562500768341124
+      },
+      "seed_final_observed": [
+        0.78125,
+        0.671875,
+        0.734375,
+        0.75,
+        0.78125,
+        0.71875,
+        0.671875,
+        0.796875
+      ]
+    },
+    {
+      "family": "noisy_context",
+      "variant": "written_no_history",
+      "seeds": 8,
+      "initial": {
+        "observed": 0.361328125,
+        "optimal": 0.248046875,
+        "regret": 0.45117188172298484
+      },
+      "final": {
+        "observed": 0.392578125,
+        "optimal": 0.26171875,
+        "regret": 0.44296875660074875
+      },
+      "whole": {
+        "observed": 0.361328125,
+        "optimal": 0.244140625,
+        "regret": 0.45351563175790943
+      },
+      "after_change_early": {
+        "observed": 0.375,
+        "optimal": 0.21875,
+        "regret": 0.4687500069849193
+      },
+      "after_change_late": {
+        "observed": 0.4140625,
+        "optimal": 0.2578125,
+        "regret": 0.44531250663567334
+      },
+      "seed_final_observed": [
+        0.34375,
+        0.375,
+        0.390625,
+        0.453125,
+        0.453125,
+        0.453125,
+        0.3125,
+        0.359375
+      ]
+    },
+    {
+      "family": "noisy_context",
+      "variant": "random_untrained",
+      "seeds": 8,
+      "initial": {
+        "observed": 0.349609375,
+        "optimal": 0.25390625,
+        "regret": 0.44765625667059794
+      },
+      "final": {
+        "observed": 0.345703125,
+        "optimal": 0.22265625,
+        "regret": 0.4664062569499947
+      },
+      "whole": {
+        "observed": 0.35546875,
+        "optimal": 0.244140625,
+        "regret": 0.45351563175790943
+      },
+      "after_change_early": {
+        "observed": 0.33984375,
+        "optimal": 0.25,
+        "regret": 0.45000000670552254
+      },
+      "after_change_late": {
+        "observed": 0.37890625,
+        "optimal": 0.2265625,
+        "regret": 0.4640625069150701
+      },
+      "seed_final_observed": [
+        0.359375,
+        0.421875,
+        0.359375,
+        0.328125,
+        0.453125,
+        0.1875,
+        0.328125,
+        0.328125
+      ]
+    },
+    {
+      "family": "changed_dynamics",
+      "variant": "written",
+      "seeds": 8,
+      "initial": {
+        "observed": 0.837890625,
+        "optimal": 0.837890625,
+        "regret": 0.162109375
+      },
+      "final": {
+        "observed": 0.685546875,
+        "optimal": 0.685546875,
+        "regret": 0.314453125
+      },
+      "whole": {
+        "observed": 0.71533203125,
+        "optimal": 0.71533203125,
+        "regret": 0.28466796875
+      },
+      "after_change_early": {
+        "observed": 0.30078125,
+        "optimal": 0.30078125,
+        "regret": 0.69921875
+      },
+      "after_change_late": {
+        "observed": 0.73828125,
+        "optimal": 0.73828125,
+        "regret": 0.26171875
+      },
+      "seed_final_observed": [
+        0.6875,
+        0.6875,
+        0.796875,
+        0.390625,
+        0.671875,
+        0.9375,
+        0.703125,
+        0.609375
+      ]
+    },
+    {
+      "family": "changed_dynamics",
+      "variant": "written_no_history",
+      "seeds": 8,
+      "initial": {
+        "observed": 0.248046875,
+        "optimal": 0.248046875,
+        "regret": 0.751953125
+      },
+      "final": {
+        "observed": 0.251953125,
+        "optimal": 0.251953125,
+        "regret": 0.748046875
+      },
+      "whole": {
+        "observed": 0.2373046875,
+        "optimal": 0.2373046875,
+        "regret": 0.7626953125
+      },
+      "after_change_early": {
+        "observed": 0.23046875,
+        "optimal": 0.23046875,
+        "regret": 0.76953125
+      },
+      "after_change_late": {
+        "observed": 0.25,
+        "optimal": 0.25,
+        "regret": 0.75
+      },
+      "seed_final_observed": [
+        0.203125,
+        0.359375,
+        0.25,
+        0.265625,
+        0.171875,
+        0.265625,
+        0.296875,
+        0.203125
+      ]
+    },
+    {
+      "family": "changed_dynamics",
+      "variant": "random_untrained",
+      "seeds": 8,
+      "initial": {
+        "observed": 0.251953125,
+        "optimal": 0.251953125,
+        "regret": 0.748046875
+      },
+      "final": {
+        "observed": 0.23046875,
+        "optimal": 0.23046875,
+        "regret": 0.76953125
+      },
+      "whole": {
+        "observed": 0.25048828125,
+        "optimal": 0.25048828125,
+        "regret": 0.74951171875
+      },
+      "after_change_early": {
+        "observed": 0.23046875,
+        "optimal": 0.23046875,
+        "regret": 0.76953125
+      },
+      "after_change_late": {
+        "observed": 0.203125,
+        "optimal": 0.203125,
+        "regret": 0.796875
+      },
+      "seed_final_observed": [
+        0.28125,
+        0.25,
+        0.359375,
+        0.203125,
+        0.15625,
+        0.0625,
+        0.28125,
+        0.25
+      ]
+    },
+    {
+      "family": "changed_goal",
+      "variant": "written",
+      "seeds": 8,
+      "initial": {
+        "observed": 0.9013671887805685,
+        "optimal": 0.853515625,
+        "regret": 0.09863281121943146
+      },
+      "final": {
+        "observed": 0.9493164068553597,
+        "optimal": 0.927734375,
+        "regret": 0.050683593144640326
+      },
+      "whole": {
+        "observed": 0.9370361336041242,
+        "optimal": 0.908203125,
+        "regret": 0.06296386639587581
+      },
+      "after_change_early": {
+        "observed": 0.9335937509313226,
+        "optimal": 0.90234375,
+        "regret": 0.06640624906867743
+      },
+      "after_change_late": {
+        "observed": 0.9505859380587935,
+        "optimal": 0.9296875,
+        "regret": 0.049414061941206455
+      },
+      "seed_final_observed": [
+        0.9445312507450581,
+        0.954687500372529,
+        0.9437500005587935,
+        0.9453125009313226,
+        0.9789062505587935,
+        0.9515625005587935,
+        0.9359375005587935,
+        0.9398437505587935
+      ]
+    },
+    {
+      "family": "changed_goal",
+      "variant": "written_no_history",
+      "seeds": 8,
+      "initial": {
+        "observed": 0.48486328742001206,
+        "optimal": 0.265625,
+        "regret": 0.5151367125799879
+      },
+      "final": {
+        "observed": 0.4699218808673322,
+        "optimal": 0.263671875,
+        "regret": 0.5300781191326678
+      },
+      "whole": {
+        "observed": 0.4775390684371814,
+        "optimal": 0.2685546875,
+        "regret": 0.5224609315628186
+      },
+      "after_change_early": {
+        "observed": 0.4738281308673322,
+        "optimal": 0.26953125,
+        "regret": 0.5261718691326678
+      },
+      "after_change_late": {
+        "observed": 0.4955078177154064,
+        "optimal": 0.30859375,
+        "regret": 0.5044921822845936
+      },
+      "seed_final_observed": [
+        0.46796875540167093,
+        0.3484375048428774,
+        0.468750006519258,
+        0.42656250670552254,
+        0.5546875055879354,
+        0.5039062555879354,
+        0.5375000052154064,
+        0.45156250707805157
+      ]
+    },
+    {
+      "family": "changed_goal",
+      "variant": "random_untrained",
+      "seeds": 8,
+      "initial": {
+        "observed": 0.5401367238955572,
+        "optimal": 0.34765625,
+        "regret": 0.4598632761044428
+      },
+      "final": {
+        "observed": 0.4151367238955572,
+        "optimal": 0.224609375,
+        "regret": 0.5848632761044428
+      },
+      "whole": {
+        "observed": 0.4714111376670189,
+        "optimal": 0.29052734375,
+        "regret": 0.5285888623329811
+      },
+      "after_change_early": {
+        "observed": 0.36972656729631126,
+        "optimal": 0.203125,
+        "regret": 0.6302734327036887
+      },
+      "after_change_late": {
+        "observed": 0.42714844294823706,
+        "optimal": 0.22265625,
+        "regret": 0.5728515570517629
+      },
+      "seed_final_observed": [
+        0.02265625074505806,
+        0.5468750111758709,
+        0.021875000558793545,
+        0.31093751173466444,
+        0.9789062505587935,
+        0.33046875707805157,
+        0.8265625024214387,
+        0.28281250689178705
+      ]
+    },
+    {
+      "family": "continuous_context",
+      "variant": "written",
+      "seeds": 8,
+      "initial": {
+        "observed": 0.5625,
+        "optimal": 0.38671875,
+        "regret": 0.17043613372061373
+      },
+      "final": {
+        "observed": 0.646484375,
+        "optimal": 0.498046875,
+        "regret": 0.11887521830067271
+      },
+      "whole": {
+        "observed": 0.61669921875,
+        "optimal": 0.4853515625,
+        "regret": 0.12999835028199414
+      },
+      "after_change_early": {
+        "observed": 0.6171875,
+        "optimal": 0.484375,
+        "regret": 0.13188142998842523
+      },
+      "after_change_late": {
+        "observed": 0.65234375,
+        "optimal": 0.52734375,
+        "regret": 0.114449603803223
+      },
+      "seed_final_observed": [
+        0.65625,
+        0.703125,
+        0.625,
+        0.703125,
+        0.65625,
+        0.671875,
+        0.484375,
+        0.671875
+      ]
+    },
+    {
+      "family": "continuous_context",
+      "variant": "written_no_history",
+      "seeds": 8,
+      "initial": {
+        "observed": 0.486328125,
+        "optimal": 0.240234375,
+        "regret": 0.25602910738962237
+      },
+      "final": {
+        "observed": 0.564453125,
+        "optimal": 0.259765625,
+        "regret": 0.2423682928783819
+      },
+      "whole": {
+        "observed": 0.5205078125,
+        "optimal": 0.2548828125,
+        "regret": 0.24611838344935677
+      },
+      "after_change_early": {
+        "observed": 0.51171875,
+        "optimal": 0.25,
+        "regret": 0.2568964458114351
+      },
+      "after_change_late": {
+        "observed": 0.609375,
+        "optimal": 0.26953125,
+        "regret": 0.23515878256876022
+      },
+      "seed_final_observed": [
+        0.59375,
+        0.5,
+        0.53125,
+        0.578125,
+        0.578125,
+        0.625,
+        0.59375,
+        0.515625
+      ]
+    },
+    {
+      "family": "continuous_context",
+      "variant": "random_untrained",
+      "seeds": 8,
+      "initial": {
+        "observed": 0.484375,
+        "optimal": 0.224609375,
+        "regret": 0.251383144563988
+      },
+      "final": {
+        "observed": 0.56640625,
+        "optimal": 0.283203125,
+        "regret": 0.22518452227814123
+      },
+      "whole": {
+        "observed": 0.5185546875,
+        "optimal": 0.2548828125,
+        "regret": 0.23906873400187578
+      },
+      "after_change_early": {
+        "observed": 0.52734375,
+        "optimal": 0.22265625,
+        "regret": 0.23670317392679863
+      },
+      "after_change_late": {
+        "observed": 0.5703125,
+        "optimal": 0.26953125,
+        "regret": 0.22346307977568358
+      },
+      "seed_final_observed": [
+        0.515625,
+        0.5625,
+        0.515625,
+        0.609375,
+        0.578125,
+        0.59375,
+        0.609375,
+        0.546875
+      ]
+    },
+    {
+      "family": "delayed_credit",
+      "variant": "written",
+      "seeds": 8,
+      "initial": {
+        "observed": 0.49609375,
+        "optimal": 0.49609375,
+        "regret": 0.50390625
+      },
+      "final": {
+        "observed": 0.49609375,
+        "optimal": 0.49609375,
+        "regret": 0.50390625
+      },
+      "whole": {
+        "observed": 0.49560546875,
+        "optimal": 0.49560546875,
+        "regret": 0.50439453125
+      },
+      "after_change_early": {
+        "observed": 0.51171875,
+        "optimal": 0.51171875,
+        "regret": 0.48828125
+      },
+      "after_change_late": {
+        "observed": 0.50390625,
+        "optimal": 0.50390625,
+        "regret": 0.49609375
+      },
+      "seed_final_observed": [
+        0.515625,
+        0.484375,
+        0.46875,
+        0.515625,
+        0.515625,
+        0.453125,
+        0.5,
+        0.515625
+      ]
+    },
+    {
+      "family": "delayed_credit",
+      "variant": "written_no_history",
+      "seeds": 8,
+      "initial": {
+        "observed": 0.482421875,
+        "optimal": 0.482421875,
+        "regret": 0.517578125
+      },
+      "final": {
+        "observed": 0.474609375,
+        "optimal": 0.474609375,
+        "regret": 0.525390625
+      },
+      "whole": {
+        "observed": 0.484375,
+        "optimal": 0.484375,
+        "regret": 0.515625
+      },
+      "after_change_early": {
+        "observed": 0.49609375,
+        "optimal": 0.49609375,
+        "regret": 0.50390625
+      },
+      "after_change_late": {
+        "observed": 0.49609375,
+        "optimal": 0.49609375,
+        "regret": 0.50390625
+      },
+      "seed_final_observed": [
+        0.484375,
+        0.484375,
+        0.421875,
+        0.453125,
+        0.546875,
+        0.40625,
+        0.46875,
+        0.53125
+      ]
+    },
+    {
+      "family": "delayed_credit",
+      "variant": "random_untrained",
+      "seeds": 8,
+      "initial": {
+        "observed": 0.48828125,
+        "optimal": 0.48828125,
+        "regret": 0.51171875
+      },
+      "final": {
+        "observed": 0.60546875,
+        "optimal": 0.60546875,
+        "regret": 0.39453125
+      },
+      "whole": {
+        "observed": 0.5693359375,
+        "optimal": 0.5693359375,
+        "regret": 0.4306640625
+      },
+      "after_change_early": {
+        "observed": 0.59765625,
+        "optimal": 0.59765625,
+        "regret": 0.40234375
+      },
+      "after_change_late": {
+        "observed": 0.625,
+        "optimal": 0.625,
+        "regret": 0.375
+      },
+      "seed_final_observed": [
+        0.046875,
+        0.953125,
+        0.046875,
+        0.9375,
+        0.953125,
+        0.953125,
+        0.890625,
+        0.0625
+      ]
+    }
+  ],
+  "task_runs": 144,
+  "task_rounds": 36864,
+  "environment_transitions": 43008,
+  "optimizer_steps": 0,
+  "trained_pure_feedback_baseline_runs": 0,
+  "old_rfl_calls": 0,
+  "wall_seconds": 25.23831020000216,
+  "limitation": "Experience updates memory, not weights; controls are not trained baselines; delayed credit is absent."
+}

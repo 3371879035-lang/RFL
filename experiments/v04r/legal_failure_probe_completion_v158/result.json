@@ -1,0 +1,311 @@
+{
+  "schema": "V158_NO_MISMATCH_FAILURE_PROBE_RESULT",
+  "date_asia_shanghai": "2026-11-07",
+  "parent_commit": "e90dd34c1eadf01840d1daa80ae910e4ad78d7ef",
+  "status": "UNEXECUTED_LEGAL_BRANCHES_COMPLETE_ZERO_AGGREGATE_MAIN_GAIN_TIMING_TRADEOFF_AND_EXTRA_COST",
+  "actual": {
+    "native_new_first_exit": 0,
+    "stored_review_first_exit": 0,
+    "preserved_v157_native_exit": 1,
+    "recorded_baseline_tasks": 12,
+    "old18_complete": false,
+    "new_native_counts": {
+      "rollout": 30,
+      "step": 188,
+      "transaction": 39
+    },
+    "combined_native_counts": {
+      "rollout": 42,
+      "step": 261,
+      "transaction": 54
+    },
+    "new_records": 249,
+    "baseline_records": 78,
+    "new_wall_seconds_instrumented": 1.2339999999967404,
+    "input_pins": 351,
+    "input_bytes_unchanged": true,
+    "matched_common_source_pins": 104,
+    "summaries": [
+      {
+        "arm": "TaskTD",
+        "source": "v157 actual complete12 prefix; capture exit1/full18 notcomplete",
+        "successes": 9,
+        "returns": [
+          -1.06,
+          0.86,
+          -1.06,
+          0.86,
+          0.86,
+          0.86,
+          -1.08,
+          0.86,
+          0.86,
+          0.86,
+          0.86,
+          0.86
+        ],
+        "outcomes": [
+          "TRAP",
+          "SUCCESS",
+          "TRAP",
+          "SUCCESS",
+          "SUCCESS",
+          "SUCCESS",
+          "TRAP",
+          "SUCCESS",
+          "SUCCESS",
+          "SUCCESS",
+          "SUCCESS",
+          "SUCCESS"
+        ],
+        "mean_return": 0.37833333333333335,
+        "external_updates": 0,
+        "diagnostic_account": {
+          "algorithm": "TaskTD",
+          "trial_tasks_used": 0,
+          "trial_task_budget": 0,
+          "base_queries": 0,
+          "expanded_queries": 0
+        }
+      },
+      {
+        "arm": "GreedyPractice",
+        "successes": 9,
+        "returns": [
+          -1.06,
+          -1.06,
+          0.86,
+          0.86,
+          0.86,
+          0.86,
+          -1.08,
+          0.86,
+          0.86,
+          0.86,
+          0.86,
+          0.86
+        ],
+        "outcomes": [
+          "TRAP",
+          "TRAP",
+          "SUCCESS",
+          "SUCCESS",
+          "SUCCESS",
+          "SUCCESS",
+          "TRAP",
+          "SUCCESS",
+          "SUCCESS",
+          "SUCCESS",
+          "SUCCESS",
+          "SUCCESS"
+        ],
+        "mean_return": 0.37833333333333335,
+        "external_updates": 3,
+        "diagnostic_account": {
+          "algorithm": "GreedyPractice",
+          "base_queries": 3,
+          "expanded_queries": 0,
+          "trial_task_budget": 12,
+          "trial_tasks_used": 3
+        }
+      },
+      {
+        "arm": "TargetedPractice",
+        "successes": 9,
+        "returns": [
+          -1.06,
+          -1.06,
+          0.86,
+          0.86,
+          0.86,
+          0.86,
+          -1.08,
+          0.86,
+          0.86,
+          0.86,
+          0.86,
+          0.86
+        ],
+        "outcomes": [
+          "TRAP",
+          "TRAP",
+          "SUCCESS",
+          "SUCCESS",
+          "SUCCESS",
+          "SUCCESS",
+          "TRAP",
+          "SUCCESS",
+          "SUCCESS",
+          "SUCCESS",
+          "SUCCESS",
+          "SUCCESS"
+        ],
+        "mean_return": 0.37833333333333335,
+        "external_updates": 3,
+        "diagnostic_account": {
+          "algorithm": "TargetedPractice",
+          "base_queries": 3,
+          "expanded_queries": 0,
+          "trial_task_budget": 12,
+          "trial_tasks_used": 3
+        }
+      }
+    ],
+    "online_costs": [
+      {
+        "arm": "TaskTD",
+        "main_tasks": 12,
+        "private_tasks": 0,
+        "rollout": 12,
+        "step": 73,
+        "transaction": 12,
+        "shared3TX_excluded": true
+      },
+      {
+        "arm": "GreedyPractice",
+        "main_tasks": 12,
+        "private_tasks": 3,
+        "rollout": 15,
+        "step": 94,
+        "transaction": 18,
+        "shared3TX_excluded": true
+      },
+      {
+        "arm": "TargetedPractice",
+        "main_tasks": 12,
+        "private_tasks": 3,
+        "rollout": 15,
+        "step": 94,
+        "transaction": 18,
+        "shared3TX_excluded": true
+      }
+    ],
+    "descriptive_A_timing": [
+      {
+        "arm": "TaskTD",
+        "first_success_main_1based": 2,
+        "observed_final_success_run_start_main_1based": 4,
+        "same_start_total_interactions_1based": 4,
+        "descriptive_posthoc_not_formal_recovery_metric": true
+      },
+      {
+        "arm": "GreedyPractice",
+        "first_success_main_1based": 3,
+        "observed_final_success_run_start_main_1based": 3,
+        "same_start_total_interactions_1based": 5,
+        "descriptive_posthoc_not_formal_recovery_metric": true
+      },
+      {
+        "arm": "TargetedPractice",
+        "first_success_main_1based": 3,
+        "observed_final_success_run_start_main_1based": 3,
+        "same_start_total_interactions_1based": 5,
+        "descriptive_posthoc_not_formal_recovery_metric": true
+      }
+    ],
+    "practice_methods_post_RLI_equal_all12": true,
+    "all_query_targets_ordinary_TD_already_switched": true,
+    "accepted_query_observations": [
+      {
+        "arm": "GreedyPractice",
+        "epoch": 0,
+        "terminal": "SUCCESS",
+        "numeric_content_changed": true
+      },
+      {
+        "arm": "GreedyPractice",
+        "epoch": 1,
+        "terminal": "SUCCESS",
+        "numeric_content_changed": true
+      },
+      {
+        "arm": "GreedyPractice",
+        "epoch": 6,
+        "terminal": "SUCCESS",
+        "numeric_content_changed": true
+      },
+      {
+        "arm": "TargetedPractice",
+        "epoch": 0,
+        "terminal": "SUCCESS",
+        "numeric_content_changed": true
+      },
+      {
+        "arm": "TargetedPractice",
+        "epoch": 1,
+        "terminal": "SUCCESS",
+        "numeric_content_changed": true
+      },
+      {
+        "arm": "TargetedPractice",
+        "epoch": 6,
+        "terminal": "SUCCESS",
+        "numeric_content_changed": true
+      }
+    ],
+    "combined_native_ordinary_updates": 42,
+    "external_ordinary_updates": 6,
+    "feedback_TX": 0,
+    "source_install_TX": 0,
+    "checkpoint_TX_combined": 6,
+    "old_native_checker_bank_reruns": 0,
+    "new_keys_RNG_DP_calibration_collection": 0,
+    "automation_changes": 0
+  },
+  "scope": "Two fresh strategies vs actual complete12 prefix of preserved failed baseline capture, fixed informed two-trap domain. No independent scientific N/full18 confirmation; current-targeted queries reduce to normal greedy practice in these cases.",
+  "decision": "Do not enable unconditional no-mismatch practice by default. Preserve numeric learning and timing tradeoff; investigate common failure event hypotheses instead of repeated known alternatives.",
+  "contract_wording_limit": "comparison inherited three-new-roles sentence is historical wording; revision/arms/expected_extent/actual capture explicitly two new roles plus recorded baseline. Executed contract unchanged.",
+  "artifacts": [
+    {
+      "path": "experiments/v04r/legal_failure_probe_completion_v158/contract.json",
+      "bytes": 7460,
+      "sha256": "1da43d4308d3324bf516a2676992ad6b7bb0f3e118090e4bd22bf4257adef2ad"
+    },
+    {
+      "path": "experiments/v04r/legal_failure_probe_completion_v158/workload.py",
+      "bytes": 8384,
+      "sha256": "2241fed950a3dfe4ab1335aea8910fee445b0caaa2d54e3269850b5979e43c71"
+    },
+    {
+      "path": "experiments/v04r/legal_failure_probe_completion_v158/execute.py",
+      "bytes": 4564,
+      "sha256": "1fc4a85d084c7df026839a9ef3e8d03b558f3bf33e777eaaf787bdc918e88245"
+    },
+    {
+      "path": "experiments/v04r/legal_failure_probe_completion_v158/audit_stored.py",
+      "bytes": 29062,
+      "sha256": "d660abac3464202a1fe46fb65afcb770319a59c14a9bcb9ff7e3519dd8c501d7"
+    },
+    {
+      "path": "experiments/v04r/legal_failure_probe_completion_v158/evidence/claim.json",
+      "bytes": 45656,
+      "sha256": "6b7248b9110af7f4e50aa03e8d7233007cf7fe6179fd78b5f276f48bf5993ea2"
+    },
+    {
+      "path": "experiments/v04r/legal_failure_probe_completion_v158/evidence/exit.json",
+      "bytes": 45781,
+      "sha256": "2e7e69bf495741e91e20a6a8f4b264afa9848d40cec17f7d63387c8136f7e048"
+    },
+    {
+      "path": "experiments/v04r/legal_failure_probe_completion_v158/evidence/raw.jsonl",
+      "bytes": 667922,
+      "sha256": "35e4110c86ffdfa589dc47ed1111358d8b1e4ac76a1795f582faabba84191060"
+    },
+    {
+      "path": "experiments/v04r/legal_failure_probe_completion_v158/stored_audit_result.json",
+      "bytes": 11450,
+      "sha256": "b4c76816bfe4257f2268355656e81c3a69fdbc4365b6e777420be6b6fed9dc9e"
+    },
+    {
+      "path": "experiments/v04r/legal_failure_probe_completion_v158/audit_process_exit.json",
+      "bytes": 41,
+      "sha256": "2d542270094b4386662714961f173cd557ff986f1fd9b53b37d3c802589e58c3"
+    },
+    {
+      "path": "experiments/v04r/legal_failure_probe_completion_v158/result.md",
+      "bytes": 6737,
+      "sha256": "40afddf953488ce2ba52fd57b1d8c6493f2f34b109dac50ce3153cb927504ee1"
+    }
+  ],
+  "qualification": false
+}

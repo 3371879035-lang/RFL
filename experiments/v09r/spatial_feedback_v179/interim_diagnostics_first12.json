@@ -1,0 +1,113 @@
+{
+  "status": "INTERIM_DIAGNOSTIC_FIRST12_COMPLETED_SEEDS_ONLY",
+  "utc": "2026-11-07T17:26:12.930160+00:00",
+  "rows": [
+    {
+      "arm": "RL-RP",
+      "mixed_checkpoint_mean_scores": {
+        "0": 36.673177083333336,
+        "16384": 45.200846354166664,
+        "65536": 87.01725260416667,
+        "131072": 183.03548177083334,
+        "262144": 298.1600341796875
+      },
+      "matched_final_ablation_mean_scores": {
+        "matched_full_128": null,
+        "H1_only": null,
+        "no_cross_episode_history_retrieval": null
+      },
+      "neural_head_training_average_Brier": null,
+      "hybrid_Q_override_fraction_all_training_decisions": null
+    },
+    {
+      "arm": "F0",
+      "mixed_checkpoint_mean_scores": {
+        "0": 33.627604166666664,
+        "16384": 40.096028645833336,
+        "65536": 40.859375,
+        "131072": 42.174479166666664,
+        "262144": 38.523234049479164
+      },
+      "matched_final_ablation_mean_scores": {
+        "matched_full_128": 37.985026041666664,
+        "H1_only": 39.5263671875,
+        "no_cross_episode_history_retrieval": 37.399088541666664
+      },
+      "neural_head_training_average_Brier": 0.03531307450613341,
+      "hybrid_Q_override_fraction_all_training_decisions": null,
+      "full_minus_H1_only": {
+        "mean": -1.5413411458333333,
+        "positive": 5,
+        "zero": 0,
+        "negative": 7
+      },
+      "full_minus_no_cross_episode_history_retrieval": {
+        "mean": 0.5859375,
+        "positive": 5,
+        "zero": 0,
+        "negative": 7
+      }
+    },
+    {
+      "arm": "F-RP",
+      "mixed_checkpoint_mean_scores": {
+        "0": 34.037760416666664,
+        "16384": 34.619466145833336,
+        "65536": 40.99609375,
+        "131072": 42.6748046875,
+        "262144": 46.031778971354164
+      },
+      "matched_final_ablation_mean_scores": {
+        "matched_full_128": 45.7177734375,
+        "H1_only": 42.492838541666664,
+        "no_cross_episode_history_retrieval": 48.899739583333336
+      },
+      "neural_head_training_average_Brier": 0.03323340696376266,
+      "hybrid_Q_override_fraction_all_training_decisions": 0.6874415079752604,
+      "full_minus_H1_only": {
+        "mean": 3.2249348958333335,
+        "positive": 10,
+        "zero": 0,
+        "negative": 2
+      },
+      "full_minus_no_cross_episode_history_retrieval": {
+        "mean": -3.1819661458333335,
+        "positive": 2,
+        "zero": 0,
+        "negative": 10
+      }
+    },
+    {
+      "arm": "F-R",
+      "mixed_checkpoint_mean_scores": {
+        "0": 35.203450520833336,
+        "16384": 35.203450520833336,
+        "65536": 41.365559895833336,
+        "131072": 44.411783854166664,
+        "262144": 49.434244791666664
+      },
+      "matched_final_ablation_mean_scores": {
+        "matched_full_128": 48.175130208333336,
+        "H1_only": 42.185221354166664,
+        "no_cross_episode_history_retrieval": 47.612630208333336
+      },
+      "neural_head_training_average_Brier": 0.03210588688455852,
+      "hybrid_Q_override_fraction_all_training_decisions": 0.6916710535685221,
+      "full_minus_H1_only": {
+        "mean": 5.989908854166667,
+        "positive": 10,
+        "zero": 0,
+        "negative": 2
+      },
+      "full_minus_no_cross_episode_history_retrieval": {
+        "mean": 0.5625,
+        "positive": 5,
+        "zero": 0,
+        "negative": 7
+      }
+    }
+  ],
+  "new_RFL_calls": 0,
+  "new_native_parameters_or_sample_changes": 0,
+  "limits": "Existing frozen execution ablations only, not retrained ablations or final64seed inference. Override counts indicate changed choices, not improved choices; no comparable Q for F0."
+}

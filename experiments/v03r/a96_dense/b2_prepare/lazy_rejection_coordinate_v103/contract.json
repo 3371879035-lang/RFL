@@ -1,0 +1,19 @@
+{
+  "schema": "V103_ACTUAL_LAZY_ADAPTER_REJECTION_COORDINATE_PROBE",
+  "parent_commit": "440a806d2c122826d9b4df414fa52e9f3a5d6719",
+  "purpose": "Close the specific V95 n=5 rejection-coordinate integration gap with the real versioned EngineeringEpisode/EngineeringPlan/EpisodeAdapter and unchanged original exact uniform_action function.",
+  "fixed_inputs": {
+    "v95_learning_sha256": "38b4e0e0cde2bcfa35e321fff5a16a11139c00d0a183dc909a7c556e7a9e24d4",
+    "v90_core_sha256": "4e15a9b4e91c0065b0234fe988fc38e97cc284d036255543fc96b4856c34834b",
+    "original_training_sha256": "0342626da5a111952873f33028866718a5504c2535e31d8790af952e08c472d6",
+    "coordinate": {"epoch": 0, "step_i": 0, "j": 1, "actions": [0, 1, 2, 3, 4],
+                   "raw_uint64": [18446744073709551615, 4]},
+    "locked_engineering_parameters": {"alpha": [1, 2], "epsilon": [1, 10]},
+    "scene": [0, 2, 0, 57, 0]
+  },
+  "budget": {"rollout": 0, "step": 0, "B1": 0, "transaction": 0,
+             "rng_or_key_calls": 0, "seconds": 30, "stdout_bytes": 20000, "stderr_bytes": 10000},
+  "exclusive_capture": "One new namespace; exact inputs pinned before a single bounded child. No runner, rollout, B1, transaction, random generator, keyderive, DP, old fixture, checker, or collection call. Preserve any first outcome; do not retry.",
+  "expected_semantics": "For n=5, 2^64 mod 5 is 1, so uint64 MAX is rejected and c=1 value 4 is accepted. Exact action index and floor-scaled mutant both equal 4 for these values; the discriminator is the actual lazy adapter transcript: exact consumes c=0 and c=1, flooring consumes only c=0.",
+  "claim_limits": "Component integration evidence for the finite adapter only. It does not repair V95 executed bytes or establish full keyed Xi coverage, full source-level six-mutation go-red, curve/family fairness, scientific qualification, or collection authority."
+}

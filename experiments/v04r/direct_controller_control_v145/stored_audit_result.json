@@ -1,0 +1,205 @@
+{
+  "schema": "V145_STDLIB_DIRECT_CONTROL_REVIEW",
+  "complete": true,
+  "native_counts": {
+    "rollout": 26,
+    "step": 80,
+    "transaction": 62
+  },
+  "records": 207,
+  "input_pins": 338,
+  "summaries": [
+    {
+      "case": "controller",
+      "arm": "DirectSite",
+      "successes": 4,
+      "returns": [
+        -1.02,
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "outcomes": [
+        "TRAP",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.2333333333333333,
+      "external_updates": 0
+    },
+    {
+      "case": "controller",
+      "arm": "DirectSitePlusExperience",
+      "successes": 5,
+      "returns": [
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "outcomes": [
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.5466666666666666,
+      "external_updates": 1
+    },
+    {
+      "case": "plant",
+      "arm": "DirectSite",
+      "successes": 0,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02
+      ],
+      "outcomes": [
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP"
+      ],
+      "mean_return": -1.02,
+      "external_updates": 0
+    },
+    {
+      "case": "plant",
+      "arm": "DirectSitePlusExperience",
+      "successes": 0,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02
+      ],
+      "outcomes": [
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP"
+      ],
+      "mean_return": -1.02,
+      "external_updates": 1
+    }
+  ],
+  "direct_decisions": [
+    {
+      "case": "controller",
+      "arm": "DirectSite",
+      "own_store_present": true,
+      "proposal": {
+        "action": "apply",
+        "edits": [
+          {
+            "store": "controller",
+            "address": {
+              "state": {
+                "x": 0,
+                "y": 2,
+                "t": 0,
+                "kappa": 0,
+                "phi": 3
+              },
+              "cmd": 4
+            },
+            "value": null
+          }
+        ]
+      }
+    },
+    {
+      "case": "controller",
+      "arm": "DirectSitePlusExperience",
+      "own_store_present": true,
+      "proposal": {
+        "action": "apply",
+        "edits": [
+          {
+            "store": "controller",
+            "address": {
+              "state": {
+                "x": 0,
+                "y": 2,
+                "t": 0,
+                "kappa": 0,
+                "phi": 3
+              },
+              "cmd": 4
+            },
+            "value": null
+          }
+        ]
+      }
+    },
+    {
+      "case": "plant",
+      "arm": "DirectSite",
+      "own_store_present": false,
+      "proposal": {
+        "action": "keep",
+        "edits": []
+      }
+    },
+    {
+      "case": "plant",
+      "arm": "DirectSitePlusExperience",
+      "own_store_present": false,
+      "proposal": {
+        "action": "keep",
+        "edits": []
+      }
+    }
+  ],
+  "comparisons_to_v144": [
+    {
+      "case": "controller",
+      "recorded_arm": "TwoStepValue",
+      "new_arm": "DirectSitePlusExperience",
+      "all6_main_raw_identical": true,
+      "all6_post_experience_R_L_I_identical": true,
+      "ingested_first_keep_trace_identical": true,
+      "initial_R_L_I_identical": true
+    },
+    {
+      "case": "plant",
+      "recorded_arm": "TwoStepValue",
+      "new_arm": "DirectSitePlusExperience",
+      "all6_main_raw_identical": true,
+      "all6_post_experience_R_L_I_identical": true,
+      "ingested_first_keep_trace_identical": true,
+      "initial_R_L_I_identical": true
+    }
+  ],
+  "native_ordinary_updates": 26,
+  "external_ordinary_updates": 2,
+  "native_policy_TX": 26,
+  "external_policy_TX": 2,
+  "main_X_feedback_TX": 2,
+  "private_X_TX": 0,
+  "M_fit_events": 0,
+  "diagnostic_calls": 15,
+  "success_diagnostic_calls": 0,
+  "old_checker_native_reruns": 0,
+  "new_keys_RNG_DP_calibration_collection": 0,
+  "formal_B1_or_science_qualification": false
+}

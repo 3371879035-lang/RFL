@@ -1,0 +1,45 @@
+{
+  "schema": "V09_PAUSED_FORMULA_AND_ERROR_DECOMPOSITION_V182",
+  "utc": "2026-11-07T18:10:54.105537+00:00",
+  "authority": "Direct user repeats pause training and investigate cause; no resumption or repair training.",
+  "fixed_models": {
+    "seeds": [
+      9001,
+      9002,
+      9003,
+      9004,
+      9005,
+      9006,
+      9007,
+      9008,
+      9009,
+      9010,
+      9011,
+      9012
+    ],
+    "arms": [
+      "F-RP",
+      "F-R"
+    ],
+    "checkpoint": 262144,
+    "sample": "Same64fixed evenly spaced25frame replay windows as V181,8burnin and16positions. Only nonterminal positions have genuinely observed next frame; decompose successor error only there."
+  },
+  "new_questions": [
+    "Does the declared five-of-seven ensemble mask actually drop any training examples or differ across heads? Check original formula within full bounded uid domain and exact modular arithmetic.",
+    "For actually executed nonterminal transitions, how much one-step numerical error remains when replacing only the predicted successor with observed successor, versus replacing only immediate outcome? Offline hindsight substitutions are never fed to any learner or policy.",
+    "Does zero predicted delta preserve the current hidden state? Quantify repeated-tanh shrinkage and learned correction; descriptive, not a proven alternative decoder.",
+    "Check the directional bias from Beta(1,1)history pseudocount on an all-safe local support sample, with fixed probability0.03 only as algebraic example."
+  ],
+  "budgets": {
+    "saved_models": 24,
+    "offline_positions_each": 1024,
+    "workers": 4,
+    "wall_seconds": 300,
+    "new_training_steps": 0,
+    "optimizer_updates": 0,
+    "environment_calls": 0,
+    "new_rollouts": 0
+  },
+  "scope": "Posthoc frozen offline diagnosis, not independently trained replicate, not holdout performance, not exact expected-value/counterfactual target. Do not claim fixing formula alone restores performance.",
+  "preserve": "Executed V178-V181 sources and all evidence remain unchanged. Main13processes remain suspended. Exclusive output, first error retained."
+}

@@ -1,0 +1,1716 @@
+{
+  "schema": "V126_PRACTICE_EXPERIENCE_MEMORY_TRANSFER_RESULT",
+  "date_asia_shanghai": "2026-11-06",
+  "parent_commit": "b40d6687e86dc3e5dd7784be77943487a58265cd",
+  "status": "EXTENSION_COMPLETE_ONE_ACTUAL_CROSS_CONTEXT_DIAGNOSTIC_MEMORY_TRANSFER",
+  "question": "Does retaining conditional practice consequences reduce repeated practice at a later distinct context, relative to the same frozen base policy with ephemeral practice?",
+  "design": {
+    "main_tasks_per_role": 20,
+    "modes": [
+      "dq",
+      "patch-adaptive"
+    ],
+    "arms": [
+      "TaskTD",
+      "EvidenceValue",
+      "FrozenPractice",
+      "MemoryPractice"
+    ],
+    "contexts": [
+      {
+        "kappa": 0,
+        "phi": 2,
+        "error_cell": [
+          2,
+          1
+        ],
+        "onset": 3
+      },
+      {
+        "kappa": 1,
+        "phi": 1,
+        "error_cell": [
+          1,
+          2
+        ],
+        "onset": 1
+      }
+    ],
+    "new_online_state": "DiagnosticMemory mean table keyed by visible base candidate features plus repeated-run versus single-step. Representation supplied, empirical values learned from actual experiments. No absolute coordinate/time/kappa/phase/ordinal identity/fault truth in stored scoring key.",
+    "training": "Only failed main-task ambiguity permits actual3branch/6task practice. Every tested action return is retained. Successful main tasks trigger no model observation/diagnostic. Subsequent main outcomes do not update memory.",
+    "control": "FrozenPractice has same ordinary learner, base28row values, candidate grammar,2event cap and current-condition experiment capability, but no cross-event diagnostic memory. OrdinaryR+L remains persistent in all arms."
+  },
+  "execution": {
+    "native_first_exit": 0,
+    "new_stored_review_first_exit_observed": 0,
+    "rollout": 274,
+    "step": 2215,
+    "transaction": 279,
+    "records": 974,
+    "input_pins_unchanged": 333,
+    "main_tasks": 160,
+    "candidate_practice_tasks_all_arms": 18,
+    "read_only_tasks": 96,
+    "ordinary_full_R_L_updates_checked": 178,
+    "main_steps": 1225,
+    "practice_steps": 186,
+    "read_only_steps": 804,
+    "candidate_practice_transactions": 6,
+    "instrumented_wall_seconds": 20.95400000002701,
+    "base_model_parameter_updates": 0,
+    "diagnostic_memory_update_events": 1,
+    "historical_base_training_probe_tasks": 196,
+    "automatic_retry": false,
+    "new_keys": 0,
+    "formal_collection": false
+  },
+  "summary": [
+    {
+      "mode": "dq",
+      "arms": {
+        "EvidenceValue": {
+          "diagnostic_calls": 15,
+          "diagnostic_edit_attempts": 13,
+          "diagnostic_transactions": 13,
+          "memory_hits": 0,
+          "practice_events": 0,
+          "practice_rollouts": 0,
+          "successes": 5,
+          "task_return_mean": -0.694,
+          "task_return_sum": -13.879999999999999,
+          "tasks": 20
+        },
+        "FrozenPractice": {
+          "diagnostic_calls": 6,
+          "diagnostic_edit_attempts": 4,
+          "diagnostic_transactions": 4,
+          "memory_hits": 0,
+          "practice_events": 2,
+          "practice_rollouts": 12,
+          "successes": 14,
+          "task_return_mean": 0.256,
+          "task_return_sum": 5.12,
+          "tasks": 20
+        },
+        "MemoryPractice": {
+          "diagnostic_calls": 6,
+          "diagnostic_edit_attempts": 4,
+          "diagnostic_transactions": 4,
+          "memory_hits": 1,
+          "practice_events": 1,
+          "practice_rollouts": 6,
+          "successes": 14,
+          "task_return_mean": 0.256,
+          "task_return_sum": 5.12,
+          "tasks": 20
+        },
+        "TaskTD": {
+          "diagnostic_calls": 0,
+          "diagnostic_edit_attempts": 0,
+          "diagnostic_transactions": 0,
+          "memory_hits": 0,
+          "practice_events": 0,
+          "practice_rollouts": 0,
+          "successes": 2,
+          "task_return_mean": -1.0070000000000001,
+          "task_return_sum": -20.14,
+          "tasks": 20
+        }
+      }
+    },
+    {
+      "mode": "patch-adaptive",
+      "arms": {
+        "EvidenceValue": {
+          "diagnostic_calls": 4,
+          "diagnostic_edit_attempts": 0,
+          "diagnostic_transactions": 0,
+          "memory_hits": 0,
+          "practice_events": 0,
+          "practice_rollouts": 0,
+          "successes": 16,
+          "task_return_mean": 0.466,
+          "task_return_sum": 9.32,
+          "tasks": 20
+        },
+        "FrozenPractice": {
+          "diagnostic_calls": 4,
+          "diagnostic_edit_attempts": 0,
+          "diagnostic_transactions": 0,
+          "memory_hits": 0,
+          "practice_events": 0,
+          "practice_rollouts": 0,
+          "successes": 16,
+          "task_return_mean": 0.466,
+          "task_return_sum": 9.32,
+          "tasks": 20
+        },
+        "MemoryPractice": {
+          "diagnostic_calls": 4,
+          "diagnostic_edit_attempts": 0,
+          "diagnostic_transactions": 0,
+          "memory_hits": 0,
+          "practice_events": 0,
+          "practice_rollouts": 0,
+          "successes": 16,
+          "task_return_mean": 0.466,
+          "task_return_sum": 9.32,
+          "tasks": 20
+        },
+        "TaskTD": {
+          "diagnostic_calls": 0,
+          "diagnostic_edit_attempts": 0,
+          "diagnostic_transactions": 0,
+          "memory_hits": 0,
+          "practice_events": 0,
+          "practice_rollouts": 0,
+          "successes": 16,
+          "task_return_mean": 0.466,
+          "task_return_sum": 9.32,
+          "tasks": 20
+        }
+      }
+    }
+  ],
+  "complete_stream_metrics": [
+    {
+      "arms": {
+        "EvidenceValue": {
+          "diagnostic_calls": 15,
+          "diagnostic_edit_attempts": 13,
+          "diagnostic_transactions": 13,
+          "final_diagnostic_memory": [],
+          "memory_hits": 0,
+          "outcomes": [
+            "TIMEOUT",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "TRAP",
+            "TIMEOUT",
+            "SUCCESS",
+            "TIMEOUT",
+            "SUCCESS",
+            "TIMEOUT",
+            "TRAP",
+            "TIMEOUT",
+            "TIMEOUT",
+            "TIMEOUT",
+            "TIMEOUT",
+            "TIMEOUT",
+            "TIMEOUT",
+            "TIMEOUT",
+            "SUCCESS",
+            "TIMEOUT"
+          ],
+          "practice_events": 0,
+          "practice_rollouts": 0,
+          "retention_banks": [
+            {
+              "completed_tasks": 0,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 4,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                }
+              ]
+            },
+            {
+              "completed_tasks": 8,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                }
+              ]
+            },
+            {
+              "completed_tasks": 10,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                }
+              ]
+            },
+            {
+              "completed_tasks": 14,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 20,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.76
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                }
+              ]
+            }
+          ],
+          "returns": [
+            -1.24,
+            -1.24,
+            0.88,
+            0.88,
+            -1.02,
+            -1.24,
+            0.88,
+            -1.24,
+            0.88,
+            -1.24,
+            -1.02,
+            -1.24,
+            -1.24,
+            -1.24,
+            -1.24,
+            -1.24,
+            -1.24,
+            -1.24,
+            0.76,
+            -1.24
+          ],
+          "successes": 5,
+          "task_return_mean": -0.694,
+          "task_return_sum": -13.879999999999999,
+          "tasks": 20
+        },
+        "FrozenPractice": {
+          "diagnostic_calls": 6,
+          "diagnostic_edit_attempts": 4,
+          "diagnostic_transactions": 4,
+          "final_diagnostic_memory": [],
+          "memory_hits": 0,
+          "outcomes": [
+            "TIMEOUT",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "TRAP",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "TRAP",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "practice_events": 2,
+          "practice_rollouts": 12,
+          "retention_banks": [
+            {
+              "completed_tasks": 0,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 4,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                }
+              ]
+            },
+            {
+              "completed_tasks": 8,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                }
+              ]
+            },
+            {
+              "completed_tasks": 10,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                }
+              ]
+            },
+            {
+              "completed_tasks": 14,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.86
+                }
+              ]
+            },
+            {
+              "completed_tasks": 20,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.86
+                }
+              ]
+            }
+          ],
+          "returns": [
+            -1.24,
+            -1.24,
+            0.88,
+            0.88,
+            -1.02,
+            -1.24,
+            0.88,
+            0.86,
+            0.88,
+            0.86,
+            -1.02,
+            -1.24,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86
+          ],
+          "successes": 14,
+          "task_return_mean": 0.256,
+          "task_return_sum": 5.12,
+          "tasks": 20
+        },
+        "MemoryPractice": {
+          "diagnostic_calls": 6,
+          "diagnostic_edit_attempts": 4,
+          "diagnostic_transactions": 4,
+          "final_diagnostic_memory": [
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "keep",
+                "global"
+              ],
+              2,
+              {
+                "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+              }
+            ],
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "repeated-run"
+              ],
+              2,
+              {
+                "binary64_hex": "0x1.b851eb851eb85p-1"
+              }
+            ],
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "single-step"
+              ],
+              2,
+              {
+                "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+              }
+            ]
+          ],
+          "memory_hits": 1,
+          "outcomes": [
+            "TIMEOUT",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "TRAP",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "TRAP",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "practice_events": 1,
+          "practice_rollouts": 6,
+          "retention_banks": [
+            {
+              "completed_tasks": 0,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 4,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                }
+              ]
+            },
+            {
+              "completed_tasks": 8,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                }
+              ]
+            },
+            {
+              "completed_tasks": 10,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                }
+              ]
+            },
+            {
+              "completed_tasks": 14,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.86
+                }
+              ]
+            },
+            {
+              "completed_tasks": 20,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.86
+                }
+              ]
+            }
+          ],
+          "returns": [
+            -1.24,
+            -1.24,
+            0.88,
+            0.88,
+            -1.02,
+            -1.24,
+            0.88,
+            0.86,
+            0.88,
+            0.86,
+            -1.02,
+            -1.24,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86
+          ],
+          "successes": 14,
+          "task_return_mean": 0.256,
+          "task_return_sum": 5.12,
+          "tasks": 20
+        },
+        "TaskTD": {
+          "diagnostic_calls": 0,
+          "diagnostic_edit_attempts": 0,
+          "diagnostic_transactions": 0,
+          "final_diagnostic_memory": [],
+          "memory_hits": 0,
+          "outcomes": [
+            "TIMEOUT",
+            "TIMEOUT",
+            "TIMEOUT",
+            "TIMEOUT",
+            "TRAP",
+            "TIMEOUT",
+            "TIMEOUT",
+            "TIMEOUT",
+            "TIMEOUT",
+            "TIMEOUT",
+            "TRAP",
+            "TRAP",
+            "TIMEOUT",
+            "TIMEOUT",
+            "TIMEOUT",
+            "TIMEOUT",
+            "SUCCESS",
+            "TIMEOUT",
+            "SUCCESS",
+            "TIMEOUT"
+          ],
+          "practice_events": 0,
+          "practice_rollouts": 0,
+          "retention_banks": [
+            {
+              "completed_tasks": 0,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 4,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 8,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 10,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 14,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 20,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.76
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                }
+              ]
+            }
+          ],
+          "returns": [
+            -1.24,
+            -1.24,
+            -1.24,
+            -1.24,
+            -1.02,
+            -1.24,
+            -1.24,
+            -1.24,
+            -1.24,
+            -1.24,
+            -1.02,
+            -1.02,
+            -1.24,
+            -1.24,
+            -1.24,
+            -1.24,
+            0.76,
+            -1.24,
+            0.76,
+            -1.24
+          ],
+          "successes": 2,
+          "task_return_mean": -1.0070000000000001,
+          "task_return_sum": -20.14,
+          "tasks": 20
+        }
+      },
+      "mode": "dq"
+    },
+    {
+      "arms": {
+        "EvidenceValue": {
+          "diagnostic_calls": 4,
+          "diagnostic_edit_attempts": 0,
+          "diagnostic_transactions": 0,
+          "final_diagnostic_memory": [],
+          "memory_hits": 0,
+          "outcomes": [
+            "TIMEOUT",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "TRAP",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "TRAP",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "practice_events": 0,
+          "practice_rollouts": 0,
+          "retention_banks": [
+            {
+              "completed_tasks": 0,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 4,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                }
+              ]
+            },
+            {
+              "completed_tasks": 8,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                }
+              ]
+            },
+            {
+              "completed_tasks": 10,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                }
+              ]
+            },
+            {
+              "completed_tasks": 14,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.86
+                }
+              ]
+            },
+            {
+              "completed_tasks": 20,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.86
+                }
+              ]
+            }
+          ],
+          "returns": [
+            -1.24,
+            -1.24,
+            0.88,
+            0.88,
+            -1.02,
+            0.86,
+            0.88,
+            0.86,
+            0.88,
+            0.86,
+            -1.02,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86
+          ],
+          "successes": 16,
+          "task_return_mean": 0.466,
+          "task_return_sum": 9.32,
+          "tasks": 20
+        },
+        "FrozenPractice": {
+          "diagnostic_calls": 4,
+          "diagnostic_edit_attempts": 0,
+          "diagnostic_transactions": 0,
+          "final_diagnostic_memory": [],
+          "memory_hits": 0,
+          "outcomes": [
+            "TIMEOUT",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "TRAP",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "TRAP",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "practice_events": 0,
+          "practice_rollouts": 0,
+          "retention_banks": [
+            {
+              "completed_tasks": 0,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 4,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                }
+              ]
+            },
+            {
+              "completed_tasks": 8,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                }
+              ]
+            },
+            {
+              "completed_tasks": 10,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                }
+              ]
+            },
+            {
+              "completed_tasks": 14,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.86
+                }
+              ]
+            },
+            {
+              "completed_tasks": 20,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.86
+                }
+              ]
+            }
+          ],
+          "returns": [
+            -1.24,
+            -1.24,
+            0.88,
+            0.88,
+            -1.02,
+            0.86,
+            0.88,
+            0.86,
+            0.88,
+            0.86,
+            -1.02,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86
+          ],
+          "successes": 16,
+          "task_return_mean": 0.466,
+          "task_return_sum": 9.32,
+          "tasks": 20
+        },
+        "MemoryPractice": {
+          "diagnostic_calls": 4,
+          "diagnostic_edit_attempts": 0,
+          "diagnostic_transactions": 0,
+          "final_diagnostic_memory": [],
+          "memory_hits": 0,
+          "outcomes": [
+            "TIMEOUT",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "TRAP",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "TRAP",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "practice_events": 0,
+          "practice_rollouts": 0,
+          "retention_banks": [
+            {
+              "completed_tasks": 0,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 4,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                }
+              ]
+            },
+            {
+              "completed_tasks": 8,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                }
+              ]
+            },
+            {
+              "completed_tasks": 10,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                }
+              ]
+            },
+            {
+              "completed_tasks": 14,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.86
+                }
+              ]
+            },
+            {
+              "completed_tasks": 20,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.86
+                }
+              ]
+            }
+          ],
+          "returns": [
+            -1.24,
+            -1.24,
+            0.88,
+            0.88,
+            -1.02,
+            0.86,
+            0.88,
+            0.86,
+            0.88,
+            0.86,
+            -1.02,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86
+          ],
+          "successes": 16,
+          "task_return_mean": 0.466,
+          "task_return_sum": 9.32,
+          "tasks": 20
+        },
+        "TaskTD": {
+          "diagnostic_calls": 0,
+          "diagnostic_edit_attempts": 0,
+          "diagnostic_transactions": 0,
+          "final_diagnostic_memory": [],
+          "memory_hits": 0,
+          "outcomes": [
+            "TIMEOUT",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "TRAP",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "TRAP",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "practice_events": 0,
+          "practice_rollouts": 0,
+          "retention_banks": [
+            {
+              "completed_tasks": 0,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 4,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                }
+              ]
+            },
+            {
+              "completed_tasks": 8,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                }
+              ]
+            },
+            {
+              "completed_tasks": 10,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                }
+              ]
+            },
+            {
+              "completed_tasks": 14,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.86
+                }
+              ]
+            },
+            {
+              "completed_tasks": 20,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.86
+                }
+              ]
+            }
+          ],
+          "returns": [
+            -1.24,
+            -1.24,
+            0.88,
+            0.88,
+            -1.02,
+            0.86,
+            0.88,
+            0.86,
+            0.88,
+            0.86,
+            -1.02,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86
+          ],
+          "successes": 16,
+          "task_return_mean": 0.466,
+          "task_return_sum": 9.32,
+          "tasks": 20
+        }
+      },
+      "mode": "patch-adaptive"
+    }
+  ],
+  "actual_practice_events": [
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:4"
+      ],
+      "arm": "FrozenPractice",
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:4": 1
+      },
+      "epoch": 5,
+      "means": {
+        "keep": -1.24,
+        "single:0": -1.24,
+        "single:4": 0.86
+      },
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.24,
+          -1.24
+        ],
+        "single:0": [
+          -1.24,
+          -1.24
+        ],
+        "single:4": [
+          0.86,
+          0.86
+        ]
+      },
+      "selected": "single:4"
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:2"
+      ],
+      "arm": "FrozenPractice",
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:2": 1
+      },
+      "epoch": 11,
+      "means": {
+        "keep": -1.24,
+        "single:0": -1.24,
+        "single:2": 0.86
+      },
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.24,
+          -1.24
+        ],
+        "single:0": [
+          -1.24,
+          -1.24
+        ],
+        "single:2": [
+          0.86,
+          0.86
+        ]
+      },
+      "selected": "single:2"
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:4"
+      ],
+      "arm": "MemoryPractice",
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:4": 1
+      },
+      "epoch": 5,
+      "means": {
+        "keep": -1.24,
+        "single:0": -1.24,
+        "single:4": 0.86
+      },
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.24,
+          -1.24
+        ],
+        "single:0": [
+          -1.24,
+          -1.24
+        ],
+        "single:4": [
+          0.86,
+          0.86
+        ]
+      },
+      "selected": "single:4"
+    }
+  ],
+  "online_memory_updates": [
+    {
+      "epoch": 5,
+      "mode": "dq",
+      "new_table": [
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "keep",
+            "global"
+          ],
+          2,
+          {
+            "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+          }
+        ],
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "repeated-run"
+          ],
+          2,
+          {
+            "binary64_hex": "0x1.b851eb851eb85p-1"
+          }
+        ],
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "single-step"
+          ],
+          2,
+          {
+            "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+          }
+        ]
+      ]
+    }
+  ],
+  "memory_lookups": [
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:4"
+      ],
+      "arm": "MemoryPractice",
+      "epoch": 5,
+      "info": {
+        "keys": {
+          "keep": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "keep",
+            "global"
+          ],
+          "single:0": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "single-step"
+          ],
+          "single:4": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "repeated-run"
+          ]
+        },
+        "supported": false
+      },
+      "mode": "dq",
+      "selected": null
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:2"
+      ],
+      "arm": "MemoryPractice",
+      "epoch": 11,
+      "info": {
+        "keys": {
+          "keep": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "keep",
+            "global"
+          ],
+          "single:0": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "single-step"
+          ],
+          "single:2": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "repeated-run"
+          ]
+        },
+        "scores": {
+          "keep": {
+            "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+          },
+          "single:0": {
+            "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+          },
+          "single:2": {
+            "binary64_hex": "0x1.b851eb851eb85p-1"
+          }
+        },
+        "supported": true
+      },
+      "mode": "dq",
+      "selected": "single:2"
+    }
+  ],
+  "transfer_start_state_checks": [
+    {
+      "epoch": 11,
+      "mode": "dq",
+      "same_actual_post_TD_R_L_I_as_fresh_practice_control": true
+    }
+  ],
+  "findings": [
+    "DQ FrozenPractice and MemoryPractice both14/20 successes and mean0.256. Their full20task outcome and binary64 return sequences match. MemoryPractice uses1practice event/6rollouts; FrozenPractice2events/12rollouts.",
+    "At epoch5 memory starts unsupported, performs actual practice and learns3conditional rows from6actual continuation returns: keep-1.24,isolatedWAITcandidate-1.24,repeated-runWAITcandidate0.86.",
+    "At epoch11 on changed kappa/phase/errorposition, memory selects single:2(the third address), not the prior single:4. No new trial is run in MemoryPractice. Independent FrozenPractice from equal actual post-TD R+L+I tests the same options and also finds single:2 yields[0.86,0.86], others[-1.24,-1.24]. This validates the observed transferred decision in this case.",
+    "One extra6task/62step/2candidate-transaction practice event is avoided in the simulated comparison. Lookup/storage/representation overhead and general real-world net resource efficiency not established.",
+    "DQ main baselines: TaskTD2/20/mean-1.007; frozen evidence without practice5/20/mean-0.694. No architecture ranking: revised patch all arms16/20/mean0.466 and never practices or learns diagnostic memory.",
+    "Both practice arms final clean returns0.86/0.86, not perfect prior0.88 restoration. Keep imperfect retention, ordinary learning and prior v120/v122 failures unchanged."
+  ],
+  "limits": [
+    "One actual diagnostic-memory transfer within one fixed two-context stream per mode/arm, not independent seed inference, broad memory generalization or calibrated causal attribution.",
+    "The run-span feature is human-designed after the earlier alias failure; result demonstrates consequence learning and reuse under this representation, not learned feature discovery or universal taste.",
+    "SharedQ*, keep/delete grammar, repeatable simulation conditions, revised patch ordinary policy improvement and taskMAXcoins remain; not from-scratch world learning or autonomous task exploration.",
+    "Only keep and up to2aliased singles are compared/remembered; untested candidates are not certified inferior. Memory may be wrong in another context even when feature keys match.",
+    "Whole agent is not frozen: DiagnosticMemory updates online once. Inherited contract practice wording about no persistent scorer update refers to the base table; the separate online_memory/model sections prospectively declare this new online state.",
+    "Environmental work saving observed here, but no matched total clone/IO/time study or distribution-wide economy. No complete originalV04R gate migration."
+  ],
+  "prior_v124_local_stage_completion_preserved": true,
+  "original_full_V04R_qualified": false,
+  "preservation": {
+    "previous64_ledger_values": true,
+    "old266_provenance": true,
+    "frozen313": true,
+    "all_old_executed_code_and_results_unchanged": true,
+    "automation_inspected_or_modified": false
+  }
+}

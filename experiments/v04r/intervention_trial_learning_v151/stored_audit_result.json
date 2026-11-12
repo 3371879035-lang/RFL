@@ -1,0 +1,1787 @@
+{
+  "schema": "V151_STDLIB_INTERVENTION_TRIAL_LEARNING_REVIEW",
+  "complete": true,
+  "native_counts": {
+    "rollout": 72,
+    "step": 386,
+    "transaction": 177
+  },
+  "records": 529,
+  "input_pins": 335,
+  "summaries": [
+    {
+      "case": "first_failure_then_gain",
+      "arm": "NoTrialLearning",
+      "successes": 4,
+      "returns": [
+        -1.02,
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "outcomes": [
+        "TRAP",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.2333333333333333,
+      "external_updates": 0
+    },
+    {
+      "case": "first_failure_then_gain",
+      "arm": "KeepOnly",
+      "successes": 5,
+      "returns": [
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "outcomes": [
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.5466666666666666,
+      "external_updates": 1
+    },
+    {
+      "case": "first_failure_then_gain",
+      "arm": "CandidateOnly",
+      "successes": 5,
+      "returns": [
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "outcomes": [
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.5466666666666666,
+      "external_updates": 1
+    },
+    {
+      "case": "first_failure_then_gain",
+      "arm": "CompatibleBatch",
+      "successes": 5,
+      "returns": [
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "outcomes": [
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.5466666666666666,
+      "external_updates": 2
+    },
+    {
+      "case": "late_repair",
+      "arm": "NoTrialLearning",
+      "successes": 5,
+      "returns": [
+        -1.06,
+        0.86,
+        0.84,
+        0.84,
+        0.84,
+        0.84
+      ],
+      "outcomes": [
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.5266666666666666,
+      "external_updates": 0
+    },
+    {
+      "case": "late_repair",
+      "arm": "KeepOnly",
+      "successes": 5,
+      "returns": [
+        -1.06,
+        0.86,
+        0.84,
+        0.84,
+        0.84,
+        0.84
+      ],
+      "outcomes": [
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.5266666666666666,
+      "external_updates": 0
+    },
+    {
+      "case": "late_repair",
+      "arm": "CandidateOnly",
+      "successes": 5,
+      "returns": [
+        -1.06,
+        0.86,
+        0.84,
+        0.84,
+        0.84,
+        0.84
+      ],
+      "outcomes": [
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.5266666666666666,
+      "external_updates": 1
+    },
+    {
+      "case": "late_repair",
+      "arm": "CompatibleBatch",
+      "successes": 5,
+      "returns": [
+        -1.06,
+        0.86,
+        0.84,
+        0.84,
+        0.84,
+        0.84
+      ],
+      "outcomes": [
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.5266666666666666,
+      "external_updates": 1
+    }
+  ],
+  "queries": [
+    {
+      "case": "first_failure_then_gain",
+      "arm": "NoTrialLearning",
+      "observed": {
+        "keep": [
+          -1.02,
+          -1.02
+        ],
+        "controller-delete": [
+          -1.02,
+          0.86
+        ]
+      },
+      "means": {
+        "keep": -1.02,
+        "controller-delete": -0.08000000000000002
+      },
+      "query_delta": 0.94,
+      "choice": "controller-delete",
+      "horizon": 2
+    },
+    {
+      "case": "first_failure_then_gain",
+      "arm": "KeepOnly",
+      "observed": {
+        "keep": [
+          -1.02,
+          -1.02
+        ],
+        "controller-delete": [
+          -1.02,
+          0.86
+        ]
+      },
+      "means": {
+        "keep": -1.02,
+        "controller-delete": -0.08000000000000002
+      },
+      "query_delta": 0.94,
+      "choice": "controller-delete",
+      "horizon": 2
+    },
+    {
+      "case": "first_failure_then_gain",
+      "arm": "CandidateOnly",
+      "observed": {
+        "keep": [
+          -1.02,
+          -1.02
+        ],
+        "controller-delete": [
+          -1.02,
+          0.86
+        ]
+      },
+      "means": {
+        "keep": -1.02,
+        "controller-delete": -0.08000000000000002
+      },
+      "query_delta": 0.94,
+      "choice": "controller-delete",
+      "horizon": 2
+    },
+    {
+      "case": "first_failure_then_gain",
+      "arm": "CompatibleBatch",
+      "observed": {
+        "keep": [
+          -1.02,
+          -1.02
+        ],
+        "controller-delete": [
+          -1.02,
+          0.86
+        ]
+      },
+      "means": {
+        "keep": -1.02,
+        "controller-delete": -0.08000000000000002
+      },
+      "query_delta": 0.94,
+      "choice": "controller-delete",
+      "horizon": 2
+    },
+    {
+      "case": "late_repair",
+      "arm": "NoTrialLearning",
+      "observed": {
+        "keep": [
+          -1.06
+        ],
+        "controller-delete": [
+          0.86
+        ]
+      },
+      "means": {
+        "keep": -1.06,
+        "controller-delete": 0.86
+      },
+      "query_delta": 1.92,
+      "choice": "controller-delete",
+      "horizon": 1
+    },
+    {
+      "case": "late_repair",
+      "arm": "KeepOnly",
+      "observed": {
+        "keep": [
+          -1.06
+        ],
+        "controller-delete": [
+          0.86
+        ]
+      },
+      "means": {
+        "keep": -1.06,
+        "controller-delete": 0.86
+      },
+      "query_delta": 1.92,
+      "choice": "controller-delete",
+      "horizon": 1
+    },
+    {
+      "case": "late_repair",
+      "arm": "CandidateOnly",
+      "observed": {
+        "keep": [
+          -1.06
+        ],
+        "controller-delete": [
+          0.86
+        ]
+      },
+      "means": {
+        "keep": -1.06,
+        "controller-delete": 0.86
+      },
+      "query_delta": 1.92,
+      "choice": "controller-delete",
+      "horizon": 1
+    },
+    {
+      "case": "late_repair",
+      "arm": "CompatibleBatch",
+      "observed": {
+        "keep": [
+          -1.06
+        ],
+        "controller-delete": [
+          0.86
+        ]
+      },
+      "means": {
+        "keep": -1.06,
+        "controller-delete": 0.86
+      },
+      "query_delta": 1.92,
+      "choice": "controller-delete",
+      "horizon": 1
+    }
+  ],
+  "online_costs": [
+    {
+      "case": "first_failure_then_gain",
+      "arm": "NoTrialLearning",
+      "rollout": 10,
+      "step": 40,
+      "transaction": 22,
+      "shared5TX_excluded": true
+    },
+    {
+      "case": "first_failure_then_gain",
+      "arm": "KeepOnly",
+      "rollout": 10,
+      "step": 46,
+      "transaction": 24,
+      "shared5TX_excluded": true
+    },
+    {
+      "case": "first_failure_then_gain",
+      "arm": "CandidateOnly",
+      "rollout": 10,
+      "step": 46,
+      "transaction": 24,
+      "shared5TX_excluded": true
+    },
+    {
+      "case": "first_failure_then_gain",
+      "arm": "CompatibleBatch",
+      "rollout": 10,
+      "step": 46,
+      "transaction": 26,
+      "shared5TX_excluded": true
+    },
+    {
+      "case": "late_repair",
+      "arm": "NoTrialLearning",
+      "rollout": 8,
+      "step": 52,
+      "transaction": 18,
+      "shared5TX_excluded": true
+    },
+    {
+      "case": "late_repair",
+      "arm": "KeepOnly",
+      "rollout": 8,
+      "step": 52,
+      "transaction": 18,
+      "shared5TX_excluded": true
+    },
+    {
+      "case": "late_repair",
+      "arm": "CandidateOnly",
+      "rollout": 8,
+      "step": 52,
+      "transaction": 20,
+      "shared5TX_excluded": true
+    },
+    {
+      "case": "late_repair",
+      "arm": "CompatibleBatch",
+      "rollout": 8,
+      "step": 52,
+      "transaction": 20,
+      "shared5TX_excluded": true
+    }
+  ],
+  "comparisons": [
+    {
+      "case": "first_failure_then_gain",
+      "arm": "KeepOnly",
+      "vs": "NoTrialLearning",
+      "all6_raw_identical": false,
+      "all6_post_R_L_I_identical": false
+    },
+    {
+      "case": "first_failure_then_gain",
+      "arm": "CandidateOnly",
+      "vs": "NoTrialLearning",
+      "all6_raw_identical": false,
+      "all6_post_R_L_I_identical": false
+    },
+    {
+      "case": "first_failure_then_gain",
+      "arm": "CompatibleBatch",
+      "vs": "NoTrialLearning",
+      "all6_raw_identical": false,
+      "all6_post_R_L_I_identical": false
+    },
+    {
+      "case": "late_repair",
+      "arm": "KeepOnly",
+      "vs": "NoTrialLearning",
+      "all6_raw_identical": true,
+      "all6_post_R_L_I_identical": true
+    },
+    {
+      "case": "late_repair",
+      "arm": "CandidateOnly",
+      "vs": "NoTrialLearning",
+      "all6_raw_identical": true,
+      "all6_post_R_L_I_identical": false
+    },
+    {
+      "case": "late_repair",
+      "arm": "CompatibleBatch",
+      "vs": "NoTrialLearning",
+      "all6_raw_identical": true,
+      "all6_post_R_L_I_identical": false
+    }
+  ],
+  "accepted": [
+    {
+      "case": "first_failure_then_gain",
+      "arm": "KeepOnly",
+      "candidate": "keep",
+      "terminal": "TRAP",
+      "numeric_content_changed": true,
+      "before_numeric": {
+        "D": [],
+        "P": [],
+        "Q": [
+          {
+            "address": {
+              "a": 3,
+              "m": 0,
+              "state": {
+                "kappa": 1,
+                "phi": 0,
+                "t": 0,
+                "x": 0,
+                "y": 2
+              },
+              "z": 1
+            },
+            "value": {
+              "binary64_hex": "-0x1.1eb851eb851f0p-4"
+            }
+          },
+          {
+            "address": {
+              "a": 4,
+              "m": 0,
+              "state": {
+                "kappa": 1,
+                "phi": 0,
+                "t": 0,
+                "x": 0,
+                "y": 2
+              },
+              "z": 1
+            },
+            "value": {
+              "binary64_hex": "-0x1.47ae147ae1480p-4"
+            }
+          }
+        ],
+        "X": []
+      },
+      "after_numeric": {
+        "D": [],
+        "P": [],
+        "Q": [
+          {
+            "address": {
+              "a": 3,
+              "m": 0,
+              "state": {
+                "kappa": 1,
+                "phi": 0,
+                "t": 0,
+                "x": 0,
+                "y": 2
+              },
+              "z": 1
+            },
+            "value": {
+              "binary64_hex": "-0x1.170a3d70a3d71p-1"
+            }
+          },
+          {
+            "address": {
+              "a": 4,
+              "m": 0,
+              "state": {
+                "kappa": 1,
+                "phi": 0,
+                "t": 0,
+                "x": 0,
+                "y": 2
+              },
+              "z": 1
+            },
+            "value": {
+              "binary64_hex": "-0x1.47ae147ae1480p-4"
+            }
+          }
+        ],
+        "X": []
+      },
+      "observed_trace": {
+        "base_option": 1,
+        "control": {
+          "m": 0,
+          "z": 1
+        },
+        "interventions": {
+          "members": []
+        },
+        "mask": {
+          "controller": null,
+          "decision": null,
+          "plant": null,
+          "trap": {
+            "cell": [
+              1,
+              2
+            ],
+            "t": 0
+          }
+        },
+        "option_in_force": 1,
+        "outcome": "TRAP",
+        "steps": [
+          {
+            "a_cmd": 3,
+            "a_realized": 3,
+            "control": {
+              "m": 0,
+              "z": 1
+            },
+            "illegal": false,
+            "outcome": "TRAP",
+            "reward": {
+              "binary64_hex": "-0x1.051eb851eb852p+0"
+            },
+            "state": {
+              "kappa": 1,
+              "phi": 0,
+              "t": 1,
+              "x": 1,
+              "y": 2
+            },
+            "terminal": true,
+            "u": 3
+          }
+        ]
+      }
+    },
+    {
+      "case": "first_failure_then_gain",
+      "arm": "CandidateOnly",
+      "candidate": "controller-delete",
+      "terminal": "TRAP",
+      "numeric_content_changed": true,
+      "before_numeric": {
+        "D": [],
+        "P": [],
+        "Q": [
+          {
+            "address": {
+              "a": 3,
+              "m": 0,
+              "state": {
+                "kappa": 1,
+                "phi": 0,
+                "t": 0,
+                "x": 0,
+                "y": 2
+              },
+              "z": 1
+            },
+            "value": {
+              "binary64_hex": "-0x1.1eb851eb851f0p-4"
+            }
+          },
+          {
+            "address": {
+              "a": 4,
+              "m": 0,
+              "state": {
+                "kappa": 1,
+                "phi": 0,
+                "t": 0,
+                "x": 0,
+                "y": 2
+              },
+              "z": 1
+            },
+            "value": {
+              "binary64_hex": "-0x1.47ae147ae1480p-4"
+            }
+          }
+        ],
+        "X": []
+      },
+      "after_numeric": {
+        "D": [],
+        "P": [],
+        "Q": [
+          {
+            "address": {
+              "a": 3,
+              "m": 0,
+              "state": {
+                "kappa": 1,
+                "phi": 0,
+                "t": 0,
+                "x": 0,
+                "y": 2
+              },
+              "z": 1
+            },
+            "value": {
+              "binary64_hex": "-0x1.170a3d70a3d71p-1"
+            }
+          },
+          {
+            "address": {
+              "a": 4,
+              "m": 0,
+              "state": {
+                "kappa": 1,
+                "phi": 0,
+                "t": 0,
+                "x": 0,
+                "y": 2
+              },
+              "z": 1
+            },
+            "value": {
+              "binary64_hex": "-0x1.47ae147ae1480p-4"
+            }
+          }
+        ],
+        "X": []
+      },
+      "observed_trace": {
+        "base_option": 1,
+        "control": {
+          "m": 0,
+          "z": 1
+        },
+        "interventions": {
+          "members": []
+        },
+        "mask": {
+          "controller": null,
+          "decision": null,
+          "plant": null,
+          "trap": {
+            "cell": [
+              1,
+              2
+            ],
+            "t": 0
+          }
+        },
+        "option_in_force": 1,
+        "outcome": "TRAP",
+        "steps": [
+          {
+            "a_cmd": 3,
+            "a_realized": 3,
+            "control": {
+              "m": 0,
+              "z": 1
+            },
+            "illegal": false,
+            "outcome": "TRAP",
+            "reward": {
+              "binary64_hex": "-0x1.051eb851eb852p+0"
+            },
+            "state": {
+              "kappa": 1,
+              "phi": 0,
+              "t": 1,
+              "x": 1,
+              "y": 2
+            },
+            "terminal": true,
+            "u": 3
+          }
+        ]
+      }
+    },
+    {
+      "case": "first_failure_then_gain",
+      "arm": "CompatibleBatch",
+      "candidate": "keep",
+      "terminal": "TRAP",
+      "numeric_content_changed": true,
+      "before_numeric": {
+        "D": [],
+        "P": [],
+        "Q": [
+          {
+            "address": {
+              "a": 3,
+              "m": 0,
+              "state": {
+                "kappa": 1,
+                "phi": 0,
+                "t": 0,
+                "x": 0,
+                "y": 2
+              },
+              "z": 1
+            },
+            "value": {
+              "binary64_hex": "-0x1.1eb851eb851f0p-4"
+            }
+          },
+          {
+            "address": {
+              "a": 4,
+              "m": 0,
+              "state": {
+                "kappa": 1,
+                "phi": 0,
+                "t": 0,
+                "x": 0,
+                "y": 2
+              },
+              "z": 1
+            },
+            "value": {
+              "binary64_hex": "-0x1.47ae147ae1480p-4"
+            }
+          }
+        ],
+        "X": []
+      },
+      "after_numeric": {
+        "D": [],
+        "P": [],
+        "Q": [
+          {
+            "address": {
+              "a": 3,
+              "m": 0,
+              "state": {
+                "kappa": 1,
+                "phi": 0,
+                "t": 0,
+                "x": 0,
+                "y": 2
+              },
+              "z": 1
+            },
+            "value": {
+              "binary64_hex": "-0x1.170a3d70a3d71p-1"
+            }
+          },
+          {
+            "address": {
+              "a": 4,
+              "m": 0,
+              "state": {
+                "kappa": 1,
+                "phi": 0,
+                "t": 0,
+                "x": 0,
+                "y": 2
+              },
+              "z": 1
+            },
+            "value": {
+              "binary64_hex": "-0x1.47ae147ae1480p-4"
+            }
+          }
+        ],
+        "X": []
+      },
+      "observed_trace": {
+        "base_option": 1,
+        "control": {
+          "m": 0,
+          "z": 1
+        },
+        "interventions": {
+          "members": []
+        },
+        "mask": {
+          "controller": null,
+          "decision": null,
+          "plant": null,
+          "trap": {
+            "cell": [
+              1,
+              2
+            ],
+            "t": 0
+          }
+        },
+        "option_in_force": 1,
+        "outcome": "TRAP",
+        "steps": [
+          {
+            "a_cmd": 3,
+            "a_realized": 3,
+            "control": {
+              "m": 0,
+              "z": 1
+            },
+            "illegal": false,
+            "outcome": "TRAP",
+            "reward": {
+              "binary64_hex": "-0x1.051eb851eb852p+0"
+            },
+            "state": {
+              "kappa": 1,
+              "phi": 0,
+              "t": 1,
+              "x": 1,
+              "y": 2
+            },
+            "terminal": true,
+            "u": 3
+          }
+        ]
+      }
+    },
+    {
+      "case": "first_failure_then_gain",
+      "arm": "CompatibleBatch",
+      "candidate": "controller-delete",
+      "terminal": "TRAP",
+      "numeric_content_changed": true,
+      "before_numeric": {
+        "D": [],
+        "P": [],
+        "Q": [
+          {
+            "address": {
+              "a": 3,
+              "m": 0,
+              "state": {
+                "kappa": 1,
+                "phi": 0,
+                "t": 0,
+                "x": 0,
+                "y": 2
+              },
+              "z": 1
+            },
+            "value": {
+              "binary64_hex": "-0x1.170a3d70a3d71p-1"
+            }
+          },
+          {
+            "address": {
+              "a": 4,
+              "m": 0,
+              "state": {
+                "kappa": 1,
+                "phi": 0,
+                "t": 0,
+                "x": 0,
+                "y": 2
+              },
+              "z": 1
+            },
+            "value": {
+              "binary64_hex": "-0x1.47ae147ae1480p-4"
+            }
+          }
+        ],
+        "X": []
+      },
+      "after_numeric": {
+        "D": [],
+        "P": [],
+        "Q": [
+          {
+            "address": {
+              "a": 3,
+              "m": 0,
+              "state": {
+                "kappa": 1,
+                "phi": 0,
+                "t": 0,
+                "x": 0,
+                "y": 2
+              },
+              "z": 1
+            },
+            "value": {
+              "binary64_hex": "-0x1.90a3d70a3d70ap-1"
+            }
+          },
+          {
+            "address": {
+              "a": 4,
+              "m": 0,
+              "state": {
+                "kappa": 1,
+                "phi": 0,
+                "t": 0,
+                "x": 0,
+                "y": 2
+              },
+              "z": 1
+            },
+            "value": {
+              "binary64_hex": "-0x1.47ae147ae1480p-4"
+            }
+          }
+        ],
+        "X": []
+      },
+      "observed_trace": {
+        "base_option": 1,
+        "control": {
+          "m": 0,
+          "z": 1
+        },
+        "interventions": {
+          "members": []
+        },
+        "mask": {
+          "controller": null,
+          "decision": null,
+          "plant": null,
+          "trap": {
+            "cell": [
+              1,
+              2
+            ],
+            "t": 0
+          }
+        },
+        "option_in_force": 1,
+        "outcome": "TRAP",
+        "steps": [
+          {
+            "a_cmd": 3,
+            "a_realized": 3,
+            "control": {
+              "m": 0,
+              "z": 1
+            },
+            "illegal": false,
+            "outcome": "TRAP",
+            "reward": {
+              "binary64_hex": "-0x1.051eb851eb852p+0"
+            },
+            "state": {
+              "kappa": 1,
+              "phi": 0,
+              "t": 1,
+              "x": 1,
+              "y": 2
+            },
+            "terminal": true,
+            "u": 3
+          }
+        ]
+      }
+    },
+    {
+      "case": "late_repair",
+      "arm": "CandidateOnly",
+      "candidate": "controller-delete",
+      "terminal": "SUCCESS",
+      "numeric_content_changed": true,
+      "before_numeric": {
+        "D": [],
+        "P": [],
+        "Q": [
+          {
+            "address": {
+              "a": 3,
+              "m": 0,
+              "state": {
+                "kappa": 1,
+                "phi": 0,
+                "t": 0,
+                "x": 0,
+                "y": 2
+              },
+              "z": 1
+            },
+            "value": {
+              "binary64_hex": "-0x1.1eb851eb851f0p-4"
+            }
+          },
+          {
+            "address": {
+              "a": 0,
+              "m": 0,
+              "state": {
+                "kappa": 1,
+                "phi": 0,
+                "t": 2,
+                "x": 1,
+                "y": 2
+              },
+              "z": 1
+            },
+            "value": {
+              "binary64_hex": "-0x1.eb851eb851ec0p-5"
+            }
+          }
+        ],
+        "X": []
+      },
+      "after_numeric": {
+        "D": [],
+        "P": [],
+        "Q": [
+          {
+            "address": {
+              "a": 3,
+              "m": 0,
+              "state": {
+                "kappa": 1,
+                "phi": 0,
+                "t": 0,
+                "x": 0,
+                "y": 2
+              },
+              "z": 1
+            },
+            "value": {
+              "binary64_hex": "-0x1.1eb851eb851f0p-4"
+            }
+          },
+          {
+            "address": {
+              "a": 3,
+              "m": 0,
+              "state": {
+                "kappa": 1,
+                "phi": 0,
+                "t": 1,
+                "x": 0,
+                "y": 2
+              },
+              "z": 1
+            },
+            "value": {
+              "binary64_hex": "0x1.bd70a3d70a3d6p-1"
+            }
+          },
+          {
+            "address": {
+              "a": 0,
+              "m": 0,
+              "state": {
+                "kappa": 1,
+                "phi": 0,
+                "t": 2,
+                "x": 1,
+                "y": 2
+              },
+              "z": 1
+            },
+            "value": {
+              "binary64_hex": "0x1.ae147ae147ae0p-2"
+            }
+          }
+        ],
+        "X": []
+      },
+      "observed_trace": {
+        "base_option": 1,
+        "control": {
+          "m": 1,
+          "z": 1
+        },
+        "interventions": {
+          "members": []
+        },
+        "mask": {
+          "controller": null,
+          "decision": null,
+          "plant": null,
+          "trap": null
+        },
+        "option_in_force": 1,
+        "outcome": "SUCCESS",
+        "steps": [
+          {
+            "a_cmd": 4,
+            "a_realized": 4,
+            "control": {
+              "m": 0,
+              "z": 1
+            },
+            "illegal": false,
+            "outcome": null,
+            "reward": {
+              "binary64_hex": "-0x1.47ae147ae147bp-6"
+            },
+            "state": {
+              "kappa": 1,
+              "phi": 0,
+              "t": 1,
+              "x": 0,
+              "y": 2
+            },
+            "terminal": false,
+            "u": 4
+          },
+          {
+            "a_cmd": 3,
+            "a_realized": 3,
+            "control": {
+              "m": 0,
+              "z": 1
+            },
+            "illegal": false,
+            "outcome": null,
+            "reward": {
+              "binary64_hex": "-0x1.47ae147ae147bp-6"
+            },
+            "state": {
+              "kappa": 1,
+              "phi": 0,
+              "t": 2,
+              "x": 1,
+              "y": 2
+            },
+            "terminal": false,
+            "u": 3
+          },
+          {
+            "a_cmd": 0,
+            "a_realized": 0,
+            "control": {
+              "m": 0,
+              "z": 1
+            },
+            "illegal": false,
+            "outcome": null,
+            "reward": {
+              "binary64_hex": "-0x1.47ae147ae147bp-6"
+            },
+            "state": {
+              "kappa": 1,
+              "phi": 0,
+              "t": 3,
+              "x": 1,
+              "y": 1
+            },
+            "terminal": false,
+            "u": 0
+          },
+          {
+            "a_cmd": 3,
+            "a_realized": 3,
+            "control": {
+              "m": 1,
+              "z": 1
+            },
+            "illegal": false,
+            "outcome": null,
+            "reward": {
+              "binary64_hex": "-0x1.47ae147ae147bp-6"
+            },
+            "state": {
+              "kappa": 1,
+              "phi": 0,
+              "t": 4,
+              "x": 2,
+              "y": 1
+            },
+            "terminal": false,
+            "u": 3
+          },
+          {
+            "a_cmd": 1,
+            "a_realized": 1,
+            "control": {
+              "m": 1,
+              "z": 1
+            },
+            "illegal": false,
+            "outcome": null,
+            "reward": {
+              "binary64_hex": "-0x1.47ae147ae147bp-6"
+            },
+            "state": {
+              "kappa": 1,
+              "phi": 0,
+              "t": 5,
+              "x": 2,
+              "y": 2
+            },
+            "terminal": false,
+            "u": 1
+          },
+          {
+            "a_cmd": 3,
+            "a_realized": 3,
+            "control": {
+              "m": 1,
+              "z": 1
+            },
+            "illegal": false,
+            "outcome": null,
+            "reward": {
+              "binary64_hex": "-0x1.47ae147ae147bp-6"
+            },
+            "state": {
+              "kappa": 1,
+              "phi": 0,
+              "t": 6,
+              "x": 3,
+              "y": 2
+            },
+            "terminal": false,
+            "u": 3
+          },
+          {
+            "a_cmd": 3,
+            "a_realized": 3,
+            "control": {
+              "m": 1,
+              "z": 1
+            },
+            "illegal": false,
+            "outcome": "SUCCESS",
+            "reward": {
+              "binary64_hex": "0x1.f5c28f5c28f5cp-1"
+            },
+            "state": {
+              "kappa": 1,
+              "phi": 0,
+              "t": 7,
+              "x": 4,
+              "y": 2
+            },
+            "terminal": true,
+            "u": 3
+          }
+        ]
+      }
+    },
+    {
+      "case": "late_repair",
+      "arm": "CompatibleBatch",
+      "candidate": "controller-delete",
+      "terminal": "SUCCESS",
+      "numeric_content_changed": true,
+      "before_numeric": {
+        "D": [],
+        "P": [],
+        "Q": [
+          {
+            "address": {
+              "a": 3,
+              "m": 0,
+              "state": {
+                "kappa": 1,
+                "phi": 0,
+                "t": 0,
+                "x": 0,
+                "y": 2
+              },
+              "z": 1
+            },
+            "value": {
+              "binary64_hex": "-0x1.1eb851eb851f0p-4"
+            }
+          },
+          {
+            "address": {
+              "a": 0,
+              "m": 0,
+              "state": {
+                "kappa": 1,
+                "phi": 0,
+                "t": 2,
+                "x": 1,
+                "y": 2
+              },
+              "z": 1
+            },
+            "value": {
+              "binary64_hex": "-0x1.eb851eb851ec0p-5"
+            }
+          }
+        ],
+        "X": []
+      },
+      "after_numeric": {
+        "D": [],
+        "P": [],
+        "Q": [
+          {
+            "address": {
+              "a": 3,
+              "m": 0,
+              "state": {
+                "kappa": 1,
+                "phi": 0,
+                "t": 0,
+                "x": 0,
+                "y": 2
+              },
+              "z": 1
+            },
+            "value": {
+              "binary64_hex": "-0x1.1eb851eb851f0p-4"
+            }
+          },
+          {
+            "address": {
+              "a": 3,
+              "m": 0,
+              "state": {
+                "kappa": 1,
+                "phi": 0,
+                "t": 1,
+                "x": 0,
+                "y": 2
+              },
+              "z": 1
+            },
+            "value": {
+              "binary64_hex": "0x1.bd70a3d70a3d6p-1"
+            }
+          },
+          {
+            "address": {
+              "a": 0,
+              "m": 0,
+              "state": {
+                "kappa": 1,
+                "phi": 0,
+                "t": 2,
+                "x": 1,
+                "y": 2
+              },
+              "z": 1
+            },
+            "value": {
+              "binary64_hex": "0x1.ae147ae147ae0p-2"
+            }
+          }
+        ],
+        "X": []
+      },
+      "observed_trace": {
+        "base_option": 1,
+        "control": {
+          "m": 1,
+          "z": 1
+        },
+        "interventions": {
+          "members": []
+        },
+        "mask": {
+          "controller": null,
+          "decision": null,
+          "plant": null,
+          "trap": null
+        },
+        "option_in_force": 1,
+        "outcome": "SUCCESS",
+        "steps": [
+          {
+            "a_cmd": 4,
+            "a_realized": 4,
+            "control": {
+              "m": 0,
+              "z": 1
+            },
+            "illegal": false,
+            "outcome": null,
+            "reward": {
+              "binary64_hex": "-0x1.47ae147ae147bp-6"
+            },
+            "state": {
+              "kappa": 1,
+              "phi": 0,
+              "t": 1,
+              "x": 0,
+              "y": 2
+            },
+            "terminal": false,
+            "u": 4
+          },
+          {
+            "a_cmd": 3,
+            "a_realized": 3,
+            "control": {
+              "m": 0,
+              "z": 1
+            },
+            "illegal": false,
+            "outcome": null,
+            "reward": {
+              "binary64_hex": "-0x1.47ae147ae147bp-6"
+            },
+            "state": {
+              "kappa": 1,
+              "phi": 0,
+              "t": 2,
+              "x": 1,
+              "y": 2
+            },
+            "terminal": false,
+            "u": 3
+          },
+          {
+            "a_cmd": 0,
+            "a_realized": 0,
+            "control": {
+              "m": 0,
+              "z": 1
+            },
+            "illegal": false,
+            "outcome": null,
+            "reward": {
+              "binary64_hex": "-0x1.47ae147ae147bp-6"
+            },
+            "state": {
+              "kappa": 1,
+              "phi": 0,
+              "t": 3,
+              "x": 1,
+              "y": 1
+            },
+            "terminal": false,
+            "u": 0
+          },
+          {
+            "a_cmd": 3,
+            "a_realized": 3,
+            "control": {
+              "m": 1,
+              "z": 1
+            },
+            "illegal": false,
+            "outcome": null,
+            "reward": {
+              "binary64_hex": "-0x1.47ae147ae147bp-6"
+            },
+            "state": {
+              "kappa": 1,
+              "phi": 0,
+              "t": 4,
+              "x": 2,
+              "y": 1
+            },
+            "terminal": false,
+            "u": 3
+          },
+          {
+            "a_cmd": 1,
+            "a_realized": 1,
+            "control": {
+              "m": 1,
+              "z": 1
+            },
+            "illegal": false,
+            "outcome": null,
+            "reward": {
+              "binary64_hex": "-0x1.47ae147ae147bp-6"
+            },
+            "state": {
+              "kappa": 1,
+              "phi": 0,
+              "t": 5,
+              "x": 2,
+              "y": 2
+            },
+            "terminal": false,
+            "u": 1
+          },
+          {
+            "a_cmd": 3,
+            "a_realized": 3,
+            "control": {
+              "m": 1,
+              "z": 1
+            },
+            "illegal": false,
+            "outcome": null,
+            "reward": {
+              "binary64_hex": "-0x1.47ae147ae147bp-6"
+            },
+            "state": {
+              "kappa": 1,
+              "phi": 0,
+              "t": 6,
+              "x": 3,
+              "y": 2
+            },
+            "terminal": false,
+            "u": 3
+          },
+          {
+            "a_cmd": 3,
+            "a_realized": 3,
+            "control": {
+              "m": 1,
+              "z": 1
+            },
+            "illegal": false,
+            "outcome": "SUCCESS",
+            "reward": {
+              "binary64_hex": "0x1.f5c28f5c28f5cp-1"
+            },
+            "state": {
+              "kappa": 1,
+              "phi": 0,
+              "t": 7,
+              "x": 4,
+              "y": 2
+            },
+            "terminal": true,
+            "u": 3
+          }
+        ]
+      }
+    }
+  ],
+  "rejected": [
+    {
+      "case": "late_repair",
+      "arm": "KeepOnly",
+      "candidate": "keep",
+      "terminal": "COLLISION",
+      "mechanism_changes": [
+        {
+          "channel": "X",
+          "address": {
+            "state": {
+              "kappa": 1,
+              "phi": 0,
+              "t": 2,
+              "x": 1,
+              "y": 2
+            },
+            "cmd": 0
+          },
+          "origin": 3,
+          "current": 0
+        }
+      ]
+    },
+    {
+      "case": "late_repair",
+      "arm": "CompatibleBatch",
+      "candidate": "keep",
+      "terminal": "COLLISION",
+      "mechanism_changes": [
+        {
+          "channel": "X",
+          "address": {
+            "state": {
+              "kappa": 1,
+              "phi": 0,
+              "t": 2,
+              "x": 1,
+              "y": 2
+            },
+            "cmd": 0
+          },
+          "origin": 3,
+          "current": 0
+        }
+      ]
+    }
+  ],
+  "observation_transfers": [
+    {
+      "case": "first_failure_then_gain",
+      "arm": "KeepOnly",
+      "applied": true,
+      "reason": "same_mechanism_on_observed_path",
+      "observation_id": "first_failure_then_gain:KeepOnly:owned:1",
+      "mechanism_changes": []
+    },
+    {
+      "case": "first_failure_then_gain",
+      "arm": "CandidateOnly",
+      "applied": true,
+      "reason": "same_mechanism_on_observed_path",
+      "observation_id": "first_failure_then_gain:CandidateOnly:owned:2",
+      "mechanism_changes": []
+    },
+    {
+      "case": "first_failure_then_gain",
+      "arm": "CompatibleBatch",
+      "applied": true,
+      "reason": "same_mechanism_on_observed_path",
+      "observation_id": "first_failure_then_gain:CompatibleBatch:owned:1",
+      "mechanism_changes": []
+    },
+    {
+      "case": "first_failure_then_gain",
+      "arm": "CompatibleBatch",
+      "applied": true,
+      "reason": "same_mechanism_on_observed_path",
+      "observation_id": "first_failure_then_gain:CompatibleBatch:owned:2",
+      "mechanism_changes": []
+    },
+    {
+      "case": "late_repair",
+      "arm": "KeepOnly",
+      "applied": false,
+      "reason": "current_mechanism_differs_on_observed_path",
+      "observation_id": "late_repair:KeepOnly:owned:1",
+      "mechanism_changes": [
+        {
+          "channel": "X",
+          "address": {
+            "state": {
+              "kappa": 1,
+              "phi": 0,
+              "t": 2,
+              "x": 1,
+              "y": 2
+            },
+            "cmd": 0
+          },
+          "origin": 3,
+          "current": 0
+        }
+      ]
+    },
+    {
+      "case": "late_repair",
+      "arm": "CandidateOnly",
+      "applied": true,
+      "reason": "same_mechanism_on_observed_path",
+      "observation_id": "late_repair:CandidateOnly:owned:2",
+      "mechanism_changes": []
+    },
+    {
+      "case": "late_repair",
+      "arm": "CompatibleBatch",
+      "applied": false,
+      "reason": "current_mechanism_differs_on_observed_path",
+      "observation_id": "late_repair:CompatibleBatch:owned:1",
+      "mechanism_changes": [
+        {
+          "channel": "X",
+          "address": {
+            "state": {
+              "kappa": 1,
+              "phi": 0,
+              "t": 2,
+              "x": 1,
+              "y": 2
+            },
+            "cmd": 0
+          },
+          "origin": 3,
+          "current": 0
+        }
+      ]
+    },
+    {
+      "case": "late_repair",
+      "arm": "CompatibleBatch",
+      "applied": true,
+      "reason": "same_mechanism_on_observed_path",
+      "observation_id": "late_repair:CompatibleBatch:owned:2",
+      "mechanism_changes": []
+    }
+  ],
+  "pre_ingestion_postTD_roots_equal_except_labels": true,
+  "keep_candidate_first_trace_comparisons": [
+    {
+      "case": "first_failure_then_gain",
+      "arm": "NoTrialLearning",
+      "first_keep_candidate_raw_identical": true
+    },
+    {
+      "case": "first_failure_then_gain",
+      "arm": "KeepOnly",
+      "first_keep_candidate_raw_identical": true
+    },
+    {
+      "case": "first_failure_then_gain",
+      "arm": "CandidateOnly",
+      "first_keep_candidate_raw_identical": true
+    },
+    {
+      "case": "first_failure_then_gain",
+      "arm": "CompatibleBatch",
+      "first_keep_candidate_raw_identical": true
+    },
+    {
+      "case": "late_repair",
+      "arm": "NoTrialLearning",
+      "first_keep_candidate_raw_identical": false
+    },
+    {
+      "case": "late_repair",
+      "arm": "KeepOnly",
+      "first_keep_candidate_raw_identical": false
+    },
+    {
+      "case": "late_repair",
+      "arm": "CandidateOnly",
+      "first_keep_candidate_raw_identical": false
+    },
+    {
+      "case": "late_repair",
+      "arm": "CompatibleBatch",
+      "first_keep_candidate_raw_identical": false
+    }
+  ],
+  "native_ordinary_updates": 72,
+  "ordinary_policy_TX": 72,
+  "external_ordinary_updates": 6,
+  "external_policy_TX": 6,
+  "checkpoint_TX": 3,
+  "source_TX": 2,
+  "private_candidate_X_TX": 8,
+  "main_feedback_X_TX": 8,
+  "actual_explore_events": 36,
+  "success_diagnosis": 0,
+  "mechanism_rejections": 2,
+  "duplicate_batch_rejections": 6,
+  "issued_new_observations": 16,
+  "consumed_new_observations": 8,
+  "unconsumed_new_observations": 8,
+  "native_source_AST_only_issue_block_changed": true,
+  "old_native_checker_bank_reruns": 0,
+  "new_keys_RNG_DP_calibration_collection": 0,
+  "formal_B1_or_science_qualification": false
+}

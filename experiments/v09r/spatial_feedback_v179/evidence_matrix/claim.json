@@ -1,0 +1,49 @@
+{
+  "phase": "matrix",
+  "utc": "2026-11-07T13:35:38.622934+00:00",
+  "pid": 33964,
+  "python": "3.12.14",
+  "torch": "2.15.0+cpu",
+  "numpy": "2.5.4",
+  "input_pins": [
+    {
+      "path": "experiments/v09r/spatial_feedback_v179/world.py",
+      "bytes": 11850,
+      "sha256": "b6c801eb9bca1830064ba723d4a5004dbcbb934582a84fb29c16f5ec7aa5e844"
+    },
+    {
+      "path": "experiments/v09r/spatial_feedback_v179/learning.py",
+      "bytes": 21169,
+      "sha256": "b9ac845a39bcf45a8575fd79d828ba816b16e03b6c0821f0d7156ccb5e5c44dc"
+    },
+    {
+      "path": "experiments/v09r/spatial_feedback_v179/experiment.py",
+      "bytes": 16674,
+      "sha256": "dedc5ae80dbf124bf8eaeca715e59d79f580b61f3149951d525bd67045801718"
+    },
+    {
+      "path": "experiments/v09r/spatial_feedback_v179/contract.json",
+      "bytes": 4927,
+      "sha256": "d9372c978ff9d50df1601df1ab1a57e38e4c998a128968c92a0bf99ed0a655b7"
+    },
+    {
+      "path": "experiments/v09r/plan_v177.json",
+      "bytes": 18238,
+      "sha256": "4d13d8e8732ddfb7e16073208d22a959e4bfe51042fb5745522cc16cd37baabc"
+    }
+  ],
+  "workers": 12,
+  "argv": [
+    "experiment.py",
+    "--phase",
+    "matrix",
+    "--output",
+    "evidence_matrix",
+    "--maps",
+    "../spatial_feedback_v178/evidence_prepare/maps",
+    "--workers",
+    "12",
+    "--wall-seconds",
+    "86295"
+  ]
+}

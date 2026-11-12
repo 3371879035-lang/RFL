@@ -1,0 +1,64 @@
+test_01_full_pre_before_arms_and_complete_whole_metrics (__main__.WholeTests.test_01_full_pre_before_arms_and_complete_whole_metrics) ... ERROR
+test_02_actual_consultation_and_strict_extent (__main__.WholeTests.test_02_actual_consultation_and_strict_extent) ... ERROR
+test_03_owner_and_region_tampering_rejected_without_native (__main__.WholeTests.test_03_owner_and_region_tampering_rejected_without_native) ... ERROR
+test_04_real_partial_post_preserved_once (__main__.WholeTests.test_04_real_partial_post_preserved_once) ... ERROR
+
+======================================================================
+ERROR: test_01_full_pre_before_arms_and_complete_whole_metrics (__main__.WholeTests.test_01_full_pre_before_arms_and_complete_whole_metrics)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v03r\a96_dense\b2_prepare\owned_whole_collateral_v96\test_whole.py", line 160, in test_01_full_pre_before_arms_and_complete_whole_metrics
+    prep=R.prepare(bound,architecture=architecture)
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v03r\a96_dense\b2_prepare\owned_whole_collateral_v96\ruler.py", line 124, in prepare
+    pre_input, records, owners, region, status, deepcopy(origin), A.digest(origin))
+                                                                  ~~~~~~~~^^^^^^^^
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v03r\a96_dense\b2_prepare\adaptive_training_v90\adaptive_training.py", line 56, in digest
+    return sha256(json.dumps(value, sort_keys=True, separators=(",", ":"),
+                  ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                             ensure_ascii=True).encode("ascii")).hexdigest()
+                             ^^^^^^^^^^^^^^^^^^
+  File "D:\python\Lib\json\__init__.py", line 242, in dumps
+    **kw).encode(obj)
+          ~~~~~~^^^^^
+  File "D:\python\Lib\json\encoder.py", line 202, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "D:\python\Lib\json\encoder.py", line 263, in iterencode
+    return _iterencode(o, 0)
+  File "D:\python\Lib\json\encoder.py", line 182, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+                    f'is not JSON serializable')
+TypeError: Object of type Owner is not JSON serializable
+when serializing tuple item 0
+when serializing dict item 'owners'
+
+======================================================================
+ERROR: test_02_actual_consultation_and_strict_extent (__main__.WholeTests.test_02_actual_consultation_and_strict_extent)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v03r\a96_dense\b2_prepare\owned_whole_collateral_v96\test_whole.py", line 197, in test_02_actual_consultation_and_strict_extent
+    domain=scene_domain(); units=M.units(R._PREPARED[self.preps[0]].region)
+                                                     ~~~~~~~~~~^^^
+IndexError: list index out of range
+
+======================================================================
+ERROR: test_03_owner_and_region_tampering_rejected_without_native (__main__.WholeTests.test_03_owner_and_region_tampering_rejected_without_native)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v03r\a96_dense\b2_prepare\owned_whole_collateral_v96\test_whole.py", line 210, in test_03_owner_and_region_tampering_rejected_without_native
+    MODE='dq'; prep=self.preps[0]; d=R._PREPARED[prep]; counts=dict(COUNTS)
+                    ~~~~~~~~~~^^^
+IndexError: list index out of range
+
+======================================================================
+ERROR: test_04_real_partial_post_preserved_once (__main__.WholeTests.test_04_real_partial_post_preserved_once)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v03r\a96_dense\b2_prepare\owned_whole_collateral_v96\test_whole.py", line 233, in test_04_real_partial_post_preserved_once
+    MODE='dq'; STAGE='partial-post'; prep=self.preps[0]
+                                          ~~~~~~~~~~^^^
+IndexError: list index out of range
+
+----------------------------------------------------------------------
+Ran 4 tests in 90.193s
+
+FAILED (errors=4)

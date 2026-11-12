@@ -1,0 +1,4334 @@
+{
+  "schema": "V130_ACTUAL_HYBRID_MEMORY_REVIEW_RESULT",
+  "date_asia_shanghai": "2026-11-06",
+  "parent_commit": "55dc6827eabd1b308344364dd076f3357c04155a",
+  "status": "EXTENSION_COMPLETE_ACTUAL_HYBRID_AND_UNIQUE_RECALL_LIMIT_RESULT",
+  "question": "Can one actual hybridagent retain cheap prior memory checks and use later observed failures to investigate a uniquely top-scored but invalid recall, compared with either review mechanism alone?",
+  "execution": {
+    "native_first_exit": 0,
+    "new_stored_review_first_exit_observed": 0,
+    "rollout": 552,
+    "step": 4522,
+    "transaction": 598,
+    "records": 2238,
+    "input_pins_unchanged": 335,
+    "main_tasks": 320,
+    "practice_tasks_all_arms": 72,
+    "read_only_rollouts": 160,
+    "ordinary_full_R_L_updates_checked": 392,
+    "main_steps": 2379,
+    "practice_steps": 714,
+    "read_only_steps": 1429,
+    "source_install_transactions": 2,
+    "source_install_addresses_per_mode": 92,
+    "ordinary_numeric_transactions": 392,
+    "ordinary_policy_transactions": 152,
+    "live_diagnostic_transactions": 28,
+    "practice_candidate_transactions": 24,
+    "instrumented_wall_seconds": 94.79699999996228,
+    "base_model_parameter_updates": 0,
+    "online_memory_update_events": 8,
+    "observed_failed_prediction_reviews": 3,
+    "actual_review_triggered_retests": 3,
+    "success_diagnostics": 0,
+    "historical_base_training_probe_tasks": 196,
+    "automatic_retry": false,
+    "new_keys": 0,
+    "formal_collection": false
+  },
+  "summary": [
+    {
+      "mode": "dq",
+      "arms": {
+        "AwareMemory": {
+          "tasks": 40,
+          "successes": 30,
+          "task_return_sum": 13.08,
+          "task_return_mean": 0.327,
+          "practice_events": 2,
+          "practice_rollouts": 12,
+          "memory_hits": 3,
+          "diagnostic_calls": 10,
+          "diagnostic_transactions": 7,
+          "diagnostic_edit_attempts": 7
+        },
+        "FailureRefresh": {
+          "tasks": 40,
+          "successes": 28,
+          "task_return_sum": 9.84,
+          "task_return_mean": 0.246,
+          "practice_events": 3,
+          "practice_rollouts": 18,
+          "memory_hits": 3,
+          "diagnostic_calls": 12,
+          "diagnostic_transactions": 8,
+          "diagnostic_edit_attempts": 8
+        },
+        "FreshPractice": {
+          "tasks": 40,
+          "successes": 32,
+          "task_return_sum": 17.72,
+          "task_return_mean": 0.44299999999999995,
+          "practice_events": 4,
+          "practice_rollouts": 24,
+          "memory_hits": 0,
+          "diagnostic_calls": 8,
+          "diagnostic_transactions": 6,
+          "diagnostic_edit_attempts": 6
+        },
+        "HybridMemory": {
+          "tasks": 40,
+          "successes": 30,
+          "task_return_sum": 13.78,
+          "task_return_mean": 0.3445,
+          "practice_events": 3,
+          "practice_rollouts": 18,
+          "memory_hits": 2,
+          "diagnostic_calls": 10,
+          "diagnostic_transactions": 7,
+          "diagnostic_edit_attempts": 7
+        }
+      }
+    },
+    {
+      "mode": "patch-adaptive",
+      "arms": {
+        "AwareMemory": {
+          "tasks": 40,
+          "successes": 32,
+          "task_return_sum": 18.5,
+          "task_return_mean": 0.4625,
+          "practice_events": 0,
+          "practice_rollouts": 0,
+          "memory_hits": 0,
+          "diagnostic_calls": 8,
+          "diagnostic_transactions": 0,
+          "diagnostic_edit_attempts": 0
+        },
+        "FailureRefresh": {
+          "tasks": 40,
+          "successes": 32,
+          "task_return_sum": 18.5,
+          "task_return_mean": 0.4625,
+          "practice_events": 0,
+          "practice_rollouts": 0,
+          "memory_hits": 0,
+          "diagnostic_calls": 8,
+          "diagnostic_transactions": 0,
+          "diagnostic_edit_attempts": 0
+        },
+        "FreshPractice": {
+          "tasks": 40,
+          "successes": 32,
+          "task_return_sum": 18.5,
+          "task_return_mean": 0.4625,
+          "practice_events": 0,
+          "practice_rollouts": 0,
+          "memory_hits": 0,
+          "diagnostic_calls": 8,
+          "diagnostic_transactions": 0,
+          "diagnostic_edit_attempts": 0
+        },
+        "HybridMemory": {
+          "tasks": 40,
+          "successes": 32,
+          "task_return_sum": 18.5,
+          "task_return_mean": 0.4625,
+          "practice_events": 0,
+          "practice_rollouts": 0,
+          "memory_hits": 0,
+          "diagnostic_calls": 8,
+          "diagnostic_transactions": 0,
+          "diagnostic_edit_attempts": 0
+        }
+      }
+    }
+  ],
+  "prospective_phase_metrics": [
+    {
+      "mode": "dq",
+      "arm": "AwareMemory",
+      "phase": "formation_A",
+      "tasks": 8,
+      "successes": 5,
+      "return_sum": 0.82,
+      "return_mean": 0.1025
+    },
+    {
+      "mode": "dq",
+      "arm": "AwareMemory",
+      "phase": "favorable_B",
+      "tasks": 8,
+      "successes": 5,
+      "return_sum": 0.82,
+      "return_mean": 0.1025
+    },
+    {
+      "mode": "dq",
+      "arm": "AwareMemory",
+      "phase": "unique_invalid_D",
+      "tasks": 12,
+      "successes": 9,
+      "return_sum": 3.3600000000000003,
+      "return_mean": 0.28
+    },
+    {
+      "mode": "dq",
+      "arm": "AwareMemory",
+      "phase": "duplicate_C",
+      "tasks": 8,
+      "successes": 7,
+      "return_sum": 4.64,
+      "return_mean": 0.58
+    },
+    {
+      "mode": "dq",
+      "arm": "AwareMemory",
+      "phase": "return_AB",
+      "tasks": 4,
+      "successes": 4,
+      "return_sum": 3.44,
+      "return_mean": 0.86
+    },
+    {
+      "mode": "dq",
+      "arm": "FailureRefresh",
+      "phase": "formation_A",
+      "tasks": 8,
+      "successes": 5,
+      "return_sum": 0.82,
+      "return_mean": 0.1025
+    },
+    {
+      "mode": "dq",
+      "arm": "FailureRefresh",
+      "phase": "favorable_B",
+      "tasks": 8,
+      "successes": 5,
+      "return_sum": 0.82,
+      "return_mean": 0.1025
+    },
+    {
+      "mode": "dq",
+      "arm": "FailureRefresh",
+      "phase": "unique_invalid_D",
+      "tasks": 12,
+      "successes": 9,
+      "return_sum": 4.06,
+      "return_mean": 0.3383333333333333
+    },
+    {
+      "mode": "dq",
+      "arm": "FailureRefresh",
+      "phase": "duplicate_C",
+      "tasks": 8,
+      "successes": 5,
+      "return_sum": 0.6999999999999998,
+      "return_mean": 0.08749999999999998
+    },
+    {
+      "mode": "dq",
+      "arm": "FailureRefresh",
+      "phase": "return_AB",
+      "tasks": 4,
+      "successes": 4,
+      "return_sum": 3.44,
+      "return_mean": 0.86
+    },
+    {
+      "mode": "dq",
+      "arm": "FreshPractice",
+      "phase": "formation_A",
+      "tasks": 8,
+      "successes": 5,
+      "return_sum": 0.82,
+      "return_mean": 0.1025
+    },
+    {
+      "mode": "dq",
+      "arm": "FreshPractice",
+      "phase": "favorable_B",
+      "tasks": 8,
+      "successes": 5,
+      "return_sum": 0.82,
+      "return_mean": 0.1025
+    },
+    {
+      "mode": "dq",
+      "arm": "FreshPractice",
+      "phase": "unique_invalid_D",
+      "tasks": 12,
+      "successes": 11,
+      "return_sum": 8.0,
+      "return_mean": 0.6666666666666666
+    },
+    {
+      "mode": "dq",
+      "arm": "FreshPractice",
+      "phase": "duplicate_C",
+      "tasks": 8,
+      "successes": 7,
+      "return_sum": 4.64,
+      "return_mean": 0.58
+    },
+    {
+      "mode": "dq",
+      "arm": "FreshPractice",
+      "phase": "return_AB",
+      "tasks": 4,
+      "successes": 4,
+      "return_sum": 3.44,
+      "return_mean": 0.86
+    },
+    {
+      "mode": "dq",
+      "arm": "HybridMemory",
+      "phase": "formation_A",
+      "tasks": 8,
+      "successes": 5,
+      "return_sum": 0.82,
+      "return_mean": 0.1025
+    },
+    {
+      "mode": "dq",
+      "arm": "HybridMemory",
+      "phase": "favorable_B",
+      "tasks": 8,
+      "successes": 5,
+      "return_sum": 0.82,
+      "return_mean": 0.1025
+    },
+    {
+      "mode": "dq",
+      "arm": "HybridMemory",
+      "phase": "unique_invalid_D",
+      "tasks": 12,
+      "successes": 9,
+      "return_sum": 4.06,
+      "return_mean": 0.3383333333333333
+    },
+    {
+      "mode": "dq",
+      "arm": "HybridMemory",
+      "phase": "duplicate_C",
+      "tasks": 8,
+      "successes": 7,
+      "return_sum": 4.64,
+      "return_mean": 0.58
+    },
+    {
+      "mode": "dq",
+      "arm": "HybridMemory",
+      "phase": "return_AB",
+      "tasks": 4,
+      "successes": 4,
+      "return_sum": 3.44,
+      "return_mean": 0.86
+    },
+    {
+      "mode": "patch-adaptive",
+      "arm": "AwareMemory",
+      "phase": "formation_A",
+      "tasks": 8,
+      "successes": 6,
+      "return_sum": 2.92,
+      "return_mean": 0.365
+    },
+    {
+      "mode": "patch-adaptive",
+      "arm": "AwareMemory",
+      "phase": "favorable_B",
+      "tasks": 8,
+      "successes": 6,
+      "return_sum": 2.92,
+      "return_mean": 0.365
+    },
+    {
+      "mode": "patch-adaptive",
+      "arm": "AwareMemory",
+      "phase": "unique_invalid_D",
+      "tasks": 12,
+      "successes": 10,
+      "return_sum": 6.34,
+      "return_mean": 0.5283333333333333
+    },
+    {
+      "mode": "patch-adaptive",
+      "arm": "AwareMemory",
+      "phase": "duplicate_C",
+      "tasks": 8,
+      "successes": 6,
+      "return_sum": 2.88,
+      "return_mean": 0.36
+    },
+    {
+      "mode": "patch-adaptive",
+      "arm": "AwareMemory",
+      "phase": "return_AB",
+      "tasks": 4,
+      "successes": 4,
+      "return_sum": 3.44,
+      "return_mean": 0.86
+    },
+    {
+      "mode": "patch-adaptive",
+      "arm": "FailureRefresh",
+      "phase": "formation_A",
+      "tasks": 8,
+      "successes": 6,
+      "return_sum": 2.92,
+      "return_mean": 0.365
+    },
+    {
+      "mode": "patch-adaptive",
+      "arm": "FailureRefresh",
+      "phase": "favorable_B",
+      "tasks": 8,
+      "successes": 6,
+      "return_sum": 2.92,
+      "return_mean": 0.365
+    },
+    {
+      "mode": "patch-adaptive",
+      "arm": "FailureRefresh",
+      "phase": "unique_invalid_D",
+      "tasks": 12,
+      "successes": 10,
+      "return_sum": 6.34,
+      "return_mean": 0.5283333333333333
+    },
+    {
+      "mode": "patch-adaptive",
+      "arm": "FailureRefresh",
+      "phase": "duplicate_C",
+      "tasks": 8,
+      "successes": 6,
+      "return_sum": 2.88,
+      "return_mean": 0.36
+    },
+    {
+      "mode": "patch-adaptive",
+      "arm": "FailureRefresh",
+      "phase": "return_AB",
+      "tasks": 4,
+      "successes": 4,
+      "return_sum": 3.44,
+      "return_mean": 0.86
+    },
+    {
+      "mode": "patch-adaptive",
+      "arm": "FreshPractice",
+      "phase": "formation_A",
+      "tasks": 8,
+      "successes": 6,
+      "return_sum": 2.92,
+      "return_mean": 0.365
+    },
+    {
+      "mode": "patch-adaptive",
+      "arm": "FreshPractice",
+      "phase": "favorable_B",
+      "tasks": 8,
+      "successes": 6,
+      "return_sum": 2.92,
+      "return_mean": 0.365
+    },
+    {
+      "mode": "patch-adaptive",
+      "arm": "FreshPractice",
+      "phase": "unique_invalid_D",
+      "tasks": 12,
+      "successes": 10,
+      "return_sum": 6.34,
+      "return_mean": 0.5283333333333333
+    },
+    {
+      "mode": "patch-adaptive",
+      "arm": "FreshPractice",
+      "phase": "duplicate_C",
+      "tasks": 8,
+      "successes": 6,
+      "return_sum": 2.88,
+      "return_mean": 0.36
+    },
+    {
+      "mode": "patch-adaptive",
+      "arm": "FreshPractice",
+      "phase": "return_AB",
+      "tasks": 4,
+      "successes": 4,
+      "return_sum": 3.44,
+      "return_mean": 0.86
+    },
+    {
+      "mode": "patch-adaptive",
+      "arm": "HybridMemory",
+      "phase": "formation_A",
+      "tasks": 8,
+      "successes": 6,
+      "return_sum": 2.92,
+      "return_mean": 0.365
+    },
+    {
+      "mode": "patch-adaptive",
+      "arm": "HybridMemory",
+      "phase": "favorable_B",
+      "tasks": 8,
+      "successes": 6,
+      "return_sum": 2.92,
+      "return_mean": 0.365
+    },
+    {
+      "mode": "patch-adaptive",
+      "arm": "HybridMemory",
+      "phase": "unique_invalid_D",
+      "tasks": 12,
+      "successes": 10,
+      "return_sum": 6.34,
+      "return_mean": 0.5283333333333333
+    },
+    {
+      "mode": "patch-adaptive",
+      "arm": "HybridMemory",
+      "phase": "duplicate_C",
+      "tasks": 8,
+      "successes": 6,
+      "return_sum": 2.88,
+      "return_mean": 0.36
+    },
+    {
+      "mode": "patch-adaptive",
+      "arm": "HybridMemory",
+      "phase": "return_AB",
+      "tasks": 4,
+      "successes": 4,
+      "return_sum": 3.44,
+      "return_mean": 0.86
+    }
+  ],
+  "complete_stream_metrics": [
+    {
+      "arms": {
+        "AwareMemory": {
+          "contested_keys": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "repeated-run"
+            ]
+          ],
+          "diagnostic_calls": 10,
+          "diagnostic_edit_attempts": 7,
+          "diagnostic_transactions": 7,
+          "final_diagnostic_memory": [
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "keep",
+                "global"
+              ],
+              4,
+              {
+                "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+              }
+            ],
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "repeated-run"
+              ],
+              6,
+              {
+                "binary64_hex": "0x1.851eb851eb851p-3"
+              }
+            ],
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "single-step"
+              ],
+              2,
+              {
+                "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+              }
+            ]
+          ],
+          "memory_hits": 3,
+          "needs_retest": [],
+          "outcomes": [
+            "TIMEOUT",
+            "SUCCESS",
+            "TRAP",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "TIMEOUT",
+            "SUCCESS",
+            "TRAP",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "TIMEOUT",
+            "TRAP",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "pending_recall": null,
+          "practice_events": 2,
+          "practice_rollouts": 12,
+          "retention_banks": [
+            {
+              "completed_tasks": 0,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "phi": 2,
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 1,
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 2,
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 4,
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 16,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 2,
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 4,
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 28,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.78
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 4,
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 36,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.78
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 4,
+                  "return": 0.84
+                }
+              ]
+            },
+            {
+              "completed_tasks": 40,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.78
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 4,
+                  "return": 0.84
+                }
+              ]
+            }
+          ],
+          "returns": [
+            -1.24,
+            0.88,
+            -1.02,
+            -1.24,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            -1.24,
+            0.88,
+            -1.02,
+            -1.24,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            -1.24,
+            -1.02,
+            -1.24,
+            0.76,
+            0.76,
+            0.76,
+            0.76,
+            0.76,
+            0.76,
+            0.76,
+            0.76,
+            0.78,
+            -1.24,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.86,
+            0.86,
+            0.86,
+            0.86
+          ],
+          "successes": 30,
+          "task_return_mean": 0.327,
+          "task_return_sum": 13.08,
+          "tasks": 40
+        },
+        "FailureRefresh": {
+          "contested_keys": [],
+          "diagnostic_calls": 12,
+          "diagnostic_edit_attempts": 8,
+          "diagnostic_transactions": 8,
+          "final_diagnostic_memory": [
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "keep",
+                "global"
+              ],
+              6,
+              {
+                "binary64_hex": "-0x1.258bf258bf259p-1"
+              }
+            ],
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "repeated-run"
+              ],
+              8,
+              {
+                "binary64_hex": "0x1.3851eb851eb85p-2"
+              }
+            ],
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "single-step"
+              ],
+              4,
+              {
+                "binary64_hex": "-0x1.999999999999ap-3"
+              }
+            ]
+          ],
+          "memory_hits": 3,
+          "needs_retest": [],
+          "outcomes": [
+            "TIMEOUT",
+            "SUCCESS",
+            "TRAP",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "TIMEOUT",
+            "SUCCESS",
+            "TRAP",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "TIMEOUT",
+            "TRAP",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "TIMEOUT",
+            "TRAP",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "pending_recall": null,
+          "practice_events": 3,
+          "practice_rollouts": 18,
+          "retention_banks": [
+            {
+              "completed_tasks": 0,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "phi": 2,
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 1,
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 2,
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 4,
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 16,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 2,
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 4,
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 28,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.84
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 4,
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 36,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.84
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 4,
+                  "return": 0.84
+                }
+              ]
+            },
+            {
+              "completed_tasks": 40,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.84
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 4,
+                  "return": 0.84
+                }
+              ]
+            }
+          ],
+          "returns": [
+            -1.24,
+            0.88,
+            -1.02,
+            -1.24,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            -1.24,
+            0.88,
+            -1.02,
+            -1.24,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            -1.24,
+            -1.02,
+            -1.24,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            -1.24,
+            -1.02,
+            -1.24,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.86,
+            0.86,
+            0.86,
+            0.86
+          ],
+          "successes": 28,
+          "task_return_mean": 0.246,
+          "task_return_sum": 9.84,
+          "tasks": 40
+        },
+        "FreshPractice": {
+          "contested_keys": [],
+          "diagnostic_calls": 8,
+          "diagnostic_edit_attempts": 6,
+          "diagnostic_transactions": 6,
+          "final_diagnostic_memory": [],
+          "memory_hits": 0,
+          "needs_retest": [],
+          "outcomes": [
+            "TIMEOUT",
+            "SUCCESS",
+            "TRAP",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "TIMEOUT",
+            "SUCCESS",
+            "TRAP",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "pending_recall": null,
+          "practice_events": 4,
+          "practice_rollouts": 24,
+          "retention_banks": [
+            {
+              "completed_tasks": 0,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "phi": 2,
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 1,
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 2,
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 4,
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 16,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 2,
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 4,
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 28,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.84
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 4,
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 36,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.84
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 4,
+                  "return": 0.84
+                }
+              ]
+            },
+            {
+              "completed_tasks": 40,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.84
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 4,
+                  "return": 0.84
+                }
+              ]
+            }
+          ],
+          "returns": [
+            -1.24,
+            0.88,
+            -1.02,
+            -1.24,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            -1.24,
+            0.88,
+            -1.02,
+            -1.24,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            -1.24,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            -1.24,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.86,
+            0.86,
+            0.86,
+            0.86
+          ],
+          "successes": 32,
+          "task_return_mean": 0.44299999999999995,
+          "task_return_sum": 17.72,
+          "tasks": 40
+        },
+        "HybridMemory": {
+          "contested_keys": [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "repeated-run"
+            ]
+          ],
+          "diagnostic_calls": 10,
+          "diagnostic_edit_attempts": 7,
+          "diagnostic_transactions": 7,
+          "final_diagnostic_memory": [
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "keep",
+                "global"
+              ],
+              6,
+              {
+                "binary64_hex": "-0x1.258bf258bf259p-1"
+              }
+            ],
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "repeated-run"
+              ],
+              8,
+              {
+                "binary64_hex": "0x1.547ae147ae148p-2"
+              }
+            ],
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "single-step"
+              ],
+              4,
+              {
+                "binary64_hex": "-0x1.999999999999ap-3"
+              }
+            ]
+          ],
+          "memory_hits": 2,
+          "needs_retest": [],
+          "outcomes": [
+            "TIMEOUT",
+            "SUCCESS",
+            "TRAP",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "TIMEOUT",
+            "SUCCESS",
+            "TRAP",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "TIMEOUT",
+            "TRAP",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "pending_recall": null,
+          "practice_events": 3,
+          "practice_rollouts": 18,
+          "retention_banks": [
+            {
+              "completed_tasks": 0,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "phi": 2,
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 1,
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 2,
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 4,
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 16,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 2,
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 4,
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 28,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.84
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 4,
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 36,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.84
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 4,
+                  "return": 0.84
+                }
+              ]
+            },
+            {
+              "completed_tasks": 40,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.84
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 4,
+                  "return": 0.84
+                }
+              ]
+            }
+          ],
+          "returns": [
+            -1.24,
+            0.88,
+            -1.02,
+            -1.24,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            -1.24,
+            0.88,
+            -1.02,
+            -1.24,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            -1.24,
+            -1.02,
+            -1.24,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            -1.24,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.86,
+            0.86,
+            0.86,
+            0.86
+          ],
+          "successes": 30,
+          "task_return_mean": 0.3445,
+          "task_return_sum": 13.78,
+          "tasks": 40
+        }
+      },
+      "mode": "dq"
+    },
+    {
+      "arms": {
+        "AwareMemory": {
+          "contested_keys": [],
+          "diagnostic_calls": 8,
+          "diagnostic_edit_attempts": 0,
+          "diagnostic_transactions": 0,
+          "final_diagnostic_memory": [],
+          "memory_hits": 0,
+          "needs_retest": [],
+          "outcomes": [
+            "TIMEOUT",
+            "SUCCESS",
+            "TRAP",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "TIMEOUT",
+            "SUCCESS",
+            "TRAP",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "TIMEOUT",
+            "TRAP",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "TIMEOUT",
+            "TRAP",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "pending_recall": null,
+          "practice_events": 0,
+          "practice_rollouts": 0,
+          "retention_banks": [
+            {
+              "completed_tasks": 0,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "phi": 2,
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 1,
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 2,
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 4,
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 16,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 2,
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 4,
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 28,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 4,
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 36,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 4,
+                  "return": 0.86
+                }
+              ]
+            },
+            {
+              "completed_tasks": 40,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 4,
+                  "return": 0.86
+                }
+              ]
+            }
+          ],
+          "returns": [
+            -1.24,
+            0.88,
+            -1.02,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            -1.24,
+            0.88,
+            -1.02,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            -1.24,
+            -1.02,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            -1.24,
+            -1.02,
+            0.84,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86
+          ],
+          "successes": 32,
+          "task_return_mean": 0.4625,
+          "task_return_sum": 18.5,
+          "tasks": 40
+        },
+        "FailureRefresh": {
+          "contested_keys": [],
+          "diagnostic_calls": 8,
+          "diagnostic_edit_attempts": 0,
+          "diagnostic_transactions": 0,
+          "final_diagnostic_memory": [],
+          "memory_hits": 0,
+          "needs_retest": [],
+          "outcomes": [
+            "TIMEOUT",
+            "SUCCESS",
+            "TRAP",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "TIMEOUT",
+            "SUCCESS",
+            "TRAP",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "TIMEOUT",
+            "TRAP",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "TIMEOUT",
+            "TRAP",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "pending_recall": null,
+          "practice_events": 0,
+          "practice_rollouts": 0,
+          "retention_banks": [
+            {
+              "completed_tasks": 0,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "phi": 2,
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 1,
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 2,
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 4,
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 16,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 2,
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 4,
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 28,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 4,
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 36,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 4,
+                  "return": 0.86
+                }
+              ]
+            },
+            {
+              "completed_tasks": 40,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 4,
+                  "return": 0.86
+                }
+              ]
+            }
+          ],
+          "returns": [
+            -1.24,
+            0.88,
+            -1.02,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            -1.24,
+            0.88,
+            -1.02,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            -1.24,
+            -1.02,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            -1.24,
+            -1.02,
+            0.84,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86
+          ],
+          "successes": 32,
+          "task_return_mean": 0.4625,
+          "task_return_sum": 18.5,
+          "tasks": 40
+        },
+        "FreshPractice": {
+          "contested_keys": [],
+          "diagnostic_calls": 8,
+          "diagnostic_edit_attempts": 0,
+          "diagnostic_transactions": 0,
+          "final_diagnostic_memory": [],
+          "memory_hits": 0,
+          "needs_retest": [],
+          "outcomes": [
+            "TIMEOUT",
+            "SUCCESS",
+            "TRAP",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "TIMEOUT",
+            "SUCCESS",
+            "TRAP",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "TIMEOUT",
+            "TRAP",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "TIMEOUT",
+            "TRAP",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "pending_recall": null,
+          "practice_events": 0,
+          "practice_rollouts": 0,
+          "retention_banks": [
+            {
+              "completed_tasks": 0,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "phi": 2,
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 1,
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 2,
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 4,
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 16,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 2,
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 4,
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 28,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 4,
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 36,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 4,
+                  "return": 0.86
+                }
+              ]
+            },
+            {
+              "completed_tasks": 40,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 4,
+                  "return": 0.86
+                }
+              ]
+            }
+          ],
+          "returns": [
+            -1.24,
+            0.88,
+            -1.02,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            -1.24,
+            0.88,
+            -1.02,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            -1.24,
+            -1.02,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            -1.24,
+            -1.02,
+            0.84,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86
+          ],
+          "successes": 32,
+          "task_return_mean": 0.4625,
+          "task_return_sum": 18.5,
+          "tasks": 40
+        },
+        "HybridMemory": {
+          "contested_keys": [],
+          "diagnostic_calls": 8,
+          "diagnostic_edit_attempts": 0,
+          "diagnostic_transactions": 0,
+          "final_diagnostic_memory": [],
+          "memory_hits": 0,
+          "needs_retest": [],
+          "outcomes": [
+            "TIMEOUT",
+            "SUCCESS",
+            "TRAP",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "TIMEOUT",
+            "SUCCESS",
+            "TRAP",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "TIMEOUT",
+            "TRAP",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "TIMEOUT",
+            "TRAP",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "pending_recall": null,
+          "practice_events": 0,
+          "practice_rollouts": 0,
+          "retention_banks": [
+            {
+              "completed_tasks": 0,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "phi": 2,
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 1,
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 2,
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 4,
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 16,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 2,
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 4,
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 28,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "phi": 4,
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 36,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 4,
+                  "return": 0.86
+                }
+              ]
+            },
+            {
+              "completed_tasks": 40,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 2,
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "phi": 4,
+                  "return": 0.86
+                }
+              ]
+            }
+          ],
+          "returns": [
+            -1.24,
+            0.88,
+            -1.02,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            -1.24,
+            0.88,
+            -1.02,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            -1.24,
+            -1.02,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            -1.24,
+            -1.02,
+            0.84,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86,
+            0.86
+          ],
+          "successes": 32,
+          "task_return_mean": 0.4625,
+          "task_return_sum": 18.5,
+          "tasks": 40
+        }
+      },
+      "mode": "patch-adaptive"
+    }
+  ],
+  "per_role_native_work": [
+    {
+      "mode": "dq",
+      "arm": "FreshPractice",
+      "readonly_rollout": 20,
+      "readonly_step": 180,
+      "stream_rollout": 40,
+      "stream_step": 314,
+      "ordinary_numeric_tx": 64,
+      "ordinary_policy_tx": 0,
+      "live_diagnostic_tx": 6,
+      "practice_rollout": 24,
+      "practice_step": 230,
+      "practice_candidate_tx": 8,
+      "total_rollout": 84,
+      "total_step": 724,
+      "total_transaction_excluding_shared_source_install": 78
+    },
+    {
+      "mode": "dq",
+      "arm": "AwareMemory",
+      "readonly_rollout": 20,
+      "readonly_step": 189,
+      "stream_rollout": 40,
+      "stream_step": 346,
+      "ordinary_numeric_tx": 52,
+      "ordinary_policy_tx": 0,
+      "live_diagnostic_tx": 7,
+      "practice_rollout": 12,
+      "practice_step": 115,
+      "practice_candidate_tx": 4,
+      "total_rollout": 72,
+      "total_step": 650,
+      "total_transaction_excluding_shared_source_install": 63
+    },
+    {
+      "mode": "dq",
+      "arm": "FailureRefresh",
+      "readonly_rollout": 20,
+      "readonly_step": 180,
+      "stream_rollout": 40,
+      "stream_step": 308,
+      "ordinary_numeric_tx": 58,
+      "ordinary_policy_tx": 0,
+      "live_diagnostic_tx": 8,
+      "practice_rollout": 18,
+      "practice_step": 190,
+      "practice_candidate_tx": 6,
+      "total_rollout": 78,
+      "total_step": 678,
+      "total_transaction_excluding_shared_source_install": 72
+    },
+    {
+      "mode": "dq",
+      "arm": "HybridMemory",
+      "readonly_rollout": 20,
+      "readonly_step": 180,
+      "stream_rollout": 40,
+      "stream_step": 311,
+      "ordinary_numeric_tx": 58,
+      "ordinary_policy_tx": 0,
+      "live_diagnostic_tx": 7,
+      "practice_rollout": 18,
+      "practice_step": 179,
+      "practice_candidate_tx": 6,
+      "total_rollout": 78,
+      "total_step": 670,
+      "total_transaction_excluding_shared_source_install": 71
+    },
+    {
+      "mode": "patch-adaptive",
+      "arm": "FreshPractice",
+      "readonly_rollout": 20,
+      "readonly_step": 175,
+      "stream_rollout": 40,
+      "stream_step": 275,
+      "ordinary_numeric_tx": 40,
+      "ordinary_policy_tx": 38,
+      "total_rollout": 60,
+      "total_step": 450,
+      "total_transaction_excluding_shared_source_install": 78
+    },
+    {
+      "mode": "patch-adaptive",
+      "arm": "AwareMemory",
+      "readonly_rollout": 20,
+      "readonly_step": 175,
+      "stream_rollout": 40,
+      "stream_step": 275,
+      "ordinary_numeric_tx": 40,
+      "ordinary_policy_tx": 38,
+      "total_rollout": 60,
+      "total_step": 450,
+      "total_transaction_excluding_shared_source_install": 78
+    },
+    {
+      "mode": "patch-adaptive",
+      "arm": "FailureRefresh",
+      "readonly_rollout": 20,
+      "readonly_step": 175,
+      "stream_rollout": 40,
+      "stream_step": 275,
+      "ordinary_numeric_tx": 40,
+      "ordinary_policy_tx": 38,
+      "total_rollout": 60,
+      "total_step": 450,
+      "total_transaction_excluding_shared_source_install": 78
+    },
+    {
+      "mode": "patch-adaptive",
+      "arm": "HybridMemory",
+      "readonly_rollout": 20,
+      "readonly_step": 175,
+      "stream_rollout": 40,
+      "stream_step": 275,
+      "ordinary_numeric_tx": 40,
+      "ordinary_policy_tx": 38,
+      "total_rollout": 60,
+      "total_step": 450,
+      "total_transaction_excluding_shared_source_install": 78
+    }
+  ],
+  "actual_component_observations": {
+    "hybrid_raw_bound_events": [
+      {
+        "seq": 1049,
+        "mode": "dq",
+        "arm": "HybridMemory",
+        "actions": [
+          "keep",
+          "single:0",
+          "single:4"
+        ],
+        "contested_keys": [],
+        "epoch": 3,
+        "info": {
+          "keys": {
+            "keep": [
+              "dq",
+              "TIMEOUT",
+              false,
+              "keep",
+              "global"
+            ],
+            "single:0": [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "single-step"
+            ],
+            "single:4": [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "repeated-run"
+            ]
+          },
+          "supported": false
+        },
+        "needs_retest": [],
+        "raw_selected": null,
+        "selected": null,
+        "status": "unsupported",
+        "table": []
+      },
+      {
+        "seq": 1142,
+        "mode": "dq",
+        "arm": "HybridMemory",
+        "actions": [
+          "keep",
+          "single:0",
+          "single:2"
+        ],
+        "contested_keys": [],
+        "epoch": 11,
+        "info": {
+          "keys": {
+            "keep": [
+              "dq",
+              "TIMEOUT",
+              false,
+              "keep",
+              "global"
+            ],
+            "single:0": [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "single-step"
+            ],
+            "single:2": [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "repeated-run"
+            ]
+          },
+          "scores": {
+            "keep": {
+              "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+            },
+            "single:0": {
+              "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+            },
+            "single:2": {
+              "binary64_hex": "0x1.b851eb851eb85p-1"
+            }
+          },
+          "supported": true
+        },
+        "needs_retest": [],
+        "raw_selected": "single:2",
+        "selected": "single:2",
+        "status": "supported-unique",
+        "table": [
+          [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "keep",
+              "global"
+            ],
+            2,
+            {
+              "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+            }
+          ],
+          [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "repeated-run"
+            ],
+            2,
+            {
+              "binary64_hex": "0x1.b851eb851eb85p-1"
+            }
+          ],
+          [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "single-step"
+            ],
+            2,
+            {
+              "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+            }
+          ]
+        ]
+      },
+      {
+        "seq": 1174,
+        "mode": "dq",
+        "arm": "HybridMemory",
+        "actions": [
+          "keep",
+          "single:0",
+          "single:3"
+        ],
+        "contested_keys": [],
+        "epoch": 16,
+        "info": {
+          "keys": {
+            "keep": [
+              "dq",
+              "TIMEOUT",
+              false,
+              "keep",
+              "global"
+            ],
+            "single:0": [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "repeated-run"
+            ],
+            "single:3": [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "single-step"
+            ]
+          },
+          "scores": {
+            "keep": {
+              "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+            },
+            "single:0": {
+              "binary64_hex": "0x1.b851eb851eb85p-1"
+            },
+            "single:3": {
+              "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+            }
+          },
+          "supported": true
+        },
+        "needs_retest": [],
+        "raw_selected": "single:0",
+        "selected": "single:0",
+        "status": "supported-unique",
+        "table": [
+          [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "keep",
+              "global"
+            ],
+            2,
+            {
+              "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+            }
+          ],
+          [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "repeated-run"
+            ],
+            2,
+            {
+              "binary64_hex": "0x1.b851eb851eb85p-1"
+            }
+          ],
+          [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "single-step"
+            ],
+            2,
+            {
+              "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+            }
+          ]
+        ]
+      },
+      {
+        "seq": 1194,
+        "mode": "dq",
+        "arm": "HybridMemory",
+        "actions": [
+          "keep",
+          "single:0",
+          "single:3"
+        ],
+        "contested_keys": [],
+        "epoch": 18,
+        "info": {
+          "keys": {
+            "keep": [
+              "dq",
+              "TIMEOUT",
+              false,
+              "keep",
+              "global"
+            ],
+            "single:0": [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "repeated-run"
+            ],
+            "single:3": [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "single-step"
+            ]
+          },
+          "scores": {
+            "keep": {
+              "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+            },
+            "single:0": {
+              "binary64_hex": "0x1.b851eb851eb85p-1"
+            },
+            "single:3": {
+              "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+            }
+          },
+          "supported": true
+        },
+        "needs_retest": [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "repeated-run"
+          ]
+        ],
+        "raw_selected": "single:0",
+        "selected": null,
+        "status": "observed-failure-review",
+        "table": [
+          [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "keep",
+              "global"
+            ],
+            2,
+            {
+              "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+            }
+          ],
+          [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "repeated-run"
+            ],
+            2,
+            {
+              "binary64_hex": "0x1.b851eb851eb85p-1"
+            }
+          ],
+          [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "single-step"
+            ],
+            2,
+            {
+              "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+            }
+          ]
+        ]
+      },
+      {
+        "seq": 1290,
+        "mode": "dq",
+        "arm": "HybridMemory",
+        "actions": [
+          "keep",
+          "single:0",
+          "single:3"
+        ],
+        "contested_keys": [],
+        "epoch": 28,
+        "info": {
+          "keys": {
+            "keep": [
+              "dq",
+              "TIMEOUT",
+              false,
+              "keep",
+              "global"
+            ],
+            "single:0": [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "repeated-run"
+            ],
+            "single:3": [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "repeated-run"
+            ]
+          },
+          "scores": {
+            "keep": {
+              "binary64_hex": "-0x1.eb851eb851eb8p-3"
+            },
+            "single:0": {
+              "binary64_hex": "0x1.9eb851eb851ecp-1"
+            },
+            "single:3": {
+              "binary64_hex": "0x1.9eb851eb851ecp-1"
+            }
+          },
+          "supported": true
+        },
+        "needs_retest": [],
+        "raw_selected": "single:0",
+        "selected": null,
+        "status": "duplicate-best-key",
+        "table": [
+          [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "keep",
+              "global"
+            ],
+            4,
+            {
+              "binary64_hex": "-0x1.eb851eb851eb8p-3"
+            }
+          ],
+          [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "repeated-run"
+            ],
+            4,
+            {
+              "binary64_hex": "0x1.9eb851eb851ecp-1"
+            }
+          ],
+          [
+            [
+              "dq",
+              "TIMEOUT",
+              false,
+              "single",
+              4,
+              false,
+              "stay",
+              "single-step"
+            ],
+            4,
+            {
+              "binary64_hex": "-0x1.999999999999ap-3"
+            }
+          ]
+        ]
+      }
+    ],
+    "hybrid_review_epochs": [
+      17
+    ],
+    "hybrid_failure_retest_epochs": [
+      18
+    ],
+    "D_main_steps_aware": 132,
+    "D_main_steps_hybrid": 97,
+    "ordinary_recovery_control_preserved": "AwareMemory also9/12D successes; e19..26returns0.76,e27return0.78. Noclaim hybridcausedallnine successes.",
+    "actual_hybrid_e18_practice_keep_returns": [
+      0.76,
+      0.76
+    ],
+    "actual_hybrid_e18_practice_selected_returns": [
+      0.84,
+      0.84
+    ],
+    "DQ_hybrid_vs_aware_extra_practice_rollouts": 6,
+    "DQ_hybrid_vs_aware_extra_practice_steps": 64,
+    "DQ_hybrid_vs_aware_saved_main_steps": 35,
+    "DQ_hybrid_vs_aware_saved_readonly_steps": 9,
+    "DQ_hybrid_vs_aware_extra_total_native_steps": 20,
+    "DQ_hybrid_vs_failure_same_practice_rollouts": 18,
+    "DQ_hybrid_vs_failure_extra_successes": 2
+  },
+  "matched_actual_roots": [
+    {
+      "mode": "dq",
+      "epoch": 16,
+      "arms": [
+        "HybridMemory",
+        "FreshPractice"
+      ],
+      "actual_raw_identical": true,
+      "ordinary_after_R_L_I_identical": true
+    },
+    {
+      "mode": "dq",
+      "epoch": 16,
+      "arms": [
+        "HybridMemory",
+        "AwareMemory"
+      ],
+      "actual_raw_identical": true,
+      "ordinary_after_R_L_I_identical": true
+    },
+    {
+      "mode": "dq",
+      "epoch": 16,
+      "arms": [
+        "HybridMemory",
+        "FailureRefresh"
+      ],
+      "actual_raw_identical": true,
+      "ordinary_after_R_L_I_identical": true
+    },
+    {
+      "mode": "dq",
+      "epoch": 17,
+      "arms": [
+        "HybridMemory",
+        "AwareMemory"
+      ],
+      "actual_raw_identical": true,
+      "ordinary_after_R_L_I_identical": true
+    },
+    {
+      "mode": "dq",
+      "epoch": 17,
+      "arms": [
+        "HybridMemory",
+        "FailureRefresh"
+      ],
+      "actual_raw_identical": true,
+      "ordinary_after_R_L_I_identical": true
+    },
+    {
+      "mode": "dq",
+      "epoch": 18,
+      "arms": [
+        "HybridMemory",
+        "AwareMemory"
+      ],
+      "actual_raw_identical": true,
+      "ordinary_after_R_L_I_identical": true
+    },
+    {
+      "mode": "dq",
+      "epoch": 18,
+      "arms": [
+        "HybridMemory",
+        "FailureRefresh"
+      ],
+      "actual_raw_identical": true,
+      "ordinary_after_R_L_I_identical": true
+    }
+  ],
+  "raw_context_bound_prediction_reviews": [
+    {
+      "seq": 804,
+      "mode": "dq",
+      "arm": "FailureRefresh",
+      "after": [
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "single",
+          4,
+          false,
+          "stay",
+          "repeated-run"
+        ]
+      ],
+      "before": [],
+      "context": [
+        1,
+        2
+      ],
+      "epoch": 17,
+      "memory_unchanged": [
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "keep",
+            "global"
+          ],
+          2,
+          {
+            "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+          }
+        ],
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "repeated-run"
+          ],
+          2,
+          {
+            "binary64_hex": "0x1.b851eb851eb85p-1"
+          }
+        ],
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "single-step"
+          ],
+          2,
+          {
+            "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+          }
+        ]
+      ],
+      "pending": {
+        "candidate": "single:0",
+        "context": [
+          1,
+          2
+        ],
+        "epoch": 16,
+        "key": [
+          "dq",
+          "TIMEOUT",
+          false,
+          "single",
+          4,
+          false,
+          "stay",
+          "repeated-run"
+        ],
+        "predicted_mean": {
+          "binary64_hex": "0x1.b851eb851eb85p-1"
+        }
+      },
+      "requires_retest": true,
+      "terminal": "TRAP"
+    },
+    {
+      "seq": 919,
+      "mode": "dq",
+      "arm": "FailureRefresh",
+      "after": [
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "single",
+          4,
+          false,
+          "stay",
+          "repeated-run"
+        ]
+      ],
+      "before": [],
+      "context": [
+        1,
+        4
+      ],
+      "epoch": 29,
+      "memory_unchanged": [
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "keep",
+            "global"
+          ],
+          4,
+          {
+            "binary64_hex": "-0x1.eb851eb851eb8p-3"
+          }
+        ],
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "repeated-run"
+          ],
+          4,
+          {
+            "binary64_hex": "0x1.9eb851eb851ecp-1"
+          }
+        ],
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "single-step"
+          ],
+          4,
+          {
+            "binary64_hex": "-0x1.999999999999ap-3"
+          }
+        ]
+      ],
+      "pending": {
+        "candidate": "single:0",
+        "context": [
+          1,
+          4
+        ],
+        "epoch": 28,
+        "key": [
+          "dq",
+          "TIMEOUT",
+          false,
+          "single",
+          4,
+          false,
+          "stay",
+          "repeated-run"
+        ],
+        "predicted_mean": {
+          "binary64_hex": "0x1.9eb851eb851ecp-1"
+        }
+      },
+      "requires_retest": true,
+      "terminal": "TRAP"
+    },
+    {
+      "seq": 1185,
+      "mode": "dq",
+      "arm": "HybridMemory",
+      "after": [
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "single",
+          4,
+          false,
+          "stay",
+          "repeated-run"
+        ]
+      ],
+      "before": [],
+      "context": [
+        1,
+        2
+      ],
+      "epoch": 17,
+      "memory_unchanged": [
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "keep",
+            "global"
+          ],
+          2,
+          {
+            "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+          }
+        ],
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "repeated-run"
+          ],
+          2,
+          {
+            "binary64_hex": "0x1.b851eb851eb85p-1"
+          }
+        ],
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "single-step"
+          ],
+          2,
+          {
+            "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+          }
+        ]
+      ],
+      "pending": {
+        "candidate": "single:0",
+        "context": [
+          1,
+          2
+        ],
+        "epoch": 16,
+        "key": [
+          "dq",
+          "TIMEOUT",
+          false,
+          "single",
+          4,
+          false,
+          "stay",
+          "repeated-run"
+        ],
+        "predicted_mean": {
+          "binary64_hex": "0x1.b851eb851eb85p-1"
+        }
+      },
+      "requires_retest": true,
+      "terminal": "TRAP"
+    }
+  ],
+  "raw_context_bound_retests": [
+    {
+      "seq": 707,
+      "mode": "dq",
+      "arm": "FailureRefresh",
+      "after": [],
+      "before": [],
+      "epoch": 3,
+      "tested_keys": [
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "keep",
+          "global"
+        ],
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "single",
+          4,
+          false,
+          "stay",
+          "repeated-run"
+        ],
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "single",
+          4,
+          false,
+          "stay",
+          "single-step"
+        ]
+      ]
+    },
+    {
+      "seq": 851,
+      "mode": "dq",
+      "arm": "FailureRefresh",
+      "after": [],
+      "before": [
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "single",
+          4,
+          false,
+          "stay",
+          "repeated-run"
+        ]
+      ],
+      "epoch": 18,
+      "tested_keys": [
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "keep",
+          "global"
+        ],
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "single",
+          4,
+          false,
+          "stay",
+          "repeated-run"
+        ],
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "single",
+          4,
+          false,
+          "stay",
+          "single-step"
+        ]
+      ]
+    },
+    {
+      "seq": 966,
+      "mode": "dq",
+      "arm": "FailureRefresh",
+      "after": [],
+      "before": [
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "single",
+          4,
+          false,
+          "stay",
+          "repeated-run"
+        ]
+      ],
+      "epoch": 30,
+      "tested_keys": [
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "keep",
+          "global"
+        ],
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "single",
+          4,
+          false,
+          "stay",
+          "repeated-run"
+        ]
+      ]
+    },
+    {
+      "seq": 1087,
+      "mode": "dq",
+      "arm": "HybridMemory",
+      "after": [],
+      "before": [],
+      "epoch": 3,
+      "tested_keys": [
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "keep",
+          "global"
+        ],
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "single",
+          4,
+          false,
+          "stay",
+          "repeated-run"
+        ],
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "single",
+          4,
+          false,
+          "stay",
+          "single-step"
+        ]
+      ]
+    },
+    {
+      "seq": 1232,
+      "mode": "dq",
+      "arm": "HybridMemory",
+      "after": [],
+      "before": [
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "single",
+          4,
+          false,
+          "stay",
+          "repeated-run"
+        ]
+      ],
+      "epoch": 18,
+      "tested_keys": [
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "keep",
+          "global"
+        ],
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "single",
+          4,
+          false,
+          "stay",
+          "repeated-run"
+        ],
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "single",
+          4,
+          false,
+          "stay",
+          "single-step"
+        ]
+      ]
+    },
+    {
+      "seq": 1328,
+      "mode": "dq",
+      "arm": "HybridMemory",
+      "after": [],
+      "before": [],
+      "epoch": 28,
+      "tested_keys": [
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "keep",
+          "global"
+        ],
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "single",
+          4,
+          false,
+          "stay",
+          "repeated-run"
+        ]
+      ]
+    }
+  ],
+  "actual_practice_events": [
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:4"
+      ],
+      "arm": "FreshPractice",
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:4": 1
+      },
+      "epoch": 3,
+      "means": {
+        "keep": -1.24,
+        "single:0": -1.24,
+        "single:4": 0.86
+      },
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.24,
+          -1.24
+        ],
+        "single:0": [
+          -1.24,
+          -1.24
+        ],
+        "single:4": [
+          0.86,
+          0.86
+        ]
+      },
+      "selected": "single:4"
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:2"
+      ],
+      "arm": "FreshPractice",
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:2": 1
+      },
+      "epoch": 11,
+      "means": {
+        "keep": -1.24,
+        "single:0": -1.24,
+        "single:2": 0.86
+      },
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.24,
+          -1.24
+        ],
+        "single:0": [
+          -1.24,
+          -1.24
+        ],
+        "single:2": [
+          0.86,
+          0.86
+        ]
+      },
+      "selected": "single:2"
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:3"
+      ],
+      "arm": "FreshPractice",
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:3": 1
+      },
+      "epoch": 16,
+      "means": {
+        "keep": -0.24,
+        "single:0": -1.13,
+        "single:3": 0.84
+      },
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.24,
+          0.76
+        ],
+        "single:0": [
+          -1.02,
+          -1.24
+        ],
+        "single:3": [
+          0.84,
+          0.84
+        ]
+      },
+      "selected": "single:3"
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:3"
+      ],
+      "arm": "FreshPractice",
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:3": 1
+      },
+      "epoch": 28,
+      "means": {
+        "keep": -1.24,
+        "single:0": -1.13,
+        "single:3": 0.84
+      },
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.24,
+          -1.24
+        ],
+        "single:0": [
+          -1.02,
+          -1.24
+        ],
+        "single:3": [
+          0.84,
+          0.84
+        ]
+      },
+      "selected": "single:3"
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:4"
+      ],
+      "arm": "AwareMemory",
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:4": 1
+      },
+      "epoch": 3,
+      "means": {
+        "keep": -1.24,
+        "single:0": -1.24,
+        "single:4": 0.86
+      },
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.24,
+          -1.24
+        ],
+        "single:0": [
+          -1.24,
+          -1.24
+        ],
+        "single:4": [
+          0.86,
+          0.86
+        ]
+      },
+      "selected": "single:4"
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:3"
+      ],
+      "arm": "AwareMemory",
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:3": 1
+      },
+      "epoch": 28,
+      "means": {
+        "keep": -1.24,
+        "single:0": -1.13,
+        "single:3": 0.84
+      },
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.24,
+          -1.24
+        ],
+        "single:0": [
+          -1.02,
+          -1.24
+        ],
+        "single:3": [
+          0.84,
+          0.84
+        ]
+      },
+      "selected": "single:3"
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:4"
+      ],
+      "arm": "FailureRefresh",
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:4": 1
+      },
+      "epoch": 3,
+      "means": {
+        "keep": -1.24,
+        "single:0": -1.24,
+        "single:4": 0.86
+      },
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.24,
+          -1.24
+        ],
+        "single:0": [
+          -1.24,
+          -1.24
+        ],
+        "single:4": [
+          0.86,
+          0.86
+        ]
+      },
+      "selected": "single:4"
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:3"
+      ],
+      "arm": "FailureRefresh",
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:3": 1
+      },
+      "epoch": 18,
+      "means": {
+        "keep": 0.76,
+        "single:0": 0.76,
+        "single:3": 0.84
+      },
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          0.76,
+          0.76
+        ],
+        "single:0": [
+          0.76,
+          0.76
+        ],
+        "single:3": [
+          0.84,
+          0.84
+        ]
+      },
+      "selected": "single:3"
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:3"
+      ],
+      "arm": "FailureRefresh",
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:3": 1
+      },
+      "epoch": 30,
+      "means": {
+        "keep": -1.24,
+        "single:0": -1.24,
+        "single:3": 0.84
+      },
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.24,
+          -1.24
+        ],
+        "single:0": [
+          -1.24,
+          -1.24
+        ],
+        "single:3": [
+          0.84,
+          0.84
+        ]
+      },
+      "selected": "single:3"
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:4"
+      ],
+      "arm": "HybridMemory",
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:4": 1
+      },
+      "epoch": 3,
+      "means": {
+        "keep": -1.24,
+        "single:0": -1.24,
+        "single:4": 0.86
+      },
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.24,
+          -1.24
+        ],
+        "single:0": [
+          -1.24,
+          -1.24
+        ],
+        "single:4": [
+          0.86,
+          0.86
+        ]
+      },
+      "selected": "single:4"
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:3"
+      ],
+      "arm": "HybridMemory",
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:3": 1
+      },
+      "epoch": 18,
+      "means": {
+        "keep": 0.76,
+        "single:0": 0.76,
+        "single:3": 0.84
+      },
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          0.76,
+          0.76
+        ],
+        "single:0": [
+          0.76,
+          0.76
+        ],
+        "single:3": [
+          0.84,
+          0.84
+        ]
+      },
+      "selected": "single:3"
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:3"
+      ],
+      "arm": "HybridMemory",
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:3": 1
+      },
+      "epoch": 28,
+      "means": {
+        "keep": -1.24,
+        "single:0": -1.13,
+        "single:3": 0.84
+      },
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.24,
+          -1.24
+        ],
+        "single:0": [
+          -1.02,
+          -1.24
+        ],
+        "single:3": [
+          0.84,
+          0.84
+        ]
+      },
+      "selected": "single:3"
+    }
+  ],
+  "findings": [
+    "Hybrid is now an actualsingle-agent implementation, not an inferred union of v129arms: e16supported-unique badrecall, e17realTRAPreview, e18needs-retest realpractice, ande28duplicate-best-key proactivepractice are allactualcontext-bound recorded events.",
+    "DQ40task results: Fresh32success/mean0.44299999999999995/trials24; Aware30/0.327/trials12; FailureRefresh28/0.246/trials18; Hybrid30/0.3445/trials18. Noall-metric winner or imposedpositivegate.",
+    "Unique-D key has one0.86topscore andalternate-1.24, so prior duplicate-keycheck really misses it. Allfour share exactD e16raw andpostTD R+L+I; Freshactualsame-root trials give firstcandidate[-1.02,-1.24],latercandidate[0.84,0.84], so uniqueness is not validity.",
+    "Aware also recoversD through ordinary learning:9/12successes same as Hybrid, butsuccessfulreturns0.76 early,0.78last versusHybrid0.84. Hybride18 practicekeepalso[0.76,0.76], so the fallback is not credited with allnine successes; its measured gain is better subsequenttaskreturn/fewerexecutionsteps.",
+    "ComparedAware, Hybrid gains0.7totalmainreturn (mean+0.0175),same30successes, while spending6extratrials/64trialsteps; it saves35mainsteps and9readonlysteps, leaving20MORE nativeKsteps overall. Do notclaim all-cost efficiency improvement.",
+    "ComparedFailureRefresh, Hybrid avoids2Cmainfailures atsame18trialtasks (30vs28successes). BothpaytheDblindspot first, butHybrid laterpreempts Cduplicateambiguity. Same4event cap allarms, no budget starvation.",
+    "Fresh remains32successes versusHybrid30 butuses24vs18trialtasks. FavorableB memorytransfer stillsaves6trials in Hybrid. Quality/experimentcost tradeoff retained, not hidden by a fittedscalarutility.",
+    "AllDQ arms returnAB4/4success; finalcleanD returnsAware0.78,other0.84. Patchallfour32/40/mean0.4625 withzeroextraM/practice/diagnosticwrites; noarchitecture ranking.",
+    "Reviewflags are not negativeMlabels orcausalproof; allM values come from actualpractice. Success ordinarylearning remains, no successattribution. ConditionalM representation stillcoarse; newruleintegration isprovided, not learnedgeneralworldknowledge."
+  ],
+  "limits": [
+    "Fourcontext40task targeted adversarial stream, not blindpopulation/independentseed confirmation. NewD itinerarychosenfromknowngeometry before run; no outcomebasedresampling or secondnativeattempt.",
+    "Hybridonly combines existingtwo suppliedheuristics. It doesnot learn itsown triggers, causalposterior, confidencecalibration ornewrepresentation. Unique-score unseen failure canstill slipthrough; onefollowup samecontext may be unrelated.",
+    "Ordinarycontrol self-improves. Hybride18 keepbranch actualsuccess0.76 must be retained. Neither failure nor terminalsuccess alone establishes attribution or thecounterfactual value of correction.",
+    "Localmenu stillkeep+first2eligible singles/2tasksperbranch,4events/role; extraeligibleDsingles retained but unprobed. Nooraclecorrectanswer, newmenu, rollback, rewardchange, automaticretry or unboundedexploration.",
+    "AggregateM mayremain misleading aftertrialupdates; no generalcorrectness claim fromclearing a needs-retestflag orsuccesslater. Originalreward unchanged, not punishmentablation.",
+    "Nativecounts are actualK/storework, not totalCPU/RAM/IO/clone/hashcost.94.797s is aninstrumentedharness time; Mstateoverhead not productionprofiled. Morefailedtasks canuseshortertrajectories, so stepcountalone isnotutility.",
+    "Newstdlibreview internally checks allroles and rawcontext ownership; its short observed_prediction_reviews/actual_retests projections omitarmfield. Newresult preserves exactseq+arm fromoriginalraw, not editingchecker output or pretending serialbytesrestore runtimeidentity.",
+    "Original313/API/guard/law/registry/oldexecutedbytes/positivenegativezeroevidence preserved. No newkeys/RNG/keyderive/DP/calibration/formalcollector orautomationchange. Not generalRFL, inheritedF1PASS or originalfullV04R qualification; internalreview isnot independentexpert/sciencegate."
+  ],
+  "prior_v124_local_stage_completion_preserved": true,
+  "prior_v126_v127_v128_v129_results_preserved": true,
+  "original_full_V04R_qualified": false,
+  "preservation": {
+    "old68_ledger_values_preserved": true,
+    "old266_provenance_preserved": true,
+    "old_executed_bytes_edited": false,
+    "old_checker_native_reruns": 0,
+    "automation_inspected_or_modified": false
+  }
+}

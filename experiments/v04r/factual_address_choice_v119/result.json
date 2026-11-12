@@ -1,0 +1,485 @@
+{
+  "schema": "V119_LOCAL_FACTUAL_ADDRESS_CHOICE_RESULT",
+  "date_asia_shanghai": "2026-11-06",
+  "parent_commit": "1ffb79bd0adb3cd3652aca060412144c4f2442f9",
+  "status": "FINITE_ADDRESS_TRAIN_FREEZE_HELDOUT_COMPLETE",
+  "question": "Can actual continuation feedback select a smaller sufficient factual edit instead of clearing the whole trajectory?",
+  "training": {
+    "factual_tasks": 8,
+    "failure_triggered_candidate_branches": 42,
+    "development_probe_tasks": 84,
+    "candidate_value_rows": 42,
+    "continuations_per_candidate": 2,
+    "frozen_before_held_out": true,
+    "held_out_updates": 0
+  },
+  "held_out": {
+    "fixed_case_types_per_mode": 4,
+    "arms": [
+      "TaskTD",
+      "AlwaysClear",
+      "LearnedAddress"
+    ],
+    "ordinary_followups_per_case_arm": 2,
+    "context": "selector training kappa0/rank3; held-out kappa1/rank4 with changed DQ initial magnitudes. Shared Q* covers both. Same four-mechanism family as v118, not independent replication.",
+    "selection_features": "mode, task-visible terminal and command/execution mismatch; candidate identity is chronological unique factual position, not hidden fault or context ID.",
+    "tie_rule": "Maximum actual developmental mean; exact return ties prefer fewer attempted address edits, then earlier candidate. No tuned reward/cost weight."
+  },
+  "descriptive_fixed_case_aggregates": [
+    {
+      "arms": {
+        "AlwaysClear": {
+          "descriptive_mean_future_return_over_four_fixed_cases": 0.64,
+          "future_successes": 7,
+          "future_tasks": 8,
+          "online_diagnostic_address_edits": 15,
+          "online_diagnostic_transactions": 3
+        },
+        "LearnedAddress": {
+          "descriptive_mean_future_return_over_four_fixed_cases": 0.875,
+          "future_successes": 8,
+          "future_tasks": 8,
+          "online_diagnostic_address_edits": 2,
+          "online_diagnostic_transactions": 2
+        },
+        "TaskTD": {
+          "descriptive_mean_future_return_over_four_fixed_cases": 0.105,
+          "future_successes": 5,
+          "future_tasks": 8,
+          "online_diagnostic_address_edits": 0,
+          "online_diagnostic_transactions": 0
+        }
+      },
+      "mode": "dq"
+    },
+    {
+      "arms": {
+        "AlwaysClear": {
+          "descriptive_mean_future_return_over_four_fixed_cases": 0.875,
+          "future_successes": 8,
+          "future_tasks": 8,
+          "online_diagnostic_address_edits": 15,
+          "online_diagnostic_transactions": 3
+        },
+        "LearnedAddress": {
+          "descriptive_mean_future_return_over_four_fixed_cases": 0.875,
+          "future_successes": 8,
+          "future_tasks": 8,
+          "online_diagnostic_address_edits": 0,
+          "online_diagnostic_transactions": 0
+        },
+        "TaskTD": {
+          "descriptive_mean_future_return_over_four_fixed_cases": 0.875,
+          "future_successes": 8,
+          "future_tasks": 8,
+          "online_diagnostic_address_edits": 0,
+          "online_diagnostic_transactions": 0
+        }
+      },
+      "mode": "patch-adaptive"
+    }
+  ],
+  "paired_cases": [
+    {
+      "LearnedAddress_minus_AlwaysClear": 0.0,
+      "LearnedAddress_minus_TaskTD": 0.96,
+      "case": "collision",
+      "means": {
+        "AlwaysClear": 0.88,
+        "LearnedAddress": 0.88,
+        "TaskTD": -0.08000000000000002
+      },
+      "mode": "dq"
+    },
+    {
+      "LearnedAddress_minus_AlwaysClear": 0.0,
+      "LearnedAddress_minus_TaskTD": 2.12,
+      "case": "timeout",
+      "means": {
+        "AlwaysClear": 0.88,
+        "LearnedAddress": 0.88,
+        "TaskTD": -1.24
+      },
+      "mode": "dq"
+    },
+    {
+      "LearnedAddress_minus_AlwaysClear": 0.94,
+      "LearnedAddress_minus_TaskTD": 0.0,
+      "case": "external_trap",
+      "means": {
+        "AlwaysClear": -0.08000000000000002,
+        "LearnedAddress": 0.86,
+        "TaskTD": 0.86
+      },
+      "mode": "dq"
+    },
+    {
+      "LearnedAddress_minus_AlwaysClear": 0.0,
+      "LearnedAddress_minus_TaskTD": 0.0,
+      "case": "success",
+      "means": {
+        "AlwaysClear": 0.88,
+        "LearnedAddress": 0.88,
+        "TaskTD": 0.88
+      },
+      "mode": "dq"
+    },
+    {
+      "LearnedAddress_minus_AlwaysClear": 0.0,
+      "LearnedAddress_minus_TaskTD": 0.0,
+      "case": "collision",
+      "means": {
+        "AlwaysClear": 0.88,
+        "LearnedAddress": 0.88,
+        "TaskTD": 0.88
+      },
+      "mode": "patch-adaptive"
+    },
+    {
+      "LearnedAddress_minus_AlwaysClear": 0.0,
+      "LearnedAddress_minus_TaskTD": 0.0,
+      "case": "timeout",
+      "means": {
+        "AlwaysClear": 0.88,
+        "LearnedAddress": 0.88,
+        "TaskTD": 0.88
+      },
+      "mode": "patch-adaptive"
+    },
+    {
+      "LearnedAddress_minus_AlwaysClear": 0.0,
+      "LearnedAddress_minus_TaskTD": 0.0,
+      "case": "external_trap",
+      "means": {
+        "AlwaysClear": 0.86,
+        "LearnedAddress": 0.86,
+        "TaskTD": 0.86
+      },
+      "mode": "patch-adaptive"
+    },
+    {
+      "LearnedAddress_minus_AlwaysClear": 0.0,
+      "LearnedAddress_minus_TaskTD": 0.0,
+      "case": "success",
+      "means": {
+        "AlwaysClear": 0.88,
+        "LearnedAddress": 0.88,
+        "TaskTD": 0.88
+      },
+      "mode": "patch-adaptive"
+    }
+  ],
+  "actual_selected_candidates": [
+    {
+      "address_edits": 0,
+      "arm": "TaskTD",
+      "candidate": null,
+      "case": "collision",
+      "future_returns": [
+        -1.04,
+        0.88
+      ],
+      "mode": "dq"
+    },
+    {
+      "address_edits": 2,
+      "arm": "AlwaysClear",
+      "candidate": "clear_factual",
+      "case": "collision",
+      "future_returns": [
+        0.88,
+        0.88
+      ],
+      "mode": "dq"
+    },
+    {
+      "address_edits": 1,
+      "arm": "LearnedAddress",
+      "candidate": "single:1",
+      "case": "collision",
+      "future_returns": [
+        0.88,
+        0.88
+      ],
+      "mode": "dq"
+    },
+    {
+      "address_edits": 0,
+      "arm": "TaskTD",
+      "candidate": null,
+      "case": "timeout",
+      "future_returns": [
+        -1.24,
+        -1.24
+      ],
+      "mode": "dq"
+    },
+    {
+      "address_edits": 12,
+      "arm": "AlwaysClear",
+      "candidate": "clear_factual",
+      "case": "timeout",
+      "future_returns": [
+        0.88,
+        0.88
+      ],
+      "mode": "dq"
+    },
+    {
+      "address_edits": 1,
+      "arm": "LearnedAddress",
+      "candidate": "single:0",
+      "case": "timeout",
+      "future_returns": [
+        0.88,
+        0.88
+      ],
+      "mode": "dq"
+    },
+    {
+      "address_edits": 0,
+      "arm": "TaskTD",
+      "candidate": null,
+      "case": "external_trap",
+      "future_returns": [
+        0.86,
+        0.86
+      ],
+      "mode": "dq"
+    },
+    {
+      "address_edits": 1,
+      "arm": "AlwaysClear",
+      "candidate": "clear_factual",
+      "case": "external_trap",
+      "future_returns": [
+        -1.02,
+        0.86
+      ],
+      "mode": "dq"
+    },
+    {
+      "address_edits": 0,
+      "arm": "LearnedAddress",
+      "candidate": "keep",
+      "case": "external_trap",
+      "future_returns": [
+        0.86,
+        0.86
+      ],
+      "mode": "dq"
+    },
+    {
+      "address_edits": 0,
+      "arm": "TaskTD",
+      "candidate": null,
+      "case": "success",
+      "future_returns": [
+        0.88,
+        0.88
+      ],
+      "mode": "dq"
+    },
+    {
+      "address_edits": 0,
+      "arm": "AlwaysClear",
+      "candidate": null,
+      "case": "success",
+      "future_returns": [
+        0.88,
+        0.88
+      ],
+      "mode": "dq"
+    },
+    {
+      "address_edits": 0,
+      "arm": "LearnedAddress",
+      "candidate": null,
+      "case": "success",
+      "future_returns": [
+        0.88,
+        0.88
+      ],
+      "mode": "dq"
+    },
+    {
+      "address_edits": 0,
+      "arm": "TaskTD",
+      "candidate": null,
+      "case": "collision",
+      "future_returns": [
+        0.88,
+        0.88
+      ],
+      "mode": "patch-adaptive"
+    },
+    {
+      "address_edits": 2,
+      "arm": "AlwaysClear",
+      "candidate": "clear_factual",
+      "case": "collision",
+      "future_returns": [
+        0.88,
+        0.88
+      ],
+      "mode": "patch-adaptive"
+    },
+    {
+      "address_edits": 0,
+      "arm": "LearnedAddress",
+      "candidate": "keep",
+      "case": "collision",
+      "future_returns": [
+        0.88,
+        0.88
+      ],
+      "mode": "patch-adaptive"
+    },
+    {
+      "address_edits": 0,
+      "arm": "TaskTD",
+      "candidate": null,
+      "case": "timeout",
+      "future_returns": [
+        0.88,
+        0.88
+      ],
+      "mode": "patch-adaptive"
+    },
+    {
+      "address_edits": 12,
+      "arm": "AlwaysClear",
+      "candidate": "clear_factual",
+      "case": "timeout",
+      "future_returns": [
+        0.88,
+        0.88
+      ],
+      "mode": "patch-adaptive"
+    },
+    {
+      "address_edits": 0,
+      "arm": "LearnedAddress",
+      "candidate": "keep",
+      "case": "timeout",
+      "future_returns": [
+        0.88,
+        0.88
+      ],
+      "mode": "patch-adaptive"
+    },
+    {
+      "address_edits": 0,
+      "arm": "TaskTD",
+      "candidate": null,
+      "case": "external_trap",
+      "future_returns": [
+        0.86,
+        0.86
+      ],
+      "mode": "patch-adaptive"
+    },
+    {
+      "address_edits": 1,
+      "arm": "AlwaysClear",
+      "candidate": "clear_factual",
+      "case": "external_trap",
+      "future_returns": [
+        0.86,
+        0.86
+      ],
+      "mode": "patch-adaptive"
+    },
+    {
+      "address_edits": 0,
+      "arm": "LearnedAddress",
+      "candidate": "keep",
+      "case": "external_trap",
+      "future_returns": [
+        0.86,
+        0.86
+      ],
+      "mode": "patch-adaptive"
+    },
+    {
+      "address_edits": 0,
+      "arm": "TaskTD",
+      "candidate": null,
+      "case": "success",
+      "future_returns": [
+        0.88,
+        0.88
+      ],
+      "mode": "patch-adaptive"
+    },
+    {
+      "address_edits": 0,
+      "arm": "AlwaysClear",
+      "candidate": null,
+      "case": "success",
+      "future_returns": [
+        0.88,
+        0.88
+      ],
+      "mode": "patch-adaptive"
+    },
+    {
+      "address_edits": 0,
+      "arm": "LearnedAddress",
+      "candidate": null,
+      "case": "success",
+      "future_returns": [
+        0.88,
+        0.88
+      ],
+      "mode": "patch-adaptive"
+    }
+  ],
+  "execution": {
+    "first_native_exit": 0,
+    "first_new_stored_check_exit_observed": 0,
+    "rollout": 164,
+    "step": 1080,
+    "transaction": 262,
+    "records": 976,
+    "ordinary_full_R_L_updates_checked": 164,
+    "declared_inputs_unchanged": 327,
+    "wall_seconds_instrumented_launcher": 11.60899999999674,
+    "new_keys": 0,
+    "formal_collection": false,
+    "automatic_retry": false
+  },
+  "cost": {
+    "extra_development_probe_tasks": 84,
+    "development_candidate_address_edits": 60,
+    "online_diagnostic_address_edits_all_arms": 32,
+    "DQ_LearnedAddress_online_edits": 2,
+    "DQ_AlwaysClear_online_edits": 15,
+    "DQ_two_repaired_cases_clear_all_edits": 14,
+    "DQ_two_repaired_cases_single_edits": 2,
+    "net_total_compute_savings_established": false
+  },
+  "interpretation": [
+    "DQ collision: single:1 and clear-all both yield [0.88,0.88]; single:0 and keep yield [-1.04,0.88]. Actual branch evidence discriminates addresses.",
+    "DQ timeout: single:0 and clear-all both yield [0.88,0.88]. Later single addresses progressively delay exit or fail within the finite horizon; all retained rather than selected away.",
+    "DQ external trap: keep preserves useful ordinary learning, while clearing yields another trap. Revised patch returns tie ordinary-only; learned keep avoids unnecessary edits.",
+    "The online address reduction is real within this experiment, but 84 extra developmental probes are counted and no net compute saving is claimed."
+  ],
+  "limits": [
+    "Four fixed cases per mode, two followups/candidate, no independent-seed inference, full recurring policy or architecture ranking.",
+    "Position-conditioned value learning is not a causal responsibility posterior. Relocating failure-relevant decisions is not yet tested; all-row/unknown context generalization is not established.",
+    "Deleting one timeout address bypasses other bad overrides on these continuations; it does not certify all other overrides are repaired or safe in other tasks.",
+    "Shared Q* and revised patch ordinary policy improvement remain. Success starts no diagnostic/probe training. Not a punishment ablation or formal V04 PASS."
+  ],
+  "V03_local_stage_complete": true,
+  "V04_full_learned_causal_pipeline_complete": false,
+  "preservation": {
+    "old57_ledger_values": true,
+    "old266_provenance": true,
+    "frozen313": true,
+    "old_checker_native_reruns": 0,
+    "old_executed_source_modified": false,
+    "automation_inspected_or_modified": false
+  },
+  "next_work": "Test relocation of the failure-relevant factual decision to distinguish transferable selection from memorized temporal-position regularities; do not repeat this completed batch or chase larger effects."
+}

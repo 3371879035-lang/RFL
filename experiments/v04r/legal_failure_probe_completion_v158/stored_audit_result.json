@@ -1,0 +1,466 @@
+{
+  "schema": "V158_STDLIB_LEGAL_FAILURE_PROBE_COMPLETION_REVIEW",
+  "complete": true,
+  "native_counts": {
+    "rollout": 30,
+    "step": 188,
+    "transaction": 39
+  },
+  "records": 249,
+  "recorded_baseline_records": 78,
+  "recorded_baseline_native_exit": 1,
+  "preserved_failure": {
+    "counts": {
+      "rollout": 12,
+      "step": 73,
+      "transaction": 15
+    },
+    "error": "trap cell may not be START or GOAL (11 \u00a76.6)",
+    "traceback": "Traceback (most recent call last):\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3-dense-20261009\\experiments\\v04r\\no_mismatch_failure_probe_v157\\workload.py\", line 123, in main\n    sys.setprofile(profile);rows=experiment();emit('RESULT',{'complete':True,'counts':dict(COUNTS),'streams':rows,'new_keys':0,'formal_collection':False});ok=True\n                                 ^^^^^^^^^^^^\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3-dense-20261009\\experiments\\v04r\\no_mismatch_failure_probe_v157\\workload.py\", line 108, in experiment\n    CONTEXT['main_epoch']=e;mask=K.FaultMask(trap=K.Trap(tuple(s['trap']['cell']),s['trap']['t']))\n                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<string>\", line 5, in __init__\n  File \"D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3-dense-20261009\\src\\rfl_rebuild\\env\\kernel.py\", line 443, in __post_init__\n    raise ValueError(\"trap cell may not be START or GOAL (11 \u00a76.6)\")\nValueError: trap cell may not be START or GOAL (11 \u00a76.6)\n",
+    "type": "ValueError"
+  },
+  "combined_counts": {
+    "rollout": 42,
+    "step": 261,
+    "transaction": 54
+  },
+  "matched_common_source_pins": 104,
+  "input_pins": 351,
+  "summaries": [
+    {
+      "arm": "TaskTD",
+      "source": "v157 actual complete12 prefix; capture exit1/full18 notcomplete",
+      "successes": 9,
+      "returns": [
+        -1.06,
+        0.86,
+        -1.06,
+        0.86,
+        0.86,
+        0.86,
+        -1.08,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "outcomes": [
+        "TRAP",
+        "SUCCESS",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.37833333333333335,
+      "external_updates": 0,
+      "diagnostic_account": {
+        "algorithm": "TaskTD",
+        "trial_tasks_used": 0,
+        "trial_task_budget": 0,
+        "base_queries": 0,
+        "expanded_queries": 0
+      }
+    },
+    {
+      "arm": "GreedyPractice",
+      "successes": 9,
+      "returns": [
+        -1.06,
+        -1.06,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.08,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "outcomes": [
+        "TRAP",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.37833333333333335,
+      "external_updates": 3,
+      "diagnostic_account": {
+        "algorithm": "GreedyPractice",
+        "base_queries": 3,
+        "expanded_queries": 0,
+        "trial_task_budget": 12,
+        "trial_tasks_used": 3
+      }
+    },
+    {
+      "arm": "TargetedPractice",
+      "successes": 9,
+      "returns": [
+        -1.06,
+        -1.06,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.08,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "outcomes": [
+        "TRAP",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.37833333333333335,
+      "external_updates": 3,
+      "diagnostic_account": {
+        "algorithm": "TargetedPractice",
+        "base_queries": 3,
+        "expanded_queries": 0,
+        "trial_task_budget": 12,
+        "trial_tasks_used": 3
+      }
+    }
+  ],
+  "phase_results": [
+    {
+      "arm": "TaskTD",
+      "stage": "A_late_upper_trap",
+      "successes": 4,
+      "returns": [
+        -1.06,
+        0.86,
+        -1.06,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.21999999999999997,
+      "private_tasks": 0
+    },
+    {
+      "arm": "TaskTD",
+      "stage": "B_deeper_upper_trap",
+      "successes": 5,
+      "returns": [
+        -1.08,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.5366666666666666,
+      "private_tasks": 0
+    },
+    {
+      "arm": "GreedyPractice",
+      "stage": "A_late_upper_trap",
+      "successes": 4,
+      "returns": [
+        -1.06,
+        -1.06,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.21999999999999997,
+      "private_tasks": 2
+    },
+    {
+      "arm": "GreedyPractice",
+      "stage": "B_deeper_upper_trap",
+      "successes": 5,
+      "returns": [
+        -1.08,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.5366666666666666,
+      "private_tasks": 1
+    },
+    {
+      "arm": "TargetedPractice",
+      "stage": "A_late_upper_trap",
+      "successes": 4,
+      "returns": [
+        -1.06,
+        -1.06,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.21999999999999997,
+      "private_tasks": 2
+    },
+    {
+      "arm": "TargetedPractice",
+      "stage": "B_deeper_upper_trap",
+      "successes": 5,
+      "returns": [
+        -1.08,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.5366666666666666,
+      "private_tasks": 1
+    }
+  ],
+  "online_costs": [
+    {
+      "arm": "TaskTD",
+      "main_tasks": 12,
+      "private_tasks": 0,
+      "rollout": 12,
+      "step": 73,
+      "transaction": 12,
+      "shared3TX_excluded": true
+    },
+    {
+      "arm": "GreedyPractice",
+      "main_tasks": 12,
+      "private_tasks": 3,
+      "rollout": 15,
+      "step": 94,
+      "transaction": 18,
+      "shared3TX_excluded": true
+    },
+    {
+      "arm": "TargetedPractice",
+      "main_tasks": 12,
+      "private_tasks": 3,
+      "rollout": 15,
+      "step": 94,
+      "transaction": 18,
+      "shared3TX_excluded": true
+    }
+  ],
+  "queries": [
+    {
+      "arm": "GreedyPractice",
+      "epoch": 0,
+      "stage": "A_late_upper_trap",
+      "target_index": 2,
+      "failed_command": 3,
+      "proposed_alternative": 4,
+      "post_main_TD_selector": 4,
+      "post_main_TD_already_avoids_failed_command": true
+    },
+    {
+      "arm": "GreedyPractice",
+      "epoch": 1,
+      "stage": "A_late_upper_trap",
+      "target_index": 2,
+      "failed_command": 0,
+      "proposed_alternative": 4,
+      "post_main_TD_selector": 4,
+      "post_main_TD_already_avoids_failed_command": true
+    },
+    {
+      "arm": "GreedyPractice",
+      "epoch": 6,
+      "stage": "B_deeper_upper_trap",
+      "target_index": 3,
+      "failed_command": 3,
+      "proposed_alternative": 4,
+      "post_main_TD_selector": 4,
+      "post_main_TD_already_avoids_failed_command": true
+    },
+    {
+      "arm": "TargetedPractice",
+      "epoch": 0,
+      "stage": "A_late_upper_trap",
+      "target_index": 2,
+      "failed_command": 3,
+      "proposed_alternative": 4,
+      "post_main_TD_selector": 4,
+      "post_main_TD_already_avoids_failed_command": true
+    },
+    {
+      "arm": "TargetedPractice",
+      "epoch": 1,
+      "stage": "A_late_upper_trap",
+      "target_index": 2,
+      "failed_command": 0,
+      "proposed_alternative": 4,
+      "post_main_TD_selector": 4,
+      "post_main_TD_already_avoids_failed_command": true
+    },
+    {
+      "arm": "TargetedPractice",
+      "epoch": 6,
+      "stage": "B_deeper_upper_trap",
+      "target_index": 3,
+      "failed_command": 3,
+      "proposed_alternative": 4,
+      "post_main_TD_selector": 4,
+      "post_main_TD_already_avoids_failed_command": true
+    }
+  ],
+  "accepted": [
+    {
+      "arm": "GreedyPractice",
+      "epoch": 0,
+      "terminal": "SUCCESS",
+      "numeric_content_changed": true
+    },
+    {
+      "arm": "GreedyPractice",
+      "epoch": 1,
+      "terminal": "SUCCESS",
+      "numeric_content_changed": true
+    },
+    {
+      "arm": "GreedyPractice",
+      "epoch": 6,
+      "terminal": "SUCCESS",
+      "numeric_content_changed": true
+    },
+    {
+      "arm": "TargetedPractice",
+      "epoch": 0,
+      "terminal": "SUCCESS",
+      "numeric_content_changed": true
+    },
+    {
+      "arm": "TargetedPractice",
+      "epoch": 1,
+      "terminal": "SUCCESS",
+      "numeric_content_changed": true
+    },
+    {
+      "arm": "TargetedPractice",
+      "epoch": 6,
+      "terminal": "SUCCESS",
+      "numeric_content_changed": true
+    }
+  ],
+  "main_equality": [
+    {
+      "epoch": 0,
+      "all3_main_raw_equal": true,
+      "greedy_vs_targeted_post_RLI_equal": true,
+      "TaskTD_vs_greedy_post_RLI_equal": false
+    },
+    {
+      "epoch": 1,
+      "all3_main_raw_equal": false,
+      "greedy_vs_targeted_post_RLI_equal": true,
+      "TaskTD_vs_greedy_post_RLI_equal": false
+    },
+    {
+      "epoch": 2,
+      "all3_main_raw_equal": false,
+      "greedy_vs_targeted_post_RLI_equal": true,
+      "TaskTD_vs_greedy_post_RLI_equal": false
+    },
+    {
+      "epoch": 3,
+      "all3_main_raw_equal": true,
+      "greedy_vs_targeted_post_RLI_equal": true,
+      "TaskTD_vs_greedy_post_RLI_equal": false
+    },
+    {
+      "epoch": 4,
+      "all3_main_raw_equal": true,
+      "greedy_vs_targeted_post_RLI_equal": true,
+      "TaskTD_vs_greedy_post_RLI_equal": false
+    },
+    {
+      "epoch": 5,
+      "all3_main_raw_equal": true,
+      "greedy_vs_targeted_post_RLI_equal": true,
+      "TaskTD_vs_greedy_post_RLI_equal": false
+    },
+    {
+      "epoch": 6,
+      "all3_main_raw_equal": true,
+      "greedy_vs_targeted_post_RLI_equal": true,
+      "TaskTD_vs_greedy_post_RLI_equal": false
+    },
+    {
+      "epoch": 7,
+      "all3_main_raw_equal": true,
+      "greedy_vs_targeted_post_RLI_equal": true,
+      "TaskTD_vs_greedy_post_RLI_equal": false
+    },
+    {
+      "epoch": 8,
+      "all3_main_raw_equal": false,
+      "greedy_vs_targeted_post_RLI_equal": true,
+      "TaskTD_vs_greedy_post_RLI_equal": false
+    },
+    {
+      "epoch": 9,
+      "all3_main_raw_equal": true,
+      "greedy_vs_targeted_post_RLI_equal": true,
+      "TaskTD_vs_greedy_post_RLI_equal": false
+    },
+    {
+      "epoch": 10,
+      "all3_main_raw_equal": false,
+      "greedy_vs_targeted_post_RLI_equal": true,
+      "TaskTD_vs_greedy_post_RLI_equal": false
+    },
+    {
+      "epoch": 11,
+      "all3_main_raw_equal": false,
+      "greedy_vs_targeted_post_RLI_equal": true,
+      "TaskTD_vs_greedy_post_RLI_equal": false
+    }
+  ],
+  "combined_native_ordinary_updates": 42,
+  "new_native_ordinary_updates": 30,
+  "ordinary_policy_TX": 0,
+  "external_ordinary_updates": 6,
+  "external_policy_TX": 0,
+  "issued_observations": 6,
+  "consumed_observations": 6,
+  "no_alternative_keeps": 0,
+  "budget_keeps": 0,
+  "out_of_scope_keeps": 0,
+  "feedback_TX": 0,
+  "source_install_TX": 0,
+  "success_diagnosis": 0,
+  "old_native_checker_bank_reruns": 0,
+  "new_keys_RNG_DP_calibration_collection": 0,
+  "formal_B1_or_science_qualification": false
+}

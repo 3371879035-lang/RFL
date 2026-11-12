@@ -1,0 +1,152 @@
+{
+  "schema": "V156_CURRENT_PATH_OUTCOME_REUSE_RESULT",
+  "date_asia_shanghai": "2026-11-07",
+  "parent_commit": "ebaff3ac240c421095adb48c133949a7dbe8cc59",
+  "status": "FIRST_NATIVE_AND_FIRST_STORED_REVIEW_EXIT0_SIMPLER_CURRENT_ONLY_METHOD_USES12_TRIALS_SAME20MAIN_RESULTS",
+  "actual": {
+    "native_first_exit": 0,
+    "stored_review_first_exit": 0,
+    "native_counts": {
+      "rollout": 32,
+      "step": 140,
+      "transaction": 88
+    },
+    "records": 308,
+    "native_wall_seconds_instrumented": 2.5630000000237487,
+    "input_pins": 350,
+    "native_input_bytes_unchanged": true,
+    "only_new_role": "PathwiseReuse",
+    "main_tasks": 20,
+    "successes": 12,
+    "main_mean_return": 0.10799999999999998,
+    "all_main_RLI_raw_episode_match_both_recorded_controls": true,
+    "new_cost": {
+      "arm": "PathwiseReuse",
+      "main_tasks": 20,
+      "private_tasks": 12,
+      "rollout": 32,
+      "step": 140,
+      "transaction": 84,
+      "shared4TX_excluded": true
+    },
+    "recorded_control_costs": [
+      {
+        "arm": "FreshDiscovery",
+        "main_tasks": 20,
+        "private_tasks": 20,
+        "rollout": 40,
+        "step": 160,
+        "transaction": 104,
+        "shared4TX_excluded": true
+      },
+      {
+        "arm": "ProgramMemory",
+        "main_tasks": 20,
+        "private_tasks": 16,
+        "rollout": 36,
+        "step": 150,
+        "transaction": 94,
+        "shared4TX_excluded": true
+      }
+    ],
+    "private_saved_vs_original": 8,
+    "private_saved_fraction_vs_original": 0.4,
+    "private_saved_vs_memory": 4,
+    "four_reuse_decisions": [
+      true,
+      true,
+      true,
+      true
+    ],
+    "source_episode_full_input_equal": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "changed_consumed_command_proof_rejected": true,
+    "negative_plan_native_executions": 0,
+    "native_ordinary_updates": 32,
+    "external_ordinary_updates": 4,
+    "issued_observations": 12,
+    "consumed_observations": 12,
+    "main_feedback_TX": 4,
+    "main_feedback_addresses": 8,
+    "checkpoint_TX": 3,
+    "fresh_source_TX": 1,
+    "fresh_source_edits": 13,
+    "matched_common_learner_source_pins": 102,
+    "historical_native_checker_bank_reruns": 0,
+    "new_keys_RNG_DP_calibration_collection": 0,
+    "automation_changes": 0
+  },
+  "interpretation": "V155 online20to16 saving is real but is not evidence that a learned query template is necessary: current same-command outcome reuse achieves12 without that template. Ordinary feedback learning retained. New deterministic path outcome criterion explicitly differs from V155 full literal-input identity; no native coordinate/handle equivalence claim.",
+  "scope": "One new deterministic informed finite role vs exact frozen recorded controls, not fresh scientific N/fullXi/B1/F1 qualification, general planner or wholeV04 completion",
+  "artifacts": [
+    {
+      "path": "experiments/v04r/current_path_reuse_v156/contract.json",
+      "bytes": 7295,
+      "sha256": "f252e0fd8c100e5e2900c2b59da57d7754c33a9b3914118c14b7b28c956a00af"
+    },
+    {
+      "path": "experiments/v04r/current_path_reuse_v156/path_agent.py",
+      "bytes": 5622,
+      "sha256": "9a77992eed63ac8e8d813050cc8fff2d129f3d6f2acaf0bd1ddc399541e221a5"
+    },
+    {
+      "path": "experiments/v04r/current_path_reuse_v156/path_equivalence.py",
+      "bytes": 3752,
+      "sha256": "0686544be2a87a5cb3b6565c71f8bccd46a944e92cf85f4046da9e105d28256b"
+    },
+    {
+      "path": "experiments/v04r/current_path_reuse_v156/workload.py",
+      "bytes": 8900,
+      "sha256": "fc8d88b3f6fca36e342c975162398f9d9194c1703efa7d3e57f47f869553a348"
+    },
+    {
+      "path": "experiments/v04r/current_path_reuse_v156/execute.py",
+      "bytes": 4441,
+      "sha256": "0d3e984aed8fbf188934ff6919bd7d477c82add2f3c74c66c08cd13a3ea51ea5"
+    },
+    {
+      "path": "experiments/v04r/current_path_reuse_v156/audit_stored.py",
+      "bytes": 40789,
+      "sha256": "91aa48d7e11502f095ef27d9ccba804512d6081da03eaf482ac256b093351a0c"
+    },
+    {
+      "path": "experiments/v04r/current_path_reuse_v156/evidence/claim.json",
+      "bytes": 45431,
+      "sha256": "26c60629ba59eb1d8e06d3332ac13dd4e5eb78c7073e5e5ae43137d6c0ce563b"
+    },
+    {
+      "path": "experiments/v04r/current_path_reuse_v156/evidence/exit.json",
+      "bytes": 45569,
+      "sha256": "b06c1a3fd97f0e4cd9e49a2b592b9fe85185f51ce61a08759b24beb8ada67c6b"
+    },
+    {
+      "path": "experiments/v04r/current_path_reuse_v156/evidence/raw.jsonl",
+      "bytes": 1373120,
+      "sha256": "72597a6d6bc377936a5dcf0dc2ac322a085aab68e40a1039b8660fc29f3bb610"
+    },
+    {
+      "path": "experiments/v04r/current_path_reuse_v156/audit_process_exit.json",
+      "bytes": 41,
+      "sha256": "2d542270094b4386662714961f173cd557ff986f1fd9b53b37d3c802589e58c3"
+    },
+    {
+      "path": "experiments/v04r/current_path_reuse_v156/stored_audit_result.json",
+      "bytes": 61565,
+      "sha256": "139674fc4f63b7718238a6ef51f40980dc2761e68ca68b4ec6ad1cb34900ce48"
+    },
+    {
+      "path": "experiments/v04r/current_path_reuse_v156/result.md",
+      "bytes": 6129,
+      "sha256": "7a0798ab8e426c2474edc9b8d8c652d44eb3d4830a62a63afd45c35432613d4a"
+    }
+  ],
+  "qualification": false
+}

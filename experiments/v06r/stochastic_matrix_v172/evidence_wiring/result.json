@@ -1,0 +1,357 @@
+{
+  "streams": [
+    {
+      "arm": "RL-RP",
+      "trained": [
+        "SUCCESS",
+        "COLLISION"
+      ],
+      "bank": {
+        "checkpoint": 2,
+        "uids": [
+          3,
+          4
+        ],
+        "episodes": 2,
+        "successes": 2,
+        "steps": 2,
+        "mean_success": 1.0,
+        "program": [
+          1
+        ],
+        "frozen_state_sha256": "398fbb605560c4d9a68449222626d0c852a5d38030b3bc4e14d6080427eb3efa",
+        "train_state_sha256_after": "398fbb605560c4d9a68449222626d0c852a5d38030b3bc4e14d6080427eb3efa",
+        "frozen_state_sha256_after": "398fbb605560c4d9a68449222626d0c852a5d38030b3bc4e14d6080427eb3efa",
+        "learning_writes": 0,
+        "policy_ns": 22400,
+        "planning_edge_expansions": 0
+      },
+      "final_learner": {
+        "type": "DirectQLearner",
+        "task": {
+          "rooms": [
+            0
+          ],
+          "goal": 1,
+          "horizon": 12
+        },
+        "failure_reward": -1.0,
+        "q": {
+          "0:1": 0.21875
+        },
+        "buffer": [
+          [
+            1,
+            0,
+            0,
+            1,
+            1.0,
+            1,
+            true
+          ],
+          [
+            2,
+            0,
+            0,
+            1,
+            -1.0,
+            0,
+            true
+          ]
+        ],
+        "history": [
+          1,
+          2
+        ],
+        "ordinary": 2,
+        "replays": 3,
+        "models": 0,
+        "numeric_changes": 5
+      }
+    },
+    {
+      "arm": "RL-R",
+      "trained": [
+        "SUCCESS",
+        "COLLISION"
+      ],
+      "bank": {
+        "checkpoint": 2,
+        "uids": [
+          7,
+          8
+        ],
+        "episodes": 2,
+        "successes": 2,
+        "steps": 2,
+        "mean_success": 1.0,
+        "program": [
+          1
+        ],
+        "frozen_state_sha256": "e1886cc0b967bb81bfa3d52f86ca20fd3bfe6651494e55631bfaebbf99dd61e4",
+        "train_state_sha256_after": "e1886cc0b967bb81bfa3d52f86ca20fd3bfe6651494e55631bfaebbf99dd61e4",
+        "frozen_state_sha256_after": "e1886cc0b967bb81bfa3d52f86ca20fd3bfe6651494e55631bfaebbf99dd61e4",
+        "learning_writes": 0,
+        "policy_ns": 14900,
+        "planning_edge_expansions": 0
+      },
+      "final_learner": {
+        "type": "DirectQLearner",
+        "task": {
+          "rooms": [
+            0
+          ],
+          "goal": 1,
+          "horizon": 12
+        },
+        "failure_reward": 0.0,
+        "q": {
+          "0:1": 0.59375
+        },
+        "buffer": [
+          [
+            5,
+            0,
+            0,
+            1,
+            1.0,
+            1,
+            true
+          ],
+          [
+            6,
+            0,
+            0,
+            1,
+            0.0,
+            0,
+            true
+          ]
+        ],
+        "history": [
+          5,
+          6
+        ],
+        "ordinary": 2,
+        "replays": 3,
+        "models": 0,
+        "numeric_changes": 5
+      }
+    },
+    {
+      "arm": "F0",
+      "trained": [
+        "SUCCESS",
+        "COLLISION"
+      ],
+      "bank": {
+        "checkpoint": 2,
+        "uids": [
+          11,
+          12
+        ],
+        "episodes": 2,
+        "successes": 2,
+        "steps": 2,
+        "mean_success": 1.0,
+        "program": [
+          1
+        ],
+        "frozen_state_sha256": "71e381981b89ac628b898a79764af0f771e53986e7ecf9edb018050c01f340a8",
+        "train_state_sha256_after": "71e381981b89ac628b898a79764af0f771e53986e7ecf9edb018050c01f340a8",
+        "frozen_state_sha256_after": "71e381981b89ac628b898a79764af0f771e53986e7ecf9edb018050c01f340a8",
+        "learning_writes": 0,
+        "policy_ns": 28300,
+        "planning_edge_expansions": 2
+      },
+      "final_learner": {
+        "type": "FactualLearner",
+        "task": {
+          "rooms": [
+            0
+          ],
+          "goal": 1,
+          "horizon": 12
+        },
+        "counts": {
+          "0:1": [
+            1,
+            1
+          ]
+        },
+        "history": [
+          9,
+          10
+        ]
+      }
+    },
+    {
+      "arm": "F-RP",
+      "trained": [
+        "SUCCESS",
+        "COLLISION"
+      ],
+      "bank": {
+        "checkpoint": 2,
+        "uids": [
+          15,
+          16
+        ],
+        "episodes": 2,
+        "successes": 2,
+        "steps": 2,
+        "mean_success": 1.0,
+        "program": [
+          1
+        ],
+        "frozen_state_sha256": "80594a88faf456c0b6ff467613ace0d32517859359496ddce2a7d3f5e866abb5",
+        "train_state_sha256_after": "80594a88faf456c0b6ff467613ace0d32517859359496ddce2a7d3f5e866abb5",
+        "frozen_state_sha256_after": "80594a88faf456c0b6ff467613ace0d32517859359496ddce2a7d3f5e866abb5",
+        "learning_writes": 0,
+        "policy_ns": 15300,
+        "planning_edge_expansions": 0
+      },
+      "final_learner": {
+        "type": "HybridQLearner",
+        "task": {
+          "rooms": [
+            0
+          ],
+          "goal": 1,
+          "horizon": 12
+        },
+        "failure_reward": -1.0,
+        "q": {
+          "0:1": -0.07291666666666666
+        },
+        "buffer": [
+          [
+            13,
+            0,
+            0,
+            1,
+            1.0,
+            1,
+            true
+          ],
+          [
+            14,
+            0,
+            0,
+            1,
+            -1.0,
+            0,
+            true
+          ]
+        ],
+        "history": [
+          13,
+          14
+        ],
+        "ordinary": 2,
+        "replays": 0,
+        "models": 3,
+        "numeric_changes": 5,
+        "counts": {
+          "0:1": [
+            1,
+            1
+          ]
+        }
+      }
+    },
+    {
+      "arm": "F-R",
+      "trained": [
+        "SUCCESS",
+        "COLLISION"
+      ],
+      "bank": {
+        "checkpoint": 2,
+        "uids": [
+          19,
+          20
+        ],
+        "episodes": 2,
+        "successes": 2,
+        "steps": 2,
+        "mean_success": 1.0,
+        "program": [
+          1
+        ],
+        "frozen_state_sha256": "0148ab80531ef30c8343c7652f5199cedf01b8cedfb9000ccc346855a2d83d0f",
+        "train_state_sha256_after": "0148ab80531ef30c8343c7652f5199cedf01b8cedfb9000ccc346855a2d83d0f",
+        "frozen_state_sha256_after": "0148ab80531ef30c8343c7652f5199cedf01b8cedfb9000ccc346855a2d83d0f",
+        "learning_writes": 0,
+        "policy_ns": 14300,
+        "planning_edge_expansions": 0
+      },
+      "final_learner": {
+        "type": "HybridQLearner",
+        "task": {
+          "rooms": [
+            0
+          ],
+          "goal": 1,
+          "horizon": 12
+        },
+        "failure_reward": 0.0,
+        "q": {
+          "0:1": 0.44791666666666663
+        },
+        "buffer": [
+          [
+            17,
+            0,
+            0,
+            1,
+            1.0,
+            1,
+            true
+          ],
+          [
+            18,
+            0,
+            0,
+            1,
+            0.0,
+            0,
+            true
+          ]
+        ],
+        "history": [
+          17,
+          18
+        ],
+        "ordinary": 2,
+        "replays": 0,
+        "models": 3,
+        "numeric_changes": 5,
+        "counts": {
+          "0:1": [
+            1,
+            1
+          ]
+        }
+      }
+    }
+  ],
+  "counts": {
+    "source_instances": 5,
+    "source_mapping_initializations": 20,
+    "rollouts": 20,
+    "train_rollouts": 10,
+    "steps": 20,
+    "train_steps": 10,
+    "observations_consumed": 10,
+    "history_appends": 10,
+    "ordinary_backups": 8,
+    "replay_backups": 6,
+    "model_backups": 6,
+    "numeric_changes": 20,
+    "fact_count_updates": 6,
+    "planning_edge_expansions": 2,
+    "eval_rollouts": 10,
+    "eval_steps": 10
+  }
+}

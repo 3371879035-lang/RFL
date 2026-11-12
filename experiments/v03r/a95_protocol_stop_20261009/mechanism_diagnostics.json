@@ -1,0 +1,217 @@
+{
+  "schema": "rfl-a95-grid-stop-mechanism-v1",
+  "role": "DESCRIPTIVE_NATIVE_RESULT_EXTRACTION_NOT_NEW_EXPERIMENT_OR_ENDPOINT_SEARCH",
+  "status": "NO_ADMISSIBLE_GRID",
+  "source_native_result": "experiments/v03r/a95_measurement/f1_result.json",
+  "source_native_result_sha256": "d33d3a86a0b0f56f7a65fd26067c4896de6c9e2f37902386944004f265ee9d77",
+  "sources_digest": "4d8a4bc3a0afc2c0335decafa559af44e2cd9028ccd3c4776189fc8c11dffd79",
+  "registered_grid_error_limit": 0.05,
+  "frozen_metric": "max over the original 32 seeds of max(abs(restricted_time_sparse-restricted_time_dense)/T, abs(DeficitAUC_sparse-DeficitAUC_dense))",
+  "dense_comparison_axis": "episodes 0..T on the master bank 1024; T=465",
+  "acquisition_axis": "episodes 0..576; all 32*577 original records used for per-seed design summaries",
+  "native_diagnostics": {
+    "f_T": {
+      "T": 465,
+      "censored": 0,
+      "healthy_settling_times": [
+        269,
+        354,
+        234,
+        349,
+        195,
+        454,
+        376,
+        387,
+        258,
+        276,
+        263,
+        536,
+        264,
+        260,
+        318,
+        204,
+        271,
+        388,
+        332,
+        210,
+        229,
+        361,
+        318,
+        266,
+        205,
+        305,
+        371,
+        261,
+        226,
+        209,
+        212,
+        197
+      ],
+      "late_anchors": [
+        387,
+        426,
+        465
+      ],
+      "measurement_profile": "v03r-a95-healthy-settling-retention-v1",
+      "n": 32,
+      "quantile": 387,
+      "rank": 29,
+      "reason": null,
+      "status": "ADMISSIBLE",
+      "uncensored": 32
+    },
+    "f_N": {
+      "N": 100,
+      "metrics": [
+        {
+          "N": 100,
+          "metric": 0.009647894447614188
+        },
+        {
+          "N": 256,
+          "metric": 0.06253720520914972
+        },
+        {
+          "N": 512,
+          "metric": 0.017925761814380447
+        },
+        {
+          "N": 1024,
+          "metric": 0
+        }
+      ],
+      "status": "ADMISSIBLE"
+    },
+    "f_C": {
+      "status": "ADMISSIBLE",
+      "refinement": "eligible_all",
+      "collateral_bound": 0.041447131280198696,
+      "spread_population": 259561088,
+      "metrics": [
+        {
+          "metric": 1,
+          "refinement": "eligible_all"
+        },
+        {
+          "metric": 1.765263207432228,
+          "refinement": "eligible_phase_even"
+        },
+        {
+          "metric": 1.7214111074229865,
+          "refinement": "eligible_phase_odd"
+        },
+        {
+          "metric": 1.4390190867446753,
+          "refinement": "eligible_cause_rank_lower"
+        },
+        {
+          "metric": 1.414213562373111,
+          "refinement": "eligible_error_absent"
+        },
+        {
+          "metric": 1.0266005825038294,
+          "refinement": "eligible_base_option_nonzero"
+        }
+      ]
+    },
+    "f_G": {
+      "candidates": [
+        {
+          "admissible": false,
+          "grid": [
+            0,
+            1,
+            5,
+            20,
+            100,
+            200,
+            387,
+            426,
+            465
+          ],
+          "metric": 0.3978494623655914,
+          "template": 1
+        },
+        {
+          "admissible": false,
+          "grid": [
+            0,
+            1,
+            2,
+            5,
+            10,
+            20,
+            50,
+            100,
+            150,
+            200,
+            300,
+            387,
+            426,
+            465
+          ],
+          "metric": 0.210752688172043,
+          "template": 2
+        },
+        {
+          "admissible": false,
+          "grid": [
+            0,
+            1,
+            2,
+            3,
+            5,
+            7,
+            10,
+            15,
+            20,
+            35,
+            50,
+            75,
+            100,
+            125,
+            150,
+            175,
+            200,
+            250,
+            300,
+            382,
+            387,
+            426,
+            465
+          ],
+          "metric": 0.1032258064516129,
+          "template": 3
+        }
+      ],
+      "grid": null,
+      "measurement_profile": "v03r-a95-healthy-settling-retention-v1",
+      "status": "NO_ADMISSIBLE_GRID"
+    },
+    "f_R": null
+  },
+  "candidate_checkpoint_counts": [
+    9,
+    14,
+    23
+  ],
+  "mechanism_inference": "The ratified healthy-settling event is identifiable, but none of the three registered sparse grids preserves the dense utility endpoints within the unchanged worst-seed 0.05 bound. The additional late anchors did not make these templates admissible.",
+  "inference_limit": "The native aggregate is the maximum of two error components. This closure does not identify a particular worst seed or component, fit an alternative grid, query alternative windows, or infer a treatment effect.",
+  "partial_quantities_locked": false,
+  "retention_state": "NOT_EVALUATED_BECAUSE_F_G_FAILED; neither PASS nor FAIL",
+  "spearman_state": "NOT_EVALUATED; diagnostic-only amendment is not evidence of Retention success",
+  "scientific_claim": "No admissible complete design under the current freeze; RFL treatment efficacy, practical value, equivalence and zero harm are unmeasured.",
+  "old_rev5_result": "NO_ADMISSIBLE_RETENTION, closed and unchanged; not relabelled as A95 evidence",
+  "protocol_disposition": "CLOSE_CURRENT_A95_FREEZE_NO_AUTOMATIC_RETRY",
+  "prohibited_followups": [
+    "cap expansion",
+    "threshold relaxation",
+    "initializer changes",
+    "partial F1 lock",
+    "new seed selection",
+    "alternative grid search to pursue PASS",
+    "B2 treatment or confirmatory acquisition without a new independently frozen approved protocol"
+  ],
+  "treatment_or_confirmatory_collected": false,
+  "research_complete": false
+}

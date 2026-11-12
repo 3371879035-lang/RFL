@@ -1,0 +1,624 @@
+{
+  "schema": "V161_LEARNED_QUERY_GATE_ACTUAL_RESULT",
+  "parent_commit": "d4ddeaad500e41abe73bb9ef2e4f307f8eb25e0c",
+  "status": "FIRST_NATIVE_AND_STDLIB_REVIEW_EXIT0_BENEFICIAL_ZERO_SKIP_AND_ACTUAL_FALSE_ZERO_COUNTEREXAMPLE_RETAINED_NOT_DEFAULT",
+  "native_first_exit": 0,
+  "stored_review_first_exit": 0,
+  "native_wall_seconds_instrumented": 3.5780000000377186,
+  "review_wall_seconds": 0.35899999999674037,
+  "native_counts": {
+    "public_geometry": 395,
+    "query_features": 7,
+    "query_model_fit": 1,
+    "rollout": 79,
+    "step": 466,
+    "transaction": 122
+  },
+  "records": 576,
+  "input_pins": 358,
+  "input_before_after_exact": true,
+  "summaries": [
+    {
+      "arm": "TaskTD",
+      "main_tasks": 24,
+      "successes": 18,
+      "outcomes": [
+        "TRAP",
+        "SUCCESS",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "external_updates": 0,
+      "diagnostic_account": {
+        "algorithm": "TaskTD",
+        "base_queries": 0,
+        "expanded_queries": 0,
+        "trial_task_budget": 0,
+        "trial_tasks_used": 0
+      },
+      "returns": [
+        -1.06,
+        0.86,
+        -1.06,
+        0.86,
+        0.86,
+        0.86,
+        -1.08,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.08,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        -1.08,
+        0.86,
+        0.86,
+        -1.08,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.3808333333333333
+    },
+    {
+      "arm": "AlwaysUnified",
+      "main_tasks": 24,
+      "successes": 20,
+      "outcomes": [
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "external_updates": 4,
+      "diagnostic_account": {
+        "algorithm": "AlwaysUnified",
+        "base_queries": 4,
+        "expanded_queries": 0,
+        "trial_task_budget": 6,
+        "trial_tasks_used": 4
+      },
+      "returns": [
+        -1.06,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.08,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.08,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        -1.08,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.5416666666666666
+    },
+    {
+      "arm": "ValueGated",
+      "main_tasks": 24,
+      "successes": 19,
+      "outcomes": [
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "external_updates": 3,
+      "diagnostic_account": {
+        "algorithm": "ValueGated",
+        "base_queries": 3,
+        "expanded_queries": 0,
+        "trial_task_budget": 6,
+        "trial_tasks_used": 3
+      },
+      "returns": [
+        -1.06,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.08,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.08,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        -1.08,
+        0.86,
+        0.86,
+        -1.08,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.46083333333333326
+    }
+  ],
+  "online_costs": [
+    {
+      "arm": "TaskTD",
+      "main_tasks": 24,
+      "private_tasks": 0,
+      "rollout": 24,
+      "step": 143,
+      "transaction": 33,
+      "shared4TX_excluded": true,
+      "additional_public_geometry_transitions": 0
+    },
+    {
+      "arm": "AlwaysUnified",
+      "main_tasks": 24,
+      "private_tasks": 4,
+      "rollout": 28,
+      "step": 165,
+      "transaction": 44,
+      "shared4TX_excluded": true,
+      "additional_public_geometry_transitions": 191
+    },
+    {
+      "arm": "ValueGated",
+      "main_tasks": 24,
+      "private_tasks": 3,
+      "rollout": 27,
+      "step": 158,
+      "transaction": 41,
+      "shared4TX_excluded": true,
+      "additional_public_geometry_transitions": 204
+    }
+  ],
+  "phase_results": [
+    {
+      "arm": "TaskTD",
+      "stage": "A_new_competitive_entry",
+      "successes": 4,
+      "returns": [
+        -1.06,
+        0.86,
+        -1.06,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.21999999999999997,
+      "private_tasks": 0
+    },
+    {
+      "arm": "TaskTD",
+      "stage": "B_new_uncompetitive_entry",
+      "successes": 5,
+      "returns": [
+        -1.08,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.5366666666666666,
+      "private_tasks": 0
+    },
+    {
+      "arm": "TaskTD",
+      "stage": "C_unsupported_prefix_override",
+      "successes": 5,
+      "returns": [
+        -1.08,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        0.88
+      ],
+      "mean_return": 0.5533333333333333,
+      "private_tasks": 0
+    },
+    {
+      "arm": "TaskTD",
+      "stage": "D_feature_supported_but_ownedD_shift",
+      "successes": 4,
+      "returns": [
+        -1.08,
+        0.86,
+        0.86,
+        -1.08,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.2133333333333333,
+      "private_tasks": 0
+    },
+    {
+      "arm": "AlwaysUnified",
+      "stage": "A_new_competitive_entry",
+      "successes": 5,
+      "returns": [
+        -1.06,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.5399999999999999,
+      "private_tasks": 1
+    },
+    {
+      "arm": "AlwaysUnified",
+      "stage": "B_new_uncompetitive_entry",
+      "successes": 5,
+      "returns": [
+        -1.08,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.5366666666666666,
+      "private_tasks": 1
+    },
+    {
+      "arm": "AlwaysUnified",
+      "stage": "C_unsupported_prefix_override",
+      "successes": 5,
+      "returns": [
+        -1.08,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        0.88
+      ],
+      "mean_return": 0.5533333333333333,
+      "private_tasks": 1
+    },
+    {
+      "arm": "AlwaysUnified",
+      "stage": "D_feature_supported_but_ownedD_shift",
+      "successes": 5,
+      "returns": [
+        -1.08,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.5366666666666666,
+      "private_tasks": 1
+    },
+    {
+      "arm": "ValueGated",
+      "stage": "A_new_competitive_entry",
+      "successes": 5,
+      "returns": [
+        -1.06,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.5399999999999999,
+      "private_tasks": 1
+    },
+    {
+      "arm": "ValueGated",
+      "stage": "B_new_uncompetitive_entry",
+      "successes": 5,
+      "returns": [
+        -1.08,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.5366666666666666,
+      "private_tasks": 0
+    },
+    {
+      "arm": "ValueGated",
+      "stage": "C_unsupported_prefix_override",
+      "successes": 5,
+      "returns": [
+        -1.08,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        0.88
+      ],
+      "mean_return": 0.5533333333333333,
+      "private_tasks": 1
+    },
+    {
+      "arm": "ValueGated",
+      "stage": "D_feature_supported_but_ownedD_shift",
+      "successes": 4,
+      "returns": [
+        -1.08,
+        0.86,
+        0.86,
+        -1.08,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.2133333333333333,
+      "private_tasks": 1
+    }
+  ],
+  "query_decisions": [
+    {
+      "arm": "ValueGated",
+      "epoch": 0,
+      "stage": "A_new_competitive_entry",
+      "x": [
+        0.0,
+        0.0
+      ],
+      "prediction": 1.92,
+      "decision": "supported_probe"
+    },
+    {
+      "arm": "ValueGated",
+      "epoch": 6,
+      "stage": "B_new_uncompetitive_entry",
+      "x": [
+        0.040000000000000036,
+        0.0
+      ],
+      "prediction": 0.0,
+      "decision": "supported_skip"
+    },
+    {
+      "arm": "ValueGated",
+      "epoch": 12,
+      "stage": "C_unsupported_prefix_override",
+      "x": [
+        0.020000000000000018,
+        -0.020000000000000018
+      ],
+      "prediction": null,
+      "decision": "unknown_probe"
+    },
+    {
+      "arm": "ValueGated",
+      "epoch": 18,
+      "stage": "D_feature_supported_but_ownedD_shift",
+      "x": [
+        0.040000000000000036,
+        0.0
+      ],
+      "prediction": 0.0,
+      "decision": "supported_skip"
+    },
+    {
+      "arm": "ValueGated",
+      "epoch": 21,
+      "stage": "D_feature_supported_but_ownedD_shift",
+      "x": [
+        0.96,
+        0.0050000000000000044
+      ],
+      "prediction": null,
+      "decision": "unknown_probe"
+    }
+  ],
+  "skip_comparisons": [
+    {
+      "epoch": 6,
+      "stage": "B_new_uncompetitive_entry",
+      "first_factual_equal": true,
+      "following_AlwaysUnified_returns": [
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "following_ValueGated_returns": [
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "Always_minus_Gated_future_sum": 0.0
+    },
+    {
+      "epoch": 18,
+      "stage": "D_feature_supported_but_ownedD_shift",
+      "first_factual_equal": true,
+      "following_AlwaysUnified_returns": [
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "following_ValueGated_returns": [
+        0.86,
+        0.86,
+        -1.08,
+        0.86,
+        0.86
+      ],
+      "Always_minus_Gated_future_sum": 1.94
+    }
+  ],
+  "simple_sums_not_adopted_utility": [
+    {
+      "arm": "TaskTD",
+      "main_successes": 18,
+      "main_return": 9.139999999999999,
+      "all_interaction_return": 9.139999999999999,
+      "all_interaction_failures": 6,
+      "ordinary_policy_TX": 9,
+      "external_policy_TX": 0
+    },
+    {
+      "arm": "AlwaysUnified",
+      "main_successes": 20,
+      "main_return": 13.0,
+      "all_interaction_return": 8.7,
+      "all_interaction_failures": 8,
+      "ordinary_policy_TX": 10,
+      "external_policy_TX": 2
+    },
+    {
+      "arm": "ValueGated",
+      "main_successes": 19,
+      "main_return": 11.059999999999999,
+      "all_interaction_return": 7.839999999999999,
+      "all_interaction_failures": 8,
+      "ordinary_policy_TX": 10,
+      "external_policy_TX": 1
+    }
+  ],
+  "native_ordinary_updates": 79,
+  "ordinary_policy_TX": 29,
+  "external_ordinary_updates": 7,
+  "external_policy_TX": 3,
+  "issued_observations": 7,
+  "consumed_observations": 7,
+  "shared_checkpoint_TX": 3,
+  "shared_install_TX": 1,
+  "source_edits": 2,
+  "historical_training_points": 2,
+  "historical_label_interactions_reused_not_free": 26,
+  "trained_model": {
+    "left_mean": {
+      "binary64_hex": "0x1.eb851eb851eb8p+0"
+    },
+    "left_n": 1,
+    "n": 2,
+    "right_mean": {
+      "binary64_hex": "0x0.0p+0"
+    },
+    "right_n": 1,
+    "split_feature": 0,
+    "support": [
+      [
+        {
+          "binary64_hex": "0x0.0p+0"
+        },
+        {
+          "binary64_hex": "0x1.47ae147ae1480p-5"
+        }
+      ],
+      [
+        {
+          "binary64_hex": "0x0.0p+0"
+        },
+        {
+          "binary64_hex": "0x0.0p+0"
+        }
+      ]
+    ],
+    "threshold": {
+      "binary64_hex": "0x1.47ae147ae1480p-6"
+    }
+  },
+  "decisions": {
+    "adopt_value_gate_as_default": false,
+    "retain_v160_unified_agent_as_usable_research_entry": true,
+    "interpretation": "Small historical numeric-Q feature support is not ordinary-policy/context sufficiency. B skips one unhelpful probe without future-main loss. D presents identical numeric features but different actor-owned D: skipped actual alternate experience leaves D uncorrected until later main failure. C unknown remains genuinely tested; all7 private outcomes are TRAP and are accepted ordinary learning evidence.",
+    "next_necessary_hypothesis": "Represent actor-owned ordinary policy along proposed route and its learning consequences before transferring historical no-benefit; test on a new prospective workload, do not rerun/refit this frozen stream into PASS."
+  },
+  "limits": [
+    "Two descriptive retrospective training labels and informed fixed holdout/stress contexts, not independent seed population or calibrated causal effect.",
+    "Planned route and two features hand-engineered, one numeric stump is learned; not autonomous discovery of representation/question grammar or general world model.",
+    "Same-price main+private raw-return sum is descriptive only; both investigative arms lower than TaskTD on this workload, so main improvement is not net-resource optimality.",
+    "Main all literalMAX coins: original epsilon threshold unchanged, no randomized-keyed stream qualification or policy-frequency claim.",
+    "No extra punishment, no punishment ablation; all roles ordinarily learn, success has zero diagnosis, protectedI/fullR+L preserved.",
+    "v161 selected no controller mismatch; integrated execution branch is exact frozen reuse, not requalified by this event-gate study."
+  ],
+  "new_keys_RNG_keyderive_DP_calibration_formalcollection": 0,
+  "old_checker_native_bank_reruns": 0,
+  "automation_changes": 0,
+  "qualification": false
+}

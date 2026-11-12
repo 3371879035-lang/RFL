@@ -1,0 +1,189 @@
+{
+  "round": 2,
+  "groups": {
+    "dense-learned": {
+      "group": "dense-learned",
+      "round": 2,
+      "steps": 8192,
+      "updates": 512,
+      "counts": {
+        "real_trials": 8,
+        "trial_steps": 16,
+        "student_tests": 2,
+        "student_pass": 1,
+        "sleep_updates": 16,
+        "ordinary_updates": 496,
+        "reward_packets": 8192,
+        "fact_labels": 32757,
+        "actual_return_labels": 8188,
+        "effect_pairs": 2,
+        "effect_negative_or_zero": 1,
+        "actual_steps": 8192,
+        "ordinary_steps": 8128,
+        "gate_steps": 48,
+        "actual_episodes": 1370
+      },
+      "before": "71035ffc88b2cb412dc47f7164d90842c943d3edb9ba9e7541deedea15ebfa60",
+      "after": "f1a35c37eee97289e1a3a9ab4055859653d4b11c3207b8e2ff2161a1a352c618",
+      "replay": 8192,
+      "memory": 8192,
+      "events": 258,
+      "last_losses": [
+        {
+          "kind": "optimizer",
+          "stage": "ordinary",
+          "update": 508,
+          "loss": 0.016459045931696892,
+          "parts": {
+            "td": 0.003882837947458029,
+            "factual": 0.007231006398797035,
+            "actual_return": 0.053439538925886154,
+            "effect": 1.245442035724409e-05
+          }
+        },
+        {
+          "kind": "optimizer",
+          "stage": "ordinary",
+          "update": 509,
+          "loss": 0.008087322115898132,
+          "parts": {
+            "td": 0.002800077199935913,
+            "factual": 0.0042030224576592445,
+            "actual_return": 0.010748602449893951,
+            "effect": 9.363007120555267e-05
+          }
+        },
+        {
+          "kind": "optimizer",
+          "stage": "ordinary",
+          "update": 510,
+          "loss": 0.012714681215584278,
+          "parts": {
+            "td": 0.003457216313108802,
+            "factual": 0.006239002570509911,
+            "actual_return": 0.030002372339367867,
+            "effect": 0.00018225039821118116
+          }
+        },
+        {
+          "kind": "optimizer",
+          "stage": "ordinary",
+          "update": 511,
+          "loss": 0.06290388107299805,
+          "parts": {
+            "td": 0.04416019842028618,
+            "factual": 0.013513588346540928,
+            "actual_return": 0.05205503851175308,
+            "effect": 0.0002459244569763541
+          }
+        },
+        {
+          "kind": "optimizer",
+          "stage": "ordinary",
+          "update": 512,
+          "loss": 0.03530798852443695,
+          "parts": {
+            "td": 0.02007591910660267,
+            "factual": 0.009968521073460579,
+            "actual_return": 0.052212998270988464,
+            "effect": 0.0004224810400046408
+          }
+        }
+      ]
+    },
+    "dense-random": {
+      "group": "dense-random",
+      "round": 2,
+      "steps": 8192,
+      "updates": 512,
+      "counts": {
+        "real_trials": 8,
+        "trial_steps": 28,
+        "student_tests": 2,
+        "student_pass": 1,
+        "sleep_updates": 16,
+        "ordinary_updates": 496,
+        "reward_packets": 8192,
+        "fact_labels": 32757,
+        "actual_return_labels": 8188,
+        "effect_pairs": 2,
+        "effect_negative_or_zero": 2,
+        "actual_steps": 8192,
+        "ordinary_steps": 8116,
+        "gate_steps": 48,
+        "actual_episodes": 1368
+      },
+      "before": "876f7659d04e4fe46d1a7943b402c1fee61509c11803a618182d0ed8fcd2707d",
+      "after": "3fa3bccf573f410ab5113d2867b5e29be3833be9c95adca860fa4cdaeee59f7a",
+      "replay": 8192,
+      "memory": 8192,
+      "events": 258,
+      "last_losses": [
+        {
+          "kind": "optimizer",
+          "stage": "ordinary",
+          "update": 508,
+          "loss": 0.016843309625983238,
+          "parts": {
+            "td": 0.0014206175692379475,
+            "factual": 0.010151584632694721,
+            "actual_return": 0.052710093557834625,
+            "effect": 9.758027772477362e-07
+          }
+        },
+        {
+          "kind": "optimizer",
+          "stage": "ordinary",
+          "update": 509,
+          "loss": 0.005611307919025421,
+          "parts": {
+            "td": 0.0010712287621572614,
+            "factual": 0.0038672955706715584,
+            "actual_return": 0.006612029857933521,
+            "effect": 0.00011580313002923504
+          }
+        },
+        {
+          "kind": "optimizer",
+          "stage": "ordinary",
+          "update": 510,
+          "loss": 0.048289649188518524,
+          "parts": {
+            "td": 0.02408710867166519,
+            "factual": 0.01417197473347187,
+            "actual_return": 0.10030555725097656,
+            "effect": 1.221447973875911e-07
+          }
+        },
+        {
+          "kind": "optimizer",
+          "stage": "ordinary",
+          "update": 511,
+          "loss": 0.03816185146570206,
+          "parts": {
+            "td": 0.02699856273829937,
+            "factual": 0.008096317760646343,
+            "actual_return": 0.030610954388976097,
+            "effect": 5.875472561456263e-05
+          }
+        },
+        {
+          "kind": "optimizer",
+          "stage": "ordinary",
+          "update": 512,
+          "loss": 0.04448568820953369,
+          "parts": {
+            "td": 0.02411774918437004,
+            "factual": 0.01290943007916212,
+            "actual_return": 0.07458508759737015,
+            "effect": 8.358905567718011e-09
+          }
+        }
+      ]
+    }
+  },
+  "training_seconds": {
+    "dense-random": 49.28736430000572,
+    "dense-learned": 55.33502790000057
+  }
+}

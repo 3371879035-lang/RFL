@@ -1,0 +1,17 @@
+{
+  "schema": "V04_LOCAL_FAILURE_ONLY_ORCHESTRATION_CONTRACT",
+  "scope": "Frozen-list-free engineering seam; no V0.3 source or production API modification.",
+  "terminal_routes": {
+    "SUCCESS": "ordinary_update_only; zero diagnostic calls, queries and writes",
+    "COLLISION": "ordinary_update_then_bounded_diagnosis_or_keep",
+    "TRAP": "ordinary_update_then_bounded_diagnosis_or_keep",
+    "TIMEOUT": "ordinary_update_then_bounded_diagnosis_or_keep",
+    "missing_nonterminal_unknown": "ProtocolError before ordinary or diagnostic call"
+  },
+  "truth_boundary": "Routing reads only the task-visible terminal string; evaluator truth/configured faults are audit-only, absent from LearnerObservation and never route selection inputs. Diagnosis receives an immutable remaining-budget view; only the orchestrator records spend.",
+  "new_keys": 0,
+  "formal_collection": false,
+  "learner_feedback_value_selection": false,
+  "automatic_retry": false,
+  "legacy_v03_source_modified": false
+}

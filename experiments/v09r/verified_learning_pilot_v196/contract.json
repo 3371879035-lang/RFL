@@ -1,0 +1,76 @@
+{
+  "version": "V196 real-intervention / behavior learning / teacher-student adoption pilot",
+  "authority": "Latest direct user: 可以，那你执行吧; implement V195 as a bounded four-group pilot.",
+  "parent_git": "18c1f0247bdff5b338346155e410e97b32907818",
+  "created_utc": "2026-11-08T15:54:37.357535+00:00",
+  "matrix": {
+    "seeds": [
+      93001,
+      93002,
+      93003,
+      93004
+    ],
+    "arms": [
+      "RL-RP",
+      "F0",
+      "F-RP",
+      "F-R"
+    ],
+    "cycles": 2
+  },
+  "fixed_inputs": {
+    "source": "Genuine V190 base checkpoints at 147456 steps, same sources as V191, no old evaluation rerun",
+    "sources_per_cycle": 8,
+    "max_cases": 2,
+    "case_rule": "First two captured source episodes ending by step96 with a stationary action in last8; select earliest such action in last8. No effect-based case changes. Missing cases retained.",
+    "source_episode_start": 1960000,
+    "legal_alternatives": "original action and normal directional rotations +2/-2, distinct legal only; full suffix until actual terminal",
+    "probe_episodes": 16,
+    "student_wake_episodes": 8,
+    "student_gate_episodes": 16,
+    "report_episodes": 64
+  },
+  "learning": {
+    "shared_data": "All groups/ordinary reference receive all actually executed source and trial data; counterfactual prefixes explicitly reused, not counted as fresh steps. RL uses only reward/TD labels, no preference loss or factual heads. F0 no reward packet or Q.",
+    "ordinary_reference_updates": 32,
+    "teacher_candidates": {
+      "weak": 0.25,
+      "strong": 1.0
+    },
+    "teacher_updates_each": 16,
+    "sleep_updates": 16,
+    "retain": "Every optimizer update includes original ordinary learner loss on real old replay plus new executed data.",
+    "teacher_selection": "Strictly higher mean official task score than ordinary reference on fresh train-map development episodes. Cycle1 both proposals executed. Cycle2 Dream-selected order, stop after first qualifying teacher.",
+    "sleep": "Only task-validated teacher; student starts from ordinary reference; real student wake trajectories with same-observation teacher shadow; legal full-action KL T=0.25 plus real old/new ordinary losses.",
+    "student_adoption": "Strictly greater mean score than ordinary reference AND captured count no greater on a separate16episode train-map gate. Otherwise retain ordinary reference. Final64report never consulted.",
+    "uncertainty": "16episode selection is noisy and not a scientific significance test; four existing trained seeds, not fresh-from-scratch N.",
+    "matched_sleep_reference": "Whenever a teacher qualifies, ordinary reference receives the SAME student-wake factual data and16 additional ordinary updates; student receives16 ordinary+behavior-KL updates. Data and update count match for the Sleep comparison.",
+    "data_store": "New real source/trial/student trajectories stored separately; frozen historical Replay remains read-only. Offline batches include old normal learner loss + new actual labels, fixed target network per fit. No fabricated old replay UIDs; exact source prefixes reused as history, not native steps."
+  },
+  "dream": {
+    "controllers": [
+      "weak_first",
+      "strong_first"
+    ],
+    "history": "Executed parent->candidate networks with actual task-probe outcomes and costs; unknown children unavailable. Compare which recorded child beats reference under one-proposal historical budget; incumbent retained on ties. Cycle2 uses selected order. Not original LLM code-rewrite replication."
+  },
+  "cost_scope": "Component/closed-loop pilot. All source/trial/probe/student/gate/report steps and every optimizer update (including rejected candidates and ordinary reference) counted. Shared source/trial data and reference are charged explicitly as shared work, not free learner improvement. Optimizer/validation overhead is NOT claimed matched to ordinary-only production cost; cannot infer net efficiency or isolated Dream/Sleep benefit.",
+  "budget": {
+    "workers": 4,
+    "max_environment_steps": 1500000,
+    "wall_seconds": 1800,
+    "ram_bytes": 17179869184,
+    "artifact_bytes": 2147483648
+  },
+  "prohibitions": [
+    "no old native/checker rerun",
+    "no automatic retry",
+    "no original evidence modification",
+    "no cause probability network",
+    "no large training restart",
+    "no automation restart",
+    "no final-test selection",
+    "no guarantee of positive effects"
+  ],
+  "evaluation_scope": "Training-map source/probes/gates only; final-report fresh seen/heldout-map episodes after adoption decisions. Teacher, student and ordinary reference compared on same final64 bank when applicable."
+}

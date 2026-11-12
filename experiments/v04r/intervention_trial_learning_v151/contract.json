@@ -1,0 +1,77 @@
+{
+  "schema": "V151_PROSPECTIVE_INTERVENTION_TRIAL_ORDINARY_LEARNING",
+  "date_asia_shanghai": "2026-11-07",
+  "parent_commit": "59938277dafa82847283fcd471ec9ef02ff88f2b",
+  "question": "Can actually issued candidate-intervention trials provide ordinary TD experience under the selected learner mechanism, including failed candidate trials, without copying privateL, training on incompatible keep paths, or paying extra environment tasks?",
+  "reference": {
+    "path": "experiments/v03r/a96_dense/b2_prepare/grammar_catalog_v31/evidence/stdout.log",
+    "sha256": "d0aafb6dc20b1cc0c872ac4c48497d94feb707ffe14448bd1c2f3ddd1bbb467b",
+    "q_digest": "d9078b5b5b823df56f998e8c28eb6a3e388bd3ae216f41a21acdb5202d2ec05a"
+  },
+  "ordinary_checkpoint": {
+    "raw": {
+      "path": "experiments/v04r/learned_relative_transfer_v148/evidence/raw.jsonl",
+      "bytes": 1382529,
+      "sha256": "de3796632d9eb8223053d435af5e1f7eeefbf1f87babd0f7557691d102306fd6"
+    },
+    "exit": {
+      "path": "experiments/v04r/learned_relative_transfer_v148/evidence/exit.json",
+      "bytes": 43758,
+      "sha256": "cf14ca352b6469071c65b493964225502bc801f7c302248d3645ded441612513"
+    },
+    "review": {
+      "path": "experiments/v04r/learned_relative_transfer_v148/stored_audit_result.json",
+      "bytes": 10702,
+      "sha256": "14def5237c7a6744c83b4788fff6d2bbfeeef3aa92c89a967f21dacb1efedade"
+    },
+    "selector": {
+      "tag": "PREPARATION_COMPLETE",
+      "field": "state"
+    },
+    "recorded_completed_tasks": 1,
+    "recorded_external_updates": 0,
+    "type": "Construct existing RecordedOrdinaryCheckpoint as explicit ordinary-state DATA only; exact fullI/R/L materialization by original legal3TX. No old source/pair/receipt/issuedidentity restore and no repeat of finished preparatory rollout."
+  },
+  "test_context": [
+    1,
+    0
+  ],
+  "cases": [
+    "first_failure_then_gain",
+    "late_repair"
+  ],
+  "arms": [
+    "NoTrialLearning",
+    "KeepOnly",
+    "CandidateOnly",
+    "CompatibleBatch"
+  ],
+  "main_tasks_each": 6,
+  "sources": {
+    "first_failure_then_gain": "OneoriginalTX X[START,WAIT4]=RIGHT3 on recordedordinarycheckpoint. NativepersistentTrap((1,2),step0). Actual failuremismatch givescandidateXdelete. Keep/delete2currentordinarytasks each, actualmeanchooses. Candidatefirsttask canstillfail; preserveobservedoutcome.",
+    "late_repair": "OneoriginalTX X[(1,2,t2,k1phi0),UP0]=RIGHT3. No masks. Eachkeep/delete1actualobservedprefix task toconsultlatefactualsite. Actualsingle-taskreturnedvaluechooses; do not call it2futuremean."
+  },
+  "coordinates": "Mainfirstcase allMAX. Latecase maine1 fixedcoins0at0..2/rejectionindices[1,0,0] (WAIT,RIGHT,UP), othersMAX. Futurefirstcaseprivate2MAX; lateprivate1literalobservedprefix fromoldv150compiler. Eacharm same. Q*/alpha1/2/epsilon1/10 unchanged, no RNG/formalXi/adaptive mainexploration.",
+  "new_typed_flow": "NewOwnedTrialObservation+OwnedInterventionSource+InterventionExperienceLoop, not oldNativeTrialObservation. Branchfactory startsfrom actual mainpostTD fullR+L and onlyexecutes originallegitimate visitedControllerSite delete/noop before sourceK. Source issues newnominal observation from actual nativeRolloutTrace/EpisodeAdapter atfirsttaskcomplete; neverfrom serializedbytes. Source cancontinue to2tasks forvalues but onlyfirsttaskobservationeligible. Mainexecuteschosenrepair first, thennewbatchconsumption.",
+  "batch": "NoTrialLearning consumesnone, KeepOnly submitsfirstkeep, CandidateOnly submitsfirstcandidate, CompatibleBatch submitsfirstkeep thenfirstcandidate, independentofreturnedreward. Entireinputbatchprevalidatedagainstsame actual mainpostTD numericorigin andrealissuer/receiver/epoch/plan; consumedonce beforeTD. Compareown effectiveP/Xalong eachactualtrace tocurrentselectedmechanism. RejectincompatiblewithoutTD; acceptcompatible usingexistingordinaryTDfromcurrentL in declaredkeep-then-candidateorder, no mainclockadvance orK/draws. Offpolicyobservedcommands are retained, not privateLcopy or parameteraveraging.",
+  "estimand": "Same actualpaidtrialmenu and correctionobjective inallarms; onlyordinaryingestionvaries. Futurequeryvalues arepre-ingestion estimates, notpost-batchfulllearningcounterfactuals. ReportrealmainR/L/results andallfailedtrials, no mandatoryutilityimprovement. Failedobservation maytrain andsuccessfulone maystillberejected bymechanism.",
+  "once": "Afteractualconsume, oneintentional duplicateinput call mustrejectbeforeanyK/TD/TX, not automaticnativeexperimentretry. No claimofcompletepartial/exception/stochasticworldqualification.",
+  "expected_extent_not_effect_gate": {
+    "main_tasks": 48,
+    "private_tasks": 24,
+    "old_preparation_rollouts": 0,
+    "checkpoint_TX": 3,
+    "freshsource_TX": 2,
+    "freshsource_edits": 2
+  },
+  "budget": {
+    "rollout": 80,
+    "step": 960,
+    "transaction": 230,
+    "raw_bytes": 33554432,
+    "seconds": 150
+  },
+  "capture": "Newfirstexclusivecapture, noautomaticretry. Freezeallnewexecutedsource, preservefailure/partial/zero/adverse. Nooldnative/checker/bankrerun, science/workloadkeys/RNG/keyderive/DP/calibration/formalcollection/automation.",
+  "limits": "Two informed finite cases, fixedrevisedpatch/localX andcandidatevocabulary, notoriginalwholeB1/lawqualification, generalworldcontexttransfer, unbiasedseedinference orpolicy-gradientonpolicyclaim. Newbatchnumericrootsemantics explicit; onlysharedactualexternalenvironmentpercase, no inferredlatentworldinvariance. Historicalpreparation/trialdiscoverynotfree.",
+  "replication_boundary": "Keep/candidate firsttraces may beidentical ifchangedsite notconsulted. Both arepaidactualtasks, not independentinformation orseedN. CandidateOnly isolates onecandidateobservation; Batch canrepeat ordinaryTD oncorrelatedsamecontent. Do not countnewnumericupdateasnewknowledge orrequirepositivefuturegain."
+}

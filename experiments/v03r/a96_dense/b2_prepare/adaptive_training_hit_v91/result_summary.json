@@ -1,0 +1,188 @@
+{
+  "schema": "V03_ADAPTIVE_TRAINING_IMPLEMENTATION_AND_TRUE_HIT_V91_RESULT",
+  "status": "ISOLATED_REVISED_IMPLEMENTATION_FINITE_VERIFICATION_NOT_SCIENTIFIC_QUALIFICATION",
+  "parent_commit": "5aefee1984bc016a9d1e2c085ba05a53e7ca306a",
+  "human_request": "那就解决这些问题啊",
+  "implementation": {
+    "path": "experiments/v03r/a96_dense/b2_prepare/adaptive_training_v90/adaptive_training.py",
+    "bytes": 12068,
+    "sha256": "4e15a9b4e91c0065b0234fe988fc38e97cc284d036255543fc96b4856c34834b",
+    "unchanged_after_both_claims": true
+  },
+  "fixed_interfaces": [
+    "New explicit typed entry combines patch action state and persistent learning values; no invalid original D+Q state is served.",
+    "Training exploitation and checkpoint evaluation use the same greedy composition.",
+    "Outer exploration can override a patch hit using the original exact rational/rejection rule.",
+    "Patched visited contexts can change according to ordinary learned values; unread patches and full P/X remain.",
+    "DQ uses its original complete Q path, numeric order and canonicalization; two new true-source differentials exactly match original actions, TD, full post and evaluation."
+  ],
+  "exact_revision_boundary": {
+    "original_A77_A91_unchanged": false,
+    "original_frozen_files_API_guards_unchanged": true,
+    "new_logical_learning_state": true,
+    "patch_ordinary_policy_updates": true,
+    "immutable_D_priority_v87": false,
+    "production_or_scientific_backend_selected": false,
+    "explanation": "This is a revised ordinary policy-improvement implementation, not a repair that secretly preserves the original four-store/Q-only/D-immutable semantics."
+  },
+  "v90_failure": {
+    "receipt": {
+      "automatic_retry": false,
+      "capture_budget_met": true,
+      "child_exit_code": 1,
+      "collection_authorized": false,
+      "completed_at_utc": "2026-10-12T05:22:08.248994+00:00",
+      "input_bytes_unchanged": true,
+      "qualification_migrated": false,
+      "role": "ACTUAL_ONE_CHILD_EXIT_NOT_SCIENCE_RECEIPT",
+      "started_at_utc": "2026-10-12T05:22:06.931753+00:00",
+      "stderr": {
+        "bytes": 6200,
+        "sha256": "5579ce0886fe2fa400d82b0a2f30161b738347f87490c2defdb7c48256cf5f69"
+      },
+      "stdout": {
+        "bytes": 56596,
+        "sha256": "99445454a5139ce9d528ab7e1039a7f9a70db39b08bfd94a25522d41cc163b80"
+      }
+    },
+    "input_count": 320,
+    "record_count": 15,
+    "result": {
+      "counts": {
+        "evaluate": 5,
+        "rollout": 16,
+        "step": 108,
+        "sweep": 11,
+        "train_episode": 10,
+        "transaction": 21
+      },
+      "elapsed_seconds": {
+        "binary64_hex": "0x1.faa3e2c900000p-1"
+      },
+      "errors": 0,
+      "failures": 6,
+      "formal_training_or_collection": false,
+      "qualification_migrated": false,
+      "scientific_PASS": false,
+      "skips": 0,
+      "tests": 11
+    },
+    "cause": "Test-only START=(1,1) was wrong; actual original START=(0,2). Intended patches never hit, independent TD pre-state oracle was wrong, n2 first action set did not reject max uint64.",
+    "failed_methods": 6,
+    "total_methods": 11,
+    "raw_limit": "Some assertions failed before emitting traces; no full v90 raw certification. Runtime counted16 rollouts/108 steps; missing raw is not rerun or reconstructed.",
+    "preserved": true,
+    "fixture_or_checker_rerun": false
+  },
+  "v91_actual_new_inputs": {
+    "receipt": {
+      "automatic_retry": false,
+      "capture_budget_met": true,
+      "child_exit_code": 0,
+      "completed_at_utc": "2026-10-12T05:31:45.812966+00:00",
+      "failed_v90_preserved": true,
+      "input_bytes_unchanged": true,
+      "scientific_qualification": false,
+      "started_at_utc": "2026-10-12T05:31:43.902003+00:00",
+      "stderr": {
+        "bytes": 933,
+        "sha256": "2f5978ddfda815c349167829ba1d51f1e687f1d7d2f78d8f102bd1bc2db77604"
+      },
+      "stdout": {
+        "bytes": 180054,
+        "sha256": "29cce9074ad7a5d6b7270a4e1bb3adcf06572960cfbb35c5263d557f8cca4470"
+      }
+    },
+    "input_count": 327,
+    "record_count": 170,
+    "result": {
+      "counts": {
+        "complete_revised_episodes": 8,
+        "rollout": 20,
+        "step": 124,
+        "transaction": 22
+      },
+      "errors": 0,
+      "failures": 0,
+      "formal_training_or_collection": false,
+      "scientific_PASS": false,
+      "seconds": {
+        "binary64_hex": "0x1.9468e3ef40000p+0"
+      },
+      "skips": 0,
+      "tests": 6
+    },
+    "difference": "Different full source states at actual START; validates previously untested hit branches. Failed v90 code/contract/evidence all unchanged; core reused without old fixture/launcher/main.",
+    "tests": 6,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "exact_native_counts": {
+      "rollout": 20,
+      "step": 124,
+      "apply_transaction_calls": 22
+    },
+    "full_raw_traces": 19,
+    "partial_prefixes": 1,
+    "revised_complete_manual_episodes": 8,
+    "original_DQ_manual_differential_episodes": 2,
+    "readonly_revised_evaluations": 7,
+    "full_capture_records": 170
+  },
+  "stored_audit": {
+    "path": "experiments/v03r/a96_dense/b2_prepare/adaptive_training_hit_v91_stored_audit.py",
+    "bytes": 9121,
+    "sha256": "b800e65a77fa631ead86f51c89e59b402ee502b35d48229aca88322dd8891410",
+    "actual_exit_code": 0,
+    "first_execution": true,
+    "RFL_import_or_execution": false,
+    "verified": "All327 bound input bytes, full claim/exit/stdout/stderr,170 records/124 raw steps/19 full traces plus1 partial prefix, all8 revised TD sweeps/canonical stores/greedy policy edits, P-X/in-force/shadow/exploration/eval and two original differentials.",
+    "policy_action_changes": 4,
+    "review": "Main-agent separate stdlib arithmetic audit, not independent expert; serialized contents do not recreate runtime identity."
+  },
+  "important_counterexample": {
+    "observed": true,
+    "numeric_TD_value_changes": 0,
+    "actual_D_action_change": "WAIT4→RIGHT3 at true START",
+    "mechanism": "Greedy policy improvement using existing Q* prior.",
+    "permitted_conclusion": "The revised interface can run and its separate policy-improvement operator changes behavior.",
+    "prohibited_conclusions": [
+      "Feedback produced new value knowledge",
+      "Autonomous exploration or feedback-value selection learned",
+      "Original primitive scientifically validated",
+      "F1 qualified the new patch state"
+    ]
+  },
+  "execution_totals_this_turn": {
+    "original_native_rollouts": 36,
+    "original_native_steps": 232,
+    "apply_transaction_calls": 43,
+    "scientific_keys": 0,
+    "workload_keys": 0,
+    "RNG_or_key_derivation": 0,
+    "DP_or_new_native_calibration": 0,
+    "formal_FutureTrainingProtocol_Curve_train_curve_or_collector": 0,
+    "original_B1_runner_or_law_executions": 0,
+    "note": "Manual engineering episodes use explicit tapes/uint64 coordinate arrays, not a seed registry or fake production protocol. Counts include failed v90 work, not only successful v91."
+  },
+  "preservation": {
+    "frozen_source_files": 313,
+    "all_frozen_SHA_before_after": true,
+    "old_ledger_semantic_sha256": "23bd486f160478f5a8007c3f8db0888ddb4f4018357a860231211e83bc5c1f1e",
+    "old_provenance_count": 266,
+    "old_provenance_sha256": "0b1d125634babebc4b70765d92fde7a1c1e37574fed8e6c62265e8b8162592cb",
+    "all_old_scientific_evidence_preserved": true,
+    "no_old_fixture_checker_or_native_reruns": true
+  },
+  "remaining": {
+    "current_next": "Authenticate and transfer actual original whole-B1 pair/source/role full immediate posts into the explicit typed revision; current test constructor only labels nominal engineering states.",
+    "pipeline_full_owned_handoff_complete": false,
+    "full_dense_resource_qualification": false,
+    "whole_Collateral_scientific_rule_adopted": false,
+    "original_scientific_matrix_or_family_reduced": false,
+    "new_scientific_qualification_or_F1_transfer": false,
+    "science_and_collection_authority": false,
+    "not_next": "Do not repeat v90/v91 fixtures/audits or add standalone state demonstrations to accumulate passes."
+  },
+  "scientific_state": "UNEVALUATED_COLLECTION_CLOSED_RESEARCH_INCOMPLETE_NO_VALID_MECHANISM_REFUTATION"
+}

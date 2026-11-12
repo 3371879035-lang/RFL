@@ -1,0 +1,185 @@
+"""New prospective finite learning/evaluation run, no old tests imported."""
+from collections import Counter
+from dataclasses import asdict
+import hashlib
+import importlib.util
+import json
+from pathlib import Path
+import sys
+import time
+import traceback
+
+HERE=Path(__file__).resolve().parent
+ROOT=HERE.parents[2]
+PREP=ROOT/'experiments/v03r/a96_dense/b2_prepare'
+sys.path[:0]=[str(HERE),str(HERE.parent/'evidence_value_transfer_v121'),str(HERE.parent/'factual_address_choice_v119'),str(HERE.parent/'learned_candidate_choice_v118'),str(ROOT/'src'),str(HERE.parent/'failure_only_orchestration'),
+               str(PREP/'adaptive_training_v90')]
+
+def load(name,path):
+    spec=importlib.util.spec_from_file_location(name,path)
+    mod=importlib.util.module_from_spec(spec);sys.modules[name]=mod;spec.loader.exec_module(mod)
+    return mod
+
+load('v105_normal_td',PREP/'complete_curve_source_gates_v105/variants/normal/td.py')
+L=load('v105_normal_learning',PREP/'complete_curve_source_gates_v105/variants/normal/learning.py')
+import adaptive_training as A
+from candidate_loop import CandidateTaskLoop
+from selector import FrozenAddressSelector, available_actions, candidate, feature
+from evidence_selector import FrozenEvidenceSelector
+from rfl_rebuild.env import kernel as K
+from rfl_rebuild.b2.unaffected import EvaluationScene
+from rfl_rebuild.learner.reference import QReferenceView
+from rfl_rebuild.learner.store import (LearnerPersistentState, Q, DECISION, PROCESS,
+                                      QAddress,DecisionAddress,Edit)
+
+C=json.loads((HERE/'contract.json').read_bytes())
+COUNTS=Counter();CONTEXT={};RECORDS=0;STREAM=None;START=time.monotonic();REFERENCE=None
+SCHEDULE=C['schedule']
+
+def emit(tag,payload):
+    global RECORDS
+    line=json.dumps({'seq':RECORDS,'context':dict(CONTEXT),'tag':tag,'payload':A.wire(payload)},
+                    sort_keys=True,separators=(',',':'),ensure_ascii=True)+'\n'
+    STREAM.write(line);STREAM.flush();RECORDS+=1
+    if STREAM.tell()>C['budget']['raw_bytes'] or time.monotonic()-START>C['budget']['seconds']:
+        raise RuntimeError('prospective resource budget exceeded')
+
+def profile(frame,event,arg):
+    if event!='call':return
+    p,n=frame.f_code.co_filename.replace('\\','/'),frame.f_code.co_name
+    name=(n if p.endswith('rfl_rebuild/env/kernel.py') and n in ('rollout','step') else
+          'transaction' if p.endswith('rfl_rebuild/learner/store.py') and n=='apply_transaction' else None)
+    if name:
+        COUNTS[name]+=1
+        if COUNTS[name]>C['budget'][name]:raise RuntimeError('native budget '+name)
+
+def read_reference():
+    spec=C['reference'];data=(ROOT/spec['path']).read_bytes()
+    assert hashlib.sha256(data).hexdigest()==spec['sha256']
+    rows={}
+    for line in data.decode('utf-8').splitlines():
+        if line.startswith('DECISION_CONTEXT='):
+            item=json.loads(line.split('=',1)[1]);x,y,t,k,p,z,m=item['context']
+            rows[K.State(x,y,t,k,p),z,m]={a:float.fromhex(v) for a,v in item['q_row_hex']}
+    ref=QReferenceView(rows,name='v122-shared-unchanged-Q-prior')
+    assert ref.digest()==spec['q_digest'];return ref
+
+def plan():
+    episodes=tuple(L.EngineeringEpisode(e,item['kappa'],1,K.SemanticTape(2,0,8),
+                         ((1<<64)-1,)*12,(((1<<64)-1,0),)*12) for e,item in enumerate(SCHEDULE))
+    scenes=tuple(EvaluationScene(k,2,0,8,1) for k in (0,1))
+    return L.EngineeringPlan(episodes,scenes,0.7642000000000008,A.LearningParameters(),
+                             'v122-finite-recurrent-stream-not-keyed-qualification')
+
+def start(mode):
+    edits=[]
+    for d in C['sources']:
+        kappa=d['kappa'];x,y=d['cell']
+        for t in range(d['prefix'],12):
+            for m in (0,1):
+                a=DecisionAddress(K.State(x,y,t,kappa,2),1,m)
+                edits.append(Edit(Q,QAddress(a.state,1,m,K.WAIT),6.0) if mode=='dq' else Edit(DECISION,a,K.WAIT))
+    a=DecisionAddress(K.State(1,2,1,0,4),1,0)
+    edits.append(Edit(Q,QAddress(a.state,1,0,K.RIGHT),9.0) if mode=='dq' else Edit(DECISION,a,K.RIGHT))
+    edits.append(Edit(PROCESS,3,2));state=LearnerPersistentState()
+    emit('SOURCE_SETUP',{'mode':mode,'edits':edits,'before':A.stores(state)})
+    state.apply_transaction(tuple(edits),q_reference=REFERENCE)
+    emit('SOURCE_READY',{'stores':A.stores(state),'healthy':state.healthy})
+    return state
+
+def actor(initial,mode,p,diagnose,enabled,label):
+    return CandidateTaskLoop(initial,mode=mode,role='treatment',source_label=label,
+            reference=REFERENCE,plan=p,diagnose=diagnose,max_writes=12,emit=emit,
+            diagnostic_enabled=enabled)
+
+
+
+def returned(receipt):
+    return float(sum(float.fromhex(s['reward']['binary64_hex']) for s in receipt['trace']['steps']))
+
+def models():
+    record=json.loads((HERE/'parameters.json').read_bytes())
+    for field in ('evidence_source','ordinal_source'):
+        item=record[field];data=(ROOT/item['path']).read_bytes()
+        assert len(data)==item['bytes'] and hashlib.sha256(data).hexdigest()==item['sha256']
+        if field=='evidence_source':
+            r=json.loads(data.splitlines()[record['source_seq']])
+            assert r['tag']=='FROZEN_EVIDENCE_MODEL' and r['payload']['model']==record['evidence_model']
+        else:assert json.loads(data)['table']==record['ordinal_model']['table']
+    ordinal=FrozenAddressSelector(tuple((tuple(k),a,n,float.fromhex(v['binary64_hex']),cost) for k,a,n,v,cost in record['ordinal_model']['table']))
+    evidence=FrozenEvidenceSelector(tuple((tuple(k),n,float.fromhex(v['binary64_hex'])) for k,n,v in record['evidence_model']['table']))
+    emit('FROZEN_MODELS',{'ordinal':ordinal,'evidence':evidence})
+    return ordinal,evidence
+
+
+def retention(loop,completed):
+    before=loop.payload();base=Counter(COUNTS)
+    snap=loop._current.snapshot();command=loop._greedy();results=[]
+    for kappa in (0,1):
+        raw=K.rollout(kappa=kappa,tape=K.SemanticTape(2,0,8),base_option=1,
+                      command_provider=command,controller=snap.controller_mapping(),
+                      learner_process_commit=snap.process_commit_provider(),reward_mode='A')
+        results.append({'kappa':kappa,'trace':raw,'return_hex':raw.return_value.hex()})
+    after=loop.payload();delta={k:COUNTS[k]-base[k] for k in ('rollout','step','transaction')}
+    emit('RETENTION_BANK',{'completed_tasks':completed,'before':before,'after':after,'results':results,
+                          'native_delta':delta,'draws':0,'TD':0,'diagnostic_calls':0})
+    assert before==after and delta['rollout']==2 and delta['transaction']==0
+
+
+def experiment(ordinal,evidence):
+    global CONTEXT
+    rows=[];pins=(A.digest(A.wire(ordinal)),A.digest(A.wire(evidence)))
+    for mode in C['modes']:
+        CONTEXT={'phase':'stream','mode':mode,'arm':'setup'}
+        initial=start(mode);initial_pin=A.digest(A.stores(initial))
+        for arm in C['arms']:
+            CONTEXT={'phase':'stream','mode':mode,'arm':arm}
+            def diagnose(terminal,visible,budget):
+                if arm=='AlwaysClear':action='clear_factual';decision={'source':'unconditional-failure baseline'}
+                elif arm=='FrozenOrdinal':action,decision=ordinal.choose(mode,terminal,visible)
+                else:action,decision=evidence.choose(mode,terminal,visible)
+                proposal=candidate(mode,visible,action)
+                emit('SELECTION',{'arm':arm,'candidate':action,'proposal':proposal,'decision':decision,
+                     'candidate_count':len(available_actions(mode,visible))})
+                return proposal
+            loop=actor(initial.clone(),mode,plan(),diagnose,arm!='TaskTD','stream:'+mode+':'+arm)
+            assert A.digest(loop.payload()['current'])==initial_pin
+            retention(loop,0);receipts=[]
+            for e,item in enumerate(SCHEDULE):
+                mask=K.FaultMask(trap=K.Trap((1,2),0)) if item['trap'] else K.FaultMask()
+                receipt=loop.run_task(mask=mask);receipts.append(receipt)
+                if e+1 in C['retention_checkpoints_completed_tasks']:retention(loop,e+1)
+                assert (A.digest(A.wire(ordinal)),A.digest(A.wire(evidence)))==pins
+            returns=[returned(r) for r in receipts]
+            row={'mode':mode,'arm':arm,'initial_state_sha256':initial_pin,'returns':returns,
+                 'outcomes':[r['terminal'] for r in receipts],'total_return':sum(returns),'mean_return':sum(returns)/len(returns),
+                 'successes':sum(r['terminal']=='SUCCESS' for r in receipts),
+                 'diagnostic_calls':sum(r['counters']['diagnostic_calls'] for r in receipts),
+                 'diagnostic_transactions':sum(r['counters']['diagnostic_transactions'] for r in receipts),
+                 'diagnostic_edit_attempts':sum(r['counters']['diagnostic_edit_addresses'] for r in receipts),
+                 'ordinary_updates':len(receipts),'final_state':loop.payload()}
+            emit('STREAM_ARM',row);rows.append(row)
+    return rows
+
+
+def main():
+    global STREAM,REFERENCE
+    STREAM=(HERE/'evidence/raw.jsonl').open('x',encoding='ascii',newline='\n')
+    prior=sys.getprofile();ok=False
+    try:
+        REFERENCE=read_reference();emit('REFERENCE',{'digest':REFERENCE.digest(),'rows':len(REFERENCE)})
+        sys.setprofile(profile)
+        ordinal,evidence=models();rows=experiment(ordinal,evidence)
+        emit('RESULT',{'complete':True,'counts':dict(COUNTS),'streams':rows,'ordinal_model':ordinal,'evidence_model':evidence,
+                      'parameter_updates':0,'new_keys':0,'formal_collection':False})
+        ok=True
+    except BaseException as error:
+        emit('FAILURE',{'type':type(error).__name__,'message':str(error),'traceback':traceback.format_exc(),'counts':dict(COUNTS),'complete':False})
+        traceback.print_exc()
+    finally:
+        sys.setprofile(prior)
+        emit('FINAL',{'complete':ok,'counts':dict(COUNTS),'profile_restored':sys.getprofile() is prior,'wall_seconds':time.monotonic()-START})
+        STREAM.close()
+    return 0 if ok else 1
+
+if __name__=='__main__':raise SystemExit(main())

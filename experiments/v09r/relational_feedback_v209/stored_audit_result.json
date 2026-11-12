@@ -1,0 +1,545 @@
+{
+  "status": "STORED_AUDIT_PASS",
+  "canonical_records": 201602,
+  "counts": {
+    "state_observations": 122880,
+    "episodes": 196608,
+    "steps": 786432,
+    "candidate_builds": 1152,
+    "trials": 18432,
+    "adoptions": 410,
+    "evaluations": 73728
+  },
+  "run_count": 192,
+  "wall_seconds": 16.14690629998222,
+  "checked": [
+    "all raw episodes and outcomes",
+    "all step/action/propensity records",
+    "chronological training memory with holdout exclusion",
+    "all weighted fact counts",
+    "all candidate tables via integer arithmetic",
+    "all ranking and trial decisions",
+    "paired common random inputs",
+    "all frozen parameter hashes",
+    "all input hashes"
+  ],
+  "environment_runs_in_auditor": 0,
+  "imports_original_learner_or_world": false,
+  "aggregate": {
+    "single_remote": {
+      "unary_verified": {
+        "evaluation_rate": 0.8107638888888888,
+        "known_rule_expected_rate": 0.8022222222222223,
+        "all_training_success_rate": 0.7368489583333333,
+        "adoptions": 13,
+        "harmful_adoptions": 0,
+        "zero_effect_adoptions": 1,
+        "missed_positive_candidates": 1,
+        "evaluation_by_cycle": [
+          0.7447916666666666,
+          0.8046875,
+          0.84765625,
+          0.8072916666666666,
+          0.8307291666666666,
+          0.8294270833333334
+        ],
+        "expected_by_cycle": [
+          0.74,
+          0.7933333333333334,
+          0.8200000000000001,
+          0.8200000000000001,
+          0.8200000000000001,
+          0.8200000000000001
+        ]
+      },
+      "joint_verified": {
+        "evaluation_rate": 0.8009982638888888,
+        "known_rule_expected_rate": 0.7933333333333334,
+        "all_training_success_rate": 0.7272135416666666,
+        "adoptions": 14,
+        "harmful_adoptions": 0,
+        "zero_effect_adoptions": 2,
+        "missed_positive_candidates": 1,
+        "evaluation_by_cycle": [
+          0.71875,
+          0.7721354166666666,
+          0.84765625,
+          0.8072916666666666,
+          0.8307291666666666,
+          0.8294270833333334
+        ],
+        "expected_by_cycle": [
+          0.7133333333333334,
+          0.7666666666666667,
+          0.8200000000000001,
+          0.8200000000000001,
+          0.8200000000000001,
+          0.8200000000000001
+        ]
+      },
+      "joint_rank_only": {
+        "evaluation_rate": 0.7471788194444444,
+        "known_rule_expected_rate": 0.74,
+        "all_training_success_rate": 0.68515625,
+        "adoptions": 22,
+        "harmful_adoptions": 3,
+        "zero_effect_adoptions": 4,
+        "missed_positive_candidates": 8,
+        "evaluation_by_cycle": [
+          0.6979166666666666,
+          0.7122395833333334,
+          0.734375,
+          0.73046875,
+          0.7786458333333334,
+          0.8294270833333334
+        ],
+        "expected_by_cycle": [
+          0.6866666666666668,
+          0.7133333333333334,
+          0.7133333333333334,
+          0.74,
+          0.7666666666666667,
+          0.8200000000000001
+        ]
+      },
+      "joint_uniform_verified": {
+        "evaluation_rate": 0.5525173611111112,
+        "known_rule_expected_rate": 0.5488888888888889,
+        "all_training_success_rate": 0.5421875,
+        "adoptions": 21,
+        "harmful_adoptions": 0,
+        "zero_effect_adoptions": 18,
+        "missed_positive_candidates": 0,
+        "evaluation_by_cycle": [
+          0.5494791666666666,
+          0.5299479166666666,
+          0.51953125,
+          0.5520833333333334,
+          0.5703125,
+          0.59375
+        ],
+        "expected_by_cycle": [
+          0.5266666666666666,
+          0.5266666666666666,
+          0.5266666666666666,
+          0.5533333333333333,
+          0.5800000000000001,
+          0.5800000000000001
+        ]
+      }
+    },
+    "pair_joint": {
+      "unary_verified": {
+        "evaluation_rate": 0.5262586805555556,
+        "known_rule_expected_rate": 0.5,
+        "all_training_success_rate": 0.500390625,
+        "adoptions": 23,
+        "harmful_adoptions": 0,
+        "zero_effect_adoptions": 23,
+        "missed_positive_candidates": 0,
+        "evaluation_by_cycle": [
+          0.5299479166666666,
+          0.5377604166666666,
+          0.5026041666666666,
+          0.5338541666666666,
+          0.52734375,
+          0.5260416666666666
+        ],
+        "expected_by_cycle": [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ]
+      },
+      "joint_verified": {
+        "evaluation_rate": 0.7827690972222222,
+        "known_rule_expected_rate": 0.7755555555555556,
+        "all_training_success_rate": 0.7084635416666667,
+        "adoptions": 15,
+        "harmful_adoptions": 0,
+        "zero_effect_adoptions": 3,
+        "missed_positive_candidates": 0,
+        "evaluation_by_cycle": [
+          0.69921875,
+          0.75,
+          0.7838541666666666,
+          0.78125,
+          0.8307291666666666,
+          0.8515625
+        ],
+        "expected_by_cycle": [
+          0.6866666666666668,
+          0.74,
+          0.7933333333333334,
+          0.7933333333333334,
+          0.8200000000000001,
+          0.8200000000000001
+        ]
+      },
+      "joint_rank_only": {
+        "evaluation_rate": 0.7135416666666666,
+        "known_rule_expected_rate": 0.6955555555555556,
+        "all_training_success_rate": 0.6555989583333334,
+        "adoptions": 32,
+        "harmful_adoptions": 7,
+        "zero_effect_adoptions": 10,
+        "missed_positive_candidates": 6,
+        "evaluation_by_cycle": [
+          0.70703125,
+          0.6822916666666666,
+          0.6848958333333334,
+          0.69921875,
+          0.76953125,
+          0.73828125
+        ],
+        "expected_by_cycle": [
+          0.6866666666666668,
+          0.66,
+          0.6866666666666668,
+          0.6866666666666668,
+          0.74,
+          0.7133333333333334
+        ]
+      },
+      "joint_uniform_verified": {
+        "evaluation_rate": 0.5564236111111112,
+        "known_rule_expected_rate": 0.5444444444444445,
+        "all_training_success_rate": 0.5373697916666667,
+        "adoptions": 24,
+        "harmful_adoptions": 0,
+        "zero_effect_adoptions": 22,
+        "missed_positive_candidates": 1,
+        "evaluation_by_cycle": [
+          0.5533854166666666,
+          0.5338541666666666,
+          0.546875,
+          0.5611979166666666,
+          0.5872395833333334,
+          0.5559895833333334
+        ],
+        "expected_by_cycle": [
+          0.5266666666666666,
+          0.5266666666666666,
+          0.5533333333333333,
+          0.5533333333333333,
+          0.5533333333333333,
+          0.5533333333333333
+        ]
+      }
+    },
+    "pair_switch": {
+      "unary_verified": {
+        "evaluation_rate": 0.5186631944444444,
+        "known_rule_expected_rate": 0.5,
+        "all_training_success_rate": 0.48919270833333334,
+        "adoptions": 28,
+        "harmful_adoptions": 0,
+        "zero_effect_adoptions": 28,
+        "missed_positive_candidates": 0,
+        "evaluation_by_cycle": [
+          0.5208333333333334,
+          0.5611979166666666,
+          0.5130208333333334,
+          0.5221354166666666,
+          0.4921875,
+          0.5026041666666666
+        ],
+        "expected_by_cycle": [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ]
+      },
+      "joint_verified": {
+        "evaluation_rate": 0.7135416666666666,
+        "known_rule_expected_rate": 0.7000000000000001,
+        "all_training_success_rate": 0.598046875,
+        "adoptions": 39,
+        "harmful_adoptions": 0,
+        "zero_effect_adoptions": 5,
+        "missed_positive_candidates": 2,
+        "evaluation_by_cycle": [
+          0.75,
+          0.7994791666666666,
+          0.8033854166666666,
+          0.53125,
+          0.65625,
+          0.7408854166666666
+        ],
+        "expected_by_cycle": [
+          0.74,
+          0.7666666666666667,
+          0.7933333333333334,
+          0.4866666666666667,
+          0.6466666666666667,
+          0.7666666666666667
+        ]
+      },
+      "joint_rank_only": {
+        "evaluation_rate": 0.6126302083333334,
+        "known_rule_expected_rate": 0.6022222222222222,
+        "all_training_success_rate": 0.5473958333333333,
+        "adoptions": 36,
+        "harmful_adoptions": 2,
+        "zero_effect_adoptions": 13,
+        "missed_positive_candidates": 15,
+        "evaluation_by_cycle": [
+          0.6236979166666666,
+          0.7018229166666666,
+          0.6471354166666666,
+          0.4700520833333333,
+          0.5442708333333334,
+          0.6888020833333334
+        ],
+        "expected_by_cycle": [
+          0.6066666666666667,
+          0.6866666666666668,
+          0.66,
+          0.44666666666666666,
+          0.5266666666666666,
+          0.6866666666666668
+        ]
+      },
+      "joint_uniform_verified": {
+        "evaluation_rate": 0.5190972222222222,
+        "known_rule_expected_rate": 0.508888888888889,
+        "all_training_success_rate": 0.50390625,
+        "adoptions": 31,
+        "harmful_adoptions": 0,
+        "zero_effect_adoptions": 29,
+        "missed_positive_candidates": 0,
+        "evaluation_by_cycle": [
+          0.5130208333333334,
+          0.5455729166666666,
+          0.4986979166666667,
+          0.5286458333333334,
+          0.5182291666666666,
+          0.5104166666666666
+        ],
+        "expected_by_cycle": [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5266666666666666,
+          0.5266666666666666
+        ]
+      }
+    },
+    "triple_joint": {
+      "unary_verified": {
+        "evaluation_rate": 0.5062934027777778,
+        "known_rule_expected_rate": 0.5,
+        "all_training_success_rate": 0.5052083333333334,
+        "adoptions": 23,
+        "harmful_adoptions": 0,
+        "zero_effect_adoptions": 23,
+        "missed_positive_candidates": 0,
+        "evaluation_by_cycle": [
+          0.51171875,
+          0.5221354166666666,
+          0.5182291666666666,
+          0.5182291666666666,
+          0.4947916666666667,
+          0.47265625
+        ],
+        "expected_by_cycle": [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ]
+      },
+      "joint_verified": {
+        "evaluation_rate": 0.5125868055555556,
+        "known_rule_expected_rate": 0.5,
+        "all_training_success_rate": 0.501953125,
+        "adoptions": 26,
+        "harmful_adoptions": 0,
+        "zero_effect_adoptions": 26,
+        "missed_positive_candidates": 0,
+        "evaluation_by_cycle": [
+          0.5,
+          0.5286458333333334,
+          0.5143229166666666,
+          0.53125,
+          0.5208333333333334,
+          0.48046875
+        ],
+        "expected_by_cycle": [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ]
+      },
+      "joint_rank_only": {
+        "evaluation_rate": 0.5045572916666666,
+        "known_rule_expected_rate": 0.5,
+        "all_training_success_rate": 0.504296875,
+        "adoptions": 39,
+        "harmful_adoptions": 0,
+        "zero_effect_adoptions": 39,
+        "missed_positive_candidates": 0,
+        "evaluation_by_cycle": [
+          0.4908854166666667,
+          0.515625,
+          0.5169270833333334,
+          0.53125,
+          0.5078125,
+          0.46484375
+        ],
+        "expected_by_cycle": [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ]
+      },
+      "joint_uniform_verified": {
+        "evaluation_rate": 0.5099826388888888,
+        "known_rule_expected_rate": 0.5,
+        "all_training_success_rate": 0.49973958333333335,
+        "adoptions": 24,
+        "harmful_adoptions": 0,
+        "zero_effect_adoptions": 24,
+        "missed_positive_candidates": 0,
+        "evaluation_by_cycle": [
+          0.5130208333333334,
+          0.5104166666666666,
+          0.5234375,
+          0.5182291666666666,
+          0.5169270833333334,
+          0.4778645833333333
+        ],
+        "expected_by_cycle": [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ]
+      }
+    }
+  },
+  "contrasts": {
+    "single_remote": {
+      "unary_verified": {
+        "paired_seed_mean_difference": -0.009765625,
+        "exploratory_seed_bootstrap_95": [
+          -0.029296875,
+          0.0
+        ],
+        "independent_seed_count": 12
+      },
+      "joint_rank_only": {
+        "paired_seed_mean_difference": 0.053819444444444454,
+        "exploratory_seed_bootstrap_95": [
+          0.009982638888888904,
+          0.10026041666666667
+        ],
+        "independent_seed_count": 12
+      },
+      "joint_uniform_verified": {
+        "paired_seed_mean_difference": 0.24848090277777776,
+        "exploratory_seed_bootstrap_95": [
+          0.18663194444444442,
+          0.2977430555555555
+        ],
+        "independent_seed_count": 12
+      }
+    },
+    "pair_joint": {
+      "unary_verified": {
+        "paired_seed_mean_difference": 0.25651041666666663,
+        "exploratory_seed_bootstrap_95": [
+          0.21788194444444445,
+          0.2888454861111111
+        ],
+        "independent_seed_count": 12
+      },
+      "joint_rank_only": {
+        "paired_seed_mean_difference": 0.06922743055555555,
+        "exploratory_seed_bootstrap_95": [
+          0.025824652777777773,
+          0.11979166666666667
+        ],
+        "independent_seed_count": 12
+      },
+      "joint_uniform_verified": {
+        "paired_seed_mean_difference": 0.2263454861111111,
+        "exploratory_seed_bootstrap_95": [
+          0.14713541666666666,
+          0.2890625
+        ],
+        "independent_seed_count": 12
+      }
+    },
+    "pair_switch": {
+      "unary_verified": {
+        "paired_seed_mean_difference": 0.1948784722222222,
+        "exploratory_seed_bootstrap_95": [
+          0.15690104166666666,
+          0.2265625
+        ],
+        "independent_seed_count": 12
+      },
+      "joint_rank_only": {
+        "paired_seed_mean_difference": 0.1009114583333333,
+        "exploratory_seed_bootstrap_95": [
+          0.053602430555555525,
+          0.14149305555555552
+        ],
+        "independent_seed_count": 12
+      },
+      "joint_uniform_verified": {
+        "paired_seed_mean_difference": 0.19444444444444442,
+        "exploratory_seed_bootstrap_95": [
+          0.14908854166666666,
+          0.23372395833333334
+        ],
+        "independent_seed_count": 12
+      }
+    },
+    "triple_joint": {
+      "unary_verified": {
+        "paired_seed_mean_difference": 0.006293402777777772,
+        "exploratory_seed_bootstrap_95": [
+          -0.005859375000000014,
+          0.020616319444444437
+        ],
+        "independent_seed_count": 12
+      },
+      "joint_rank_only": {
+        "paired_seed_mean_difference": 0.008029513888888895,
+        "exploratory_seed_bootstrap_95": [
+          -0.004340277777777781,
+          0.020616319444444448
+        ],
+        "independent_seed_count": 12
+      },
+      "joint_uniform_verified": {
+        "paired_seed_mean_difference": 0.002604166666666685,
+        "exploratory_seed_bootstrap_95": [
+          -0.014105902777777754,
+          0.017578125000000003
+        ],
+        "independent_seed_count": 12
+      }
+    }
+  },
+  "note": "Known-rule expected values are post-run analytic diagnostics, never learner inputs. Bootstrap is exploratory, not a formal family-level confirmation."
+}

@@ -1,0 +1,130 @@
+{
+  "schema": "V115_INDEPENDENT_STDLIB_SHIFTED_SHORT_STREAM_REPLICATION_STORED_AUDIT",
+  "status": "COMPLETE_NATIVE_BOTH_MODES_STORED_AUDIT_CORRECTED_AFTER_TWO_HARNESS_SCHEMA_ERRORS",
+  "parent_commit": "e62c596c7c26f0c19c7646a8210eb1e8b6593357",
+  "engineering_horizon": 64,
+  "checkpoint_count": 65,
+  "eval_scenes_per_checkpoint": 100,
+  "stream_offset": 7,
+  "native_children": [],
+  "total_rollouts": 57458,
+  "total_steps": 328140,
+  "total_td_receipts": 256,
+  "total_owner_receipts": 4,
+  "old_checker_rfl_execution": false,
+  "scientific_qualification": false,
+  "first_audit_failure_preserved": true,
+  "second_corrected_audit_failure_preserved": true,
+  "corrected_audit_success": true,
+  "source_sha256": "4e41de2826d7c727262646e9f96022f9790e0bba6721a1829c149ff385db38dc",
+  "per_mode": [
+    {
+      "mode": "dq",
+      "actual_counts": {
+        "B1": 2,
+        "rollout": 28729,
+        "step": 163681,
+        "transaction": 130
+      },
+      "td_policy_diagnostics": {
+        "TD_addresses": 753,
+        "TD_step_details": 753,
+        "exploration_steps": 71,
+        "numeric_changed": 10,
+        "policy_changed": 0,
+        "rejection_followup_coordinates": 35
+      },
+      "positive_epochs": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "negative_epochs": [],
+      "first_equal_epoch": 12,
+      "all_equal_from_epoch": 12,
+      "unique_treatment_minus_reference": [
+        0,
+        0.0384000000000001
+      ],
+      "reference_change_epochs": [
+        12,
+        16,
+        17,
+        61
+      ],
+      "treatment_change_epochs": [
+        16,
+        17,
+        61
+      ],
+      "reference_final": 0.7642000000000008,
+      "treatment_final": 0.7642000000000008,
+      "whole_collateral_pair_difference_hex": "0x0.0p+0",
+      "whole_collateral_region_size": 4920,
+      "numeric_or_policy_change_interpretation": "DQ numeric changes; patch policy changes with numeric L path distinguished."
+    },
+    {
+      "mode": "patch-adaptive",
+      "actual_counts": {
+        "B1": 2,
+        "rollout": 28729,
+        "step": 164459,
+        "transaction": 140
+      },
+      "td_policy_diagnostics": {
+        "TD_addresses": 763,
+        "TD_step_details": 763,
+        "exploration_steps": 73,
+        "numeric_changed": 0,
+        "policy_changed": 7,
+        "rejection_followup_coordinates": 35
+      },
+      "positive_epochs": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "negative_epochs": [],
+      "first_equal_epoch": 12,
+      "all_equal_from_epoch": 12,
+      "unique_treatment_minus_reference": [
+        0,
+        0.0384000000000001
+      ],
+      "reference_change_epochs": [
+        12,
+        13,
+        16,
+        17
+      ],
+      "treatment_change_epochs": [
+        13,
+        16,
+        17
+      ],
+      "reference_final": 0.7642000000000008,
+      "treatment_final": 0.7642000000000008,
+      "whole_collateral_pair_difference_hex": "0x0.0p+0",
+      "whole_collateral_region_size": 4920,
+      "numeric_or_policy_change_interpretation": "DQ numeric changes; patch policy changes with numeric L path distinguished."
+    }
+  ]
+}

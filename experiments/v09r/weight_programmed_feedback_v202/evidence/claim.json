@@ -1,0 +1,101 @@
+{
+  "started_utc": "2026-11-09T15:59:11.801727+00:00",
+  "inputs": {
+    "experiments/v09r/weight_programmed_feedback_v202/model.py": "507d8b743d32afc296405d18cdc779d4ff558006a0b3069aa1d9351da597c88c",
+    "experiments/v09r/weight_programmed_feedback_v202/tasks.py": "b44fd81aa23928d4394237ce9eb052222afb1690eb0884cc484d88c54d0e2f86",
+    "experiments/v09r/weight_programmed_feedback_v202/checks.py": "d8d98dd7e0745e061b4e5df818184d360608c5d304d3128c3ede75537532f5b0",
+    "experiments/v09r/weight_programmed_feedback_v202/run.py": "bee688ea7117dea1f9530528d75bce4f9873356cf2895ea4760a8c0a58451c02",
+    "experiments/v09r/weight_programmed_feedback_v202/launch.py": "a28d468541efd7b673a49d33e23a48ad6f26f73aa7e644a4350bd46af3f4a824",
+    "experiments/v09r/weight_programmed_feedback_v202/contract.json": "f02e723cf0c83f01d9dfa0194589510c5a68737102a530076237e2c3740df7b6",
+    "experiments/v09r/weight_programmed_feedback_v202/DERIVATION.md": "e04016b111f49ac88fdf3dcda1c534210d24f74e7a24241ff95ba9ce289e8041",
+    "experiments/v09r/weight_programmed_feedback_v200/model.py": "ade0b125b8ad2a6690213c7db7f9dde87cd0cacf21eb39d4f857e2df6ba83906",
+    "experiments/v09r/weight_programmed_feedback_v200/evidence/initial_written.pt": "ff4fa8981b85b5359a1aca42a3b764dca3a660807f61d53f87b6110055cd3e82"
+  },
+  "contract": {
+    "version": "V202.0 analytic weight-programmed transition feedback",
+    "created_utc": "2026-11-09T15:59:00.937727+00:00",
+    "authority": "User: continue improving weight-space programming; no game adaptation; no gradient parameter updates.",
+    "construction": "New separately written analytic initial weights; V200 unchanged. No pretrained or environment-trained weights. Freeze all parameters during checks and actual episodes.",
+    "families": [
+      "delayed_choice",
+      "joint_sequence",
+      "stochastic_reversal"
+    ],
+    "variants": [
+      "v202_full",
+      "v202_no_gate",
+      "v202_no_successor",
+      "v200_original"
+    ],
+    "seeds": [
+      202001,
+      202002,
+      202003,
+      202004,
+      202005,
+      202006,
+      202007,
+      202008
+    ],
+    "cycles": 16,
+    "per_cycle": {
+      "discovery": 4,
+      "candidate_actual_trials": 8,
+      "incumbent_actual_trials": 8,
+      "heldout_evaluation": 4
+    },
+    "old_source": "experiments/v09r/weight_programmed_feedback_v200/model.py",
+    "old_checkpoint": "experiments/v09r/weight_programmed_feedback_v200/evidence/initial_written.pt",
+    "generic_interface": {
+      "context_dim": 6,
+      "action_dim": 6,
+      "fact_dim": 3,
+      "memory_capacity": 384,
+      "public_goal": [
+        1,
+        0,
+        0
+      ],
+      "actions": 2,
+      "description": "Normalized numerical observations, stable candidate descriptors, actual successors, terminal flag, factual outcomes and known masks. No task identity or hidden table passed to model."
+    },
+    "fixed_program": {
+      "kernel_beta": 20,
+      "record_age_penalty": 0.002,
+      "range_normalization": true,
+      "planning_depth": 6,
+      "value_moments": "first and joint second moments",
+      "prior": "independent Uniform[0,1] outcome prior of mass one",
+      "exploration": "0.5 epistemic proxy + 0.1 unsupported mass, plus 0.1 epsilon during discovery only",
+      "actual_trial_gate": "n >= 8 and paired actual mean difference - 2 * sample standard error > 0; finite engineering heuristic, NOT a calibrated 95% CI"
+    },
+    "chronology": "Real discovery -> freeze candidate/incumbent -> real paired trials -> adoption verdict from actual outcomes only -> add completed trials to future working memory -> heldout evaluation not remembered. No imagined outcome becomes a memory fact.",
+    "costs": "All four controls receive identical actual discovery/trial/evaluation episode budgets and fixed episode lengths. No-gate still pays all trials. No-successor uses the same V202 weights. V200 is original untrained weight-programmed baseline, not a trained pure-RL baseline.",
+    "evaluation": "Report all eight seeds, first/last four cycles, whole 64 heldout evaluation episodes per run, post-reversal early window, adoption counts, exact interactions. Equal exogenous tapes for paired policies and controls; different trajectories remain actual execution.",
+    "budget": {
+      "wall_seconds": 900,
+      "cpu_workers": 4,
+      "intraop_threads_per_worker": 1,
+      "max_episodes": 36864,
+      "max_transitions": 184320,
+      "per_seed_max_transitions": 23040,
+      "GPU": false,
+      "cloud": false,
+      "optimizer_updates": 0,
+      "game_calls": 0
+    },
+    "checks": "12 synthetic algebra/interface checks, counted separately from actual task episodes; no result-dependent rewriting.",
+    "claim_limits": [
+      "finite fully observed numerical tasks only",
+      "no general semantic encoder or arbitrary-feature relevance learning",
+      "observed-successor planning is not proof of causality",
+      "sample mass proxy is not independent sample size",
+      "no SLEEP or parameter consolidation",
+      "no trained-baseline superiority claim",
+      "not the historical four reward/penalty training groups"
+    ],
+    "preservation": "Exclusive new namespace/evidence; first failure or partial preserved; no automatic retry; no edits of executed source bytes; no old test fixture or result matrix rerun. New runtime use of unchanged V200 model on new tasks is declared.",
+    "adoption": "Standalone candidate checkpoint only; not installed into prior game models and no automation."
+  },
+  "native_attempt": 1
+}

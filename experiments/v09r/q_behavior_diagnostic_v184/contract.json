@@ -1,0 +1,60 @@
+{
+  "schema": "V09_Q_TRAINING_BEHAVIOR_DIAGNOSTIC_V184",
+  "utc": "2026-11-08T06:51:01.414091+00:00",
+  "parent_commit": "888e2274ec1efe4b97d0955257ae9e7e5a68cbc7",
+  "authority": "保留事实记忆和事实学习，让混合模型用自己的Q头采集训练经验，做一轮小规模对照，先把问题定位清楚，再决定怎么改。",
+  "intervention": "Only greedy physical training actions of hybrids are selected by their own Q. Same epsilon/random action draw, full factual calculations, history/retrieval, losses/weights/optimizer/initialization/targets/replay/maps/rewards/stages. Factual forecast for the actually chosen action is retained. No change to frozen full/Q readouts.",
+  "controls": "Read-only paired V183 same four seeds, same131072steps, same source rules/initialization/runtime. No old native/checker re-execution. All four core arms retained in report; only hybrid training controller receives a new intervention. This is a diagnostic using known seeds/results, not fresh confirmation.",
+  "matrix": {
+    "seeds": [
+      93001,
+      93002,
+      93003,
+      93004
+    ],
+    "new_arms": [
+      "F-RP",
+      "F-R"
+    ],
+    "new_models": 8,
+    "training_steps_each": 131072,
+    "total_new_train_steps": 1048576,
+    "checkpoints": [
+      0,
+      16384,
+      65536,
+      131072
+    ],
+    "full_eval_counts": [
+      128,
+      128,
+      128,
+      256
+    ],
+    "Q_only_eval_counts": [
+      128,
+      128,
+      128,
+      128
+    ],
+    "total_new_evaluation_episodes": 9216,
+    "new_environment_steps_upper": 3407872
+  },
+  "resources": {
+    "workers": 8,
+    "numeric_threads_each": 1,
+    "wall_seconds": 3600,
+    "aggregate_RAM_gib": 20,
+    "compressed_evidence_gib": 6,
+    "paid_compute": false,
+    "automation": false
+  },
+  "primary": [
+    "Final matchedj0..127 four cells: old/new training controller x full/ownQ readout, each hybrid, paired byseed.",
+    "NewQ-training ownQ vs stored pureRL at exactly samej0..127.",
+    "Full256 scores and four core groups retained; cold/early common-step curves reported without calling evalepisodes independent training samples.",
+    "Real behavior distribution: episode lengths, immobility, pickup, training takeover counts; same training updates."
+  ],
+  "inference": "Four paired seeds. Changing behavior also changes encountered data/history/targets; estimates total effect of controller replacement, not independently isolated distribution vs all downstream mediators. ResidualQ-vs-pureRL gap not by itself proof of gradient interference. No new success threshold or mandatorypositiveeffect.",
+  "failure": "Exclusive capture; first errors/partials retained; no automatic retry or effect-driven parameter/budget changes. Old64seedrun remains stopped. This pilot does not complete V09."
+}

@@ -1,0 +1,364 @@
+{
+  "all_ordinary_full_R_L_updates_verified": 54,
+  "complete": true,
+  "declared_input_pins": 329,
+  "descriptive_fixed_case_aggregates": [
+    {
+      "arms": {
+        "AlwaysClear": {
+          "descriptive_mean_future_return_over_three_fixed_cases": 0.88,
+          "future_successes": 6,
+          "future_tasks": 6,
+          "online_diagnostic_address_edit_attempts": 36,
+          "online_diagnostic_transactions": 3
+        },
+        "FrozenAddress": {
+          "descriptive_mean_future_return_over_three_fixed_cases": -1.24,
+          "future_successes": 0,
+          "future_tasks": 6,
+          "online_diagnostic_address_edit_attempts": 3,
+          "online_diagnostic_transactions": 3
+        },
+        "TaskTD": {
+          "descriptive_mean_future_return_over_three_fixed_cases": -1.24,
+          "future_successes": 0,
+          "future_tasks": 6,
+          "online_diagnostic_address_edit_attempts": 0,
+          "online_diagnostic_transactions": 0
+        }
+      },
+      "mode": "dq"
+    },
+    {
+      "arms": {
+        "AlwaysClear": {
+          "descriptive_mean_future_return_over_three_fixed_cases": 0.88,
+          "future_successes": 6,
+          "future_tasks": 6,
+          "online_diagnostic_address_edit_attempts": 36,
+          "online_diagnostic_transactions": 3
+        },
+        "FrozenAddress": {
+          "descriptive_mean_future_return_over_three_fixed_cases": 0.88,
+          "future_successes": 6,
+          "future_tasks": 6,
+          "online_diagnostic_address_edit_attempts": 0,
+          "online_diagnostic_transactions": 0
+        },
+        "TaskTD": {
+          "descriptive_mean_future_return_over_three_fixed_cases": 0.88,
+          "future_successes": 6,
+          "future_tasks": 6,
+          "online_diagnostic_address_edit_attempts": 0,
+          "online_diagnostic_transactions": 0
+        }
+      },
+      "mode": "patch-adaptive"
+    }
+  ],
+  "frozen_selector_evaluations": 6,
+  "frozen_selector_unknown_coverage_cases": 0,
+  "frozen_table_unchanged": true,
+  "matched_TIMEOUT_twelve_step_cases": 6,
+  "native_counts": {
+    "rollout": 54,
+    "step": 504,
+    "transaction": 90
+  },
+  "native_first_exit": 0,
+  "notes": "Actual frozen parameter transfer, not runtime-handle restoration. Policy transfer failures are distinct from harness errors or RFL mechanism refutation. No independent-seed inference.",
+  "old_checker_or_native_reruns": 0,
+  "online_address_edit_attempts": 75,
+  "paired_cases": [
+    {
+      "arms": {
+        "AlwaysClear": {
+          "address_edit_attempts": 12,
+          "candidate": "clear_factual",
+          "diagnostic_content_changed": true,
+          "future_outcomes": [
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "future_returns": [
+            0.88,
+            0.88
+          ]
+        },
+        "FrozenAddress": {
+          "address_edit_attempts": 1,
+          "candidate": "single:0",
+          "diagnostic_content_changed": true,
+          "future_outcomes": [
+            "TIMEOUT",
+            "TIMEOUT"
+          ],
+          "future_returns": [
+            -1.24,
+            -1.24
+          ]
+        },
+        "TaskTD": {
+          "address_edit_attempts": 0,
+          "candidate": null,
+          "diagnostic_content_changed": false,
+          "future_outcomes": [
+            "TIMEOUT",
+            "TIMEOUT"
+          ],
+          "future_returns": [
+            -1.24,
+            -1.24
+          ]
+        }
+      },
+      "case": "prefix1",
+      "factual_steps": 12,
+      "factual_terminal": "TIMEOUT",
+      "mode": "dq"
+    },
+    {
+      "arms": {
+        "AlwaysClear": {
+          "address_edit_attempts": 12,
+          "candidate": "clear_factual",
+          "diagnostic_content_changed": true,
+          "future_outcomes": [
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "future_returns": [
+            0.88,
+            0.88
+          ]
+        },
+        "FrozenAddress": {
+          "address_edit_attempts": 1,
+          "candidate": "single:0",
+          "diagnostic_content_changed": false,
+          "future_outcomes": [
+            "TIMEOUT",
+            "TIMEOUT"
+          ],
+          "future_returns": [
+            -1.24,
+            -1.24
+          ]
+        },
+        "TaskTD": {
+          "address_edit_attempts": 0,
+          "candidate": null,
+          "diagnostic_content_changed": false,
+          "future_outcomes": [
+            "TIMEOUT",
+            "TIMEOUT"
+          ],
+          "future_returns": [
+            -1.24,
+            -1.24
+          ]
+        }
+      },
+      "case": "prefix2",
+      "factual_steps": 12,
+      "factual_terminal": "TIMEOUT",
+      "mode": "dq"
+    },
+    {
+      "arms": {
+        "AlwaysClear": {
+          "address_edit_attempts": 12,
+          "candidate": "clear_factual",
+          "diagnostic_content_changed": true,
+          "future_outcomes": [
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "future_returns": [
+            0.88,
+            0.88
+          ]
+        },
+        "FrozenAddress": {
+          "address_edit_attempts": 1,
+          "candidate": "single:0",
+          "diagnostic_content_changed": false,
+          "future_outcomes": [
+            "TIMEOUT",
+            "TIMEOUT"
+          ],
+          "future_returns": [
+            -1.24,
+            -1.24
+          ]
+        },
+        "TaskTD": {
+          "address_edit_attempts": 0,
+          "candidate": null,
+          "diagnostic_content_changed": false,
+          "future_outcomes": [
+            "TIMEOUT",
+            "TIMEOUT"
+          ],
+          "future_returns": [
+            -1.24,
+            -1.24
+          ]
+        }
+      },
+      "case": "prefix3",
+      "factual_steps": 12,
+      "factual_terminal": "TIMEOUT",
+      "mode": "dq"
+    },
+    {
+      "arms": {
+        "AlwaysClear": {
+          "address_edit_attempts": 12,
+          "candidate": "clear_factual",
+          "diagnostic_content_changed": true,
+          "future_outcomes": [
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "future_returns": [
+            0.88,
+            0.88
+          ]
+        },
+        "FrozenAddress": {
+          "address_edit_attempts": 0,
+          "candidate": "keep",
+          "diagnostic_content_changed": false,
+          "future_outcomes": [
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "future_returns": [
+            0.88,
+            0.88
+          ]
+        },
+        "TaskTD": {
+          "address_edit_attempts": 0,
+          "candidate": null,
+          "diagnostic_content_changed": false,
+          "future_outcomes": [
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "future_returns": [
+            0.88,
+            0.88
+          ]
+        }
+      },
+      "case": "prefix1",
+      "factual_steps": 12,
+      "factual_terminal": "TIMEOUT",
+      "mode": "patch-adaptive"
+    },
+    {
+      "arms": {
+        "AlwaysClear": {
+          "address_edit_attempts": 12,
+          "candidate": "clear_factual",
+          "diagnostic_content_changed": true,
+          "future_outcomes": [
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "future_returns": [
+            0.88,
+            0.88
+          ]
+        },
+        "FrozenAddress": {
+          "address_edit_attempts": 0,
+          "candidate": "keep",
+          "diagnostic_content_changed": false,
+          "future_outcomes": [
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "future_returns": [
+            0.88,
+            0.88
+          ]
+        },
+        "TaskTD": {
+          "address_edit_attempts": 0,
+          "candidate": null,
+          "diagnostic_content_changed": false,
+          "future_outcomes": [
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "future_returns": [
+            0.88,
+            0.88
+          ]
+        }
+      },
+      "case": "prefix2",
+      "factual_steps": 12,
+      "factual_terminal": "TIMEOUT",
+      "mode": "patch-adaptive"
+    },
+    {
+      "arms": {
+        "AlwaysClear": {
+          "address_edit_attempts": 12,
+          "candidate": "clear_factual",
+          "diagnostic_content_changed": true,
+          "future_outcomes": [
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "future_returns": [
+            0.88,
+            0.88
+          ]
+        },
+        "FrozenAddress": {
+          "address_edit_attempts": 0,
+          "candidate": "keep",
+          "diagnostic_content_changed": false,
+          "future_outcomes": [
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "future_returns": [
+            0.88,
+            0.88
+          ]
+        },
+        "TaskTD": {
+          "address_edit_attempts": 0,
+          "candidate": null,
+          "diagnostic_content_changed": false,
+          "future_outcomes": [
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "future_returns": [
+            0.88,
+            0.88
+          ]
+        }
+      },
+      "case": "prefix3",
+      "factual_steps": 12,
+      "factual_terminal": "TIMEOUT",
+      "mode": "patch-adaptive"
+    }
+  ],
+  "raw_file": {
+    "bytes": 1982755,
+    "sha256": "792de6a41687085c92c43cf1640451f97922e77f31cddb7e4a66ee8204bfef54"
+  },
+  "records": 304,
+  "schema": "V120_STDLIB_FROZEN_POSITION_TRANSFER_REVIEW",
+  "scientific_qualification": false,
+  "training_updates": 0
+}

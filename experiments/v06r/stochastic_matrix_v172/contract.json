@@ -1,0 +1,51 @@
+{
+  "schema": "V172_PROSPECTIVE_STOCHASTIC_MATRIX_CONTRACT",
+  "parent_commit": "e59a871f677211ae71920026846af5b11291dac8",
+  "authority": "可以，按照这个方案开始实验，继续完成V0.6。",
+  "plan": "experiments/v06r/plan_v171.json",
+  "approved_plan_commit": "e59a871f677211ae71920026846af5b11291dac8",
+  "phase_limits": {
+    "wiring": {
+      "rollouts": 20,
+      "steps": 240,
+      "extra_Q_backups": 96,
+      "wall_seconds": 30,
+      "capture_bytes": 4194304
+    },
+    "matrix": {
+      "rollouts": 11720,
+      "steps": 140640,
+      "extra_Q_backups": 49152,
+      "wall_seconds": 570,
+      "capture_bytes": 130023424
+    }
+  },
+  "combined_limits": {
+    "rollouts": 11740,
+    "steps": 140880,
+    "extra_Q_backups": 49248,
+    "wall_seconds": 600,
+    "capture_bytes": 134217728
+  },
+  "inputs": [
+    "experiments/v06r/README.md",
+    "experiments/v06r/plan_v171.json",
+    "experiments/v06r/stochastic_matrix_v172/README.md",
+    "experiments/v06r/stochastic_matrix_v172/experiment.py",
+    "experiments/v06r/stochastic_matrix_v172/audit_stored.py",
+    "experiments/v06r/stochastic_matrix_v172/analyze_stored.py",
+    "experiments/v06r/stochastic_matrix_v172/contract.json"
+  ],
+  "coordinate_implementation": "Python random.Random(f\"V172|{seed}|{mirror}|{phase}\") string seed version 2. Phase-specific materialized train_env64x3/train_action64x3x2/eval_env32x3. No arm/p/checkpoint in coordinates. Native random() calls5376; stored audit reconstruction5376, not additional population.",
+  "wiring": "Approved four scripted outcomes per arm, two training then two frozen eval, fixed command1. No random draws.",
+  "isolation": "Only PublicTask and actual owned Observation or RewardPacket to learners. FrozenPolicy full deepcopy has no learn method; each eval bank checks both full training/clone snapshots before and after.",
+  "prior": "All model arms share the declared Beta(1,1); no probability mass from a prior is logged as a real observation.",
+  "metric_diagnostic_not_plan_change": "Compute empirical maximum success in stored fixed eval bank to flag when original threshold is unreachable; retain original threshold, all nulls, all tapes and banks unchanged.",
+  "no_new_formal_science_keys_or_collector": true,
+  "approved_local_toy_PRNG_only": true,
+  "old_RFL_fixture_or_checker_calls": 0,
+  "old_executed_source_modifications": 0,
+  "automatic_retry": false,
+  "automation_changes": false,
+  "paid_resources": false
+}

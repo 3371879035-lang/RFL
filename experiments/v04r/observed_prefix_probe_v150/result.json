@@ -1,0 +1,556 @@
+{
+  "schema": "V150_OBSERVED_PREFIX_PROBE_RESULT",
+  "date_asia_shanghai": "2026-11-07",
+  "parent_commit": "0aa8044e21533b6c75193281a6a580552c82d269",
+  "status": "ACTUAL_NONINITIAL_PREFIX_REACH_REVEALS_MISSED_REPAIR_AND_PRESERVES_SHADOWED_ZERO",
+  "actual": {
+    "native_first_exit": 0,
+    "new_stored_audit_first_exit": 0,
+    "native_counts": {
+      "rollout": 86,
+      "step": 523,
+      "transaction": 206
+    },
+    "records": 604,
+    "native_pins": 335,
+    "main_tasks": 60,
+    "private_tasks": 26,
+    "preparation_native_rollouts": 0,
+    "checkpoint_TX": 3,
+    "new_shared_source_TX": 1,
+    "new_shared_source_edits": 1,
+    "ordinary_numeric_TX": 96,
+    "ordinary_policy_TX": 96,
+    "external_observation_updates": 10,
+    "observation_mechanism_rejections": 0,
+    "private_candidate_X_TX": 6,
+    "main_feedback_X_TX": 4,
+    "success_diagnosis": 0,
+    "actual_literal_explore_events": 58,
+    "terminal_counts": {
+      "stream": {
+        "COLLISION": 17,
+        "SUCCESS": 43
+      },
+      "private": {
+        "SUCCESS": 11,
+        "COLLISION": 15
+      }
+    },
+    "all_first_failure_target_indices": [
+      2
+    ],
+    "old_native_checker_bank_reruns": 0,
+    "new_keys_RNG_keyderive_DP_calibration_collection": 0,
+    "started_at_utc": "2026-11-06T20:13:16.597938+00:00",
+    "completed_at_utc": "2026-11-06T20:13:18.682162+00:00",
+    "instrumented_wall_seconds": 2.0790000000270084
+  },
+  "summaries": [
+    {
+      "case": "late_controller",
+      "arm": "NoWrite",
+      "successes": 4,
+      "returns": [
+        -1.06,
+        -1.06,
+        0.84,
+        0.84,
+        0.84,
+        0.84
+      ],
+      "outcomes": [
+        "COLLISION",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.20666666666666664,
+      "external_updates": 1
+    },
+    {
+      "case": "late_controller",
+      "arm": "DirectSite",
+      "successes": 5,
+      "returns": [
+        -1.06,
+        0.86,
+        0.84,
+        0.84,
+        0.84,
+        0.84
+      ],
+      "outcomes": [
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.5266666666666666,
+      "external_updates": 1
+    },
+    {
+      "case": "late_controller",
+      "arm": "FirstCommandAblation",
+      "successes": 4,
+      "returns": [
+        -1.06,
+        -1.06,
+        0.84,
+        0.84,
+        0.84,
+        0.84
+      ],
+      "outcomes": [
+        "COLLISION",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.20666666666666664,
+      "external_updates": 1
+    },
+    {
+      "case": "late_controller",
+      "arm": "PrefixProbe",
+      "successes": 5,
+      "returns": [
+        -1.06,
+        0.86,
+        0.84,
+        0.84,
+        0.84,
+        0.84
+      ],
+      "outcomes": [
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.5266666666666666,
+      "external_updates": 1
+    },
+    {
+      "case": "late_controller",
+      "arm": "FutureValidated",
+      "successes": 5,
+      "returns": [
+        -1.06,
+        0.86,
+        0.84,
+        0.84,
+        0.84,
+        0.84
+      ],
+      "outcomes": [
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.5266666666666666,
+      "external_updates": 1
+    },
+    {
+      "case": "late_shadow",
+      "arm": "NoWrite",
+      "successes": 4,
+      "returns": [
+        -1.06,
+        -1.06,
+        0.84,
+        0.84,
+        0.84,
+        0.84
+      ],
+      "outcomes": [
+        "COLLISION",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.20666666666666664,
+      "external_updates": 1
+    },
+    {
+      "case": "late_shadow",
+      "arm": "DirectSite",
+      "successes": 4,
+      "returns": [
+        -1.06,
+        -1.06,
+        0.84,
+        0.84,
+        0.84,
+        0.84
+      ],
+      "outcomes": [
+        "COLLISION",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.20666666666666664,
+      "external_updates": 1
+    },
+    {
+      "case": "late_shadow",
+      "arm": "FirstCommandAblation",
+      "successes": 4,
+      "returns": [
+        -1.06,
+        -1.06,
+        0.84,
+        0.84,
+        0.84,
+        0.84
+      ],
+      "outcomes": [
+        "COLLISION",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.20666666666666664,
+      "external_updates": 1
+    },
+    {
+      "case": "late_shadow",
+      "arm": "PrefixProbe",
+      "successes": 4,
+      "returns": [
+        -1.06,
+        -1.06,
+        0.84,
+        0.84,
+        0.84,
+        0.84
+      ],
+      "outcomes": [
+        "COLLISION",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.20666666666666664,
+      "external_updates": 1
+    },
+    {
+      "case": "late_shadow",
+      "arm": "FutureValidated",
+      "successes": 4,
+      "returns": [
+        -1.06,
+        -1.06,
+        0.84,
+        0.84,
+        0.84,
+        0.84
+      ],
+      "outcomes": [
+        "COLLISION",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.20666666666666664,
+      "external_updates": 1
+    }
+  ],
+  "queries": [
+    {
+      "case": "late_controller",
+      "arm": "FirstCommandAblation",
+      "observed": {
+        "keep": [
+          0.84
+        ],
+        "controller-delete": [
+          0.84
+        ]
+      },
+      "means": {
+        "keep": 0.84,
+        "controller-delete": 0.84
+      },
+      "query_delta": 0.0,
+      "proper_target_comparison": false,
+      "target_delta": null,
+      "choice": "keep",
+      "target_reach": {
+        "keep": {
+          "reached": false,
+          "reason": "observed_state_control_or_command_prefix_differs",
+          "checked_steps": 2
+        },
+        "controller-delete": {
+          "reached": false,
+          "reason": "observed_state_control_or_command_prefix_differs",
+          "checked_steps": 2
+        }
+      },
+      "estimand": "first-command-only-ablation"
+    },
+    {
+      "case": "late_controller",
+      "arm": "PrefixProbe",
+      "observed": {
+        "keep": [
+          -1.06
+        ],
+        "controller-delete": [
+          0.86
+        ]
+      },
+      "means": {
+        "keep": -1.06,
+        "controller-delete": 0.86
+      },
+      "query_delta": 1.92,
+      "proper_target_comparison": true,
+      "target_delta": 1.92,
+      "choice": "controller-delete",
+      "target_reach": {
+        "keep": {
+          "reached": true,
+          "reason": "actual_target_consulted_with_matching_observed_prefix",
+          "checked_steps": 3
+        },
+        "controller-delete": {
+          "reached": true,
+          "reason": "actual_target_consulted_with_matching_observed_prefix",
+          "checked_steps": 3
+        }
+      },
+      "estimand": "one-task-observed-prefix"
+    },
+    {
+      "case": "late_controller",
+      "arm": "FutureValidated",
+      "observed": {
+        "keep": [
+          -1.06,
+          0.84
+        ],
+        "controller-delete": [
+          0.86,
+          0.84
+        ]
+      },
+      "means": {
+        "keep": -0.11000000000000004,
+        "controller-delete": 0.85
+      },
+      "query_delta": 0.96,
+      "proper_target_comparison": true,
+      "target_delta": 0.96,
+      "choice": "controller-delete",
+      "target_reach": {
+        "keep": {
+          "reached": true,
+          "reason": "actual_target_consulted_with_matching_observed_prefix",
+          "checked_steps": 3
+        },
+        "controller-delete": {
+          "reached": true,
+          "reason": "actual_target_consulted_with_matching_observed_prefix",
+          "checked_steps": 3
+        }
+      },
+      "estimand": "two-task-predeclared-future"
+    },
+    {
+      "case": "late_shadow",
+      "arm": "FirstCommandAblation",
+      "observed": {
+        "keep": [
+          -1.06
+        ],
+        "controller-delete": [
+          -1.06
+        ]
+      },
+      "means": {
+        "keep": -1.06,
+        "controller-delete": -1.06
+      },
+      "query_delta": 0.0,
+      "proper_target_comparison": false,
+      "target_delta": null,
+      "choice": "keep",
+      "target_reach": {
+        "keep": {
+          "reached": false,
+          "reason": "observed_state_control_or_command_prefix_differs",
+          "checked_steps": 2
+        },
+        "controller-delete": {
+          "reached": false,
+          "reason": "observed_state_control_or_command_prefix_differs",
+          "checked_steps": 2
+        }
+      },
+      "estimand": "first-command-only-ablation"
+    },
+    {
+      "case": "late_shadow",
+      "arm": "PrefixProbe",
+      "observed": {
+        "keep": [
+          -1.06
+        ],
+        "controller-delete": [
+          -1.06
+        ]
+      },
+      "means": {
+        "keep": -1.06,
+        "controller-delete": -1.06
+      },
+      "query_delta": 0.0,
+      "proper_target_comparison": true,
+      "target_delta": 0.0,
+      "choice": "keep",
+      "target_reach": {
+        "keep": {
+          "reached": true,
+          "reason": "actual_target_consulted_with_matching_observed_prefix",
+          "checked_steps": 3
+        },
+        "controller-delete": {
+          "reached": true,
+          "reason": "actual_target_consulted_with_matching_observed_prefix",
+          "checked_steps": 3
+        }
+      },
+      "estimand": "one-task-observed-prefix"
+    },
+    {
+      "case": "late_shadow",
+      "arm": "FutureValidated",
+      "observed": {
+        "keep": [
+          -1.06,
+          -1.06
+        ],
+        "controller-delete": [
+          -1.06,
+          -1.06
+        ]
+      },
+      "means": {
+        "keep": -1.06,
+        "controller-delete": -1.06
+      },
+      "query_delta": 0.0,
+      "proper_target_comparison": true,
+      "target_delta": 0.0,
+      "choice": "keep",
+      "target_reach": {
+        "keep": {
+          "reached": true,
+          "reason": "actual_target_consulted_with_matching_observed_prefix",
+          "checked_steps": 3
+        },
+        "controller-delete": {
+          "reached": true,
+          "reason": "actual_target_consulted_with_matching_observed_prefix",
+          "checked_steps": 3
+        }
+      },
+      "estimand": "two-task-predeclared-future"
+    }
+  ],
+  "prefix_vs_future_validation": [
+    {
+      "case": "late_controller",
+      "decision_agrees": true,
+      "all6_main_raw_identical": true,
+      "all6_post_R_L_I_identical": true
+    },
+    {
+      "case": "late_shadow",
+      "decision_agrees": true,
+      "all6_main_raw_identical": true,
+      "all6_post_R_L_I_identical": true
+    }
+  ],
+  "online_costs_excluding_shared4TX": {
+    "NoWrite": {
+      "rollout": 14,
+      "step": 87,
+      "transaction": 32
+    },
+    "DirectSite": {
+      "rollout": 14,
+      "step": 91,
+      "transaction": 34
+    },
+    "FirstCommandAblation": {
+      "rollout": 18,
+      "step": 109,
+      "transaction": 42
+    },
+    "PrefixProbe": {
+      "rollout": 18,
+      "step": 107,
+      "transaction": 43
+    },
+    "FutureValidated": {
+      "rollout": 22,
+      "step": 129,
+      "transaction": 51
+    }
+  },
+  "online_savings_prefix_vs_future": {
+    "rollout": {
+      "avoided": 4,
+      "fraction": 0.18181818181818182
+    },
+    "step": {
+      "avoided": 22,
+      "fraction": 0.17054263565891473
+    },
+    "transaction": {
+      "avoided": 8,
+      "fraction": 0.1568627450980392
+    }
+  },
+  "findings": {
+    "late_controller": "First-command-only tasks avoided UP target atstep2 after ordinaryTD, yieldedactualquerydelta0 buttargeteffectUNKNOWN/null. Fullobservedprefix reachedsite: keep-1.06/delete+.86, delta1.92. Futuretwo-taskdelta.96 is separatemean. MainNoWrite/ablation4of6 vsDirect/Prefix/Future5of6; firstsuccess task3vs2, sixmean+.32; endpointsall.84.",
+    "late_shadow": "Fullprefix also genuinelyreachedsameownsite, butPlantoverride survivesdeletion: keep/deleteboth-1.06, actualtargetdelta0, choosekeep. Allmain4of6 andsametraces; DirectdoespointlessXdelete. First-onlydidnotreachsite, soitszeroquerydiff isnotcausalzero proof.",
+    "cost": "Prefix18roll/107step/43TX vsFuture22/129/51, samemain6raw/postI/R/Lpercase. Shared4TXexcluded equally. PrefixnotcheapestagainstNoWrite/Direct. Historicaldiscovery/preparationnotfree.",
+    "sampling": "Fixed informed deterministic testsequence, including prospective main-e1 literalWAIT-RIGHT-UP; notblindseeds, naturalexplorationfrequency, formalXi, orpopulationinferentialN.",
+    "scope": "Observedprefixmodule doesnotreadmask/referenceQ/causelabel. Candidate vocabulary and query comparison stillengineered, no learned queryplanner or generalworldmodelclaim. Partialreach preservesnull; fullprefixdivergence/stochasticdomainsnotqualified."
+  },
+  "integrity": {
+    "native_input_before_after_equal": true,
+    "old_ledger_values_preserved": 88,
+    "old_provenance_preserved": 266,
+    "original313_unchanged": true,
+    "frozen_all_old_source": true,
+    "formal_original_whole_B1_backend_or_science_PASS": false,
+    "automation_not_touched": true
+  }
+}

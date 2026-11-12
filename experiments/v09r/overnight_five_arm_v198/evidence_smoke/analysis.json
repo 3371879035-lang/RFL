@@ -1,0 +1,531 @@
+{
+  "status": "COMPLETED_LOCAL_CONTINUATION",
+  "native": {
+    "exit_code": 0,
+    "interruption": null,
+    "wall_seconds": 85.2787782000014,
+    "peak_tree_rss": 4680409088,
+    "last_artifact_bytes": 105652925,
+    "finished_utc": "2026-11-08T16:55:02.307223+00:00"
+  },
+  "common_blocks": 2,
+  "seeds": [
+    93002
+  ],
+  "groups": [
+    {
+      "group": "RL-plain",
+      "seeds": 1,
+      "mean_score": 152.125,
+      "mean_steps": 84.75,
+      "capture_rate": 1.0,
+      "difference_vs_plain": 0.0,
+      "per_seed_difference": [
+        0.0
+      ],
+      "positive_seeds": 0,
+      "strata": {
+        "seen": 104.125,
+        "reserved_report": 200.125
+      },
+      "report_episodes_per_seed": 8
+    },
+    {
+      "group": "RL-outer",
+      "seeds": 1,
+      "mean_score": 188.75,
+      "mean_steps": 92.5,
+      "capture_rate": 0.875,
+      "difference_vs_plain": 36.625,
+      "per_seed_difference": [
+        36.625
+      ],
+      "positive_seeds": 1,
+      "strata": {
+        "seen": 245.0,
+        "reserved_report": 132.5
+      },
+      "report_episodes_per_seed": 8
+    },
+    {
+      "group": "F0",
+      "seeds": 1,
+      "mean_score": 48.6875,
+      "mean_steps": 24.125,
+      "capture_rate": 1.0,
+      "difference_vs_plain": -103.4375,
+      "per_seed_difference": [
+        -103.4375
+      ],
+      "positive_seeds": 0,
+      "strata": {
+        "seen": 22.5,
+        "reserved_report": 74.875
+      },
+      "report_episodes_per_seed": 8
+    },
+    {
+      "group": "F-RP",
+      "seeds": 1,
+      "mean_score": 188.75,
+      "mean_steps": 92.5,
+      "capture_rate": 0.875,
+      "difference_vs_plain": 36.625,
+      "per_seed_difference": [
+        36.625
+      ],
+      "positive_seeds": 1,
+      "strata": {
+        "seen": 245.0,
+        "reserved_report": 132.5
+      },
+      "report_episodes_per_seed": 8
+    },
+    {
+      "group": "F-R",
+      "seeds": 1,
+      "mean_score": 204.875,
+      "mean_steps": 78.25,
+      "capture_rate": 1.0,
+      "difference_vs_plain": 52.75,
+      "per_seed_difference": [
+        52.75
+      ],
+      "positive_seeds": 1,
+      "strata": {
+        "seen": 121.75,
+        "reserved_report": 288.0
+      },
+      "report_episodes_per_seed": 8
+    }
+  ],
+  "charged_steps_per_job": 32768,
+  "optimizer_steps_per_job": 256,
+  "total_actual_environment_steps": 177025,
+  "total_actual_optimizer_steps": 1280,
+  "input_pins_checked": 43,
+  "changed_inputs": [],
+  "mechanism_audit": [
+    {
+      "group": "RL-plain",
+      "complete_blocks": 2,
+      "mechanism_events": {
+        "optimizer": 256,
+        "episode": 364,
+        "ordinary_partial": 2
+      },
+      "optimizer_roles": {
+        "ordinary_online": 256
+      },
+      "environment_step_roles": {
+        "ordinary": 32768,
+        "interim_report": 1673
+      },
+      "history_suggestions": 0,
+      "teachers_tested": 0,
+      "teachers_qualified": 0,
+      "students_adopted": 0,
+      "ordinary_no_qualifying_failure": 0
+    },
+    {
+      "group": "RL-outer",
+      "complete_blocks": 2,
+      "mechanism_events": {
+        "optimizer": 256,
+        "episode": 375,
+        "fit": 2,
+        "dream": 2,
+        "adopt": 2,
+        "ordinary_partial": 2
+      },
+      "optimizer_roles": {
+        "ordinary_online": 240,
+        "ordinary": 16
+      },
+      "environment_step_roles": {
+        "ordinary": 32303,
+        "source": 465,
+        "interim_report": 1655
+      },
+      "history_suggestions": 0,
+      "teachers_tested": 0,
+      "teachers_qualified": 0,
+      "students_adopted": 0,
+      "ordinary_no_qualifying_failure": 2
+    },
+    {
+      "group": "F0",
+      "complete_blocks": 2,
+      "mechanism_events": {
+        "episode": 1241,
+        "optimizer": 256,
+        "history_proposal": 2,
+        "intervention": 2,
+        "fit": 6,
+        "dream": 2,
+        "adopt": 2,
+        "ordinary_partial": 2
+      },
+      "optimizer_roles": {
+        "ordinary_online": 208,
+        "ordinary": 16,
+        "weak": 16,
+        "strong": 16
+      },
+      "environment_step_roles": {
+        "ordinary": 32272,
+        "source": 75,
+        "trial": 102,
+        "reference_probe": 125,
+        "teacher_probe": 194,
+        "interim_report": 548
+      },
+      "history_suggestions": 1,
+      "teachers_tested": 4,
+      "teachers_qualified": 0,
+      "students_adopted": 0,
+      "ordinary_no_qualifying_failure": 0
+    },
+    {
+      "group": "F-RP",
+      "complete_blocks": 2,
+      "mechanism_events": {
+        "optimizer": 256,
+        "episode": 375,
+        "fit": 2,
+        "dream": 2,
+        "adopt": 2,
+        "ordinary_partial": 2
+      },
+      "optimizer_roles": {
+        "ordinary_online": 240,
+        "ordinary": 16
+      },
+      "environment_step_roles": {
+        "ordinary": 32303,
+        "source": 465,
+        "interim_report": 1655
+      },
+      "history_suggestions": 0,
+      "teachers_tested": 0,
+      "teachers_qualified": 0,
+      "students_adopted": 0,
+      "ordinary_no_qualifying_failure": 2
+    },
+    {
+      "group": "F-R",
+      "complete_blocks": 2,
+      "mechanism_events": {
+        "episode": 560,
+        "optimizer": 256,
+        "history_proposal": 2,
+        "intervention": 2,
+        "fit": 6,
+        "dream": 2,
+        "adopt": 2,
+        "ordinary_partial": 2
+      },
+      "optimizer_roles": {
+        "ordinary_online": 208,
+        "ordinary": 16,
+        "weak": 16,
+        "strong": 16
+      },
+      "environment_step_roles": {
+        "ordinary": 31511,
+        "source": 184,
+        "trial": 56,
+        "reference_probe": 339,
+        "teacher_probe": 678,
+        "interim_report": 1520
+      },
+      "history_suggestions": 0,
+      "teachers_tested": 4,
+      "teachers_qualified": 0,
+      "students_adopted": 0,
+      "ordinary_no_qualifying_failure": 0
+    }
+  ],
+  "ordinary_coverage": [
+    {
+      "seed": 93002,
+      "group": "RL-plain",
+      "finished_ordinary_episodes": 348,
+      "mean_episode_steps": 94.0632183908046,
+      "reached96": 159,
+      "reached160": 64,
+      "reached256": 11,
+      "score_mean": 179.3132183908046
+    },
+    {
+      "seed": 93002,
+      "group": "RL-outer",
+      "finished_ordinary_episodes": 355,
+      "mean_episode_steps": 90.78591549295774,
+      "reached96": 159,
+      "reached160": 58,
+      "reached256": 9,
+      "score_mean": 171.6718309859155
+    },
+    {
+      "seed": 93002,
+      "group": "F0",
+      "finished_ordinary_episodes": 1185,
+      "mean_episode_steps": 27.160337552742615,
+      "reached96": 35,
+      "reached160": 6,
+      "reached256": 1,
+      "score_mean": 48.67299578059072
+    },
+    {
+      "seed": 93002,
+      "group": "F-RP",
+      "finished_ordinary_episodes": 355,
+      "mean_episode_steps": 90.78591549295774,
+      "reached96": 159,
+      "reached160": 58,
+      "reached256": 9,
+      "score_mean": 171.6718309859155
+    },
+    {
+      "seed": 93002,
+      "group": "F-R",
+      "finished_ordinary_episodes": 504,
+      "mean_episode_steps": 62.45634920634921,
+      "reached96": 105,
+      "reached160": 25,
+      "reached256": 4,
+      "score_mean": 143.08928571428572
+    }
+  ],
+  "curves": [
+    {
+      "seed": 93002,
+      "group": "F0",
+      "block": 0,
+      "stage": "initial",
+      "charged_steps": 0,
+      "mean": 57.9375,
+      "mean_steps": 38.625,
+      "captured": 8,
+      "episodes": 8
+    },
+    {
+      "seed": 93002,
+      "group": "RL-plain",
+      "block": 0,
+      "stage": "initial",
+      "charged_steps": 0,
+      "mean": 144.0,
+      "mean_steps": 96.0,
+      "captured": 8,
+      "episodes": 8
+    },
+    {
+      "seed": 93002,
+      "group": "RL-outer",
+      "block": 0,
+      "stage": "initial",
+      "charged_steps": 0,
+      "mean": 144.0,
+      "mean_steps": 96.0,
+      "captured": 8,
+      "episodes": 8
+    },
+    {
+      "seed": 93002,
+      "group": "F-R",
+      "block": 0,
+      "stage": "initial",
+      "charged_steps": 0,
+      "mean": 152.0,
+      "mean_steps": 68.0,
+      "captured": 8,
+      "episodes": 8
+    },
+    {
+      "seed": 93002,
+      "group": "F-RP",
+      "block": 0,
+      "stage": "initial",
+      "charged_steps": 0,
+      "mean": 144.0,
+      "mean_steps": 96.0,
+      "captured": 8,
+      "episodes": 8
+    },
+    {
+      "seed": 93002,
+      "group": "RL-plain",
+      "block": 1,
+      "stage": "block001",
+      "charged_steps": 16384,
+      "mean": 214.0,
+      "mean_steps": 126.0,
+      "captured": 7,
+      "episodes": 8
+    },
+    {
+      "seed": 93002,
+      "group": "RL-outer",
+      "block": 1,
+      "stage": "block001",
+      "charged_steps": 16384,
+      "mean": 134.375,
+      "mean_steps": 81.25,
+      "captured": 8,
+      "episodes": 8
+    },
+    {
+      "seed": 93002,
+      "group": "F-RP",
+      "block": 1,
+      "stage": "block001",
+      "charged_steps": 16384,
+      "mean": 134.375,
+      "mean_steps": 81.25,
+      "captured": 8,
+      "episodes": 8
+    },
+    {
+      "seed": 93002,
+      "group": "F-R",
+      "block": 1,
+      "stage": "block001",
+      "charged_steps": 16384,
+      "mean": 146.125,
+      "mean_steps": 80.75,
+      "captured": 7,
+      "episodes": 8
+    },
+    {
+      "seed": 93002,
+      "group": "F0",
+      "block": 1,
+      "stage": "block001",
+      "charged_steps": 16384,
+      "mean": 45.0,
+      "mean_steps": 30.0,
+      "captured": 8,
+      "episodes": 8
+    },
+    {
+      "seed": 93002,
+      "group": "RL-plain",
+      "block": 2,
+      "stage": "block002",
+      "charged_steps": 32768,
+      "mean": 137.1875,
+      "mean_steps": 83.125,
+      "captured": 8,
+      "episodes": 8
+    },
+    {
+      "seed": 93002,
+      "group": "RL-outer",
+      "block": 2,
+      "stage": "block002",
+      "charged_steps": 32768,
+      "mean": 250.9375,
+      "mean_steps": 125.625,
+      "captured": 8,
+      "episodes": 8
+    },
+    {
+      "seed": 93002,
+      "group": "F-RP",
+      "block": 2,
+      "stage": "block002",
+      "charged_steps": 32768,
+      "mean": 250.9375,
+      "mean_steps": 125.625,
+      "captured": 8,
+      "episodes": 8
+    },
+    {
+      "seed": 93002,
+      "group": "F-R",
+      "block": 2,
+      "stage": "block002",
+      "charged_steps": 32768,
+      "mean": 263.875,
+      "mean_steps": 109.25,
+      "captured": 8,
+      "episodes": 8
+    },
+    {
+      "seed": 93002,
+      "group": "F0",
+      "block": 2,
+      "stage": "block002",
+      "charged_steps": 32768,
+      "mean": 57.75,
+      "mean_steps": 38.5,
+      "captured": 8,
+      "episodes": 8
+    },
+    {
+      "seed": 93002,
+      "group": "F0",
+      "block": 2,
+      "stage": "final",
+      "charged_steps": 32768,
+      "mean": 48.6875,
+      "mean_steps": 24.125,
+      "captured": 8,
+      "episodes": 8
+    },
+    {
+      "seed": 93002,
+      "group": "RL-plain",
+      "block": 2,
+      "stage": "final",
+      "charged_steps": 32768,
+      "mean": 152.125,
+      "mean_steps": 84.75,
+      "captured": 8,
+      "episodes": 8
+    },
+    {
+      "seed": 93002,
+      "group": "RL-outer",
+      "block": 2,
+      "stage": "final",
+      "charged_steps": 32768,
+      "mean": 188.75,
+      "mean_steps": 92.5,
+      "captured": 7,
+      "episodes": 8
+    },
+    {
+      "seed": 93002,
+      "group": "F-R",
+      "block": 2,
+      "stage": "final",
+      "charged_steps": 32768,
+      "mean": 204.875,
+      "mean_steps": 78.25,
+      "captured": 8,
+      "episodes": 8
+    },
+    {
+      "seed": 93002,
+      "group": "F-RP",
+      "block": 2,
+      "stage": "final",
+      "charged_steps": 32768,
+      "mean": 188.75,
+      "mean_steps": 92.5,
+      "captured": 7,
+      "episodes": 8
+    }
+  ],
+  "artifact_bytes_before_report": 159175310,
+  "limits": [
+    "Four existing pretrained seed clusters; no guarantee from long duration alone.",
+    "F0 means no environment reward/Q, but has explicit goal preferences.",
+    "Equal environment calls and optimizer steps, not identical FLOPs.",
+    "Historical similarity proposes a trial, not a proved complete cause.",
+    "Conditional Sleep is skipped if no teacher qualifies; no forced adoption."
+  ]
+}

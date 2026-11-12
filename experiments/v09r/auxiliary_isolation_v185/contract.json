@@ -1,0 +1,59 @@
+{
+  "schema": "V09_AUXILIARY_GRADIENT_ISOLATION_V185",
+  "utc": "2026-11-08T07:52:37.547234+00:00",
+  "parent_commit": "9f79093114f87d0296ac92cf8a8779e7e30b475c",
+  "authority": "那你解决吧，加油codex；先隔离事实辅助学习对Q的影响，再处理反馈选择",
+  "intervention": "For hybrids only, factual outcome input uses detached current representation; already detached transition/value targets remain unchanged. Clip core/Q parameters and factual heads separately, eachmaxnorm5; same Adam optimizer with independent perparameter states. All factual learning/history/planning still computes. Qphysicalbehavior and epsilon unchanged fromV184. F0 learning branch not changed or run.",
+  "matrix": {
+    "seeds": [
+      93001,
+      93002,
+      93003,
+      93004
+    ],
+    "arms": [
+      "F-RP",
+      "F-R"
+    ],
+    "models": 8,
+    "training_steps_each": 131072,
+    "total_train_steps": 1048576,
+    "checkpoints": [
+      0,
+      16384,
+      65536,
+      131072
+    ],
+    "full_eval_counts": [
+      128,
+      128,
+      128,
+      256
+    ],
+    "Q_eval_counts": [
+      128,
+      128,
+      128,
+      128
+    ],
+    "evaluation_episodes": 9216,
+    "environment_steps_upper": 3407872
+  },
+  "resources": {
+    "workers": 8,
+    "numeric_threads_each": 1,
+    "wall_seconds": 3600,
+    "aggregate_RAM_gib": 20,
+    "compressed_evidence_gib": 6,
+    "paid_compute": false,
+    "automation": false
+  },
+  "primary": [
+    "AgainstV184 sameQtraining: ownQ and full frozen performance at matched128scenes",
+    "AgainstV183 pureRL-RP: whetherRP core parameters and real training action/trajectory prefix exactlymatch; diagnostic not assumed success",
+    "Factualheads actuallylearn and memories/retrieval retained; no claimfeedbackbenefit merely becausebaseline restored",
+    "Old four coregroups retained as stored references; no F0repairclaim"
+  ],
+  "limits": "Knownpairedseeds notfreshconfirmation. Bundled removalofencodergradientandglobalclippingcoupling doesnotseparate theirindividual causalcontributions. F-R differs frompureRL-RP punishment; samecontroller comparisons validwithinarm. Readouteffect separate fromlearningeffect.",
+  "failure": "Exclusivecapture firstfailure/partialretained noautomaticretry. No64seedrestart or effectdrivenbudgetchange."
+}

@@ -1,0 +1,44 @@
+{
+  "schema": "V102_STORED_OBSERVATION_MUTATION_SENSITIVITY_NOT_SCIENCE",
+  "parent_commit": "9241e1b915e36a2cb4d3b67b923fbabfa2ded675",
+  "status": "FIRST_CHILD_EXIT0_SIX_OBSERVATION_MUTANTS_REJECTED_ONE_INTEGRATION_GAP_FOUND",
+  "native": {
+    "exit_code": 0,
+    "tests_or_probes": 6,
+    "seconds": 0.1034905999986222,
+    "started_at_utc": "2026-10-13T08:02:09.038273+00:00",
+    "completed_at_utc": "2026-10-13T08:02:09.145178+00:00",
+    "stdout_bytes": 1308,
+    "stdout_sha256": "c99d4cc9f75b0146ccf4c2c6ccda7dbd3c0e6574d0812ec3ded02d08c7016c53",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "automatic_retry": false,
+    "inputs_before_after_identical": true
+  },
+  "results": {
+    "stored_observation_mutants_rejected": 6,
+    "source_level_mutants_executed": 0,
+    "actual_records": {
+      "CORE_EPISODE": 12,
+      "INDEPENDENT_TD": 12,
+      "EXTERNAL_CURVE_VIEW": 4
+    },
+    "native_RFL_rollout_step_B1_transaction": 0,
+    "old_fixture_checker_native_reruns": 0,
+    "RFL_imports_or_calls": 0
+  },
+  "specific_gap": "V95 contract said its explored coordinate was an n=5 rejection example. Binding its actual captured traces shows every real explored step had two admissible actions. Thus the V95 multi-epoch curve did not exercise an n=5 rejection. A separate exact-arithmetic boundary probe at n=5 rejects uint64 MAX and consumes c=0,1; the flooring mutant picks the same action index here but consumes only c=0. This is a real coverage discrepancy, not an RFL mechanism failure.",
+  "mutation_limits": "Six in-memory mutants were applied to immutable already-captured observations and rejected by the corresponding invariant checks. This is not six source-mutant go-red runs, not a mutation of V95 code, and not formal keyed-stream qualification. The original six A91 gates remain separate.",
+  "independent_stored_audit": {
+    "exit_code": 0,
+    "records": 1,
+    "input_pins": 7,
+    "mutations_rejected": 6,
+    "source_level_mutants_executed": 0,
+    "RFL_or_old_checker_executed": false,
+    "independent_expert_or_science_gate": false
+  },
+  "scientific_status": "UNEVALUATED",
+  "collection_authorized": false,
+  "research_complete": false
+}

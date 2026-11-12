@@ -1,0 +1,81 @@
+{
+  "created_utc": "2026-11-10T11:51:10.577564+00:00",
+  "original_reviewer_sha256": "d0dbe3aeb65848a105321213aa2c0aa5f7d955a4bd7578ab8a13f6a41e4b8dc2",
+  "new_reviewer_sha256": "7bd58b72d279dfac94a710db19ee57ea1b5f9f705f41468cb0cd5160237f4800",
+  "original_exit_sha256": "27da64b3def32566a756ee7f1dfba6b7296f4918679cba8a816b6af2a7a4ce8d",
+  "diagnostic_sha256": "f039ad3143a3850d79a0e1b9d848d7b4291dd333f63a85b473bb1ab7afcdd1bc",
+  "completed_stored_reviews": {
+    "single_s00": {
+      "review_sha256": "2176ed896fb6813c7fe03974a8ee205a8920c7ff50f0220b9b2b132cbd96f883",
+      "raw_sha256": "e9292ecb5e9109ddeab17cfc3dc6bfbe30557be261c643c09896482c662763d5"
+    },
+    "single_s01": {
+      "review_sha256": "f70dfceea0e5e810f02483820f79c3a9908e95c55133cf8bd9615688a1c9fe28",
+      "raw_sha256": "c79339d5edcffb8ad2d2d8326c0fdc962eba01083e665b9181ef7b69b036229f"
+    },
+    "single_s02": {
+      "review_sha256": "498ded81ed8e8ca522af11043515db19656b3dd8ce5186b4eb3c10f6494969e3",
+      "raw_sha256": "dd34c8261e8916c06861e69f511a2d441d4a3948393966bbcd969264c2dcfa18"
+    },
+    "single_s03": {
+      "review_sha256": "b318fb0ce795b26678e95b79fc73acb2a6f3c6815e0d4a6bf19e681231c4722b",
+      "raw_sha256": "63063e44e3b4138b789281eba462b4562cba23b7f65f879d254ca0f94f8cf14a"
+    },
+    "single_s04": {
+      "review_sha256": "cb2d837079f5d411c2bae3ff2882798099d251e830e41ea75b15b8d8114bb711",
+      "raw_sha256": "f3a58300176fb6d233c773b74add891b4dae4956b8300737ef92bc651240b53a"
+    },
+    "single_s05": {
+      "review_sha256": "c7c3043e3dca32fedac8e22608ac49ed8d6bc74c8dceac72ff0ba500627488d9",
+      "raw_sha256": "df7b652f236a9f48b3f44397aab935acb1ed0ebca77ea8fd76fbcea120121ffc"
+    },
+    "switch_pair_s00": {
+      "review_sha256": "2b2d7aad58c23f961d948975f82b2a23a2aade7c5d90e5333c4fc99ae34874fb",
+      "raw_sha256": "137adbc3e26cc7499917749a3bb28ed8fc136ee048f2a383c8190b3e69f64215"
+    },
+    "switch_pair_s01": {
+      "review_sha256": "9fdd21d09cbde873803341307f9b79e2b38cb84e9c61281f29b9deb6feb628d2",
+      "raw_sha256": "d98d59118c0cfc99b19f5f17b46dba5a7d857ec8074093636f2a0baab8531de6"
+    },
+    "switch_pair_s02": {
+      "review_sha256": "de60a7f70e79cbc2da026c16bc5e47490ab0edd6f7a481930b1101de9b41235f",
+      "raw_sha256": "942fc948d859b9162cf825e54a86343862652cd304284a6798228ce5203d1014"
+    },
+    "switch_pair_s03": {
+      "review_sha256": "3c126e99c117748033142242be6a8fee3b0d3a0f63aaed6802f78fc2defc73d8",
+      "raw_sha256": "863a223841faa6d896992251fd4032f2697c1eff4d4264890a34180a368e5126"
+    },
+    "switch_pair_s04": {
+      "review_sha256": "bb5cae1750877cd348a52af042bda01cfb28f309f125e7a0c1261baeebf50663",
+      "raw_sha256": "885f337ca48597f743d1397022c630ed41b185f24550be763c6a7cb9857f35e1"
+    },
+    "switch_pair_s05": {
+      "review_sha256": "b31b9231a0efb640c4630c3817472c722a74ee4939eecbe828157a9d542a03bd",
+      "raw_sha256": "bc5b14ed20fc87211de1e51bc1c61c1433a78e1a99913fa2b708e3da94245594"
+    },
+    "triple_s02": {
+      "review_sha256": "9e470de564d47a6e9e2a2ba348176b29b1f9d536513451fa1c82c2607cca83a9",
+      "raw_sha256": "b753da5149232b91f92596a97a2c6265d66db61453ba4f39c8bd0bb683a3d2ec"
+    },
+    "triple_s04": {
+      "review_sha256": "67e95df969666734653340ca4cf3371b925a40fe7a2ffc384d14ea3176036490",
+      "raw_sha256": "43e700ec0447642e23cbcd7be62326db3d556f410bd60f8078ac3335f6b6010d"
+    },
+    "triple_s05": {
+      "review_sha256": "eca48e81ab0096ee9427f249bfc6c2847b7a600bf4b0699f009fae5316118d1f",
+      "raw_sha256": "ad6c6b87b00a9028a6d3401b0f348466fc01bf7809bd5874c4dadc1a05821fbb"
+    }
+  },
+  "remaining_shards": [
+    "noise_s00",
+    "noise_s01",
+    "noise_s02",
+    "noise_s03",
+    "noise_s04",
+    "noise_s05",
+    "triple_s00",
+    "triple_s01",
+    "triple_s03"
+  ],
+  "change": "Replace only candidate score builtin sum with native ordered += in audit logic; use new output paths and combine 15 unchanged completed stored reviews with 9 new reviews. No experiment rerun, no old checker rerun, no source/capture editing."
+}

@@ -1,0 +1,1248 @@
+{
+  "streams": [
+    {
+      "phase": "wiring",
+      "arm": "RL-RP",
+      "train_tasks": 2,
+      "train_successes": 1,
+      "train_steps": 4,
+      "train_curve": [
+        {
+          "epoch": 1,
+          "uid": 1,
+          "successes": 0,
+          "train_steps": 2,
+          "policy_ns": 3200,
+          "update_ns": 20400,
+          "shadow_ns": 0
+        },
+        {
+          "epoch": 2,
+          "uid": 2,
+          "successes": 1,
+          "train_steps": 4,
+          "policy_ns": 5100,
+          "update_ns": 29700,
+          "shadow_ns": 0
+        }
+      ],
+      "eval_banks": [
+        {
+          "checkpoint": 2,
+          "first_uid": 3,
+          "last_uid": 4,
+          "episodes": 2,
+          "successes": 1,
+          "steps": 3,
+          "program": [
+            0,
+            1,
+            0
+          ],
+          "mean_success": 0.5,
+          "frozen_before": "933adb8335ee572e18bd1308286ae71dbcfbba0a1d55eaaff2822640f36cd876",
+          "frozen_after": "933adb8335ee572e18bd1308286ae71dbcfbba0a1d55eaaff2822640f36cd876",
+          "live_after": "933adb8335ee572e18bd1308286ae71dbcfbba0a1d55eaaff2822640f36cd876",
+          "learning_writes": 0,
+          "policy_ns": 1600
+        }
+      ],
+      "counts": {
+        "source_instances": 1,
+        "policy_calls": 3,
+        "rollouts": 4,
+        "train_rollouts": 2,
+        "steps": 7,
+        "train_steps": 4,
+        "ordinary_backups": 4,
+        "numeric_changes": 7,
+        "replay_backups": 6,
+        "eval_rollouts": 2,
+        "eval_steps": 3
+      },
+      "final_state": {
+        "family": "Q",
+        "failure_reward": -1.0,
+        "q": [
+          0.5625,
+          0.0,
+          -0.875,
+          0.75,
+          0.0,
+          0.0
+        ],
+        "buffer": [
+          [
+            1,
+            0,
+            0,
+            0,
+            0.0,
+            1,
+            false
+          ],
+          [
+            1,
+            1,
+            1,
+            0,
+            -1.0,
+            1,
+            true
+          ],
+          [
+            2,
+            0,
+            0,
+            0,
+            0.0,
+            1,
+            false
+          ],
+          [
+            2,
+            1,
+            1,
+            1,
+            1.0,
+            3,
+            true
+          ]
+        ],
+        "history": [
+          1,
+          2
+        ]
+      },
+      "behavior_sha256": "3d2a13101fdf41d06d3be6b6ac3359824cf9cf447b017c87dfb647a47eb91807",
+      "source_unchanged": true
+    },
+    {
+      "phase": "wiring",
+      "arm": "RL-R",
+      "train_tasks": 2,
+      "train_successes": 1,
+      "train_steps": 4,
+      "train_curve": [
+        {
+          "epoch": 1,
+          "uid": 5,
+          "successes": 0,
+          "train_steps": 2,
+          "policy_ns": 1700,
+          "update_ns": 9200,
+          "shadow_ns": 0
+        },
+        {
+          "epoch": 2,
+          "uid": 6,
+          "successes": 1,
+          "train_steps": 4,
+          "policy_ns": 3300,
+          "update_ns": 17900,
+          "shadow_ns": 0
+        }
+      ],
+      "eval_banks": [
+        {
+          "checkpoint": 2,
+          "first_uid": 7,
+          "last_uid": 8,
+          "episodes": 2,
+          "successes": 1,
+          "steps": 3,
+          "program": [
+            0,
+            0,
+            0
+          ],
+          "mean_success": 0.5,
+          "frozen_before": "b66babc7e7dc8392866becddf94afecddce59e5652178b621b6fc54c3b7b40eb",
+          "frozen_after": "b66babc7e7dc8392866becddf94afecddce59e5652178b621b6fc54c3b7b40eb",
+          "live_after": "b66babc7e7dc8392866becddf94afecddce59e5652178b621b6fc54c3b7b40eb",
+          "learning_writes": 0,
+          "policy_ns": 1800
+        }
+      ],
+      "counts": {
+        "source_instances": 1,
+        "policy_calls": 3,
+        "rollouts": 4,
+        "train_rollouts": 2,
+        "steps": 7,
+        "train_steps": 4,
+        "ordinary_backups": 4,
+        "numeric_changes": 4,
+        "replay_backups": 6,
+        "eval_rollouts": 2,
+        "eval_steps": 3
+      },
+      "final_state": {
+        "family": "Q",
+        "failure_reward": 0.0,
+        "q": [
+          0.375,
+          0.0,
+          0.375,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "buffer": [
+          [
+            5,
+            0,
+            0,
+            0,
+            0.0,
+            1,
+            false
+          ],
+          [
+            5,
+            1,
+            1,
+            0,
+            0.0,
+            1,
+            true
+          ],
+          [
+            6,
+            0,
+            0,
+            0,
+            0.0,
+            1,
+            false
+          ],
+          [
+            6,
+            1,
+            1,
+            0,
+            1.0,
+            3,
+            true
+          ]
+        ],
+        "history": [
+          5,
+          6
+        ]
+      },
+      "behavior_sha256": "1df3ec8c76eed1a03f32311053d569a81be399999a032fda26486764eaaaadcc",
+      "source_unchanged": true
+    },
+    {
+      "phase": "wiring",
+      "arm": "F0",
+      "train_tasks": 2,
+      "train_successes": 1,
+      "train_steps": 4,
+      "train_curve": [
+        {
+          "epoch": 1,
+          "uid": 9,
+          "successes": 0,
+          "train_steps": 2,
+          "policy_ns": 8500,
+          "update_ns": 3700,
+          "shadow_ns": 0
+        },
+        {
+          "epoch": 2,
+          "uid": 10,
+          "successes": 1,
+          "train_steps": 4,
+          "policy_ns": 12300,
+          "update_ns": 6400,
+          "shadow_ns": 0
+        }
+      ],
+      "eval_banks": [
+        {
+          "checkpoint": 2,
+          "first_uid": 11,
+          "last_uid": 12,
+          "episodes": 2,
+          "successes": 1,
+          "steps": 3,
+          "program": [
+            0,
+            1,
+            0
+          ],
+          "mean_success": 0.5,
+          "frozen_before": "00e1e38f3a4113f8cd076c46f50ae6ca1275e5b1a251c301a02b3bc36814732e",
+          "frozen_after": "00e1e38f3a4113f8cd076c46f50ae6ca1275e5b1a251c301a02b3bc36814732e",
+          "live_after": "00e1e38f3a4113f8cd076c46f50ae6ca1275e5b1a251c301a02b3bc36814732e",
+          "learning_writes": 0,
+          "policy_ns": 4400
+        }
+      ],
+      "counts": {
+        "source_instances": 1,
+        "policy_calls": 3,
+        "rollouts": 4,
+        "train_rollouts": 2,
+        "steps": 7,
+        "train_steps": 4,
+        "fact_updates": 4,
+        "eval_rollouts": 2,
+        "eval_steps": 3,
+        "goal_planning_edges": 18
+      },
+      "final_state": {
+        "family": "F0",
+        "counts": [
+          [
+            2,
+            0
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "history": [
+          9,
+          10
+        ]
+      },
+      "behavior_sha256": "3d2a13101fdf41d06d3be6b6ac3359824cf9cf447b017c87dfb647a47eb91807",
+      "source_unchanged": true
+    },
+    {
+      "phase": "wiring",
+      "arm": "F-RP-FT",
+      "train_tasks": 2,
+      "train_successes": 1,
+      "train_steps": 4,
+      "train_curve": [
+        {
+          "epoch": 1,
+          "uid": 13,
+          "successes": 0,
+          "train_steps": 2,
+          "policy_ns": 8500,
+          "update_ns": 15200,
+          "shadow_ns": 21100
+        },
+        {
+          "epoch": 2,
+          "uid": 14,
+          "successes": 1,
+          "train_steps": 4,
+          "policy_ns": 14400,
+          "update_ns": 29700,
+          "shadow_ns": 37600
+        }
+      ],
+      "eval_banks": [
+        {
+          "checkpoint": 2,
+          "first_uid": 15,
+          "last_uid": 16,
+          "episodes": 2,
+          "successes": 1,
+          "steps": 3,
+          "program": [
+            1,
+            1,
+            0
+          ],
+          "mean_success": 0.5,
+          "frozen_before": "3e2a9e9ae748d34b16ce4069ebbbb574e7131c713d47ff9b32cad51c2700f9cd",
+          "frozen_after": "3e2a9e9ae748d34b16ce4069ebbbb574e7131c713d47ff9b32cad51c2700f9cd",
+          "live_after": "3e2a9e9ae748d34b16ce4069ebbbb574e7131c713d47ff9b32cad51c2700f9cd",
+          "learning_writes": 0,
+          "policy_ns": 6300
+        }
+      ],
+      "counts": {
+        "source_instances": 1,
+        "policy_calls": 3,
+        "rollouts": 4,
+        "train_rollouts": 2,
+        "steps": 7,
+        "train_steps": 4,
+        "ordinary_backups": 4,
+        "numeric_changes": 8,
+        "fact_updates": 4,
+        "eval_rollouts": 2,
+        "eval_steps": 3,
+        "actual_tie_candidate_scores": 18,
+        "shadow_calls": 2,
+        "shadow_M1_edges": 12,
+        "shadow_tie_scores": 12,
+        "model_backups": 6
+      },
+      "final_state": {
+        "family": "hybrid",
+        "failure_reward": -1.0,
+        "q": [
+          -0.25,
+          -0.027777777777777818,
+          -0.3750000000000001,
+          0.0,
+          0.41666666666666663,
+          0.0
+        ],
+        "buffer": [
+          [
+            13,
+            0,
+            0,
+            0,
+            0.0,
+            1,
+            false
+          ],
+          [
+            13,
+            1,
+            1,
+            0,
+            -1.0,
+            1,
+            true
+          ],
+          [
+            14,
+            0,
+            0,
+            1,
+            0.0,
+            2,
+            false
+          ],
+          [
+            14,
+            1,
+            2,
+            0,
+            1.0,
+            3,
+            true
+          ]
+        ],
+        "history": [
+          13,
+          14
+        ],
+        "mode": "FT",
+        "counts": [
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            0,
+            0
+          ]
+        ]
+      },
+      "behavior_sha256": "1ee24e309449461a0eb54e7adcb8b971086e498216ad9c2f617df8763ec92339",
+      "source_unchanged": true
+    },
+    {
+      "phase": "wiring",
+      "arm": "F-R-FT",
+      "train_tasks": 2,
+      "train_successes": 1,
+      "train_steps": 4,
+      "train_curve": [
+        {
+          "epoch": 1,
+          "uid": 17,
+          "successes": 0,
+          "train_steps": 2,
+          "policy_ns": 7100,
+          "update_ns": 13100,
+          "shadow_ns": 17400
+        },
+        {
+          "epoch": 2,
+          "uid": 18,
+          "successes": 1,
+          "train_steps": 4,
+          "policy_ns": 13000,
+          "update_ns": 24900,
+          "shadow_ns": 34700
+        }
+      ],
+      "eval_banks": [
+        {
+          "checkpoint": 2,
+          "first_uid": 19,
+          "last_uid": 20,
+          "episodes": 2,
+          "successes": 1,
+          "steps": 3,
+          "program": [
+            0,
+            0,
+            0
+          ],
+          "mean_success": 0.5,
+          "frozen_before": "a54b6f9640d512983e22ef7fed9b902dfc188670a98464bcc591eac1e0993787",
+          "frozen_after": "a54b6f9640d512983e22ef7fed9b902dfc188670a98464bcc591eac1e0993787",
+          "live_after": "a54b6f9640d512983e22ef7fed9b902dfc188670a98464bcc591eac1e0993787",
+          "learning_writes": 0,
+          "policy_ns": 5800
+        }
+      ],
+      "counts": {
+        "source_instances": 1,
+        "policy_calls": 3,
+        "rollouts": 4,
+        "train_rollouts": 2,
+        "steps": 7,
+        "train_steps": 4,
+        "ordinary_backups": 4,
+        "numeric_changes": 8,
+        "fact_updates": 4,
+        "eval_rollouts": 2,
+        "eval_steps": 3,
+        "actual_tie_candidate_scores": 18,
+        "shadow_calls": 2,
+        "shadow_M1_edges": 12,
+        "shadow_tie_scores": 12,
+        "model_backups": 6
+      },
+      "final_state": {
+        "family": "hybrid",
+        "failure_reward": 0.0,
+        "q": [
+          0.3246527777777778,
+          0.0,
+          0.5208333333333334,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "buffer": [
+          [
+            17,
+            0,
+            0,
+            0,
+            0.0,
+            1,
+            false
+          ],
+          [
+            17,
+            1,
+            1,
+            0,
+            0.0,
+            1,
+            true
+          ],
+          [
+            18,
+            0,
+            0,
+            0,
+            0.0,
+            1,
+            false
+          ],
+          [
+            18,
+            1,
+            1,
+            0,
+            1.0,
+            3,
+            true
+          ]
+        ],
+        "history": [
+          17,
+          18
+        ],
+        "mode": "FT",
+        "counts": [
+          [
+            2,
+            0
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            0
+          ]
+        ]
+      },
+      "behavior_sha256": "1df3ec8c76eed1a03f32311053d569a81be399999a032fda26486764eaaaadcc",
+      "source_unchanged": true
+    },
+    {
+      "phase": "wiring",
+      "arm": "F-RP-CT",
+      "train_tasks": 2,
+      "train_successes": 1,
+      "train_steps": 4,
+      "train_curve": [
+        {
+          "epoch": 1,
+          "uid": 21,
+          "successes": 0,
+          "train_steps": 2,
+          "policy_ns": 5600,
+          "update_ns": 9700,
+          "shadow_ns": 11800
+        },
+        {
+          "epoch": 2,
+          "uid": 22,
+          "successes": 1,
+          "train_steps": 4,
+          "policy_ns": 10000,
+          "update_ns": 20600,
+          "shadow_ns": 23500
+        }
+      ],
+      "eval_banks": [
+        {
+          "checkpoint": 2,
+          "first_uid": 23,
+          "last_uid": 24,
+          "episodes": 2,
+          "successes": 1,
+          "steps": 3,
+          "program": [
+            1,
+            1,
+            0
+          ],
+          "mean_success": 0.5,
+          "frozen_before": "dffe00d220c96591a4d48603967e55d621c857531ec41f662c036eb0ec5fd2bf",
+          "frozen_after": "dffe00d220c96591a4d48603967e55d621c857531ec41f662c036eb0ec5fd2bf",
+          "live_after": "dffe00d220c96591a4d48603967e55d621c857531ec41f662c036eb0ec5fd2bf",
+          "learning_writes": 0,
+          "policy_ns": 4400
+        }
+      ],
+      "counts": {
+        "source_instances": 1,
+        "policy_calls": 3,
+        "rollouts": 4,
+        "train_rollouts": 2,
+        "steps": 7,
+        "train_steps": 4,
+        "ordinary_backups": 4,
+        "numeric_changes": 8,
+        "fact_updates": 4,
+        "eval_rollouts": 2,
+        "eval_steps": 3,
+        "actual_tie_candidate_scores": 18,
+        "shadow_calls": 2,
+        "shadow_M1_edges": 12,
+        "shadow_tie_scores": 12,
+        "model_backups": 6
+      },
+      "final_state": {
+        "family": "hybrid",
+        "failure_reward": -1.0,
+        "q": [
+          -0.25,
+          -0.027777777777777818,
+          -0.3750000000000001,
+          0.0,
+          0.41666666666666663,
+          0.0
+        ],
+        "buffer": [
+          [
+            21,
+            0,
+            0,
+            0,
+            0.0,
+            1,
+            false
+          ],
+          [
+            21,
+            1,
+            1,
+            0,
+            -1.0,
+            1,
+            true
+          ],
+          [
+            22,
+            0,
+            0,
+            1,
+            0.0,
+            2,
+            false
+          ],
+          [
+            22,
+            1,
+            2,
+            0,
+            1.0,
+            3,
+            true
+          ]
+        ],
+        "history": [
+          21,
+          22
+        ],
+        "mode": "CT",
+        "counts": [
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            0,
+            0
+          ]
+        ]
+      },
+      "behavior_sha256": "1ee24e309449461a0eb54e7adcb8b971086e498216ad9c2f617df8763ec92339",
+      "source_unchanged": true
+    },
+    {
+      "phase": "wiring",
+      "arm": "F-R-CT",
+      "train_tasks": 2,
+      "train_successes": 1,
+      "train_steps": 4,
+      "train_curve": [
+        {
+          "epoch": 1,
+          "uid": 25,
+          "successes": 0,
+          "train_steps": 2,
+          "policy_ns": 4800,
+          "update_ns": 10200,
+          "shadow_ns": 12500
+        },
+        {
+          "epoch": 2,
+          "uid": 26,
+          "successes": 1,
+          "train_steps": 4,
+          "policy_ns": 9000,
+          "update_ns": 20600,
+          "shadow_ns": 24000
+        }
+      ],
+      "eval_banks": [
+        {
+          "checkpoint": 2,
+          "first_uid": 27,
+          "last_uid": 28,
+          "episodes": 2,
+          "successes": 1,
+          "steps": 3,
+          "program": [
+            0,
+            0,
+            0
+          ],
+          "mean_success": 0.5,
+          "frozen_before": "429ee2f311b6464aeebf9c9bc1d9b501cf883e14b3495819d41875fc8754e3eb",
+          "frozen_after": "429ee2f311b6464aeebf9c9bc1d9b501cf883e14b3495819d41875fc8754e3eb",
+          "live_after": "429ee2f311b6464aeebf9c9bc1d9b501cf883e14b3495819d41875fc8754e3eb",
+          "learning_writes": 0,
+          "policy_ns": 4400
+        }
+      ],
+      "counts": {
+        "source_instances": 1,
+        "policy_calls": 3,
+        "rollouts": 4,
+        "train_rollouts": 2,
+        "steps": 7,
+        "train_steps": 4,
+        "ordinary_backups": 4,
+        "numeric_changes": 8,
+        "fact_updates": 4,
+        "eval_rollouts": 2,
+        "eval_steps": 3,
+        "actual_tie_candidate_scores": 18,
+        "shadow_calls": 2,
+        "shadow_M1_edges": 12,
+        "shadow_tie_scores": 12,
+        "model_backups": 6
+      },
+      "final_state": {
+        "family": "hybrid",
+        "failure_reward": 0.0,
+        "q": [
+          0.3246527777777778,
+          0.0,
+          0.5208333333333334,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "buffer": [
+          [
+            25,
+            0,
+            0,
+            0,
+            0.0,
+            1,
+            false
+          ],
+          [
+            25,
+            1,
+            1,
+            0,
+            0.0,
+            1,
+            true
+          ],
+          [
+            26,
+            0,
+            0,
+            0,
+            0.0,
+            1,
+            false
+          ],
+          [
+            26,
+            1,
+            1,
+            0,
+            1.0,
+            3,
+            true
+          ]
+        ],
+        "history": [
+          25,
+          26
+        ],
+        "mode": "CT",
+        "counts": [
+          [
+            2,
+            0
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            0
+          ]
+        ]
+      },
+      "behavior_sha256": "1df3ec8c76eed1a03f32311053d569a81be399999a032fda26486764eaaaadcc",
+      "source_unchanged": true
+    },
+    {
+      "phase": "wiring",
+      "arm": "F-RP-M1",
+      "train_tasks": 2,
+      "train_successes": 1,
+      "train_steps": 4,
+      "train_curve": [
+        {
+          "epoch": 1,
+          "uid": 29,
+          "successes": 0,
+          "train_steps": 2,
+          "policy_ns": 8100,
+          "update_ns": 10400,
+          "shadow_ns": 10400
+        },
+        {
+          "epoch": 2,
+          "uid": 30,
+          "successes": 1,
+          "train_steps": 4,
+          "policy_ns": 16100,
+          "update_ns": 20700,
+          "shadow_ns": 20900
+        }
+      ],
+      "eval_banks": [
+        {
+          "checkpoint": 2,
+          "first_uid": 31,
+          "last_uid": 32,
+          "episodes": 2,
+          "successes": 1,
+          "steps": 3,
+          "program": [
+            0,
+            1,
+            0
+          ],
+          "mean_success": 0.5,
+          "frozen_before": "4d2f51b7cac6d127e68d5ce21972c14f3854b711e76ea787fd54e7c2ee107ebd",
+          "frozen_after": "4d2f51b7cac6d127e68d5ce21972c14f3854b711e76ea787fd54e7c2ee107ebd",
+          "live_after": "4d2f51b7cac6d127e68d5ce21972c14f3854b711e76ea787fd54e7c2ee107ebd",
+          "learning_writes": 0,
+          "policy_ns": 6600
+        }
+      ],
+      "counts": {
+        "source_instances": 1,
+        "policy_calls": 3,
+        "rollouts": 4,
+        "train_rollouts": 2,
+        "steps": 7,
+        "train_steps": 4,
+        "ordinary_backups": 4,
+        "numeric_changes": 9,
+        "fact_updates": 4,
+        "eval_rollouts": 2,
+        "eval_steps": 3,
+        "shadow_calls": 2,
+        "shadow_M1_edges": 12,
+        "shadow_tie_scores": 12,
+        "model_backups": 6,
+        "actual_M1_edges": 18
+      },
+      "final_state": {
+        "family": "hybrid",
+        "failure_reward": -1.0,
+        "q": [
+          -0.010416666666666671,
+          0.0,
+          -0.35416666666666674,
+          0.41666666666666663,
+          0.0,
+          0.0
+        ],
+        "buffer": [
+          [
+            29,
+            0,
+            0,
+            0,
+            0.0,
+            1,
+            false
+          ],
+          [
+            29,
+            1,
+            1,
+            0,
+            -1.0,
+            1,
+            true
+          ],
+          [
+            30,
+            0,
+            0,
+            0,
+            0.0,
+            1,
+            false
+          ],
+          [
+            30,
+            1,
+            1,
+            1,
+            1.0,
+            3,
+            true
+          ]
+        ],
+        "history": [
+          29,
+          30
+        ],
+        "mode": "M1",
+        "counts": [
+          [
+            2,
+            0
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            0
+          ]
+        ]
+      },
+      "behavior_sha256": "3d2a13101fdf41d06d3be6b6ac3359824cf9cf447b017c87dfb647a47eb91807",
+      "source_unchanged": true
+    },
+    {
+      "phase": "wiring",
+      "arm": "F-R-M1",
+      "train_tasks": 2,
+      "train_successes": 1,
+      "train_steps": 4,
+      "train_curve": [
+        {
+          "epoch": 1,
+          "uid": 33,
+          "successes": 0,
+          "train_steps": 2,
+          "policy_ns": 6400,
+          "update_ns": 9300,
+          "shadow_ns": 10400
+        },
+        {
+          "epoch": 2,
+          "uid": 34,
+          "successes": 1,
+          "train_steps": 4,
+          "policy_ns": 12000,
+          "update_ns": 19200,
+          "shadow_ns": 20200
+        }
+      ],
+      "eval_banks": [
+        {
+          "checkpoint": 2,
+          "first_uid": 35,
+          "last_uid": 36,
+          "episodes": 2,
+          "successes": 1,
+          "steps": 3,
+          "program": [
+            0,
+            1,
+            0
+          ],
+          "mean_success": 0.5,
+          "frozen_before": "d67617229bb53fbdcb70d2b0adce4b05debb9b56f131f921b46073566fc58a27",
+          "frozen_after": "d67617229bb53fbdcb70d2b0adce4b05debb9b56f131f921b46073566fc58a27",
+          "live_after": "d67617229bb53fbdcb70d2b0adce4b05debb9b56f131f921b46073566fc58a27",
+          "learning_writes": 0,
+          "policy_ns": 6300
+        }
+      ],
+      "counts": {
+        "source_instances": 1,
+        "policy_calls": 3,
+        "rollouts": 4,
+        "train_rollouts": 2,
+        "steps": 7,
+        "train_steps": 4,
+        "ordinary_backups": 4,
+        "numeric_changes": 8,
+        "fact_updates": 4,
+        "eval_rollouts": 2,
+        "eval_steps": 3,
+        "shadow_calls": 2,
+        "shadow_M1_edges": 12,
+        "shadow_tie_scores": 12,
+        "model_backups": 6,
+        "actual_M1_edges": 18
+      },
+      "final_state": {
+        "family": "hybrid",
+        "failure_reward": 0.0,
+        "q": [
+          0.2743055555555555,
+          0.0,
+          0.29166666666666663,
+          0.5833333333333333,
+          0.0,
+          0.0
+        ],
+        "buffer": [
+          [
+            33,
+            0,
+            0,
+            0,
+            0.0,
+            1,
+            false
+          ],
+          [
+            33,
+            1,
+            1,
+            0,
+            0.0,
+            1,
+            true
+          ],
+          [
+            34,
+            0,
+            0,
+            0,
+            0.0,
+            1,
+            false
+          ],
+          [
+            34,
+            1,
+            1,
+            1,
+            1.0,
+            3,
+            true
+          ]
+        ],
+        "history": [
+          33,
+          34
+        ],
+        "mode": "M1",
+        "counts": [
+          [
+            2,
+            0
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            0
+          ]
+        ]
+      },
+      "behavior_sha256": "3d2a13101fdf41d06d3be6b6ac3359824cf9cf447b017c87dfb647a47eb91807",
+      "source_unchanged": true
+    }
+  ],
+  "counts": {
+    "source_instances": 9,
+    "policy_calls": 27,
+    "rollouts": 36,
+    "train_rollouts": 18,
+    "steps": 63,
+    "train_steps": 36,
+    "ordinary_backups": 32,
+    "numeric_changes": 60,
+    "replay_backups": 12,
+    "fact_updates": 28,
+    "eval_rollouts": 18,
+    "eval_steps": 27,
+    "goal_planning_edges": 18,
+    "actual_tie_candidate_scores": 72,
+    "shadow_calls": 12,
+    "shadow_M1_edges": 72,
+    "shadow_tie_scores": 72,
+    "model_backups": 36,
+    "actual_M1_edges": 36
+  }
+}

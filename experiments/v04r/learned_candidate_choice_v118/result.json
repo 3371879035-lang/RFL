@@ -1,0 +1,219 @@
+{
+  "schema": "V118_LOCAL_LEARNED_SELECTION_ACTUAL_COMPARISON",
+  "date_asia_shanghai": "2026-11-06",
+  "parent_commit": "4d9cabb918bc25f847181271daf791fcd59f9b35",
+  "status": "FINITE_TRAIN_FREEZE_HELDOUT_COMPARISON_COMPLETE",
+  "V03_local_stage_complete": true,
+  "V04_full_learned_causal_pipeline_complete": false,
+  "question": "Can a small value selector learn from actual consequences when to correct and when to keep, rather than always editing after failure?",
+  "training": {
+    "factual_cases": 8,
+    "failure_triggered_candidate_branches": 12,
+    "actual_branch_continuation_rollouts": 24,
+    "feature_classes": 6,
+    "candidates_per_class": 2,
+    "returns_per_candidate": 2,
+    "parameters_frozen_before_holdout": true,
+    "features": "mode, actual observed terminal, visible command/execution mismatch; not context ID, evaluator truth or hidden fault"
+  },
+  "held_out": {
+    "contexts": "selector trained on kappa0, evaluated on kappa1; DQ magnitude changes4->6 for collision and8->6 for timeout; common Q* prior already covers both kappas",
+    "case_types": [
+      "collision",
+      "timeout",
+      "external_trap",
+      "success_control"
+    ],
+    "case_count_per_mode": 4,
+    "arms": [
+      "TaskTD",
+      "AlwaysClear",
+      "LearnedChoice"
+    ],
+    "ordinary_followups_per_arm_case": 2,
+    "factual_ordinary_learning_in_all_arms": true,
+    "one_event_correction_only": true,
+    "independent_statistical_seeds": false
+  },
+  "paired_cases": [
+    {
+      "LearnedChoice_minus_AlwaysClear": 0,
+      "LearnedChoice_minus_TaskTD": 0.96,
+      "case": "collision",
+      "means": {
+        "AlwaysClear": 0.88,
+        "LearnedChoice": 0.88,
+        "TaskTD": -0.08000000000000002
+      },
+      "mode": "dq"
+    },
+    {
+      "LearnedChoice_minus_AlwaysClear": 0,
+      "LearnedChoice_minus_TaskTD": 2.12,
+      "case": "timeout",
+      "means": {
+        "AlwaysClear": 0.88,
+        "LearnedChoice": 0.88,
+        "TaskTD": -1.24
+      },
+      "mode": "dq"
+    },
+    {
+      "LearnedChoice_minus_AlwaysClear": 0.94,
+      "LearnedChoice_minus_TaskTD": 0,
+      "case": "external_trap",
+      "means": {
+        "AlwaysClear": -0.08000000000000002,
+        "LearnedChoice": 0.86,
+        "TaskTD": 0.86
+      },
+      "mode": "dq"
+    },
+    {
+      "LearnedChoice_minus_AlwaysClear": 0,
+      "LearnedChoice_minus_TaskTD": 0,
+      "case": "success",
+      "means": {
+        "AlwaysClear": 0.88,
+        "LearnedChoice": 0.88,
+        "TaskTD": 0.88
+      },
+      "mode": "dq"
+    },
+    {
+      "LearnedChoice_minus_AlwaysClear": 0,
+      "LearnedChoice_minus_TaskTD": 0,
+      "case": "collision",
+      "means": {
+        "AlwaysClear": 0.88,
+        "LearnedChoice": 0.88,
+        "TaskTD": 0.88
+      },
+      "mode": "patch-adaptive"
+    },
+    {
+      "LearnedChoice_minus_AlwaysClear": 0,
+      "LearnedChoice_minus_TaskTD": 0,
+      "case": "timeout",
+      "means": {
+        "AlwaysClear": 0.88,
+        "LearnedChoice": 0.88,
+        "TaskTD": 0.88
+      },
+      "mode": "patch-adaptive"
+    },
+    {
+      "LearnedChoice_minus_AlwaysClear": 0,
+      "LearnedChoice_minus_TaskTD": 0,
+      "case": "external_trap",
+      "means": {
+        "AlwaysClear": 0.86,
+        "LearnedChoice": 0.86,
+        "TaskTD": 0.86
+      },
+      "mode": "patch-adaptive"
+    },
+    {
+      "LearnedChoice_minus_AlwaysClear": 0,
+      "LearnedChoice_minus_TaskTD": 0,
+      "case": "success",
+      "means": {
+        "AlwaysClear": 0.88,
+        "LearnedChoice": 0.88,
+        "TaskTD": 0.88
+      },
+      "mode": "patch-adaptive"
+    }
+  ],
+  "descriptive_fixed_case_aggregates": [
+    {
+      "arms": {
+        "AlwaysClear": {
+          "descriptive_mean_future_return_over_four_fixed_cases": 0.64,
+          "future_successes": 7,
+          "future_tasks": 8,
+          "online_diagnostic_address_edits": 15,
+          "online_diagnostic_transactions": 3
+        },
+        "LearnedChoice": {
+          "descriptive_mean_future_return_over_four_fixed_cases": 0.875,
+          "future_successes": 8,
+          "future_tasks": 8,
+          "online_diagnostic_address_edits": 14,
+          "online_diagnostic_transactions": 2
+        },
+        "TaskTD": {
+          "descriptive_mean_future_return_over_four_fixed_cases": 0.105,
+          "future_successes": 5,
+          "future_tasks": 8,
+          "online_diagnostic_address_edits": 0,
+          "online_diagnostic_transactions": 0
+        }
+      },
+      "mode": "dq"
+    },
+    {
+      "arms": {
+        "AlwaysClear": {
+          "descriptive_mean_future_return_over_four_fixed_cases": 0.875,
+          "future_successes": 8,
+          "future_tasks": 8,
+          "online_diagnostic_address_edits": 15,
+          "online_diagnostic_transactions": 3
+        },
+        "LearnedChoice": {
+          "descriptive_mean_future_return_over_four_fixed_cases": 0.875,
+          "future_successes": 8,
+          "future_tasks": 8,
+          "online_diagnostic_address_edits": 0,
+          "online_diagnostic_transactions": 0
+        },
+        "TaskTD": {
+          "descriptive_mean_future_return_over_four_fixed_cases": 0.875,
+          "future_successes": 8,
+          "future_tasks": 8,
+          "online_diagnostic_address_edits": 0,
+          "online_diagnostic_transactions": 0
+        }
+      },
+      "mode": "patch-adaptive"
+    }
+  ],
+  "actual_execution": {
+    "native_first_exit": 0,
+    "stored_check_first_exit_observed": 0,
+    "rollout": 104,
+    "step": 624,
+    "transactions": 148,
+    "records": 586,
+    "all_ordinary_TD_full_R_L_checked": 104,
+    "input_pins_unchanged": 326,
+    "online_diagnostic_transactions": 8,
+    "online_diagnostic_address_edits": 44,
+    "development_candidate_address_edits": 30,
+    "automatic_retry": false,
+    "new_keys": 0,
+    "formal_collection": false
+  },
+  "interpretation": [
+    "DQ: learned correction improves collision/timeout followups relative to ordinary task learning, while learned keep avoids the extra trap failure caused by unconditional clearing.",
+    "Revised patch: ordinary learning already restores the declared cases. LearnedChoice keeps, ties TaskTD returns and avoids the fifteen address edits made by AlwaysClear.",
+    "Successful task outcomes never start diagnosis or candidate-value training. Successful continuations can be return targets of an already failure-triggered candidate experiment.",
+    "The learned object is a two-action consequence table, not a learned causal posterior or a discovered general repair algorithm.",
+    "Twenty-four developmental probe rollouts are an extra training cost. Online held-out gains do not establish total compute-time or net resource savings."
+  ],
+  "limits": [
+    "Only four fixed task types per mode, two continuation returns per candidate; no population inference/CI/equivalence/architecture ranking.",
+    "Q* prior/reset-to-prior and revised patch policy-improvement boundaries remain; no from-scratch learning claim.",
+    "No noisy-feedback or full cause/address localization test; no full recurrent diagnostic policy, no formal V04 PASS or old gate transfer."
+  ],
+  "next_work": "Compare finer factual-address repair candidates, rather than clearing every factual entry, so the learned selector must choose where to change and preserve useful ordinary learning. Keep the same local, result-neutral bounded experimental style; do not repeat this completed batch.",
+  "preservation": {
+    "frozen313_match": true,
+    "previous_ledger_keys_preserved": 56,
+    "old_provenance_preserved": 266,
+    "old_executed_modules_and_results_unchanged": true,
+    "old_checker_or_native_reruns": 0,
+    "automation_inspected_or_modified": false
+  }
+}

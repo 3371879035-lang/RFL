@@ -1,0 +1,166 @@
+{
+  "schema": "RFL_V03_WORKPLAN_RESET_V89",
+  "status": "CURRENT_HUMAN_WORK_ORDER_NOT_NEW_SCIENTIFIC_PROTOCOL",
+  "recorded_at": "2026-10-12T12:54:16+08:00",
+  "timezone": "Asia/Shanghai",
+  "human_request": "那重新安排吧，继续V0.3",
+  "parent_commit": "224d5992f5a47a0b602128e668cda8c92893c3b5",
+  "branch": "study/v03r-dense-measurement-20261009",
+  "research_question": "给定分T/P责任反馈后，合法持久更新是否改善未来学习；原Utility/Collateral/Retention/T约束保留。",
+  "governing_source": "docs/rebuild/12-AMENDMENTS.md:3157",
+  "role_boundary": {
+    "learner": "依据原实验臂允许的信息及实际经验学习；不由Codex逐步筛选反馈、动作或探索位置。",
+    "codex": "Dream-RSI/RRSI只用于研究工作方法，不加入learner。",
+    "not_new_research_requirements": [
+      "学习反馈价值选择",
+      "学习探索调度",
+      "去掉所有Q*先验",
+      "从零训练",
+      "LLM权重自我改进"
+    ],
+    "existing_prior": "注入Q*同时进入greedy及TD，不仅用于评分；解释为带参考先验的恢复/保持实验。",
+    "fixed_epsilon": "保留原共同对照设定；1/10不是自主探索能力证明。"
+  },
+  "current_work_item": {
+    "id": "P0_TRAIN_EVAL_STATE_CONSISTENCY",
+    "state": "OPEN_WITH_KNOWN_CONDITIONAL_PATCH_INCOMPATIBILITY",
+    "known_facts_reused_without_rerun": [
+      "training greedy绕过D，而ordinary评估读取D。",
+      "非空D保留且TD产生非空canonical Q时，原互斥guard正确拒绝后续provider构造。"
+    ],
+    "immediate_limit": "原冻结约束不能仅靠动作wrapper闭合patch持续训练；不能声称本轮已修复。",
+    "minimum_decision_boundary": "改变核心学习state/输入可见性/目标/行为优先级必须说明具体最小修改及研究影响并取得对应范围；排期批准不自动批准v87。",
+    "v87_backend_selected": false,
+    "new_backend_implementation_authorized": false,
+    "completed_static_audits_not_repeated": true,
+    "no_substitute": [
+      "半wrapper",
+      "删除D或nonowner",
+      "healthy reset",
+      "Q转换",
+      "松guard",
+      "永久补丁代替学习",
+      "排除patch科学臂",
+      "无限新状态fixture"
+    ]
+  },
+  "stages": [
+    {
+      "id": "P0",
+      "work": "训练/评估/完整状态兼容性",
+      "exit": "各来源架构合法持续学习语义明确；必要修订获对应批准，实现并有来源绑定验证。",
+      "status": "OPEN"
+    },
+    {
+      "id": "P1",
+      "work": "有限端到端隔离工程验证",
+      "exit": "同pre两臂whole更新、完整独立future starts、实际后续学习及只读评估；完整raw/TD/store/ordered mean/失败证据。",
+      "status": "NOT_RUN",
+      "restrictions": "事前有限contract/预算/输入/独占capture，无science/workload key分配；须取得所需具体运行范围。不是旧fixture重跑或科学效果估计。"
+    },
+    {
+      "id": "P2",
+      "work": "完整研究测量与执行资格",
+      "exit": "整组Collateral科学定义、全k/shape公平family、资格/方向/多重检验、完整资源及oncegate闭合；需新增科学规则另具体批准。",
+      "status": "OPEN_UNADOPTED_WHOLE_MEASUREMENT_RULE"
+    },
+    {
+      "id": "P3",
+      "work": "原正式配对比较与最终分析",
+      "exit": "明确keys/采集权限、完整前瞻冻结后正式primary400/secondary200；原完整终点合取。",
+      "status": "COLLECTION_CLOSED_NOT_AUTHORIZED"
+    }
+  ],
+  "removed_from_active_queue": [
+    "完成bank/签名/状态例子的扩充",
+    "历史去重与重复范围报告",
+    "将候选calibration ALL旁支作为所有工作的前提",
+    "将自主探索或Dream-RSI/RRSI新增为V0.3实验模块"
+  ],
+  "preserved_requirements": [
+    "313冻结源码及API/guard/B1law/registry",
+    "F0/F1/dev_lock原字节和旧结果资格边界",
+    "全部真实manifestations与owner/nonowner/residual/unread/sentinel",
+    "全k/shape、独立同extensional DQ/patch、公平context预算",
+    "samepre一次whole事务、全receipt、同tierNoWrite",
+    "T/P分离和原正式400/200完整最终合取",
+    "全部旧失败/partial/零/不利证据",
+    "ALL153792 pendingunique/125366 refs及未决fullstore记录不重算"
+  ],
+  "no_new_authority": [
+    "new core learner backend or priority",
+    "scientific rule adoption",
+    "science/workload key allocation",
+    "formal future training/collector/collection",
+    "new native calibration",
+    "old fixture/checker/native reruns"
+  ],
+  "automation": {
+    "id": "rfl-a96",
+    "kind": "heartbeat",
+    "name": "RFL A96 密集测量研究续接",
+    "target_thread_id": "01a04e31-be68-7c23-8958-542a4ea9cfda",
+    "requested_status": "ACTIVE",
+    "observed_status_before": "PAUSED",
+    "cadence_minutes": 15,
+    "human_resume_authority": "本次直接人类重新安排并继续请求；保持同任务同聊天，不新建。",
+    "product_update_verification": "ACTUAL_PRODUCT_UPDATE_SUCCEEDED_AND_PHYSICAL_TOML_EXACT_PROMPT_FIELDS_VERIFIED",
+    "prompt_chars": 2340,
+    "prompt": "SAVED_IN_PRODUCT_AUTOMATION_NOT_HISTORICAL_SUFFIX_CONCATENATION",
+    "backup_before_reset": {
+      "path": "C:/Users/huani/.codex/automations/rfl-a96/automation.before-v03-reset-20261012.toml",
+      "sha256": "031c59d5f1d956f535826cdc2fc8754736b4be523d5abcae26d429e54cd01381"
+    },
+    "actual_status": "ACTIVE",
+    "prompt_sha256": "685344ee6ff65e724ab75203d1346fd3af48947082f609f93e37ac426433db9c",
+    "actual_config_sha256": "67e6e0479260c2b21f43d1002980dccec9dbf23d5d38a0960fca1b5fd57d0b37",
+    "updated_at": 1791781092284
+  },
+  "evidence_index_preservation": {
+    "old_ledger_semantic_sha256": "63ef2a3588497f2354785f4a34c29bd831ad73ec76c703616c5da37b2f2d620f",
+    "old_provenance_count": 266,
+    "old_provenance_semantic_sha256": "0b1d125634babebc4b70765d92fde7a1c1e37574fed8e6c62265e8b8162592cb",
+    "old_latest_preparation_semantic_sha256": "624c3055e18c6123e0ed1570798c3f324fd23e2448c80a96d2aa2ac42e031100",
+    "new_field": "current_v03_workplan",
+    "history_role": "只新增当前安排索引；历史latest_preparation/provenance/v88记录不覆盖，不把安排当native回执。"
+  },
+  "source_files": [
+    {
+      "path": "docs/rebuild/12-AMENDMENTS.md",
+      "bytes": 540800,
+      "sha256": "3721d35f7e7f860ee4ac1f506f876b1a3e22e7ee2224cb1acc369b98fca11170"
+    },
+    {
+      "path": "docs/rebuild/34-A96-DENSE-MEASUREMENT.md",
+      "bytes": 6263,
+      "sha256": "80192208555069d834a83d6050d3dd428412d72c8b3ca14d8429bbb8b03a6553"
+    },
+    {
+      "path": "src/rfl_rebuild/b2/training.py",
+      "bytes": 22321,
+      "sha256": "0342626da5a111952873f33028866718a5504c2535e31d8790af952e08c472d6"
+    },
+    {
+      "path": "src/rfl_rebuild/b2/environment.py",
+      "bytes": 8884,
+      "sha256": "c25ed7940489e341e781e47b8d98dd0e6d723985477b71a87611e2007c4a7087"
+    },
+    {
+      "path": "src/rfl_rebuild/learner/store.py",
+      "bytes": 30097,
+      "sha256": "2c41ce68994020cad87c6ccd6bba4fb6ca231a0cb1ef43ff0f3756b3dbf523c4"
+    },
+    {
+      "path": "experiments/v03r/a96_dense/dev_lock.json",
+      "bytes": 35631,
+      "sha256": "7d43ee9ae33a218e1266ab3cd2351e07d7e30922302e4527c65facbddaa3472f"
+    },
+    {
+      "path": "experiments/v03r/a96_dense/b2_prepare/learner_control_source_boundary_v88.json",
+      "bytes": 14535,
+      "sha256": "a71b70b80fdb35e8e254ec743d8e43298f6204d6626dc825d54f71f1e289b11b"
+    }
+  ],
+  "execution_this_change": "仅任务配置/技术JSON/账本当前安排索引；未实现后端、未执行研究代码、未训练或采集。",
+  "scientific_status": "UNEVALUATED_COLLECTION_CLOSED_RESEARCH_INCOMPLETE"
+}

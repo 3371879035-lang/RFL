@@ -1,0 +1,140 @@
+{
+  "schema": "V05_FEEDBACK_EFFICIENCY_PLAN_V168",
+  "date_asia_shanghai": "2026-11-07",
+  "parent_commit": "fc1fe4b7c1e7be7bd48ecb6bbebe40318f4f7add",
+  "status": "DESIGN_DEFINED_NOT_IMPLEMENTED_NOT_EXECUTED",
+  "authority": {
+    "direct_user_request": "可以，你继续制定V0.5吧",
+    "this_delivery": "Define the local V0.5 concept, comparison and finite first experiment; do not execute training or change old evidence.",
+    "historical_experience_is_feedback": true,
+    "effectiveness_and_efficiency_are_both_valid": true
+  },
+  "question": "Can better use of current and historical feedback improve performance per interaction or reduce work to the same performance, and what additional contribution do explicit reward and punishment make?",
+  "claim_scope": "Finite engineering cases; no independent-seed inference, formal qualification or universal superiority.",
+  "signal_channels": {
+    "RP": {"success": 1.0, "failure": -1.0, "nonterminal": 0.0},
+    "R": {"success": 1.0, "failure": 0.0, "nonterminal": 0.0},
+    "F": {
+      "success": null,
+      "failure": null,
+      "nonterminal": null,
+      "null_semantics": "Reward field absent from learner input, not a zero-reward TD learner.",
+      "goal_and_factual_outcomes_preserved": true,
+      "mechanism": "Conditional factual transition memory and goal-directed search; no scalar task-reward update."
+    }
+  },
+  "feedback_modes": {
+    "P": "Simple feedback and fixed supplemental-practice/local-candidate schedule; raw history and ordinary learning remain enabled.",
+    "S": "Same base learner with conditional experience indexing and evidence-directed experiment selection; keep and unknown-probe allowed."
+  },
+  "arms": ["P-RP", "S-RP", "P-R", "S-R", "P-F", "S-F"],
+  "matching": {
+    "same_goal_observation_initial_knowledge": true,
+    "same_action_and_local_edit_capabilities": true,
+    "same_task_order_and_exogenous_engineering_coordinates": true,
+    "ordinary_learning_and_success_memory_all_arms": true,
+    "success_extra_diagnosis": false,
+    "extra_trial_limit_same_actual_work_reported": true,
+    "shared_raw_history_format_not_shared_live_state": true,
+    "RP_vs_R": "Same Q update and initialization; only terminal failure reward changes.",
+    "F_vs_reward_channels": "Whole-method comparison because the reward-free policy update differs; not a one-scalar causal ablation."
+  },
+  "learner_boundary": {
+    "RP_R_alpha": 0.5,
+    "RP_R_gamma": 1.0,
+    "exploration_intent": 0.1,
+    "first_streams": "Prospective deterministic engineering coordinates, not formal keyed or iid random streams.",
+    "initial_Q_for_RP_R": "Zero task-specific values; no healthy Q* import.",
+    "initial_experience": "Empty task-specific history for every arm; common reward-independent nominal action/topology/goal knowledge only.",
+    "no_prior_v04_value_tree_or_reward_checkpoint": true,
+    "no_hidden_truth_in_features_or_candidate_filter": true,
+    "current_evidence_scope_and_once_consumption": true,
+    "failure_does_not_force_edit_or_global_action_ban": true,
+    "no_new_failure_penalty_beyond_declared_channel": true,
+    "source_environment_unchanged_by_local_policy_repair": true
+  },
+  "first_matrix": {
+    "environment": "New versioned small serial-junction rooms; old V03/V04 kernel and captures remain unchanged.",
+    "difficulty_variable": "Number of sequential decision points only",
+    "decision_points": [1, 3, 5],
+    "mirror_instances_each": 2,
+    "cases": 6,
+    "streams_each_case": 6,
+    "streams_total": 36,
+    "main_tasks_each_stream": 48,
+    "cold_tasks": 24,
+    "continued_tasks": 24,
+    "reset_between_cold_and_continued": false,
+    "max_extra_trials_each_stream": 12,
+    "P_max_trials_per_main_failure": 2,
+    "S_max_trials_per_main_failure": 2,
+    "max_environment_steps_each_rollout": 12,
+    "native_main_cap": 1728,
+    "native_extra_cap": 432,
+    "native_matrix_cap": 2160,
+    "matrix_step_cap": 25920,
+    "independent_seed_count_claimed": 0,
+    "runtime_manifest_not_yet_written": [
+      "Exact room coordinates, mirrored layouts and equal-count controller mappings",
+      "Common initial state, episode coordinates and immutable observation schema",
+      "P fixed candidate cycle and S conditional matching/unknown selection rules",
+      "Source inventory, capture path and first-call budget enforcement"
+    ],
+    "manifest_rule": "Resolve before first native call from legal task design, not from effect-seeking runs; explicit revision for material changes."
+  },
+  "metrics": {
+    "early_main_prefixes": [12, 24, 48],
+    "primary": ["Main successes and failures by prefix", "Full cumulative main-failure curve", "Successful main deliveries against total environment work"],
+    "target": {
+      "definition": "First main-task index ending a run of 12 consecutive main successes",
+      "cost_to_target": ["All main and trial rollouts", "All environment steps", "Compute time", "State writes"],
+      "not_reached": "NOT_REACHED_RIGHT_CENSORED_NEVER_ZERO",
+      "later_failures_retained": true,
+      "not_a_claim_of_permanent_mastery": true
+    },
+    "secondary": ["Repeated mistakes", "Wrong repairs and protection damage", "Revisit regressions", "Cold versus continued-phase cost including acquired history"],
+    "no_cross_channel_raw_reward_ranking": true,
+    "no_new_scalar_cost_weight": true,
+    "identical_trial_caps_not_called_identical_actual_cost": true,
+    "extra_trial_failures_retained_in_total_work": true
+  },
+  "planned_total_budget": {
+    "minimal_wiring_native_rollouts_cap": 6,
+    "minimal_wiring_steps_cap": 72,
+    "all_native_rollouts_cap": 2166,
+    "all_environment_steps_cap": 25992,
+    "wall_seconds_cap": 1200,
+    "capture_bytes_cap": 134217728,
+    "hardware": "Local CPU only",
+    "paid_resources": false,
+    "formal_keys_RNG_collector": false,
+    "automation_change": false,
+    "dense_evaluation_banks": false,
+    "status": "Planned ceiling, not a measured runtime or executable permit"
+  },
+  "implementation_sequence": [
+    "One new minimal end-to-end three-channel wiring; real feedback, active learning, failure-only trial and once-consumed experience; no reward leakage into F.",
+    "One finite matched matrix, stored result verification and result-neutral interpretation; preserve first failures/partial and do not rerun old native/checkers."
+  ],
+  "completion": {
+    "requires": ["Actual functioning three-channel paths", "Comparable P/S capabilities and costs", "Executed matrix with checkable positive, zero or adverse results", "Separate conclusions on feedback organization, punishment and pure-feedback feasibility"],
+    "does_not_require": ["Positive benefit", "Winning every metric or difficulty", "Higher final ceiling", "Unseen-family transfer", "General RFL or a large world model", "Original 400/200 formal confirmation"],
+    "implementation_or_resource_blocker": "Preserve and report as blocked/incomplete, not completed evidence."
+  },
+  "actual_this_delivery": {
+    "new_learning_code": 0,
+    "native_rollouts": 0,
+    "old_checker_or_native_runs": 0,
+    "new_training_or_collection": 0,
+    "automation_changes": 0
+  },
+  "read_only_basis": [
+    "experiments/v03r/a96_dense/b2_prepare/shifted_stream_replication_v115/result.md",
+    "experiments/v04r/ordinary_extra_control_v142/result.md",
+    "experiments/v04r/learned_probe_program_v155/result.md",
+    "experiments/v04r/learned_execution_value_v165/result.md",
+    "experiments/v04r/continuous_dual_value_v166/workload.py",
+    "experiments/v04r/continuous_dual_value_v166/result.md",
+    "experiments/v04r/local_extension_completion_v167/completion.md"
+  ]
+}

@@ -1,0 +1,180 @@
+{
+  "schema": "V169_LOCAL_V05_COMPLETION",
+  "status": "COMPLETE_CONDITIONAL_LOCAL_FEEDBACK_EFFICIENCY_MATRIX",
+  "utc": "2026-11-07T08:33:31.867925+00:00",
+  "objective": "按照这个计划完成V0.5",
+  "plan_parent_commit": "1ab4d3158c8c582fded85c8106c1b83423544ad0",
+  "requirements": [
+    {
+      "id": "C1",
+      "requirement": "Current and historical feedback; ordinary learning all outcomes, failure-only optional investigation",
+      "status": "MET_IN_DECLARED_LOCAL_SCOPE",
+      "evidence": [
+        "experiment.py: FactLearner and Stream.task",
+        "evidence_matrix/raw.jsonl: LEARN / REUSE / CANDIDATE_MENU"
+      ],
+      "actual": {
+        "all_real_observations_matrix": 1951,
+        "query_reuses": 116,
+        "earlier_trial_reuses": 31,
+        "success_extra_diagnosis": 0
+      }
+    },
+    {
+      "id": "C2",
+      "requirement": "Full six-arm, six-case, 36-stream matrix; 48 chronological tasks and cold24/continued24 without reset",
+      "status": "MET_IN_DECLARED_LOCAL_SCOPE",
+      "evidence": [
+        "contract.json",
+        "evidence_matrix/result.json",
+        "evidence_matrix/audit_result_v2.json"
+      ],
+      "actual": {
+        "streams": 36,
+        "main_tasks": 1728,
+        "resets_between_phases": 0
+      }
+    },
+    {
+      "id": "C3",
+      "requirement": "RP/R only failure-reward difference; F has a real reward-free update and no reward-derived prior",
+      "status": "MET_IN_DECLARED_LOCAL_SCOPE",
+      "evidence": [
+        "experiment.py: reward_packet / FactLearner / RewardLearner / Stream.learn",
+        "all native LEARN packet and binary64 TD records"
+      ],
+      "actual": {
+        "F_Q_tables": 0,
+        "F_TD_updates": 0,
+        "F_fact_learning": true,
+        "old_Qstar_or_value_tree_imports": 0
+      }
+    },
+    {
+      "id": "C4",
+      "requirement": "Matched basic learner, observations, action/edit capabilities and actual cost reporting",
+      "status": "MET_IN_DECLARED_LOCAL_SCOPE",
+      "evidence": [
+        "common Agent.menu and Controller.revised",
+        "contract.json: P_selection / S_selection",
+        "all runtime counters"
+      ],
+      "actual": {
+        "trial_cap_each": 12,
+        "per_failure_cap_each": 2,
+        "protected_unread_committed_changes": 0
+      }
+    },
+    {
+      "id": "C5",
+      "requirement": "Authentic issued observations, own-source once consumption, no copied private learning state",
+      "status": "MET_IN_DECLARED_LOCAL_SCOPE",
+      "evidence": [
+        "evidence_wiring/raw.jsonl: BOUNDARY_CHALLENGES",
+        "all EPISODE/LEARN/COMMIT/REUSE records",
+        "both completed stored reviews"
+      ],
+      "actual": {
+        "challenge_groups": 3,
+        "combined_observations": 1957,
+        "local_commits": 37,
+        "private_learned_state_copies": 0,
+        "serialized_identity_restoration": false
+      }
+    },
+    {
+      "id": "C6",
+      "requirement": "Planned early/target/cost/error/cold-warm metrics and actual curves; preserve censored results",
+      "status": "MET_IN_DECLARED_LOCAL_SCOPE",
+      "evidence": [
+        "analysis.json",
+        "targets.csv",
+        "matched_cost.csv",
+        "cost_curve.csv",
+        "failure_curve.csv",
+        "learning_curves.svg",
+        "matched_cost_curves.svg"
+      ],
+      "actual": {
+        "target_records": 36,
+        "target_reached": 27,
+        "target_censored": 9
+      }
+    },
+    {
+      "id": "C7",
+      "requirement": "Finite local CPU study within native/step/time/capture ceilings, no old run or formal collection",
+      "status": "MET_IN_DECLARED_LOCAL_SCOPE",
+      "evidence": [
+        "both native exit.json",
+        "analysis.json: combined_actual_counts",
+        "native source/import inventory"
+      ],
+      "actual": {
+        "rollouts": 1957,
+        "steps": 5299,
+        "instrumented_native_wall_seconds": 2.826464300043881,
+        "capture_bytes": 8714524,
+        "old_native_checker_keys_RNG_collector_automation": 0
+      }
+    },
+    {
+      "id": "C8",
+      "requirement": "Separate result-neutral conclusions; preserve first errors, negative and zero results",
+      "status": "MET_IN_DECLARED_LOCAL_SCOPE",
+      "evidence": [
+        "result.md",
+        "evidence_matrix/audit_result.json",
+        "evidence_matrix/audit_result_v2.json",
+        "targets.csv"
+      ],
+      "actual": {
+        "native_first_exit0_phases": 2,
+        "original_matrix_stored_audit_exit": 1,
+        "corrected_stored_audit_exit": 0,
+        "F_S_minus_P_successes": -1,
+        "target_lowered_after_results": false
+      }
+    }
+  ],
+  "RP_main_trace_equal_by_case": {
+    "d1_m0": true,
+    "d1_m1": true,
+    "d3_m0": true,
+    "d3_m1": true,
+    "d5_m0": true,
+    "d5_m1": true
+  },
+  "reuse_origin": {
+    "same_main_task": 85,
+    "earlier_main_task": 31
+  },
+  "reuse_origin_by_arm": {
+    "S-RP": {
+      "same_main_task": 24,
+      "earlier_main_task": 10
+    },
+    "S-R": {
+      "same_main_task": 37,
+      "earlier_main_task": 11
+    },
+    "S-F": {
+      "same_main_task": 24,
+      "earlier_main_task": 10
+    }
+  },
+  "joint_candidate_scope": "Common source-defined grammar; not triggered in this matrix, no multi-position qualification claimed.",
+  "scope_limits": [
+    "Pure feedback retains task goal and visible outcome labels; it is not goal-free or prior-free.",
+    "F uses a model-based categorical planner while RP/R use Q heads; cross-family results are whole-method comparisons.",
+    "S uses a hand-declared experiment-order rule plus a learned current-source query index, not a trained general causal/value model.",
+    "Exact query reuse is valid in this deterministic unchanged world; stochastic settings require a new contract.",
+    "Both command outcomes are reachable in the initial swap; all groups have the same local repair capability.",
+    "Increased depth also lengthens propagation from the same terminal reward rule; not a separate causal identification of every kind of complexity.",
+    "After-24 observations reuse the same environment; not unseen-family transfer.",
+    "Runtime is instrumented local CPU with capture/tracemalloc; Python traced heap is not full process RSS; no all-resource dominance claim."
+  ],
+  "no_V06_started": true,
+  "universal_or_formal_PASS_claim": false,
+  "independent_expert_review": false
+}

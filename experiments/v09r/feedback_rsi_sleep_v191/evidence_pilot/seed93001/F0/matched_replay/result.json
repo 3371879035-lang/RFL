@@ -1,0 +1,365 @@
+{
+  "seed": 93001,
+  "arm": "F0",
+  "variant": "matched_replay",
+  "status": "COMPLETE",
+  "error": null,
+  "source": {
+    "seed": 93001,
+    "arm": "F0",
+    "path": "experiments/v09r/reactive_consolidation_v190/evidence_pilot/seed93001/F0/base/checkpoint_final.pt.gz",
+    "bytes": 10914843,
+    "sha256": "695f4d01e326b9b0cd31a9e3a1a52c893068691883c6ec98c6286a4522d1daf0"
+  },
+  "initial_hash": "f9f185b47b71086384dd9aeb93f435c10a0a5b38d126eef4d15f7cabe9e0a780",
+  "final_hash": "96a40539f67230be2b5bab921a01a904b3273d2252a9dc3ce9a33ddd7e3e63d4",
+  "old_partial_preserved": {
+    "episode": 200576,
+    "steps": 14,
+    "terminal": false
+  },
+  "additional_train_steps": 12288,
+  "completed_episodes": 422,
+  "training_sources": 422,
+  "unfinished_steps": 0,
+  "counters": {
+    "policy": 12288,
+    "retrieval": 1722,
+    "retrieved_records": 13776,
+    "model_edges": 116352,
+    "head_evaluations": 349056,
+    "deep_H4": 0,
+    "deep_H8": 0,
+    "Q_updates": 0,
+    "fact_updates": 168,
+    "real_replay_labels": 43008,
+    "reward_packets": 0,
+    "factual_mse_sum": 40.48780134093249,
+    "factual_brier_sum": 329.30734040843527,
+    "factual_predictions": 12288,
+    "factual_action_changes": 10114,
+    "bootstrap_selected_0": 30520,
+    "bootstrap_selected_1": 30717,
+    "bootstrap_selected_2": 30810,
+    "bootstrap_positions": 43008,
+    "transition_weight": 88803.0,
+    "transition_model_mse_sum": 297.9539324939251,
+    "transition_identity_mse_sum": 321.0495437979698,
+    "transition_value_loss_sum": 0.0,
+    "measurement_updates": 168,
+    "measurement_label_windows": 49152,
+    "measurement_train_windows": 367937,
+    "measurement_loss_sum": 6.756697190925479,
+    "measurement_head_evaluations": 36864,
+    "measurement_action_predictions": 349056,
+    "v191_optimizer_updates": 168
+  },
+  "evaluations": [
+    {
+      "checkpoint": 0,
+      "steps": 3059,
+      "episodes": 128,
+      "mean_score": 41.31640625,
+      "mean_steps": 23.8984375,
+      "mean_treasures": 0.0546875,
+      "common64": {
+        "episodes": 64,
+        "mean_score": 43.40625,
+        "mean_steps": 25.8125,
+        "mean_treasures": 0.046875
+      },
+      "seen": {
+        "episodes": 64,
+        "mean_score": 45.9609375,
+        "mean_steps": 24.390625,
+        "mean_treasures": 0.09375
+      },
+      "heldout": {
+        "episodes": 64,
+        "mean_score": 36.671875,
+        "mean_steps": 23.40625,
+        "mean_treasures": 0.015625
+      },
+      "stationary_rate": 0.499182739457339,
+      "long_stall_rate": 0.21052631578947367,
+      "parameter_hash": "f9f185b47b71086384dd9aeb93f435c10a0a5b38d126eef4d15f7cabe9e0a780",
+      "frozen": true,
+      "shared_initial_bank": {
+        "source_variant": "matched_replay",
+        "parameter_hash": "f9f185b47b71086384dd9aeb93f435c10a0a5b38d126eef4d15f7cabe9e0a780",
+        "action_implementation": "inherited BaseAgent.act, no reaction layer"
+      }
+    },
+    {
+      "checkpoint": 4096,
+      "steps": 1693,
+      "episodes": 64,
+      "mean_score": 47.4921875,
+      "mean_steps": 26.453125,
+      "mean_treasures": 0.078125,
+      "common64": {
+        "episodes": 64,
+        "mean_score": 47.4921875,
+        "mean_steps": 26.453125,
+        "mean_treasures": 0.078125
+      },
+      "seen": {
+        "episodes": 32,
+        "mean_score": 50.34375,
+        "mean_steps": 27.3125,
+        "mean_treasures": 0.09375
+      },
+      "heldout": {
+        "episodes": 32,
+        "mean_score": 44.640625,
+        "mean_steps": 25.59375,
+        "mean_treasures": 0.0625
+      },
+      "stationary_rate": 0.6704075605434141,
+      "long_stall_rate": 0.44063792085056114,
+      "parameter_hash": "77a63370abc99cf44391e4c9a6035227f62c15608656db5008887df1b5c92277",
+      "frozen": true
+    },
+    {
+      "checkpoint": 8192,
+      "steps": 2073,
+      "episodes": 64,
+      "mean_score": 70.4609375,
+      "mean_steps": 32.390625,
+      "mean_treasures": 0.21875,
+      "common64": {
+        "episodes": 64,
+        "mean_score": 70.4609375,
+        "mean_steps": 32.390625,
+        "mean_treasures": 0.21875
+      },
+      "seen": {
+        "episodes": 32,
+        "mean_score": 79.296875,
+        "mean_steps": 38.28125,
+        "mean_treasures": 0.21875
+      },
+      "heldout": {
+        "episodes": 32,
+        "mean_score": 61.625,
+        "mean_steps": 26.5,
+        "mean_treasures": 0.21875
+      },
+      "stationary_rate": 0.6020260492040521,
+      "long_stall_rate": 0.3164495899662325,
+      "parameter_hash": "622845ca232e5ecdf1932b876beb969c83d70d00b4dc0aa688fc0aa69277064b",
+      "frozen": true
+    },
+    {
+      "checkpoint": -12288,
+      "steps": 1797,
+      "episodes": 64,
+      "mean_score": 45.2421875,
+      "mean_steps": 28.078125,
+      "mean_treasures": 0.03125,
+      "common64": {
+        "episodes": 64,
+        "mean_score": 45.2421875,
+        "mean_steps": 28.078125,
+        "mean_treasures": 0.03125
+      },
+      "seen": {
+        "episodes": 32,
+        "mean_score": 51.296875,
+        "mean_steps": 30.03125,
+        "mean_treasures": 0.0625
+      },
+      "heldout": {
+        "episodes": 32,
+        "mean_score": 39.1875,
+        "mean_steps": 26.125,
+        "mean_treasures": 0.0
+      },
+      "stationary_rate": 0.7345575959933222,
+      "long_stall_rate": 0.451307735114079,
+      "parameter_hash": "7b867c677e3c566ede9027754a3ef91cf8e3445982105f13043de3c1ca031866",
+      "frozen": true
+    },
+    {
+      "checkpoint": 12288,
+      "steps": 8724,
+      "episodes": 256,
+      "mean_score": 59.7109375,
+      "mean_steps": 34.078125,
+      "mean_treasures": 0.0859375,
+      "common64": {
+        "episodes": 64,
+        "mean_score": 61.5625,
+        "mean_steps": 30.625,
+        "mean_treasures": 0.15625
+      },
+      "seen": {
+        "episodes": 128,
+        "mean_score": 66.41015625,
+        "mean_steps": 39.5859375,
+        "mean_treasures": 0.0703125
+      },
+      "heldout": {
+        "episodes": 128,
+        "mean_score": 53.01171875,
+        "mean_steps": 28.5703125,
+        "mean_treasures": 0.1015625
+      },
+      "stationary_rate": 0.5503209536909675,
+      "long_stall_rate": 0.24449793672627235,
+      "parameter_hash": "96a40539f67230be2b5bab921a01a904b3273d2252a9dc3ce9a33ddd7e3e63d4",
+      "frozen": true
+    }
+  ],
+  "sleep_rounds": [
+    {
+      "cycle": 1,
+      "variant": "matched_replay",
+      "training_step": 151552,
+      "feature_names": [
+        "own_error",
+        "recency",
+        "action_rarity"
+      ],
+      "before_probe": 0.07964838632688043,
+      "after_probe": 0.0777526611891517,
+      "before_old": 0.08671629407763248,
+      "after_old": 0.08673835056106327,
+      "before_recent": 0.07258047857612837,
+      "after_recent": 0.06876697181724012,
+      "previous_theta": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "next_theta": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "historical_gain_model": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "candidates": [],
+      "selected": null,
+      "history_records": 0,
+      "parent_hash": "5e2b0e999a1a5692c366f4e2ce29ea7e5a3d26a6797df8c05759c29e3ecd5958",
+      "student_hash": "77a63370abc99cf44391e4c9a6035227f62c15608656db5008887df1b5c92277",
+      "updates": 24,
+      "wall_seconds": 2.201655799999571,
+      "prefix_reencoded": 31,
+      "paused_world": {
+        "episode": 310147,
+        "steps": 31,
+        "terminal": false
+      }
+    },
+    {
+      "cycle": 2,
+      "variant": "matched_replay",
+      "training_step": 155648,
+      "feature_names": [
+        "own_error",
+        "recency",
+        "action_rarity"
+      ],
+      "before_probe": 0.06925133513504989,
+      "after_probe": 0.0738846395543078,
+      "before_old": 0.09723286360531347,
+      "after_old": 0.10778800255502574,
+      "before_recent": 0.0412698066647863,
+      "after_recent": 0.03998127655358985,
+      "previous_theta": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "next_theta": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "historical_gain_model": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "candidates": [],
+      "selected": null,
+      "history_records": 0,
+      "parent_hash": "f5d9559477ee804373786075df758482ac4ca5294735a3101f989c15e676b1e2",
+      "student_hash": "622845ca232e5ecdf1932b876beb969c83d70d00b4dc0aa688fc0aa69277064b",
+      "updates": 24,
+      "wall_seconds": 1.8862249000012525,
+      "prefix_reencoded": 11,
+      "paused_world": {
+        "episode": 310284,
+        "steps": 11,
+        "terminal": false
+      }
+    },
+    {
+      "cycle": 3,
+      "variant": "matched_replay",
+      "training_step": 159744,
+      "feature_names": [
+        "own_error",
+        "recency",
+        "action_rarity"
+      ],
+      "before_probe": 0.061399908572639106,
+      "after_probe": 0.058706174673716305,
+      "before_old": 0.0527724149505957,
+      "after_old": 0.050712587566522416,
+      "before_recent": 0.07002740219468251,
+      "after_recent": 0.0666997617809102,
+      "previous_theta": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "next_theta": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "historical_gain_model": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "candidates": [],
+      "selected": null,
+      "history_records": 0,
+      "parent_hash": "7b867c677e3c566ede9027754a3ef91cf8e3445982105f13043de3c1ca031866",
+      "student_hash": "96a40539f67230be2b5bab921a01a904b3273d2252a9dc3ce9a33ddd7e3e63d4",
+      "updates": 24,
+      "wall_seconds": 2.3929142000015418,
+      "prefix_reencoded": 0,
+      "paused_world": {
+        "episode": 310422,
+        "steps": 27,
+        "terminal": true
+      }
+    }
+  ],
+  "raw_records": 29634,
+  "raw_payload_sha256": "e70b931411993b16740d3a02db3e605b13b7791ea8b3bf115aaedd50567c7fbf",
+  "labels": 49152,
+  "label_payload_sha256": "a722f7222934ea7f59b471448c85c560fd5dc3ed07930da3d91f20edc57c7a63",
+  "action_rules_added": 0,
+  "history_records": 0,
+  "final_rehearsal_policy": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "wall_seconds": 90.98733169999832,
+  "cpu_seconds": 84.5625,
+  "sleep_wall_seconds": 6.4807949000023655
+}

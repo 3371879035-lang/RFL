@@ -1,0 +1,928 @@
+{
+  "block": 389,
+  "seed": 163,
+  "groups": {
+    "F-R": {
+      "group": "F-R",
+      "seed": 163,
+      "block": 389,
+      "charged_steps": 64,
+      "total_steps": 24896,
+      "updates": 2,
+      "total_updates": 581,
+      "losses": {
+        "td": 0.004752294160425663,
+        "facts": 0.008061877451837063
+      },
+      "counters": {
+        "actual_trials": 2948,
+        "history_references": 24896,
+        "candidate_trials": 179,
+        "teacher_gates": 179,
+        "teacher_pass": 13,
+        "sleep_updates": 13,
+        "student_gates": 13,
+        "adoptions": 1,
+        "ordinary_updates": 389,
+        "reward_packets": 24896,
+        "fact_targets": 49728,
+        "imagined_nodes": 0
+      },
+      "before": "1da3ce244f9133c65beb58771a60841d6dda3c1405547858ce3f5b42b8c7d56a",
+      "after": "1daa76689917d88395a390f29cea094e336d1969e9075f27c4e42296e6d9dd53",
+      "main_tasks": [
+        {
+          "success": true,
+          "distance": 0.23708211119071332,
+          "family": 0,
+          "steps": 6
+        },
+        {
+          "success": false,
+          "distance": 0.7714626976153014,
+          "family": 1,
+          "steps": 6
+        },
+        {
+          "success": false,
+          "distance": 1.1133522996804854,
+          "family": 2,
+          "steps": 6
+        },
+        {
+          "success": false,
+          "distance": 1.4595157016679996,
+          "family": 3,
+          "steps": 6
+        },
+        {
+          "success": false,
+          "distance": 0.8894511258451304,
+          "family": 0,
+          "steps": 6
+        },
+        {
+          "success": false,
+          "distance": 1.0370699016891993,
+          "family": 1,
+          "steps": 6
+        },
+        {
+          "success": false,
+          "distance": 0.875154752225415,
+          "family": 2,
+          "steps": 6
+        },
+        {
+          "success": false,
+          "distance": 1.287717292359745,
+          "family": 3,
+          "steps": 6
+        }
+      ],
+      "preferences": [
+        {
+          "x": [
+            -0.17522548139095306,
+            0.3359505534172058,
+            0.5,
+            0.5,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            1.0,
+            1.0,
+            -1.0,
+            0.0,
+            0.8333333134651184,
+            0.1666666716337204,
+            0.0,
+            0.0,
+            0.5,
+            0.5,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.07281113415956497,
+            0.1294177919626236,
+            -0.1145833358168602,
+            -0.010416666977107525,
+            0.25,
+            0.2083333283662796,
+            0.2916666567325592,
+            0.25,
+            0.5,
+            0.4583333432674408,
+            0.2083333283662796,
+            0.010416666977107525,
+            0.4444444477558136,
+            0.18055559694766998,
+            0.0,
+            0.0,
+            0.09375,
+            0.010416666977107525,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.08664518594741821,
+            0.13669322431087494,
+            -0.1145833358168602,
+            -0.010416666977107525,
+            0.25,
+            0.2083333283662796,
+            0.2916666567325592,
+            0.25,
+            0.5,
+            0.4583333432674408,
+            0.09375,
+            0.010416666977107525,
+            0.625,
+            0.18055559694766998,
+            0.0,
+            0.0
+          ],
+          "better": 4,
+          "worse": 0,
+          "effects": [
+            0.06616074680303408,
+            0.007478492299303641
+          ]
+        }
+      ],
+      "gates": [
+        {
+          "kind": "teacher_gate",
+          "pairs": [
+            [
+              {
+                "success": false,
+                "distance": 0.8512028249444337,
+                "family": 0,
+                "steps": 3
+              },
+              {
+                "success": false,
+                "distance": 0.8512028249444337,
+                "family": 0,
+                "steps": 3
+              }
+            ],
+            [
+              {
+                "success": false,
+                "distance": 0.7924392709005179,
+                "family": 1,
+                "steps": 3
+              },
+              {
+                "success": false,
+                "distance": 0.9176498587329,
+                "family": 1,
+                "steps": 3
+              }
+            ]
+          ],
+          "passed": false
+        }
+      ],
+      "history_nodes": 96,
+      "replay_nodes": 8192,
+      "wall_seconds": 0.046999999991385266
+    },
+    "N226": {
+      "group": "N226",
+      "seed": 163,
+      "block": 389,
+      "charged_steps": 64,
+      "total_steps": 24896,
+      "updates": 1,
+      "total_updates": 396,
+      "before": "b423751f3b05799a502908c3bfebc9c83bc88940f0319d5de92a3d3159312678",
+      "after": "d977ef2801868f86d884011b9a823421786def494574787934f749d913793dff",
+      "losses": {
+        "world_nll_per_event": 7.54410618899455,
+        "policy": -18.006710052490234,
+        "critic": 0.038558367639780045,
+        "sleep": null
+      },
+      "gradients": {
+        "world": {
+          "norm": 826.6260986328125,
+          "tensors": 155
+        },
+        "policy": {
+          "norm": 0.7928154468536377,
+          "tensors": 85
+        },
+        "critic": {
+          "norm": 3.294123888015747,
+          "tensors": 5
+        }
+      },
+      "counters": {
+        "actual_trials": 1706,
+        "history_references": 24895,
+        "candidate_trials": 206,
+        "teacher_gates": 0,
+        "teacher_pass": 0,
+        "sleep_updates": 7,
+        "student_gates": 0,
+        "adoptions": 76,
+        "ordinary_updates": 389,
+        "reward_packets": 23190,
+        "fact_targets": 8488,
+        "imagined_nodes": 14985,
+        "thoughts": 2036,
+        "filter_updates": 24896
+      },
+      "main_tasks": [
+        {
+          "success": false,
+          "distance": 1.3417219933818123,
+          "family": 0,
+          "steps": 6
+        },
+        {
+          "success": false,
+          "distance": 0.5766721639229517,
+          "family": 1,
+          "steps": 6
+        },
+        {
+          "success": false,
+          "distance": 0.39999201709802995,
+          "family": 2,
+          "steps": 6
+        },
+        {
+          "success": false,
+          "distance": 1.613240635943044,
+          "family": 3,
+          "steps": 6
+        },
+        {
+          "success": false,
+          "distance": 0.9234617682295037,
+          "family": 0,
+          "steps": 6
+        },
+        {
+          "success": false,
+          "distance": 0.5847317494144347,
+          "family": 1,
+          "steps": 6
+        },
+        {
+          "success": false,
+          "distance": 1.1667860356846025,
+          "family": 2,
+          "steps": 6
+        },
+        {
+          "success": false,
+          "distance": 1.3513300260659702,
+          "family": 3,
+          "steps": 6
+        },
+        {
+          "success": false,
+          "distance": 1.161471433217926,
+          "family": 0,
+          "steps": 6
+        },
+        {
+          "success": false,
+          "distance": 1.1480895823535622,
+          "family": 1,
+          "steps": 2
+        }
+      ],
+      "history_nodes": 96,
+      "initial_history_nodes": 96,
+      "credit_replay_errors": {
+        "candidate_code_max": 0.0,
+        "policy_max": 0.0,
+        "value_max": 0.0,
+        "log_probability_delta": 8.399011761639485e-07
+      },
+      "world_training_ids": [
+        [
+          "v226/163/block389/event/116",
+          "v226/163/block389/event/117",
+          "v226/163/block389/event/118",
+          "v226/163/block389/event/119",
+          "v226/163/block389/event/120",
+          "v226/163/block389/event/121"
+        ],
+        [
+          "v226/163/block389/event/158",
+          "v226/163/block389/event/159"
+        ],
+        [
+          "v226/163/block389/event/140",
+          "v226/163/block389/event/141",
+          "v226/163/block389/event/142",
+          "v226/163/block389/event/143",
+          "v226/163/block389/event/144",
+          "v226/163/block389/event/145"
+        ],
+        [
+          "v226/163/block388/event/112"
+        ]
+      ],
+      "sleep_event_ids": [],
+      "wall_seconds": 64.84299999999348
+    },
+    "RL-plain": {
+      "group": "RL-plain",
+      "seed": 163,
+      "block": 389,
+      "charged_steps": 64,
+      "total_steps": 24896,
+      "updates": 1,
+      "total_updates": 389,
+      "losses": {
+        "td": 0.02933310531079769
+      },
+      "counters": {
+        "actual_trials": 0,
+        "history_references": 24896,
+        "candidate_trials": 0,
+        "teacher_gates": 0,
+        "teacher_pass": 0,
+        "sleep_updates": 0,
+        "student_gates": 0,
+        "adoptions": 0,
+        "ordinary_updates": 389,
+        "reward_packets": 24896,
+        "fact_targets": 0,
+        "imagined_nodes": 0
+      },
+      "before": "742d6499e0921284cc9f082a6e33e39a060ea65dd44c4df752950b5e996abd1e",
+      "after": "cd5f9b6a8484bad320eb25d74a07edd6a5498f3f13b9706a45314af18c1a9617",
+      "main_tasks": [
+        {
+          "success": false,
+          "distance": 0.8077948119076918,
+          "family": 0,
+          "steps": 6
+        },
+        {
+          "success": false,
+          "distance": 0.7482503852052772,
+          "family": 1,
+          "steps": 6
+        },
+        {
+          "success": false,
+          "distance": 1.032693015846201,
+          "family": 2,
+          "steps": 6
+        },
+        {
+          "success": false,
+          "distance": 0.43777324597716805,
+          "family": 3,
+          "steps": 6
+        },
+        {
+          "success": false,
+          "distance": 0.7913953839881498,
+          "family": 0,
+          "steps": 6
+        },
+        {
+          "success": false,
+          "distance": 1.1867455449459245,
+          "family": 1,
+          "steps": 6
+        },
+        {
+          "success": false,
+          "distance": 0.812048076561772,
+          "family": 2,
+          "steps": 6
+        },
+        {
+          "success": false,
+          "distance": 0.7070501043556833,
+          "family": 3,
+          "steps": 6
+        },
+        {
+          "success": false,
+          "distance": 0.9545888585155207,
+          "family": 0,
+          "steps": 6
+        },
+        {
+          "success": false,
+          "distance": 0.874728911238669,
+          "family": 1,
+          "steps": 6
+        },
+        {
+          "success": true,
+          "distance": 0.23982213946638722,
+          "family": 2,
+          "steps": 4
+        }
+      ],
+      "preferences": [],
+      "gates": [],
+      "history_nodes": 96,
+      "replay_nodes": 8192,
+      "wall_seconds": 0.03199999999196734
+    },
+    "RL-outer": {
+      "group": "RL-outer",
+      "seed": 163,
+      "block": 389,
+      "charged_steps": 64,
+      "total_steps": 24896,
+      "updates": 1,
+      "total_updates": 659,
+      "losses": {
+        "td": 0.03644603118300438
+      },
+      "counters": {
+        "actual_trials": 2920,
+        "history_references": 24896,
+        "candidate_trials": 251,
+        "teacher_gates": 251,
+        "teacher_pass": 19,
+        "sleep_updates": 19,
+        "student_gates": 19,
+        "adoptions": 1,
+        "ordinary_updates": 389,
+        "reward_packets": 24896,
+        "fact_targets": 0,
+        "imagined_nodes": 0
+      },
+      "before": "8252b7cf5bfb1fe1ff7d2a0d0327ee7b39a61a990e763c17c6235b3ebedce17d",
+      "after": "acc0fec193d55f967594dcfa0786a33174d602b48d806c9612b3476613df15c9",
+      "main_tasks": [
+        {
+          "success": false,
+          "distance": 0.5065424783197323,
+          "family": 3,
+          "steps": 6
+        },
+        {
+          "success": false,
+          "distance": 0.5684086286334045,
+          "family": 0,
+          "steps": 6
+        },
+        {
+          "success": false,
+          "distance": 0.44823613919527944,
+          "family": 1,
+          "steps": 6
+        },
+        {
+          "success": false,
+          "distance": 0.889609041952609,
+          "family": 2,
+          "steps": 6
+        },
+        {
+          "success": false,
+          "distance": 1.1915218798794047,
+          "family": 3,
+          "steps": 6
+        },
+        {
+          "success": false,
+          "distance": 0.338204423228431,
+          "family": 0,
+          "steps": 6
+        },
+        {
+          "success": false,
+          "distance": 0.6667331019138448,
+          "family": 1,
+          "steps": 6
+        },
+        {
+          "success": true,
+          "distance": 0.10227818805421462,
+          "family": 2,
+          "steps": 6
+        },
+        {
+          "success": false,
+          "distance": 0.7186546899449456,
+          "family": 3,
+          "steps": 6
+        },
+        {
+          "success": false,
+          "distance": 1.209496971940795,
+          "family": 0,
+          "steps": 2
+        }
+      ],
+      "preferences": [],
+      "gates": [],
+      "history_nodes": 96,
+      "replay_nodes": 8192,
+      "wall_seconds": 0.04700000000593718
+    },
+    "F0": {
+      "group": "F0",
+      "seed": 163,
+      "block": 389,
+      "charged_steps": 64,
+      "total_steps": 24896,
+      "updates": 2,
+      "total_updates": 664,
+      "losses": {
+        "facts": 0.028231382369995117
+      },
+      "counters": {
+        "actual_trials": 2600,
+        "history_references": 24896,
+        "candidate_trials": 257,
+        "teacher_gates": 257,
+        "teacher_pass": 18,
+        "sleep_updates": 18,
+        "student_gates": 18,
+        "adoptions": 9,
+        "ordinary_updates": 389,
+        "reward_packets": 0,
+        "fact_targets": 49728,
+        "imagined_nodes": 0
+      },
+      "before": "4ddc37c09bf8e576dd21c487ebe6c3ee99c1a3040b78aaa9f44e59c5f87fac64",
+      "after": "c37686fe516d20a18bc3596c7ae389f4b94696c3f1bb1d04bade734faa75f1ce",
+      "main_tasks": [
+        {
+          "success": false,
+          "distance": 1.2219403465161003,
+          "family": 0,
+          "steps": 6
+        },
+        {
+          "success": false,
+          "distance": 0.3068283638252255,
+          "family": 1,
+          "steps": 6
+        },
+        {
+          "success": false,
+          "distance": 0.3251183344487364,
+          "family": 2,
+          "steps": 6
+        },
+        {
+          "success": false,
+          "distance": 2.0238364985641635,
+          "family": 3,
+          "steps": 6
+        },
+        {
+          "success": false,
+          "distance": 1.6316754923313217,
+          "family": 0,
+          "steps": 6
+        },
+        {
+          "success": false,
+          "distance": 1.8210686102263045,
+          "family": 1,
+          "steps": 6
+        },
+        {
+          "success": false,
+          "distance": 2.005679787533065,
+          "family": 2,
+          "steps": 6
+        },
+        {
+          "success": false,
+          "distance": 0.9717336785244625,
+          "family": 3,
+          "steps": 2
+        }
+      ],
+      "preferences": [
+        {
+          "x": [
+            0.19931373000144958,
+            -0.22916482388973236,
+            -0.5,
+            0.5,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            1.0,
+            1.0,
+            0.0,
+            0.8333333134651184,
+            0.1666666716337204,
+            0.0,
+            0.0,
+            -0.5,
+            0.5,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            -0.09523052722215652,
+            -0.11891364306211472,
+            -0.0416666679084301,
+            -0.1458333283662796,
+            0.28125,
+            0.28125,
+            0.25,
+            0.1875,
+            0.5625,
+            0.4375,
+            -0.0520833320915699,
+            0.0625,
+            0.4461806118488312,
+            0.17708341777324677,
+            0.0,
+            0.0,
+            -0.0625,
+            0.0416666679084301,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            -0.09241902828216553,
+            -0.1710912585258484,
+            -0.0416666679084301,
+            -0.1458333283662796,
+            0.28125,
+            0.28125,
+            0.25,
+            0.1875,
+            0.5625,
+            0.4375,
+            -0.0625,
+            0.0416666679084301,
+            0.6232638955116272,
+            0.17708341777324677,
+            0.0,
+            0.0
+          ],
+          "better": 3,
+          "worse": 0,
+          "effects": [
+            0.34718626477685843,
+            0.3479912986041228
+          ]
+        }
+      ],
+      "gates": [
+        {
+          "kind": "teacher_gate",
+          "pairs": [
+            [
+              {
+                "success": false,
+                "distance": 1.0062409764918603,
+                "family": 0,
+                "steps": 3
+              },
+              {
+                "success": false,
+                "distance": 1.3569492663392129,
+                "family": 0,
+                "steps": 3
+              }
+            ],
+            [
+              {
+                "success": false,
+                "distance": 0.9559491267312177,
+                "family": 1,
+                "steps": 3
+              },
+              {
+                "success": false,
+                "distance": 0.9559491267312177,
+                "family": 1,
+                "steps": 3
+              }
+            ]
+          ],
+          "passed": false
+        }
+      ],
+      "history_nodes": 96,
+      "replay_nodes": 8192,
+      "wall_seconds": 0.031000000002677552
+    },
+    "F-RP": {
+      "group": "F-RP",
+      "seed": 163,
+      "block": 389,
+      "charged_steps": 64,
+      "total_steps": 24896,
+      "updates": 2,
+      "total_updates": 661,
+      "losses": {
+        "td": 0.02248239703476429,
+        "facts": 0.006344760302454233
+      },
+      "counters": {
+        "actual_trials": 2948,
+        "history_references": 24896,
+        "candidate_trials": 250,
+        "teacher_gates": 250,
+        "teacher_pass": 22,
+        "sleep_updates": 22,
+        "student_gates": 22,
+        "adoptions": 6,
+        "ordinary_updates": 389,
+        "reward_packets": 24896,
+        "fact_targets": 49728,
+        "imagined_nodes": 0
+      },
+      "before": "154b231e5201614f202677b0ace92f60bf12383e5cc2975598fbb8ef47393946",
+      "after": "69b72c3da5e02a7b0bc2b02a2d24d9abafae25f2fccd9a8fe4487b97ae85482c",
+      "main_tasks": [
+        {
+          "success": false,
+          "distance": 0.9559898629988876,
+          "family": 3,
+          "steps": 6
+        },
+        {
+          "success": false,
+          "distance": 0.45313821913838587,
+          "family": 0,
+          "steps": 6
+        },
+        {
+          "success": false,
+          "distance": 1.4823396193084473,
+          "family": 1,
+          "steps": 6
+        },
+        {
+          "success": false,
+          "distance": 0.9096686703117026,
+          "family": 2,
+          "steps": 6
+        },
+        {
+          "success": false,
+          "distance": 1.2282411253091805,
+          "family": 3,
+          "steps": 6
+        },
+        {
+          "success": false,
+          "distance": 0.5684086286334045,
+          "family": 0,
+          "steps": 6
+        },
+        {
+          "success": false,
+          "distance": 0.44823613919527944,
+          "family": 1,
+          "steps": 6
+        },
+        {
+          "success": false,
+          "distance": 0.680436733573171,
+          "family": 2,
+          "steps": 2
+        }
+      ],
+      "preferences": [
+        {
+          "x": [
+            0.38177287578582764,
+            -0.32187578082084656,
+            0.5,
+            -0.5,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            1.0,
+            1.0,
+            0.0,
+            0.8333333134651184,
+            0.1666666716337204,
+            0.0,
+            0.0,
+            0.5,
+            -0.5,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.06956843286752701,
+            -0.10653600096702576,
+            0.1979166716337204,
+            0.0416666679084301,
+            0.28125,
+            0.21875,
+            0.1666666716337204,
+            0.3333333432674408,
+            0.5,
+            0.4583333432674408,
+            0.0416666679084301,
+            -0.1458333283662796,
+            0.465277761220932,
+            0.18055559694766998,
+            0.0,
+            0.0,
+            -0.0625,
+            -0.010416666977107525,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.057509198784828186,
+            -0.11937404423952103,
+            0.1979166716337204,
+            0.0416666679084301,
+            0.28125,
+            0.21875,
+            0.1666666716337204,
+            0.3333333432674408,
+            0.5,
+            0.4583333432674408,
+            -0.0625,
+            -0.010416666977107525,
+            0.6458333134651184,
+            0.18055559694766998,
+            0.0,
+            0.0
+          ],
+          "better": 4,
+          "worse": 1,
+          "effects": [
+            2.2297974066555515,
+            2.2351726002620076
+          ]
+        }
+      ],
+      "gates": [
+        {
+          "kind": "teacher_gate",
+          "pairs": [
+            [
+              {
+                "success": false,
+                "distance": 0.6738978940898396,
+                "family": 0,
+                "steps": 3
+              },
+              {
+                "success": false,
+                "distance": 0.6738978940898396,
+                "family": 0,
+                "steps": 3
+              }
+            ],
+            [
+              {
+                "success": false,
+                "distance": 0.9176498587329,
+                "family": 1,
+                "steps": 3
+              },
+              {
+                "success": false,
+                "distance": 0.7924392709005179,
+                "family": 1,
+                "steps": 3
+              }
+            ]
+          ],
+          "passed": false
+        }
+      ],
+      "history_nodes": 96,
+      "replay_nodes": 8192,
+      "wall_seconds": 0.04700000000593718
+    }
+  },
+  "wall_seconds": 65.20299999999406
+}

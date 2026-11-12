@@ -1,0 +1,459 @@
+{
+  "schema": "V06_UNCERTAIN_FEEDBACK_PLAN_V171",
+  "date_asia_shanghai": "2026-11-07",
+  "parent_commit": "ae8beae8e73adae72eb3588145a2843a9adf97a8",
+  "status": "DESIGN_DEFINED_NOT_IMPLEMENTED_NOT_EXECUTED",
+  "authority": {
+    "direct_user_request": "那就规划V0.6吧，分别是纯强化学习，纯反馈，奖励和处罚都有，只有奖励。",
+    "delivery_scope": "Plan only. No native experiment, new learner code, stochastic tape, automation or formal collection executed.",
+    "interpretation": "Four conceptual categories become five operational arms: pure RL also has RP/R variants; F0, feedback+RP, feedback+R form the other three. Avoid confounding method and punishment."
+  },
+  "question": "Can current and historical feedback improve early learning without treating an occasional failure as a permanent action ban, and how does scalar punishment change finite learning?",
+  "arms": [
+    {
+      "id": "RL-RP",
+      "family": "direct_model_free_Q",
+      "reward_success": 1,
+      "reward_failure": -1,
+      "reward_nonterminal": 0,
+      "facts_model": false,
+      "extra_compute": "own-real newest-first replay"
+    },
+    {
+      "id": "RL-R",
+      "family": "direct_model_free_Q",
+      "reward_success": 1,
+      "reward_failure": 0,
+      "reward_nonterminal": 0,
+      "facts_model": false,
+      "extra_compute": "own-real newest-first replay"
+    },
+    {
+      "id": "F0",
+      "family": "probabilistic_factual_goal_planner",
+      "reward_field_present": false,
+      "Q_head": false,
+      "facts_model": true,
+      "extra_compute": "backward goal-reachability probability calculation"
+    },
+    {
+      "id": "F-RP",
+      "family": "factual_model_plus_Q",
+      "reward_success": 1,
+      "reward_failure": -1,
+      "reward_nonterminal": 0,
+      "facts_model": true,
+      "extra_compute": "bounded expected-model Q backups"
+    },
+    {
+      "id": "F-R",
+      "family": "factual_model_plus_Q",
+      "reward_success": 1,
+      "reward_failure": 0,
+      "reward_nonterminal": 0,
+      "facts_model": true,
+      "extra_compute": "bounded expected-model Q backups"
+    }
+  ],
+  "planned_comparisons": {
+    "whole_methods": [
+      [
+        "F0",
+        "RL-RP"
+      ],
+      [
+        "F0",
+        "RL-R"
+      ],
+      [
+        "F0",
+        "F-RP"
+      ],
+      [
+        "F0",
+        "F-R"
+      ]
+    ],
+    "fact_model_planning_vs_direct_replay_same_channel": [
+      [
+        "F-RP",
+        "RL-RP"
+      ],
+      [
+        "F-R",
+        "RL-R"
+      ]
+    ],
+    "failure_reward_within_same_implementation": [
+      [
+        "RL-RP",
+        "RL-R"
+      ],
+      [
+        "F-RP",
+        "F-R"
+      ]
+    ]
+  },
+  "environment": {
+    "new_version_only": true,
+    "decision_points": 3,
+    "mirrors": [
+      0,
+      1
+    ],
+    "structural_case_sources": [
+      {
+        "id": "d3_m0",
+        "index": 2,
+        "decision_points": 3,
+        "mirror": 0,
+        "passable_exits": [
+          0,
+          1,
+          0
+        ],
+        "controller_mappings": [
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            6,
+            0,
+            1
+          ],
+          [
+            7,
+            1,
+            0
+          ]
+        ],
+        "protected_addresses": [
+          [
+            6,
+            0
+          ],
+          [
+            7,
+            1
+          ]
+        ]
+      },
+      {
+        "id": "d3_m1",
+        "index": 3,
+        "decision_points": 3,
+        "mirror": 1,
+        "passable_exits": [
+          1,
+          0,
+          1
+        ],
+        "controller_mappings": [
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            6,
+            0,
+            1
+          ],
+          [
+            7,
+            1,
+            0
+          ]
+        ],
+        "protected_addresses": [
+          [
+            6,
+            0
+          ],
+          [
+            7,
+            1
+          ]
+        ]
+      }
+    ],
+    "accidental_failure_probability": [
+      0.0,
+      0.1
+    ],
+    "safe_exit": "advance with probability 1-p, otherwise terminal COLLISION",
+    "blocked_exit": "terminal COLLISION with probability 1",
+    "same_visible_failure_label": true,
+    "horizon": 12,
+    "controller_edit_capability": "none for all arms",
+    "stationary_within_stream": true,
+    "drift": false,
+    "learner_hidden": [
+      "passable_exits",
+      "full_controller_maps",
+      "p",
+      "accidental_vs_blocked_cause",
+      "future_noise_tape",
+      "external_evaluation_results"
+    ]
+  },
+  "learner": {
+    "public_task": "same rooms, legal commands, goal and nominal layered topology; no exit truth",
+    "context": [
+      "room",
+      "command"
+    ],
+    "initial_history": "empty per independent stream",
+    "Q_initialization": 0.0,
+    "alpha": 0.5,
+    "gamma": 1.0,
+    "train_epsilon": 0.1,
+    "eval_epsilon": 0.0,
+    "tie_break": "command 0",
+    "Q_buffer_real_transitions": 64,
+    "extra_Q_backups_per_train_episode": "min(12, current own buffer length)",
+    "RL_replay_order": "newest-first real transitions, chronological ordinary updates before replay",
+    "factual_model": {
+      "counts": [
+        "n_forward",
+        "n_collision"
+      ],
+      "prior": "Beta(1,1)",
+      "estimate": "(n_forward+1)/(n_forward+n_collision+2)",
+      "contradictory_outcomes": "both retained as legal evidence, not protocol error",
+      "action_permanent_ban_after_one_failure": false,
+      "new_version_not_inplace_v169_fix": true
+    },
+    "F0_readout": "P(goal)=1; backward P(room)=max_command p_hat(room,command)*P(room+1); no Q or scalar reward packet",
+    "hybrid_readout": "greedy current Q after real TD and bounded expected-model backups",
+    "hybrid_model_backups": {
+      "visited_contexts_only": true,
+      "order": "room descending then command ascending, cyclic",
+      "target_nonfinal": "p_hat*max_a Q(room+1,a) + (1-p_hat)*r_failure",
+      "target_final": "p_hat*1 + (1-p_hat)*r_failure",
+      "sources": "own real counts plus declared symmetric prior and public channel reward rule; no hidden truth, fabricated raw or reward-weight mixture"
+    },
+    "ordinary_learning_on_success_and_failure": true,
+    "success_extra_attribution": 0,
+    "failure_extra_native_queries": 0,
+    "all_groups_keep_own_history": true,
+    "old_Qstar_or_checkpoint_import": false,
+    "objective_identity": "At gamma=1, binary absorbing outcomes and no step penalty, J_R=P(success), J_RP=2P(success)-1; optimal rankings match. Test finite learning, not different ideal optima."
+  },
+  "workload": {
+    "local_engineering_seed_ids": [
+      6001,
+      6002,
+      6003,
+      6004
+    ],
+    "noise_conditions": 2,
+    "mirrors": 2,
+    "arms": 5,
+    "streams": 80,
+    "train_tasks_per_stream": 64,
+    "cold_train_tasks": 32,
+    "continued_train_tasks": 32,
+    "reset_at_midpoint": false,
+    "checkpoints": [
+      0,
+      16,
+      32,
+      48,
+      64
+    ],
+    "eval_rollouts_per_checkpoint": {
+      "p0": 1,
+      "p01": 32
+    },
+    "main_train_rollouts": 5120,
+    "deterministic_eval_rollouts": 200,
+    "noisy_eval_rollouts": 6400,
+    "matrix_rollouts": 11720,
+    "wiring_rollouts_cap": 20,
+    "combined_rollouts_cap": 11740,
+    "combined_step_cap": 140880,
+    "extra_Q_backups_matrix_cap": 49152,
+    "extra_Q_backups_wiring_cap": 96,
+    "extra_Q_backups_combined_cap": 49248,
+    "wall_seconds_cap": 600,
+    "capture_bytes_cap": 134217728,
+    "device": "local CPU",
+    "paid_resources": false
+  },
+  "randomness": {
+    "not_activated_this_turn": true,
+    "proposal": "standard local PRNG; streams fully materialized outside learners before native; not legacy science/workload-key allocation",
+    "train_environment_coordinate": [
+      "seed",
+      "mirror",
+      "train_env",
+      "episode",
+      "room"
+    ],
+    "train_exploration_coordinate": [
+      "seed",
+      "mirror",
+      "train_action",
+      "episode",
+      "room"
+    ],
+    "eval_environment_coordinate": [
+      "seed",
+      "mirror",
+      "eval_env",
+      "bank_item",
+      "room"
+    ],
+    "arm_and_checkpoint_excluded_from_eval_coordinate": true,
+    "noise_condition_excluded_for_paired_potential_noise": true,
+    "exploration_and_environment_streams_independent": true,
+    "no_path_length_dependent_consumption": true,
+    "eval_tape_disjoint_from_train": true,
+    "learner_cannot_read_tapes_or_ids": true
+  },
+  "wiring": {
+    "streams": 5,
+    "rollouts_each": 4,
+    "world": "one room, passable physical exit 0, fixed root command swap, p=.10",
+    "scripted_command": 1,
+    "scripted_environment_uniforms": [
+      0.9,
+      0.05,
+      0.8,
+      0.9
+    ],
+    "expected_observed_outcomes": [
+      "SUCCESS",
+      "COLLISION",
+      "SUCCESS",
+      "SUCCESS"
+    ],
+    "first_two": "real ordinary training, retain both outcomes",
+    "last_two": "same frozen learner clone, no writes to learning or training state",
+    "engineering_not_stochastic_population": true
+  },
+  "evaluation": {
+    "learning_state": "complete frozen clone, all Q/counts/buffer/history protected",
+    "no_learning_from_eval": true,
+    "no_eval_to_training_or_adaptive_stopping": true,
+    "online_metrics": [
+      "successes at16/32/64",
+      "cumulative failures",
+      "common train-step-budget successful deliveries"
+    ],
+    "frozen_metrics": [
+      "complete success-rate curve at0/16/32/48/64",
+      "first checkpoint at90percent achievable ceiling",
+      "later regression"
+    ],
+    "ceiling_external_only": "(1-p)^3",
+    "threshold_exact": {
+      "p0": [
+        9,
+        10
+      ],
+      "p01": [
+        6561,
+        10000
+      ]
+    },
+    "target_not_reached": "null/right-censored; never zero-fill or delete",
+    "target_grid_resolution_train_episodes": 16,
+    "not_a_completion_gate": true,
+    "pair_cost_fractions": [
+      0.25,
+      0.5,
+      0.75,
+      1.0
+    ],
+    "pair_cost_rule": "B=min(actual training steps); count completed successes by each fraction of B within case/seed; no reward-value ranking",
+    "costs_separate": [
+      "train environment",
+      "eval environment",
+      "ordinary TD",
+      "real replay",
+      "expected model backups",
+      "probability-planning edge expansions",
+      "fact writes",
+      "instrumented CPU/time",
+      "state serialization and observed memory"
+    ],
+    "statistical_scope": "four engineering seed blocks, within-seed mirror average then paired differences per p; all seed values/mean/range; episodes and bank items not independent N; no universal superiority/equivalence inference"
+  },
+  "completion": {
+    "required": [
+      "all five paths genuinely use declared signals",
+      "legitimate conflicting outcomes retained",
+      "matched fixed permissions and budgets",
+      "frozen eval no train contamination",
+      "all results and costs retained"
+    ],
+    "positive_effect_required": false,
+    "all_metrics_win_required": false,
+    "unseen_transfer_required": false,
+    "general_taste_or_emergence_required": false,
+    "first_step": "new probabilistic feedback inlet and frozen-evaluation isolation, then the 20-rollout wiring, then this single finite matrix",
+    "no_effect_chasing_or_automatic_retry": true,
+    "first_failure_or_partial_preserved": true
+  },
+  "literature": [
+    {
+      "title": "Watkins and Dayan, Q-learning",
+      "url": "https://www.gatsby.ucl.ac.uk/~dayan/papers/cjch.pdf"
+    },
+    {
+      "title": "Sutton and Barto, Reinforcement Learning: An Introduction, Chapter 8",
+      "url": "https://www.andrew.cmu.edu/course/10-703/textbook/BartoSutton.pdf"
+    }
+  ],
+  "prior_source_files": [
+    {
+      "path": "experiments/v05r/feedback_matrix_v169/result.md",
+      "bytes": 11017,
+      "sha256": "e4f1c823bfa780755276724e26362bce19327e2a031be2d88eaa915875ba2c3c"
+    },
+    {
+      "path": "experiments/v05r/feedback_matrix_v169/experiment.py",
+      "bytes": 28170,
+      "sha256": "e514db4017dc54f6e58f3f2b563aaf201c72e4cd624f383b0c61f6b5617a8b6e"
+    },
+    {
+      "path": "experiments/v05r/rl_baseline_v170/result.md",
+      "bytes": 8240,
+      "sha256": "42a144ad1d2f823a93f51f8e1804c2109fc6f23eb21b6028e94ca1a1e51c84cd"
+    },
+    {
+      "path": "experiments/v05r/rl_baseline_v170/experiment.py",
+      "bytes": 13613,
+      "sha256": "0a4159704ef948606dc3d1e5c4111ddc5fe2527e343ac9884774db37918c98d8"
+    },
+    {
+      "path": "experiments/v05r/rl_baseline_v170/contract.json",
+      "bytes": 7014,
+      "sha256": "9e803e47045df5a9856097610de0d8c5b92e86da866ce146c05df53197687008"
+    }
+  ],
+  "this_turn_execution": {
+    "new_native": 0,
+    "new_RNG_draws": 0,
+    "learner_implementation": 0,
+    "old_checker_or_fixture_runs": 0,
+    "formal_collection": 0,
+    "automation_changes": 0
+  },
+  "old_stage_evidence_and_unfinished_formal_plans": "unchanged; not made prerequisites of this local stage"
+}

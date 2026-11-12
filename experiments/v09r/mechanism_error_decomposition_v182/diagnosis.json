@@ -1,0 +1,66 @@
+{
+  "status": "MAIN_USER_PAUSED_IMPLEMENTATION_DEFECT_CONFIRMED_NO_RETRAIN",
+  "utc": "2026-11-07T18:16:36.859379+00:00",
+  "parent_commit": "5e18000db5bcc55ffcb46d4f676e2bcc9914df26",
+  "bootstrap_defect": {
+    "status": "CONFIRMED_DECLARED_BOOTSTRAP_MASK_DEFECT",
+    "original_line": 386,
+    "original_expression": "torch.from_numpy((((starts[:, None] + np.arange(8, 24) + j * 17) * 1103515245 + 12345) % 7 < 5).astype(np.float32))",
+    "multiplier_mod7": 0,
+    "intercept_mod7": 4,
+    "threshold": 5,
+    "all_uid_count_each": 262144,
+    "selected_fraction_each": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "pairwise_mask_differences": [
+      0,
+      0,
+      0
+    ],
+    "maximum_int64_intermediate": 289316316400710,
+    "overflow": false,
+    "consequence": "Declared five-of-seven per-head sample masking is absent. Initial parameters still differ; this does not prove identical heads or quantify performance loss."
+  },
+  "decomposition": [
+    {
+      "arm": "F-RP",
+      "models": 12,
+      "nonterminal_positions": 11856,
+      "original_one_step_MAE": 0.2196951632698377,
+      "observed_successor_substitution_MAE": 0.03134620872636636,
+      "observed_outcome_substitution_MAE": 0.21763199381530285,
+      "successor_substitution_improves_models": 12,
+      "zero_delta_hidden_MSE": 0.047238457637528576,
+      "identity_hidden_MSE": 0.02697656691695253,
+      "model_hidden_MSE": 0.029018021188676357
+    },
+    {
+      "arm": "F-R",
+      "models": 12,
+      "nonterminal_positions": 11857,
+      "original_one_step_MAE": 0.1594360452145338,
+      "observed_successor_substitution_MAE": 0.02467464640115698,
+      "observed_outcome_substitution_MAE": 0.16323941635588804,
+      "successor_substitution_improves_models": 12,
+      "zero_delta_hidden_MSE": 0.05093730210016171,
+      "identity_hidden_MSE": 0.023082312662154436,
+      "model_hidden_MSE": 0.025745597667992115
+    }
+  ],
+  "pure_probe_first_exit": 0,
+  "wall_seconds": 20.886185200011823,
+  "new_training_steps": 0,
+  "new_environment_steps": 0,
+  "optimizer_updates": 0,
+  "main_processes_resumed": false,
+  "limits": [
+    "Algebraic mask defect does not establish its share of task-score loss. Three networks still have independently initialized parameters.",
+    "Successor substitution uses an observed next-frame representation only for offline diagnostic comparison; Q remains estimated, not an optimal oracle. No policy saw these substitutions.",
+    "The24hybrid model decomposition does not explain all F0 failures.",
+    "Main64seed matrix is incomplete and its factual-mask implementation differs from the declared five-of-seven design. Keep all actual performance as results of this defective candidate.",
+    "No repair efficacy claim; no training/rollout resumed."
+  ]
+}

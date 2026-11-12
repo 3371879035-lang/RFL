@@ -1,0 +1,187 @@
+{
+  "schema": "V126_PROSPECTIVE_ONLINE_PRACTICE_MEMORY_TRANSFER",
+  "date_asia_shanghai": "2026-11-06",
+  "parent_commit": "b40d6687e86dc3e5dd7784be77943487a58265cd",
+  "question": "Can actual first-context practice consequences form conditional diagnostic memory, then reduce repeated practice at a later distinct task context without reducing main-task quality?",
+  "modes": [
+    "dq",
+    "patch-adaptive"
+  ],
+  "arms": [
+    "TaskTD",
+    "EvidenceValue",
+    "FrozenPractice",
+    "MemoryPractice"
+  ],
+  "sources": [
+    {
+      "kappa": 0,
+      "phi": 2,
+      "prefix": 3,
+      "cell": [
+        2,
+        1
+      ]
+    },
+    {
+      "kappa": 1,
+      "phi": 1,
+      "prefix": 1,
+      "cell": [
+        1,
+        2
+      ]
+    }
+  ],
+  "source_rule": "Install both source contexts together: wrong WAIT value6/literalD at declared cell for t>=prefix,m0/1,z1 and its own kappa/phi. Unread phase4 RIGHT sentinel and process3->2 unchanged. No source choice based on new results.",
+  "schedule": [
+    {
+      "kappa": 0,
+      "phi": 2,
+      "trap": false
+    },
+    {
+      "kappa": 1,
+      "phi": 1,
+      "trap": false
+    },
+    {
+      "kappa": 0,
+      "phi": 2,
+      "trap": false
+    },
+    {
+      "kappa": 1,
+      "phi": 1,
+      "trap": false
+    },
+    {
+      "kappa": 0,
+      "phi": 2,
+      "trap": true
+    },
+    {
+      "kappa": 0,
+      "phi": 2,
+      "trap": true
+    },
+    {
+      "kappa": 1,
+      "phi": 1,
+      "trap": false
+    },
+    {
+      "kappa": 0,
+      "phi": 2,
+      "trap": true
+    },
+    {
+      "kappa": 1,
+      "phi": 1,
+      "trap": false
+    },
+    {
+      "kappa": 0,
+      "phi": 2,
+      "trap": false
+    },
+    {
+      "kappa": 1,
+      "phi": 1,
+      "trap": true
+    },
+    {
+      "kappa": 1,
+      "phi": 1,
+      "trap": true
+    },
+    {
+      "kappa": 0,
+      "phi": 2,
+      "trap": false
+    },
+    {
+      "kappa": 1,
+      "phi": 1,
+      "trap": true
+    },
+    {
+      "kappa": 0,
+      "phi": 2,
+      "trap": false
+    },
+    {
+      "kappa": 1,
+      "phi": 1,
+      "trap": false
+    },
+    {
+      "kappa": 0,
+      "phi": 2,
+      "trap": false
+    },
+    {
+      "kappa": 1,
+      "phi": 1,
+      "trap": false
+    },
+    {
+      "kappa": 0,
+      "phi": 2,
+      "trap": false
+    },
+    {
+      "kappa": 1,
+      "phi": 1,
+      "trap": false
+    }
+  ],
+  "episode_inputs": "Chronological main e0..19, phase per task context(0,2)/(1,1), errorflag0/rank11/base1, fixedMAX coins. Trap(1,2,step0) only on declared six events. Private practice repeatsCURRENT observed context/mask, never future mask. Both stages and all main outcomes retained, no outcome-dependent stream extension.",
+  "model": "Shared frozen base28row model and ordinary learner unchanged. Additional online diagnostic memory is explicit new learned component; no neural-weight/self-RSI claim.",
+  "diagnostic": "Enabled after every actual COLLISION/TRAP/TIMEOUT for corrected arms, not only first task. SUCCESS ordinary-only. Max12addresses and0queries per event; individual consumed epochs, completeR+L and immediateI persist. TaskTD never diagnoses. Keep allowed.",
+  "retention_checkpoints_completed_tasks": [
+    0,
+    4,
+    8,
+    10,
+    14,
+    20
+  ],
+  "retention_protocol": "Six read-only banks per role, fixed contexts(kappa0,phi2)/(kappa1,phi1), nofault/rank11. CompleteR+L+I unchanged,0draw/TD/diagnostic/write. Not independent seeds or success attribution.",
+  "metrics": "Full20task success/return sequences, all practice costs and events, learned-memory updates/hits, clean read-only results. No fitted weighted utility, no best window or dropping failed transfer.",
+  "reference": {
+    "path": "experiments/v03r/a96_dense/b2_prepare/grammar_catalog_v31/evidence/stdout.log",
+    "sha256": "d0aafb6dc20b1cc0c872ac4c48497d94feb707ffe14448bd1c2f3ddd1bbb467b",
+    "q_digest": "d9078b5b5b823df56f998e8c28eb6a3e388bd3ae216f41a21acdb5202d2ec05a"
+  },
+  "budget": {
+    "rollout": 320,
+    "step": 3840,
+    "transaction": 1024,
+    "raw_bytes": 33554432,
+    "seconds": 120
+  },
+  "expected_extent_not_effect_gate": {
+    "main_tasks": 160,
+    "read_only_rollouts": 96,
+    "practice_rollouts_upper_bound": 48,
+    "total_rollouts_upper_bound": 304
+  },
+  "capture": "New exclusive bounded capture and source pins before first execution. Old code/positive/negative/partial results unchanged, no old checker/native rerun, no automatic retry or replacing adverse/unknown outcomes.",
+  "limits": "Fixed scripted stream, not blind population/seeds/general causal posterior. Same sharedQ*, alpha1/2 epsilon1/10 and original rewards. Legal local edits on post-TD current, not original same-pre wholeB1. Trap phases are deliberate environmental changes; compare same-schedule arms, do not label changing-environment return as general collateral. No new science/workload keys, RNG/keyderive, DP/calibration/formal collection. Automation off, not inspected or changed. This is a new action-intervention practice capability in the revised V04 experiment, not an assertion that v122 already had it. Only the tested aliased candidates are adjudicated; no total compute matching or universal attribution claim. Two sequential context exposures in one fixed stream, not independent statistical seeds. Any practice saving is simulator-work saving in this run, not an exact total-compute or generic real-world memory benefit. v124 local closure and all prior positive/negative evidence remain unchanged.",
+  "practice": {
+    "trigger": "PracticeValue only, actual failed task after ordinary learning, chosen single-address has at least2 top-scored single candidates with identical feature key. No truth/location label, future schedule or environment configuration is passed to request/choice policy.",
+    "cap": "At most2 practice events per stream role, consumed before first branch. At most2 eligible singles (canonical order), plus keep; exactly2 ordinary tasks per branch. Extra eligible/unprobed candidates explicitly retained. No outcome-conditioned rerun or persistent scorer update.",
+    "execution": "Runner-private current-task environment capability binds current observed kappa/phase and current actual mask, never future masks. Clone actual complete live post-TD R+L into separate branches; candidate edits on branch,2repeat-current-condition tasks, no diagnostics inside branches. Origin and its I stay unchanged. New typed data/branches, not restored issuedB1handles.",
+    "decision": "Choose greatest actual two-task mean from keep and tested singles; exact ties prefer fewer attempted address edits then declared order. Apply chosen original proposal once to live post-TD state. Scores remain frozen; practice outcomes are ephemeral event evidence.",
+    "cost": "All branch rollouts/steps/ordinary transactions and candidate writes counted separately; task and retention comparison shares task schedule but NOT total compute. No net efficiency or full-menu optimality claim. Standard query API remains0; these new practice operations are not claimed free or nonexistent."
+  },
+  "online_memory": {
+    "state": "New explicit per-role DiagnosticMemory, separate from ordinaryR+L and from frozen28row base model. Initially empty; only MemoryPractice changes it.",
+    "features": "Base visible candidate feature plus whether the contiguous same-cell/same-action run containing it spans multiple observed steps. No absolute x/y/t/kappa/phi, ordinal identity or fault truth stored. Representation supplied; empirical values learned.",
+    "training": "After actual ambiguity practice, everykeep/tested single branch actual2return outcomes update mean table; no success attribution, future main returns or held-out truth labels train it. New memory state/version/updates captured.",
+    "recall": "At later same-base-feature ambiguity, if keep and up to2eligible single memory keys all covered, choose maximum learned mean, then fewer edits/order. No new practice on hit. Otherwise fall back to the same capped real practice. Record miss/hit and full table before/after.",
+    "comparison": "FrozenPractice uses identical base scoring, candidate menu and current-condition practice but discards cross-event diagnostic experience. Both have2practice-event cap perrole; actual practice work may differ. Whole agent is NOT called frozen: base model stays frozen, MemoryPractice learns new explicit diagnostic state online.",
+    "hypothesis_not_effect_gate": "Memory may or may not transfer; preserve fallback probes, failures and imperfect value predictions. Second context differs in kappa/phase, installed error position and possible healthy route; not a blind population or universal invariance test."
+  }
+}

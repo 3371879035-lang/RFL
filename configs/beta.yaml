@@ -1,0 +1,40 @@
+schema_version: "0.3.0"
+environment:
+  horizon: 8
+  gamma: 1.0
+  width: 5
+  lanes: 2
+  p_hazard: 0.25
+learning:
+  alpha_low: 0.10
+  alpha_high: 0.10
+  alpha_diag: 0.10
+  epsilon_start: 0.30
+  epsilon_end: 0.05
+  epsilon_decay_fraction: 0.80
+gate:
+  min_auc_gap: 0.005
+  min_family_events: 400
+  # Oracle must beat every blunt rule by at least this much mean innocent-module
+  # knowledge damage, in at least one family, to count as a structural advantage.
+  oracle_advantage_kd: 0.01
+experiment:
+  name: v03_beta
+  seeds: 8
+  seed_base: 4100000
+  # The research plan pairs 2,000 episodes with ">= 400-500 effective failures
+  # per scene", which 2,000 episodes cannot deliver for H_error (it is only a
+  # few percent of episodes, and the Oracle arms cut total failures further by
+  # learning better).  D6 pre-registers the remedy: raise episodes, never touch
+  # p_hazard, epsilon, or the label definitions.
+  episodes: 12000
+  eval_every: 250
+  eval_episodes: 200
+  conditions:
+    - traditional
+    - positive_only
+    - traditional_oracle
+    - positive_only_oracle
+    - h_only
+    - l_only
+    - hl

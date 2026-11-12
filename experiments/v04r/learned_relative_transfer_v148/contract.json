@@ -1,0 +1,116 @@
+{
+  "schema": "V148_PROSPECTIVE_LEARNED_RELATIVE_VALUE_TRANSFER",
+  "date_asia_shanghai": "2026-11-07",
+  "parent_commit": "d4a46fceb231a17267e69d5754182534c412b21a",
+  "question": "Can a relative future-value tree learned only from three prior real paired comparisons select correct/keep in a new coordinate context, matching fresh paired validation with less online work?",
+  "training_sources": [
+    {
+      "id": "broken",
+      "case": "controller",
+      "arm": "TwoStepValue",
+      "raw": {
+        "path": "experiments/v04r/controller_horizon_value_v144/evidence/raw.jsonl",
+        "bytes": 4046821,
+        "sha256": "bfeea98c8d3b0d9eb91727eec0f183840167ab83227ab6f85d7f8615b1b9c8a2"
+      },
+      "exit": {
+        "path": "experiments/v04r/controller_horizon_value_v144/evidence/exit.json",
+        "bytes": 42927,
+        "sha256": "592c27961b4cf2b4ecf9c6ee8ed5b03a17a8821805ac2c32765189392cc8bdaf"
+      },
+      "review": {
+        "path": "experiments/v04r/controller_horizon_value_v144/stored_audit_result.json",
+        "bytes": 6784,
+        "sha256": "b0e25e5a1ca4d24da14c1849939776523e61c06da2215813cd6ca097da60894f"
+      }
+    },
+    {
+      "id": "plant",
+      "case": "plant",
+      "arm": "TwoStepValue",
+      "raw": {
+        "path": "experiments/v04r/controller_horizon_value_v144/evidence/raw.jsonl",
+        "bytes": 4046821,
+        "sha256": "bfeea98c8d3b0d9eb91727eec0f183840167ab83227ab6f85d7f8615b1b9c8a2"
+      },
+      "exit": {
+        "path": "experiments/v04r/controller_horizon_value_v144/evidence/exit.json",
+        "bytes": 42927,
+        "sha256": "592c27961b4cf2b4ecf9c6ee8ed5b03a17a8821805ac2c32765189392cc8bdaf"
+      },
+      "review": {
+        "path": "experiments/v04r/controller_horizon_value_v144/stored_audit_result.json",
+        "bytes": 6784,
+        "sha256": "b0e25e5a1ca4d24da14c1849939776523e61c06da2215813cd6ca097da60894f"
+      }
+    },
+    {
+      "id": "protective",
+      "case": null,
+      "arm": "PairedValue",
+      "raw": {
+        "path": "experiments/v04r/protective_mapping_challenge_v146/evidence/raw.jsonl",
+        "bytes": 1397451,
+        "sha256": "3ab0bac30d7d06f280c5fb451999a9d19370d31dad5916610f1ab0037c769771"
+      },
+      "exit": {
+        "path": "experiments/v04r/protective_mapping_challenge_v146/evidence/exit.json",
+        "bytes": 43745,
+        "sha256": "2c3dcb0631b18db6727b900fdf72614fb2622736e69d86b1a22051e9399640a3"
+      },
+      "review": {
+        "path": "experiments/v04r/protective_mapping_challenge_v146/stored_audit_result.json",
+        "bytes": 2629,
+        "sha256": "29fe627f288e44421f7de528fe0ccd76dff6bc38b52ccebfbee43004450365fa"
+      }
+    }
+  ],
+  "training_context": [
+    0,
+    3
+  ],
+  "test_context": [
+    1,
+    0
+  ],
+  "reference": {
+    "path": "experiments/v03r/a96_dense/b2_prepare/grammar_catalog_v31/evidence/stdout.log",
+    "sha256": "d0aafb6dc20b1cc0c872ac4c48497d94feb707ffe14448bd1c2f3ddd1bbb467b",
+    "q_digest": "d9078b5b5b823df56f998e8c28eb6a3e388bd3ae216f41a21acdb5202d2ec05a"
+  },
+  "model": "Deterministic greedy squared-error regression tree. Features only first visible mismatch distance to observed terminal and presence of its own controller entry; no state coordinates/case/role/source/mask/cause labels in model input. Target = original orderedmean2(candidate)-orderedmean2(keep), derived actual private trials, not fitted prior scores. Fit once before first new native task; freeze through all test arms. No depth preset; split only for actual strict SSE decrease; ties byfeatureindex/threshold.",
+  "generalization_scope": "Diagnostic-value labels at kappa1/phi0 are excluded from training; ordinary commonQ* already covers that context. The three low-dimensional feature patterns repeat old support, so this is coordinate transfer, not new-feature-domain or blind population generalization.",
+  "cases": [
+    "broken",
+    "plant",
+    "protective"
+  ],
+  "arms": [
+    "NoWrite",
+    "DirectSite",
+    "FrozenLearned",
+    "Validated"
+  ],
+  "main_tasks_each": 6,
+  "preparation": "One shared actual ordinary episode in k1/phi0 after legal D_START_RIGHT seed, diagnosticdisabled, persistentstep0Trap((1,2),0); acquire genuineRIGHT failure knowledge with original alpha1/2. Clone resulting fullR+L for all case/arms. Not fromscratch/commonQ*unchanged, no saved checkpoint/issuedidentityrestore.",
+  "case_sources": "broken adds X[START,WAIT]=RIGHT(1edit); plant adds noX, nativePlantFault(t0,RIGHT); protective adds D_START_RIGHT,X[START,RIGHT]=WAIT,D[(1,2,t2),z1,m0]=RIGHT(3edits), so first collision at postt3 and ordinaryTD restores lateD. Both nonplant cases fixedstep0Trap; plantalsoTrap. Only runner knows these constructors, not model.",
+  "protocol": "New main0..5 and private0..1, k1/phi0/proposal1/error0/rank12. Protective main e1 and private e0 have coin0/chi0RIGHT; otherwiseMAX. Same literalvalues across arms/candidates; no adaptive exploration or sampled epsilon-frequency claim. Alpha1/2 epsilon1/10 unchanged.",
+  "strategy": "On first actual mainfailure afterordinaryTD: NoWriteforceskeep; DirectSite uses frozenv145own-state rule; FrozenLearnedpredictsDelta and applies onlyifpositive (keepontie); ValidatedrunskeepandXdelete2ordinarytasks each, comparesactualorderedmeans. All arms payrealfirstkeepobservation (oneprivateepisodeexceptValidatedtwo) and consumeonlyitsfirstnativeobservation aftermaincomplete throughunchangedv147conditionedreceipt. This matches ordinary experience without silently using an old actuator sample after changing a consulted mapping.",
+  "learning_boundary": "All main actors use same v147ConditionedObservationLoop, private exactv144nativeclass; fullI/R+L/PXanchor/once preserved. Candidate only observed ControllerSite; localexecutor not originalwhole-B1/law qualification. Success ordinary-only, no diagnosticbranch. NoWrite keeps ordinary and eligibleextraexperience learning.",
+  "comparison": "Per-case actualraw/return/fullstate; onlinework onlycompare samequality FrozenLearned andValidated, both actualfresh runs. Old history supplied paid training labels, not free data; report offlinefit/historicalcost separately, no new totalCPU optimumclaim or fullfamilyweights.",
+  "expected_extent_not_effect_gate": {
+    "shared_preparatory_tasks": 1,
+    "main_tasks": 72,
+    "private_tasks_upper": 21,
+    "frozen_predictions": 3,
+    "training_unique_paired_examples": 3
+  },
+  "budget": {
+    "rollout": 120,
+    "step": 1440,
+    "transaction": 320,
+    "raw_bytes": 50331648,
+    "seconds": 180
+  },
+  "capture": "Exclusive bounded first execution; preservefirstfailure/partial/adverse/zero; no auto retry/oldnative-checker-bankrerun. Original313/API/guard/law/registry/alloldexecutedbytes266provunchanged. New keys/RNG/keyderive/DP/calibration/formalcollector/automation0."
+}

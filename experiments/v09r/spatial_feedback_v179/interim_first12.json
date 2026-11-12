@@ -1,0 +1,267 @@
+{
+  "status": "INTERIM_FIXED_FIRST_12_SEEDS_NOT_FINAL_64_SEED_ANALYSIS",
+  "recorded_utc": "2026-11-07T17:23:45.093226+00:00",
+  "seeds": [
+    9001,
+    9002,
+    9003,
+    9004,
+    9005,
+    9006,
+    9007,
+    9008,
+    9009,
+    9010,
+    9011,
+    9012
+  ],
+  "selection": "Fixed first12complete seed blocks, all4arms, no effect-based selection",
+  "rows": [
+    {
+      "arm": "RL-RP",
+      "name": "纯强化学习",
+      "independent_training_seeds": 12,
+      "training_steps_each": 262144,
+      "training_steps_total": 3145728,
+      "completed_train_episodes": 56165,
+      "final_eval_episodes": 12288,
+      "final_mixed_mean_score": 298.1600341796875,
+      "final_mixed_mean_survival": 138.649658203125,
+      "final_mixed_mean_treasures_derived_from_score_identity": 0.90185546875
+    },
+    {
+      "arm": "F0",
+      "name": "纯反馈",
+      "independent_training_seeds": 12,
+      "training_steps_each": 262144,
+      "training_steps_total": 3145728,
+      "completed_train_episodes": 135910,
+      "final_eval_episodes": 12288,
+      "final_mixed_mean_score": 38.523234049479164,
+      "final_mixed_mean_survival": 21.732503255208332,
+      "final_mixed_mean_treasures_derived_from_score_identity": 0.059244791666666644
+    },
+    {
+      "arm": "F-RP",
+      "name": "反馈＋奖惩",
+      "independent_training_seeds": 12,
+      "training_steps_each": 262144,
+      "training_steps_total": 3145728,
+      "completed_train_episodes": 130298,
+      "final_eval_episodes": 12288,
+      "final_mixed_mean_score": 46.031778971354164,
+      "final_mixed_mean_survival": 25.452392578125,
+      "final_mixed_mean_treasures_derived_from_score_identity": 0.07853190104166664
+    },
+    {
+      "arm": "F-R",
+      "name": "反馈＋仅奖励",
+      "independent_training_seeds": 12,
+      "training_steps_each": 262144,
+      "training_steps_total": 3145728,
+      "completed_train_episodes": 128308,
+      "final_eval_episodes": 12288,
+      "final_mixed_mean_score": 49.434244791666664,
+      "final_mixed_mean_survival": 27.134765625,
+      "final_mixed_mean_treasures_derived_from_score_identity": 0.08732096354166664
+    }
+  ],
+  "scope": "Final checkpoint mixed bank, seen/held-out and solo/duo balanced. Not the predeclared primary seen-duo AUC or final64seed inference. Descriptive means only.",
+  "existing_eval_episodes_summarized": 49152,
+  "new_training_or_evaluation_calls": 0,
+  "native_parameters_or_workload_changed": false,
+  "inputs": [
+    {
+      "path": "evidence_matrix/seed9001/RL-RP/result.json",
+      "sha256": "d0815d54213216c61738b01b5b407829cc295c21cc18c1acb181d1c94cc3fd2b"
+    },
+    {
+      "path": "evidence_matrix/seed9002/RL-RP/result.json",
+      "sha256": "5146626cacb4e87df0e04f9c8286d1e95d679c82c7a905ff1cef84d100698f94"
+    },
+    {
+      "path": "evidence_matrix/seed9003/RL-RP/result.json",
+      "sha256": "5f13f2e9adc1eb87080780140ac95fe5dc166157a7d07cdc8228dbfb9258279d"
+    },
+    {
+      "path": "evidence_matrix/seed9004/RL-RP/result.json",
+      "sha256": "bb406390f24a4fac0a42a4043c24b14bd78a2dc324d321639aa3a73127c060b1"
+    },
+    {
+      "path": "evidence_matrix/seed9005/RL-RP/result.json",
+      "sha256": "97300a2bd9aa0de602f753b516fe127255ab1e51de4b0f06b07aef712d202b82"
+    },
+    {
+      "path": "evidence_matrix/seed9006/RL-RP/result.json",
+      "sha256": "12796364778fa1aff01d944b2750e729ebf6c6f1c5523598dcb52cf6fa08c374"
+    },
+    {
+      "path": "evidence_matrix/seed9007/RL-RP/result.json",
+      "sha256": "20654e1fe1c25ce716ef5e93344e1264dc045418a396acae63909d40f9e6e1cc"
+    },
+    {
+      "path": "evidence_matrix/seed9008/RL-RP/result.json",
+      "sha256": "90523c60ce41bf2fd00b6a09ddac4eb80bb84a47b5682dc55376770962906b18"
+    },
+    {
+      "path": "evidence_matrix/seed9009/RL-RP/result.json",
+      "sha256": "09bec1a34e9371549ca1ed7bf4e6d604b4be09ec0fd5e2d4809a81e033721754"
+    },
+    {
+      "path": "evidence_matrix/seed9010/RL-RP/result.json",
+      "sha256": "8db1f8c01ac77a05bdc98a5a98193f3478b3f8151d941358064a0acf76a2ae4f"
+    },
+    {
+      "path": "evidence_matrix/seed9011/RL-RP/result.json",
+      "sha256": "8622b4711ef65ad5c3e4233552f804aa7eaa0f0d016ee0b7cdb9f849fda4e243"
+    },
+    {
+      "path": "evidence_matrix/seed9012/RL-RP/result.json",
+      "sha256": "8d5d2af39f1e34c6d986d024b506d2510d21483612c2b594ca8377bb034532e6"
+    },
+    {
+      "path": "evidence_matrix/seed9001/F0/result.json",
+      "sha256": "87918a85d1da5253f8206ea6cf2cbe1ac1fc6bd398891b1b6682b1fedb9f24ca"
+    },
+    {
+      "path": "evidence_matrix/seed9002/F0/result.json",
+      "sha256": "bdf39956b1320f1969d560e54c300789e45b74683e7afa620c7442ca41565fb6"
+    },
+    {
+      "path": "evidence_matrix/seed9003/F0/result.json",
+      "sha256": "6f9cb6f019b85abb9e78f1d3b85943f984cb4cbd15c0f8426a8b3511a7c6f87d"
+    },
+    {
+      "path": "evidence_matrix/seed9004/F0/result.json",
+      "sha256": "e58e4a694c0ddf866d24df1428c6c2ccda30098a80bfca3495db206f671f1b8d"
+    },
+    {
+      "path": "evidence_matrix/seed9005/F0/result.json",
+      "sha256": "2fff64a5a08fcfbf07141ce5cc019c0834506d61f348e68f7e092444fec49267"
+    },
+    {
+      "path": "evidence_matrix/seed9006/F0/result.json",
+      "sha256": "8fc813a3b108c9ff477f284660aaf70450881b4f728f10f111bf4b8508bedbaf"
+    },
+    {
+      "path": "evidence_matrix/seed9007/F0/result.json",
+      "sha256": "3e5cd8c1f8131e97c50c8c608d4789dfc2a52478337290f3fadf6abac70d8171"
+    },
+    {
+      "path": "evidence_matrix/seed9008/F0/result.json",
+      "sha256": "5a1bf10a15f5bfb1a51b70380e76e9ff1441ae77d777247bb627fd2dbbfda475"
+    },
+    {
+      "path": "evidence_matrix/seed9009/F0/result.json",
+      "sha256": "59dad3e46e161d63191b8e340055ec9aeac31a91359c5eddd6b205d3c9f373a4"
+    },
+    {
+      "path": "evidence_matrix/seed9010/F0/result.json",
+      "sha256": "4494606f124957f5cd238e6273896ec58ffa9e751858a17f1335f89f69ebdc3f"
+    },
+    {
+      "path": "evidence_matrix/seed9011/F0/result.json",
+      "sha256": "6e3d03c2c2132c89d7f1cf48760982aee8c3625b6488eb6ccf9ed4d8803a58b4"
+    },
+    {
+      "path": "evidence_matrix/seed9012/F0/result.json",
+      "sha256": "fc20eda68ea590a86b7423ba5b764dcfcdb80382dea074e7a0075224f88bd497"
+    },
+    {
+      "path": "evidence_matrix/seed9001/F-RP/result.json",
+      "sha256": "59b8f9a2a58b2a6e5ba27bd50d3c2ba071479560713c5d23e93fedc4e0cb5174"
+    },
+    {
+      "path": "evidence_matrix/seed9002/F-RP/result.json",
+      "sha256": "f71739e7cad09a0e8ad1834c8daf2bc313b1d6b0a17e245d1668a6a144a8e7fe"
+    },
+    {
+      "path": "evidence_matrix/seed9003/F-RP/result.json",
+      "sha256": "21be81c6a119381ef43fbd8f689eae688c78342d0a84a73701364393b00fa20a"
+    },
+    {
+      "path": "evidence_matrix/seed9004/F-RP/result.json",
+      "sha256": "3ab942e77a2ddf21febc229f7452dc9a0e852e95090c9b838be51969c21882af"
+    },
+    {
+      "path": "evidence_matrix/seed9005/F-RP/result.json",
+      "sha256": "eb8283e2fab413f727ef6ef75748970a66d9e054aa5a395d4855f299f897fba5"
+    },
+    {
+      "path": "evidence_matrix/seed9006/F-RP/result.json",
+      "sha256": "f0b36f548c872a086e2a34ebf2e1c40633cdd1a73471a7470430a1e71cbaa295"
+    },
+    {
+      "path": "evidence_matrix/seed9007/F-RP/result.json",
+      "sha256": "0fde001da33e9c5a1453d40fb87ed7ccf9239afe3f8983737a22ed216014600d"
+    },
+    {
+      "path": "evidence_matrix/seed9008/F-RP/result.json",
+      "sha256": "d222bb6df7b190e1db851777201da8435bb06d62fa279d5a488a4558038a76ac"
+    },
+    {
+      "path": "evidence_matrix/seed9009/F-RP/result.json",
+      "sha256": "e2fe6edf6fc695436df8b229dd47adcc13cbca4d07fabbd1c07725cee801000f"
+    },
+    {
+      "path": "evidence_matrix/seed9010/F-RP/result.json",
+      "sha256": "64a7689ef6d1e25d1d0039513ef3145d164cb0d8d1a6fa5b3712f2b3a3f7ecd0"
+    },
+    {
+      "path": "evidence_matrix/seed9011/F-RP/result.json",
+      "sha256": "0d3c395a2c735eaf407b19f6dd0089ced7c9157065fbee93d3d7c7f58bb72afb"
+    },
+    {
+      "path": "evidence_matrix/seed9012/F-RP/result.json",
+      "sha256": "21e7349f5cf9b03969518ca69ecb26dac4eea9f1a3f6c96c091ef60cc8d0a115"
+    },
+    {
+      "path": "evidence_matrix/seed9001/F-R/result.json",
+      "sha256": "9fcdeb7cd63c7a2cad1197c4e46cccca94d2186ea6fdedd7d7fc248d38e1eab7"
+    },
+    {
+      "path": "evidence_matrix/seed9002/F-R/result.json",
+      "sha256": "a3561635000e070605ff3b16afa3c77c45099d7f55cdc0b941d2228317a2259e"
+    },
+    {
+      "path": "evidence_matrix/seed9003/F-R/result.json",
+      "sha256": "c62fe884995a6b7ec703e559e18f17f180d0f1f0a163ef5f211d2ee63b6a747d"
+    },
+    {
+      "path": "evidence_matrix/seed9004/F-R/result.json",
+      "sha256": "18ea856580f8fbbb97e9a686fe8ef396c9ad1a9e2aa78a9a0aae9925c677dd87"
+    },
+    {
+      "path": "evidence_matrix/seed9005/F-R/result.json",
+      "sha256": "fcaee857b2f171e0937504a872eab76c75e90fa82c472b9278c55522cc0e6ed1"
+    },
+    {
+      "path": "evidence_matrix/seed9006/F-R/result.json",
+      "sha256": "76a9f5d48dcf530ed93b2baf57a8ff373927bba6ded3477cda38eda4076c1f2a"
+    },
+    {
+      "path": "evidence_matrix/seed9007/F-R/result.json",
+      "sha256": "e5e34ab9b8a484ddd0c8ff6845268bd78deaaeba0ac7ba19db3e25748102e155"
+    },
+    {
+      "path": "evidence_matrix/seed9008/F-R/result.json",
+      "sha256": "3051ac927be0ee88f7d7d8c9f6d0e8f5015b73f7295480872abab4fa294016fd"
+    },
+    {
+      "path": "evidence_matrix/seed9009/F-R/result.json",
+      "sha256": "f4aee0a4b87a3411fb7af627e8ed1f1c6714544dfd5a03ca5c4e19bb3b57bea6"
+    },
+    {
+      "path": "evidence_matrix/seed9010/F-R/result.json",
+      "sha256": "cfbd434b9ce91096ae1fd34af4b9e85a51320b3cdb1eef3a3a37d1efce97f37f"
+    },
+    {
+      "path": "evidence_matrix/seed9011/F-R/result.json",
+      "sha256": "1ab17d04f9e9dd40ba841d5b33484afabdc33849107eb7fbadfdcb65a3c6b64d"
+    },
+    {
+      "path": "evidence_matrix/seed9012/F-R/result.json",
+      "sha256": "6fe18da678328b98e9e3318d5204129a93102227dadb60befee6a5c04f52ee3b"
+    }
+  ]
+}

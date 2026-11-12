@@ -1,0 +1,19 @@
+Traceback (most recent call last):
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v03r\a96_dense\b2_prepare\dense_resource_workload_v106\workload.py", line 302, in main
+    handles=C.run_pair_curve(bundle)
+            ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v03r\a96_dense\b2_prepare\complete_curve_source_gates_v105\variants\normal\owned_curve.py", line 140, in run_pair_curve
+    traces, mean = _evaluate_bank(actor, d.plan.evaluation_sample)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v03r\a96_dense\b2_prepare\complete_curve_source_gates_v105\variants\normal\owned_curve.py", line 125, in _evaluate_bank
+    return tuple(traces), total / len(sample)
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v03r\a96_dense\b2_prepare\dense_resource_workload_v106\workload.py", line 181, in observe
+    if item[1]: handler(frame,event,arg)
+                ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v03r\a96_dense\b2_prepare\dense_resource_workload_v106\workload.py", line 152, in handler
+    now=resource('checkpoint')
+        ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v03r\a96_dense\b2_prepare\dense_resource_workload_v106\workload.py", line 91, in resource
+    assert now['wall_seconds'] <= CONTRACT['budget']['seconds_per_child'], 'wall-time cap'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: wall-time cap

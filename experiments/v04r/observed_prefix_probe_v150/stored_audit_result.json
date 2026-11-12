@@ -1,0 +1,661 @@
+{
+  "schema": "V150_STDLIB_OBSERVED_PREFIX_REVIEW",
+  "complete": true,
+  "native_counts": {
+    "rollout": 86,
+    "step": 523,
+    "transaction": 206
+  },
+  "records": 604,
+  "input_pins": 335,
+  "summaries": [
+    {
+      "case": "late_controller",
+      "arm": "NoWrite",
+      "successes": 4,
+      "returns": [
+        -1.06,
+        -1.06,
+        0.84,
+        0.84,
+        0.84,
+        0.84
+      ],
+      "outcomes": [
+        "COLLISION",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.20666666666666664,
+      "external_updates": 1
+    },
+    {
+      "case": "late_controller",
+      "arm": "DirectSite",
+      "successes": 5,
+      "returns": [
+        -1.06,
+        0.86,
+        0.84,
+        0.84,
+        0.84,
+        0.84
+      ],
+      "outcomes": [
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.5266666666666666,
+      "external_updates": 1
+    },
+    {
+      "case": "late_controller",
+      "arm": "FirstCommandAblation",
+      "successes": 4,
+      "returns": [
+        -1.06,
+        -1.06,
+        0.84,
+        0.84,
+        0.84,
+        0.84
+      ],
+      "outcomes": [
+        "COLLISION",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.20666666666666664,
+      "external_updates": 1
+    },
+    {
+      "case": "late_controller",
+      "arm": "PrefixProbe",
+      "successes": 5,
+      "returns": [
+        -1.06,
+        0.86,
+        0.84,
+        0.84,
+        0.84,
+        0.84
+      ],
+      "outcomes": [
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.5266666666666666,
+      "external_updates": 1
+    },
+    {
+      "case": "late_controller",
+      "arm": "FutureValidated",
+      "successes": 5,
+      "returns": [
+        -1.06,
+        0.86,
+        0.84,
+        0.84,
+        0.84,
+        0.84
+      ],
+      "outcomes": [
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.5266666666666666,
+      "external_updates": 1
+    },
+    {
+      "case": "late_shadow",
+      "arm": "NoWrite",
+      "successes": 4,
+      "returns": [
+        -1.06,
+        -1.06,
+        0.84,
+        0.84,
+        0.84,
+        0.84
+      ],
+      "outcomes": [
+        "COLLISION",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.20666666666666664,
+      "external_updates": 1
+    },
+    {
+      "case": "late_shadow",
+      "arm": "DirectSite",
+      "successes": 4,
+      "returns": [
+        -1.06,
+        -1.06,
+        0.84,
+        0.84,
+        0.84,
+        0.84
+      ],
+      "outcomes": [
+        "COLLISION",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.20666666666666664,
+      "external_updates": 1
+    },
+    {
+      "case": "late_shadow",
+      "arm": "FirstCommandAblation",
+      "successes": 4,
+      "returns": [
+        -1.06,
+        -1.06,
+        0.84,
+        0.84,
+        0.84,
+        0.84
+      ],
+      "outcomes": [
+        "COLLISION",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.20666666666666664,
+      "external_updates": 1
+    },
+    {
+      "case": "late_shadow",
+      "arm": "PrefixProbe",
+      "successes": 4,
+      "returns": [
+        -1.06,
+        -1.06,
+        0.84,
+        0.84,
+        0.84,
+        0.84
+      ],
+      "outcomes": [
+        "COLLISION",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.20666666666666664,
+      "external_updates": 1
+    },
+    {
+      "case": "late_shadow",
+      "arm": "FutureValidated",
+      "successes": 4,
+      "returns": [
+        -1.06,
+        -1.06,
+        0.84,
+        0.84,
+        0.84,
+        0.84
+      ],
+      "outcomes": [
+        "COLLISION",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.20666666666666664,
+      "external_updates": 1
+    }
+  ],
+  "queries": [
+    {
+      "case": "late_controller",
+      "arm": "FirstCommandAblation",
+      "observed": {
+        "keep": [
+          0.84
+        ],
+        "controller-delete": [
+          0.84
+        ]
+      },
+      "means": {
+        "keep": 0.84,
+        "controller-delete": 0.84
+      },
+      "query_delta": 0.0,
+      "proper_target_comparison": false,
+      "target_delta": null,
+      "choice": "keep",
+      "target_reach": {
+        "keep": {
+          "reached": false,
+          "reason": "observed_state_control_or_command_prefix_differs",
+          "checked_steps": 2
+        },
+        "controller-delete": {
+          "reached": false,
+          "reason": "observed_state_control_or_command_prefix_differs",
+          "checked_steps": 2
+        }
+      },
+      "estimand": "first-command-only-ablation"
+    },
+    {
+      "case": "late_controller",
+      "arm": "PrefixProbe",
+      "observed": {
+        "keep": [
+          -1.06
+        ],
+        "controller-delete": [
+          0.86
+        ]
+      },
+      "means": {
+        "keep": -1.06,
+        "controller-delete": 0.86
+      },
+      "query_delta": 1.92,
+      "proper_target_comparison": true,
+      "target_delta": 1.92,
+      "choice": "controller-delete",
+      "target_reach": {
+        "keep": {
+          "reached": true,
+          "reason": "actual_target_consulted_with_matching_observed_prefix",
+          "checked_steps": 3
+        },
+        "controller-delete": {
+          "reached": true,
+          "reason": "actual_target_consulted_with_matching_observed_prefix",
+          "checked_steps": 3
+        }
+      },
+      "estimand": "one-task-observed-prefix"
+    },
+    {
+      "case": "late_controller",
+      "arm": "FutureValidated",
+      "observed": {
+        "keep": [
+          -1.06,
+          0.84
+        ],
+        "controller-delete": [
+          0.86,
+          0.84
+        ]
+      },
+      "means": {
+        "keep": -0.11000000000000004,
+        "controller-delete": 0.85
+      },
+      "query_delta": 0.96,
+      "proper_target_comparison": true,
+      "target_delta": 0.96,
+      "choice": "controller-delete",
+      "target_reach": {
+        "keep": {
+          "reached": true,
+          "reason": "actual_target_consulted_with_matching_observed_prefix",
+          "checked_steps": 3
+        },
+        "controller-delete": {
+          "reached": true,
+          "reason": "actual_target_consulted_with_matching_observed_prefix",
+          "checked_steps": 3
+        }
+      },
+      "estimand": "two-task-predeclared-future"
+    },
+    {
+      "case": "late_shadow",
+      "arm": "FirstCommandAblation",
+      "observed": {
+        "keep": [
+          -1.06
+        ],
+        "controller-delete": [
+          -1.06
+        ]
+      },
+      "means": {
+        "keep": -1.06,
+        "controller-delete": -1.06
+      },
+      "query_delta": 0.0,
+      "proper_target_comparison": false,
+      "target_delta": null,
+      "choice": "keep",
+      "target_reach": {
+        "keep": {
+          "reached": false,
+          "reason": "observed_state_control_or_command_prefix_differs",
+          "checked_steps": 2
+        },
+        "controller-delete": {
+          "reached": false,
+          "reason": "observed_state_control_or_command_prefix_differs",
+          "checked_steps": 2
+        }
+      },
+      "estimand": "first-command-only-ablation"
+    },
+    {
+      "case": "late_shadow",
+      "arm": "PrefixProbe",
+      "observed": {
+        "keep": [
+          -1.06
+        ],
+        "controller-delete": [
+          -1.06
+        ]
+      },
+      "means": {
+        "keep": -1.06,
+        "controller-delete": -1.06
+      },
+      "query_delta": 0.0,
+      "proper_target_comparison": true,
+      "target_delta": 0.0,
+      "choice": "keep",
+      "target_reach": {
+        "keep": {
+          "reached": true,
+          "reason": "actual_target_consulted_with_matching_observed_prefix",
+          "checked_steps": 3
+        },
+        "controller-delete": {
+          "reached": true,
+          "reason": "actual_target_consulted_with_matching_observed_prefix",
+          "checked_steps": 3
+        }
+      },
+      "estimand": "one-task-observed-prefix"
+    },
+    {
+      "case": "late_shadow",
+      "arm": "FutureValidated",
+      "observed": {
+        "keep": [
+          -1.06,
+          -1.06
+        ],
+        "controller-delete": [
+          -1.06,
+          -1.06
+        ]
+      },
+      "means": {
+        "keep": -1.06,
+        "controller-delete": -1.06
+      },
+      "query_delta": 0.0,
+      "proper_target_comparison": true,
+      "target_delta": 0.0,
+      "choice": "keep",
+      "target_reach": {
+        "keep": {
+          "reached": true,
+          "reason": "actual_target_consulted_with_matching_observed_prefix",
+          "checked_steps": 3
+        },
+        "controller-delete": {
+          "reached": true,
+          "reason": "actual_target_consulted_with_matching_observed_prefix",
+          "checked_steps": 3
+        }
+      },
+      "estimand": "two-task-predeclared-future"
+    }
+  ],
+  "first_failure_target_indices": [
+    {
+      "case": "late_controller",
+      "arm": "NoWrite",
+      "target_index": 2
+    },
+    {
+      "case": "late_controller",
+      "arm": "DirectSite",
+      "target_index": 2
+    },
+    {
+      "case": "late_controller",
+      "arm": "FirstCommandAblation",
+      "target_index": 2
+    },
+    {
+      "case": "late_controller",
+      "arm": "PrefixProbe",
+      "target_index": 2
+    },
+    {
+      "case": "late_controller",
+      "arm": "FutureValidated",
+      "target_index": 2
+    },
+    {
+      "case": "late_shadow",
+      "arm": "NoWrite",
+      "target_index": 2
+    },
+    {
+      "case": "late_shadow",
+      "arm": "DirectSite",
+      "target_index": 2
+    },
+    {
+      "case": "late_shadow",
+      "arm": "FirstCommandAblation",
+      "target_index": 2
+    },
+    {
+      "case": "late_shadow",
+      "arm": "PrefixProbe",
+      "target_index": 2
+    },
+    {
+      "case": "late_shadow",
+      "arm": "FutureValidated",
+      "target_index": 2
+    }
+  ],
+  "prefix_vs_future_validation": [
+    {
+      "case": "late_controller",
+      "decision_agrees": true,
+      "all6_main_raw_identical": true,
+      "all6_post_R_L_I_identical": true
+    },
+    {
+      "case": "late_shadow",
+      "decision_agrees": true,
+      "all6_main_raw_identical": true,
+      "all6_post_R_L_I_identical": true
+    }
+  ],
+  "online_costs": [
+    {
+      "case": "late_controller",
+      "arm": "NoWrite",
+      "rollout": 7,
+      "step": 46,
+      "transaction": 16,
+      "shared4TX_excluded": true
+    },
+    {
+      "case": "late_controller",
+      "arm": "DirectSite",
+      "rollout": 7,
+      "step": 50,
+      "transaction": 17,
+      "shared4TX_excluded": true
+    },
+    {
+      "case": "late_controller",
+      "arm": "FirstCommandAblation",
+      "rollout": 9,
+      "step": 62,
+      "transaction": 21,
+      "shared4TX_excluded": true
+    },
+    {
+      "case": "late_controller",
+      "arm": "PrefixProbe",
+      "rollout": 9,
+      "step": 60,
+      "transaction": 22,
+      "shared4TX_excluded": true
+    },
+    {
+      "case": "late_controller",
+      "arm": "FutureValidated",
+      "rollout": 11,
+      "step": 76,
+      "transaction": 26,
+      "shared4TX_excluded": true
+    },
+    {
+      "case": "late_shadow",
+      "arm": "NoWrite",
+      "rollout": 7,
+      "step": 41,
+      "transaction": 16,
+      "shared4TX_excluded": true
+    },
+    {
+      "case": "late_shadow",
+      "arm": "DirectSite",
+      "rollout": 7,
+      "step": 41,
+      "transaction": 17,
+      "shared4TX_excluded": true
+    },
+    {
+      "case": "late_shadow",
+      "arm": "FirstCommandAblation",
+      "rollout": 9,
+      "step": 47,
+      "transaction": 21,
+      "shared4TX_excluded": true
+    },
+    {
+      "case": "late_shadow",
+      "arm": "PrefixProbe",
+      "rollout": 9,
+      "step": 47,
+      "transaction": 21,
+      "shared4TX_excluded": true
+    },
+    {
+      "case": "late_shadow",
+      "arm": "FutureValidated",
+      "rollout": 11,
+      "step": 53,
+      "transaction": 25,
+      "shared4TX_excluded": true
+    }
+  ],
+  "observation_transfers": [
+    {
+      "case": "late_controller",
+      "arm": "NoWrite",
+      "applied": true
+    },
+    {
+      "case": "late_controller",
+      "arm": "DirectSite",
+      "applied": true
+    },
+    {
+      "case": "late_controller",
+      "arm": "FirstCommandAblation",
+      "applied": true
+    },
+    {
+      "case": "late_controller",
+      "arm": "PrefixProbe",
+      "applied": true
+    },
+    {
+      "case": "late_controller",
+      "arm": "FutureValidated",
+      "applied": true
+    },
+    {
+      "case": "late_shadow",
+      "arm": "NoWrite",
+      "applied": true
+    },
+    {
+      "case": "late_shadow",
+      "arm": "DirectSite",
+      "applied": true
+    },
+    {
+      "case": "late_shadow",
+      "arm": "FirstCommandAblation",
+      "applied": true
+    },
+    {
+      "case": "late_shadow",
+      "arm": "PrefixProbe",
+      "applied": true
+    },
+    {
+      "case": "late_shadow",
+      "arm": "FutureValidated",
+      "applied": true
+    }
+  ],
+  "native_ordinary_updates": 86,
+  "ordinary_policy_TX": 86,
+  "external_ordinary_updates": 10,
+  "external_policy_TX": 10,
+  "checkpoint_TX": 3,
+  "source_TX": 1,
+  "private_candidate_X_TX": 6,
+  "main_feedback_X_TX": 4,
+  "actual_explore_events": 58,
+  "success_diagnosis": 0,
+  "guard_rejections": 0,
+  "old_native_checker_bank_reruns": 0,
+  "new_keys_RNG_DP_calibration_collection": 0,
+  "formal_B1_or_science_qualification": false
+}

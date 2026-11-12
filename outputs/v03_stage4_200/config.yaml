@@ -1,0 +1,36 @@
+attribution:
+  n_traces: 8000
+  n_train: 4000
+  seed_offset: 5000000
+environment:
+  gamma: 1.0
+  horizon: 8
+  p_hazard: 0.25
+experiment:
+  arms:
+  - traditional
+  - positive_only
+  - direct_feedback
+  - random_correction
+  - sequence_rfl
+  - learned_rfl
+  - oracle_rfl
+  - aux_penalty_rfl
+  - global_value_rfl
+  episodes: 5000
+  eval_episodes: 150
+  eval_every: 250
+  name: v03_stage4_formal
+  p_false: 0.4
+  seed_base: 4400000
+  seeds: 200
+gate:
+  noninferiority_margin: 0.02
+learning:
+  alpha_diag: 0.1
+  alpha_high: 0.1
+  alpha_low: 0.1
+  epsilon_decay_fraction: 0.8
+  epsilon_end: 0.05
+  epsilon_start: 0.3
+schema_version: 0.3.0

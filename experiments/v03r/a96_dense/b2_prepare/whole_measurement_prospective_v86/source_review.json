@@ -1,0 +1,249 @@
+{
+  "schema": "V03R_WHOLE_MEASUREMENT_SOURCE_REVIEW_V86",
+  "role": "MAIN_AGENT_STATIC_SOURCE_REVIEW_NOT_EXTERNAL_EXPERT_NATIVE_TEST_OR_SCIENTIFIC_PASS",
+  "parent_commit": "4b0e66d09f6fd89f78d1037a805db14a4a95c80e",
+  "source_pins": {
+    "docs/rebuild/12-AMENDMENTS.md": {
+      "bytes": 540800,
+      "sha256": "3721d35f7e7f860ee4ac1f506f876b1a3e22e7ee2224cb1acc369b98fca11170"
+    },
+    "docs/rebuild/34-A96-DENSE-MEASUREMENT.md": {
+      "bytes": 6263,
+      "sha256": "80192208555069d834a83d6050d3dd428412d72c8b3ca14d8429bbb8b03a6553"
+    },
+    "docs/rebuild/05-STATISTICAL-PROTOCOL.md": {
+      "bytes": 11938,
+      "sha256": "06f0441920ace7c58594b8b23d4b054e11428886242fca9fff2f94e1f7a5f15d"
+    },
+    "src/rfl_rebuild/b2/training.py": {
+      "bytes": 22321,
+      "sha256": "0342626da5a111952873f33028866718a5504c2535e31d8790af952e08c472d6"
+    },
+    "src/rfl_rebuild/b2/environment.py": {
+      "bytes": 8884,
+      "sha256": "c25ed7940489e341e781e47b8d98dd0e6d723985477b71a87611e2007c4a7087"
+    },
+    "src/rfl_rebuild/learner/store.py": {
+      "bytes": 30097,
+      "sha256": "2c41ce68994020cad87c6ccd6bba4fb6ca231a0cb1ef43ff0f3756b3dbf523c4"
+    },
+    "src/rfl_rebuild/b2/runner.py": {
+      "bytes": 26935,
+      "sha256": "c3a363e76eb425819c0cbdab4cc96c9dd59b1013e1588c3b6ccf22baffb078cd"
+    },
+    "src/rfl_rebuild/b2/unaffected.py": {
+      "bytes": 21842,
+      "sha256": "70fcc6188ef23039189cf7603eb8403585eb499c559efdb38310970a68675b9c"
+    },
+    "src/rfl_rebuild/b2/collateral.py": {
+      "bytes": 15186,
+      "sha256": "6a96a7f9bc490a7f87e648e92fea69a7932bddcbd0327775c19e5f0352a9e6b2"
+    },
+    "experiments/v03r/a96_dense/b2_prepare/whole_credit_protocol_draft_v23.json": {
+      "bytes": 8470,
+      "sha256": "83f34a4c991ae8f60d395e127021c7fabf0d0c326b9a7b70ca8069c4c69df87f"
+    },
+    "experiments/v03r/a96_dense/b2_prepare/formal_validation_plan_v27.json": {
+      "bytes": 183858,
+      "sha256": "540c568199454534e7dff34537c4eabded5010d5ca80db9dcb3d9d73cc1a1e99"
+    },
+    "experiments/v03r/a96_dense/b2_prepare/completion_scope_review_v72.json": {
+      "bytes": 18193,
+      "sha256": "5aeff4c4459dd03f99f703144a77476264d2ce309aa1b6e1c8e2cba22c07a0a7"
+    },
+    "experiments/v03r/a96_dense/dev_lock.json": {
+      "bytes": 35631,
+      "sha256": "7d43ee9ae33a218e1266ab3cd2351e07d7e30922302e4527c65facbddaa3472f"
+    }
+  },
+  "normative_routes": [
+    {
+      "clauses": "A75 62.1,62.8,62.9",
+      "lines": [
+        3157,
+        3171,
+        3414,
+        3503
+      ],
+      "interpretation": "Oracle update-law mainline, all manifestations, T/P separate, independent extensional DQ/patch, context budgets, k/shape and full family interaction"
+    },
+    {
+      "clauses": "A76 63.10; A77 65.4,65.9",
+      "interpretation": "one samepre whole update; all owner receipts; D/Q mutually exclusive at construction, no implicit priority"
+    },
+    {
+      "clauses": "A79 67.4,67.7,67.9,67.11",
+      "interpretation": "pre fixed armblind region, same-tier contrasts, final paired400/200 and complete conjunction"
+    },
+    {
+      "clauses": "A89 77.3,77.4,77.7,77.8",
+      "interpretation": "5760 ordered U2, singleton E(c), canary prediction and identity; not whole adoption"
+    },
+    {
+      "clauses": "A91 79.4 and A96",
+      "interpretation": "Q-only chronological ordinary training, immutable D/P/X, post clone, locked dense integer measure; patch architecture learning remains unresolved"
+    }
+  ],
+  "function_pins": [
+    {
+      "path": "src/rfl_rebuild/b2/training.py",
+      "name": "_behaviour_provider",
+      "lines": [
+        350,
+        364
+      ],
+      "source_segment_sha256": "575705947afb37a1d85d54b5ce7c5e61206bc81b3de6269d9152a7ff553d1f75",
+      "relevant_expression": "greedy = learner.snapshot().q_decision_provider(q_reference); return greedy(state, control)"
+    },
+    {
+      "path": "src/rfl_rebuild/b2/training.py",
+      "name": "episode_rollout",
+      "lines": [
+        367,
+        383
+      ],
+      "source_segment_sha256": "8f0de7c228c8d4e3b8de0321d910eb4244eb0a9cc114e499eb7c161451a76b7a",
+      "relevant_expression": "command_provider=_behaviour_provider; controller and process from snapshot"
+    },
+    {
+      "path": "src/rfl_rebuild/b2/training.py",
+      "name": "sweep_edits",
+      "lines": [
+        411,
+        444
+      ],
+      "source_segment_sha256": "2e319e820a9857aabcdd3238e7aae390ef0a32ea6b9ed54681edcc16f67c7f21",
+      "relevant_expression": "return tuple(Edit(store=Q, address=q, value=float(overrides[q])) for q in seen)"
+    },
+    {
+      "path": "src/rfl_rebuild/b2/training.py",
+      "name": "train_curve",
+      "lines": [
+        467,
+        495
+      ],
+      "source_segment_sha256": "06a44742352e0e5177a3ee25934e0b5d0737dca922783faff083cadc8f7d8127",
+      "relevant_expression": "range(t_max+1), checkpoint mean before episode, final break; apply_transaction(edits)"
+    },
+    {
+      "path": "src/rfl_rebuild/b2/environment.py",
+      "name": "learner_channels",
+      "lines": [
+        68,
+        77
+      ],
+      "source_segment_sha256": "63de4f86523bb42069571a002675d4ab9ded1d073fb743b4618b4449bf83f3bc",
+      "relevant_expression": "snapshot.decision_provider(snapshot.q_decision_provider(q_reference))"
+    },
+    {
+      "path": "src/rfl_rebuild/b2/environment.py",
+      "name": "learned_rollout",
+      "lines": [
+        80,
+        97
+      ],
+      "source_segment_sha256": "364d024ef2a2aa1279db2afb364396406840792652cd7de892734f92dc37349b",
+      "relevant_expression": "learner_channels(snapshot,q_reference) and snapshot.process_commit_provider()"
+    },
+    {
+      "path": "src/rfl_rebuild/learner/store.py",
+      "name": "_require_decision_store_exclusive",
+      "lines": [
+        254,
+        272
+      ],
+      "source_segment_sha256": "d1b88c8bc4bf905eae2d7dc37db83365cd1f34f6a8c68cdbb689ca63ee953219",
+      "relevant_expression": "if self._decision and self._q: raise LearnerStateError"
+    },
+    {
+      "path": "src/rfl_rebuild/learner/store.py",
+      "name": "decision_provider",
+      "lines": [
+        275,
+        318
+      ],
+      "source_segment_sha256": "fc8453ebac9505530534a123b7a4659bf15f5cf6ed403f2d164964bd48747b54",
+      "relevant_expression": "guard first; read self._decision before base_provider"
+    },
+    {
+      "path": "src/rfl_rebuild/learner/store.py",
+      "name": "q_decision_provider",
+      "lines": [
+        320,
+        358
+      ],
+      "source_segment_sha256": "97f38f53959e2908868a2b812b4b6a5cd08c5ca8011cf7f1f0d5e313506a207a",
+      "relevant_expression": "guard first; effective Q argmax; no self._decision branch"
+    },
+    {
+      "path": "src/rfl_rebuild/learner/store.py",
+      "name": "apply_transaction",
+      "lines": [
+        430,
+        512
+      ],
+      "source_segment_sha256": "7ecfc05b20fde678541b2e745ce85e3ecbe9bfe7f946af7829aa9cbab5a187b9",
+      "relevant_expression": "validate typed/domain/duplicate; canonical Q reference equality deletes; retain D and commit all stores; no provider construction"
+    }
+  ],
+  "findings": [
+    {
+      "id": "PATCH_TRAINING_READ_BYPASS",
+      "strength": "actual pinned source, static",
+      "statement": "exploitation ignores nonempty literal D while ordinary evaluation consults D",
+      "scope": "not saying every visited context hits D; not runtime observation"
+    },
+    {
+      "id": "PATCH_Q_TRAINING_CORESIDENCE",
+      "strength": "conditional source consequence",
+      "condition": "D remains nonempty and an applied canonical Q edit remains nonempty",
+      "consequence": "next read-provider construction rejects via original exclusivity guard",
+      "scope": "does not assert all TD edits nonzero or that any fresh native failure occurred"
+    },
+    {
+      "id": "SINGLETON_TO_WHOLE_GAP",
+      "strength": "original source and clauses",
+      "statement": "runner singleton resolved guard and unaffected CHANNELS lack literalpatch; no inferred whole metric or borrowed D_Q handle"
+    },
+    {
+      "id": "DENSE_COST",
+      "strength": "source-loop integer arithmetic",
+      "statement": "47065 rollout per role, 94130 per two-arm future; 99890+3n candidate full pair excluding stated extra work",
+      "scope": "not measured resources or permission to run"
+    }
+  ],
+  "candidate_reconciliation": {
+    "v23": "intersection/ordered doublemean remains unadopted; this contract specifies operational inputs, ownership and refusal",
+    "v27": "specific k/shape values, weights,394 family, per-region fixed nonzero canary and SD95% delta remain unadopted; no inherited numerical decisions",
+    "v72": "original obligation vs candidate engineering dependency remains separate",
+    "v85": "three original P registered finite ordinary-bank chains complete; not futuretraining/wholeCollateral qualification, no rerun"
+  },
+  "read_scope": {
+    "required_v85_sources": "complete contract/test/execute/audit_stored source; audit not executed",
+    "required_v85_evidence": "all physical claim/exit/report JSON and full675 canonical stdout EOF parsed; stderr complete; bounded semantic fields returned",
+    "normative": "selected complete A75,A76,A77,A78,A79,A89,A91,A92,A94,A95,A96 sections; not all history540800 bytes visually read",
+    "proposal": "v23/v27 Markdown read; full physicalJSON parsed with necessary selected prospective fields; not every v27 giant field visually displayed",
+    "new_static": "full training/environment/unaffected/collateral; relevant runner and store interfaces plus full apply_transaction and validators; AST/function source pins only"
+  },
+  "tool_observations": [
+    "An aggregated v23/v27/v72 JSON output exceeded display budgets and Windows output showed replacement characters in Chinese strings; corrected with full physicalJSON parsing and bounded ensure_ascii selected fields. No artifact, native, rule or capture was changed.",
+    "An initial read-only ledger helper guessed background_execution and raised KeyError before any output/write; actual ledger keys then read and background_followup used. Not a native or scientific error."
+  ],
+  "parent_preservation_before": {
+    "parent_commit": "4b0e66d09f6fd89f78d1037a805db14a4a95c80e",
+    "paths": 2894,
+    "total_bytes": 13728904331,
+    "all_actual_bytes_match_Git_blobs": true,
+    "ordered_registry_sha256": "b2776f4e91a770e24b3e6404360459ab8e10d5eb8fecc18707dad12c651a6736"
+  },
+  "work_this_turn": {
+    "RFL_or_old_checker_import_execution": 0,
+    "old_completed_failed_native_fixture_reruns": 0,
+    "new_kernel_B1_rollout_DP_calibration_science_stats_RNG": 0,
+    "keys_protocol_curve_train_collector": 0,
+    "new_production_modules": 0,
+    "scientific_adoption": false,
+    "external_or_independent_agent_review": false
+  },
+  "review_conclusion": "Prospective operational contract is inspectable, but training architecture, whole scientific ruler qualification/threshold/family, complete resource certificate and key authority are not closed. Collection remains closed; not scientificSTOP."
+}

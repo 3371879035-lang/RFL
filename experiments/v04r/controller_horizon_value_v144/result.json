@@ -1,0 +1,406 @@
+{
+  "schema": "V144_CONTROLLER_HORIZON_VALUE_RESULT",
+  "date_asia_shanghai": "2026-11-07",
+  "parent_commit": "84c34998fbef5fa275f2c7950d85ee91a1322d04",
+  "status": "LOCAL_CONTROLLER_CORRECTION_SHOWS_DELAYED_BENEFIT_AND_PLANT_CONFOUNDER_IS_KEPT",
+  "execution": {
+    "native_first_exit": 0,
+    "new_stored_auditor_first_exit": 0,
+    "native_counts": {
+      "rollout": 60,
+      "step": 108,
+      "transaction": 143
+    },
+    "records": 457,
+    "input_pins_native_before_after_equal": 333,
+    "main_tasks": 36,
+    "private_tasks": 24,
+    "native_ordinary_updates": 60,
+    "external_ordinary_updates": 6,
+    "ordinary_numeric_TX": 66,
+    "ordinary_policy_TX": 66,
+    "checkpoint_restore_TX": 3,
+    "new_controller_source_install_TX": 1,
+    "new_controller_source_install_edits": 1,
+    "private_candidate_controller_TX": 6,
+    "main_feedback_controller_TX": 1,
+    "model_fit_events": 6,
+    "main_diagnostic_calls": 31,
+    "success_diagnostic_calls": 0,
+    "issued_native_keep_observations": 6,
+    "consumed_keep_observations": 6,
+    "keep_source_each_completes_two_but_only_first_epoch_observation_ingested": true,
+    "raw_terminal_counts": {
+      "stream": {
+        "TRAP": 31,
+        "SUCCESS": 5
+      },
+      "trial": {
+        "TRAP": 21,
+        "SUCCESS": 3
+      }
+    },
+    "old_prefix_native_or_checker_or_bank_reruns": 0,
+    "new_keys_RNG_keyderive_DP_calibration_formal_collection": 0,
+    "automatic_retry": false,
+    "started_at_utc": "2026-11-06T18:47:01.277483+00:00",
+    "completed_at_utc": "2026-11-06T18:47:08.266433+00:00",
+    "instrumented_wall_seconds": 6.98499999998603
+  },
+  "per_role_measured_work_and_returns": [
+    {
+      "case": "controller",
+      "arm": "ExperienceNoWrite",
+      "successes": 0,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02
+      ],
+      "outcomes": [
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP"
+      ],
+      "mean_return": -1.02,
+      "external_updates": 1,
+      "native_rollouts": 10,
+      "Ksteps": 16,
+      "private_rollouts": 4,
+      "ordinary_numeric_TX": 11,
+      "ordinary_policy_TX": 11,
+      "private_X_TX": 1,
+      "main_feedback_X_TX": 0,
+      "nonbootstrap_TX": 23
+    },
+    {
+      "case": "controller",
+      "arm": "OneStepValue",
+      "successes": 0,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02
+      ],
+      "outcomes": [
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP"
+      ],
+      "mean_return": -1.02,
+      "external_updates": 1,
+      "native_rollouts": 10,
+      "Ksteps": 16,
+      "private_rollouts": 4,
+      "ordinary_numeric_TX": 11,
+      "ordinary_policy_TX": 11,
+      "private_X_TX": 1,
+      "main_feedback_X_TX": 0,
+      "nonbootstrap_TX": 23
+    },
+    {
+      "case": "controller",
+      "arm": "TwoStepValue",
+      "successes": 5,
+      "returns": [
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "outcomes": [
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.5466666666666666,
+      "external_updates": 1,
+      "native_rollouts": 10,
+      "Ksteps": 46,
+      "private_rollouts": 4,
+      "ordinary_numeric_TX": 11,
+      "ordinary_policy_TX": 11,
+      "private_X_TX": 1,
+      "main_feedback_X_TX": 1,
+      "nonbootstrap_TX": 24
+    },
+    {
+      "case": "plant",
+      "arm": "ExperienceNoWrite",
+      "successes": 0,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02
+      ],
+      "outcomes": [
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP"
+      ],
+      "mean_return": -1.02,
+      "external_updates": 1,
+      "native_rollouts": 10,
+      "Ksteps": 10,
+      "private_rollouts": 4,
+      "ordinary_numeric_TX": 11,
+      "ordinary_policy_TX": 11,
+      "private_X_TX": 1,
+      "main_feedback_X_TX": 0,
+      "nonbootstrap_TX": 23
+    },
+    {
+      "case": "plant",
+      "arm": "OneStepValue",
+      "successes": 0,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02
+      ],
+      "outcomes": [
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP"
+      ],
+      "mean_return": -1.02,
+      "external_updates": 1,
+      "native_rollouts": 10,
+      "Ksteps": 10,
+      "private_rollouts": 4,
+      "ordinary_numeric_TX": 11,
+      "ordinary_policy_TX": 11,
+      "private_X_TX": 1,
+      "main_feedback_X_TX": 0,
+      "nonbootstrap_TX": 23
+    },
+    {
+      "case": "plant",
+      "arm": "TwoStepValue",
+      "successes": 0,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02
+      ],
+      "outcomes": [
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP"
+      ],
+      "mean_return": -1.02,
+      "external_updates": 1,
+      "native_rollouts": 10,
+      "Ksteps": 10,
+      "private_rollouts": 4,
+      "ordinary_numeric_TX": 11,
+      "ordinary_policy_TX": 11,
+      "private_X_TX": 1,
+      "main_feedback_X_TX": 0,
+      "nonbootstrap_TX": 23
+    }
+  ],
+  "actual_fitted_candidate_values": [
+    {
+      "case": "controller",
+      "arm": "ExperienceNoWrite",
+      "horizon": 2,
+      "scores": {
+        "keep": -1.02,
+        "controller-delete": -0.08000000000000002
+      },
+      "choice": "controller-delete",
+      "executed": "keep",
+      "returns": {
+        "keep": [
+          -1.02,
+          -1.02
+        ],
+        "controller-delete": [
+          -1.02,
+          0.86
+        ]
+      }
+    },
+    {
+      "case": "controller",
+      "arm": "OneStepValue",
+      "horizon": 1,
+      "scores": {
+        "keep": -1.02,
+        "controller-delete": -1.02
+      },
+      "choice": "keep",
+      "executed": "keep",
+      "returns": {
+        "keep": [
+          -1.02,
+          -1.02
+        ],
+        "controller-delete": [
+          -1.02,
+          0.86
+        ]
+      }
+    },
+    {
+      "case": "controller",
+      "arm": "TwoStepValue",
+      "horizon": 2,
+      "scores": {
+        "keep": -1.02,
+        "controller-delete": -0.08000000000000002
+      },
+      "choice": "controller-delete",
+      "executed": "controller-delete",
+      "returns": {
+        "keep": [
+          -1.02,
+          -1.02
+        ],
+        "controller-delete": [
+          -1.02,
+          0.86
+        ]
+      }
+    },
+    {
+      "case": "plant",
+      "arm": "ExperienceNoWrite",
+      "horizon": 2,
+      "scores": {
+        "keep": -1.02,
+        "controller-delete": -1.02
+      },
+      "choice": "keep",
+      "executed": "keep",
+      "returns": {
+        "keep": [
+          -1.02,
+          -1.02
+        ],
+        "controller-delete": [
+          -1.02,
+          -1.02
+        ]
+      }
+    },
+    {
+      "case": "plant",
+      "arm": "OneStepValue",
+      "horizon": 1,
+      "scores": {
+        "keep": -1.02,
+        "controller-delete": -1.02
+      },
+      "choice": "keep",
+      "executed": "keep",
+      "returns": {
+        "keep": [
+          -1.02,
+          -1.02
+        ],
+        "controller-delete": [
+          -1.02,
+          -1.02
+        ]
+      }
+    },
+    {
+      "case": "plant",
+      "arm": "TwoStepValue",
+      "horizon": 2,
+      "scores": {
+        "keep": -1.02,
+        "controller-delete": -1.02
+      },
+      "choice": "keep",
+      "executed": "keep",
+      "returns": {
+        "keep": [
+          -1.02,
+          -1.02
+        ],
+        "controller-delete": [
+          -1.02,
+          -1.02
+        ]
+      }
+    }
+  ],
+  "comparability": {
+    "initial_observed_failure_evidence_identical_across_controller_and_plant": true,
+    "within_case_same_four_actual_private_tasks_all_arms": true,
+    "within_case_same_first_keep_experience_consumed_once_all_arms": true,
+    "same_ordinary_TD_and_visited_D_math_AST": true,
+    "NoWrite_ordinary_learning_enabled": true,
+    "OneStep_pays_two_step_data_but_scores_only_first_by_design": true,
+    "scope": "Equal paid trial information isolates horizon choice; not an optimal cost-minimal OneStep implementation. Ordinary learning cannot modify X in any arm; diagnostic X-write capability is the deliberate intervention, not equal arbitrary-mechanism-learning capability."
+  },
+  "new_execution_boundary": {
+    "module": "mechanism_loop.py",
+    "proposal_type": "Original generic Proposal/Edit interpreted only by new versioned local-controller executor",
+    "allowed_write": "delete at nominal ControllerSite actually consulted in current main factual; original store legal transaction; one atomic local X commit at most per event",
+    "initial_I": "Each new case complete R including installed fault becomes protected initial I; original stored checkpoint I remains unchanged source data, not confused with new role I.",
+    "ordinary_PX": "Current P/X anchor changes only after authorized diagnostic commit; ordinary/native/external TD must preserve it. Initial full I stays immutable.",
+    "formal_B1_whole_law_or_owner_receipt_qualification": false,
+    "old_API_guard_law_registry_changes": false
+  },
+  "findings": [
+    "Controller case: NoWrite and OneStep remain0/6 with mean-1.02. TwoStep chooses observed X deletion from measured trial values and reaches5/6, mean0.5466666666666666. Same extra keep learning did not fix the execution map.",
+    "The actual candidate first task TRAPs just like keep (-1.02), but second task succeeds (.86) after normal private TD switches to WAIT. Two-step mean-.08 beats keep-1.02; one-step ties and chooses keep. A single failed immediate test can miss a repair with future-learning benefit.",
+    "Plant case has exactly the same initial learner-visible command/realized/reward evidence; all candidate tasks still TRAP and scores tie. All arms keep,0/6, no main X repair. Mismatch only generates a hypothesis, not a causal label.",
+    "All roles ingest the same within-case genuine first keep trace once, after main complete/repair, without copying private L. Main improvement is not manufactured by freezing NoWrite or giving only treatment ordinary experience.",
+    "Original negative task rewards remain; no global added punishment or claim failures are useless. Of24 private tasks,21 TRAP and3 SUCCESS; of36 main tasks,31 TRAP and5 SUCCESS, all preserved."
+  ],
+  "limits": [
+    "Two prospective informed fixed mechanism examples, not independent seeds/population inference/general causal posterior. Candidate generation is a visible-mismatch heuristic; learned value is empirical mean fitted to current real trials, not learned feature discovery or out-of-sample model transfer.",
+    "New local controller-write executor is an explicit extension. Original B1 whole-update-law/family/receipt qualification is not established or bypassed; no old PASS transfer. Source/controller budget and all ordinary work are charged.",
+    "This environment deliberately makes both admissible commands fail while X is wrong; ordinary TD writes D/Q, not X. Result shows value of correcting that allowed mechanism, not general superiority over a baseline that can itself learn/repair controllers.",
+    "All arms paid4 private tasks; a direct-feedback controller-delete baseline and a budget-optimal short-horizon strategy were not executed. Consequently current data do not establish that fitted horizon value is the cheapest necessary method.",
+    "No retention/collateral bank, complete keyed domain/partial gate/dense science qualification or formal collection. Instrumented timer is not production performance."
+  ],
+  "preservation": {
+    "old_ledger_values": 82,
+    "old_provenance": 266,
+    "original313_current_hash_match": true,
+    "old_executed_bytes_and_results_unchanged": true,
+    "not_full_repository_audit": true
+  },
+  "next_actual_gap": "Compare to direct observed-site correction with an appropriately matched ordinary-experience budget; current same-information horizon comparison does not establish that expensive four-task candidate evaluation is necessary."
+}

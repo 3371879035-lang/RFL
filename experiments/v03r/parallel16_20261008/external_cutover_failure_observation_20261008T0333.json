@@ -1,0 +1,152 @@
+{
+  "schema": "rfl-external-operational-incident-observation-v1",
+  "role": "EXTERNAL_POST_FAILURE_OBSERVATION_NOT_NATIVE_CONTROLLER_RECEIPT",
+  "status": "AWAITING_EXPLICIT_RESTART_AUTHORIZATION_NO_AUTOMATIC_RETRY",
+  "observed_at": "2026-10-08T03:36:29.9797093Z",
+  "instrument_commit": "bde83b4e650cf3fde603a73c6be1960cf490a1f4",
+  "review_evidence_commit": "03325b7937545e41a520e680508ceae6319e2d33",
+  "instrument_source_count": 295,
+  "instrument_sources_digest": "1359a1ae11cf54407a9b976b53219e30134173d255c985908f838cb057171bd2",
+  "instrument_source_mismatches": [],
+  "control_sha256": "73ad054c0ad868d57a754d202994e2ebdc300b1fd98f38ee3f095a50666c7a63",
+  "runner_sha256": "b4bdb377deeec0e6ccd907204bb62b0c37db1e19867ba53c2b8660af3e0f304b",
+  "stage_template_sha256": "dabf7ab36d2f40a551a4c164815f9786232160a0fd83199bfdd548a6485f96d7",
+  "verified_validation": {
+    "full_regression": {
+      "collected": 1001,
+      "passed": 1000,
+      "skipped": 1,
+      "failures": 0,
+      "errors": 0,
+      "native_exit_code": 0
+    },
+    "controller": {
+      "passed": 31,
+      "failures": 0,
+      "errors": 0,
+      "native_exit_code": 0
+    },
+    "serial_gates_native_exit_codes": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "review_role": "INTERNAL_SOURCE_BOUND_PARALLEL_EXECUTION_REVIEW",
+    "independent_agent_review_performed": false,
+    "external_review_performed": false
+  },
+  "chronology": [
+    {
+      "at": "2026-10-08T03:21:05.834258+00:00",
+      "event": "Internal source-bound review published VALID; not scientific/F0 authorization"
+    },
+    {
+      "at": "2026-10-08T03:21:06.424065+00:00",
+      "event": "Exclusive authorized switch reservation published"
+    },
+    {
+      "at": "2026-10-08T03:21:07.718272+00:00",
+      "event": "R1 controller recorded genuine benchmark native exit 4294967295"
+    },
+    {
+      "at": "2026-10-08T03:21:07.7982171Z",
+      "event": "R1 launcher recorded genuine controller native exit 2"
+    },
+    {
+      "at": "2026-10-08T03:21:07.950860+00:00",
+      "event": "P16 controller published TypeError failure; parent_switch_recorded=false"
+    },
+    {
+      "at": "2026-10-08T03:21:08.0253079Z",
+      "event": "P16 launcher recorded genuine controller native exit 2"
+    }
+  ],
+  "fault": {
+    "stderr_observed": "subprocess reader thread UnicodeDecodeError: utf-8 cannot decode byte 0xbb at position 168",
+    "terminal_error": "TypeError: the JSON object must be str, bytes or bytearray, not NoneType",
+    "source_location": "control_parallel16.py:147-150",
+    "source_control_flow": "PowerShell validates parent identity, stops only benchmark child, waits for R1 controller exit, then emits JSON; Python uses capture_output=True,text=True and json.loads(native.stdout)",
+    "mechanism_inference": "stdout decoding failed after stop. The subprocess reader did not return decoded stdout, so JSON parsing received None. Raw cutover JSON was not retained.",
+    "exact_producer_encoding_established": false,
+    "raw_stop_identity_json_available": false,
+    "read_only_interactive_encoding_probe": {
+      "native_exit_code": 0,
+      "utf8_decode": "PASS",
+      "utf8_json_matches": true,
+      "reproduces_detached_failure": false
+    },
+    "inference_limit": "Interactive read-only shell probe does not establish detached WMI output encoding. No native receipt has been fabricated and no completed switch observation is reconstructed."
+  },
+  "present_execution": {
+    "current_matching_p16_or_r1_launcher_controller_benchmark_processes": 0,
+    "p16_pipeline_claim_present": false,
+    "p16_engineering_benchmark_output_present": false,
+    "parent_switch_observation_present": false,
+    "formal_artifacts_checked": [
+      "smoke_attempt.json",
+      "smoke_report.json",
+      "dev_baseline",
+      "dev_baseline.json",
+      "dev_lock.json"
+    ],
+    "formal_artifacts_present_in_r1": [],
+    "formal_artifacts_present_in_p16": [],
+    "formal_smoke_started": false,
+    "development_started": false,
+    "f1_started": false,
+    "f0_authorized": false,
+    "scientific_claims_authorized": false,
+    "engineering_cutover_failure_not_scientific_negative_result": true,
+    "research_complete": false
+  },
+  "preservation": {
+    "r1_inventory_file": "external_cutover_failure_20261008T0333_r1_inventory.json",
+    "r1_file_count": 748,
+    "r1_total_bytes": 323553611,
+    "r1_source_count": 292,
+    "r1_source_mismatches": [],
+    "r1_root_untouched_by_this_observer": true,
+    "original_root_untouched_by_this_observer": true,
+    "prior_raw_not_deleted_or_imported": true,
+    "existing_claims_logs_receipts_not_overwritten": true,
+    "outcome_metrics_read": false
+  },
+  "native_evidence_sha256": {
+    "pipeline_failure.json": "e2e81cc81a6e332cace262249baa6cae4d27b6b8d791a74f29dc19d1c6196449",
+    "pipeline_exit.json": "4aee363113869286623af04b61f2cd5173529acc5e65c1ee462e8ebe0bdf1653",
+    "pipeline.stderr.log": "80db8d09ef2cbd27e396b4198174545fc5fc1fc39bbf5b424b80dd5f92cbc3e7",
+    "source_bound_parallel_review.json": "e18dd6ab8818eea2391149f262dffebc8dcf7f776d5514b2fdd512a1da10c4eb",
+    "switch_claim.json": "fdbec22ab69e8f4eb3cff6f5e7b29de6cd0a632bd9fdae2dd2c06e48939b45d5"
+  },
+  "future_boundary": {
+    "automatic_retry": false,
+    "duplicate_launch": false,
+    "relabel_old_claims": false,
+    "spent_scientific_seeds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "unchanged_fresh_smoke_seed_plan": [
+      2026100800,
+      2026100801,
+      2026100802,
+      2026100803,
+      2026100804
+    ],
+    "unchanged_development_seed_plan": "1000-1031",
+    "seed_plan_is_not_new_launch_authorization": true,
+    "required_user_decision": "Authorize engineering cutover transport repair and a separately reserved new once-only launch. Preserve all existing evidence, rerun necessary validation, no scientific changes.",
+    "proposed_repair_scope": [
+      "Explicit UTF-8 PowerShell producer and strict binary capture/decoding",
+      "Preserve raw native output and persist post-stop observation without relying only on stdout",
+      "Test Chinese paths and detached launch transport",
+      "Do not stop nonexistent parent or bypass claims/review/F0 gates"
+    ]
+  }
+}

@@ -1,0 +1,349 @@
+{
+  "schema": "V169_PROSPECTIVE_NATIVE_CONTRACT",
+  "parent_commit": "1ab4d3158c8c582fded85c8106c1b83423544ad0",
+  "authority": "User active goal: 按照这个计划完成V0.5",
+  "plan": "experiments/v05r/plan_v168.json",
+  "arms": [
+    "P-RP",
+    "S-RP",
+    "P-R",
+    "S-R",
+    "P-F",
+    "S-F"
+  ],
+  "cases": [
+    {
+      "id": "d1_m0",
+      "index": 0,
+      "decision_points": 1,
+      "mirror": 0,
+      "passable_exits": [
+        0
+      ],
+      "controller_mappings": [
+        [
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          4,
+          0,
+          1
+        ],
+        [
+          5,
+          1,
+          0
+        ]
+      ],
+      "protected_addresses": [
+        [
+          4,
+          0
+        ],
+        [
+          5,
+          1
+        ]
+      ]
+    },
+    {
+      "id": "d1_m1",
+      "index": 1,
+      "decision_points": 1,
+      "mirror": 1,
+      "passable_exits": [
+        1
+      ],
+      "controller_mappings": [
+        [
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          4,
+          0,
+          1
+        ],
+        [
+          5,
+          1,
+          0
+        ]
+      ],
+      "protected_addresses": [
+        [
+          4,
+          0
+        ],
+        [
+          5,
+          1
+        ]
+      ]
+    },
+    {
+      "id": "d3_m0",
+      "index": 2,
+      "decision_points": 3,
+      "mirror": 0,
+      "passable_exits": [
+        0,
+        1,
+        0
+      ],
+      "controller_mappings": [
+        [
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          6,
+          0,
+          1
+        ],
+        [
+          7,
+          1,
+          0
+        ]
+      ],
+      "protected_addresses": [
+        [
+          6,
+          0
+        ],
+        [
+          7,
+          1
+        ]
+      ]
+    },
+    {
+      "id": "d3_m1",
+      "index": 3,
+      "decision_points": 3,
+      "mirror": 1,
+      "passable_exits": [
+        1,
+        0,
+        1
+      ],
+      "controller_mappings": [
+        [
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          6,
+          0,
+          1
+        ],
+        [
+          7,
+          1,
+          0
+        ]
+      ],
+      "protected_addresses": [
+        [
+          6,
+          0
+        ],
+        [
+          7,
+          1
+        ]
+      ]
+    },
+    {
+      "id": "d5_m0",
+      "index": 4,
+      "decision_points": 5,
+      "mirror": 0,
+      "passable_exits": [
+        0,
+        1,
+        0,
+        1,
+        0
+      ],
+      "controller_mappings": [
+        [
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          8,
+          0,
+          1
+        ],
+        [
+          9,
+          1,
+          0
+        ]
+      ],
+      "protected_addresses": [
+        [
+          8,
+          0
+        ],
+        [
+          9,
+          1
+        ]
+      ]
+    },
+    {
+      "id": "d5_m1",
+      "index": 5,
+      "decision_points": 5,
+      "mirror": 1,
+      "passable_exits": [
+        1,
+        0,
+        1,
+        0,
+        1
+      ],
+      "controller_mappings": [
+        [
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          8,
+          0,
+          1
+        ],
+        [
+          9,
+          1,
+          0
+        ]
+      ],
+      "protected_addresses": [
+        [
+          8,
+          0
+        ],
+        [
+          9,
+          1
+        ]
+      ]
+    }
+  ],
+  "wiring_case": {
+    "id": "wiring_d1_m0",
+    "index": 0,
+    "decision_points": 1,
+    "mirror": 0,
+    "passable_exits": [
+      0
+    ],
+    "controller_mappings": [
+      [
+        0,
+        0,
+        1
+      ],
+      [
+        0,
+        1,
+        0
+      ],
+      [
+        4,
+        0,
+        1
+      ],
+      [
+        5,
+        1,
+        0
+      ]
+    ],
+    "protected_addresses": [
+      [
+        4,
+        0
+      ],
+      [
+        5,
+        1
+      ]
+    ]
+  },
+  "main_tasks": 48,
+  "trial_budget": 12,
+  "per_failure_trial_cap": 2,
+  "wall_seconds_cap": 1200,
+  "capture_bytes_cap": 134217728,
+  "coordinate_rule": "At room r in main episode e, explore iff (e+3*r+case_index)%10==7; exploratory command=(e//10+r+case_index)%2. Same vector for all queries on that main task; no random draws.",
+  "ordinary_learning": "All real episodes update categorical executed-action transitions and current controller-version command observations exactly once; RP/R also apply chronological physical-action TD alpha=.5 gamma=1. No private learned state is copied.",
+  "physical_action_TD_basis": "World transition depends on the actually executed action, not the requested command; both physical actions remain reachable under the initial swap. Controller versions condition command models, not immutable physical transition/Q facts.",
+  "F_policy": "Goal search over nominal layered graph and learned categorical edges; prefer known progressing edges, otherwise unknown frontier. No Q attribute, return labels or reward features.",
+  "P_selection": "Rotate current candidate catalogue by one position per main failure; execute at most two sequential candidates, learning each real episode immediately; stop on SUCCESS.",
+  "S_selection": "Prefer a terminal mismatch repair only if commanded nominal edge is not already known blocked; otherwise current ordinary plan, alternative, then edits. Exact current-engine controller/program/coordinate query matches may reuse owned observations without learning twice.",
+  "candidate_catalogue": "keep; remove_first; if multiple visible mismatches remove_last and joint; ordinary action alternative at last observed failed decision. Repairs replay observed command prefix; remaining rooms use updated ordinary policy.",
+  "acceptance": "Prefer observed goal attainment or strictly longer reachable prefix; ties keep. An edit requires all changed addresses actually consulted with nominal execution in the selected real trial. Never edit protected/unread addresses.",
+  "truth_boundary": "Passable exits and full controller source are audit-only. Agent receives PublicTask, factual Feedback, public intervention revision tags, current-visible candidates, and engineering coins. Reward packet exists only for RP/R.",
+  "scope": "Six deterministic engineering cases, not independent seeds; no unseen transfer or statistics. Same number of controller remaps and protected sentinels at every difficulty; topology depth only changes.",
+  "new_native_limits": {
+    "wiring_rollouts": 6,
+    "wiring_steps": 72,
+    "matrix_rollouts": 2160,
+    "matrix_steps": 25920,
+    "combined_rollouts": 2166,
+    "combined_steps": 25992
+  },
+  "inputs": [
+    "experiments/v05r/README.md",
+    "experiments/v05r/plan_v168.json",
+    "experiments/v05r/feedback_matrix_v169/experiment.py",
+    "experiments/v05r/feedback_matrix_v169/contract.json",
+    "experiments/v05r/feedback_matrix_v169/audit_stored.py"
+  ],
+  "old_evidence_reexecution": false,
+  "formal_keys_RNG_collector": false,
+  "paid_resources": false,
+  "automation_changes": false
+}

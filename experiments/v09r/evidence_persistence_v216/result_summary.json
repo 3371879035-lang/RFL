@@ -1,0 +1,794 @@
+{
+  "schema": "v216-result-summary",
+  "status": "REDUCED_OBSERVED_REACTIVATION_WITH_RESPONSIVENESS_TRADEOFF_NOT_GENERAL_GAIN",
+  "formula_checks_passed": 8,
+  "formula_checks_failed": 0,
+  "new_shards": 80,
+  "new_arm_runs": 176,
+  "new_native_errors": 0,
+  "stored_review_exit": 0,
+  "wall_seconds": 155.75,
+  "new_interactions": 176128,
+  "training_interactions": 45056,
+  "evaluation_interactions": 131072,
+  "recorded_history_import_operations": 20480,
+  "unique_existing_source_events": 16384,
+  "arm_history_exposure": 45056,
+  "new_history_interactions": 0,
+  "canonical_records": 198144,
+  "max_formula_error": 2.6645352591003757e-15,
+  "old_native_reruns": 0,
+  "automatic_retries": 0,
+  "gradient_updates": 0,
+  "SLEEP_consolidations": 0,
+  "input_files": 153,
+  "input_sha256_unchanged": true,
+  "table": [
+    {
+      "family": "stable_novel",
+      "arm": "fixed_v215",
+      "data_origin": "stored_V215_no_rerun",
+      "seeds": 16,
+      "train_success_rate": 0.8232421875,
+      "first64_success_rate": 0.8271484375,
+      "checkpoints": [
+        0,
+        16,
+        64,
+        128,
+        256
+      ],
+      "eval_curve": [
+        0.822265625,
+        0.82177734375,
+        0.83544921875,
+        0.83203125,
+        0.82080078125
+      ],
+      "primary_eval_mean": 0.8275146484375,
+      "eval_final": 0.82080078125,
+      "return_first16_success_rate": null,
+      "late_extra_wrong_rate": 0,
+      "train_log_loss": 0.3431956126886584,
+      "cpu_seconds_per_run": 0.8955078125,
+      "buffer_bytes_per_run": 8832
+    },
+    {
+      "family": "stable_novel",
+      "arm": "no_reopening_v216",
+      "data_origin": "new_V216_execution",
+      "seeds": 16,
+      "train_success_rate": 0.822998046875,
+      "first64_success_rate": 0.8271484375,
+      "checkpoints": [
+        0,
+        16,
+        64,
+        128,
+        256
+      ],
+      "eval_curve": [
+        0.822265625,
+        0.82177734375,
+        0.83544921875,
+        0.83203125,
+        0.82080078125
+      ],
+      "primary_eval_mean": 0.8275146484375,
+      "eval_final": 0.82080078125,
+      "return_first16_success_rate": null,
+      "late_extra_wrong_rate": 0,
+      "train_log_loss": 0.3456612889891827,
+      "cpu_seconds_per_run": 1.3017578125,
+      "buffer_bytes_per_run": 9056
+    },
+    {
+      "family": "stable_novel",
+      "arm": "rate_mixture_v216",
+      "data_origin": "new_V216_execution",
+      "seeds": 16,
+      "train_success_rate": 0.822998046875,
+      "first64_success_rate": 0.8271484375,
+      "checkpoints": [
+        0,
+        16,
+        64,
+        128,
+        256
+      ],
+      "eval_curve": [
+        0.822265625,
+        0.82177734375,
+        0.83544921875,
+        0.83203125,
+        0.82080078125
+      ],
+      "primary_eval_mean": 0.8275146484375,
+      "eval_final": 0.82080078125,
+      "return_first16_success_rate": null,
+      "late_extra_wrong_rate": 0,
+      "train_log_loss": 0.3442240015718563,
+      "cpu_seconds_per_run": 1.326171875,
+      "buffer_bytes_per_run": 11024
+    },
+    {
+      "family": "changed_novel",
+      "arm": "fixed_v215",
+      "data_origin": "stored_V215_no_rerun",
+      "seeds": 16,
+      "train_success_rate": 0.80712890625,
+      "first64_success_rate": 0.7646484375,
+      "checkpoints": [
+        0,
+        16,
+        64,
+        128,
+        256
+      ],
+      "eval_curve": [
+        0.17578125,
+        0.7763671875,
+        0.826171875,
+        0.83251953125,
+        0.82568359375
+      ],
+      "primary_eval_mean": 0.815185546875,
+      "eval_final": 0.82568359375,
+      "return_first16_success_rate": null,
+      "late_extra_wrong_rate": 0,
+      "train_log_loss": 0.3593988203506264,
+      "cpu_seconds_per_run": 0.95703125,
+      "buffer_bytes_per_run": 8832
+    },
+    {
+      "family": "changed_novel",
+      "arm": "no_reopening_v216",
+      "data_origin": "new_V216_execution",
+      "seeds": 16,
+      "train_success_rate": 0.808349609375,
+      "first64_success_rate": 0.767578125,
+      "checkpoints": [
+        0,
+        16,
+        64,
+        128,
+        256
+      ],
+      "eval_curve": [
+        0.17578125,
+        0.7763671875,
+        0.826171875,
+        0.83251953125,
+        0.82568359375
+      ],
+      "primary_eval_mean": 0.815185546875,
+      "eval_final": 0.82568359375,
+      "return_first16_success_rate": null,
+      "late_extra_wrong_rate": 0,
+      "train_log_loss": 0.3502347460042543,
+      "cpu_seconds_per_run": 1.380859375,
+      "buffer_bytes_per_run": 9056
+    },
+    {
+      "family": "changed_novel",
+      "arm": "rate_mixture_v216",
+      "data_origin": "new_V216_execution",
+      "seeds": 16,
+      "train_success_rate": 0.807373046875,
+      "first64_success_rate": 0.763671875,
+      "checkpoints": [
+        0,
+        16,
+        64,
+        128,
+        256
+      ],
+      "eval_curve": [
+        0.17578125,
+        0.78173828125,
+        0.826171875,
+        0.83251953125,
+        0.82568359375
+      ],
+      "primary_eval_mean": 0.8165283203125,
+      "eval_final": 0.82568359375,
+      "return_first16_success_rate": null,
+      "late_extra_wrong_rate": 0,
+      "train_log_loss": 0.35354048661781434,
+      "cpu_seconds_per_run": 1.3681640625,
+      "buffer_bytes_per_run": 11024
+    },
+    {
+      "family": "selective_change",
+      "arm": "fixed_v215",
+      "data_origin": "stored_V215_no_rerun",
+      "seeds": 16,
+      "train_success_rate": 0.79638671875,
+      "first64_success_rate": 0.7451171875,
+      "checkpoints": [
+        0,
+        16,
+        64,
+        128,
+        256
+      ],
+      "eval_curve": [
+        0.4814453125,
+        0.744140625,
+        0.83447265625,
+        0.7998046875,
+        0.8095703125
+      ],
+      "primary_eval_mean": 0.7969970703125,
+      "eval_final": 0.8095703125,
+      "return_first16_success_rate": null,
+      "late_extra_wrong_rate": 0.010416666666666666,
+      "train_log_loss": 0.3843057199929961,
+      "cpu_seconds_per_run": 0.9404296875,
+      "buffer_bytes_per_run": 8832
+    },
+    {
+      "family": "selective_change",
+      "arm": "no_reopening_v216",
+      "data_origin": "new_V216_execution",
+      "seeds": 16,
+      "train_success_rate": 0.79931640625,
+      "first64_success_rate": 0.7490234375,
+      "checkpoints": [
+        0,
+        16,
+        64,
+        128,
+        256
+      ],
+      "eval_curve": [
+        0.4814453125,
+        0.74462890625,
+        0.83447265625,
+        0.82177734375,
+        0.8095703125
+      ],
+      "primary_eval_mean": 0.8026123046875,
+      "eval_final": 0.8095703125,
+      "return_first16_success_rate": null,
+      "late_extra_wrong_rate": 0,
+      "train_log_loss": 0.37827990737063966,
+      "cpu_seconds_per_run": 1.3525390625,
+      "buffer_bytes_per_run": 9056
+    },
+    {
+      "family": "selective_change",
+      "arm": "rate_mixture_v216",
+      "data_origin": "new_V216_execution",
+      "seeds": 16,
+      "train_success_rate": 0.796875,
+      "first64_success_rate": 0.7392578125,
+      "checkpoints": [
+        0,
+        16,
+        64,
+        128,
+        256
+      ],
+      "eval_curve": [
+        0.4814453125,
+        0.72412109375,
+        0.83447265625,
+        0.82177734375,
+        0.8095703125
+      ],
+      "primary_eval_mean": 0.7974853515625,
+      "eval_final": 0.8095703125,
+      "return_first16_success_rate": null,
+      "late_extra_wrong_rate": 0,
+      "train_log_loss": 0.3816366654064389,
+      "cpu_seconds_per_run": 1.3828125,
+      "buffer_bytes_per_run": 11024
+    },
+    {
+      "family": "noise",
+      "arm": "fixed_v215",
+      "data_origin": "stored_V215_no_rerun",
+      "seeds": 16,
+      "train_success_rate": 0.50341796875,
+      "first64_success_rate": 0.5146484375,
+      "checkpoints": [
+        0,
+        16,
+        64,
+        128,
+        256
+      ],
+      "eval_curve": [
+        0.48291015625,
+        0.4970703125,
+        0.501953125,
+        0.49462890625,
+        0.49560546875
+      ],
+      "primary_eval_mean": 0.497314453125,
+      "eval_final": 0.49560546875,
+      "return_first16_success_rate": null,
+      "late_extra_wrong_rate": 0,
+      "train_log_loss": 0.7010465935360328,
+      "cpu_seconds_per_run": 0.994140625,
+      "buffer_bytes_per_run": 8832
+    },
+    {
+      "family": "noise",
+      "arm": "no_reopening_v216",
+      "data_origin": "new_V216_execution",
+      "seeds": 16,
+      "train_success_rate": 0.50341796875,
+      "first64_success_rate": 0.5146484375,
+      "checkpoints": [
+        0,
+        16,
+        64,
+        128,
+        256
+      ],
+      "eval_curve": [
+        0.48291015625,
+        0.4970703125,
+        0.501953125,
+        0.49462890625,
+        0.49560546875
+      ],
+      "primary_eval_mean": 0.497314453125,
+      "eval_final": 0.49560546875,
+      "return_first16_success_rate": null,
+      "late_extra_wrong_rate": 0,
+      "train_log_loss": 0.7018074654882858,
+      "cpu_seconds_per_run": 1.3642578125,
+      "buffer_bytes_per_run": 9056
+    },
+    {
+      "family": "noise",
+      "arm": "rate_mixture_v216",
+      "data_origin": "new_V216_execution",
+      "seeds": 16,
+      "train_success_rate": 0.50341796875,
+      "first64_success_rate": 0.5146484375,
+      "checkpoints": [
+        0,
+        16,
+        64,
+        128,
+        256
+      ],
+      "eval_curve": [
+        0.48291015625,
+        0.4970703125,
+        0.501953125,
+        0.49462890625,
+        0.49560546875
+      ],
+      "primary_eval_mean": 0.497314453125,
+      "eval_final": 0.49560546875,
+      "return_first16_success_rate": null,
+      "late_extra_wrong_rate": 0,
+      "train_log_loss": 0.7008991746956286,
+      "cpu_seconds_per_run": 1.359375,
+      "buffer_bytes_per_run": 11024
+    },
+    {
+      "family": "selective_return",
+      "arm": "fixed_v215",
+      "data_origin": "new_V216_execution",
+      "seeds": 16,
+      "train_success_rate": 0.79638671875,
+      "first64_success_rate": 0.7451171875,
+      "checkpoints": [
+        0,
+        16,
+        64,
+        128,
+        144,
+        160,
+        192,
+        256
+      ],
+      "eval_curve": [
+        0.4814453125,
+        0.744140625,
+        0.83447265625,
+        0.51416015625,
+        0.810546875,
+        0.80517578125,
+        0.8271484375,
+        0.80908203125
+      ],
+      "primary_eval_mean": 0.81298828125,
+      "eval_final": 0.80908203125,
+      "return_first16_success_rate": 0.74609375,
+      "late_extra_wrong_rate": 0,
+      "train_log_loss": 0.3968088844635213,
+      "cpu_seconds_per_run": 1.443359375,
+      "buffer_bytes_per_run": 8832
+    },
+    {
+      "family": "selective_return",
+      "arm": "no_reopening_v216",
+      "data_origin": "new_V216_execution",
+      "seeds": 16,
+      "train_success_rate": 0.789794921875,
+      "first64_success_rate": 0.7490234375,
+      "checkpoints": [
+        0,
+        16,
+        64,
+        128,
+        144,
+        160,
+        192,
+        256
+      ],
+      "eval_curve": [
+        0.4814453125,
+        0.74462890625,
+        0.83447265625,
+        0.4921875,
+        0.779296875,
+        0.80029296875,
+        0.8271484375,
+        0.80908203125
+      ],
+      "primary_eval_mean": 0.803955078125,
+      "eval_final": 0.80908203125,
+      "return_first16_success_rate": 0.6328125,
+      "late_extra_wrong_rate": 0,
+      "train_log_loss": 0.41298053675545077,
+      "cpu_seconds_per_run": 1.4931640625,
+      "buffer_bytes_per_run": 9056
+    },
+    {
+      "family": "selective_return",
+      "arm": "rate_mixture_v216",
+      "data_origin": "new_V216_execution",
+      "seeds": 16,
+      "train_success_rate": 0.79345703125,
+      "first64_success_rate": 0.7392578125,
+      "checkpoints": [
+        0,
+        16,
+        64,
+        128,
+        144,
+        160,
+        192,
+        256
+      ],
+      "eval_curve": [
+        0.4814453125,
+        0.72412109375,
+        0.83447265625,
+        0.4921875,
+        0.8203125,
+        0.80517578125,
+        0.8271484375,
+        0.80908203125
+      ],
+      "primary_eval_mean": 0.8154296875,
+      "eval_final": 0.80908203125,
+      "return_first16_success_rate": 0.71875,
+      "late_extra_wrong_rate": 0,
+      "train_log_loss": 0.4006350512028895,
+      "cpu_seconds_per_run": 1.498046875,
+      "buffer_bytes_per_run": 11024
+    }
+  ],
+  "paired_differences": [
+    {
+      "family": "stable_novel",
+      "reference": "fixed_v215",
+      "mean_primary_difference": 0.0,
+      "paired_seed_differences": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "exploratory_bootstrap_95": [
+        0.0,
+        0.0
+      ],
+      "mean_training_difference": -0.000244140625,
+      "return_first16_difference": null
+    },
+    {
+      "family": "stable_novel",
+      "reference": "no_reopening_v216",
+      "mean_primary_difference": 0.0,
+      "paired_seed_differences": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "exploratory_bootstrap_95": [
+        0.0,
+        0.0
+      ],
+      "mean_training_difference": 0.0,
+      "return_first16_difference": null
+    },
+    {
+      "family": "changed_novel",
+      "reference": "fixed_v215",
+      "mean_primary_difference": 0.0013427734375,
+      "paired_seed_differences": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -0.03125,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.052734375,
+        0.0,
+        0.0
+      ],
+      "exploratory_bootstrap_95": [
+        -0.005859375,
+        0.0098876953125
+      ],
+      "mean_training_difference": 0.000244140625,
+      "return_first16_difference": null
+    },
+    {
+      "family": "changed_novel",
+      "reference": "no_reopening_v216",
+      "mean_primary_difference": 0.0013427734375,
+      "paired_seed_differences": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -0.03125,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.052734375,
+        0.0,
+        0.0
+      ],
+      "exploratory_bootstrap_95": [
+        -0.005859375,
+        0.0098876953125
+      ],
+      "mean_training_difference": -0.0009765625,
+      "return_first16_difference": null
+    },
+    {
+      "family": "selective_change",
+      "reference": "fixed_v215",
+      "mean_primary_difference": 0.00048828125,
+      "paired_seed_differences": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -0.03515625,
+        0.0,
+        0.0,
+        0.087890625,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -0.01953125,
+        -0.025390625
+      ],
+      "exploratory_bootstrap_95": [
+        -0.0096435546875,
+        0.013916015625
+      ],
+      "mean_training_difference": 0.00048828125,
+      "return_first16_difference": null
+    },
+    {
+      "family": "selective_change",
+      "reference": "no_reopening_v216",
+      "mean_primary_difference": -0.005126953125,
+      "paired_seed_differences": [
+        0.01953125,
+        0.0,
+        0.0,
+        -0.025390625,
+        0.0,
+        -0.03515625,
+        0.0,
+        0.0,
+        -0.01953125,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -0.01953125,
+        -0.001953125
+      ],
+      "exploratory_bootstrap_95": [
+        -0.0118408203125,
+        0.0010986328125
+      ],
+      "mean_training_difference": -0.00244140625,
+      "return_first16_difference": null
+    },
+    {
+      "family": "noise",
+      "reference": "fixed_v215",
+      "mean_primary_difference": 0.0,
+      "paired_seed_differences": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "exploratory_bootstrap_95": [
+        0.0,
+        0.0
+      ],
+      "mean_training_difference": 0.0,
+      "return_first16_difference": null
+    },
+    {
+      "family": "noise",
+      "reference": "no_reopening_v216",
+      "mean_primary_difference": 0.0,
+      "paired_seed_differences": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "exploratory_bootstrap_95": [
+        0.0,
+        0.0
+      ],
+      "mean_training_difference": 0.0,
+      "return_first16_difference": null
+    },
+    {
+      "family": "selective_return",
+      "reference": "fixed_v215",
+      "mean_primary_difference": 0.00244140625,
+      "paired_seed_differences": [
+        0.0,
+        0.0,
+        0.0,
+        0.0390625,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "exploratory_bootstrap_95": [
+        0.0,
+        0.00732421875
+      ],
+      "mean_training_difference": -0.0029296875,
+      "return_first16_difference": -0.02734375
+    },
+    {
+      "family": "selective_return",
+      "reference": "no_reopening_v216",
+      "mean_primary_difference": 0.011474609375,
+      "paired_seed_differences": [
+        0.0859375,
+        0.0,
+        0.0,
+        0.078125,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.01953125,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "exploratory_bootstrap_95": [
+        0.0,
+        0.0263671875
+      ],
+      "mean_training_difference": 0.003662109375,
+      "return_first16_difference": 0.0859375
+    }
+  ],
+  "same_record_seed8": {
+    "old_wrong_greedy": 64,
+    "no_reopening_wrong_greedy": 0,
+    "rate_mixture_wrong_greedy": 0,
+    "condition1_mean_history_weights": {
+      "old": 0.5561845276103848,
+      "no_reopening": 1.2562510142380913e-11,
+      "rate_mixture": 0.2725364403700486
+    }
+  },
+  "supported": [
+    "Conditional source persistence can be learned by comparing prequential hypotheses.",
+    "The previously observed late invalid-history revival is absent at tested late static checkpoints.",
+    "Fixed zero reopening is slower after the new genuine restoration; mixture recovers more quickly than this ablation."
+  ],
+  "limitations": [
+    "Overall static task-success gains are near zero; early learning loss offsets late correction.",
+    "Restoration first16 training remains below the original fixed .02 method.",
+    "Rate grid and uniform prior are engineering choices, not a discovered true environment hazard.",
+    "Noise calibration, high-dimensional context, hidden causes, and general causal attribution remain unresolved."
+  ]
+}

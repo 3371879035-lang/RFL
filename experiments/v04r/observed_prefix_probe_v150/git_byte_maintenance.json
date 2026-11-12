@@ -1,0 +1,26 @@
+{
+  "schema": "V150_GIT_CAPTURE_BYTE_PRESERVATION_MAINTENANCE",
+  "original_commit": "097138c516e1990c6565615d9542302a9016e126",
+  "observed_first_physical_index_check_exit": 1,
+  "initial_mismatches": [
+    {
+      "path": "experiments/v04r/observed_prefix_probe_v150/.gitattributes",
+      "physical_bytes": 13,
+      "Git_bytes": 12,
+      "physical_sha256": "d91263f8075671bd30be9efc2b2cff966cb0c46ab41280e44e71175dede42226",
+      "Git_sha256": "5fa85cf355d19712ee18b111269fdca7fd5e4926c699207da54f6d655d1b8a84"
+    },
+    {
+      "path": "experiments/v04r/observed_prefix_probe_v150/audit_process_exit.json",
+      "physical_bytes": 47,
+      "Git_bytes": 46,
+      "physical_sha256": "b1a7f77f0ca5a5c674b5fcb95a62aef81cd620d063fcd489b1fa5d2d5b7e2b90",
+      "Git_sha256": "123a1ae48305e632fe3347c415db68328aa506554cec47e487e460b71f34a855"
+    }
+  ],
+  "cause": "Windows text conversion normalized CRLF to LF for two metadata files. The shell continued to git commit after the Python assertion; original commit is retained, not described as passing physical equality.",
+  "fix": "Only unexecuted .gitattributes changed to * -text, then recapture original physical audit_process_exit.json bytes into Git. All native/checker source and captures remain byte-identical. New maintenance record and ledger link only.",
+  "new_native_or_audit_reruns": 0,
+  "executed_native_or_checker_sources_modified": 0,
+  "capture_bytes_modified": 0
+}

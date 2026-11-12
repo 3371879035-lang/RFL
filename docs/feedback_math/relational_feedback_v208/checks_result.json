@@ -1,0 +1,171 @@
+{
+  "status": "ALGEBRA_AND_OPERATOR_CHECKS_PASS",
+  "tests_run": 17,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "wall_seconds": 0.10725549998460338,
+  "scope": "finite algebra, analytic tables, and frozen neural operators; not environment performance",
+  "details": {
+    "conjunction": {
+      "arities": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "entries_checked": 1364
+    },
+    "missing_category": "Explicit third category distinct; field permutation preserved",
+    "same_weights_fact_tables": {
+      "AND": {
+        "actions": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "correct_truth_table_rows": 4
+      },
+      "OR": {
+        "actions": [
+          0,
+          1,
+          1,
+          1
+        ],
+        "correct_truth_table_rows": 4
+      },
+      "XOR": {
+        "actions": [
+          0,
+          1,
+          1,
+          0
+        ],
+        "correct_truth_table_rows": 4
+      }
+    },
+    "xor_unary_vs_joint": {
+      "unary_probabilities": [
+        0.5,
+        0.5
+      ],
+      "joint_actions": [
+        0,
+        1,
+        1,
+        0
+      ],
+      "per_structure_support_not_pooled": [
+        2,
+        2,
+        1
+      ]
+    },
+    "retained_counterexample": "Uniform 3-bit parity: every unary/pair fact head is 0.5; full triple resolves table",
+    "read_only_rehearsal": {
+      "repeated_reads": 20,
+      "evidence_count_increment": 0,
+      "unknown_action_marked": true
+    },
+    "propensity_correction": {
+      "raw": [
+        "1/10",
+        "9/10"
+      ],
+      "corrected": [
+        "1/2",
+        "1/2"
+      ],
+      "scope": "Known full-context propensities; one-step common distribution"
+    },
+    "joint_intervention": {
+      "single_changes": [
+        "0",
+        "0"
+      ],
+      "joint_change": "3/5"
+    },
+    "common_policy": {
+      "best_shared": "1/2",
+      "average_world_oracle": "1"
+    },
+    "persistent_model": {
+      "joint_law_tv_if_resampled_each_step": "1/2"
+    },
+    "model_error_bound": {
+      "exact_rational_comparisons": 5184,
+      "finite_horizons": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    "planning_bound": {
+      "exact_rational_comparisons": 1296,
+      "includes_explicit_search_gap": true
+    },
+    "computation_without_observation": {
+      "same_table_myopic": "3/5",
+      "same_table_two_step": "1",
+      "new_external_observations": 0
+    },
+    "fixed_n_bound": {
+      "n": 64,
+      "delta": 0.05,
+      "radius": 0.3395253789351549,
+      "not_an_optional_stopping_or_adoption_rule": true
+    },
+    "sleep_bound": {
+      "exact_rational_comparisons": 32,
+      "uniform_policy_tv_assumed": true
+    },
+    "sleep_coverage_counterexample": {
+      "training_kl_on_A": 0.0,
+      "whole_distribution_performance_loss": "1/2"
+    },
+    "sleep_compute_break_even": {
+      "first_profitable_calls": 12,
+      "quality_equivalence_is_separate": true
+    }
+  },
+  "declared_inputs_unchanged": true,
+  "network_instances": 11,
+  "parameter_scalars_across_instances": 912,
+  "parameters_unchanged": true,
+  "all_parameters_frozen": true,
+  "torch_rng_unchanged": true,
+  "environment_episodes": 0,
+  "gradient_steps": 0,
+  "optimizer_steps": 0,
+  "old_test_or_checker_runs": 0,
+  "game_adaptations": 0,
+  "input_sha256_before": {
+    "docs/feedback_math/MATHEMATICAL_MODEL_V1.md": "e43c2b461ea874ae0721fdf64648d54fdb054d7bdd8cd50274cf2ad310675f47",
+    "docs/feedback_math/MEMORY_AND_TRIAL_MODEL_V2.md": "a0acdf2c69a5537a224a43ee77586554657894ea4917dae1323f493722e52c42",
+    "docs/feedback_math/NETWORK_SPEC_V1.md": "851a23b41910b02f683cfa52b05c519c159b39acf2b52d67753cb12920c89933",
+    "docs/feedback_math/model_audit_v207/AUDIT.md": "9d8b0217d8b709dc19945198c799d0af51cff5b6c65f44226df7f78ccc3d45df",
+    "src/feedback_program_v206/network.py": "12c59e2be2917a863892c88ae588df9503f206df3862a24a04bd9b922b9263aa",
+    "experiments/v09r/spatial_feedback_v179/analyze.py": "61c059b2b478f774aa59dc31780d5f2a93115cc63cc3de7cc7eebb09d0c681e7",
+    "docs/feedback_math/relational_feedback_v208/MATHEMATICAL_MODEL_V3.md": "6225ffb8832d5ae5c93582db2c80ac67838e3ecb527f7d4d69e56a134f2abfce",
+    "docs/feedback_math/relational_feedback_v208/NETWORK_MODEL_V3.md": "dc8dcd991b95701c08ca5651566ae36f6cb91c69c0d8208397463e8b064ceff6",
+    "docs/feedback_math/relational_feedback_v208/network_operator.py": "f28efec4f2445d5321944398f8bf373237e66037fb8cb25f6e2934f25ed28ee8",
+    "docs/feedback_math/relational_feedback_v208/checks.py": "9399ba467f6754659c12682656e966e6df2bc16ead32b47765634f156aac01b0"
+  },
+  "input_sha256_after": {
+    "docs/feedback_math/MATHEMATICAL_MODEL_V1.md": "e43c2b461ea874ae0721fdf64648d54fdb054d7bdd8cd50274cf2ad310675f47",
+    "docs/feedback_math/MEMORY_AND_TRIAL_MODEL_V2.md": "a0acdf2c69a5537a224a43ee77586554657894ea4917dae1323f493722e52c42",
+    "docs/feedback_math/NETWORK_SPEC_V1.md": "851a23b41910b02f683cfa52b05c519c159b39acf2b52d67753cb12920c89933",
+    "docs/feedback_math/model_audit_v207/AUDIT.md": "9d8b0217d8b709dc19945198c799d0af51cff5b6c65f44226df7f78ccc3d45df",
+    "src/feedback_program_v206/network.py": "12c59e2be2917a863892c88ae588df9503f206df3862a24a04bd9b922b9263aa",
+    "experiments/v09r/spatial_feedback_v179/analyze.py": "61c059b2b478f774aa59dc31780d5f2a93115cc63cc3de7cc7eebb09d0c681e7",
+    "docs/feedback_math/relational_feedback_v208/MATHEMATICAL_MODEL_V3.md": "6225ffb8832d5ae5c93582db2c80ac67838e3ecb527f7d4d69e56a134f2abfce",
+    "docs/feedback_math/relational_feedback_v208/NETWORK_MODEL_V3.md": "dc8dcd991b95701c08ca5651566ae36f6cb91c69c0d8208397463e8b064ceff6",
+    "docs/feedback_math/relational_feedback_v208/network_operator.py": "f28efec4f2445d5321944398f8bf373237e66037fb8cb25f6e2934f25ed28ee8",
+    "docs/feedback_math/relational_feedback_v208/checks.py": "9399ba467f6754659c12682656e966e6df2bc16ead32b47765634f156aac01b0"
+  },
+  "failure_traces": []
+}

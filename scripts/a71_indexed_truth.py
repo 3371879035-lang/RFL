@@ -1,0 +1,233 @@
+"""A71 — indexed responsibility truth, its domain closure, and the V0.2R
+identifiability census.
+
+THE P0 THIS FIXES. A67's wording used generic unit names for D and X --
+
+    D -> "Decision_t"        X -> "ControllerSite"
+
+-- which are TYPE names, not episode-local addresses, while A69's `credit.py`
+expands the predictions into concrete ones (`Decision_3`,
+`ControllerSite_x_y_t_cmd`) and `eta_causal` even rejects units outside
+`shape.gamma()`. Intersecting a generic truth against a concrete prediction yields
+the empty set, so the A70 census was systematically producing FALSE NEGATIVES on
+every D/X component. The Fine reference hid it, because it compared the truth
+against itself.
+
+THE CONSEQUENCE, which is larger than the bug. Five fire bits say WHICH KIND of
+mechanism fired, not WHICH timestep or WHICH site. So
+
+    Z^fire_truth  =/=>  Gamma*
+
+unless latent M is handed over, which A65/A69 forbid. That falsifies A70's premise
+that a causal rule "for each fired cause emit pi_credit(descriptor)" is the
+ceiling: localisation is a real problem again. The truth must therefore be built
+from R^mech DESCRIPTORS, which carry addresses, not from fire bits.
+"""
+
+from __future__ import annotations
+
+import json
+import pathlib
+import sys
+from collections import defaultdict
+
+ROOT = pathlib.Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT / "scripts"))
+
+from gate_stage2 import LatentCase, _domains, reference_provider  # noqa: E402
+from identifiability_gate import CAUSE_KEYS, canonicalise  # noqa: E402
+from rfl_rebuild.env import kernel as K  # noqa: E402
+from rfl_rebuild.env.kernel import SemanticTape, State  # noqa: E402
+from rfl_rebuild.method.credit import GAMMA_STATIC, FactualShape  # noqa: E402
+from rfl_rebuild.method.support import DenseSupport  # noqa: E402
+from rfl_rebuild.solve.dp import solve_reference  # noqa: E402
+
+CACHE = ROOT / "experiments" / "v01r" / "support_cache"
+
+
+def main() -> int:
+    limit = int(sys.argv[1]) if len(sys.argv) > 1 else 0
+    sol = solve_reference()
+    provider = reference_provider(sol)
+    sup = DenseSupport.load(CACHE, expected_kernel_fingerprint="full",
+                            expected_dgp_fingerprint="full")
+    n = len(sup) if limit <= 0 else min(limit, len(sup))
+
+    dom_cache: dict = {}
+
+    def domains(wid):
+        key = (sup.field(wid, "kappa"), sup.field(wid, "phase"),
+               sup.field(wid, "error_flag"), sup.field(wid, "cause_rank"),
+               sup.field(wid, "proposal"))
+        hit = dom_cache.get(key)
+        if hit is None:
+            ctx_tape = SemanticTape(phase=key[1], error_flag=key[2],
+                                    cause_rank=key[3])
+            tr = K.rollout(kappa=key[0], tape=ctx_tape, command_provider=provider,
+                           base_option=key[4])
+            d = _domains(sol, key[0], ctx_tape, key[4], tr)
+            hit = tuple(canonicalise(d[k]) for k in CAUSE_KEYS)
+            dom_cache[key] = hit
+        return hit
+
+    def rebuild(wid):
+        dm = domains(wid)
+        idx = [sup.field(wid, f"p{i}") for i in range(5)]
+        b = {k: (dm[i][idx[i]] if idx[i] >= 0 else None)
+             for i, k in enumerate(CAUSE_KEYS)}
+        return LatentCase(case_id=0, kappa=sup.field(wid, "kappa"),
+                          phi=sup.field(wid, "phase"),
+                          error_flag=sup.field(wid, "error_flag"),
+                          cause_rank=sup.field(wid, "cause_rank"),
+                          base_option=sup.field(wid, "proposal"),
+                          Z=tuple((sup.field(wid, "Z_code") >> i) & 1
+                                  for i in range(5)),
+                          option_fault=b.get("P"), decision=b.get("D"),
+                          controller=b.get("X"), plant=b.get("E"),
+                          trap=b.get("U"))
+
+    def gamma_star_indexed(case, fc, wid):
+        """A67 projection from R^mech DESCRIPTORS, so D/X carry ADDRESSES."""
+        out = set()
+        if (fc >> 0) & 1:
+            out.add("ProcessCommit")
+        if (fc >> 1) & 1 and case.decision is not None:
+            out.add(f"Decision_{case.decision.t}")
+        if (fc >> 2) & 1 and case.controller is not None:
+            f = case.controller
+            out.add(f"ControllerSite_{f.state.x}_{f.state.y}_{f.state.t}_{f.cmd}")
+        if (fc >> 3) & 1:
+            out.add("ExternalPlant")
+        if (fc >> 4) & 1:
+            out.add("Unknown/NoWrite")
+        return frozenset(out) if out else frozenset({"Unknown/NoWrite"})
+
+    def gamma_of_episode(case):
+        """Gamma(I) as credit.py defines it: static + indexed of THIS episode."""
+        obs_tape = case.tape()
+        tr = K.rollout(kappa=case.kappa, tape=obs_tape, command_provider=provider,
+                       base_option=case.base_option, mask=case.mask(),
+                       option_fault=case.option_fault)
+        st = State(x=K.START[0], y=K.START[1], t=0, kappa=case.kappa, phi=case.phi)
+        sites, ts = set(), set()
+        for s in tr.steps:
+            sites.add(f"ControllerSite_{st.x}_{st.y}_{st.t}_{s.a_cmd}")
+            ts.add(st.t)
+            st = s.state
+        return frozenset(set(GAMMA_STATIC)
+                         | {f"Decision_{t}" for t in ts} | sites)
+
+    groups = defaultdict(set)
+    group_mass = defaultdict(float)
+    n_dom_violation = 0
+    n_generic_leak = 0
+    inner = 0
+    world_mass_in_mixed = 0.0
+    ambiguity_hist = {}
+    for wid in range(n):
+        inner += 1
+        w = sup.weight(wid)
+        case = rebuild(wid)
+        fc = sup.field(wid, "fire_code")
+        gs = gamma_star_indexed(case, fc, wid)
+        gi = gamma_of_episode(case)
+        if not gs <= gi:
+            n_dom_violation += 1
+        if any(u in ("Decision_t", "ControllerSite") for u in gs):
+            n_generic_leak += 1
+        key = (sup.field(wid, "block_id"), fc)
+        groups[key].add(gs)
+        group_mass[key] += w
+
+    # SCHEMA THEOREM, not a test. LatentCase carries P/D/X/E/U as SINGLE-VALUED
+    # fields, so each cause has at most one descriptor BY CONSTRUCTION and a
+    # dynamic counter could never fail. Two earlier versions pretended otherwise:
+    # the first checked ((zc >> i) & 1) > 1, which is unsatisfiable for a bit, and
+    # the second assigned cnt = 1 and tested cnt > 1, which is unsatisfiable for a
+    # constant. Both reported PASS. If the schema ever admits multi-fault lists per
+    # cause, A66's (a)-vs-(b) ambiguity reopens and a real check must replace this.
+    schema_theorem = ("at most one mechanism descriptor per cause per world, "
+                      "because LatentCase stores each cause as a single field")
+
+    mixed = {k: v for k, v in groups.items() if len(v) > 1}
+    for k in mixed:
+        world_mass_in_mixed += group_mass[k]
+        ambiguity_hist[len(groups[k])] = ambiguity_hist.get(len(groups[k]), 0) + 1
+
+    # Gamma^- and Gamma^+ per information class: the evaluator-side envelope that
+    # A72 will freeze as the causal locator's target.
+    gamma_minus = {k: frozenset.intersection(*v) for k, v in groups.items()}
+    gamma_plus = {k: frozenset.union(*v) for k, v in groups.items()}
+    slack = [len(gamma_plus[k]) - len(gamma_minus[k]) for k in groups]
+
+    checks = {
+        "gamma_star_subset_of_episode_domain": n_dom_violation == 0,
+        "no_generic_unit_leak": n_generic_leak == 0,
+    }
+    ok = all(checks.values())
+    total_mass = sum(group_mass.values())
+    print(f"A71 over {inner:,} worlds (scope limit={limit or 'full'})\n")
+    print(f"  information classes (block, fire_code): {len(groups):,}")
+    print(f"  classes with MIXED Gamma*:              {len(mixed):,} "
+          f"({len(mixed)/max(len(groups),1):.2%} of CLASSES)")
+    print(f"  DGP mass in mixed classes:              "
+          f"{world_mass_in_mixed/max(total_mass,1e-30):.4%} of MASS")
+    print(f"  domain-closure violations:              {n_dom_violation}")
+    print(f"  generic-unit leaks:                     {n_generic_leak}")
+    print(f"  ambiguity-set size histogram (#Gamma* per mixed class): "
+          f"{dict(sorted(ambiguity_hist.items()))}")
+    print(f"  |Gamma+| - |Gamma-| over classes: mean "
+          f"{sum(slack)/len(slack):.3f}, max {max(slack)}")
+    for k in sorted(checks):
+        print(f"  {k:<42} {checks[k]}")
+    print(f"\nA71: {'ALL PASS' if ok else 'FAIL'}")
+    print(f"\n  SCHEMA THEOREM (not a test): {schema_theorem}")
+    if mixed:
+        print("\nfirst mixed classes (Gamma* not determined by X_0.2):")
+        for k, v in list(mixed.items())[:2]:
+            print(f"  block={k[0]} fire={k[1]:05b} -> {len(v)} distinct Gamma*")
+            for g in list(v)[:2]:
+                print(f"     {sorted(g)}")
+
+    p = ROOT / "experiments" / "v02r" / "a71_identifiability.json"
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps({
+        "n_worlds": inner, "n_information_classes": len(groups),
+        "n_mixed_classes": len(mixed),
+        "mixed_fraction_of_classes": len(mixed) / max(len(groups), 1),
+        "mixed_dgp_mass": world_mass_in_mixed / max(total_mass, 1e-30),
+        "total_mass": total_mass,
+        "ambiguity_truth_count_histogram": {str(k): v for k, v in
+                                            sorted(ambiguity_hist.items())},
+        "gamma_plus_minus_slack_mean": sum(slack) / len(slack),
+        "gamma_plus_minus_slack_max": max(slack),
+        "schema_theorem": schema_theorem,
+        "checks": checks, "status": "PASS" if ok else "FAIL",
+        "finding": ("Cause identification does not imply site identification. "
+                    "Even with Z^fire given, X_0.2 does not uniquely determine the "
+                    "indexed Gamma* in every information class. The ambiguity is "
+                    "thin on both counts: 1.57% of CLASSES but 0.19% of DGP MASS, "
+                    "and every mixed class has exactly two compatible truths "
+                    "differing by a single unit."),
+        "reading_warning": ("14/893 is a CLASS fraction. Reading it as a scene "
+                            "probability would be wrong by nearly an order of "
+                            "magnitude; mixed_dgp_mass is the probability."),
+        "generic_bug_fixed": "the truth is now built from R^mech descriptors with "
+                             "addresses, so it lives in the same space as the "
+                             "predictions; A67's generic 'Decision_t' / "
+                             "'ControllerSite' would intersect concretely-expanded "
+                             "predictions as the empty set",
+        "gamma_envelope": {
+            "definition": "Gamma^-(x) = intersection over l in H(x) of Gamma*(l); "
+                          "Gamma^+(x) = union",
+            "role": "evaluator-side reference; A72 freezes Gamma^+ as the "
+                    "CausalSetLocator's target",
+        },
+    }, indent=1, default=str), encoding="utf-8")
+    print(f"wrote {p}")
+    return 0 if ok else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

@@ -1,0 +1,271 @@
+{
+  "schema": "RFL_LEARNER_CONTROL_SOURCE_BOUNDARY_V88",
+  "status": "SOURCE_BOUND_INTERFACE_FINDINGS_NOT_NATIVE_OR_SCIENTIFIC_VALIDATION",
+  "observed_at_utc": "2026-10-12 02:12:21 UTC",
+  "parent_commit": "cfdb7eb37e39ce48aaea22c14554d5e8b558cf26",
+  "branch": "study/v03r-dense-measurement-20261009",
+  "scope": "First actual learner information/control-path audit under the revised human work arrangement; not a new backend, experiment, scope-expansion gate, or replacement scientific protocol.",
+  "human_role_requirement": {
+    "learner": "Learner decisions must be attributable to its actual visible inputs and learning state, not to Codex manually deciding feedback or exploration value.",
+    "codex": "Dream-RSI/RRSI are references for Codex research workflow only; do not add them to the trained learner.",
+    "authority": "The revised work arrangement is not approval of v87 L/D-priority state or new scientific rules."
+  },
+  "source_binding": {
+    "files": [
+      {
+        "path": "src/rfl_rebuild/b2/training.py",
+        "bytes": 22321,
+        "file_sha256": "0342626da5a111952873f33028866718a5504c2535e31d8790af952e08c472d6",
+        "head_blob_exact_bytes": true,
+        "in_frozen_313": true,
+        "frozen_sha_match": true,
+        "function_pins": [
+          {
+            "qualified_name": "effective_value",
+            "line": 194,
+            "end_line": 200,
+            "utf8_source_sha256": "78e021219188853505293465f1ae66eb67e3878786d2ccaf9339d0a99f8f8c5b"
+          },
+          {
+            "qualified_name": "_behaviour_provider",
+            "line": 350,
+            "end_line": 364,
+            "utf8_source_sha256": "575705947afb37a1d85d54b5ce7c5e61206bc81b3de6269d9152a7ff553d1f75"
+          },
+          {
+            "qualified_name": "sweep_edits",
+            "line": 411,
+            "end_line": 444,
+            "utf8_source_sha256": "2e319e820a9857aabcdd3238e7aae390ef0a32ea6b9ed54681edcc16f67c7f21"
+          }
+        ]
+      },
+      {
+        "path": "src/rfl_rebuild/learner/store.py",
+        "bytes": 30097,
+        "file_sha256": "2c41ce68994020cad87c6ccd6bba4fb6ca231a0cb1ef43ff0f3756b3dbf523c4",
+        "head_blob_exact_bytes": true,
+        "in_frozen_313": true,
+        "frozen_sha_match": true,
+        "function_pins": [
+          {
+            "qualified_name": "LearnerSnapshot.q_decision_provider",
+            "line": 320,
+            "end_line": 358,
+            "utf8_source_sha256": "97f38f53959e2908868a2b812b4b6a5cd08c5ca8011cf7f1f0d5e313506a207a"
+          },
+          {
+            "qualified_name": "LearnerSnapshot.decision_provider",
+            "line": 275,
+            "end_line": 318,
+            "utf8_source_sha256": "fc8453ebac9505530534a123b7a4659bf15f5cf6ed403f2d164964bd48747b54"
+          }
+        ]
+      },
+      {
+        "path": "src/rfl_rebuild/learner/reference.py",
+        "bytes": 13199,
+        "file_sha256": "c5ff468670ddb03da27b7742f1476cf4379a46f8d60ce3278c098c7c1d8a0f43",
+        "head_blob_exact_bytes": true,
+        "in_frozen_313": true,
+        "frozen_sha_match": true,
+        "function_pins": [
+          {
+            "qualified_name": "QReferenceView.value",
+            "line": 211,
+            "end_line": 225,
+            "utf8_source_sha256": "a181b34036c847d01396df2ad851554387dcf9f118794629a17099ef3cfceaa6"
+          },
+          {
+            "qualified_name": "reference_view_from",
+            "line": 259,
+            "end_line": 272,
+            "utf8_source_sha256": "f3ce392ab33f83c2115423f19e031a043fa03c5c5f5bf8ee79218df84012e13f"
+          }
+        ]
+      },
+      {
+        "path": "src/rfl_rebuild/b2/temporal_initializer.py",
+        "bytes": 1247,
+        "file_sha256": "46e2287f799e6065a2ca2087fd9679b1909c6b5e298c34415aeb0c2ba6550069",
+        "head_blob_exact_bytes": true,
+        "in_frozen_313": true,
+        "frozen_sha_match": true,
+        "function_pins": [
+          {
+            "qualified_name": "layer_edits",
+            "line": 10,
+            "end_line": 23,
+            "utf8_source_sha256": "d8e8b7944964199de9e73e6a817e36f762593cda9983d13098bd08b433cb9d96"
+          },
+          {
+            "qualified_name": "temporal_initializer",
+            "line": 26,
+            "end_line": 30,
+            "utf8_source_sha256": "b17db112710dd35aaee8676efdb21b158b41cf829c336314d7bc53cb31048658"
+          }
+        ]
+      },
+      {
+        "path": "src/rfl_rebuild/solve/dp.py",
+        "bytes": 7962,
+        "file_sha256": "3854f6986ef421ef17858a64f90f773de601ddc592e9d58d03ace23342e44237",
+        "head_blob_exact_bytes": true,
+        "in_frozen_313": true,
+        "frozen_sha_match": true,
+        "function_pins": [
+          {
+            "qualified_name": "solve_reference",
+            "line": 121,
+            "end_line": 169,
+            "utf8_source_sha256": "5ed0f358bf8236c98d4c8801cb89fc22690402ad397ee69ec9c04be9046f0eda"
+          }
+        ]
+      },
+      {
+        "path": "experiments/v03r/a96_dense/b2_prepare/readiness.py",
+        "bytes": 11667,
+        "file_sha256": "f9a1e399845d2116c1a5af9a1be2bdda7fb9df3d54ba5a8df0c12b96287412a6",
+        "head_blob_exact_bytes": true,
+        "in_frozen_313": false,
+        "frozen_sha_match": null,
+        "function_pins": [
+          {
+            "qualified_name": "build_reference",
+            "line": 133,
+            "end_line": 160,
+            "utf8_source_sha256": "f784de187a81d3c26072e28628594b5674f657229aea47ae177797857cff29c1"
+          }
+        ]
+      },
+      {
+        "path": "docs/rebuild/08-V03R.md",
+        "bytes": 9109,
+        "file_sha256": "8cb040edf775db51d152edd51533f5dc2b6ca0288390cc2546b7806fadee19b1",
+        "head_blob_exact_bytes": true,
+        "in_frozen_313": true,
+        "frozen_sha_match": true
+      },
+      {
+        "path": "docs/rebuild/11-ENVIRONMENT.md",
+        "bytes": 51232,
+        "file_sha256": "ab42ecff120516ee75300d4411de8348f829526fb527063919e9d0931eebdb29",
+        "head_blob_exact_bytes": true,
+        "in_frozen_313": true,
+        "frozen_sha_match": true
+      },
+      {
+        "path": "docs/rebuild/20-B2-DEV-PROTOCOL-FREEZE.md",
+        "bytes": 63570,
+        "file_sha256": "57bf3cec4c0110140a51ce52fc7b9188e996d5e0686eb131fac5d2d9102456d9",
+        "head_blob_exact_bytes": true,
+        "in_frozen_313": true,
+        "frozen_sha_match": true
+      }
+    ],
+    "file_count": 9,
+    "bytes": 210404,
+    "qualified_function_pin_count": 11,
+    "claim_limit": "Exact HEAD bytes were checked for these nine files, and frozen inventory hashes for the eight listed frozen files. This is not a fresh audit of all 313 frozen files or the whole Git tree."
+  },
+  "findings": [
+    {
+      "id": "L1_ACTUAL_LEARNER",
+      "statement": "The active learner uses tabular Q-learning with sparse Q overrides. This path is not evidence of neural/LLM weight training or a learned meta-exploration module.",
+      "evidence": [
+        "docs/rebuild/11-ENVIRONMENT.md:952",
+        "src/rfl_rebuild/b2/training.py:411-444"
+      ],
+      "limitation": "Does not deny model-driven action selection: the nonexploration command genuinely depends on the learner's current effective action values."
+    },
+    {
+      "id": "L2_REFERENCE_ON_LEARNER_READ_PATH",
+      "statement": "Q* is not used only by the evaluator. The architecture intentionally exposes the injected total reference to the learner's greedy action read, current TD value, next-action bootstrap and exact canonicalization.",
+      "evidence": [
+        "src/rfl_rebuild/learner/store.py:347-356",
+        "src/rfl_rebuild/b2/training.py:194-200",
+        "src/rfl_rebuild/b2/training.py:423-444",
+        "src/rfl_rebuild/learner/store.py:500-509"
+      ],
+      "derivation": "For an absent override, effective_value returns q_reference.value(address), and q_decision_provider falls back to row[a]. Therefore even an action not learned into the override table receives the precomputed reference value.",
+      "limitation": "This is the intended old A77/A91 contract, not a newly observed leak, bug or experiment failure. Prior knowledge does not by itself negate autonomous action selection."
+    },
+    {
+      "id": "L3_KNOWN_REFERENCE_CONSTRUCTION",
+      "statement": "The preparation reference builder creates reference_view_from(solve_reference()). The solver performs healthy finite-horizon backward induction. A current reference object could be supplied by other callers; the construction claim is scoped to the inspected builder.",
+      "evidence": [
+        "experiments/v03r/a96_dense/b2_prepare/readiness.py:133-160",
+        "src/rfl_rebuild/solve/dp.py:121-169",
+        "src/rfl_rebuild/learner/reference.py:259-272"
+      ],
+      "limitation": "No solver, reference builder, rollout or reference reconstruction was executed this turn."
+    },
+    {
+      "id": "L4_EXPLORATION_AND_TD_HAVE_DIFFERENT_CONTROLLERS",
+      "statement": "The exploration coin and uniformly drawn action are controlled by protocol epsilon and the keyed episode generator, not by learned Q values. The nonexploration action is controlled by current effective Q values. The chronological sweep processes every visited step and writes its final value; it contains no learned or Codex-defined worth-feedback filter.",
+      "evidence": [
+        "src/rfl_rebuild/b2/training.py:350-364",
+        "src/rfl_rebuild/b2/training.py:411-444",
+        "docs/rebuild/20-B2-DEV-PROTOCOL-FREEZE.md:57-60"
+      ],
+      "limitation": "A fixed experimental exploration rule is not proof of a learned exploration-allocation strategy, but also not proof that the agent makes no endogenous decisions. No new epsilon schedule or selection formula is adopted."
+    },
+    {
+      "id": "L5_REFERENCE_BASED_RECOVERY_INITIALIZATION",
+      "statement": "The inspected C3 temporal baseline initializer chooses the lowest-id worst action in each strict-gap layer-1 reference row and promotes that action using best+(best-worst). It starts from a healthy sparse state and installs those Q edits. The baseline is therefore a controlled corruption of known reference capability, not a from-scratch unknown-environment learner.",
+      "evidence": [
+        "src/rfl_rebuild/b2/temporal_initializer.py:10-30"
+      ],
+      "limitation": "This baseline initializer is not every B2 post-treatment future start. Do not add C3 to production patch L0, migrate F1 qualification, rerun F1, or infer future treatment outcomes from this source fact."
+    },
+    {
+      "id": "L6_RESEARCH_INTERPRETATION_BOUNDARY",
+      "statement": "The original study can investigate the effect of persistent updates on a reference-grounded learner's future. It cannot alone establish learned feedback selection, learned exploration allocation, unknown-environment discovery or LLM self-improvement.",
+      "evidence": [
+        "docs/rebuild/08-V03R.md:7",
+        "docs/rebuild/08-V03R.md:95",
+        "docs/rebuild/11-ENVIRONMENT.md:928-959",
+        "L1_ACTUAL_LEARNER",
+        "L2_REFERENCE_ON_LEARNER_READ_PATH",
+        "L4_EXPLORATION_AND_TD_HAVE_DIFFERENT_CONTROLLERS"
+      ],
+      "limitation": "The user has not required removing all prior knowledge or training from scratch. This interpretation must not be promoted into a mandatory new research population or algorithm."
+    }
+  ],
+  "next_engineering_focus": {
+    "task": "Close the actual train/evaluation action-and-state compatibility boundary for the original architectures while preserving learner-owned state and the updated human role split.",
+    "not_a_solution": "v87 L with immutable D-priority is still only a proposal; this audit does not approve, implement or automatically select it.",
+    "required_distinction": "An implementation rule, a hard-coded action answer, learner-owned feedback state, and an externally imposed selector are different things. Any eventual solution must state which object is learnable and which input controls a real action.",
+    "no_new_prerequisite": "Do not add Dream-RSI/RRSI to the learner or make reproducing either paper a V0.3 completion prerequisite. Do not require unknown-environment training merely because Q* is a prior.",
+    "remaining_scope_boundary": "New core learning state, changed feedback visibility/objective/priority or scientific measurement rules require their concrete scope. Existing whole-update Collateral is still scientifically unclosed."
+  },
+  "operation_inventory": {
+    "basis": "Inventory of the current tool operations, not profile-enforced native counters.",
+    "research_module_imports": 0,
+    "research_entrypoint_execution": 0,
+    "old_fixture_checker_or_native_reruns": 0,
+    "kernel_rollouts_or_steps": 0,
+    "B1_transactions": 0,
+    "DP_execution": 0,
+    "RNG_or_key_allocation": 0,
+    "FutureTrainingProtocol_or_Curve_construction": 0,
+    "training_or_collector_execution": 0,
+    "new_backend_or_priority_implementation": 0,
+    "scientific_rule_adoption": 0,
+    "additions": "One source-bound static audit record plus one new ledger work-progress field only."
+  },
+  "preservation": {
+    "old_ledger_sha256": "ca273620d176eb9ee4ee7dbd34a1813d74523caf2293e670fa576ccbdead5f4e",
+    "old_ledger_semantic_sha256": "1bdb5abe8ee640e5a87885eed82acaaee5d9c3179ea8c16d452f010bd9792f09",
+    "old_provenance_count": 266,
+    "old_provenance_semantic_sha256": "0b1d125634babebc4b70765d92fde7a1c1e37574fed8e6c62265e8b8162592cb",
+    "history": "All existing ledger keys, v87 preparation facts and provenance records are to remain semantically unchanged; the new ledger field is work progress, not a replacement native receipt.",
+    "scientific_state": "UNEVALUATED; collection closed; research incomplete; no effective original-mechanism refutation or scientific STOP established.",
+    "review": "Main-agent implementation-level source review, not independent expert or science-gate acceptance."
+  },
+  "read_only_tool_observations": [
+    "Some combined displays exceeded the wrapper token budget. Required missing source functions were subsequently read in bounded spans; no claim that undisplayed text was visually inspected.",
+    "Guessed env/dp.py, healthy_reference_candidate.py and pipeline_controller.py paths did not exist. Actual paths were located with rg --files; the preparation builder is in readiness.py and the solver in solve/dp.py.",
+    "The first AST pin lookup used LearnerPersistentState.q_decision_provider; the actual owner is LearnerSnapshot. The read-only helper was corrected before any artifact write or research execution."
+  ]
+}

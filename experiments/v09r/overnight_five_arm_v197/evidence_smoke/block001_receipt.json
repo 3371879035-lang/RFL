@@ -1,0 +1,1222 @@
+{
+  "status": "COMPLETE",
+  "elapsed_seconds": 39.75977730000159,
+  "jobs": [
+    {
+      "seed": 93001,
+      "group": "RL-plain",
+      "arm": "RL-RP",
+      "block": 1,
+      "stage": "block001",
+      "status": "COMPLETE",
+      "started_utc": "2026-11-08T16:41:58.993240+00:00",
+      "input_hash": "f5311e98cbb23580f106700b37f8b9a3759e16b7185ac658dca0f6933ab76f7b",
+      "initial_parameter_hash": "8dccaa3074e9b038e53ed5770f39d0f0b5c7ae457ec28a9669328570e0d7e6e2",
+      "outer": null,
+      "report": {
+        "mean": 280.5625,
+        "mean_steps": 120.375,
+        "captured": 7,
+        "rows": [
+          {
+            "episode": 19700000,
+            "steps": 19,
+            "treasures": 0,
+            "captured": true,
+            "completed": false,
+            "score": 28.5
+          },
+          {
+            "episode": 19700001,
+            "steps": 87,
+            "treasures": 0,
+            "captured": true,
+            "completed": false,
+            "score": 130.5
+          },
+          {
+            "episode": 19700002,
+            "steps": 186,
+            "treasures": 2,
+            "captured": true,
+            "completed": false,
+            "score": 479.0
+          },
+          {
+            "episode": 19700003,
+            "steps": 128,
+            "treasures": 1,
+            "captured": true,
+            "completed": false,
+            "score": 292.0
+          },
+          {
+            "episode": 19700004,
+            "steps": 256,
+            "treasures": 3,
+            "captured": false,
+            "completed": true,
+            "score": 684.0
+          },
+          {
+            "episode": 19700005,
+            "steps": 27,
+            "treasures": 1,
+            "captured": true,
+            "completed": false,
+            "score": 140.5
+          },
+          {
+            "episode": 19700006,
+            "steps": 170,
+            "treasures": 0,
+            "captured": true,
+            "completed": false,
+            "score": 255.0
+          },
+          {
+            "episode": 19700007,
+            "steps": 90,
+            "treasures": 1,
+            "captured": true,
+            "completed": false,
+            "score": 235.0
+          }
+        ],
+        "parameter_hash": "bf942a2be0cf2b6aa2676c1441744d7fb1fcff0a6a9db230902c99c9eea82fdc"
+      },
+      "parameter_hash": "bf942a2be0cf2b6aa2676c1441744d7fb1fcff0a6a9db230902c99c9eea82fdc",
+      "ordinary_training_steps_total": 16384,
+      "charged_environment_total": 16384,
+      "optimizer_total": 128,
+      "replay_records": 163840,
+      "checkpoint": "D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009\\experiments\\v09r\\overnight_five_arm_v197\\evidence_smoke\\seed93001\\RL-plain\\block001\\checkpoint.pt.gz",
+      "checkpoint_sha256": "c3f21df42e8e391c741b2258996e73de298227a14afd42f08c29362e719dfde3",
+      "environment_steps": 17347,
+      "charged_environment_steps": 16384,
+      "step_counts": {
+        "ordinary": 16384,
+        "interim_report": 963
+      },
+      "complete_rollout_segments": 168,
+      "rollout_segments": 169,
+      "partial_segments": 1,
+      "optimizer_updates": 128,
+      "wall_seconds": 23.960003099993628,
+      "cpu_seconds": 22.421875,
+      "finished_utc": "2026-11-08T16:42:22.950200+00:00"
+    },
+    {
+      "seed": 93001,
+      "group": "RL-outer",
+      "arm": "RL-RP",
+      "block": 1,
+      "stage": "block001",
+      "status": "COMPLETE",
+      "started_utc": "2026-11-08T16:41:58.992244+00:00",
+      "input_hash": "0c6509b685a3d81a10365d80f8c6473c1541ac11f46ac974e86cf0b7f41b8bce",
+      "initial_parameter_hash": "8dccaa3074e9b038e53ed5770f39d0f0b5c7ae457ec28a9669328570e0d7e6e2",
+      "outer": {
+        "cases": {
+          "cases": 1,
+          "preferences": 0
+        },
+        "reference_fit": {
+          "role": "ordinary",
+          "updates": 8,
+          "parent_hash": "ecd25560992849c325e6b088001d58c21ff12276cb85a269695ae90fbce344ef",
+          "child_hash": "56d919089318dde17990e1698cbeb6a7437636f3f3417e79ac9e57e192000e1c",
+          "margins_before": [],
+          "margins_after": []
+        },
+        "reference_probe": {
+          "mean": 219.875,
+          "mean_steps": 63.25,
+          "captured": 4,
+          "rows": [
+            {
+              "episode": 197256,
+              "steps": 128,
+              "treasures": 3,
+              "captured": true,
+              "completed": false,
+              "score": 492.0
+            },
+            {
+              "episode": 197257,
+              "steps": 32,
+              "treasures": 1,
+              "captured": true,
+              "completed": false,
+              "score": 148.0
+            },
+            {
+              "episode": 197258,
+              "steps": 30,
+              "treasures": 0,
+              "captured": true,
+              "completed": false,
+              "score": 45.0
+            },
+            {
+              "episode": 197259,
+              "steps": 63,
+              "treasures": 1,
+              "captured": true,
+              "completed": false,
+              "score": 194.5
+            }
+          ],
+          "parameter_hash": "56d919089318dde17990e1698cbeb6a7437636f3f3417e79ac9e57e192000e1c"
+        },
+        "dream": {
+          "available_trees": 0,
+          "selected": "weak"
+        },
+        "teachers": {
+          "weak": {
+            "probe": {
+              "mean": 213.875,
+              "mean_steps": 109.25,
+              "captured": 4,
+              "rows": [
+                {
+                  "episode": 197256,
+                  "steps": 256,
+                  "treasures": 1,
+                  "captured": true,
+                  "completed": false,
+                  "score": 484.0
+                },
+                {
+                  "episode": 197257,
+                  "steps": 48,
+                  "treasures": 1,
+                  "captured": true,
+                  "completed": false,
+                  "score": 172.0
+                },
+                {
+                  "episode": 197258,
+                  "steps": 49,
+                  "treasures": 0,
+                  "captured": true,
+                  "completed": false,
+                  "score": 73.5
+                },
+                {
+                  "episode": 197259,
+                  "steps": 84,
+                  "treasures": 0,
+                  "captured": true,
+                  "completed": false,
+                  "score": 126.0
+                }
+              ],
+              "parameter_hash": "86f4c855f066ec815d2c247d612cf68ce10b2dfe4b0efe1c6e3a465dc4495cbe"
+            },
+            "fit": {
+              "role": "weak",
+              "updates": 8,
+              "parent_hash": "ecd25560992849c325e6b088001d58c21ff12276cb85a269695ae90fbce344ef",
+              "child_hash": "86f4c855f066ec815d2c247d612cf68ce10b2dfe4b0efe1c6e3a465dc4495cbe",
+              "margins_before": [],
+              "margins_after": []
+            }
+          },
+          "strong": {
+            "probe": {
+              "mean": 219.875,
+              "mean_steps": 63.25,
+              "captured": 4,
+              "rows": [
+                {
+                  "episode": 197256,
+                  "steps": 128,
+                  "treasures": 3,
+                  "captured": true,
+                  "completed": false,
+                  "score": 492.0
+                },
+                {
+                  "episode": 197257,
+                  "steps": 32,
+                  "treasures": 1,
+                  "captured": true,
+                  "completed": false,
+                  "score": 148.0
+                },
+                {
+                  "episode": 197258,
+                  "steps": 30,
+                  "treasures": 0,
+                  "captured": true,
+                  "completed": false,
+                  "score": 45.0
+                },
+                {
+                  "episode": 197259,
+                  "steps": 63,
+                  "treasures": 1,
+                  "captured": true,
+                  "completed": false,
+                  "score": 194.5
+                }
+              ],
+              "parameter_hash": "56d919089318dde17990e1698cbeb6a7437636f3f3417e79ac9e57e192000e1c"
+            },
+            "fit": {
+              "role": "strong",
+              "updates": 8,
+              "parent_hash": "ecd25560992849c325e6b088001d58c21ff12276cb85a269695ae90fbce344ef",
+              "child_hash": "56d919089318dde17990e1698cbeb6a7437636f3f3417e79ac9e57e192000e1c",
+              "margins_before": [],
+              "margins_after": []
+            }
+          }
+        },
+        "teacher_selected": null,
+        "sleep": null,
+        "matched_reference": null,
+        "reference_gate": null,
+        "student_gate": null,
+        "two_block_gains": [],
+        "adopted": false,
+        "parent_hash": "ecd25560992849c325e6b088001d58c21ff12276cb85a269695ae90fbce344ef",
+        "deployed_hash": "56d919089318dde17990e1698cbeb6a7437636f3f3417e79ac9e57e192000e1c"
+      },
+      "report": {
+        "mean": 208.5,
+        "mean_steps": 114.0,
+        "captured": 7,
+        "rows": [
+          {
+            "episode": 19700000,
+            "steps": 19,
+            "treasures": 0,
+            "captured": true,
+            "completed": false,
+            "score": 28.5
+          },
+          {
+            "episode": 19700001,
+            "steps": 59,
+            "treasures": 0,
+            "captured": true,
+            "completed": false,
+            "score": 88.5
+          },
+          {
+            "episode": 19700002,
+            "steps": 167,
+            "treasures": 1,
+            "captured": true,
+            "completed": false,
+            "score": 350.5
+          },
+          {
+            "episode": 19700003,
+            "steps": 138,
+            "treasures": 1,
+            "captured": true,
+            "completed": false,
+            "score": 307.0
+          },
+          {
+            "episode": 19700004,
+            "steps": 59,
+            "treasures": 0,
+            "captured": true,
+            "completed": false,
+            "score": 88.5
+          },
+          {
+            "episode": 19700005,
+            "steps": 256,
+            "treasures": 1,
+            "captured": false,
+            "completed": true,
+            "score": 484.0
+          },
+          {
+            "episode": 19700006,
+            "steps": 62,
+            "treasures": 0,
+            "captured": true,
+            "completed": false,
+            "score": 93.0
+          },
+          {
+            "episode": 19700007,
+            "steps": 152,
+            "treasures": 0,
+            "captured": true,
+            "completed": false,
+            "score": 228.0
+          }
+        ],
+        "parameter_hash": "d77334d1a2fce823c05e5e1bdb82a06267b490ee069ca9c2e1a08e13003f3803"
+      },
+      "parameter_hash": "d77334d1a2fce823c05e5e1bdb82a06267b490ee069ca9c2e1a08e13003f3803",
+      "ordinary_training_steps_total": 15108,
+      "charged_environment_total": 16384,
+      "optimizer_total": 128,
+      "replay_records": 162564,
+      "checkpoint": "D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009\\experiments\\v09r\\overnight_five_arm_v197\\evidence_smoke\\seed93001\\RL-outer\\block001\\checkpoint.pt.gz",
+      "checkpoint_sha256": "f810e569e6f5df1a0e9d025f0dc996cf674a544622210e85b186490dbfa7939d",
+      "environment_steps": 17296,
+      "charged_environment_steps": 16384,
+      "step_counts": {
+        "ordinary": 15108,
+        "source": 214,
+        "trial": 119,
+        "reference_probe": 253,
+        "teacher_probe": 690,
+        "interim_report": 912
+      },
+      "complete_rollout_segments": 193,
+      "rollout_segments": 194,
+      "partial_segments": 1,
+      "optimizer_updates": 128,
+      "wall_seconds": 24.644442400000116,
+      "cpu_seconds": 22.890625,
+      "finished_utc": "2026-11-08T16:42:23.634228+00:00"
+    },
+    {
+      "seed": 93001,
+      "group": "F-R",
+      "arm": "F-R",
+      "block": 1,
+      "stage": "block001",
+      "status": "COMPLETE",
+      "started_utc": "2026-11-08T16:41:58.992244+00:00",
+      "input_hash": "4f637ceed4821783725007aa6049e94608d2179d61458b7fb8526c243e3852d3",
+      "initial_parameter_hash": "f868aef7da99fac452efee479aba82c8c8eb927ccb06be78111c97887db75f97",
+      "outer": {
+        "cases": {
+          "cases": 1,
+          "preferences": 1
+        },
+        "reference_fit": {
+          "role": "ordinary",
+          "updates": 8,
+          "parent_hash": "6b64a3112411f28f2a1e68cec5e4bddd9ff1b3fab6f65c33430da3c399fd1645",
+          "child_hash": "5f50864dfce710d473220187aaf61613c056ea3c15b2f4bbfc9c1693c20bb4ed",
+          "margins_before": [],
+          "margins_after": []
+        },
+        "reference_probe": {
+          "mean": 58.375,
+          "mean_steps": 22.25,
+          "captured": 4,
+          "rows": [
+            {
+              "episode": 197256,
+              "steps": 41,
+              "treasures": 1,
+              "captured": true,
+              "completed": false,
+              "score": 161.5
+            },
+            {
+              "episode": 197257,
+              "steps": 12,
+              "treasures": 0,
+              "captured": true,
+              "completed": false,
+              "score": 18.0
+            },
+            {
+              "episode": 197258,
+              "steps": 27,
+              "treasures": 0,
+              "captured": true,
+              "completed": false,
+              "score": 40.5
+            },
+            {
+              "episode": 197259,
+              "steps": 9,
+              "treasures": 0,
+              "captured": true,
+              "completed": false,
+              "score": 13.5
+            }
+          ],
+          "parameter_hash": "5f50864dfce710d473220187aaf61613c056ea3c15b2f4bbfc9c1693c20bb4ed"
+        },
+        "dream": {
+          "available_trees": 0,
+          "selected": "weak"
+        },
+        "teachers": {
+          "weak": {
+            "probe": {
+              "mean": 32.625,
+              "mean_steps": 21.75,
+              "captured": 4,
+              "rows": [
+                {
+                  "episode": 197256,
+                  "steps": 9,
+                  "treasures": 0,
+                  "captured": true,
+                  "completed": false,
+                  "score": 13.5
+                },
+                {
+                  "episode": 197257,
+                  "steps": 12,
+                  "treasures": 0,
+                  "captured": true,
+                  "completed": false,
+                  "score": 18.0
+                },
+                {
+                  "episode": 197258,
+                  "steps": 32,
+                  "treasures": 0,
+                  "captured": true,
+                  "completed": false,
+                  "score": 48.0
+                },
+                {
+                  "episode": 197259,
+                  "steps": 34,
+                  "treasures": 0,
+                  "captured": true,
+                  "completed": false,
+                  "score": 51.0
+                }
+              ],
+              "parameter_hash": "5e280b6dca9681736b9971e2f3d9026a7644339a611c57589857a885e7de1b5c"
+            },
+            "fit": {
+              "role": "weak",
+              "updates": 8,
+              "parent_hash": "6b64a3112411f28f2a1e68cec5e4bddd9ff1b3fab6f65c33430da3c399fd1645",
+              "child_hash": "5e280b6dca9681736b9971e2f3d9026a7644339a611c57589857a885e7de1b5c",
+              "margins_before": [
+                -0.009857892990112305
+              ],
+              "margins_after": [
+                0.8585826754570007
+              ]
+            }
+          },
+          "strong": {
+            "probe": {
+              "mean": 17.625,
+              "mean_steps": 11.75,
+              "captured": 4,
+              "rows": [
+                {
+                  "episode": 197256,
+                  "steps": 9,
+                  "treasures": 0,
+                  "captured": true,
+                  "completed": false,
+                  "score": 13.5
+                },
+                {
+                  "episode": 197257,
+                  "steps": 12,
+                  "treasures": 0,
+                  "captured": true,
+                  "completed": false,
+                  "score": 18.0
+                },
+                {
+                  "episode": 197258,
+                  "steps": 18,
+                  "treasures": 0,
+                  "captured": true,
+                  "completed": false,
+                  "score": 27.0
+                },
+                {
+                  "episode": 197259,
+                  "steps": 8,
+                  "treasures": 0,
+                  "captured": true,
+                  "completed": false,
+                  "score": 12.0
+                }
+              ],
+              "parameter_hash": "21a2115db3f1931363bee7040441bc34325c9fb4f15cadd469c7ab78bd31def7"
+            },
+            "fit": {
+              "role": "strong",
+              "updates": 8,
+              "parent_hash": "6b64a3112411f28f2a1e68cec5e4bddd9ff1b3fab6f65c33430da3c399fd1645",
+              "child_hash": "21a2115db3f1931363bee7040441bc34325c9fb4f15cadd469c7ab78bd31def7",
+              "margins_before": [
+                -0.009857892990112305
+              ],
+              "margins_after": [
+                1.375564694404602
+              ]
+            }
+          }
+        },
+        "teacher_selected": null,
+        "sleep": null,
+        "matched_reference": null,
+        "reference_gate": null,
+        "student_gate": null,
+        "two_block_gains": [],
+        "adopted": false,
+        "parent_hash": "6b64a3112411f28f2a1e68cec5e4bddd9ff1b3fab6f65c33430da3c399fd1645",
+        "deployed_hash": "5f50864dfce710d473220187aaf61613c056ea3c15b2f4bbfc9c1693c20bb4ed"
+      },
+      "report": {
+        "mean": 158.625,
+        "mean_steps": 80.75,
+        "captured": 8,
+        "rows": [
+          {
+            "episode": 19700000,
+            "steps": 19,
+            "treasures": 0,
+            "captured": true,
+            "completed": false,
+            "score": 28.5
+          },
+          {
+            "episode": 19700001,
+            "steps": 143,
+            "treasures": 0,
+            "captured": true,
+            "completed": false,
+            "score": 214.5
+          },
+          {
+            "episode": 19700002,
+            "steps": 27,
+            "treasures": 0,
+            "captured": true,
+            "completed": false,
+            "score": 40.5
+          },
+          {
+            "episode": 19700003,
+            "steps": 95,
+            "treasures": 0,
+            "captured": true,
+            "completed": false,
+            "score": 142.5
+          },
+          {
+            "episode": 19700004,
+            "steps": 165,
+            "treasures": 2,
+            "captured": true,
+            "completed": false,
+            "score": 447.5
+          },
+          {
+            "episode": 19700005,
+            "steps": 27,
+            "treasures": 1,
+            "captured": true,
+            "completed": false,
+            "score": 140.5
+          },
+          {
+            "episode": 19700006,
+            "steps": 98,
+            "treasures": 0,
+            "captured": true,
+            "completed": false,
+            "score": 147.0
+          },
+          {
+            "episode": 19700007,
+            "steps": 72,
+            "treasures": 0,
+            "captured": true,
+            "completed": false,
+            "score": 108.0
+          }
+        ],
+        "parameter_hash": "edc1446093f58922ccfad8311180c054c1434bb78da9621842ae19014c19d116"
+      },
+      "parameter_hash": "edc1446093f58922ccfad8311180c054c1434bb78da9621842ae19014c19d116",
+      "ordinary_training_steps_total": 16031,
+      "charged_environment_total": 16384,
+      "optimizer_total": 128,
+      "replay_records": 163487,
+      "checkpoint": "D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009\\experiments\\v09r\\overnight_five_arm_v197\\evidence_smoke\\seed93001\\F-R\\block001\\checkpoint.pt.gz",
+      "checkpoint_sha256": "03e8b3123caa138deb62c5556a956234664779683f55afb0379a47109fe98b12",
+      "environment_steps": 17030,
+      "charged_environment_steps": 16384,
+      "step_counts": {
+        "ordinary": 16031,
+        "source": 50,
+        "trial": 80,
+        "reference_probe": 89,
+        "teacher_probe": 134,
+        "interim_report": 646
+      },
+      "complete_rollout_segments": 331,
+      "rollout_segments": 332,
+      "partial_segments": 1,
+      "optimizer_updates": 128,
+      "wall_seconds": 36.268055199994706,
+      "cpu_seconds": 34.671875,
+      "finished_utc": "2026-11-08T16:42:35.258653+00:00"
+    },
+    {
+      "seed": 93001,
+      "group": "F-RP",
+      "arm": "F-RP",
+      "block": 1,
+      "stage": "block001",
+      "status": "COMPLETE",
+      "started_utc": "2026-11-08T16:41:58.992244+00:00",
+      "input_hash": "58e4365b92a1f492edd1c312b788fb600dcbd42f0b8e566c2a5b149a5b26ef6b",
+      "initial_parameter_hash": "4e44b3fb9fd5f01207b8d822a66bc75ce4c5e9e378901de77a6ee85cb36329c0",
+      "outer": {
+        "cases": {
+          "cases": 1,
+          "preferences": 0
+        },
+        "reference_fit": {
+          "role": "ordinary",
+          "updates": 8,
+          "parent_hash": "60de3660657dbc783abcb598805bff37da7c574fa2bdffa1f04ee838cc6b8bb0",
+          "child_hash": "3e6464cd8b7c34962023f61efaa396d020a83f6c2b34bbe3143a692d84f7d04d",
+          "margins_before": [],
+          "margins_after": []
+        },
+        "reference_probe": {
+          "mean": 219.875,
+          "mean_steps": 63.25,
+          "captured": 4,
+          "rows": [
+            {
+              "episode": 197256,
+              "steps": 128,
+              "treasures": 3,
+              "captured": true,
+              "completed": false,
+              "score": 492.0
+            },
+            {
+              "episode": 197257,
+              "steps": 32,
+              "treasures": 1,
+              "captured": true,
+              "completed": false,
+              "score": 148.0
+            },
+            {
+              "episode": 197258,
+              "steps": 30,
+              "treasures": 0,
+              "captured": true,
+              "completed": false,
+              "score": 45.0
+            },
+            {
+              "episode": 197259,
+              "steps": 63,
+              "treasures": 1,
+              "captured": true,
+              "completed": false,
+              "score": 194.5
+            }
+          ],
+          "parameter_hash": "3e6464cd8b7c34962023f61efaa396d020a83f6c2b34bbe3143a692d84f7d04d"
+        },
+        "dream": {
+          "available_trees": 0,
+          "selected": "weak"
+        },
+        "teachers": {
+          "weak": {
+            "probe": {
+              "mean": 219.875,
+              "mean_steps": 63.25,
+              "captured": 4,
+              "rows": [
+                {
+                  "episode": 197256,
+                  "steps": 128,
+                  "treasures": 3,
+                  "captured": true,
+                  "completed": false,
+                  "score": 492.0
+                },
+                {
+                  "episode": 197257,
+                  "steps": 32,
+                  "treasures": 1,
+                  "captured": true,
+                  "completed": false,
+                  "score": 148.0
+                },
+                {
+                  "episode": 197258,
+                  "steps": 30,
+                  "treasures": 0,
+                  "captured": true,
+                  "completed": false,
+                  "score": 45.0
+                },
+                {
+                  "episode": 197259,
+                  "steps": 63,
+                  "treasures": 1,
+                  "captured": true,
+                  "completed": false,
+                  "score": 194.5
+                }
+              ],
+              "parameter_hash": "3e6464cd8b7c34962023f61efaa396d020a83f6c2b34bbe3143a692d84f7d04d"
+            },
+            "fit": {
+              "role": "weak",
+              "updates": 8,
+              "parent_hash": "60de3660657dbc783abcb598805bff37da7c574fa2bdffa1f04ee838cc6b8bb0",
+              "child_hash": "3e6464cd8b7c34962023f61efaa396d020a83f6c2b34bbe3143a692d84f7d04d",
+              "margins_before": [],
+              "margins_after": []
+            }
+          },
+          "strong": {
+            "probe": {
+              "mean": 219.875,
+              "mean_steps": 63.25,
+              "captured": 4,
+              "rows": [
+                {
+                  "episode": 197256,
+                  "steps": 128,
+                  "treasures": 3,
+                  "captured": true,
+                  "completed": false,
+                  "score": 492.0
+                },
+                {
+                  "episode": 197257,
+                  "steps": 32,
+                  "treasures": 1,
+                  "captured": true,
+                  "completed": false,
+                  "score": 148.0
+                },
+                {
+                  "episode": 197258,
+                  "steps": 30,
+                  "treasures": 0,
+                  "captured": true,
+                  "completed": false,
+                  "score": 45.0
+                },
+                {
+                  "episode": 197259,
+                  "steps": 63,
+                  "treasures": 1,
+                  "captured": true,
+                  "completed": false,
+                  "score": 194.5
+                }
+              ],
+              "parameter_hash": "3e6464cd8b7c34962023f61efaa396d020a83f6c2b34bbe3143a692d84f7d04d"
+            },
+            "fit": {
+              "role": "strong",
+              "updates": 8,
+              "parent_hash": "60de3660657dbc783abcb598805bff37da7c574fa2bdffa1f04ee838cc6b8bb0",
+              "child_hash": "3e6464cd8b7c34962023f61efaa396d020a83f6c2b34bbe3143a692d84f7d04d",
+              "margins_before": [],
+              "margins_after": []
+            }
+          }
+        },
+        "teacher_selected": null,
+        "sleep": null,
+        "matched_reference": null,
+        "reference_gate": null,
+        "student_gate": null,
+        "two_block_gains": [],
+        "adopted": false,
+        "parent_hash": "60de3660657dbc783abcb598805bff37da7c574fa2bdffa1f04ee838cc6b8bb0",
+        "deployed_hash": "3e6464cd8b7c34962023f61efaa396d020a83f6c2b34bbe3143a692d84f7d04d"
+      },
+      "report": {
+        "mean": 261.875,
+        "mean_steps": 141.25,
+        "captured": 6,
+        "rows": [
+          {
+            "episode": 19700000,
+            "steps": 256,
+            "treasures": 2,
+            "captured": false,
+            "completed": true,
+            "score": 584.0
+          },
+          {
+            "episode": 19700001,
+            "steps": 98,
+            "treasures": 0,
+            "captured": true,
+            "completed": false,
+            "score": 147.0
+          },
+          {
+            "episode": 19700002,
+            "steps": 185,
+            "treasures": 1,
+            "captured": true,
+            "completed": false,
+            "score": 377.5
+          },
+          {
+            "episode": 19700003,
+            "steps": 53,
+            "treasures": 0,
+            "captured": true,
+            "completed": false,
+            "score": 79.5
+          },
+          {
+            "episode": 19700004,
+            "steps": 59,
+            "treasures": 0,
+            "captured": true,
+            "completed": false,
+            "score": 88.5
+          },
+          {
+            "episode": 19700005,
+            "steps": 256,
+            "treasures": 1,
+            "captured": false,
+            "completed": true,
+            "score": 484.0
+          },
+          {
+            "episode": 19700006,
+            "steps": 62,
+            "treasures": 0,
+            "captured": true,
+            "completed": false,
+            "score": 93.0
+          },
+          {
+            "episode": 19700007,
+            "steps": 161,
+            "treasures": 0,
+            "captured": true,
+            "completed": false,
+            "score": 241.5
+          }
+        ],
+        "parameter_hash": "fc868b92bf467eca34cb2fdc6caed25f7339530ca4b69ef023723cb5861ca0e8"
+      },
+      "parameter_hash": "fc868b92bf467eca34cb2fdc6caed25f7339530ca4b69ef023723cb5861ca0e8",
+      "ordinary_training_steps_total": 15292,
+      "charged_environment_total": 16384,
+      "optimizer_total": 128,
+      "replay_records": 162748,
+      "checkpoint": "D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009\\experiments\\v09r\\overnight_five_arm_v197\\evidence_smoke\\seed93001\\F-RP\\block001\\checkpoint.pt.gz",
+      "checkpoint_sha256": "be0c8303ff42c8eefddf8d0ade93f3f7e6f676567ef14b37a991a19d27aa8e70",
+      "environment_steps": 17514,
+      "charged_environment_steps": 16384,
+      "step_counts": {
+        "ordinary": 15292,
+        "source": 214,
+        "trial": 119,
+        "reference_probe": 253,
+        "teacher_probe": 506,
+        "interim_report": 1130
+      },
+      "complete_rollout_segments": 195,
+      "rollout_segments": 196,
+      "partial_segments": 1,
+      "optimizer_updates": 128,
+      "wall_seconds": 36.75238359999639,
+      "cpu_seconds": 35.265625,
+      "finished_utc": "2026-11-08T16:42:35.742237+00:00"
+    },
+    {
+      "seed": 93001,
+      "group": "F0",
+      "arm": "F0",
+      "block": 1,
+      "stage": "block001",
+      "status": "COMPLETE",
+      "started_utc": "2026-11-08T16:41:58.992244+00:00",
+      "input_hash": "4fb3b1e21b0fc5162a6bf25c1d29e2173f9fe80f4eaaba36b82014378d9571d5",
+      "initial_parameter_hash": "f9f185b47b71086384dd9aeb93f435c10a0a5b38d126eef4d15f7cabe9e0a780",
+      "outer": {
+        "cases": {
+          "cases": 1,
+          "preferences": 0
+        },
+        "reference_fit": {
+          "role": "ordinary",
+          "updates": 8,
+          "parent_hash": "1fc5b3be6b409772cdc4009af8eab6725ab02805e96a3102f51b193a2ed9e590",
+          "child_hash": "5eb3133021ba80a0c4762c3d7804e9aad47af4b0a193ad40ac64d1d9ba55c20a",
+          "margins_before": [],
+          "margins_after": []
+        },
+        "reference_probe": {
+          "mean": 25.125,
+          "mean_steps": 16.75,
+          "captured": 4,
+          "rows": [
+            {
+              "episode": 197256,
+              "steps": 41,
+              "treasures": 0,
+              "captured": true,
+              "completed": false,
+              "score": 61.5
+            },
+            {
+              "episode": 197257,
+              "steps": 18,
+              "treasures": 0,
+              "captured": true,
+              "completed": false,
+              "score": 27.0
+            },
+            {
+              "episode": 197258,
+              "steps": 1,
+              "treasures": 0,
+              "captured": true,
+              "completed": false,
+              "score": 1.5
+            },
+            {
+              "episode": 197259,
+              "steps": 7,
+              "treasures": 0,
+              "captured": true,
+              "completed": false,
+              "score": 10.5
+            }
+          ],
+          "parameter_hash": "5eb3133021ba80a0c4762c3d7804e9aad47af4b0a193ad40ac64d1d9ba55c20a"
+        },
+        "dream": {
+          "available_trees": 0,
+          "selected": "weak"
+        },
+        "teachers": {
+          "weak": {
+            "probe": {
+              "mean": 25.125,
+              "mean_steps": 16.75,
+              "captured": 4,
+              "rows": [
+                {
+                  "episode": 197256,
+                  "steps": 41,
+                  "treasures": 0,
+                  "captured": true,
+                  "completed": false,
+                  "score": 61.5
+                },
+                {
+                  "episode": 197257,
+                  "steps": 18,
+                  "treasures": 0,
+                  "captured": true,
+                  "completed": false,
+                  "score": 27.0
+                },
+                {
+                  "episode": 197258,
+                  "steps": 1,
+                  "treasures": 0,
+                  "captured": true,
+                  "completed": false,
+                  "score": 1.5
+                },
+                {
+                  "episode": 197259,
+                  "steps": 7,
+                  "treasures": 0,
+                  "captured": true,
+                  "completed": false,
+                  "score": 10.5
+                }
+              ],
+              "parameter_hash": "5eb3133021ba80a0c4762c3d7804e9aad47af4b0a193ad40ac64d1d9ba55c20a"
+            },
+            "fit": {
+              "role": "weak",
+              "updates": 8,
+              "parent_hash": "1fc5b3be6b409772cdc4009af8eab6725ab02805e96a3102f51b193a2ed9e590",
+              "child_hash": "5eb3133021ba80a0c4762c3d7804e9aad47af4b0a193ad40ac64d1d9ba55c20a",
+              "margins_before": [],
+              "margins_after": []
+            }
+          },
+          "strong": {
+            "probe": {
+              "mean": 25.125,
+              "mean_steps": 16.75,
+              "captured": 4,
+              "rows": [
+                {
+                  "episode": 197256,
+                  "steps": 41,
+                  "treasures": 0,
+                  "captured": true,
+                  "completed": false,
+                  "score": 61.5
+                },
+                {
+                  "episode": 197257,
+                  "steps": 18,
+                  "treasures": 0,
+                  "captured": true,
+                  "completed": false,
+                  "score": 27.0
+                },
+                {
+                  "episode": 197258,
+                  "steps": 1,
+                  "treasures": 0,
+                  "captured": true,
+                  "completed": false,
+                  "score": 1.5
+                },
+                {
+                  "episode": 197259,
+                  "steps": 7,
+                  "treasures": 0,
+                  "captured": true,
+                  "completed": false,
+                  "score": 10.5
+                }
+              ],
+              "parameter_hash": "5eb3133021ba80a0c4762c3d7804e9aad47af4b0a193ad40ac64d1d9ba55c20a"
+            },
+            "fit": {
+              "role": "strong",
+              "updates": 8,
+              "parent_hash": "1fc5b3be6b409772cdc4009af8eab6725ab02805e96a3102f51b193a2ed9e590",
+              "child_hash": "5eb3133021ba80a0c4762c3d7804e9aad47af4b0a193ad40ac64d1d9ba55c20a",
+              "margins_before": [],
+              "margins_after": []
+            }
+          }
+        },
+        "teacher_selected": null,
+        "sleep": null,
+        "matched_reference": null,
+        "reference_gate": null,
+        "student_gate": null,
+        "two_block_gains": [],
+        "adopted": false,
+        "parent_hash": "1fc5b3be6b409772cdc4009af8eab6725ab02805e96a3102f51b193a2ed9e590",
+        "deployed_hash": "5eb3133021ba80a0c4762c3d7804e9aad47af4b0a193ad40ac64d1d9ba55c20a"
+      },
+      "report": {
+        "mean": 83.625,
+        "mean_steps": 55.75,
+        "captured": 8,
+        "rows": [
+          {
+            "episode": 19700000,
+            "steps": 13,
+            "treasures": 0,
+            "captured": true,
+            "completed": false,
+            "score": 19.5
+          },
+          {
+            "episode": 19700001,
+            "steps": 47,
+            "treasures": 0,
+            "captured": true,
+            "completed": false,
+            "score": 70.5
+          },
+          {
+            "episode": 19700002,
+            "steps": 66,
+            "treasures": 0,
+            "captured": true,
+            "completed": false,
+            "score": 99.0
+          },
+          {
+            "episode": 19700003,
+            "steps": 36,
+            "treasures": 0,
+            "captured": true,
+            "completed": false,
+            "score": 54.0
+          },
+          {
+            "episode": 19700004,
+            "steps": 40,
+            "treasures": 0,
+            "captured": true,
+            "completed": false,
+            "score": 60.0
+          },
+          {
+            "episode": 19700005,
+            "steps": 49,
+            "treasures": 0,
+            "captured": true,
+            "completed": false,
+            "score": 73.5
+          },
+          {
+            "episode": 19700006,
+            "steps": 96,
+            "treasures": 0,
+            "captured": true,
+            "completed": false,
+            "score": 144.0
+          },
+          {
+            "episode": 19700007,
+            "steps": 99,
+            "treasures": 0,
+            "captured": true,
+            "completed": false,
+            "score": 148.5
+          }
+        ],
+        "parameter_hash": "79486c78af1c353944c82b502956e75ba81113456b8e4734ad46571e3a6b9a3a"
+      },
+      "parameter_hash": "79486c78af1c353944c82b502956e75ba81113456b8e4734ad46571e3a6b9a3a",
+      "ordinary_training_steps_total": 16059,
+      "charged_environment_total": 16384,
+      "optimizer_total": 128,
+      "replay_records": 163515,
+      "checkpoint": "D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009\\experiments\\v09r\\overnight_five_arm_v197\\evidence_smoke\\seed93001\\F0\\block001\\checkpoint.pt.gz",
+      "checkpoint_sha256": "f66f6ca6cadd4ee2b606ac60a56245df13bc9973590863940134e1c6581d5ca5",
+      "environment_steps": 16830,
+      "charged_environment_steps": 16384,
+      "step_counts": {
+        "ordinary": 16059,
+        "source": 76,
+        "trial": 48,
+        "reference_probe": 67,
+        "teacher_probe": 134,
+        "interim_report": 446
+      },
+      "complete_rollout_segments": 576,
+      "rollout_segments": 577,
+      "partial_segments": 1,
+      "optimizer_updates": 128,
+      "wall_seconds": 39.74013980000018,
+      "cpu_seconds": 37.890625,
+      "finished_utc": "2026-11-08T16:42:38.729905+00:00"
+    }
+  ]
+}

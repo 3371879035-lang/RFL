@@ -1,0 +1,22 @@
+{
+  "version": "V200.0 weight-programmed factual feedback foundation prototype",
+  "authority": "User: first try writing from scratch a model with basic feedback processing ability, with generality.",
+  "question": "Can a directly written task-independent neural memory controller use actual factual feedback to improve choices across several local task families, without gradient fitting or a pretrained checkpoint?",
+  "claim_scope": "General interface and limited cross-task empirical reuse, NOT universal intelligence, a causal attribution engine, full world simulation, or a trained-baseline superiority claim.",
+  "construction": "All parameter tensors are explicitly zeroed then assigned by analytic instructions before any experiment. No old checkpoints or task tables are read by the writer. The model receives context/action descriptors, explicit goals, observed factual outcomes and missingness masks, not an environment reward packet.",
+  "network": "Two parameterized attention memories, parameterized discrepancy gate, bilinear fact-goal readout and uncertainty readout. Memory writes copy observed data only. The fixed feature lift includes a squared norm; this is disclosed architecture, not an inferred world law.",
+  "learning_meaning": "Online experience changes model-owned memory state. Initial neural weights do not change during this first experiment. All weights remain trainable for a later genuine gradient-training comparison. No SLEEP or autonomous cause explanation is claimed.",
+  "interface": {"context_dim": 6, "action_dim": 6, "fact_dim": 3, "memory_capacity": 384, "facts": "normalized observed measurements in [0,1]", "descriptors": "normalized, stable within a task", "goal": "public factual preferences, not a reward training target"},
+  "fixed_numeric_program": {"distance_beta": 20.0, "prior_logit": -8.0, "prior_fact": 0.5, "slow_age_penalty": 0.002, "fast_age_penalty": 0.04, "gate_slope": 12.0, "gate_bias": -1.44, "unsupported_action_bonus": 0.35},
+  "families": ["deterministic_context", "noisy_context", "changed_dynamics", "changed_goal", "continuous_context", "delayed_credit"],
+  "variants": ["written", "written_no_history", "random_untrained"],
+  "seeds": [200001, 200002, 200003, 200004, 200005, 200006, 200007, 200008],
+  "rounds_per_run": 256,
+  "epsilon": 0.1,
+  "evaluation": "Each model acts from its own accumulated experience. The external evaluator retains hidden outcome means and a pre-generated common random tape, but neither enters the model. Choices for all variants use the same epsilon/tie random tape. First/last64 rounds and first/last32 after a change are reported; all seeds and failures retained. The delayed-credit case reports terminal success separately and is intended to expose absent multi-step attribution.",
+  "controls": "No-history and random-untrained are mechanism controls only. Neither is a trained pure-feedback baseline; the requested future training comparison is NOT claimed complete.",
+  "checks": ["save_load_equivalence", "parameter_origin_and_no_updates", "feedback_changes_choices", "action_order_equivariance", "descriptor_coordinate_permutation", "missing_feedback_is_not_zero", "changed_goal_without_new_feedback", "shared_model_has_no_environment_access"],
+  "budget": {"native_wall_seconds": 600, "maximum_environment_transitions": 50000, "threads": 1, "workers": 1, "GPU": false, "cloud": false, "optimizer_steps": 0},
+  "preservation": "New exclusive evidence directory; preserve first failure or partial, no automatic retry, no edits to executed source bytes, no old fixtures/learning/banks rerun. Only new engineering task instances, not a new formal science confirmation population. Existing V198/V199 results untouched.",
+  "adoption": "This creates a standalone candidate checkpoint only. It is not installed in the previous learner or promoted to a general model on its own internal checks. No automation is created."
+}

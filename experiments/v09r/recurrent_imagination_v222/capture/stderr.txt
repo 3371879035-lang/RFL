@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v09r\recurrent_imagination_v222\probe.py", line 91, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v09r\recurrent_imagination_v222\probe.py", line 80, in main
+    checks=run_checks(agent,record);save(cap/'checks.json',checks)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v09r\recurrent_imagination_v222\checks.py", line 55, in run_checks
+    check('shared_factual_and_imagined_kernel',one_kernel)
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v09r\recurrent_imagination_v222\checks.py", line 25, in check
+    detail=fn();result[name]=detail;record({'kind':'check','name':name,'passed':True,'details':detail})
+           ^^^^
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v09r\recurrent_imagination_v222\checks.py", line 53, in one_kernel
+    assert torch.equal(tensor([n.next_observation for n in first]),expected)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

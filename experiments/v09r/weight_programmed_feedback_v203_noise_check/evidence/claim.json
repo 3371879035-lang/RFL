@@ -1,0 +1,72 @@
+{
+  "started_utc": "2026-11-09T16:32:46.173870+00:00",
+  "inputs": {
+    "experiments/v09r/weight_programmed_feedback_v203_noise_check/run.py": "c2c57ed92a50ab09dc72ab15d8a578b3912ff1eac34edd2e8ba7ae299e35aa94",
+    "experiments/v09r/weight_programmed_feedback_v203_noise_check/launch.py": "399b13cee27ba32b1b7e74e1444c9b9b17d7d8feaba3a04d234c3fb12d007297",
+    "experiments/v09r/weight_programmed_feedback_v203_noise_check/contract.json": "c458652c88683ee9f5d9cf564a3ab096a58ae7fc2f92780f5d1c03c1862dd8a1",
+    "experiments/v09r/weight_programmed_feedback_v203_noise_check/RATIONALE.md": "ca959c1fa9730b4b811b0e33321016912e0035afdbf63a34d9d115763dfb3418",
+    "experiments/v09r/weight_programmed_feedback_v203/evidence/initial_written.pt": "45b946ad8127d9af6fc86912bda8d4be40d26bd31879adb56ebf4c0ed087f58d",
+    "experiments/v09r/weight_programmed_feedback_v203/model.py": "65aeb011b21141b7a2246de662c2110506a8d30609cca6bd8e5bc159f6f3fde1",
+    "experiments/v09r/weight_programmed_feedback_v203/tasks.py": "eb6b924680bb8566505f235ce705d61d1eaee685c7d6ff8a2cd1052dd4e643e9",
+    "experiments/v09r/weight_programmed_feedback_v202/model.py": "507d8b743d32afc296405d18cdc779d4ff558006a0b3069aa1d9351da597c88c"
+  },
+  "contract": {
+    "version": "V203 frozen independent-noise stress check",
+    "created_utc": "2026-11-09T16:32:18.511130+00:00",
+    "authority": "Necessary bounded validation of the currently requested general weight-program improvement; no new algorithm/weight changes.",
+    "checkpoint": "experiments/v09r/weight_programmed_feedback_v203/evidence/initial_written.pt",
+    "parameter_hash": "e4573c6f3c7f8487511829f5ba64850f9c42dab61aa15214dfb6baf5fdae8fb0",
+    "immutable_sources": [
+      "experiments/v09r/weight_programmed_feedback_v203/evidence/initial_written.pt",
+      "experiments/v09r/weight_programmed_feedback_v203/model.py",
+      "experiments/v09r/weight_programmed_feedback_v203/tasks.py",
+      "experiments/v09r/weight_programmed_feedback_v202/model.py"
+    ],
+    "families": [
+      "stochastic_stationary",
+      "stochastic_reversal"
+    ],
+    "variants": [
+      "v203_full",
+      "v203_global_gate",
+      "v203_no_gate"
+    ],
+    "noise_protocols": [
+      "paired",
+      "independent"
+    ],
+    "seeds": [
+      203101,
+      203102,
+      203103,
+      203104,
+      203105,
+      203106,
+      203107,
+      203108,
+      203109,
+      203110,
+      203111,
+      203112,
+      203113,
+      203114,
+      203115,
+      203116
+    ],
+    "cycles": 16,
+    "budget": {
+      "wall_seconds": 900,
+      "workers": 4,
+      "max_episodes": 110592,
+      "max_environment_transitions": 221184,
+      "per_seed_max_transitions": 6912
+    },
+    "new_parameters_written": 0,
+    "gradient_updates": 0,
+    "game_calls": 0,
+    "old_checks_or_old_matrix_runs": 0,
+    "comparison": "Fresh hidden task instances identical across protocols/variants; only trial outcome-noise coupling differs. Shared action tie tapes and paired heldout evaluation tapes. All costs counted; evaluation never updates memory.",
+    "preservation": "First attempt exclusive capture, no retry, all negatives retained, all earlier bytes immutable."
+  },
+  "attempt": 1
+}

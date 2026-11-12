@@ -1,0 +1,72 @@
+{
+  "schema": "rfl-v03r-prospective-measurement-amendment-draft-v1",
+  "prototype_id": "v03r-healthy-settling-retention-construct-draft-v1",
+  "status": "DRAFT_IMPLEMENTED_FOR_SEEDLESS_REVIEW_NOT_RATIFIED",
+  "parent_commit": "559f53be9a3f5be226e8757a2ddf5a0e4187afcd",
+  "parent_protocol_result": "NO_ADMISSIBLE_RETENTION",
+  "result_informed_motivation_disclosed": true,
+  "user_scope_authorization": "2026-10-08 human reply: 那就继续吧; permits measurement-contract design and implementation, not arbitrary threshold changes or new scientific collection",
+  "production_dispatch_changed": false,
+  "old_protocol_or_evidence_relabelled": false,
+  "ratified": false,
+  "scientific_execution_authorized": false,
+  "seed_sets_assigned": false,
+  "scientific_seed_sets": null,
+  "unchanged": {
+    "environment_horizon": 12,
+    "acquisition_cap": 576,
+    "initializer": "c3-temporal-layer-1-v1",
+    "alpha": "1/2",
+    "epsilon": "1/10",
+    "K": 3,
+    "epsilon_s": 0.001,
+    "epsilon_f": 0.1,
+    "recovery_fraction": 0.95,
+    "development_N": 32,
+    "smoke_N": 5,
+    "confirmatory_primary_N": 400,
+    "confirmatory_secondary_N": 200,
+    "N_eval_candidates": [100, 256, 512, 1024],
+    "master_bank_size": 1024,
+    "grid_error_limit": 0.05,
+    "retention_stability_limit": 0.10,
+    "retention_range_denominator_epsilon": 1e-9,
+    "retention_margin_multiplier": 0.25,
+    "zero_retention_spread": "inadmissible_no_imputation",
+    "rmst_benchmark_margin": 1.5,
+    "deficit_auc_margin": 0.01,
+    "maximum_spawn_workers": 16,
+    "serial_mutation_gates": true
+  },
+  "proposed_changes_requiring_exact_ratification": {
+    "f_T": {
+      "event": "first K=3 window whose levels are all >=0.95*v_pre and for which every remaining dense K-window through cap remains healthy and satisfies original slope/flip rule",
+      "followup_requirement": "at least K-1=2 observed episodes after the window-end event",
+      "population": "all original 32 fresh baseline seeds; dense episode axis 0..576",
+      "quantile": "nearest-rank ceil(0.90*32), preserving all censored seeds in denominator",
+      "T": "max(ceil(6*q/5),q+2)",
+      "late_anchors": ["q", "q+floor((T-q)/2)", "T"],
+      "censoring": "None; missing/corrupt axis is invalid, not censoring",
+      "stop": "fewer than rank=29 measurable times or T>unchanged cap; no extension or fallback"
+    },
+    "f_G": {
+      "templates": "same original coarse/medium/fine functions, each union the three shared late anchors",
+      "selection": "same worst-case utility error<=0.05; fewest checkpoints then original template order",
+      "reason": "ensure common absolute late window has at least K=3 observations"
+    },
+    "f_R": {
+      "forms": ["RetentionAtH", "LateWindowRetention"],
+      "parameters": {"RetentionAtH": "H=T", "LateWindowRetention": "H1=q,H2=T; checkpoint mean, not physical-time integral"},
+      "eligibility": "declared total all-seed estimator, deterministic construct-witness validation, stability<=unchanged0.10, positive unchanged0.25*population-SD margin",
+      "construct_witness": "fixed algebraic curves on the SAME selected grid, with equal restricted_time and exact analytic trapezoid area but unequal final/late Retention; never uses sampled outcomes",
+      "construct_roundoff_check": "absolute DeficitAUC tolerance 1e-12, relative tolerance0; exact equality additionally proved with rational arithmetic, not a scientific effect threshold",
+      "spearman": "report actual value or null with reason, diagnostic-only; explicitly replaces rev5 mandatory abs-correlation<=0.90 gate and ranking",
+      "ranking": "lower stability then unchanged form order",
+      "interpretation": "functional non-equivalence is not statistical independence, efficacy or practical-value proof"
+    }
+  },
+  "final_research_claim_unchanged": "learner-feasible L0 FutureUtility benefit AND no unacceptable Collateral AND Retention persistence/non-inferiority AND T-regime harm constraint; tiers matched and T/P not pooled",
+  "new_data_prerequisites": ["exact_contract_ratification", "production_instrument_integration_and_complete_schema_binding", "global_disjoint_seed_reservation", "bound_review_and_full_regression", "serial_mutation_gates_and_full_workload_timing", "new_committed_F0", "fresh_smoke_and_separate_evaluator", "fresh_development_and_atomic_full_F1", "separate_B2_collection_gate"],
+  "unimplemented": ["production_F0_F1_integration", "new_acquisition_authorization", "full_B2_collector_and_final_confirmatory_statistics"],
+  "old_data_use": "parent stop evidence only; no search for alternative windows or endpoints, no treatment effect estimation"
+}

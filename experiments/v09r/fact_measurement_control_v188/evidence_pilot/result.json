@@ -1,0 +1,1417 @@
+{
+  "exit": {
+    "status": "COMPLETE",
+    "exit_code": 0,
+    "utc": "2026-11-08T08:44:20.766269+00:00",
+    "error": null,
+    "cases": 4,
+    "wall_seconds": 241.06691130000036,
+    "pins_after": [
+      {
+        "path": "experiments/v09r/fact_measurement_control_v188/world.py",
+        "bytes": 11850,
+        "sha256": "b6c801eb9bca1830064ba723d4a5004dbcbb934582a84fb29c16f5ec7aa5e844"
+      },
+      {
+        "path": "experiments/v09r/fact_measurement_control_v188/learning.py",
+        "bytes": 26196,
+        "sha256": "337384d9f3de06b340d6fa5e2c2c5454b183c13d18af388f369e6b1423a242d1"
+      },
+      {
+        "path": "experiments/v09r/fact_measurement_control_v188/experiment.py",
+        "bytes": 16725,
+        "sha256": "15d7a039715d914abe42443e6f5f05f0625ce6c78e90c57f532c7db95dd10332"
+      },
+      {
+        "path": "experiments/v09r/fact_measurement_control_v188/contract.json",
+        "bytes": 3919,
+        "sha256": "35f48e3110ed87ad16cdcec95c64e5f089e3cb791f0cec4cb234d59ec4214660"
+      },
+      {
+        "path": "experiments/v09r/fact_measurement_control_v188/repairs.py",
+        "bytes": 1810,
+        "sha256": "ebddaebf055d148112db25f11c3f86d917f215ff2dc13c1bbe7c8c3c82e47efb"
+      },
+      {
+        "path": "experiments/v09r/fact_measurement_control_v188/pilot.py",
+        "bytes": 3865,
+        "sha256": "834ecbdd531a67486ef8afae9c9ca88351f7227e27e77ba3c4873f6f1ca788ca"
+      },
+      {
+        "path": "experiments/v09r/fact_measurement_control_v188/map_binding.json",
+        "bytes": 5458,
+        "sha256": "6a155e4b90018eddbe70a932d867c3746fa0e4bfbdc42a4127fd469c99cbdca9"
+      },
+      {
+        "path": "experiments/v09r/fact_measurement_control_v188/pure_check_result.json",
+        "bytes": 598,
+        "sha256": "171c8920bb8ebc68b6509a1da20d715e2de33dbd4c54211e901261c2854e970f"
+      },
+      {
+        "path": "experiments/v09r/fact_measurement_control_v188/control_binding.json",
+        "bytes": 13500,
+        "sha256": "1950254b9e8209a34167997029951afe288d061019f1a0c7d70ee364bdd46d5e"
+      },
+      {
+        "path": "experiments/v09r/fact_measurement_control_v188/future_facts.py",
+        "bytes": 2127,
+        "sha256": "7e4c8380a41d961dc00c44ad5f3f994188c83f19880a86641df182a67936ff03"
+      }
+    ],
+    "inputs_unchanged": true
+  },
+  "cases": [
+    {
+      "status": "COMPLETE",
+      "seed": 93004,
+      "arm": "F0",
+      "phase": "fact_measurement_control",
+      "stage_override": null,
+      "training_steps": 131072,
+      "completed_training_episodes": 5272,
+      "partial_training_episode_steps": 33,
+      "source_instances": 5913,
+      "source_uniform_draws": 12109824,
+      "record_count": 144298,
+      "record_payload_sha256": "5f2e1aa038e70a0967fd0c76a63b2528603218d6d336da3ebc22d87b73c6fb92",
+      "record_bytes": 60,
+      "initial_parameter_hash": "615399160163fa297cd05edd8b06df2369f6756ed849d3605c99d0889c7cce8b",
+      "final_parameter_hash": "3c30883b2a7f1585b5eab3eb3139dc79f58bacefe9f424ab477dc4f0214f3044",
+      "initial_parameter_parts": {
+        "core": "b0d4cb091b600e03557188f2c076735e95a38f103ae1fc6275a82525404e10e0",
+        "facts": "08a241fc0302064bb22c0e98559f4d5ddb6ba2500d3dcab9bb7e719204e432aa",
+        "measurements": "17f4e32a1644a1807eb75e47f930422ad2b5d226b5b9d60a71f62f72d0f94b51"
+      },
+      "final_parameter_parts": {
+        "core": "6122104943c25afd9bdaa64c038fe2453afdeba4fc0685334b4386079b2307eb",
+        "facts": "f2f6e4bce2febfa30652195660af1bec0f6c77c257d47d49b335ab8490299b11",
+        "measurements": "8c734613d17e545f938b911aeef32a9e1e57fe25bb67efcabee61b23b2240df7"
+      },
+      "counters": {
+        "policy": 131072,
+        "retrieval": 16453,
+        "retrieved_records": 131624,
+        "model_edges": 1201192,
+        "head_evaluations": 3603576,
+        "deep_H4": 0,
+        "deep_H8": 0,
+        "Q_updates": 0,
+        "fact_updates": 1009,
+        "real_replay_labels": 258304,
+        "reward_packets": 0,
+        "factual_mse_sum": 3725.1451801920193,
+        "factual_brier_sum": 5874.24284585896,
+        "factual_predictions": 131072,
+        "factual_action_changes": 71188,
+        "bootstrap_selected_0": 184639,
+        "bootstrap_selected_1": 185646,
+        "bootstrap_selected_2": 184274,
+        "bootstrap_positions": 258304,
+        "transition_weight": 531167.0,
+        "transition_model_mse_sum": 547.0740518197417,
+        "transition_identity_mse_sum": 586.403124329634,
+        "transition_value_loss_sum": 0.0,
+        "measurement_updates": 1009,
+        "measurement_label_windows": 524237,
+        "measurement_train_windows": 2217804,
+        "measurement_loss_sum": 63.0741380979307,
+        "measurement_head_evaluations": 393216,
+        "measurement_action_predictions": 3603576
+      },
+      "evaluations": [
+        {
+          "episodes": 128,
+          "steps": 2857,
+          "parameter_hash": "615399160163fa297cd05edd8b06df2369f6756ed849d3605c99d0889c7cce8b",
+          "counters": {
+            "policy": 2857,
+            "retrieval": 0,
+            "retrieved_records": 0,
+            "model_edges": 45712,
+            "head_evaluations": 137136,
+            "deep_H4": 0,
+            "deep_H8": 0,
+            "Q_updates": 0,
+            "fact_updates": 0,
+            "real_replay_labels": 0,
+            "reward_packets": 0,
+            "factual_mse_sum": 0.0,
+            "factual_brier_sum": 0.0,
+            "factual_predictions": 0,
+            "factual_action_changes": 0,
+            "bootstrap_selected_0": 0,
+            "bootstrap_selected_1": 0,
+            "bootstrap_selected_2": 0,
+            "bootstrap_positions": 0,
+            "transition_weight": 0.0,
+            "transition_model_mse_sum": 0.0,
+            "transition_identity_mse_sum": 0.0,
+            "transition_value_loss_sum": 0.0,
+            "measurement_updates": 0,
+            "measurement_label_windows": 0,
+            "measurement_train_windows": 0,
+            "measurement_loss_sum": 0.0,
+            "measurement_head_evaluations": 8571,
+            "measurement_action_predictions": 137136
+          },
+          "ablation": null,
+          "checkpoint": 0,
+          "mean_score": 36.60546875,
+          "mean_survival": 22.3203125,
+          "prediction_audit": {
+            "outcomes": 2857,
+            "capture_brier_sum": 712.5842615476262,
+            "pickup_mse_sum": 1298.8280381411353,
+            "successors": 2729,
+            "model_mse_sum": 0.33314683907337894,
+            "identity_mse_sum": 0.26052887255599266,
+            "successor_Q_MAE_sum": 0.0
+          }
+        },
+        {
+          "episodes": 128,
+          "steps": 2253,
+          "parameter_hash": "468d108d3f8d02dfa924c2f9bb73dd548b2401bdd9e29bda1771644e2bab00f3",
+          "counters": {
+            "policy": 2253,
+            "retrieval": 338,
+            "retrieved_records": 2704,
+            "model_edges": 36048,
+            "head_evaluations": 108144,
+            "deep_H4": 0,
+            "deep_H8": 0,
+            "Q_updates": 0,
+            "fact_updates": 0,
+            "real_replay_labels": 0,
+            "reward_packets": 0,
+            "factual_mse_sum": 0.0,
+            "factual_brier_sum": 0.0,
+            "factual_predictions": 0,
+            "factual_action_changes": 2253,
+            "bootstrap_selected_0": 0,
+            "bootstrap_selected_1": 0,
+            "bootstrap_selected_2": 0,
+            "bootstrap_positions": 0,
+            "transition_weight": 0.0,
+            "transition_model_mse_sum": 0.0,
+            "transition_identity_mse_sum": 0.0,
+            "transition_value_loss_sum": 0.0,
+            "measurement_updates": 0,
+            "measurement_label_windows": 0,
+            "measurement_train_windows": 0,
+            "measurement_loss_sum": 0.0,
+            "measurement_head_evaluations": 6759,
+            "measurement_action_predictions": 108144
+          },
+          "ablation": null,
+          "checkpoint": 16384,
+          "mean_score": 27.96484375,
+          "mean_survival": 17.6015625,
+          "prediction_audit": {
+            "outcomes": 2253,
+            "capture_brier_sum": 121.12484160747402,
+            "pickup_mse_sum": 46.565206304272664,
+            "successors": 2125,
+            "model_mse_sum": 1.7984922735104192,
+            "identity_mse_sum": 2.1704995059183787,
+            "successor_Q_MAE_sum": 0.0
+          }
+        },
+        {
+          "episodes": 128,
+          "steps": 2891,
+          "parameter_hash": "665fed8d6e62e9e423a86fdcfd3407f0bf312c59b9192fd5d4f4fe97c3ff5346",
+          "counters": {
+            "policy": 2891,
+            "retrieval": 423,
+            "retrieved_records": 3384,
+            "model_edges": 24448,
+            "head_evaluations": 73344,
+            "deep_H4": 0,
+            "deep_H8": 0,
+            "Q_updates": 0,
+            "fact_updates": 0,
+            "real_replay_labels": 0,
+            "reward_packets": 0,
+            "factual_mse_sum": 0.0,
+            "factual_brier_sum": 0.0,
+            "factual_predictions": 0,
+            "factual_action_changes": 2891,
+            "bootstrap_selected_0": 0,
+            "bootstrap_selected_1": 0,
+            "bootstrap_selected_2": 0,
+            "bootstrap_positions": 0,
+            "transition_weight": 0.0,
+            "transition_model_mse_sum": 0.0,
+            "transition_identity_mse_sum": 0.0,
+            "transition_value_loss_sum": 0.0,
+            "measurement_updates": 0,
+            "measurement_label_windows": 0,
+            "measurement_train_windows": 0,
+            "measurement_loss_sum": 0.0,
+            "measurement_head_evaluations": 8673,
+            "measurement_action_predictions": 73344
+          },
+          "ablation": null,
+          "checkpoint": 65536,
+          "mean_score": 40.12890625,
+          "mean_survival": 22.5859375,
+          "prediction_audit": {
+            "outcomes": 2891,
+            "capture_brier_sum": 122.24063985939001,
+            "pickup_mse_sum": 14.237175112320607,
+            "successors": 2763,
+            "model_mse_sum": 1.056645467092494,
+            "identity_mse_sum": 1.2110231112632663,
+            "successor_Q_MAE_sum": 0.0
+          }
+        },
+        {
+          "episodes": 256,
+          "steps": 5225,
+          "parameter_hash": "3c30883b2a7f1585b5eab3eb3139dc79f58bacefe9f424ab477dc4f0214f3044",
+          "counters": {
+            "policy": 5225,
+            "retrieval": 768,
+            "retrieved_records": 6144,
+            "model_edges": 47904,
+            "head_evaluations": 143712,
+            "deep_H4": 0,
+            "deep_H8": 0,
+            "Q_updates": 0,
+            "fact_updates": 0,
+            "real_replay_labels": 0,
+            "reward_packets": 0,
+            "factual_mse_sum": 0.0,
+            "factual_brier_sum": 0.0,
+            "factual_predictions": 0,
+            "factual_action_changes": 5225,
+            "bootstrap_selected_0": 0,
+            "bootstrap_selected_1": 0,
+            "bootstrap_selected_2": 0,
+            "bootstrap_positions": 0,
+            "transition_weight": 0.0,
+            "transition_model_mse_sum": 0.0,
+            "transition_identity_mse_sum": 0.0,
+            "transition_value_loss_sum": 0.0,
+            "measurement_updates": 0,
+            "measurement_label_windows": 0,
+            "measurement_train_windows": 0,
+            "measurement_loss_sum": 0.0,
+            "measurement_head_evaluations": 15675,
+            "measurement_action_predictions": 143712
+          },
+          "ablation": null,
+          "checkpoint": 131072,
+          "mean_score": 35.302734375,
+          "mean_survival": 20.41015625,
+          "prediction_audit": {
+            "outcomes": 5225,
+            "capture_brier_sum": 231.7253573981257,
+            "pickup_mse_sum": 20.91317542195056,
+            "successors": 4969,
+            "model_mse_sum": 9.002645043678058,
+            "identity_mse_sum": 9.708805054074478,
+            "successor_Q_MAE_sum": 0.0
+          }
+        }
+      ],
+      "wall_seconds": 231.64310660000046,
+      "cpu_seconds": 220.765625,
+      "error": null,
+      "inputs_unchanged": true,
+      "future_labels": {
+        "records": 524237,
+        "payload_sha256": "f1837de7c8a3c8d894e9db9433353fb81d3a41ce32372724b880658fbeeb79d2",
+        "dtype": [
+          [
+            "uid",
+            "<i8"
+          ],
+          [
+            "horizon",
+            "|u1"
+          ],
+          [
+            "observed_at",
+            "<i8"
+          ],
+          [
+            "steps",
+            "<u2"
+          ],
+          [
+            "pickups",
+            "|u1"
+          ],
+          [
+            "terminal",
+            "|u1"
+          ],
+          [
+            "target_steps",
+            "<f4"
+          ],
+          [
+            "target_pickups",
+            "<f4"
+          ]
+        ]
+      },
+      "measurement_evaluation": {
+        "records": 13226,
+        "payload_sha256": "f3221dd7a3b6d5f8164e0253bcf74366e21b9ab6fb874e0de2c4f82526ec228c",
+        "dtype": [
+          [
+            "checkpoint",
+            "<i4"
+          ],
+          [
+            "episode",
+            "<i4"
+          ],
+          [
+            "step",
+            "<u2"
+          ],
+          [
+            "action",
+            "|u1"
+          ],
+          [
+            "prediction",
+            "<f4",
+            [
+              4,
+              2
+            ]
+          ],
+          [
+            "target",
+            "<f4",
+            [
+              4,
+              2
+            ]
+          ]
+        ]
+      },
+      "no_Q_or_target_net": true,
+      "parameters": 188342
+    },
+    {
+      "status": "COMPLETE",
+      "seed": 93001,
+      "arm": "F0",
+      "phase": "fact_measurement_control",
+      "stage_override": null,
+      "training_steps": 131072,
+      "completed_training_episodes": 5203,
+      "partial_training_episode_steps": 23,
+      "source_instances": 5844,
+      "source_uniform_draws": 11968512,
+      "record_count": 146247,
+      "record_payload_sha256": "a239c61bb1cc72a54181cae34754a84c393ab3ce820030030aad0cd04ecc183e",
+      "record_bytes": 60,
+      "initial_parameter_hash": "fc0434c65aa7fea44eba703339d7090c4ff639f59e137d16a7f5cd185359a940",
+      "final_parameter_hash": "fe2f184adba8eeb7ac5d896e95267f81fab7bea289895d0cff4b1755e7968747",
+      "initial_parameter_parts": {
+        "core": "3dc8faccfa6708b72bff5cf82beeb7a35a9b66694c91efe6088e2a3dcda47296",
+        "facts": "f8e536133f310098505545af93de821078d8c42279c79cdbe4f52edcb032e4ca",
+        "measurements": "17f4e32a1644a1807eb75e47f930422ad2b5d226b5b9d60a71f62f72d0f94b51"
+      },
+      "final_parameter_parts": {
+        "core": "75af6ec50322bbcdd61dee1344bd9f16ff9f158c1f105ebd2dffe8f7df010b0e",
+        "facts": "49d9fbc4ba33697011ce9c40791fc1cf93b9a76080d50dc2945634c66f92c84c",
+        "measurements": "d9f89004ade072be787f5da82c5e21b3ee566ca51c528cf5f06f881afa222dba"
+      },
+      "counters": {
+        "policy": 131072,
+        "retrieval": 16402,
+        "retrieved_records": 131216,
+        "model_edges": 1194152,
+        "head_evaluations": 3582456,
+        "deep_H4": 0,
+        "deep_H8": 0,
+        "Q_updates": 0,
+        "fact_updates": 1009,
+        "real_replay_labels": 258304,
+        "reward_packets": 0,
+        "factual_mse_sum": 3247.132245443907,
+        "factual_brier_sum": 5751.66044242273,
+        "factual_predictions": 131072,
+        "factual_action_changes": 78247,
+        "bootstrap_selected_0": 184676,
+        "bootstrap_selected_1": 183430,
+        "bootstrap_selected_2": 185180,
+        "bootstrap_positions": 258304,
+        "transition_weight": 529691.0,
+        "transition_model_mse_sum": 750.5591175351292,
+        "transition_identity_mse_sum": 784.4574030730873,
+        "transition_value_loss_sum": 0.0,
+        "measurement_updates": 1009,
+        "measurement_label_windows": 524247,
+        "measurement_train_windows": 2212657,
+        "measurement_loss_sum": 60.89371177041903,
+        "measurement_head_evaluations": 393216,
+        "measurement_action_predictions": 3582456
+      },
+      "evaluations": [
+        {
+          "episodes": 128,
+          "steps": 3177,
+          "parameter_hash": "fc0434c65aa7fea44eba703339d7090c4ff639f59e137d16a7f5cd185359a940",
+          "counters": {
+            "policy": 3177,
+            "retrieval": 0,
+            "retrieved_records": 0,
+            "model_edges": 50832,
+            "head_evaluations": 152496,
+            "deep_H4": 0,
+            "deep_H8": 0,
+            "Q_updates": 0,
+            "fact_updates": 0,
+            "real_replay_labels": 0,
+            "reward_packets": 0,
+            "factual_mse_sum": 0.0,
+            "factual_brier_sum": 0.0,
+            "factual_predictions": 0,
+            "factual_action_changes": 0,
+            "bootstrap_selected_0": 0,
+            "bootstrap_selected_1": 0,
+            "bootstrap_selected_2": 0,
+            "bootstrap_positions": 0,
+            "transition_weight": 0.0,
+            "transition_model_mse_sum": 0.0,
+            "transition_identity_mse_sum": 0.0,
+            "transition_value_loss_sum": 0.0,
+            "measurement_updates": 0,
+            "measurement_label_windows": 0,
+            "measurement_train_windows": 0,
+            "measurement_loss_sum": 0.0,
+            "measurement_head_evaluations": 9531,
+            "measurement_action_predictions": 152496
+          },
+          "ablation": null,
+          "checkpoint": 0,
+          "mean_score": 41.13671875,
+          "mean_survival": 24.8203125,
+          "prediction_audit": {
+            "outcomes": 3177,
+            "capture_brier_sum": 807.3175520182742,
+            "pickup_mse_sum": 1181.5726070636977,
+            "successors": 3049,
+            "model_mse_sum": 0.3177121670341876,
+            "identity_mse_sum": 0.23418902669829045,
+            "successor_Q_MAE_sum": 0.0
+          }
+        },
+        {
+          "episodes": 128,
+          "steps": 3028,
+          "parameter_hash": "f50ab1c14ccc3e64eb7bc0ca53502def2d75ab860708ff8e3e05cbd0315f8f3c",
+          "counters": {
+            "policy": 3028,
+            "retrieval": 441,
+            "retrieved_records": 3528,
+            "model_edges": 25528,
+            "head_evaluations": 76584,
+            "deep_H4": 0,
+            "deep_H8": 0,
+            "Q_updates": 0,
+            "fact_updates": 0,
+            "real_replay_labels": 0,
+            "reward_packets": 0,
+            "factual_mse_sum": 0.0,
+            "factual_brier_sum": 0.0,
+            "factual_predictions": 0,
+            "factual_action_changes": 3028,
+            "bootstrap_selected_0": 0,
+            "bootstrap_selected_1": 0,
+            "bootstrap_selected_2": 0,
+            "bootstrap_positions": 0,
+            "transition_weight": 0.0,
+            "transition_model_mse_sum": 0.0,
+            "transition_identity_mse_sum": 0.0,
+            "transition_value_loss_sum": 0.0,
+            "measurement_updates": 0,
+            "measurement_label_windows": 0,
+            "measurement_train_windows": 0,
+            "measurement_loss_sum": 0.0,
+            "measurement_head_evaluations": 9084,
+            "measurement_action_predictions": 76584
+          },
+          "ablation": null,
+          "checkpoint": 16384,
+          "mean_score": 39.390625,
+          "mean_survival": 23.65625,
+          "prediction_audit": {
+            "outcomes": 3028,
+            "capture_brier_sum": 122.47301028271357,
+            "pickup_mse_sum": 55.1003056709924,
+            "successors": 2900,
+            "model_mse_sum": 1.5373805584313232,
+            "identity_mse_sum": 1.7778954983264348,
+            "successor_Q_MAE_sum": 0.0
+          }
+        },
+        {
+          "episodes": 128,
+          "steps": 2422,
+          "parameter_hash": "458177dfedd19cacd202df5561bfc75e42dd61437aa6fb1519a5b66366719dc0",
+          "counters": {
+            "policy": 2422,
+            "retrieval": 365,
+            "retrieved_records": 2920,
+            "model_edges": 38752,
+            "head_evaluations": 116256,
+            "deep_H4": 0,
+            "deep_H8": 0,
+            "Q_updates": 0,
+            "fact_updates": 0,
+            "real_replay_labels": 0,
+            "reward_packets": 0,
+            "factual_mse_sum": 0.0,
+            "factual_brier_sum": 0.0,
+            "factual_predictions": 0,
+            "factual_action_changes": 2422,
+            "bootstrap_selected_0": 0,
+            "bootstrap_selected_1": 0,
+            "bootstrap_selected_2": 0,
+            "bootstrap_positions": 0,
+            "transition_weight": 0.0,
+            "transition_model_mse_sum": 0.0,
+            "transition_identity_mse_sum": 0.0,
+            "transition_value_loss_sum": 0.0,
+            "measurement_updates": 0,
+            "measurement_label_windows": 0,
+            "measurement_train_windows": 0,
+            "measurement_loss_sum": 0.0,
+            "measurement_head_evaluations": 7266,
+            "measurement_action_predictions": 116256
+          },
+          "ablation": null,
+          "checkpoint": 65536,
+          "mean_score": 29.9453125,
+          "mean_survival": 18.921875,
+          "prediction_audit": {
+            "outcomes": 2422,
+            "capture_brier_sum": 121.4527586484575,
+            "pickup_mse_sum": 7.445189984815593,
+            "successors": 2294,
+            "model_mse_sum": 1.7624032338535471,
+            "identity_mse_sum": 1.8590722617264221,
+            "successor_Q_MAE_sum": 0.0
+          }
+        },
+        {
+          "episodes": 256,
+          "steps": 6548,
+          "parameter_hash": "fe2f184adba8eeb7ac5d896e95267f81fab7bea289895d0cff4b1755e7968747",
+          "counters": {
+            "policy": 6548,
+            "retrieval": 934,
+            "retrieved_records": 7472,
+            "model_edges": 74656,
+            "head_evaluations": 223968,
+            "deep_H4": 0,
+            "deep_H8": 0,
+            "Q_updates": 0,
+            "fact_updates": 0,
+            "real_replay_labels": 0,
+            "reward_packets": 0,
+            "factual_mse_sum": 0.0,
+            "factual_brier_sum": 0.0,
+            "factual_predictions": 0,
+            "factual_action_changes": 6548,
+            "bootstrap_selected_0": 0,
+            "bootstrap_selected_1": 0,
+            "bootstrap_selected_2": 0,
+            "bootstrap_positions": 0,
+            "transition_weight": 0.0,
+            "transition_model_mse_sum": 0.0,
+            "transition_identity_mse_sum": 0.0,
+            "transition_value_loss_sum": 0.0,
+            "measurement_updates": 0,
+            "measurement_label_windows": 0,
+            "measurement_train_windows": 0,
+            "measurement_loss_sum": 0.0,
+            "measurement_head_evaluations": 19644,
+            "measurement_action_predictions": 223968
+          },
+          "ablation": null,
+          "checkpoint": 131072,
+          "mean_score": 41.4921875,
+          "mean_survival": 25.578125,
+          "prediction_audit": {
+            "outcomes": 6548,
+            "capture_brier_sum": 221.6312957005276,
+            "pickup_mse_sum": 16.674529779080927,
+            "successors": 6292,
+            "model_mse_sum": 20.555773726593543,
+            "identity_mse_sum": 21.714802011110383,
+            "successor_Q_MAE_sum": 0.0
+          }
+        }
+      ],
+      "wall_seconds": 234.11641130000135,
+      "cpu_seconds": 223.203125,
+      "error": null,
+      "inputs_unchanged": true,
+      "future_labels": {
+        "records": 524247,
+        "payload_sha256": "38c8ca7e681f0006112e152ae19def45f383601c9785732a58d0931f7d2fe76e",
+        "dtype": [
+          [
+            "uid",
+            "<i8"
+          ],
+          [
+            "horizon",
+            "|u1"
+          ],
+          [
+            "observed_at",
+            "<i8"
+          ],
+          [
+            "steps",
+            "<u2"
+          ],
+          [
+            "pickups",
+            "|u1"
+          ],
+          [
+            "terminal",
+            "|u1"
+          ],
+          [
+            "target_steps",
+            "<f4"
+          ],
+          [
+            "target_pickups",
+            "<f4"
+          ]
+        ]
+      },
+      "measurement_evaluation": {
+        "records": 15175,
+        "payload_sha256": "0063817cb1f7a5744ea6a26f93e4823b551d78939e002e945fded1074991749b",
+        "dtype": [
+          [
+            "checkpoint",
+            "<i4"
+          ],
+          [
+            "episode",
+            "<i4"
+          ],
+          [
+            "step",
+            "<u2"
+          ],
+          [
+            "action",
+            "|u1"
+          ],
+          [
+            "prediction",
+            "<f4",
+            [
+              4,
+              2
+            ]
+          ],
+          [
+            "target",
+            "<f4",
+            [
+              4,
+              2
+            ]
+          ]
+        ]
+      },
+      "no_Q_or_target_net": true,
+      "parameters": 188342
+    },
+    {
+      "status": "COMPLETE",
+      "seed": 93002,
+      "arm": "F0",
+      "phase": "fact_measurement_control",
+      "stage_override": null,
+      "training_steps": 131072,
+      "completed_training_episodes": 5032,
+      "partial_training_episode_steps": 20,
+      "source_instances": 5673,
+      "source_uniform_draws": 11618304,
+      "record_count": 147093,
+      "record_payload_sha256": "4489bf61bd7d85625ccc959a28410ce384f7e0e8e852b42ebcba5c95d3e85ec4",
+      "record_bytes": 60,
+      "initial_parameter_hash": "17c6a9b1377971496ddada3ff53f1eeb789c06501dfdc6406e4e9d02ac5f4ea5",
+      "final_parameter_hash": "26eb54bf202fe2b35e7a40c064912f493482e952b634f732e0134e06c9ff464d",
+      "initial_parameter_parts": {
+        "core": "e4320e91f60aedcb7bf14ccb9b4022e439b137005b56a0ceec56a3b558cbb8cc",
+        "facts": "b1b2d9c0ea827277c64bd455371c0f508fa37f1dd15d669fbbd63f4d8171ed68",
+        "measurements": "17f4e32a1644a1807eb75e47f930422ad2b5d226b5b9d60a71f62f72d0f94b51"
+      },
+      "final_parameter_parts": {
+        "core": "024726a186348df58f804d8bd054a0f63413eb56161d6c76674ae01a0ed0dc63",
+        "facts": "3b6b289aa851db32b3886fb0cd5bbc19265e802f3804b88119381a9dda9b0e62",
+        "measurements": "1dfa0529cc8c6589ffe2ee8c8d8b849943f37f951ce952c530a37047689852c1"
+      },
+      "counters": {
+        "policy": 131072,
+        "retrieval": 16383,
+        "retrieved_records": 131064,
+        "model_edges": 1178392,
+        "head_evaluations": 3535176,
+        "deep_H4": 0,
+        "deep_H8": 0,
+        "Q_updates": 0,
+        "fact_updates": 1009,
+        "real_replay_labels": 258304,
+        "reward_packets": 0,
+        "factual_mse_sum": 3681.317962429486,
+        "factual_brier_sum": 5635.716523802217,
+        "factual_predictions": 131072,
+        "factual_action_changes": 67931,
+        "bootstrap_selected_0": 184458,
+        "bootstrap_selected_1": 184757,
+        "bootstrap_selected_2": 184416,
+        "bootstrap_positions": 258304,
+        "transition_weight": 531533.0,
+        "transition_model_mse_sum": 530.014494528994,
+        "transition_identity_mse_sum": 565.0238017169759,
+        "transition_value_loss_sum": 0.0,
+        "measurement_updates": 1009,
+        "measurement_label_windows": 524250,
+        "measurement_train_windows": 2214192,
+        "measurement_loss_sum": 63.81294098729268,
+        "measurement_head_evaluations": 393216,
+        "measurement_action_predictions": 3535176
+      },
+      "evaluations": [
+        {
+          "episodes": 128,
+          "steps": 2893,
+          "parameter_hash": "17c6a9b1377971496ddada3ff53f1eeb789c06501dfdc6406e4e9d02ac5f4ea5",
+          "counters": {
+            "policy": 2893,
+            "retrieval": 0,
+            "retrieved_records": 0,
+            "model_edges": 46288,
+            "head_evaluations": 138864,
+            "deep_H4": 0,
+            "deep_H8": 0,
+            "Q_updates": 0,
+            "fact_updates": 0,
+            "real_replay_labels": 0,
+            "reward_packets": 0,
+            "factual_mse_sum": 0.0,
+            "factual_brier_sum": 0.0,
+            "factual_predictions": 0,
+            "factual_action_changes": 0,
+            "bootstrap_selected_0": 0,
+            "bootstrap_selected_1": 0,
+            "bootstrap_selected_2": 0,
+            "bootstrap_positions": 0,
+            "transition_weight": 0.0,
+            "transition_model_mse_sum": 0.0,
+            "transition_identity_mse_sum": 0.0,
+            "transition_value_loss_sum": 0.0,
+            "measurement_updates": 0,
+            "measurement_label_windows": 0,
+            "measurement_train_windows": 0,
+            "measurement_loss_sum": 0.0,
+            "measurement_head_evaluations": 8679,
+            "measurement_action_predictions": 138864
+          },
+          "ablation": null,
+          "checkpoint": 0,
+          "mean_score": 38.58984375,
+          "mean_survival": 22.6015625,
+          "prediction_audit": {
+            "outcomes": 2893,
+            "capture_brier_sum": 738.1517545326194,
+            "pickup_mse_sum": 1382.0254627283207,
+            "successors": 2765,
+            "model_mse_sum": 0.3475149602527381,
+            "identity_mse_sum": 0.22282791565836746,
+            "successor_Q_MAE_sum": 0.0
+          }
+        },
+        {
+          "episodes": 128,
+          "steps": 3234,
+          "parameter_hash": "9adfde7aeb5af9e54047fd13a9c1d3c3afee44138121a4cbe10f10c31d2cc09e",
+          "counters": {
+            "policy": 3234,
+            "retrieval": 476,
+            "retrieved_records": 3808,
+            "model_edges": 27248,
+            "head_evaluations": 81744,
+            "deep_H4": 0,
+            "deep_H8": 0,
+            "Q_updates": 0,
+            "fact_updates": 0,
+            "real_replay_labels": 0,
+            "reward_packets": 0,
+            "factual_mse_sum": 0.0,
+            "factual_brier_sum": 0.0,
+            "factual_predictions": 0,
+            "factual_action_changes": 172,
+            "bootstrap_selected_0": 0,
+            "bootstrap_selected_1": 0,
+            "bootstrap_selected_2": 0,
+            "bootstrap_positions": 0,
+            "transition_weight": 0.0,
+            "transition_model_mse_sum": 0.0,
+            "transition_identity_mse_sum": 0.0,
+            "transition_value_loss_sum": 0.0,
+            "measurement_updates": 0,
+            "measurement_label_windows": 0,
+            "measurement_train_windows": 0,
+            "measurement_loss_sum": 0.0,
+            "measurement_head_evaluations": 9702,
+            "measurement_action_predictions": 81744
+          },
+          "ablation": null,
+          "checkpoint": 16384,
+          "mean_score": 45.7109375,
+          "mean_survival": 25.265625,
+          "prediction_audit": {
+            "outcomes": 3234,
+            "capture_brier_sum": 122.67628115477785,
+            "pickup_mse_sum": 61.48961167177576,
+            "successors": 3106,
+            "model_mse_sum": 1.5490960816296138,
+            "identity_mse_sum": 1.893735797271547,
+            "successor_Q_MAE_sum": 0.0
+          }
+        },
+        {
+          "episodes": 128,
+          "steps": 2500,
+          "parameter_hash": "debff2810d0a87b2f512c36f3da3cf0c3bc532deff51146e05af9b01f83f3b82",
+          "counters": {
+            "policy": 2500,
+            "retrieval": 375,
+            "retrieved_records": 3000,
+            "model_edges": 22232,
+            "head_evaluations": 66696,
+            "deep_H4": 0,
+            "deep_H8": 0,
+            "Q_updates": 0,
+            "fact_updates": 0,
+            "real_replay_labels": 0,
+            "reward_packets": 0,
+            "factual_mse_sum": 0.0,
+            "factual_brier_sum": 0.0,
+            "factual_predictions": 0,
+            "factual_action_changes": 1548,
+            "bootstrap_selected_0": 0,
+            "bootstrap_selected_1": 0,
+            "bootstrap_selected_2": 0,
+            "bootstrap_positions": 0,
+            "transition_weight": 0.0,
+            "transition_model_mse_sum": 0.0,
+            "transition_identity_mse_sum": 0.0,
+            "transition_value_loss_sum": 0.0,
+            "measurement_updates": 0,
+            "measurement_label_windows": 0,
+            "measurement_train_windows": 0,
+            "measurement_loss_sum": 0.0,
+            "measurement_head_evaluations": 7500,
+            "measurement_action_predictions": 66696
+          },
+          "ablation": null,
+          "checkpoint": 65536,
+          "mean_score": 30.859375,
+          "mean_survival": 19.53125,
+          "prediction_audit": {
+            "outcomes": 2500,
+            "capture_brier_sum": 120.53230481605286,
+            "pickup_mse_sum": 7.640032713364175,
+            "successors": 2372,
+            "model_mse_sum": 2.238612575498337,
+            "identity_mse_sum": 2.486142340338893,
+            "successor_Q_MAE_sum": 0.0
+          }
+        },
+        {
+          "episodes": 256,
+          "steps": 7394,
+          "parameter_hash": "26eb54bf202fe2b35e7a40c064912f493482e952b634f732e0134e06c9ff464d",
+          "counters": {
+            "policy": 7394,
+            "retrieval": 1043,
+            "retrieved_records": 8344,
+            "model_edges": 83280,
+            "head_evaluations": 249840,
+            "deep_H4": 0,
+            "deep_H8": 0,
+            "Q_updates": 0,
+            "fact_updates": 0,
+            "real_replay_labels": 0,
+            "reward_packets": 0,
+            "factual_mse_sum": 0.0,
+            "factual_brier_sum": 0.0,
+            "factual_predictions": 0,
+            "factual_action_changes": 7394,
+            "bootstrap_selected_0": 0,
+            "bootstrap_selected_1": 0,
+            "bootstrap_selected_2": 0,
+            "bootstrap_positions": 0,
+            "transition_weight": 0.0,
+            "transition_model_mse_sum": 0.0,
+            "transition_identity_mse_sum": 0.0,
+            "transition_value_loss_sum": 0.0,
+            "measurement_updates": 0,
+            "measurement_label_windows": 0,
+            "measurement_train_windows": 0,
+            "measurement_loss_sum": 0.0,
+            "measurement_head_evaluations": 22182,
+            "measurement_action_predictions": 249840
+          },
+          "ablation": null,
+          "checkpoint": 131072,
+          "mean_score": 51.91796875,
+          "mean_survival": 28.8828125,
+          "prediction_audit": {
+            "outcomes": 7394,
+            "capture_brier_sum": 221.81496157706965,
+            "pickup_mse_sum": 32.10971773946994,
+            "successors": 7138,
+            "model_mse_sum": 13.552962617883168,
+            "identity_mse_sum": 14.237472283552034,
+            "successor_Q_MAE_sum": 0.0
+          }
+        }
+      ],
+      "wall_seconds": 235.6978091000001,
+      "cpu_seconds": 225.46875,
+      "error": null,
+      "inputs_unchanged": true,
+      "future_labels": {
+        "records": 524250,
+        "payload_sha256": "44c7bf44ae0db0bc4af4762fbc314d2dd18685262ea1716758b88e804ad7a34f",
+        "dtype": [
+          [
+            "uid",
+            "<i8"
+          ],
+          [
+            "horizon",
+            "|u1"
+          ],
+          [
+            "observed_at",
+            "<i8"
+          ],
+          [
+            "steps",
+            "<u2"
+          ],
+          [
+            "pickups",
+            "|u1"
+          ],
+          [
+            "terminal",
+            "|u1"
+          ],
+          [
+            "target_steps",
+            "<f4"
+          ],
+          [
+            "target_pickups",
+            "<f4"
+          ]
+        ]
+      },
+      "measurement_evaluation": {
+        "records": 16021,
+        "payload_sha256": "0e0ad3cc459a47f28d33bd97d41ea916b78594b7724641bf0241e6bcaae0028f",
+        "dtype": [
+          [
+            "checkpoint",
+            "<i4"
+          ],
+          [
+            "episode",
+            "<i4"
+          ],
+          [
+            "step",
+            "<u2"
+          ],
+          [
+            "action",
+            "|u1"
+          ],
+          [
+            "prediction",
+            "<f4",
+            [
+              4,
+              2
+            ]
+          ],
+          [
+            "target",
+            "<f4",
+            [
+              4,
+              2
+            ]
+          ]
+        ]
+      },
+      "no_Q_or_target_net": true,
+      "parameters": 188342
+    },
+    {
+      "status": "COMPLETE",
+      "seed": 93003,
+      "arm": "F0",
+      "phase": "fact_measurement_control",
+      "stage_override": null,
+      "training_steps": 131072,
+      "completed_training_episodes": 5345,
+      "partial_training_episode_steps": 50,
+      "source_instances": 5986,
+      "source_uniform_draws": 12259328,
+      "record_count": 147646,
+      "record_payload_sha256": "7ba8e6d6770174d5afe04c4e3ff93e4ec370c41866fc0290c3d1297f3d485a2a",
+      "record_bytes": 60,
+      "initial_parameter_hash": "318fdb07ab7ab79214dc7f8125aef316508584ef15f12bbbb13b1aaf520589da",
+      "final_parameter_hash": "9ae398cb589a73219b5bcd543db24ed4375e3aeb4bde4dfba858f7afde9c757e",
+      "initial_parameter_parts": {
+        "core": "05527cfe6ab917b4c5134f3e4c3c2568d9c13f0374fb3adbb6f56670e0f88cdc",
+        "facts": "cf71a78cb40723c0031b819c02713b6a69b1cfadc74607233bd83eb090375f66",
+        "measurements": "17f4e32a1644a1807eb75e47f930422ad2b5d226b5b9d60a71f62f72d0f94b51"
+      },
+      "final_parameter_parts": {
+        "core": "057abe549cf6744366f812877ec7829396cfbc5e9d3a7e1a7bd5281d142262dd",
+        "facts": "3fa719fca28a7ebe1c85e93ff845148876179fc1ae39d2b0745c78cfa43bc172",
+        "measurements": "52cb9cde1665dbb4d829d7cc53e41832d8ed7d05991a6582fd5267c7a55a8bb5"
+      },
+      "counters": {
+        "policy": 131072,
+        "retrieval": 16529,
+        "retrieved_records": 132232,
+        "model_edges": 1204256,
+        "head_evaluations": 3612768,
+        "deep_H4": 0,
+        "deep_H8": 0,
+        "Q_updates": 0,
+        "fact_updates": 1009,
+        "real_replay_labels": 258304,
+        "reward_packets": 0,
+        "factual_mse_sum": 3953.0141145219095,
+        "factual_brier_sum": 5933.7472193745125,
+        "factual_predictions": 131072,
+        "factual_action_changes": 72696,
+        "bootstrap_selected_0": 184159,
+        "bootstrap_selected_1": 184791,
+        "bootstrap_selected_2": 184237,
+        "bootstrap_positions": 258304,
+        "transition_weight": 530080.0,
+        "transition_model_mse_sum": 489.3352734199725,
+        "transition_identity_mse_sum": 508.6019773457665,
+        "transition_value_loss_sum": 0.0,
+        "measurement_updates": 1009,
+        "measurement_label_windows": 524220,
+        "measurement_train_windows": 2212338,
+        "measurement_loss_sum": 61.56390254199505,
+        "measurement_head_evaluations": 393216,
+        "measurement_action_predictions": 3612768
+      },
+      "evaluations": [
+        {
+          "episodes": 128,
+          "steps": 2922,
+          "parameter_hash": "318fdb07ab7ab79214dc7f8125aef316508584ef15f12bbbb13b1aaf520589da",
+          "counters": {
+            "policy": 2922,
+            "retrieval": 0,
+            "retrieved_records": 0,
+            "model_edges": 46752,
+            "head_evaluations": 140256,
+            "deep_H4": 0,
+            "deep_H8": 0,
+            "Q_updates": 0,
+            "fact_updates": 0,
+            "real_replay_labels": 0,
+            "reward_packets": 0,
+            "factual_mse_sum": 0.0,
+            "factual_brier_sum": 0.0,
+            "factual_predictions": 0,
+            "factual_action_changes": 0,
+            "bootstrap_selected_0": 0,
+            "bootstrap_selected_1": 0,
+            "bootstrap_selected_2": 0,
+            "bootstrap_positions": 0,
+            "transition_weight": 0.0,
+            "transition_model_mse_sum": 0.0,
+            "transition_identity_mse_sum": 0.0,
+            "transition_value_loss_sum": 0.0,
+            "measurement_updates": 0,
+            "measurement_label_windows": 0,
+            "measurement_train_windows": 0,
+            "measurement_loss_sum": 0.0,
+            "measurement_head_evaluations": 8766,
+            "measurement_action_predictions": 140256
+          },
+          "ablation": null,
+          "checkpoint": 0,
+          "mean_score": 37.3671875,
+          "mean_survival": 22.828125,
+          "prediction_audit": {
+            "outcomes": 2922,
+            "capture_brier_sum": 731.477583108192,
+            "pickup_mse_sum": 1432.002085736299,
+            "successors": 2794,
+            "model_mse_sum": 0.31638917860800575,
+            "identity_mse_sum": 0.2351387445704347,
+            "successor_Q_MAE_sum": 0.0
+          }
+        },
+        {
+          "episodes": 128,
+          "steps": 3290,
+          "parameter_hash": "730a595ceba16013e9b2673e19ec5b80970295f03c1b18bacf0cddd33b2a6f3b",
+          "counters": {
+            "policy": 3290,
+            "retrieval": 473,
+            "retrieved_records": 3784,
+            "model_edges": 27688,
+            "head_evaluations": 83064,
+            "deep_H4": 0,
+            "deep_H8": 0,
+            "Q_updates": 0,
+            "fact_updates": 0,
+            "real_replay_labels": 0,
+            "reward_packets": 0,
+            "factual_mse_sum": 0.0,
+            "factual_brier_sum": 0.0,
+            "factual_predictions": 0,
+            "factual_action_changes": 3290,
+            "bootstrap_selected_0": 0,
+            "bootstrap_selected_1": 0,
+            "bootstrap_selected_2": 0,
+            "bootstrap_positions": 0,
+            "transition_weight": 0.0,
+            "transition_model_mse_sum": 0.0,
+            "transition_identity_mse_sum": 0.0,
+            "transition_value_loss_sum": 0.0,
+            "measurement_updates": 0,
+            "measurement_label_windows": 0,
+            "measurement_train_windows": 0,
+            "measurement_loss_sum": 0.0,
+            "measurement_head_evaluations": 9870,
+            "measurement_action_predictions": 83064
+          },
+          "ablation": null,
+          "checkpoint": 16384,
+          "mean_score": 43.2421875,
+          "mean_survival": 25.703125,
+          "prediction_audit": {
+            "outcomes": 3290,
+            "capture_brier_sum": 123.08928962213243,
+            "pickup_mse_sum": 57.58276916603276,
+            "successors": 3162,
+            "model_mse_sum": 0.8481411736702285,
+            "identity_mse_sum": 1.1094236798008361,
+            "successor_Q_MAE_sum": 0.0
+          }
+        },
+        {
+          "episodes": 128,
+          "steps": 3100,
+          "parameter_hash": "536095f285dbd01ad8f80cf20ab8191d0694656bb58dc1da1cb9525534f5229f",
+          "counters": {
+            "policy": 3100,
+            "retrieval": 455,
+            "retrieved_records": 3640,
+            "model_edges": 30360,
+            "head_evaluations": 91080,
+            "deep_H4": 0,
+            "deep_H8": 0,
+            "Q_updates": 0,
+            "fact_updates": 0,
+            "real_replay_labels": 0,
+            "reward_packets": 0,
+            "factual_mse_sum": 0.0,
+            "factual_brier_sum": 0.0,
+            "factual_predictions": 0,
+            "factual_action_changes": 3100,
+            "bootstrap_selected_0": 0,
+            "bootstrap_selected_1": 0,
+            "bootstrap_selected_2": 0,
+            "bootstrap_positions": 0,
+            "transition_weight": 0.0,
+            "transition_model_mse_sum": 0.0,
+            "transition_identity_mse_sum": 0.0,
+            "transition_value_loss_sum": 0.0,
+            "measurement_updates": 0,
+            "measurement_label_windows": 0,
+            "measurement_train_windows": 0,
+            "measurement_loss_sum": 0.0,
+            "measurement_head_evaluations": 9300,
+            "measurement_action_predictions": 91080
+          },
+          "ablation": null,
+          "checkpoint": 65536,
+          "mean_score": 39.453125,
+          "mean_survival": 24.21875,
+          "prediction_audit": {
+            "outcomes": 3100,
+            "capture_brier_sum": 122.54790167620286,
+            "pickup_mse_sum": 11.147339960646388,
+            "successors": 2972,
+            "model_mse_sum": 1.566664504884102,
+            "identity_mse_sum": 1.6357098427867731,
+            "successor_Q_MAE_sum": 0.0
+          }
+        },
+        {
+          "episodes": 256,
+          "steps": 7262,
+          "parameter_hash": "9ae398cb589a73219b5bcd543db24ed4375e3aeb4bde4dfba858f7afde9c757e",
+          "counters": {
+            "policy": 7262,
+            "retrieval": 1032,
+            "retrieved_records": 8256,
+            "model_edges": 66352,
+            "head_evaluations": 199056,
+            "deep_H4": 0,
+            "deep_H8": 0,
+            "Q_updates": 0,
+            "fact_updates": 0,
+            "real_replay_labels": 0,
+            "reward_packets": 0,
+            "factual_mse_sum": 0.0,
+            "factual_brier_sum": 0.0,
+            "factual_predictions": 0,
+            "factual_action_changes": 7261,
+            "bootstrap_selected_0": 0,
+            "bootstrap_selected_1": 0,
+            "bootstrap_selected_2": 0,
+            "bootstrap_positions": 0,
+            "transition_weight": 0.0,
+            "transition_model_mse_sum": 0.0,
+            "transition_identity_mse_sum": 0.0,
+            "transition_value_loss_sum": 0.0,
+            "measurement_updates": 0,
+            "measurement_label_windows": 0,
+            "measurement_train_windows": 0,
+            "measurement_loss_sum": 0.0,
+            "measurement_head_evaluations": 21786,
+            "measurement_action_predictions": 199056
+          },
+          "ablation": null,
+          "checkpoint": 131072,
+          "mean_score": 50.36328125,
+          "mean_survival": 28.3671875,
+          "prediction_audit": {
+            "outcomes": 7262,
+            "capture_brier_sum": 237.5177774199786,
+            "pickup_mse_sum": 28.549406710439253,
+            "successors": 7006,
+            "model_mse_sum": 10.546231710977736,
+            "identity_mse_sum": 10.805824441395679,
+            "successor_Q_MAE_sum": 0.0
+          }
+        }
+      ],
+      "wall_seconds": 235.93724800000018,
+      "cpu_seconds": 225.171875,
+      "error": null,
+      "inputs_unchanged": true,
+      "future_labels": {
+        "records": 524220,
+        "payload_sha256": "c05cf08422305d3b8a9311374abf3c6ba843c27b8dfdd19675b90c0454ef5a84",
+        "dtype": [
+          [
+            "uid",
+            "<i8"
+          ],
+          [
+            "horizon",
+            "|u1"
+          ],
+          [
+            "observed_at",
+            "<i8"
+          ],
+          [
+            "steps",
+            "<u2"
+          ],
+          [
+            "pickups",
+            "|u1"
+          ],
+          [
+            "terminal",
+            "|u1"
+          ],
+          [
+            "target_steps",
+            "<f4"
+          ],
+          [
+            "target_pickups",
+            "<f4"
+          ]
+        ]
+      },
+      "measurement_evaluation": {
+        "records": 16574,
+        "payload_sha256": "bc31e0a1ac9ba55953aaf71a767e7fade8d00ebfd070a151d65ecfe28a043550",
+        "dtype": [
+          [
+            "checkpoint",
+            "<i4"
+          ],
+          [
+            "episode",
+            "<i4"
+          ],
+          [
+            "step",
+            "<u2"
+          ],
+          [
+            "action",
+            "|u1"
+          ],
+          [
+            "prediction",
+            "<f4",
+            [
+              4,
+              2
+            ]
+          ],
+          [
+            "target",
+            "<f4",
+            [
+              4,
+              2
+            ]
+          ]
+        ]
+      },
+      "no_Q_or_target_net": true,
+      "parameters": 188342
+    }
+  ]
+}

@@ -1,0 +1,835 @@
+{
+  "schema": "rfl-a95-external-live-audit-v1",
+  "role": "EXTERNAL_LIVE_AUDIT_NOT_NATIVE_EXECUTION_RECEIPT",
+  "execution_level": "DEVELOPMENT32_NATIVE_0_ACQUIRED_F1_PLAN_FRESH_FULL_VALIDATION_RUNNING",
+  "observed_at_utc": "2026-10-08T23:30:58.0687699Z",
+  "root": "D:/强化反馈学习/RFL-CausalChase-v0.3-measurement-20261008",
+  "branch": "study/v03r-measurement-revision-20261008",
+  "instrument_commit": "fd4d4f52eb49274174e02db548a6b64cbf0663ba",
+  "current_head": "e3da58a005878d5b84142227d82d9ccc286a803b",
+  "milestones": {
+    "development_native_exit_code": 0,
+    "development_finished_at_utc": "2026-10-08T23:26:29.883762+00:00",
+    "development_native_receipt": "experiments/v03r/a95_measurement/pipeline/development32.receipt.json",
+    "f1_plan_started_at_utc": "2026-10-08T23:26:30.004306+00:00",
+    "development_acquisition_complete": true,
+    "development_full_semantic_validation_complete_at_observation": false,
+    "f1_plan_complete_at_observation": false,
+    "f1_complete_at_observation": false,
+    "research_complete": false,
+    "actual_plan_spawn_worker_count": 16
+  },
+  "source_binding": {
+    "sources": 309,
+    "sources_digest": "4d8a4bc3a0afc2c0335decafa559af44e2cd9028ccd3c4776189fc8c11dffd79",
+    "equal_frozen": true,
+    "sha256": {
+      "scripts/run_a95_pipeline.py": "e7da5b957d5638ba9cf9dbb7f5f0e6ec5ce25e076ba949e1492926247266915e",
+      "scripts/launch_a95_pipeline.ps1": "af45c8537d7d55ad394f29d6095834c92d86da503185e7a8970f7a42cb3992b0",
+      "experiments/v03r/a95_measurement/f0_manifest.json": "7050dedac3eb23ca1d6b84b2ddb63d510f5de54f4eff6c495845edac0601af1b",
+      "experiments/v03r/a95_measurement/smoke_report.json": "3a94014badcfe8b1804bfde79896575d5ddcebf4fc601fb376750b06288d99a1",
+      "experiments/v03r/a95_measurement/pipeline/pipeline_claim.json": "69d0a68c86a0eab9b034abcfe6ef24a93b50fabc657da2c57b161a54128a2ed3",
+      "experiments/v03r/a95_measurement/pipeline/frozen_inputs.json": "cd2de09d50dea508517a5cbc85b176c6a333b5ede604b178c9f48eb06d09f0db"
+    }
+  },
+  "authentication": {
+    "controller_complete_command_and_actual_ticks_match_claim": true,
+    "launcher_complete_command_and_actual_ticks_match_claim": true,
+    "plan_runner_command_and_parent_match_native_launch": true,
+    "spawn_workers_authenticated_by_complete_command_parent_and_actual_start_time": true,
+    "logs_progressed_since_earlier_live_read": true,
+    "independent_or_external_expert_review_performed": false
+  },
+  "audit_boundaries": [
+    "This file is an external observer snapshot, not a controller, stage or worker native receipt.",
+    "Native receipts are referenced and hashed, never synthesized or overwritten.",
+    "The 32 acquisition completion logs, native exit zero and declared index count establish acquisition completion, not a fresh whole-input validation PASS.",
+    "Compressed byte hashes below were read directly. Canonical JSONL hashes are descriptor declarations and were not recomputed by this observer; they are distinct hash domains.",
+    "The controller's fresh exhaustive 32-shard, 18464-record F1 plan validation is in progress; a partial progress prefix or file existence does not establish full validation.",
+    "All 309 frozen source/spec/test/control files match the frozen inventory at this stable boundary; no running code, protocol, scientific parameters or gate JSON was edited.",
+    "No second acquisition, duplicate validation job, test, gate, retry, seed replacement, power change, external publication or paid resource use was started."
+  ],
+  "native_receipts": [
+    {
+      "file": "add_A95-fresh-fully-verified-F0.receipt.json",
+      "native_exit_code": 0,
+      "started_at": "2026-10-09T04:26:16.130205+08:00",
+      "finished_at": "2026-10-09T04:26:16.277322+08:00",
+      "receipt_origin": "native_subprocess_wait",
+      "sha256": "c175aeb6beead9a79611cc758f8070a7a05b74f15ef3e66ab56831098f4bbf4a"
+    },
+    {
+      "file": "add_A95-source-bound-internal-acceptance.receipt.json",
+      "native_exit_code": 0,
+      "started_at": "2026-10-09T01:15:17.073087+08:00",
+      "finished_at": "2026-10-09T01:15:17.154711+08:00",
+      "receipt_origin": "native_subprocess_wait",
+      "sha256": "1a37280e53349bd22118259a594a9b7dad5832360c133a96840a63e330320fa3"
+    },
+    {
+      "file": "commit_A95-fresh-fully-verified-F0.receipt.json",
+      "native_exit_code": 0,
+      "started_at": "2026-10-09T04:26:16.282537+08:00",
+      "finished_at": "2026-10-09T04:26:16.409507+08:00",
+      "receipt_origin": "native_subprocess_wait",
+      "sha256": "f6f24c31d5bc0e11a7592a85ac9ef4c5c6c9b13e738106d69fbc5147641be91d"
+    },
+    {
+      "file": "commit_A95-source-bound-internal-acceptance.receipt.json",
+      "native_exit_code": 0,
+      "started_at": "2026-10-09T01:15:17.160289+08:00",
+      "finished_at": "2026-10-09T01:15:17.291257+08:00",
+      "receipt_origin": "native_subprocess_wait",
+      "sha256": "8f959256587d236e492e239804d1fcbe0700e3bf5b042955ba0e0be07bf913a8"
+    },
+    {
+      "file": "development32.receipt.json",
+      "native_exit_code": 0,
+      "started_at": "2026-10-09T05:18:27.941228+08:00",
+      "finished_at": "2026-10-09T07:26:29.883762+08:00",
+      "receipt_origin": "native_subprocess_wait",
+      "sha256": "567e5355ab0cb1629a9bf15c7d26ce8a6e786e633dc6f605e1e6accbc450170d"
+    },
+    {
+      "file": "formal_smoke.receipt.json",
+      "native_exit_code": 0,
+      "started_at": "2026-10-09T04:26:16.997939+08:00",
+      "finished_at": "2026-10-09T05:18:26.464396+08:00",
+      "receipt_origin": "native_subprocess_wait",
+      "sha256": "5625b3022405a45507220afc664d8300a944b067448a291a2bc9045d1385a107"
+    },
+    {
+      "file": "full_runtime.receipt.json",
+      "native_exit_code": 0,
+      "started_at": "2026-10-09T01:15:17.900319+08:00",
+      "finished_at": "2026-10-09T04:18:35.739568+08:00",
+      "receipt_origin": "native_subprocess_wait",
+      "sha256": "6fefeaa2cb07a71da3bc93a161f79ac5e11c900aaccb5573f7120089e58f6712"
+    },
+    {
+      "file": "independent_smoke_evaluator.receipt.json",
+      "native_exit_code": 0,
+      "started_at": "2026-10-09T05:18:26.47816+08:00",
+      "finished_at": "2026-10-09T05:18:27.108+08:00",
+      "receipt_origin": "native_subprocess_wait",
+      "sha256": "7d06b653ace77a8353b82f7bf7909c780d8ff4ca628a10890bfe265f8122f150"
+    },
+    {
+      "file": "runtime_full_verification.receipt.json",
+      "native_exit_code": 0,
+      "started_at": "2026-10-09T04:18:35.785566+08:00",
+      "finished_at": "2026-10-09T04:26:12.149496+08:00",
+      "receipt_origin": "native_subprocess_wait",
+      "sha256": "a56c7f30839c58d9f04db51cfbae6ea3bee447d9c2525eb9140cf0b9a9e6ac58"
+    }
+  ],
+  "development_completion_logs": [
+    {
+      "seed": 2026100910,
+      "pid": 25596,
+      "records": 577
+    },
+    {
+      "seed": 2026100922,
+      "pid": 36764,
+      "records": 577
+    },
+    {
+      "seed": 2026100914,
+      "pid": 9268,
+      "records": 577
+    },
+    {
+      "seed": 2026100918,
+      "pid": 26148,
+      "records": 577
+    },
+    {
+      "seed": 2026100912,
+      "pid": 37544,
+      "records": 577
+    },
+    {
+      "seed": 2026100923,
+      "pid": 34744,
+      "records": 577
+    },
+    {
+      "seed": 2026100915,
+      "pid": 22204,
+      "records": 577
+    },
+    {
+      "seed": 2026100920,
+      "pid": 29532,
+      "records": 577
+    },
+    {
+      "seed": 2026100919,
+      "pid": 29296,
+      "records": 577
+    },
+    {
+      "seed": 2026100924,
+      "pid": 22548,
+      "records": 577
+    },
+    {
+      "seed": 2026100911,
+      "pid": 23608,
+      "records": 577
+    },
+    {
+      "seed": 2026100925,
+      "pid": 35724,
+      "records": 577
+    },
+    {
+      "seed": 2026100921,
+      "pid": 4120,
+      "records": 577
+    },
+    {
+      "seed": 2026100917,
+      "pid": 28188,
+      "records": 577
+    },
+    {
+      "seed": 2026100916,
+      "pid": 1048,
+      "records": 577
+    },
+    {
+      "seed": 2026100913,
+      "pid": 26876,
+      "records": 577
+    },
+    {
+      "seed": 2026100927,
+      "pid": 36764,
+      "records": 577
+    },
+    {
+      "seed": 2026100926,
+      "pid": 25596,
+      "records": 577
+    },
+    {
+      "seed": 2026100931,
+      "pid": 34744,
+      "records": 577
+    },
+    {
+      "seed": 2026100930,
+      "pid": 37544,
+      "records": 577
+    },
+    {
+      "seed": 2026100932,
+      "pid": 22204,
+      "records": 577
+    },
+    {
+      "seed": 2026100929,
+      "pid": 26148,
+      "records": 577
+    },
+    {
+      "seed": 2026100933,
+      "pid": 29532,
+      "records": 577
+    },
+    {
+      "seed": 2026100928,
+      "pid": 9268,
+      "records": 577
+    },
+    {
+      "seed": 2026100934,
+      "pid": 29296,
+      "records": 577
+    },
+    {
+      "seed": 2026100935,
+      "pid": 22548,
+      "records": 577
+    },
+    {
+      "seed": 2026100936,
+      "pid": 23608,
+      "records": 577
+    },
+    {
+      "seed": 2026100938,
+      "pid": 4120,
+      "records": 577
+    },
+    {
+      "seed": 2026100937,
+      "pid": 35724,
+      "records": 577
+    },
+    {
+      "seed": 2026100941,
+      "pid": 26876,
+      "records": 577
+    },
+    {
+      "seed": 2026100939,
+      "pid": 28188,
+      "records": 577
+    },
+    {
+      "seed": 2026100940,
+      "pid": 1048,
+      "records": 577
+    }
+  ],
+  "development_started_logs": 32,
+  "index": {
+    "schema": "f0-master-incidence-v1",
+    "role": "DEVELOPMENT_BASELINE",
+    "seeds": [
+      2026100910,
+      2026100911,
+      2026100912,
+      2026100913,
+      2026100914,
+      2026100915,
+      2026100916,
+      2026100917,
+      2026100918,
+      2026100919,
+      2026100920,
+      2026100921,
+      2026100922,
+      2026100923,
+      2026100924,
+      2026100925,
+      2026100926,
+      2026100927,
+      2026100928,
+      2026100929,
+      2026100930,
+      2026100931,
+      2026100932,
+      2026100933,
+      2026100934,
+      2026100935,
+      2026100936,
+      2026100937,
+      2026100938,
+      2026100939,
+      2026100940,
+      2026100941
+    ],
+    "episode_count": 577,
+    "first_episode": 0,
+    "last_episode": 576,
+    "records": 18464,
+    "pairs": 240959684,
+    "bank_size": 1024,
+    "shard_count": 32,
+    "sha256": "843751287eaf8021a850ea266ecfcb7d01ad80327d4cfba90f9995137ca7094f"
+  },
+  "preserved_compressed_shard_inventory": [
+    {
+      "seed": 2026100910,
+      "path": "dev_baseline/seed-2026100910.jsonl.gz",
+      "records": 577,
+      "pairs": 7483304,
+      "canonical_jsonl_sha256": "138401d76de29dc8e7a07d691d566b8a0ba692ac739af40e94552dcb71640127",
+      "compressed_sha256": "3c44fea08d9d9fefc353d2233dca845fd92a9cdc46c366dc3353d44a42933d74",
+      "compressed_bytes": 25688269
+    },
+    {
+      "seed": 2026100911,
+      "path": "dev_baseline/seed-2026100911.jsonl.gz",
+      "records": 577,
+      "pairs": 7536952,
+      "canonical_jsonl_sha256": "d7d2a4e3332be1780715d3bd1de3d7aec83b7e2941127c007465811faa04723b",
+      "compressed_sha256": "1a96a007396a4e82b66da463782279fcf9cf26bc60cfacfeba71a17933abca3c",
+      "compressed_bytes": 25674401
+    },
+    {
+      "seed": 2026100912,
+      "path": "dev_baseline/seed-2026100912.jsonl.gz",
+      "records": 577,
+      "pairs": 7522236,
+      "canonical_jsonl_sha256": "10ed5fa24f2707d6425b07083bc6f4dac9f17a9ef6b4314c3ceec03ea266303c",
+      "compressed_sha256": "02798396175deb8693cce0e41c24f0282264a8aa4e8f1fef74afc1e93cf9e210",
+      "compressed_bytes": 25729474
+    },
+    {
+      "seed": 2026100913,
+      "path": "dev_baseline/seed-2026100913.jsonl.gz",
+      "records": 577,
+      "pairs": 7584812,
+      "canonical_jsonl_sha256": "8b49c8339697aefef8037f2c4fabe390104ef0d1feb2d08f33504e33ede9235b",
+      "compressed_sha256": "bf472ca5eac28fdb524d2af65707627494bca54094da5c84e5ac2adda84163ac",
+      "compressed_bytes": 25729637
+    },
+    {
+      "seed": 2026100914,
+      "path": "dev_baseline/seed-2026100914.jsonl.gz",
+      "records": 577,
+      "pairs": 7479176,
+      "canonical_jsonl_sha256": "b1ec3cfb5cd550a0cc85c331eaec3d2318ad2f112888d41c0485a5acf9259824",
+      "compressed_sha256": "2eeca9764969cbab96572f88dcbb2776114bc0f7dc21f6af8da084ff1d229fe8",
+      "compressed_bytes": 25691784
+    },
+    {
+      "seed": 2026100915,
+      "path": "dev_baseline/seed-2026100915.jsonl.gz",
+      "records": 577,
+      "pairs": 7546376,
+      "canonical_jsonl_sha256": "b27ad84a52c9ea4ab97f9b32a9d8b731876dc14bd29a28a78fa78c095935cf4a",
+      "compressed_sha256": "a0b15488aa646070b48e1a44ff6dd01224458f0a15695416c99fc745dc51201d",
+      "compressed_bytes": 25714455
+    },
+    {
+      "seed": 2026100916,
+      "path": "dev_baseline/seed-2026100916.jsonl.gz",
+      "records": 577,
+      "pairs": 7584200,
+      "canonical_jsonl_sha256": "618fc14d3082ded60ee5147764f9380e2365cf9806f75c816039965a44d18d1e",
+      "compressed_sha256": "970857886e9e37f7cf490437645aa4752aa46454a61c2f158fd6189c1060fc87",
+      "compressed_bytes": 25727490
+    },
+    {
+      "seed": 2026100917,
+      "path": "dev_baseline/seed-2026100917.jsonl.gz",
+      "records": 577,
+      "pairs": 7555860,
+      "canonical_jsonl_sha256": "f3af63a99c48c86b0fd459c8d4c517461cd8042abb8722d75e9701c058e9eb10",
+      "compressed_sha256": "b0c4ab6d69412bc448cca528171cd8113819098cf4455c21ec148d649382362c",
+      "compressed_bytes": 25723807
+    },
+    {
+      "seed": 2026100918,
+      "path": "dev_baseline/seed-2026100918.jsonl.gz",
+      "records": 577,
+      "pairs": 7465868,
+      "canonical_jsonl_sha256": "066b1c22bd3a888d9df3e47129207bde01609533b9d368a87169dfdb61538521",
+      "compressed_sha256": "c642839eb2da50e14406838320f66777469bc0671a7918762d286f372c4c23be",
+      "compressed_bytes": 25665661
+    },
+    {
+      "seed": 2026100919,
+      "path": "dev_baseline/seed-2026100919.jsonl.gz",
+      "records": 577,
+      "pairs": 7493220,
+      "canonical_jsonl_sha256": "f537209be5080438ee39c4d8ffe799c5434c9894f30c39cb5f695dc83a76c3ca",
+      "compressed_sha256": "7659310ab0155e82b5d8bd3204ca1bdb8a486a692cd53986d5c16ea8c76ec7ba",
+      "compressed_bytes": 25722294
+    },
+    {
+      "seed": 2026100920,
+      "path": "dev_baseline/seed-2026100920.jsonl.gz",
+      "records": 577,
+      "pairs": 7575224,
+      "canonical_jsonl_sha256": "75c4941fe3a579aa64b14c189b8797b9324b0917d4a387fbe8d74680d4334d95",
+      "compressed_sha256": "cd72f38b76fb798b19300067e7ba5637d1be5185b1ab305e07e67e34cddc5054",
+      "compressed_bytes": 25785968
+    },
+    {
+      "seed": 2026100921,
+      "path": "dev_baseline/seed-2026100921.jsonl.gz",
+      "records": 577,
+      "pairs": 7554548,
+      "canonical_jsonl_sha256": "e477723526f271a967e62ad8c0126ec71d8060d64c7b879ff73d6cf95388d2a0",
+      "compressed_sha256": "76d503d2e41cd93ae7712777ed4094a9b287f4190404f38c736b7f7ae5f45271",
+      "compressed_bytes": 25807792
+    },
+    {
+      "seed": 2026100922,
+      "path": "dev_baseline/seed-2026100922.jsonl.gz",
+      "records": 577,
+      "pairs": 7496460,
+      "canonical_jsonl_sha256": "5eaa4eecd77b1a0cc5356c615787777322bdf3fef275c3e7e764688c53286dda",
+      "compressed_sha256": "16af6f922fc67ce5833a95284b8b2f61545a1eec5034ae4205b3819a2f2261ac",
+      "compressed_bytes": 25652233
+    },
+    {
+      "seed": 2026100923,
+      "path": "dev_baseline/seed-2026100923.jsonl.gz",
+      "records": 577,
+      "pairs": 7511952,
+      "canonical_jsonl_sha256": "34f3865c1038cf4790468c68926724cb2682651076d5937c71759bb10c875ea5",
+      "compressed_sha256": "f14544e0822ba0856905270d0de45c51b0771635c8872ebe31e56887bc0858d7",
+      "compressed_bytes": 25710718
+    },
+    {
+      "seed": 2026100924,
+      "path": "dev_baseline/seed-2026100924.jsonl.gz",
+      "records": 577,
+      "pairs": 7514392,
+      "canonical_jsonl_sha256": "2ec018357fc89d5daf972e52e83d53712dbfe6e687914c16c4dc9360ea53ccad",
+      "compressed_sha256": "36297f1d0deac9550d43d06f890d6057b181a34dfd0442382beb33b10f6c7314",
+      "compressed_bytes": 25710628
+    },
+    {
+      "seed": 2026100925,
+      "path": "dev_baseline/seed-2026100925.jsonl.gz",
+      "records": 577,
+      "pairs": 7509872,
+      "canonical_jsonl_sha256": "15061c98fe188d69cdca8b02bb784c0a91fe401075bc8e1e513f371bf937854b",
+      "compressed_sha256": "7d83cd0ec0b5852eeb0bbdaeb5b60c383ee002d0a03d68aaf7390c0c2ffb1b52",
+      "compressed_bytes": 25663795
+    },
+    {
+      "seed": 2026100926,
+      "path": "dev_baseline/seed-2026100926.jsonl.gz",
+      "records": 577,
+      "pairs": 7537856,
+      "canonical_jsonl_sha256": "048b89c7e487c303c17ba76a8e8e29912d4645022a7146f5d71c555b976cb3b8",
+      "compressed_sha256": "6f2ecfe7b1f5a1f85972746f604e9c455753658da0f4c6ed4e1bf1beb7bbea51",
+      "compressed_bytes": 25736518
+    },
+    {
+      "seed": 2026100927,
+      "path": "dev_baseline/seed-2026100927.jsonl.gz",
+      "records": 577,
+      "pairs": 7554044,
+      "canonical_jsonl_sha256": "4c28757ab6956e57355822acfa3f4433d7716663604040105149d3883e4c63f7",
+      "compressed_sha256": "26ef6f70d9af83a53870e24f0318e93542d9ea64139a55b8d7d8ec3f959a2b57",
+      "compressed_bytes": 25715983
+    },
+    {
+      "seed": 2026100928,
+      "path": "dev_baseline/seed-2026100928.jsonl.gz",
+      "records": 577,
+      "pairs": 7606288,
+      "canonical_jsonl_sha256": "79d6230145d49f4204ab94ef0db199f215864534cc2c26017162819eca6c9418",
+      "compressed_sha256": "a62769449af63705d5ad6ed58d336ebbc0a2364d57d023a18e855e8204a1242c",
+      "compressed_bytes": 25766857
+    },
+    {
+      "seed": 2026100929,
+      "path": "dev_baseline/seed-2026100929.jsonl.gz",
+      "records": 577,
+      "pairs": 7491468,
+      "canonical_jsonl_sha256": "4af3a2031e50ece9e35bfcde067b94f1c93bf8e73e5f154ca46e254da6066d5b",
+      "compressed_sha256": "3064cfb687c4f5ebd6defcd696679c44fd0f72d6d00bcbcfb93249e013093d01",
+      "compressed_bytes": 25718022
+    },
+    {
+      "seed": 2026100930,
+      "path": "dev_baseline/seed-2026100930.jsonl.gz",
+      "records": 577,
+      "pairs": 7548596,
+      "canonical_jsonl_sha256": "ae85f1930ac241cf1c02adf2cbe9a43b4cfb1441e877f9eafbe31c0afdbe2f65",
+      "compressed_sha256": "8eb9553109d9f25ce0bea3586a4480633f5c9dd820a0a47e6de2b92ac56e36eb",
+      "compressed_bytes": 25661808
+    },
+    {
+      "seed": 2026100931,
+      "path": "dev_baseline/seed-2026100931.jsonl.gz",
+      "records": 577,
+      "pairs": 7498364,
+      "canonical_jsonl_sha256": "6df3ace6c1d3799913e738295964461ba96f2a6cd278d8c78ea36373967d7dc8",
+      "compressed_sha256": "8f20a83be3898eebba58b00a1d8f6d5bfad866ecfff39bda7642c1c482258ba2",
+      "compressed_bytes": 25654430
+    },
+    {
+      "seed": 2026100932,
+      "path": "dev_baseline/seed-2026100932.jsonl.gz",
+      "records": 577,
+      "pairs": 7550684,
+      "canonical_jsonl_sha256": "576cdab5e43b93ba17479c4ccf20da7a97cc7b3a563f36a114a24c8656d06c83",
+      "compressed_sha256": "d243f5b1b0bb15e397ccd27bef94700f3a79e7d3c1bf6a899ccd9e905240416c",
+      "compressed_bytes": 25712981
+    },
+    {
+      "seed": 2026100933,
+      "path": "dev_baseline/seed-2026100933.jsonl.gz",
+      "records": 577,
+      "pairs": 7552928,
+      "canonical_jsonl_sha256": "acca1724c1f8b629f52f4baa9ce6f05f767e2103e829bf2a033eb67efa0c2c54",
+      "compressed_sha256": "8964fb9cabd9856757e44723f75e290f0969aea85cf3af982002b916be1633ca",
+      "compressed_bytes": 25718116
+    },
+    {
+      "seed": 2026100934,
+      "path": "dev_baseline/seed-2026100934.jsonl.gz",
+      "records": 577,
+      "pairs": 7518284,
+      "canonical_jsonl_sha256": "b4a79a15aef07097868a157f7c73892591f69656f76af16df05b16fbec0d9c59",
+      "compressed_sha256": "beee6b026a3e2c664e2f20d3836afb536b993345b00ded238c0dabb33bf1ea79",
+      "compressed_bytes": 25692956
+    },
+    {
+      "seed": 2026100935,
+      "path": "dev_baseline/seed-2026100935.jsonl.gz",
+      "records": 577,
+      "pairs": 7531124,
+      "canonical_jsonl_sha256": "523c8f24b5cf882e26ec511f3c6807d8861323d4bafb350ca9c4eedbef6dd5cf",
+      "compressed_sha256": "3b9843334998cf9ed6ff76ae5c8a2287a6157bd70d1f3c506210a7759fda56a2",
+      "compressed_bytes": 25710584
+    },
+    {
+      "seed": 2026100936,
+      "path": "dev_baseline/seed-2026100936.jsonl.gz",
+      "records": 577,
+      "pairs": 7465832,
+      "canonical_jsonl_sha256": "052e6b94f1509775ca0d26611816ffcecc061cf7751f3183ca6a5dd2992adac4",
+      "compressed_sha256": "d432d37de72260fa445d7602e5b8db287d491c6568d91ad6517cd92ed373ac4d",
+      "compressed_bytes": 25677435
+    },
+    {
+      "seed": 2026100937,
+      "path": "dev_baseline/seed-2026100937.jsonl.gz",
+      "records": 577,
+      "pairs": 7550436,
+      "canonical_jsonl_sha256": "ae10658249c78aecc67d7c228202953227fad2ac795d9ff16fa5e494ef4ed109",
+      "compressed_sha256": "ef173d685df34e3361c4c27b843ef44c18665187d4c0f16d5985823c593e9832",
+      "compressed_bytes": 25727416
+    },
+    {
+      "seed": 2026100938,
+      "path": "dev_baseline/seed-2026100938.jsonl.gz",
+      "records": 577,
+      "pairs": 7540600,
+      "canonical_jsonl_sha256": "d35882720d92664e834968b58f0ba343c4ac263c18b42c002715a4069c1fc364",
+      "compressed_sha256": "01ea1b8b0160ed5ebcb6558bc5f66742a6f70ff96c9f6eec71c4aa27c9f42679",
+      "compressed_bytes": 25705998
+    },
+    {
+      "seed": 2026100939,
+      "path": "dev_baseline/seed-2026100939.jsonl.gz",
+      "records": 577,
+      "pairs": 7562900,
+      "canonical_jsonl_sha256": "945b4b1965ef69e47b0e452444352c63ec63b40d3b001624df16a02f19e4186d",
+      "compressed_sha256": "96830aba62950c3ac5d182cd329dc7c0e84a6cecf09d389b33708c4d264cd42e",
+      "compressed_bytes": 25711564
+    },
+    {
+      "seed": 2026100940,
+      "path": "dev_baseline/seed-2026100940.jsonl.gz",
+      "records": 577,
+      "pairs": 7502852,
+      "canonical_jsonl_sha256": "e629b3650181fdf9f2083c7f2dc9c732a5536f08a1561a5c98a3c723b1053ac1",
+      "compressed_sha256": "9e81f2fb533ea72481fffd07df2d14e45f81cc21749d9e1ea267fcdaec363b6a",
+      "compressed_bytes": 25675931
+    },
+    {
+      "seed": 2026100941,
+      "path": "dev_baseline/seed-2026100941.jsonl.gz",
+      "records": 577,
+      "pairs": 7532976,
+      "canonical_jsonl_sha256": "af4df43c40d10251f745aa9680285567afed3d666dd0a8a41af090caba8dc5f5",
+      "compressed_sha256": "86ef9ebe7e67891c10736c0145a0ae727a12e5fa8a981b9a2ec7e5b9b1c78993",
+      "compressed_bytes": 25699936
+    }
+  ],
+  "f1_plan_launch": {
+    "argv": [
+      "D:\\python\\python.exe",
+      "-u",
+      "-B",
+      "-X",
+      "utf8",
+      "scripts/run_dev_lock.py",
+      "--design",
+      "D:\\强化反馈学习\\RFL-CausalChase-v0.3-measurement-20261008\\experiments\\v03r\\a95_measurement\\dev_baseline.json",
+      "--plan"
+    ],
+    "automatic_retry": false,
+    "pid": 37388,
+    "role": "START_RECORD_NOT_COMPLETION",
+    "started_at": "2026-10-09T07:26:30.004306+08:00"
+  },
+  "actual_processes": [
+    {
+      "pid": 23516,
+      "parent_pid": 8032,
+      "command_line": "\"C:\\Users\\huani\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe\" -NoProfile -NonInteractive -WindowStyle Hidden -File \"D:\\强化反馈学习\\RFL-CausalChase-v0.3-measurement-20261008\\scripts\\launch_a95_pipeline.ps1\"",
+      "creation_utc": "2026-10-08T16:54:22.7165530Z",
+      "actual_start_utc": "2026-10-08T16:54:22.7165537Z",
+      "actual_start_utc_ticks": "639270752627165537",
+      "cpu_seconds": 5.609375
+    },
+    {
+      "pid": 26732,
+      "parent_pid": 23516,
+      "command_line": "\"D:\\python\\python.exe\" -u -B -X utf8 \"D:\\强化反馈学习\\RFL-CausalChase-v0.3-measurement-20261008\\scripts\\run_a95_pipeline.py\"",
+      "creation_utc": "2026-10-08T16:54:23.8521670Z",
+      "actual_start_utc": "2026-10-08T16:54:23.8521679Z",
+      "actual_start_utc_ticks": "639270752638521679",
+      "cpu_seconds": 5.71875
+    },
+    {
+      "pid": 37388,
+      "parent_pid": 26732,
+      "command_line": "D:\\python\\python.exe -u -B -X utf8 scripts/run_dev_lock.py --design D:\\强化反馈学习\\RFL-CausalChase-v0.3-measurement-20261008\\experiments\\v03r\\a95_measurement\\dev_baseline.json --plan",
+      "creation_utc": "2026-10-08T23:26:30.0063250Z",
+      "actual_start_utc": "2026-10-08T23:26:30.0063259Z",
+      "actual_start_utc_ticks": "639270987900063259",
+      "cpu_seconds": 1.34375
+    },
+    {
+      "pid": 4024,
+      "parent_pid": 37388,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=37388, pipe_handle=348)\" \"--multiprocessing-fork\"",
+      "creation_utc": "2026-10-08T23:26:32.5209130Z",
+      "actual_start_utc": "2026-10-08T23:26:32.5209136Z",
+      "actual_start_utc_ticks": "639270987925209136",
+      "cpu_seconds": 159.375
+    },
+    {
+      "pid": 16476,
+      "parent_pid": 37388,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=37388, pipe_handle=436)\" \"--multiprocessing-fork\"",
+      "creation_utc": "2026-10-08T23:26:32.5319790Z",
+      "actual_start_utc": "2026-10-08T23:26:32.5319790Z",
+      "actual_start_utc_ticks": "639270987925319790",
+      "cpu_seconds": 162.84375
+    },
+    {
+      "pid": 24588,
+      "parent_pid": 37388,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=37388, pipe_handle=440)\" \"--multiprocessing-fork\"",
+      "creation_utc": "2026-10-08T23:26:32.5394200Z",
+      "actual_start_utc": "2026-10-08T23:26:32.5394206Z",
+      "actual_start_utc_ticks": "639270987925394206",
+      "cpu_seconds": 157.8125
+    },
+    {
+      "pid": 34640,
+      "parent_pid": 37388,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=37388, pipe_handle=412)\" \"--multiprocessing-fork\"",
+      "creation_utc": "2026-10-08T23:26:32.5483410Z",
+      "actual_start_utc": "2026-10-08T23:26:32.5483413Z",
+      "actual_start_utc_ticks": "639270987925483413",
+      "cpu_seconds": 161.140625
+    },
+    {
+      "pid": 27876,
+      "parent_pid": 37388,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=37388, pipe_handle=528)\" \"--multiprocessing-fork\"",
+      "creation_utc": "2026-10-08T23:26:32.5580470Z",
+      "actual_start_utc": "2026-10-08T23:26:32.5580478Z",
+      "actual_start_utc_ticks": "639270987925580478",
+      "cpu_seconds": 159.921875
+    },
+    {
+      "pid": 2388,
+      "parent_pid": 37388,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=37388, pipe_handle=532)\" \"--multiprocessing-fork\"",
+      "creation_utc": "2026-10-08T23:26:32.5675180Z",
+      "actual_start_utc": "2026-10-08T23:26:32.5675181Z",
+      "actual_start_utc_ticks": "639270987925675181",
+      "cpu_seconds": 162.640625
+    },
+    {
+      "pid": 36208,
+      "parent_pid": 37388,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=37388, pipe_handle=584)\" \"--multiprocessing-fork\"",
+      "creation_utc": "2026-10-08T23:26:32.5754740Z",
+      "actual_start_utc": "2026-10-08T23:26:32.5754747Z",
+      "actual_start_utc_ticks": "639270987925754747",
+      "cpu_seconds": 161.109375
+    },
+    {
+      "pid": 7816,
+      "parent_pid": 37388,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=37388, pipe_handle=588)\" \"--multiprocessing-fork\"",
+      "creation_utc": "2026-10-08T23:26:32.5834500Z",
+      "actual_start_utc": "2026-10-08T23:26:32.5834501Z",
+      "actual_start_utc_ticks": "639270987925834501",
+      "cpu_seconds": 160.359375
+    },
+    {
+      "pid": 34224,
+      "parent_pid": 37388,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=37388, pipe_handle=596)\" \"--multiprocessing-fork\"",
+      "creation_utc": "2026-10-08T23:26:32.5910610Z",
+      "actual_start_utc": "2026-10-08T23:26:32.5910612Z",
+      "actual_start_utc_ticks": "639270987925910612",
+      "cpu_seconds": 160.140625
+    },
+    {
+      "pid": 26764,
+      "parent_pid": 37388,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=37388, pipe_handle=644)\" \"--multiprocessing-fork\"",
+      "creation_utc": "2026-10-08T23:26:32.6001270Z",
+      "actual_start_utc": "2026-10-08T23:26:32.6001278Z",
+      "actual_start_utc_ticks": "639270987926001278",
+      "cpu_seconds": 162.953125
+    },
+    {
+      "pid": 34988,
+      "parent_pid": 37388,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=37388, pipe_handle=368)\" \"--multiprocessing-fork\"",
+      "creation_utc": "2026-10-08T23:26:32.6084260Z",
+      "actual_start_utc": "2026-10-08T23:26:32.6084269Z",
+      "actual_start_utc_ticks": "639270987926084269",
+      "cpu_seconds": 162.078125
+    },
+    {
+      "pid": 30840,
+      "parent_pid": 37388,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=37388, pipe_handle=476)\" \"--multiprocessing-fork\"",
+      "creation_utc": "2026-10-08T23:26:32.6173810Z",
+      "actual_start_utc": "2026-10-08T23:26:32.6173814Z",
+      "actual_start_utc_ticks": "639270987926173814",
+      "cpu_seconds": 162.765625
+    },
+    {
+      "pid": 23228,
+      "parent_pid": 37388,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=37388, pipe_handle=724)\" \"--multiprocessing-fork\"",
+      "creation_utc": "2026-10-08T23:26:32.6254670Z",
+      "actual_start_utc": "2026-10-08T23:26:32.6254675Z",
+      "actual_start_utc_ticks": "639270987926254675",
+      "cpu_seconds": 159.046875
+    },
+    {
+      "pid": 25292,
+      "parent_pid": 37388,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=37388, pipe_handle=728)\" \"--multiprocessing-fork\"",
+      "creation_utc": "2026-10-08T23:26:32.6336650Z",
+      "actual_start_utc": "2026-10-08T23:26:32.6336657Z",
+      "actual_start_utc_ticks": "639270987926336657",
+      "cpu_seconds": 162.015625
+    },
+    {
+      "pid": 34276,
+      "parent_pid": 37388,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=37388, pipe_handle=772)\" \"--multiprocessing-fork\"",
+      "creation_utc": "2026-10-08T23:26:32.6430150Z",
+      "actual_start_utc": "2026-10-08T23:26:32.6430156Z",
+      "actual_start_utc_ticks": "639270987926430156",
+      "cpu_seconds": 161
+    },
+    {
+      "pid": 38212,
+      "parent_pid": 37388,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=37388, pipe_handle=804)\" \"--multiprocessing-fork\"",
+      "creation_utc": "2026-10-08T23:26:32.6527390Z",
+      "actual_start_utc": "2026-10-08T23:26:32.6527396Z",
+      "actual_start_utc_ticks": "639270987926527396",
+      "cpu_seconds": 161.765625
+    }
+  ],
+  "plan_progress": [
+    "VERIFY_PROGRESS seed=2026100931 pid=34988 records=100",
+    "VERIFY_PROGRESS seed=2026100929 pid=2388 records=100",
+    "VERIFY_PROGRESS seed=2026100932 pid=38212 records=100",
+    "VERIFY_PROGRESS seed=2026100930 pid=36208 records=100",
+    "VERIFY_PROGRESS seed=2026100933 pid=25292 records=100",
+    "VERIFY_PROGRESS seed=2026100937 pid=34640 records=100",
+    "VERIFY_PROGRESS seed=2026100935 pid=7816 records=100",
+    "VERIFY_PROGRESS seed=2026100934 pid=34224 records=100",
+    "VERIFY_PROGRESS seed=2026100936 pid=27876 records=100",
+    "VERIFY_PROGRESS seed=2026100938 pid=34276 records=100",
+    "VERIFY_PROGRESS seed=2026100940 pid=23228 records=100",
+    "VERIFY_PROGRESS seed=2026100939 pid=4024 records=100"
+  ],
+  "plan_native_completion_exists": false,
+  "plan_result_exists": false,
+  "f1_result_exists": false,
+  "pipeline_result_exists": false,
+  "pipeline_failure_exists": false,
+  "pipeline_exit_exists": false
+}

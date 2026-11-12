@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v04r\ordinary_extra_control_v142\audit_stored.py", line 298, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v04r\ordinary_extra_control_v142\audit_stored.py", line 140, in main
+    tag,p,ctx=r['tag'],r['payload'],r['context'];tags[tag]+=1;k=ctxkey(ctx);arm=ctx.get('arm');case=ctx.get('case')
+                                                                ^^^^^^^^^^^
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v04r\ordinary_extra_control_v142\audit_stored.py", line 104, in ctxkey
+    return (c['phase'],c['arm'],c.get('main_epoch'),c.get('extra_index'))
+            ~^^^^^^^^^
+KeyError: 'phase'

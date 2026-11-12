@@ -1,0 +1,94 @@
+{
+  "bootstrap": {
+    "status": "CONFIRMED_DECLARED_BOOTSTRAP_MASK_DEFECT",
+    "original_line": 386,
+    "original_expression": "torch.from_numpy((((starts[:, None] + np.arange(8, 24) + j * 17) * 1103515245 + 12345) % 7 < 5).astype(np.float32))",
+    "multiplier_mod7": 0,
+    "intercept_mod7": 4,
+    "threshold": 5,
+    "all_uid_count_each": 262144,
+    "selected_fraction_each": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "pairwise_mask_differences": [
+      0,
+      0,
+      0
+    ],
+    "maximum_int64_intermediate": 289316316400710,
+    "overflow": false,
+    "consequence": "Declared five-of-seven per-head sample masking is absent. Initial parameters still differ; this does not prove identical heads or quantify performance loss."
+  },
+  "retrieval_prior_example": {
+    "rows": [
+      {
+        "safe_record_count": 1,
+        "observed_capture_count": 0,
+        "assumed_model_capture": 0.03,
+        "empirical_with_prior": 0.3333333333333333,
+        "RP_capture_correction": -0.0337037037037037,
+        "R_capture_correction": 0.0
+      },
+      {
+        "safe_record_count": 2,
+        "observed_capture_count": 0,
+        "assumed_model_capture": 0.03,
+        "empirical_with_prior": 0.25,
+        "RP_capture_correction": -0.044000000000000004,
+        "R_capture_correction": 0.0
+      },
+      {
+        "safe_record_count": 3,
+        "observed_capture_count": 0,
+        "assumed_model_capture": 0.03,
+        "empirical_with_prior": 0.2,
+        "RP_capture_correction": -0.046363636363636364,
+        "R_capture_correction": 0.0
+      },
+      {
+        "safe_record_count": 4,
+        "observed_capture_count": 0,
+        "assumed_model_capture": 0.03,
+        "empirical_with_prior": 0.16666666666666666,
+        "RP_capture_correction": -0.04555555555555555,
+        "R_capture_correction": 0.0
+      },
+      {
+        "safe_record_count": 5,
+        "observed_capture_count": 0,
+        "assumed_model_capture": 0.03,
+        "empirical_with_prior": 0.14285714285714285,
+        "RP_capture_correction": -0.043406593406593405,
+        "R_capture_correction": 0.0
+      },
+      {
+        "safe_record_count": 6,
+        "observed_capture_count": 0,
+        "assumed_model_capture": 0.03,
+        "empirical_with_prior": 0.125,
+        "RP_capture_correction": -0.04071428571428571,
+        "R_capture_correction": 0.0
+      },
+      {
+        "safe_record_count": 7,
+        "observed_capture_count": 0,
+        "assumed_model_capture": 0.03,
+        "empirical_with_prior": 0.1111111111111111,
+        "RP_capture_correction": -0.03785185185185185,
+        "R_capture_correction": 0.0
+      },
+      {
+        "safe_record_count": 8,
+        "observed_capture_count": 0,
+        "assumed_model_capture": 0.03,
+        "empirical_with_prior": 0.1,
+        "RP_capture_correction": -0.035,
+        "R_capture_correction": 0.0
+      }
+    ],
+    "unsupported_action_correction": 0.0,
+    "interpretation": "Algebraic example only: all-safe support can lower RP action score because of pseudocount prior. Not a measured counterfactual policy effect."
+  }
+}

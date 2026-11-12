@@ -1,0 +1,542 @@
+{
+  "schema": "rfl-a95-read-only-closure-audit-v1",
+  "role": "EXTERNAL_CLOSURE_AUDIT_NOT_NATIVE_EXECUTION_RECEIPT",
+  "audit_verdict": "PASS",
+  "observed_at": "2026-10-09T00:19:32.079841+00:00",
+  "root": "D:\\强化反馈学习\\RFL-CausalChase-v0.3-measurement-20261008",
+  "instrument_commit": "fd4d4f52eb49274174e02db548a6b64cbf0663ba",
+  "native_F1_evidence_commit": "2dd3afc5b10a8ffa30a9c122ca40502abbf2477a",
+  "source_count": 309,
+  "sources_digest": "4d8a4bc3a0afc2c0335decafa559af44e2cd9028ccd3c4776189fc8c11dffd79",
+  "native_stages": {
+    "full_runtime": {
+      "argv": [
+        "D:\\python\\python.exe",
+        "-u",
+        "-B",
+        "-X",
+        "utf8",
+        "scripts/benchmark_f0_runtime.py",
+        "--output-dir",
+        "D:\\强化反馈学习\\RFL-CausalChase-v0.3-measurement-20261008\\experiments\\v03r\\a95_measurement\\f0_runtime"
+      ],
+      "finished_at": "2026-10-08T20:18:35.739568+00:00",
+      "native_exit_code": 0,
+      "pid": 30804,
+      "receipt_origin": "native_subprocess_wait",
+      "started_at": "2026-10-08T17:15:17.900319+00:00"
+    },
+    "runtime_full_verification": {
+      "argv": [
+        "D:\\python\\python.exe",
+        "-u",
+        "-B",
+        "-X",
+        "utf8",
+        "scripts/verify_a95_baseline.py",
+        "--index",
+        "D:\\强化反馈学习\\RFL-CausalChase-v0.3-measurement-20261008\\experiments\\v03r\\a95_measurement\\f0_runtime\\baseline.json",
+        "--output",
+        "D:\\强化反馈学习\\RFL-CausalChase-v0.3-measurement-20261008\\experiments\\v03r\\a95_measurement\\pipeline\\runtime_verified.json"
+      ],
+      "finished_at": "2026-10-08T20:26:12.149496+00:00",
+      "native_exit_code": 0,
+      "pid": 30760,
+      "receipt_origin": "native_subprocess_wait",
+      "started_at": "2026-10-08T20:18:35.785566+00:00"
+    },
+    "formal_smoke": {
+      "argv": [
+        "D:\\python\\python.exe",
+        "-u",
+        "-B",
+        "-X",
+        "utf8",
+        "scripts/run_smoke.py",
+        "--seeds-file",
+        "D:\\强化反馈学习\\RFL-CausalChase-v0.3-measurement-20261008\\experiments\\v03r\\a95_measurement\\smoke_seeds.txt"
+      ],
+      "finished_at": "2026-10-08T21:18:26.464396+00:00",
+      "native_exit_code": 0,
+      "pid": 32604,
+      "receipt_origin": "native_subprocess_wait",
+      "started_at": "2026-10-08T20:26:16.997939+00:00"
+    },
+    "independent_smoke_evaluator": {
+      "argv": [
+        "D:\\python\\python.exe",
+        "-u",
+        "-B",
+        "-X",
+        "utf8",
+        "experiments/v03r/evaluate_smoke_gate.py"
+      ],
+      "finished_at": "2026-10-08T21:18:27.108000+00:00",
+      "native_exit_code": 0,
+      "pid": 38500,
+      "receipt_origin": "native_subprocess_wait",
+      "started_at": "2026-10-08T21:18:26.478160+00:00"
+    },
+    "development32": {
+      "argv": [
+        "D:\\python\\python.exe",
+        "-u",
+        "-B",
+        "-X",
+        "utf8",
+        "scripts/run_dev_baseline.py",
+        "--seeds-file",
+        "D:\\强化反馈学习\\RFL-CausalChase-v0.3-measurement-20261008\\experiments\\v03r\\a95_measurement\\dev_seeds.txt"
+      ],
+      "finished_at": "2026-10-08T23:26:29.883762+00:00",
+      "native_exit_code": 0,
+      "pid": 36076,
+      "receipt_origin": "native_subprocess_wait",
+      "started_at": "2026-10-08T21:18:27.941228+00:00"
+    },
+    "f1_plan": {
+      "argv": [
+        "D:\\python\\python.exe",
+        "-u",
+        "-B",
+        "-X",
+        "utf8",
+        "scripts/run_dev_lock.py",
+        "--design",
+        "D:\\强化反馈学习\\RFL-CausalChase-v0.3-measurement-20261008\\experiments\\v03r\\a95_measurement\\dev_baseline.json",
+        "--plan"
+      ],
+      "finished_at": "2026-10-08T23:34:11.516304+00:00",
+      "native_exit_code": 0,
+      "pid": 37388,
+      "receipt_origin": "native_subprocess_wait",
+      "started_at": "2026-10-08T23:26:30.004306+00:00"
+    },
+    "full_f1": {
+      "argv": [
+        "D:\\python\\python.exe",
+        "-u",
+        "-B",
+        "-X",
+        "utf8",
+        "scripts/run_dev_lock.py",
+        "--design",
+        "D:\\强化反馈学习\\RFL-CausalChase-v0.3-measurement-20261008\\experiments\\v03r\\a95_measurement\\dev_baseline.json"
+      ],
+      "finished_at": "2026-10-09T00:06:22.705406+00:00",
+      "native_exit_code": 3,
+      "pid": 35392,
+      "receipt_origin": "native_subprocess_wait",
+      "started_at": "2026-10-08T23:34:11.522540+00:00"
+    }
+  },
+  "regressions": {
+    "acceptance": {
+      "tests": 1120,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1,
+      "passed": 1119,
+      "skipped_cases": [
+        {
+          "classname": "tests.rebuild.test_b2_acquisition",
+          "name": "test_12_a_site_no_episode_consults_shares_the_generic_value[P]"
+        }
+      ],
+      "six_native_gate_exit_codes": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "engineering_runtime": {
+      "tests": 1120,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1,
+      "passed": 1119,
+      "skipped_cases": [
+        {
+          "classname": "tests.rebuild.test_b2_acquisition",
+          "name": "test_12_a_site_no_episode_consults_shares_the_generic_value[P]"
+        }
+      ],
+      "six_native_gate_exit_codes": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "formal_smoke": {
+      "tests": 1120,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1,
+      "passed": 1119,
+      "skipped_cases": [
+        {
+          "classname": "tests.rebuild.test_b2_acquisition",
+          "name": "test_12_a_site_no_episode_consults_shares_the_generic_value[P]"
+        }
+      ],
+      "six_native_gate_exit_codes": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  },
+  "development_validation_passes": [
+    {
+      "path": "experiments/v03r/a95_measurement/f1_plan/validation-pass-001/completed.json",
+      "sha256": "c7df480a3aae11f403515e65c524322f38bf1777421201f81a3d67dd2e36bb30",
+      "workers_completed": 32,
+      "records": 18464,
+      "pairs": 240959684,
+      "index_and_all_compressed_bytes_match": true,
+      "canonical_uncompressed_hashes_match_index": true
+    },
+    {
+      "path": "experiments/v03r/a95_measurement/f1_execution/validation-pass-001/completed.json",
+      "sha256": "990c8dd82b75c63e579d9f7ca1b1edd71720ba86c7390853a7434bad77cfa7d8",
+      "workers_completed": 32,
+      "records": 18464,
+      "pairs": 240959684,
+      "index_and_all_compressed_bytes_match": true,
+      "canonical_uncompressed_hashes_match_index": true
+    },
+    {
+      "path": "experiments/v03r/a95_measurement/f1_execution/validation-pass-002/completed.json",
+      "sha256": "31c0fa1aafbbef21212a4f10ff2dbca6f73a4eef7f64d8627de4d9ac39926311",
+      "workers_completed": 32,
+      "records": 18464,
+      "pairs": 240959684,
+      "index_and_all_compressed_bytes_match": true,
+      "canonical_uncompressed_hashes_match_index": true
+    }
+  ],
+  "engineering_full_verification": {
+    "path": "experiments/v03r/a95_measurement/pipeline/runtime_verified.json",
+    "sha256": "d73a7bd4bbe9e3ce7c8dabf0e4e2fdab28d22b2f8d6ca168391097bc478037e9",
+    "workers_completed": 32,
+    "records": 18464,
+    "pairs": 241257920,
+    "index_and_all_compressed_bytes_match": true,
+    "canonical_uncompressed_hashes_match_index": true
+  },
+  "design": {
+    "status": "ALL_SEEDS_CALCULATED_ORDERED_JOIN_COMPLETE",
+    "workers_completed": 32,
+    "records": 18464,
+    "incidence_pairs": 240959684,
+    "join_order": "frozen-seed-order",
+    "design_result_sha256": "3eab5d89922b9bdb50ca54241a55afa9304b124ff0bd77262b4dc4991fe5aaa1",
+    "complete_evidence_sha256": "32d5cf125d19b006b4315769f2feb4523c7181b8ecbfb7297edbf9b7c1c60d93",
+    "worker_summary_hashes": "native worker/parent binding retained; summaries were in memory and are not independently rehashed here"
+  },
+  "native_F1_status": "NO_ADMISSIBLE_GRID",
+  "native_F1_exit": 3,
+  "native_controller_exit": 3,
+  "lock_published": false,
+  "retention_evaluated": false,
+  "treatment_effect_measured": false,
+  "research_complete": false,
+  "old_rev5_preservation_passed": true,
+  "new_experiment_or_full_parser_rerun": false,
+  "gates_or_scientific_parameters_modified": false,
+  "independent_agent_or_external_expert_review": false,
+  "checks_passed": 220,
+  "checklist_sha256": "0bf166e5a05cc64b17acfbf38937a2a2bfe9557fc8cc5d2abee0217162721b8d",
+  "all_read_evidence_files": 256,
+  "all_read_evidence_inventory_sha256": "58e008c68c568f560406f6ad5a3c723bf2f8aaf473249079cc38d8eddba1457c",
+  "evidence_sha256": {
+    "experiments/v03r/a95_measurement/pipeline/frozen_inputs.json": "cd2de09d50dea508517a5cbc85b176c6a333b5ede604b178c9f48eb06d09f0db",
+    "experiments/v03r/a95_measurement/pipeline/preregistration.json": "827ba7dfceb0ae5e7b99cac2293305f7e6c8cc131ffadfbb4a7ad0633599ebb6",
+    "experiments/v03r/a95_measurement/pipeline/pipeline_launch.json": "1fe54ffa4cada4e33dacb55a3cb7143a0a0693f4f31218dfb76c83aff86c55bc",
+    "experiments/v03r/a95_measurement/pipeline/pipeline_claim.json": "69d0a68c86a0eab9b034abcfe6ef24a93b50fabc657da2c57b161a54128a2ed3",
+    "experiments/v03r/a95_measurement/pipeline/launcher_claim.json": "71c1cc5815c131d5837e5098c7ea04cb78f031db7453e2c8537aa262736a06c3",
+    "experiments/v03r/a95_measurement/pipeline/launch_live_observation.json": "81c2cf0633282526715666b3f6d48e711361767c04dd9f3d5d4179aa6f81507c",
+    "experiments/v03r/a95_measurement/pipeline/source_bound_review.json": "2827b0167e5e6e7e8f91ff380db4675f19cc5aaa36599cec2d5911e4f8595044",
+    "experiments/v03r/a95_measurement/pipeline/acceptance_gates/regression.xml": "2c916d45c219bcf1225d9e3d2ae0e09042eb19751b0fde5218835217f74b69ff",
+    "experiments/v03r/a95_measurement/pipeline/acceptance_gates/gate-01.receipt.json": "975b949dac31437e561cf535b5a7a27293e62a0dfc1ccd5d1f691afd9e15a4fc",
+    "experiments/v03r/a95_measurement/pipeline/acceptance_gates/gate-02.receipt.json": "374bddb276b23cda38f37813be324104dde999fa8101187a299aa56721418f7a",
+    "experiments/v03r/a95_measurement/pipeline/acceptance_gates/gate-03.receipt.json": "83bdd51cbd1aa07aa166e915b2675d280785ced22c441d8fd0e5a709a15cc7a9",
+    "experiments/v03r/a95_measurement/pipeline/acceptance_gates/gate-04.receipt.json": "5dd72b6550b2f1ddf42f03a585d2552dd55fcc65a91634198af4dd10a0afeb61",
+    "experiments/v03r/a95_measurement/pipeline/acceptance_gates/gate-05.receipt.json": "a743aa03feba77b02aa85971c240e09153b3f4bb764e62404d043a90b8014a56",
+    "experiments/v03r/a95_measurement/pipeline/acceptance_gates/gate-06.receipt.json": "e90c15d05b08029065b8cca940c8ba251143ca2e129c1ae1bc86672ea56f44ba",
+    "experiments/v03r/a95_measurement/f0_runtime/gates/regression.xml": "140bbcf726f8e67e65302cfa4cc7f19a7b6690b57cffe2145daa315a013d0be8",
+    "experiments/v03r/a95_measurement/f0_runtime/gates/gate-01.receipt.json": "5b9a917f640dbb614cf69a0c9ac49d42013bdaab043d42764e4beefadca7f410",
+    "experiments/v03r/a95_measurement/f0_runtime/gates/gate-02.receipt.json": "abca29a620117266ee505d329cc84599729a7064ef0b65e2949e4f0371b2a11e",
+    "experiments/v03r/a95_measurement/f0_runtime/gates/gate-03.receipt.json": "e36d8309fed16b79b0a35b22090e74064d2c13f4fcc154d8d1f8c87ec3a49077",
+    "experiments/v03r/a95_measurement/f0_runtime/gates/gate-04.receipt.json": "a7c7d9ea1385839ca728089e92ec50b04c101eb9ac9ed39ad1c13b8dd6deb30c",
+    "experiments/v03r/a95_measurement/f0_runtime/gates/gate-05.receipt.json": "3c13f64ad57c28773663d8800d3d5c2e4c6dc65f9844f996d5c2624635867126",
+    "experiments/v03r/a95_measurement/f0_runtime/gates/gate-06.receipt.json": "b9682f42d1f4ec24e57512baf5f0261cb0e2848e4d0284bc10c3ca721474a863",
+    "experiments/v03r/a95_measurement/smoke_gates/regression.xml": "943a36b86d2ec1eb578beefa87cfc2461741967ee5b92a25cedceb2e10b2a9f9",
+    "experiments/v03r/a95_measurement/smoke_gates/gate-01.receipt.json": "ac3ca9fbd4e44267051c786186fbd9f0d4d04f74b093675f88d9b61a90360ce1",
+    "experiments/v03r/a95_measurement/smoke_gates/gate-02.receipt.json": "aa3504adf4ba435ff0d20990ea4ed9ebb4191d3e34eb831c3418f3b05286f2c8",
+    "experiments/v03r/a95_measurement/smoke_gates/gate-03.receipt.json": "a9fc88655c610e45760447738e7c9d55696eac325c1db2d4b4e697112b98fc2a",
+    "experiments/v03r/a95_measurement/smoke_gates/gate-04.receipt.json": "aa649717ba34fbc58f7ac3e618ee7e798cff95238436122dc6b22202e53a4b63",
+    "experiments/v03r/a95_measurement/smoke_gates/gate-05.receipt.json": "6c1b3b85f5404ece0f8022069eeb021b63cbc61dd36502ce16eb36085a5f9841",
+    "experiments/v03r/a95_measurement/smoke_gates/gate-06.receipt.json": "550c28f5956814d194a5e6e71fa55f334f1f4971eec02e36e43ab6e86b7e76b0",
+    "experiments/v03r/a95_measurement/f0_manifest.json": "7050dedac3eb23ca1d6b84b2ddb63d510f5de54f4eff6c495845edac0601af1b",
+    "experiments/v03r/a95_measurement/smoke_report.json": "3a94014badcfe8b1804bfde79896575d5ddcebf4fc601fb376750b06288d99a1",
+    "experiments/v03r/a95_measurement/f0_runtime/runtime.json": "202a37f3a7d6088d492f21f5a790b58399dda5907c2915273d373b4cc529a624",
+    "experiments/v03r/a95_measurement/dev_baseline.json": "843751287eaf8021a850ea266ecfcb7d01ad80327d4cfba90f9995137ca7094f",
+    "experiments/v03r/a95_measurement/pipeline/full_runtime.receipt.json": "6fefeaa2cb07a71da3bc93a161f79ac5e11c900aaccb5573f7120089e58f6712",
+    "experiments/v03r/a95_measurement/pipeline/full_runtime.launch.json": "1eac3226ae6ced351053c282135ea92b94c87a05d4a18c7ea88df682b96557b8",
+    "experiments/v03r/a95_measurement/pipeline/runtime_full_verification.receipt.json": "a56c7f30839c58d9f04db51cfbae6ea3bee447d9c2525eb9140cf0b9a9e6ac58",
+    "experiments/v03r/a95_measurement/pipeline/runtime_full_verification.launch.json": "8f4101fed669086e06c5432e75dcf97473c6a073a317df7316550b8834fd5823",
+    "experiments/v03r/a95_measurement/pipeline/formal_smoke.receipt.json": "5625b3022405a45507220afc664d8300a944b067448a291a2bc9045d1385a107",
+    "experiments/v03r/a95_measurement/pipeline/formal_smoke.launch.json": "5abad0b31eee2805c2ca68a5eded898c55c1f7ece3f7691627510e5f66b387b2",
+    "experiments/v03r/a95_measurement/pipeline/independent_smoke_evaluator.receipt.json": "7d06b653ace77a8353b82f7bf7909c780d8ff4ca628a10890bfe265f8122f150",
+    "experiments/v03r/a95_measurement/pipeline/independent_smoke_evaluator.launch.json": "1a186f125842238e4ba97e73f8db87ad3767d530b8d3ef6afb0c2e4d68bb66c8",
+    "experiments/v03r/a95_measurement/pipeline/development32.receipt.json": "567e5355ab0cb1629a9bf15c7d26ce8a6e786e633dc6f605e1e6accbc450170d",
+    "experiments/v03r/a95_measurement/pipeline/development32.launch.json": "1c8eca7887d54b9cb4f2f0109d8dadfb48a619e0be5c8815da2affcdc87f1d9c",
+    "experiments/v03r/a95_measurement/pipeline/f1_plan.receipt.json": "dcef2a03e2ef91dc1997b464348c5551121135d57718e7e3d2ff64cd2b7ebb5c",
+    "experiments/v03r/a95_measurement/pipeline/f1_plan.launch.json": "e41bb9db65f98d9d11c31e256e73c4c189895abcc753b8ce8c1c8a2a22173fdf",
+    "experiments/v03r/a95_measurement/pipeline/full_f1.receipt.json": "1e891c7eeaf2f0d3cc39e5bb6bf93179ae5098f4b9a863a5c1e9a32b5f175453",
+    "experiments/v03r/a95_measurement/pipeline/full_f1.launch.json": "2805dd12264a538ca743332cbd1bc37162aa5c001b6ffcd871303f54189a9a81",
+    "experiments/v03r/a95_measurement/f1_plan/validation-pass-001/completed.json": "c7df480a3aae11f403515e65c524322f38bf1777421201f81a3d67dd2e36bb30",
+    "experiments/v03r/a95_measurement/f1_execution/validation-pass-001/completed.json": "990c8dd82b75c63e579d9f7ca1b1edd71720ba86c7390853a7434bad77cfa7d8",
+    "experiments/v03r/a95_measurement/f1_execution/validation-pass-002/completed.json": "31c0fa1aafbbef21212a4f10ff2dbca6f73a4eef7f64d8627de4d9ac39926311",
+    "experiments/v03r/a95_measurement/pipeline/runtime_verified.json": "d73a7bd4bbe9e3ce7c8dabf0e4e2fdab28d22b2f8d6ca168391097bc478037e9",
+    "experiments/v03r/a95_measurement/f0_runtime/baseline.json": "b3d381f286610bd93d39c9557a785ca4bc087e958514527762287d9b270f9dd4",
+    "experiments/v03r/a95_measurement/f1_result.json": "d33d3a86a0b0f56f7a65fd26067c4896de6c9e2f37902386944004f265ee9d77",
+    "experiments/v03r/a95_measurement/f1_execution/parallel_design/completed.json": "32d5cf125d19b006b4315769f2feb4523c7181b8ecbfb7297edbf9b7c1c60d93",
+    "experiments/v03r/a95_measurement/pipeline/pipeline_result.json": "b4d29f2467e3f5496871f154b6bd7185e09d479c0a3676157bbbd4df6b480a69",
+    "experiments/v03r/a95_measurement/pipeline/pipeline_exit.json": "1ae6661773b365173213c01c3d0e2ca0321ae4fe7af9297eebd08b21509d8af1",
+    "experiments/v03r/a95_measurement/pipeline/parent_preservation.json": "36e7e2d9b360118ac848e39a5c5ddf8f7741cfce4a6504b27ef15d5794e08013",
+    "experiments/v03r/a95_measurement/pipeline/add_A95-fresh-fully-verified-F0.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "experiments/v03r/a95_measurement/pipeline/add_A95-fresh-fully-verified-F0.stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "experiments/v03r/a95_measurement/pipeline/add_A95-native-F1-evidence.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "experiments/v03r/a95_measurement/pipeline/add_A95-native-F1-evidence.stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "experiments/v03r/a95_measurement/pipeline/add_A95-source-bound-internal-acceptance.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "experiments/v03r/a95_measurement/pipeline/add_A95-source-bound-internal-acceptance.stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "experiments/v03r/a95_measurement/pipeline/commit_A95-fresh-fully-verified-F0.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "experiments/v03r/a95_measurement/pipeline/commit_A95-fresh-fully-verified-F0.stdout.log": "158a84956bf701562c04713a2ffaad5f03dd9e7e9a10a97f7a22ec24003ff02a",
+    "experiments/v03r/a95_measurement/pipeline/commit_A95-native-F1-evidence.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "experiments/v03r/a95_measurement/pipeline/commit_A95-native-F1-evidence.stdout.log": "c257ab049584ff5685759959a670fd2bd2a8ef8ddb60c58d3704ddc399db1d4a",
+    "experiments/v03r/a95_measurement/pipeline/commit_A95-source-bound-internal-acceptance.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "experiments/v03r/a95_measurement/pipeline/commit_A95-source-bound-internal-acceptance.stdout.log": "6ff1e164db59ad40f6a671f9a696438cde57b4f17d1bcf4a3ef081ea879d132a",
+    "experiments/v03r/a95_measurement/pipeline/development32.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "experiments/v03r/a95_measurement/pipeline/development32.stdout.log": "bf9d96b93157cf0bdac30ad4b337f1432c58ef1b187961093f1a0f7e438a39a6",
+    "experiments/v03r/a95_measurement/pipeline/f1_plan.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "experiments/v03r/a95_measurement/pipeline/f1_plan.stdout.log": "a9bcf6ae5532c98d82203338c31d65f70f3e2a01f7d7541ee523097d2b1af988",
+    "experiments/v03r/a95_measurement/pipeline/formal_smoke.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "experiments/v03r/a95_measurement/pipeline/formal_smoke.stdout.log": "03ced06f6dbbcf51e7a5715a5b9fb45f049be54de52fe68cd56e98e471df68ad",
+    "experiments/v03r/a95_measurement/pipeline/full_f1.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "experiments/v03r/a95_measurement/pipeline/full_f1.stdout.log": "63a24d2393ccbe516bc44c0f1c42bad42c970b3fa81ca199be9bb88d2414538b",
+    "experiments/v03r/a95_measurement/pipeline/full_runtime.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "experiments/v03r/a95_measurement/pipeline/full_runtime.stdout.log": "0dd327497512ec99d7348c92b351b0453fc14387631a07dbe16c447d18d094c9",
+    "experiments/v03r/a95_measurement/pipeline/independent_smoke_evaluator.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "experiments/v03r/a95_measurement/pipeline/independent_smoke_evaluator.stdout.log": "fbf728676f8ad9540357884f5e87aed4ec63ee77bc242a1f5cce66494132958c",
+    "experiments/v03r/a95_measurement/pipeline/pipeline.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "experiments/v03r/a95_measurement/pipeline/pipeline.stdout.log": "4a9d4200f3fa45f5968144d09e417fa615261e7ebdb74f0c2eaacc290eb59de3",
+    "experiments/v03r/a95_measurement/pipeline/runtime_full_verification.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "experiments/v03r/a95_measurement/pipeline/runtime_full_verification.stdout.log": "4309f8ed94c01f581ee8b67082aac7b176a167397a8f694a0fba8d5c08acc210",
+    "experiments/v03r/a95_measurement/pipeline/acceptance_gates/gate-01.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "experiments/v03r/a95_measurement/pipeline/acceptance_gates/gate-01.stdout.log": "51a8324bb194bb476daad54f06528c3f2b2bc0b493834b0565c2542322348923",
+    "experiments/v03r/a95_measurement/pipeline/acceptance_gates/gate-02.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "experiments/v03r/a95_measurement/pipeline/acceptance_gates/gate-02.stdout.log": "9222dff5b2e7176569ad92a6d2a7878acbf23006ce3abf8dd05f3b97483b3d75",
+    "experiments/v03r/a95_measurement/pipeline/acceptance_gates/gate-03.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "experiments/v03r/a95_measurement/pipeline/acceptance_gates/gate-03.stdout.log": "338dabfe7b0a16765b5db00363ff8e9a1935682fe490d8c2fe3b4be750e36a15",
+    "experiments/v03r/a95_measurement/pipeline/acceptance_gates/gate-04.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "experiments/v03r/a95_measurement/pipeline/acceptance_gates/gate-04.stdout.log": "f3038cbec95156a8807d9eed6d934e228bed3aea0bb6b5845cef5ac2dcbbbe1a",
+    "experiments/v03r/a95_measurement/pipeline/acceptance_gates/gate-05.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "experiments/v03r/a95_measurement/pipeline/acceptance_gates/gate-05.stdout.log": "f1954620d0085bef3638b74b15c994da8caee4acefc1f2a73c69dbffaf2801ca",
+    "experiments/v03r/a95_measurement/pipeline/acceptance_gates/gate-06.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "experiments/v03r/a95_measurement/pipeline/acceptance_gates/gate-06.stdout.log": "dd2504a3c011d0c9cf9d56064366f5264b8f8b70182c79be4b5a62b0f8398ee8"
+  },
+  "native_diagnostic_excerpt": {
+    "f_T": {
+      "T": 465,
+      "censored": 0,
+      "healthy_settling_times": [
+        269,
+        354,
+        234,
+        349,
+        195,
+        454,
+        376,
+        387,
+        258,
+        276,
+        263,
+        536,
+        264,
+        260,
+        318,
+        204,
+        271,
+        388,
+        332,
+        210,
+        229,
+        361,
+        318,
+        266,
+        205,
+        305,
+        371,
+        261,
+        226,
+        209,
+        212,
+        197
+      ],
+      "late_anchors": [
+        387,
+        426,
+        465
+      ],
+      "measurement_profile": "v03r-a95-healthy-settling-retention-v1",
+      "n": 32,
+      "quantile": 387,
+      "rank": 29,
+      "reason": null,
+      "status": "ADMISSIBLE",
+      "uncensored": 32
+    },
+    "f_N": {
+      "N": 100,
+      "metrics": [
+        {
+          "N": 100,
+          "metric": 0.009647894447614188
+        },
+        {
+          "N": 256,
+          "metric": 0.06253720520914972
+        },
+        {
+          "N": 512,
+          "metric": 0.017925761814380447
+        },
+        {
+          "N": 1024,
+          "metric": 0
+        }
+      ],
+      "status": "ADMISSIBLE"
+    },
+    "f_C": {
+      "status": "ADMISSIBLE",
+      "refinement": "eligible_all",
+      "collateral_bound": 0.041447131280198696,
+      "spread_population": 259561088,
+      "metrics": [
+        {
+          "metric": 1,
+          "refinement": "eligible_all"
+        },
+        {
+          "metric": 1.765263207432228,
+          "refinement": "eligible_phase_even"
+        },
+        {
+          "metric": 1.7214111074229865,
+          "refinement": "eligible_phase_odd"
+        },
+        {
+          "metric": 1.4390190867446753,
+          "refinement": "eligible_cause_rank_lower"
+        },
+        {
+          "metric": 1.414213562373111,
+          "refinement": "eligible_error_absent"
+        },
+        {
+          "metric": 1.0266005825038294,
+          "refinement": "eligible_base_option_nonzero"
+        }
+      ]
+    },
+    "f_G": {
+      "candidates": [
+        {
+          "admissible": false,
+          "grid": [
+            0,
+            1,
+            5,
+            20,
+            100,
+            200,
+            387,
+            426,
+            465
+          ],
+          "metric": 0.3978494623655914,
+          "template": 1
+        },
+        {
+          "admissible": false,
+          "grid": [
+            0,
+            1,
+            2,
+            5,
+            10,
+            20,
+            50,
+            100,
+            150,
+            200,
+            300,
+            387,
+            426,
+            465
+          ],
+          "metric": 0.210752688172043,
+          "template": 2
+        },
+        {
+          "admissible": false,
+          "grid": [
+            0,
+            1,
+            2,
+            3,
+            5,
+            7,
+            10,
+            15,
+            20,
+            35,
+            50,
+            75,
+            100,
+            125,
+            150,
+            175,
+            200,
+            250,
+            300,
+            382,
+            387,
+            426,
+            465
+          ],
+          "metric": 0.1032258064516129,
+          "template": 3
+        }
+      ],
+      "grid": null,
+      "measurement_profile": "v03r-a95-healthy-settling-retention-v1",
+      "status": "NO_ADMISSIBLE_GRID"
+    },
+    "f_R": null
+  },
+  "current_process_observation": "experiments/v03r/a95_protocol_stop_20261009/termination_observation.json",
+  "audit_reproducer": "experiments/v03r/a95_protocol_stop_20261009/audit_existing_evidence.py"
+}

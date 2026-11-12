@@ -1,0 +1,31 @@
+{
+ "exact_dgp_marginal_Zfire": {
+  "P": 0.19376173139606806,
+  "D": 0.13361299723233455,
+  "X": 0.1567629533511911,
+  "E": 0.1600466946326673,
+  "U": 0.0020412105331623566
+ },
+ "n_worlds": 1038960,
+ "expected_U_positives": {
+  "smoke": 0.010206052665811783,
+  "dev": 0.06531873706119541,
+  "conf": 0.8164842132649427
+ },
+ "p_observe_zero_U": {
+  "smoke": 0.989835527777498,
+  "dev": 0.9367063004545835,
+  "conf": 0.44161418749160103
+ },
+ "p_observe_zero_U_all_sampled": 0.40945812783684654,
+ "one_sided_95_upper_bounds_from_observations": {
+  "smoke": 0.4507197283469412,
+  "dev": 0.0893681989862648,
+  "conf": 0.0074613555287995625,
+  "all_sampled": 0.006831779156122542
+ },
+ "n_total_sampled_scenes": 437,
+ "method": "exact sum of DGP weights over the dense support; no rollouts, no scenes, no contact with confirmatory data",
+ "why": "Zero positives bound the rate only by 1 - 0.05^(1/n). The exact marginal is available for free from the cache, so the earlier sample-based guess does not need to be defended or attacked statistically.",
+ "consumes_scenes": false
+}

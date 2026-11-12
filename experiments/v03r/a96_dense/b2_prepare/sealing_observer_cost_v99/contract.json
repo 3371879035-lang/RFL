@@ -1,0 +1,29 @@
+{
+  "schema": "V99_PROSPECTIVE_STDLIB_ONLY_SEALING_OBSERVER_COST_ATTRIBUTION",
+  "parent_commit": "ba0fac66e8cc7755180ea1d947d70a81bdc89b15",
+  "question": "Does the broad Python event observer materially inflate complete-record sealing? V98 stopped after all DQ post kernel returns; exact runtime hotspot was not captured. Do not assert the timeout cause from the tail alone.",
+  "raw_input": "experiments/v03r/a96_dense/b2_prepare/owned_whole_completion_v98/evidence/stdout.log",
+  "observer_source": "experiments/v03r/a96_dense/b2_prepare/owned_whole_completion_v98/test_completion.py",
+  "seal_source": "experiments/v03r/a96_dense/b2_prepare/whole_collateral_wire_revision_v97/wire_boundary.py",
+  "inputs": {
+    "experiments/v03r/a96_dense/b2_prepare/owned_whole_completion_v98/test_completion.py": "9114645d623d0f7c662ce2677fef57c0d853ba61849f8b14b7d4442fef731b52",
+    "experiments/v03r/a96_dense/b2_prepare/whole_collateral_wire_revision_v97/wire_boundary.py": "635bb5c344beb83a00bd7f38cbf9a15b62cb063bae833178b501f31f7ffd98bd",
+    "experiments/v03r/a96_dense/b2_prepare/owned_whole_completion_v98/evidence/stdout.log": "cb8766e9665e1b99ea7045bfaa52381c01b33f83829928234593a9898a53d53d",
+    "src/rfl_rebuild/env/kernel.py": "2387e15a66beb2d13ebb5aad248c0f5672f49dfed11663419816eec36c571ab8",
+    "src/rfl_rebuild/b2/unaffected.py": "70fcc6188ef23039189cf7603eb8403585eb499c559efdb38310970a68675b9c"
+  },
+  "shape_schema_sources": {
+    "src/rfl_rebuild/env/kernel.py": {
+      "State": "State", "ControlState": "Control", "FaultMask": "Mask",
+      "InterventionSet": "Interventions", "StepResult": "Step", "RolloutTrace": "Trace"
+    },
+    "src/rfl_rebuild/b2/unaffected.py": {"EvaluationScene": "Scene"}
+  },
+  "sample_prefixes_per_role": [64, 512],
+  "design": "Read all16824 captured lines; turn all11040 actual DQ post raw records into explicitly named stdlib WireShape dataclasses with actual field schemas. AST-extract only pure encode/seal and event-observer functions, never import old test/native/fixture/checker. Compare profile-off/exact old profile/new sparse dispatcher on fixed64 and512 prefixes per role; compare full11040 sealed records off/sparse. No timing-based sample selection or retries. All canonical digests must agree; restore profiler finally.",
+  "observer_revision": "Strong code-object references beside integer identity dispatch cache. Exact complete legacy handler still receives all interesting events. Predicate equivalence over the finite path/name/qualname partitions is checked against actual old observer AST. Uninteresting Python frames bypass the expensive handler. No metric arithmetic, state, owner, bank extent, original production API or original handler is changed. New dispatcher not yet qualified with native capture.",
+  "budget": {"seconds": 120, "stdout_bytes": 20000, "stderr_bytes": 20000},
+  "exclusive_capture": "Freeze these new sources/contract before one child; preserve failures/partial and never automatically retry or increase this budget.",
+  "zero_execution": "No RFL imports/native step/rollout/B1/TX/keys/RNG/DP/calibration/training/collector; no old checker/test/main execution. Extracted pure functions are identified exact AST/source pins, not rerunning old fixture.",
+  "claim_limits": "Offline sealing cost evidence and candidate observer implementation only, not unique attribution of the earlier runtime timeout, native event-capture/exception restoration qualification, scientific PASS, complete owned measurement, runtime identity reconstruction, future dense production certificate or cached native validation. V98 remains timed-out/no native exit receipt/no complete handle. Do not rerun completed pre/post banks."
+}

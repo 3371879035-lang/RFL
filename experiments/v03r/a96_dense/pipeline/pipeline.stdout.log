@@ -1,0 +1,32 @@
+gate 1/6 exit=0: python -m pytest -q
+gate 2/6 exit=0: python scripts/spec_audit.py
+gate 3/6 exit=0: python scripts/b2_view_gate_selfcheck.py
+gate 4/6 exit=0: python scripts/a91_training_gate_selfcheck.py
+gate 5/6 exit=0: python scripts/run_calibration.py
+gate 6/6 exit=0: python scripts/f0_manifest_selfcheck.py
+START add_A96-source-bound-internal-acceptance 2026-10-09T08:07:25.500845+00:00
+END add_A96-source-bound-internal-acceptance native=0 2026-10-09T08:07:25.590665+00:00
+START commit_A96-source-bound-internal-acceptance 2026-10-09T08:07:25.591923+00:00
+END commit_A96-source-bound-internal-acceptance native=0 2026-10-09T08:07:25.719153+00:00
+START full_runtime 2026-10-09T08:07:27.353439+00:00
+END full_runtime native=0 2026-10-09T10:59:05.639339+00:00
+START runtime_full_verification 2026-10-09T10:59:05.662036+00:00
+END runtime_full_verification native=0 2026-10-09T11:06:38.482502+00:00
+START add_A96-fresh-fully-verified-F0 2026-10-09T11:06:41.788471+00:00
+END add_A96-fresh-fully-verified-F0 native=0 2026-10-09T11:06:41.931345+00:00
+START commit_A96-fresh-fully-verified-F0 2026-10-09T11:06:41.932220+00:00
+END commit_A96-fresh-fully-verified-F0 native=0 2026-10-09T11:06:42.065428+00:00
+START formal_smoke 2026-10-09T11:06:42.658739+00:00
+END formal_smoke native=0 2026-10-09T11:52:36.847598+00:00
+START independent_smoke_evaluator 2026-10-09T11:52:36.848614+00:00
+END independent_smoke_evaluator native=0 2026-10-09T11:52:37.554666+00:00
+START development32 2026-10-09T11:52:38.298465+00:00
+END development32 native=0 2026-10-09T14:06:54.036445+00:00
+START f1_plan 2026-10-09T14:06:54.143941+00:00
+END f1_plan native=0 2026-10-09T14:13:57.648753+00:00
+START full_f1 2026-10-09T14:13:57.649398+00:00
+END full_f1 native=0 2026-10-09T14:48:40.877731+00:00
+START add_A96-native-F1-evidence 2026-10-09T14:48:43.163895+00:00
+END add_A96-native-F1-evidence native=0 2026-10-09T14:48:43.504570+00:00
+START commit_A96-native-F1-evidence 2026-10-09T14:48:43.505148+00:00
+END commit_A96-native-F1-evidence native=0 2026-10-09T14:48:43.671174+00:00

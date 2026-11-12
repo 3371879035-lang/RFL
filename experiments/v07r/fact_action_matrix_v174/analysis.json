@@ -1,0 +1,2026 @@
+{
+  "status": "COMPLETE_CONDITIONAL_LOCAL_FACT_TO_ACTION_STUDY",
+  "plan": "experiments/v07r/plan_v173.json",
+  "actual_counts": {
+    "source_instances": 1156,
+    "source_mapping_initializations": 4624,
+    "policy_calls": 80652,
+    "planning_edge_expansions": 53760,
+    "tie_readout_candidate_scores": 215088,
+    "shadow_readout_calls": 49160,
+    "shadow_candidate_scores": 294944,
+    "rollouts": 1846672,
+    "train_rollouts": 73736,
+    "steps": 4489909,
+    "train_steps": 187245,
+    "observations_consumed": 73736,
+    "history_appends": 73736,
+    "ordinary_backups": 165130,
+    "replay_backups": 188253,
+    "model_backups": 566700,
+    "numeric_changes": 730280,
+    "fact_count_updates": 148684,
+    "eval_rollouts": 1772936,
+    "eval_steps": 4302664,
+    "environment_PRNG_draws": 110592,
+    "exploration_PRNG_draws": 24576
+  },
+  "native_wall_seconds": 95.3292928999872,
+  "compressed_capture_bytes": 198412548,
+  "uncompressed_capture_bytes": 1551925847,
+  "canonical_records": 4004439,
+  "maximum_measured_peak_working_set_bytes": 173826048,
+  "native_local_PRNG_random_calls": 135168,
+  "review_reconstruction_random_calls": 135168,
+  "analysis_bootstrap_randrange_calls": 320000,
+  "analysis_bootstrap_resamples": 10000,
+  "groups": [
+    {
+      "p": 0.0,
+      "arm": "RL-RP",
+      "streams": 64,
+      "train_tasks": 4096,
+      "train_successes": 3432,
+      "successes16": 795,
+      "successes32": 1668,
+      "continued32_successes": 1764,
+      "early_AUC": 0.875,
+      "exact_early_AUC": 0.875,
+      "full_AUC": 0.9375,
+      "train_rollouts": 4096,
+      "train_steps": 11596,
+      "eval_rollouts": 384,
+      "eval_steps": 1088,
+      "ordinary_backups": 11596,
+      "replay_backups": 47617,
+      "model_backups": 0,
+      "numeric_changes": 15309,
+      "fact_count_updates": 0,
+      "policy_calls": 4480,
+      "planning_edge_expansions": 0,
+      "tie_readout_candidate_scores": 0,
+      "shadow_readout_calls": 0,
+      "shadow_candidate_scores": 0,
+      "policy_ns": 38945100,
+      "update_ns": 178986700,
+      "shadow_ns": 0,
+      "frozen_curve": [
+        {
+          "checkpoint": 0,
+          "successes": 0,
+          "episodes": 64,
+          "mean_success": 0.0,
+          "mean_exact_probability": 0.0
+        },
+        {
+          "checkpoint": 8,
+          "successes": 64,
+          "episodes": 64,
+          "mean_success": 1.0,
+          "mean_exact_probability": 1.0
+        },
+        {
+          "checkpoint": 16,
+          "successes": 64,
+          "episodes": 64,
+          "mean_success": 1.0,
+          "mean_exact_probability": 1.0
+        },
+        {
+          "checkpoint": 32,
+          "successes": 64,
+          "episodes": 64,
+          "mean_success": 1.0,
+          "mean_exact_probability": 1.0
+        },
+        {
+          "checkpoint": 48,
+          "successes": 64,
+          "episodes": 64,
+          "mean_success": 1.0,
+          "mean_exact_probability": 1.0
+        },
+        {
+          "checkpoint": 64,
+          "successes": 64,
+          "episodes": 64,
+          "mean_success": 1.0,
+          "mean_exact_probability": 1.0
+        }
+      ]
+    },
+    {
+      "p": 0.0,
+      "arm": "RL-R",
+      "streams": 64,
+      "train_tasks": 4096,
+      "train_successes": 1565,
+      "successes16": 200,
+      "successes32": 553,
+      "continued32_successes": 1012,
+      "early_AUC": 0.296875,
+      "exact_early_AUC": 0.296875,
+      "full_AUC": 0.431640625,
+      "train_rollouts": 4096,
+      "train_steps": 8695,
+      "eval_rollouts": 384,
+      "eval_steps": 832,
+      "ordinary_backups": 8695,
+      "replay_backups": 46677,
+      "model_backups": 0,
+      "numeric_changes": 7537,
+      "fact_count_updates": 0,
+      "policy_calls": 4480,
+      "planning_edge_expansions": 0,
+      "tie_readout_candidate_scores": 0,
+      "shadow_readout_calls": 0,
+      "shadow_candidate_scores": 0,
+      "policy_ns": 31151300,
+      "update_ns": 130935800,
+      "shadow_ns": 0,
+      "frozen_curve": [
+        {
+          "checkpoint": 0,
+          "successes": 0,
+          "episodes": 64,
+          "mean_success": 0.0,
+          "mean_exact_probability": 0.0
+        },
+        {
+          "checkpoint": 8,
+          "successes": 13,
+          "episodes": 64,
+          "mean_success": 0.203125,
+          "mean_exact_probability": 0.203125
+        },
+        {
+          "checkpoint": 16,
+          "successes": 22,
+          "episodes": 64,
+          "mean_success": 0.34375,
+          "mean_exact_probability": 0.34375
+        },
+        {
+          "checkpoint": 32,
+          "successes": 30,
+          "episodes": 64,
+          "mean_success": 0.46875,
+          "mean_exact_probability": 0.46875
+        },
+        {
+          "checkpoint": 48,
+          "successes": 37,
+          "episodes": 64,
+          "mean_success": 0.578125,
+          "mean_exact_probability": 0.578125
+        },
+        {
+          "checkpoint": 64,
+          "successes": 41,
+          "episodes": 64,
+          "mean_success": 0.640625,
+          "mean_exact_probability": 0.640625
+        }
+      ]
+    },
+    {
+      "p": 0.0,
+      "arm": "F0",
+      "streams": 64,
+      "train_tasks": 4096,
+      "train_successes": 3433,
+      "successes16": 796,
+      "successes32": 1669,
+      "continued32_successes": 1764,
+      "early_AUC": 0.875,
+      "exact_early_AUC": 0.875,
+      "full_AUC": 0.9375,
+      "train_rollouts": 4096,
+      "train_steps": 11598,
+      "eval_rollouts": 384,
+      "eval_steps": 1088,
+      "ordinary_backups": 0,
+      "replay_backups": 0,
+      "model_backups": 0,
+      "numeric_changes": 0,
+      "fact_count_updates": 11598,
+      "policy_calls": 4480,
+      "planning_edge_expansions": 26880,
+      "tie_readout_candidate_scores": 0,
+      "shadow_readout_calls": 0,
+      "shadow_candidate_scores": 0,
+      "policy_ns": 51048500,
+      "update_ns": 15318500,
+      "shadow_ns": 0,
+      "frozen_curve": [
+        {
+          "checkpoint": 0,
+          "successes": 0,
+          "episodes": 64,
+          "mean_success": 0.0,
+          "mean_exact_probability": 0.0
+        },
+        {
+          "checkpoint": 8,
+          "successes": 64,
+          "episodes": 64,
+          "mean_success": 1.0,
+          "mean_exact_probability": 1.0
+        },
+        {
+          "checkpoint": 16,
+          "successes": 64,
+          "episodes": 64,
+          "mean_success": 1.0,
+          "mean_exact_probability": 1.0
+        },
+        {
+          "checkpoint": 32,
+          "successes": 64,
+          "episodes": 64,
+          "mean_success": 1.0,
+          "mean_exact_probability": 1.0
+        },
+        {
+          "checkpoint": 48,
+          "successes": 64,
+          "episodes": 64,
+          "mean_success": 1.0,
+          "mean_exact_probability": 1.0
+        },
+        {
+          "checkpoint": 64,
+          "successes": 64,
+          "episodes": 64,
+          "mean_success": 1.0,
+          "mean_exact_probability": 1.0
+        }
+      ]
+    },
+    {
+      "p": 0.0,
+      "arm": "F-RP",
+      "streams": 64,
+      "train_tasks": 4096,
+      "train_successes": 3374,
+      "successes16": 737,
+      "successes32": 1610,
+      "continued32_successes": 1764,
+      "early_AUC": 0.875,
+      "exact_early_AUC": 0.875,
+      "full_AUC": 0.9375,
+      "train_rollouts": 4096,
+      "train_steps": 11503,
+      "eval_rollouts": 384,
+      "eval_steps": 1088,
+      "ordinary_backups": 11503,
+      "replay_backups": 0,
+      "model_backups": 47358,
+      "numeric_changes": 57493,
+      "fact_count_updates": 11503,
+      "policy_calls": 4480,
+      "planning_edge_expansions": 0,
+      "tie_readout_candidate_scores": 0,
+      "shadow_readout_calls": 4096,
+      "shadow_candidate_scores": 24576,
+      "policy_ns": 42170400,
+      "update_ns": 307543000,
+      "shadow_ns": 53159800,
+      "frozen_curve": [
+        {
+          "checkpoint": 0,
+          "successes": 0,
+          "episodes": 64,
+          "mean_success": 0.0,
+          "mean_exact_probability": 0.0
+        },
+        {
+          "checkpoint": 8,
+          "successes": 64,
+          "episodes": 64,
+          "mean_success": 1.0,
+          "mean_exact_probability": 1.0
+        },
+        {
+          "checkpoint": 16,
+          "successes": 64,
+          "episodes": 64,
+          "mean_success": 1.0,
+          "mean_exact_probability": 1.0
+        },
+        {
+          "checkpoint": 32,
+          "successes": 64,
+          "episodes": 64,
+          "mean_success": 1.0,
+          "mean_exact_probability": 1.0
+        },
+        {
+          "checkpoint": 48,
+          "successes": 64,
+          "episodes": 64,
+          "mean_success": 1.0,
+          "mean_exact_probability": 1.0
+        },
+        {
+          "checkpoint": 64,
+          "successes": 64,
+          "episodes": 64,
+          "mean_success": 1.0,
+          "mean_exact_probability": 1.0
+        }
+      ]
+    },
+    {
+      "p": 0.0,
+      "arm": "F-R",
+      "streams": 64,
+      "train_tasks": 4096,
+      "train_successes": 1565,
+      "successes16": 200,
+      "successes32": 553,
+      "continued32_successes": 1012,
+      "early_AUC": 0.296875,
+      "exact_early_AUC": 0.296875,
+      "full_AUC": 0.431640625,
+      "train_rollouts": 4096,
+      "train_steps": 8695,
+      "eval_rollouts": 384,
+      "eval_steps": 832,
+      "ordinary_backups": 8695,
+      "replay_backups": 0,
+      "model_backups": 46677,
+      "numeric_changes": 34824,
+      "fact_count_updates": 8695,
+      "policy_calls": 4480,
+      "planning_edge_expansions": 0,
+      "tie_readout_candidate_scores": 0,
+      "shadow_readout_calls": 4096,
+      "shadow_candidate_scores": 24576,
+      "policy_ns": 36401800,
+      "update_ns": 243998900,
+      "shadow_ns": 52937400,
+      "frozen_curve": [
+        {
+          "checkpoint": 0,
+          "successes": 0,
+          "episodes": 64,
+          "mean_success": 0.0,
+          "mean_exact_probability": 0.0
+        },
+        {
+          "checkpoint": 8,
+          "successes": 13,
+          "episodes": 64,
+          "mean_success": 0.203125,
+          "mean_exact_probability": 0.203125
+        },
+        {
+          "checkpoint": 16,
+          "successes": 22,
+          "episodes": 64,
+          "mean_success": 0.34375,
+          "mean_exact_probability": 0.34375
+        },
+        {
+          "checkpoint": 32,
+          "successes": 30,
+          "episodes": 64,
+          "mean_success": 0.46875,
+          "mean_exact_probability": 0.46875
+        },
+        {
+          "checkpoint": 48,
+          "successes": 37,
+          "episodes": 64,
+          "mean_success": 0.578125,
+          "mean_exact_probability": 0.578125
+        },
+        {
+          "checkpoint": 64,
+          "successes": 41,
+          "episodes": 64,
+          "mean_success": 0.640625,
+          "mean_exact_probability": 0.640625
+        }
+      ]
+    },
+    {
+      "p": 0.0,
+      "arm": "F-RP-FT",
+      "streams": 64,
+      "train_tasks": 4096,
+      "train_successes": 3374,
+      "successes16": 737,
+      "successes32": 1610,
+      "continued32_successes": 1764,
+      "early_AUC": 0.875,
+      "exact_early_AUC": 0.875,
+      "full_AUC": 0.9375,
+      "train_rollouts": 4096,
+      "train_steps": 11503,
+      "eval_rollouts": 384,
+      "eval_steps": 1088,
+      "ordinary_backups": 11503,
+      "replay_backups": 0,
+      "model_backups": 47358,
+      "numeric_changes": 57493,
+      "fact_count_updates": 11503,
+      "policy_calls": 4480,
+      "planning_edge_expansions": 0,
+      "tie_readout_candidate_scores": 26880,
+      "shadow_readout_calls": 4096,
+      "shadow_candidate_scores": 24576,
+      "policy_ns": 59093400,
+      "update_ns": 374275600,
+      "shadow_ns": 0,
+      "frozen_curve": [
+        {
+          "checkpoint": 0,
+          "successes": 0,
+          "episodes": 64,
+          "mean_success": 0.0,
+          "mean_exact_probability": 0.0
+        },
+        {
+          "checkpoint": 8,
+          "successes": 64,
+          "episodes": 64,
+          "mean_success": 1.0,
+          "mean_exact_probability": 1.0
+        },
+        {
+          "checkpoint": 16,
+          "successes": 64,
+          "episodes": 64,
+          "mean_success": 1.0,
+          "mean_exact_probability": 1.0
+        },
+        {
+          "checkpoint": 32,
+          "successes": 64,
+          "episodes": 64,
+          "mean_success": 1.0,
+          "mean_exact_probability": 1.0
+        },
+        {
+          "checkpoint": 48,
+          "successes": 64,
+          "episodes": 64,
+          "mean_success": 1.0,
+          "mean_exact_probability": 1.0
+        },
+        {
+          "checkpoint": 64,
+          "successes": 64,
+          "episodes": 64,
+          "mean_success": 1.0,
+          "mean_exact_probability": 1.0
+        }
+      ]
+    },
+    {
+      "p": 0.0,
+      "arm": "F-R-FT",
+      "streams": 64,
+      "train_tasks": 4096,
+      "train_successes": 2930,
+      "successes16": 536,
+      "successes32": 1268,
+      "continued32_successes": 1662,
+      "early_AUC": 0.67578125,
+      "exact_early_AUC": 0.67578125,
+      "full_AUC": 0.8046875,
+      "train_rollouts": 4096,
+      "train_steps": 11598,
+      "eval_rollouts": 384,
+      "eval_steps": 1088,
+      "ordinary_backups": 11598,
+      "replay_backups": 0,
+      "model_backups": 47623,
+      "numeric_changes": 57546,
+      "fact_count_updates": 11598,
+      "policy_calls": 4480,
+      "planning_edge_expansions": 0,
+      "tie_readout_candidate_scores": 26880,
+      "shadow_readout_calls": 4096,
+      "shadow_candidate_scores": 24576,
+      "policy_ns": 60021300,
+      "update_ns": 397879600,
+      "shadow_ns": 0,
+      "frozen_curve": [
+        {
+          "checkpoint": 0,
+          "successes": 0,
+          "episodes": 64,
+          "mean_success": 0.0,
+          "mean_exact_probability": 0.0
+        },
+        {
+          "checkpoint": 8,
+          "successes": 42,
+          "episodes": 64,
+          "mean_success": 0.65625,
+          "mean_exact_probability": 0.65625
+        },
+        {
+          "checkpoint": 16,
+          "successes": 50,
+          "episodes": 64,
+          "mean_success": 0.78125,
+          "mean_exact_probability": 0.78125
+        },
+        {
+          "checkpoint": 32,
+          "successes": 56,
+          "episodes": 64,
+          "mean_success": 0.875,
+          "mean_exact_probability": 0.875
+        },
+        {
+          "checkpoint": 48,
+          "successes": 60,
+          "episodes": 64,
+          "mean_success": 0.9375,
+          "mean_exact_probability": 0.9375
+        },
+        {
+          "checkpoint": 64,
+          "successes": 63,
+          "episodes": 64,
+          "mean_success": 0.984375,
+          "mean_exact_probability": 0.984375
+        }
+      ]
+    },
+    {
+      "p": 0.0,
+      "arm": "F-RP-CT",
+      "streams": 64,
+      "train_tasks": 4096,
+      "train_successes": 3374,
+      "successes16": 737,
+      "successes32": 1610,
+      "continued32_successes": 1764,
+      "early_AUC": 0.875,
+      "exact_early_AUC": 0.875,
+      "full_AUC": 0.9375,
+      "train_rollouts": 4096,
+      "train_steps": 11503,
+      "eval_rollouts": 384,
+      "eval_steps": 1088,
+      "ordinary_backups": 11503,
+      "replay_backups": 0,
+      "model_backups": 47358,
+      "numeric_changes": 57493,
+      "fact_count_updates": 11503,
+      "policy_calls": 4480,
+      "planning_edge_expansions": 0,
+      "tie_readout_candidate_scores": 26880,
+      "shadow_readout_calls": 4096,
+      "shadow_candidate_scores": 24576,
+      "policy_ns": 61553500,
+      "update_ns": 289887300,
+      "shadow_ns": 0,
+      "frozen_curve": [
+        {
+          "checkpoint": 0,
+          "successes": 0,
+          "episodes": 64,
+          "mean_success": 0.0,
+          "mean_exact_probability": 0.0
+        },
+        {
+          "checkpoint": 8,
+          "successes": 64,
+          "episodes": 64,
+          "mean_success": 1.0,
+          "mean_exact_probability": 1.0
+        },
+        {
+          "checkpoint": 16,
+          "successes": 64,
+          "episodes": 64,
+          "mean_success": 1.0,
+          "mean_exact_probability": 1.0
+        },
+        {
+          "checkpoint": 32,
+          "successes": 64,
+          "episodes": 64,
+          "mean_success": 1.0,
+          "mean_exact_probability": 1.0
+        },
+        {
+          "checkpoint": 48,
+          "successes": 64,
+          "episodes": 64,
+          "mean_success": 1.0,
+          "mean_exact_probability": 1.0
+        },
+        {
+          "checkpoint": 64,
+          "successes": 64,
+          "episodes": 64,
+          "mean_success": 1.0,
+          "mean_exact_probability": 1.0
+        }
+      ]
+    },
+    {
+      "p": 0.0,
+      "arm": "F-R-CT",
+      "streams": 64,
+      "train_tasks": 4096,
+      "train_successes": 2905,
+      "successes16": 511,
+      "successes32": 1243,
+      "continued32_successes": 1662,
+      "early_AUC": 0.671875,
+      "exact_early_AUC": 0.671875,
+      "full_AUC": 0.802734375,
+      "train_rollouts": 4096,
+      "train_steps": 11540,
+      "eval_rollouts": 384,
+      "eval_steps": 1088,
+      "ordinary_backups": 11540,
+      "replay_backups": 0,
+      "model_backups": 47449,
+      "numeric_changes": 57252,
+      "fact_count_updates": 11540,
+      "policy_calls": 4480,
+      "planning_edge_expansions": 0,
+      "tie_readout_candidate_scores": 26880,
+      "shadow_readout_calls": 4096,
+      "shadow_candidate_scores": 24576,
+      "policy_ns": 77454100,
+      "update_ns": 287529700,
+      "shadow_ns": 0,
+      "frozen_curve": [
+        {
+          "checkpoint": 0,
+          "successes": 0,
+          "episodes": 64,
+          "mean_success": 0.0,
+          "mean_exact_probability": 0.0
+        },
+        {
+          "checkpoint": 8,
+          "successes": 41,
+          "episodes": 64,
+          "mean_success": 0.640625,
+          "mean_exact_probability": 0.640625
+        },
+        {
+          "checkpoint": 16,
+          "successes": 50,
+          "episodes": 64,
+          "mean_success": 0.78125,
+          "mean_exact_probability": 0.78125
+        },
+        {
+          "checkpoint": 32,
+          "successes": 56,
+          "episodes": 64,
+          "mean_success": 0.875,
+          "mean_exact_probability": 0.875
+        },
+        {
+          "checkpoint": 48,
+          "successes": 60,
+          "episodes": 64,
+          "mean_success": 0.9375,
+          "mean_exact_probability": 0.9375
+        },
+        {
+          "checkpoint": 64,
+          "successes": 63,
+          "episodes": 64,
+          "mean_success": 0.984375,
+          "mean_exact_probability": 0.984375
+        }
+      ]
+    },
+    {
+      "p": 0.1,
+      "arm": "RL-RP",
+      "streams": 64,
+      "train_tasks": 4096,
+      "train_successes": 2443,
+      "successes16": 536,
+      "successes32": 1163,
+      "continued32_successes": 1280,
+      "early_AUC": 0.6042289733886719,
+      "exact_early_AUC": 0.6051269531250001,
+      "full_AUC": 0.6660366058349609,
+      "train_rollouts": 4096,
+      "train_steps": 10445,
+      "eval_rollouts": 196608,
+      "eval_steps": 498334,
+      "ordinary_backups": 10445,
+      "replay_backups": 47385,
+      "model_backups": 0,
+      "numeric_changes": 53358,
+      "fact_count_updates": 0,
+      "policy_calls": 4480,
+      "planning_edge_expansions": 0,
+      "tie_readout_candidate_scores": 0,
+      "shadow_readout_calls": 0,
+      "shadow_candidate_scores": 0,
+      "policy_ns": 40890500,
+      "update_ns": 178816200,
+      "shadow_ns": 0,
+      "frozen_curve": [
+        {
+          "checkpoint": 0,
+          "successes": 0,
+          "episodes": 32768,
+          "mean_success": 0.0,
+          "mean_exact_probability": 0.0
+        },
+        {
+          "checkpoint": 8,
+          "successes": 21239,
+          "episodes": 32768,
+          "mean_success": 0.648162841796875,
+          "mean_exact_probability": 0.6492656250000001
+        },
+        {
+          "checkpoint": 16,
+          "successes": 22739,
+          "episodes": 32768,
+          "mean_success": 0.693939208984375,
+          "mean_exact_probability": 0.6948281250000001
+        },
+        {
+          "checkpoint": 32,
+          "successes": 23850,
+          "episodes": 32768,
+          "mean_success": 0.72784423828125,
+          "mean_exact_probability": 0.7290000000000001
+        },
+        {
+          "checkpoint": 48,
+          "successes": 23850,
+          "episodes": 32768,
+          "mean_success": 0.72784423828125,
+          "mean_exact_probability": 0.7290000000000001
+        },
+        {
+          "checkpoint": 64,
+          "successes": 23850,
+          "episodes": 32768,
+          "mean_success": 0.72784423828125,
+          "mean_exact_probability": 0.7290000000000001
+        }
+      ]
+    },
+    {
+      "p": 0.1,
+      "arm": "RL-R",
+      "streams": 64,
+      "train_tasks": 4096,
+      "train_successes": 941,
+      "successes16": 111,
+      "successes32": 324,
+      "continued32_successes": 617,
+      "early_AUC": 0.17211532592773438,
+      "exact_early_AUC": 0.17085937500000004,
+      "full_AUC": 0.2643451690673828,
+      "train_rollouts": 4096,
+      "train_steps": 7825,
+      "eval_rollouts": 196608,
+      "eval_steps": 382954,
+      "ordinary_backups": 7825,
+      "replay_backups": 46574,
+      "model_backups": 0,
+      "numeric_changes": 18732,
+      "fact_count_updates": 0,
+      "policy_calls": 4480,
+      "planning_edge_expansions": 0,
+      "tie_readout_candidate_scores": 0,
+      "shadow_readout_calls": 0,
+      "shadow_candidate_scores": 0,
+      "policy_ns": 33496500,
+      "update_ns": 128271100,
+      "shadow_ns": 0,
+      "frozen_curve": [
+        {
+          "checkpoint": 0,
+          "successes": 0,
+          "episodes": 32768,
+          "mean_success": 0.0,
+          "mean_exact_probability": 0.0
+        },
+        {
+          "checkpoint": 8,
+          "successes": 4155,
+          "episodes": 32768,
+          "mean_success": 0.126800537109375,
+          "mean_exact_probability": 0.12529687500000003
+        },
+        {
+          "checkpoint": 16,
+          "successes": 6031,
+          "episodes": 32768,
+          "mean_success": 0.184051513671875,
+          "mean_exact_probability": 0.18225000000000002
+        },
+        {
+          "checkpoint": 32,
+          "successes": 9358,
+          "episodes": 32768,
+          "mean_success": 0.28558349609375,
+          "mean_exact_probability": 0.284765625
+        },
+        {
+          "checkpoint": 48,
+          "successes": 11962,
+          "episodes": 32768,
+          "mean_success": 0.36505126953125,
+          "mean_exact_probability": 0.36450000000000005
+        },
+        {
+          "checkpoint": 64,
+          "successes": 13455,
+          "episodes": 32768,
+          "mean_success": 0.410614013671875,
+          "mean_exact_probability": 0.41006250000000005
+        }
+      ]
+    },
+    {
+      "p": 0.1,
+      "arm": "F0",
+      "streams": 64,
+      "train_tasks": 4096,
+      "train_successes": 2486,
+      "successes16": 567,
+      "successes32": 1205,
+      "continued32_successes": 1281,
+      "early_AUC": 0.6368637084960938,
+      "exact_early_AUC": 0.6378750000000001,
+      "full_AUC": 0.6823539733886719,
+      "train_rollouts": 4096,
+      "train_steps": 10517,
+      "eval_rollouts": 196608,
+      "eval_steps": 503982,
+      "ordinary_backups": 0,
+      "replay_backups": 0,
+      "model_backups": 0,
+      "numeric_changes": 0,
+      "fact_count_updates": 10517,
+      "policy_calls": 4480,
+      "planning_edge_expansions": 26880,
+      "tie_readout_candidate_scores": 0,
+      "shadow_readout_calls": 0,
+      "shadow_candidate_scores": 0,
+      "policy_ns": 53286000,
+      "update_ns": 15545100,
+      "shadow_ns": 0,
+      "frozen_curve": [
+        {
+          "checkpoint": 0,
+          "successes": 0,
+          "episodes": 32768,
+          "mean_success": 0.0,
+          "mean_exact_probability": 0.0
+        },
+        {
+          "checkpoint": 8,
+          "successes": 23850,
+          "episodes": 32768,
+          "mean_success": 0.72784423828125,
+          "mean_exact_probability": 0.7290000000000001
+        },
+        {
+          "checkpoint": 16,
+          "successes": 23850,
+          "episodes": 32768,
+          "mean_success": 0.72784423828125,
+          "mean_exact_probability": 0.7290000000000001
+        },
+        {
+          "checkpoint": 32,
+          "successes": 23850,
+          "episodes": 32768,
+          "mean_success": 0.72784423828125,
+          "mean_exact_probability": 0.7290000000000001
+        },
+        {
+          "checkpoint": 48,
+          "successes": 23850,
+          "episodes": 32768,
+          "mean_success": 0.72784423828125,
+          "mean_exact_probability": 0.7290000000000001
+        },
+        {
+          "checkpoint": 64,
+          "successes": 23850,
+          "episodes": 32768,
+          "mean_success": 0.72784423828125,
+          "mean_exact_probability": 0.7290000000000001
+        }
+      ]
+    },
+    {
+      "p": 0.1,
+      "arm": "F-RP",
+      "streams": 64,
+      "train_tasks": 4096,
+      "train_successes": 2437,
+      "successes16": 518,
+      "successes32": 1156,
+      "continued32_successes": 1281,
+      "early_AUC": 0.6368637084960938,
+      "exact_early_AUC": 0.6378750000000001,
+      "full_AUC": 0.6823539733886719,
+      "train_rollouts": 4096,
+      "train_steps": 10430,
+      "eval_rollouts": 196608,
+      "eval_steps": 503982,
+      "ordinary_backups": 10430,
+      "replay_backups": 0,
+      "model_backups": 47189,
+      "numeric_changes": 56026,
+      "fact_count_updates": 10430,
+      "policy_calls": 4480,
+      "planning_edge_expansions": 0,
+      "tie_readout_candidate_scores": 0,
+      "shadow_readout_calls": 4096,
+      "shadow_candidate_scores": 24576,
+      "policy_ns": 42797800,
+      "update_ns": 282425300,
+      "shadow_ns": 55417800,
+      "frozen_curve": [
+        {
+          "checkpoint": 0,
+          "successes": 0,
+          "episodes": 32768,
+          "mean_success": 0.0,
+          "mean_exact_probability": 0.0
+        },
+        {
+          "checkpoint": 8,
+          "successes": 23850,
+          "episodes": 32768,
+          "mean_success": 0.72784423828125,
+          "mean_exact_probability": 0.7290000000000001
+        },
+        {
+          "checkpoint": 16,
+          "successes": 23850,
+          "episodes": 32768,
+          "mean_success": 0.72784423828125,
+          "mean_exact_probability": 0.7290000000000001
+        },
+        {
+          "checkpoint": 32,
+          "successes": 23850,
+          "episodes": 32768,
+          "mean_success": 0.72784423828125,
+          "mean_exact_probability": 0.7290000000000001
+        },
+        {
+          "checkpoint": 48,
+          "successes": 23850,
+          "episodes": 32768,
+          "mean_success": 0.72784423828125,
+          "mean_exact_probability": 0.7290000000000001
+        },
+        {
+          "checkpoint": 64,
+          "successes": 23850,
+          "episodes": 32768,
+          "mean_success": 0.72784423828125,
+          "mean_exact_probability": 0.7290000000000001
+        }
+      ]
+    },
+    {
+      "p": 0.1,
+      "arm": "F-R",
+      "streams": 64,
+      "train_tasks": 4096,
+      "train_successes": 1041,
+      "successes16": 124,
+      "successes32": 358,
+      "continued32_successes": 683,
+      "early_AUC": 0.18752288818359375,
+      "exact_early_AUC": 0.18652148437500002,
+      "full_AUC": 0.2876853942871094,
+      "train_rollouts": 4096,
+      "train_steps": 7966,
+      "eval_rollouts": 196608,
+      "eval_steps": 389046,
+      "ordinary_backups": 7966,
+      "replay_backups": 0,
+      "model_backups": 46586,
+      "numeric_changes": 33305,
+      "fact_count_updates": 7966,
+      "policy_calls": 4480,
+      "planning_edge_expansions": 0,
+      "tie_readout_candidate_scores": 0,
+      "shadow_readout_calls": 4096,
+      "shadow_candidate_scores": 24576,
+      "policy_ns": 36721700,
+      "update_ns": 253206900,
+      "shadow_ns": 53733200,
+      "frozen_curve": [
+        {
+          "checkpoint": 0,
+          "successes": 0,
+          "episodes": 32768,
+          "mean_success": 0.0,
+          "mean_exact_probability": 0.0
+        },
+        {
+          "checkpoint": 8,
+          "successes": 4900,
+          "episodes": 32768,
+          "mean_success": 0.1495361328125,
+          "mean_exact_probability": 0.148078125
+        },
+        {
+          "checkpoint": 16,
+          "successes": 6388,
+          "episodes": 32768,
+          "mean_success": 0.1949462890625,
+          "mean_exact_probability": 0.193640625
+        },
+        {
+          "checkpoint": 32,
+          "successes": 10097,
+          "episodes": 32768,
+          "mean_success": 0.308135986328125,
+          "mean_exact_probability": 0.30754687500000005
+        },
+        {
+          "checkpoint": 48,
+          "successes": 13084,
+          "episodes": 32768,
+          "mean_success": 0.3992919921875,
+          "mean_exact_probability": 0.39867187500000006
+        },
+        {
+          "checkpoint": 64,
+          "successes": 14571,
+          "episodes": 32768,
+          "mean_success": 0.444671630859375,
+          "mean_exact_probability": 0.44423437500000007
+        }
+      ]
+    },
+    {
+      "p": 0.1,
+      "arm": "F-RP-FT",
+      "streams": 64,
+      "train_tasks": 4096,
+      "train_successes": 2437,
+      "successes16": 518,
+      "successes32": 1156,
+      "continued32_successes": 1281,
+      "early_AUC": 0.6368637084960938,
+      "exact_early_AUC": 0.6378750000000001,
+      "full_AUC": 0.6823539733886719,
+      "train_rollouts": 4096,
+      "train_steps": 10430,
+      "eval_rollouts": 196608,
+      "eval_steps": 503982,
+      "ordinary_backups": 10430,
+      "replay_backups": 0,
+      "model_backups": 47189,
+      "numeric_changes": 56026,
+      "fact_count_updates": 10430,
+      "policy_calls": 4480,
+      "planning_edge_expansions": 0,
+      "tie_readout_candidate_scores": 26880,
+      "shadow_readout_calls": 4096,
+      "shadow_candidate_scores": 24576,
+      "policy_ns": 60767600,
+      "update_ns": 274350000,
+      "shadow_ns": 0,
+      "frozen_curve": [
+        {
+          "checkpoint": 0,
+          "successes": 0,
+          "episodes": 32768,
+          "mean_success": 0.0,
+          "mean_exact_probability": 0.0
+        },
+        {
+          "checkpoint": 8,
+          "successes": 23850,
+          "episodes": 32768,
+          "mean_success": 0.72784423828125,
+          "mean_exact_probability": 0.7290000000000001
+        },
+        {
+          "checkpoint": 16,
+          "successes": 23850,
+          "episodes": 32768,
+          "mean_success": 0.72784423828125,
+          "mean_exact_probability": 0.7290000000000001
+        },
+        {
+          "checkpoint": 32,
+          "successes": 23850,
+          "episodes": 32768,
+          "mean_success": 0.72784423828125,
+          "mean_exact_probability": 0.7290000000000001
+        },
+        {
+          "checkpoint": 48,
+          "successes": 23850,
+          "episodes": 32768,
+          "mean_success": 0.72784423828125,
+          "mean_exact_probability": 0.7290000000000001
+        },
+        {
+          "checkpoint": 64,
+          "successes": 23850,
+          "episodes": 32768,
+          "mean_success": 0.72784423828125,
+          "mean_exact_probability": 0.7290000000000001
+        }
+      ]
+    },
+    {
+      "p": 0.1,
+      "arm": "F-R-FT",
+      "streams": 64,
+      "train_tasks": 4096,
+      "train_successes": 2034,
+      "successes16": 358,
+      "successes32": 861,
+      "continued32_successes": 1173,
+      "early_AUC": 0.4522514343261719,
+      "exact_early_AUC": 0.45277734375000006,
+      "full_AUC": 0.5574321746826172,
+      "train_rollouts": 4096,
+      "train_steps": 10517,
+      "eval_rollouts": 196608,
+      "eval_steps": 503982,
+      "ordinary_backups": 10517,
+      "replay_backups": 0,
+      "model_backups": 47453,
+      "numeric_changes": 56191,
+      "fact_count_updates": 10517,
+      "policy_calls": 4480,
+      "planning_edge_expansions": 0,
+      "tie_readout_candidate_scores": 26880,
+      "shadow_readout_calls": 4096,
+      "shadow_candidate_scores": 24576,
+      "policy_ns": 62279100,
+      "update_ns": 272845200,
+      "shadow_ns": 0,
+      "frozen_curve": [
+        {
+          "checkpoint": 0,
+          "successes": 0,
+          "episodes": 32768,
+          "mean_success": 0.0,
+          "mean_exact_probability": 0.0
+        },
+        {
+          "checkpoint": 8,
+          "successes": 14915,
+          "episodes": 32768,
+          "mean_success": 0.455169677734375,
+          "mean_exact_probability": 0.45562500000000006
+        },
+        {
+          "checkpoint": 16,
+          "successes": 16403,
+          "episodes": 32768,
+          "mean_success": 0.500579833984375,
+          "mean_exact_probability": 0.5011875000000001
+        },
+        {
+          "checkpoint": 32,
+          "successes": 19758,
+          "episodes": 32768,
+          "mean_success": 0.60296630859375,
+          "mean_exact_probability": 0.6037031250000001
+        },
+        {
+          "checkpoint": 48,
+          "successes": 21990,
+          "episodes": 32768,
+          "mean_success": 0.67108154296875,
+          "mean_exact_probability": 0.672046875
+        },
+        {
+          "checkpoint": 64,
+          "successes": 23112,
+          "episodes": 32768,
+          "mean_success": 0.705322265625,
+          "mean_exact_probability": 0.7062187500000001
+        }
+      ]
+    },
+    {
+      "p": 0.1,
+      "arm": "F-RP-CT",
+      "streams": 64,
+      "train_tasks": 4096,
+      "train_successes": 2437,
+      "successes16": 518,
+      "successes32": 1156,
+      "continued32_successes": 1281,
+      "early_AUC": 0.6368637084960938,
+      "exact_early_AUC": 0.6378750000000001,
+      "full_AUC": 0.6823539733886719,
+      "train_rollouts": 4096,
+      "train_steps": 10430,
+      "eval_rollouts": 196608,
+      "eval_steps": 503982,
+      "ordinary_backups": 10430,
+      "replay_backups": 0,
+      "model_backups": 47189,
+      "numeric_changes": 56026,
+      "fact_count_updates": 10430,
+      "policy_calls": 4480,
+      "planning_edge_expansions": 0,
+      "tie_readout_candidate_scores": 26880,
+      "shadow_readout_calls": 4096,
+      "shadow_candidate_scores": 24576,
+      "policy_ns": 64130500,
+      "update_ns": 288597900,
+      "shadow_ns": 0,
+      "frozen_curve": [
+        {
+          "checkpoint": 0,
+          "successes": 0,
+          "episodes": 32768,
+          "mean_success": 0.0,
+          "mean_exact_probability": 0.0
+        },
+        {
+          "checkpoint": 8,
+          "successes": 23850,
+          "episodes": 32768,
+          "mean_success": 0.72784423828125,
+          "mean_exact_probability": 0.7290000000000001
+        },
+        {
+          "checkpoint": 16,
+          "successes": 23850,
+          "episodes": 32768,
+          "mean_success": 0.72784423828125,
+          "mean_exact_probability": 0.7290000000000001
+        },
+        {
+          "checkpoint": 32,
+          "successes": 23850,
+          "episodes": 32768,
+          "mean_success": 0.72784423828125,
+          "mean_exact_probability": 0.7290000000000001
+        },
+        {
+          "checkpoint": 48,
+          "successes": 23850,
+          "episodes": 32768,
+          "mean_success": 0.72784423828125,
+          "mean_exact_probability": 0.7290000000000001
+        },
+        {
+          "checkpoint": 64,
+          "successes": 23850,
+          "episodes": 32768,
+          "mean_success": 0.72784423828125,
+          "mean_exact_probability": 0.7290000000000001
+        }
+      ]
+    },
+    {
+      "p": 0.1,
+      "arm": "F-R-CT",
+      "streams": 64,
+      "train_tasks": 4096,
+      "train_successes": 2008,
+      "successes16": 332,
+      "successes32": 835,
+      "continued32_successes": 1173,
+      "early_AUC": 0.4494590759277344,
+      "exact_early_AUC": 0.44992968750000006,
+      "full_AUC": 0.5560359954833984,
+      "train_rollouts": 4096,
+      "train_steps": 10446,
+      "eval_rollouts": 196608,
+      "eval_steps": 503124,
+      "ordinary_backups": 10446,
+      "replay_backups": 0,
+      "model_backups": 47259,
+      "numeric_changes": 55659,
+      "fact_count_updates": 10446,
+      "policy_calls": 4480,
+      "planning_edge_expansions": 0,
+      "tie_readout_candidate_scores": 26880,
+      "shadow_readout_calls": 4096,
+      "shadow_candidate_scores": 24576,
+      "policy_ns": 62717900,
+      "update_ns": 280862200,
+      "shadow_ns": 0,
+      "frozen_curve": [
+        {
+          "checkpoint": 0,
+          "successes": 0,
+          "episodes": 32768,
+          "mean_success": 0.0,
+          "mean_exact_probability": 0.0
+        },
+        {
+          "checkpoint": 8,
+          "successes": 14549,
+          "episodes": 32768,
+          "mean_success": 0.444000244140625,
+          "mean_exact_probability": 0.44423437500000007
+        },
+        {
+          "checkpoint": 16,
+          "successes": 16403,
+          "episodes": 32768,
+          "mean_success": 0.500579833984375,
+          "mean_exact_probability": 0.5011875000000001
+        },
+        {
+          "checkpoint": 32,
+          "successes": 19758,
+          "episodes": 32768,
+          "mean_success": 0.60296630859375,
+          "mean_exact_probability": 0.6037031250000001
+        },
+        {
+          "checkpoint": 48,
+          "successes": 21990,
+          "episodes": 32768,
+          "mean_success": 0.67108154296875,
+          "mean_exact_probability": 0.672046875
+        },
+        {
+          "checkpoint": 64,
+          "successes": 23112,
+          "episodes": 32768,
+          "mean_success": 0.705322265625,
+          "mean_exact_probability": 0.7062187500000001
+        }
+      ]
+    }
+  ],
+  "comparisons": [
+    {
+      "p": 0.0,
+      "left": "F-R-FT",
+      "right": "F-R",
+      "primary": false,
+      "paired_seeds": 32,
+      "mean_early_AUC_delta": 0.37890625,
+      "median_early_AUC_delta": 0.4375,
+      "bootstrap95_low": 0.328125,
+      "bootstrap95_high": 0.419921875,
+      "positive_seeds": 29,
+      "zero_seeds": 3,
+      "negative_seeds": 0,
+      "mean_exact_early_AUC_delta": 0.37890625,
+      "mean_train32_success_delta_per_mirror": 11.171875
+    },
+    {
+      "p": 0.0,
+      "left": "F-R-FT",
+      "right": "F-R-CT",
+      "primary": false,
+      "paired_seeds": 32,
+      "mean_early_AUC_delta": 0.00390625,
+      "median_early_AUC_delta": 0.0,
+      "bootstrap95_low": 0.0,
+      "bootstrap95_high": 0.01171875,
+      "positive_seeds": 1,
+      "zero_seeds": 31,
+      "negative_seeds": 0,
+      "mean_exact_early_AUC_delta": 0.00390625,
+      "mean_train32_success_delta_per_mirror": 0.390625
+    },
+    {
+      "p": 0.0,
+      "left": "F-RP-FT",
+      "right": "F-RP",
+      "primary": false,
+      "paired_seeds": 32,
+      "mean_early_AUC_delta": 0.0,
+      "median_early_AUC_delta": 0.0,
+      "bootstrap95_low": 0.0,
+      "bootstrap95_high": 0.0,
+      "positive_seeds": 0,
+      "zero_seeds": 32,
+      "negative_seeds": 0,
+      "mean_exact_early_AUC_delta": 0.0,
+      "mean_train32_success_delta_per_mirror": 0
+    },
+    {
+      "p": 0.0,
+      "left": "F-RP-FT",
+      "right": "F-RP-CT",
+      "primary": false,
+      "paired_seeds": 32,
+      "mean_early_AUC_delta": 0.0,
+      "median_early_AUC_delta": 0.0,
+      "bootstrap95_low": 0.0,
+      "bootstrap95_high": 0.0,
+      "positive_seeds": 0,
+      "zero_seeds": 32,
+      "negative_seeds": 0,
+      "mean_exact_early_AUC_delta": 0.0,
+      "mean_train32_success_delta_per_mirror": 0
+    },
+    {
+      "p": 0.0,
+      "left": "F0",
+      "right": "RL-RP",
+      "primary": false,
+      "paired_seeds": 32,
+      "mean_early_AUC_delta": 0.0,
+      "median_early_AUC_delta": 0.0,
+      "bootstrap95_low": 0.0,
+      "bootstrap95_high": 0.0,
+      "positive_seeds": 0,
+      "zero_seeds": 32,
+      "negative_seeds": 0,
+      "mean_exact_early_AUC_delta": 0.0,
+      "mean_train32_success_delta_per_mirror": 0.015625
+    },
+    {
+      "p": 0.0,
+      "left": "F0",
+      "right": "RL-R",
+      "primary": false,
+      "paired_seeds": 32,
+      "mean_early_AUC_delta": 0.578125,
+      "median_early_AUC_delta": 0.5625,
+      "bootstrap95_low": 0.5,
+      "bootstrap95_high": 0.654296875,
+      "positive_seeds": 31,
+      "zero_seeds": 1,
+      "negative_seeds": 0,
+      "mean_exact_early_AUC_delta": 0.578125,
+      "mean_train32_success_delta_per_mirror": 17.4375
+    },
+    {
+      "p": 0.0,
+      "left": "F-R",
+      "right": "RL-R",
+      "primary": false,
+      "paired_seeds": 32,
+      "mean_early_AUC_delta": 0.0,
+      "median_early_AUC_delta": 0.0,
+      "bootstrap95_low": 0.0,
+      "bootstrap95_high": 0.0,
+      "positive_seeds": 0,
+      "zero_seeds": 32,
+      "negative_seeds": 0,
+      "mean_exact_early_AUC_delta": 0.0,
+      "mean_train32_success_delta_per_mirror": 0
+    },
+    {
+      "p": 0.0,
+      "left": "F-RP",
+      "right": "RL-RP",
+      "primary": false,
+      "paired_seeds": 32,
+      "mean_early_AUC_delta": 0.0,
+      "median_early_AUC_delta": 0.0,
+      "bootstrap95_low": 0.0,
+      "bootstrap95_high": 0.0,
+      "positive_seeds": 0,
+      "zero_seeds": 32,
+      "negative_seeds": 0,
+      "mean_exact_early_AUC_delta": 0.0,
+      "mean_train32_success_delta_per_mirror": -0.90625
+    },
+    {
+      "p": 0.0,
+      "left": "F-R-FT",
+      "right": "RL-R",
+      "primary": false,
+      "paired_seeds": 32,
+      "mean_early_AUC_delta": 0.37890625,
+      "median_early_AUC_delta": 0.4375,
+      "bootstrap95_low": 0.328125,
+      "bootstrap95_high": 0.419921875,
+      "positive_seeds": 29,
+      "zero_seeds": 3,
+      "negative_seeds": 0,
+      "mean_exact_early_AUC_delta": 0.37890625,
+      "mean_train32_success_delta_per_mirror": 11.171875
+    },
+    {
+      "p": 0.0,
+      "left": "F-RP-FT",
+      "right": "RL-RP",
+      "primary": false,
+      "paired_seeds": 32,
+      "mean_early_AUC_delta": 0.0,
+      "median_early_AUC_delta": 0.0,
+      "bootstrap95_low": 0.0,
+      "bootstrap95_high": 0.0,
+      "positive_seeds": 0,
+      "zero_seeds": 32,
+      "negative_seeds": 0,
+      "mean_exact_early_AUC_delta": 0.0,
+      "mean_train32_success_delta_per_mirror": -0.90625
+    },
+    {
+      "p": 0.0,
+      "left": "RL-RP",
+      "right": "RL-R",
+      "primary": false,
+      "paired_seeds": 32,
+      "mean_early_AUC_delta": 0.578125,
+      "median_early_AUC_delta": 0.5625,
+      "bootstrap95_low": 0.5,
+      "bootstrap95_high": 0.654296875,
+      "positive_seeds": 31,
+      "zero_seeds": 1,
+      "negative_seeds": 0,
+      "mean_exact_early_AUC_delta": 0.578125,
+      "mean_train32_success_delta_per_mirror": 17.421875
+    },
+    {
+      "p": 0.0,
+      "left": "F-RP",
+      "right": "F-R",
+      "primary": false,
+      "paired_seeds": 32,
+      "mean_early_AUC_delta": 0.578125,
+      "median_early_AUC_delta": 0.5625,
+      "bootstrap95_low": 0.5,
+      "bootstrap95_high": 0.654296875,
+      "positive_seeds": 31,
+      "zero_seeds": 1,
+      "negative_seeds": 0,
+      "mean_exact_early_AUC_delta": 0.578125,
+      "mean_train32_success_delta_per_mirror": 16.515625
+    },
+    {
+      "p": 0.0,
+      "left": "F-RP-FT",
+      "right": "F-R-FT",
+      "primary": false,
+      "paired_seeds": 32,
+      "mean_early_AUC_delta": 0.19921875,
+      "median_early_AUC_delta": 0.125,
+      "bootstrap95_low": 0.138671875,
+      "bootstrap95_high": 0.259765625,
+      "positive_seeds": 22,
+      "zero_seeds": 10,
+      "negative_seeds": 0,
+      "mean_exact_early_AUC_delta": 0.19921875,
+      "mean_train32_success_delta_per_mirror": 5.34375
+    },
+    {
+      "p": 0.0,
+      "left": "F-RP-CT",
+      "right": "F-R-CT",
+      "primary": false,
+      "paired_seeds": 32,
+      "mean_early_AUC_delta": 0.203125,
+      "median_early_AUC_delta": 0.125,
+      "bootstrap95_low": 0.142578125,
+      "bootstrap95_high": 0.263671875,
+      "positive_seeds": 22,
+      "zero_seeds": 10,
+      "negative_seeds": 0,
+      "mean_exact_early_AUC_delta": 0.203125,
+      "mean_train32_success_delta_per_mirror": 5.734375
+    },
+    {
+      "p": 0.1,
+      "left": "F-R-FT",
+      "right": "F-R",
+      "primary": true,
+      "paired_seeds": 32,
+      "mean_early_AUC_delta": 0.2647285461425781,
+      "median_early_AUC_delta": 0.3135986328125,
+      "bootstrap95_low": 0.22469959259033204,
+      "bootstrap95_high": 0.30008697509765625,
+      "positive_seeds": 28,
+      "zero_seeds": 4,
+      "negative_seeds": 0,
+      "mean_exact_early_AUC_delta": 0.266255859375,
+      "mean_train32_success_delta_per_mirror": 7.859375
+    },
+    {
+      "p": 0.1,
+      "left": "F-R-FT",
+      "right": "F-R-CT",
+      "primary": true,
+      "paired_seeds": 32,
+      "mean_early_AUC_delta": 0.0027923583984375,
+      "median_early_AUC_delta": 0.0,
+      "bootstrap95_low": 0.0,
+      "bootstrap95_high": 0.0083770751953125,
+      "positive_seeds": 1,
+      "zero_seeds": 31,
+      "negative_seeds": 0,
+      "mean_exact_early_AUC_delta": 0.0028476562500000004,
+      "mean_train32_success_delta_per_mirror": 0.40625
+    },
+    {
+      "p": 0.1,
+      "left": "F-RP-FT",
+      "right": "F-RP",
+      "primary": false,
+      "paired_seeds": 32,
+      "mean_early_AUC_delta": 0.0,
+      "median_early_AUC_delta": 0.0,
+      "bootstrap95_low": 0.0,
+      "bootstrap95_high": 0.0,
+      "positive_seeds": 0,
+      "zero_seeds": 32,
+      "negative_seeds": 0,
+      "mean_exact_early_AUC_delta": 0.0,
+      "mean_train32_success_delta_per_mirror": 0
+    },
+    {
+      "p": 0.1,
+      "left": "F-RP-FT",
+      "right": "F-RP-CT",
+      "primary": false,
+      "paired_seeds": 32,
+      "mean_early_AUC_delta": 0.0,
+      "median_early_AUC_delta": 0.0,
+      "bootstrap95_low": 0.0,
+      "bootstrap95_high": 0.0,
+      "positive_seeds": 0,
+      "zero_seeds": 32,
+      "negative_seeds": 0,
+      "mean_exact_early_AUC_delta": 0.0,
+      "mean_train32_success_delta_per_mirror": 0
+    },
+    {
+      "p": 0.1,
+      "left": "F0",
+      "right": "RL-RP",
+      "primary": false,
+      "paired_seeds": 32,
+      "mean_early_AUC_delta": 0.032634735107421875,
+      "median_early_AUC_delta": 0.0,
+      "bootstrap95_low": 0.01137542724609375,
+      "bootstrap95_high": 0.05811777114868163,
+      "positive_seeds": 7,
+      "zero_seeds": 25,
+      "negative_seeds": 0,
+      "mean_exact_early_AUC_delta": 0.032748046875000006,
+      "mean_train32_success_delta_per_mirror": 0.65625
+    },
+    {
+      "p": 0.1,
+      "left": "F0",
+      "right": "RL-R",
+      "primary": false,
+      "paired_seeds": 32,
+      "mean_early_AUC_delta": 0.4647483825683594,
+      "median_early_AUC_delta": 0.5281982421875,
+      "bootstrap95_low": 0.40781373977661134,
+      "bootstrap95_high": 0.5171629905700683,
+      "positive_seeds": 31,
+      "zero_seeds": 1,
+      "negative_seeds": 0,
+      "mean_exact_early_AUC_delta": 0.46701562500000005,
+      "mean_train32_success_delta_per_mirror": 13.765625
+    },
+    {
+      "p": 0.1,
+      "left": "F-R",
+      "right": "RL-R",
+      "primary": false,
+      "paired_seeds": 32,
+      "mean_early_AUC_delta": 0.015407562255859375,
+      "median_early_AUC_delta": 0.0,
+      "bootstrap95_low": 0.0,
+      "bootstrap95_high": 0.037433624267578125,
+      "positive_seeds": 3,
+      "zero_seeds": 29,
+      "negative_seeds": 0,
+      "mean_exact_early_AUC_delta": 0.015662109375000004,
+      "mean_train32_success_delta_per_mirror": 0.53125
+    },
+    {
+      "p": 0.1,
+      "left": "F-RP",
+      "right": "RL-RP",
+      "primary": false,
+      "paired_seeds": 32,
+      "mean_early_AUC_delta": 0.032634735107421875,
+      "median_early_AUC_delta": 0.0,
+      "bootstrap95_low": 0.01137542724609375,
+      "bootstrap95_high": 0.05811777114868163,
+      "positive_seeds": 7,
+      "zero_seeds": 25,
+      "negative_seeds": 0,
+      "mean_exact_early_AUC_delta": 0.032748046875000006,
+      "mean_train32_success_delta_per_mirror": -0.109375
+    },
+    {
+      "p": 0.1,
+      "left": "F-R-FT",
+      "right": "RL-R",
+      "primary": false,
+      "paired_seeds": 32,
+      "mean_early_AUC_delta": 0.2801361083984375,
+      "median_early_AUC_delta": 0.31488037109375,
+      "bootstrap95_low": 0.24221353530883788,
+      "bootstrap95_high": 0.3116194725036621,
+      "positive_seeds": 29,
+      "zero_seeds": 3,
+      "negative_seeds": 0,
+      "mean_exact_early_AUC_delta": 0.28191796875,
+      "mean_train32_success_delta_per_mirror": 8.390625
+    },
+    {
+      "p": 0.1,
+      "left": "F-RP-FT",
+      "right": "RL-RP",
+      "primary": false,
+      "paired_seeds": 32,
+      "mean_early_AUC_delta": 0.032634735107421875,
+      "median_early_AUC_delta": 0.0,
+      "bootstrap95_low": 0.01137542724609375,
+      "bootstrap95_high": 0.05811777114868163,
+      "positive_seeds": 7,
+      "zero_seeds": 25,
+      "negative_seeds": 0,
+      "mean_exact_early_AUC_delta": 0.032748046875000006,
+      "mean_train32_success_delta_per_mirror": -0.109375
+    },
+    {
+      "p": 0.1,
+      "left": "RL-RP",
+      "right": "RL-R",
+      "primary": false,
+      "paired_seeds": 32,
+      "mean_early_AUC_delta": 0.4321136474609375,
+      "median_early_AUC_delta": 0.428955078125,
+      "bootstrap95_low": 0.36435928344726565,
+      "bootstrap95_high": 0.4895756721496582,
+      "positive_seeds": 31,
+      "zero_seeds": 0,
+      "negative_seeds": 1,
+      "mean_exact_early_AUC_delta": 0.43426757812500005,
+      "mean_train32_success_delta_per_mirror": 13.109375
+    },
+    {
+      "p": 0.1,
+      "left": "F-RP",
+      "right": "F-R",
+      "primary": false,
+      "paired_seeds": 32,
+      "mean_early_AUC_delta": 0.4493408203125,
+      "median_early_AUC_delta": 0.46710205078125,
+      "bootstrap95_low": 0.3922117233276367,
+      "bootstrap95_high": 0.503121280670166,
+      "positive_seeds": 31,
+      "zero_seeds": 1,
+      "negative_seeds": 0,
+      "mean_exact_early_AUC_delta": 0.45135351562500003,
+      "mean_train32_success_delta_per_mirror": 12.46875
+    },
+    {
+      "p": 0.1,
+      "left": "F-RP-FT",
+      "right": "F-R-FT",
+      "primary": false,
+      "paired_seeds": 32,
+      "mean_early_AUC_delta": 0.18461227416992188,
+      "median_early_AUC_delta": 0.2276611328125,
+      "bootstrap95_low": 0.13451995849609374,
+      "bootstrap95_high": 0.23421640396118162,
+      "positive_seeds": 23,
+      "zero_seeds": 9,
+      "negative_seeds": 0,
+      "mean_exact_early_AUC_delta": 0.18509765625000002,
+      "mean_train32_success_delta_per_mirror": 4.609375
+    },
+    {
+      "p": 0.1,
+      "left": "F-RP-CT",
+      "right": "F-R-CT",
+      "primary": false,
+      "paired_seeds": 32,
+      "mean_early_AUC_delta": 0.18740463256835938,
+      "median_early_AUC_delta": 0.2276611328125,
+      "bootstrap95_low": 0.1365659713745117,
+      "bootstrap95_high": 0.23716363906860352,
+      "positive_seeds": 23,
+      "zero_seeds": 9,
+      "negative_seeds": 0,
+      "mean_exact_early_AUC_delta": 0.18794531250000002,
+      "mean_train32_success_delta_per_mirror": 5.015625
+    }
+  ],
+  "identical_training_streams": [
+    {
+      "p": 0.0,
+      "left": "F-R-FT",
+      "right": "F-R",
+      "identical_full_64_task_streams": 35,
+      "total_streams": 64
+    },
+    {
+      "p": 0.0,
+      "left": "F-R-FT",
+      "right": "F-R-CT",
+      "identical_full_64_task_streams": 37,
+      "total_streams": 64
+    },
+    {
+      "p": 0.0,
+      "left": "F-RP-FT",
+      "right": "F-RP",
+      "identical_full_64_task_streams": 64,
+      "total_streams": 64
+    },
+    {
+      "p": 0.0,
+      "left": "F-RP-FT",
+      "right": "F-RP-CT",
+      "identical_full_64_task_streams": 64,
+      "total_streams": 64
+    },
+    {
+      "p": 0.0,
+      "left": "F0",
+      "right": "RL-RP",
+      "identical_full_64_task_streams": 63,
+      "total_streams": 64
+    },
+    {
+      "p": 0.0,
+      "left": "F0",
+      "right": "RL-R",
+      "identical_full_64_task_streams": 7,
+      "total_streams": 64
+    },
+    {
+      "p": 0.0,
+      "left": "F-R",
+      "right": "RL-R",
+      "identical_full_64_task_streams": 64,
+      "total_streams": 64
+    },
+    {
+      "p": 0.0,
+      "left": "F-RP",
+      "right": "RL-RP",
+      "identical_full_64_task_streams": 27,
+      "total_streams": 64
+    },
+    {
+      "p": 0.0,
+      "left": "F-R-FT",
+      "right": "RL-R",
+      "identical_full_64_task_streams": 35,
+      "total_streams": 64
+    },
+    {
+      "p": 0.0,
+      "left": "F-RP-FT",
+      "right": "RL-RP",
+      "identical_full_64_task_streams": 27,
+      "total_streams": 64
+    },
+    {
+      "p": 0.0,
+      "left": "RL-RP",
+      "right": "RL-R",
+      "identical_full_64_task_streams": 7,
+      "total_streams": 64
+    },
+    {
+      "p": 0.0,
+      "left": "F-RP",
+      "right": "F-R",
+      "identical_full_64_task_streams": 0,
+      "total_streams": 64
+    },
+    {
+      "p": 0.0,
+      "left": "F-RP-FT",
+      "right": "F-R-FT",
+      "identical_full_64_task_streams": 23,
+      "total_streams": 64
+    },
+    {
+      "p": 0.0,
+      "left": "F-RP-CT",
+      "right": "F-R-CT",
+      "identical_full_64_task_streams": 2,
+      "total_streams": 64
+    },
+    {
+      "p": 0.1,
+      "left": "F-R-FT",
+      "right": "F-R",
+      "identical_full_64_task_streams": 30,
+      "total_streams": 64
+    },
+    {
+      "p": 0.1,
+      "left": "F-R-FT",
+      "right": "F-R-CT",
+      "identical_full_64_task_streams": 34,
+      "total_streams": 64
+    },
+    {
+      "p": 0.1,
+      "left": "F-RP-FT",
+      "right": "F-RP",
+      "identical_full_64_task_streams": 64,
+      "total_streams": 64
+    },
+    {
+      "p": 0.1,
+      "left": "F-RP-FT",
+      "right": "F-RP-CT",
+      "identical_full_64_task_streams": 64,
+      "total_streams": 64
+    },
+    {
+      "p": 0.1,
+      "left": "F0",
+      "right": "RL-RP",
+      "identical_full_64_task_streams": 22,
+      "total_streams": 64
+    },
+    {
+      "p": 0.1,
+      "left": "F0",
+      "right": "RL-R",
+      "identical_full_64_task_streams": 5,
+      "total_streams": 64
+    },
+    {
+      "p": 0.1,
+      "left": "F-R",
+      "right": "RL-R",
+      "identical_full_64_task_streams": 59,
+      "total_streams": 64
+    },
+    {
+      "p": 0.1,
+      "left": "F-RP",
+      "right": "RL-RP",
+      "identical_full_64_task_streams": 16,
+      "total_streams": 64
+    },
+    {
+      "p": 0.1,
+      "left": "F-R-FT",
+      "right": "RL-R",
+      "identical_full_64_task_streams": 26,
+      "total_streams": 64
+    },
+    {
+      "p": 0.1,
+      "left": "F-RP-FT",
+      "right": "RL-RP",
+      "identical_full_64_task_streams": 16,
+      "total_streams": 64
+    },
+    {
+      "p": 0.1,
+      "left": "RL-RP",
+      "right": "RL-R",
+      "identical_full_64_task_streams": 1,
+      "total_streams": 64
+    },
+    {
+      "p": 0.1,
+      "left": "F-RP",
+      "right": "F-R",
+      "identical_full_64_task_streams": 0,
+      "total_streams": 64
+    },
+    {
+      "p": 0.1,
+      "left": "F-RP-FT",
+      "right": "F-R-FT",
+      "identical_full_64_task_streams": 18,
+      "total_streams": 64
+    },
+    {
+      "p": 0.1,
+      "left": "F-RP-CT",
+      "right": "F-R-CT",
+      "identical_full_64_task_streams": 1,
+      "total_streams": 64
+    }
+  ],
+  "observed_targets_reached": 1047,
+  "exact_targets_reached": 1047,
+  "target_observed_exact_disagreements": 0,
+  "no_new_native_or_old_checker_calls_from_analysis": true,
+  "automation_changes": 0,
+  "statistical_unit": "32 paired independent training seed blocks; mirror-averaged, p separate; not eval episodes",
+  "analysis_wall_seconds": 0.9571145999943838
+}

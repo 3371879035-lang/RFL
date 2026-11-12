@@ -1,0 +1,1193 @@
+{
+  "complete": true,
+  "declared_input_pins": 331,
+  "diagnostic_support_records": [
+    {
+      "arm": "EvidenceValue",
+      "epoch": 0,
+      "keep_unknown": false,
+      "mode": "dq",
+      "terminal": "TIMEOUT",
+      "unknown_candidates": []
+    },
+    {
+      "arm": "EvidenceValue",
+      "epoch": 2,
+      "keep_unknown": false,
+      "mode": "dq",
+      "terminal": "TIMEOUT",
+      "unknown_candidates": [
+        "single:3"
+      ]
+    },
+    {
+      "arm": "EvidenceValue",
+      "epoch": 6,
+      "keep_unknown": false,
+      "mode": "dq",
+      "terminal": "TRAP",
+      "unknown_candidates": []
+    },
+    {
+      "arm": "EvidenceValue",
+      "epoch": 7,
+      "keep_unknown": false,
+      "mode": "dq",
+      "terminal": "TIMEOUT",
+      "unknown_candidates": []
+    },
+    {
+      "arm": "EvidenceValue",
+      "epoch": 8,
+      "keep_unknown": false,
+      "mode": "dq",
+      "terminal": "TIMEOUT",
+      "unknown_candidates": []
+    },
+    {
+      "arm": "EvidenceValue",
+      "epoch": 10,
+      "keep_unknown": false,
+      "mode": "dq",
+      "terminal": "TIMEOUT",
+      "unknown_candidates": []
+    },
+    {
+      "arm": "EvidenceValue",
+      "epoch": 11,
+      "keep_unknown": false,
+      "mode": "dq",
+      "terminal": "TIMEOUT",
+      "unknown_candidates": []
+    },
+    {
+      "arm": "EvidenceValue",
+      "epoch": 0,
+      "keep_unknown": false,
+      "mode": "patch-adaptive",
+      "terminal": "TIMEOUT",
+      "unknown_candidates": []
+    },
+    {
+      "arm": "EvidenceValue",
+      "epoch": 2,
+      "keep_unknown": false,
+      "mode": "patch-adaptive",
+      "terminal": "TIMEOUT",
+      "unknown_candidates": [
+        "single:3"
+      ]
+    },
+    {
+      "arm": "EvidenceValue",
+      "epoch": 6,
+      "keep_unknown": false,
+      "mode": "patch-adaptive",
+      "terminal": "TRAP",
+      "unknown_candidates": []
+    }
+  ],
+  "frozen_parameter_updates": 0,
+  "historical_model_training_probe_cost": 196,
+  "native_counts": {
+    "rollout": 208,
+    "step": 1738,
+    "transaction": 178
+  },
+  "native_first_exit": 0,
+  "new_training_or_candidate_probe_tasks": 0,
+  "notes": "One fixed14task stream per mode/arm, repeated actual failure diagnosis and persistent fullR+L, not independent seed inference. Read-only probes are measurements, not task learning or success attribution. Dynamic trap phases separate from clean retention checks.",
+  "old_checker_or_native_reruns": 0,
+  "online_diagnostic_edit_attempts": 67,
+  "ordinary_full_R_L_updates_verified": 112,
+  "probe_steps": 848,
+  "raw_file": {
+    "bytes": 6715939,
+    "sha256": "66db8dc4416b305535ab98687c9f58ab47627902aa747fb68c4e145a81065b77"
+  },
+  "read_only_probe_draws_TD_diagnostic_writes": 0,
+  "read_only_probe_rollouts": 96,
+  "records": 651,
+  "schema": "V122_STDLIB_PERSISTENT_RECURRENT_STREAM_REVIEW",
+  "scientific_qualification": false,
+  "stream_metrics": [
+    {
+      "arms": {
+        "AlwaysClear": {
+          "diagnostic_calls": 5,
+          "diagnostic_edit_attempts": 27,
+          "diagnostic_transactions": 5,
+          "outcomes": [
+            "TIMEOUT",
+            "SUCCESS",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "TRAP",
+            "TRAP",
+            "TRAP",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "retention_banks": [
+            {
+              "completed_tasks": 0,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 2,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 4,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                }
+              ]
+            },
+            {
+              "completed_tasks": 6,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                }
+              ]
+            },
+            {
+              "completed_tasks": 9,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                }
+              ]
+            },
+            {
+              "completed_tasks": 14,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                }
+              ]
+            }
+          ],
+          "returns": [
+            -1.24,
+            0.88,
+            -1.24,
+            0.88,
+            0.88,
+            0.88,
+            -1.02,
+            -1.02,
+            -1.02,
+            0.88,
+            0.88,
+            0.88,
+            0.88,
+            0.88
+          ],
+          "successes": 9,
+          "task_return_mean": 0.16999999999999998,
+          "task_return_sum": 2.38,
+          "tasks": 14
+        },
+        "EvidenceValue": {
+          "diagnostic_calls": 7,
+          "diagnostic_edit_attempts": 6,
+          "diagnostic_transactions": 6,
+          "outcomes": [
+            "TIMEOUT",
+            "SUCCESS",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "TRAP",
+            "TIMEOUT",
+            "TIMEOUT",
+            "SUCCESS",
+            "TIMEOUT",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "retention_banks": [
+            {
+              "completed_tasks": 0,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 2,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 4,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                }
+              ]
+            },
+            {
+              "completed_tasks": 6,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                }
+              ]
+            },
+            {
+              "completed_tasks": 9,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                }
+              ]
+            },
+            {
+              "completed_tasks": 14,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                }
+              ]
+            }
+          ],
+          "returns": [
+            -1.24,
+            0.88,
+            -1.24,
+            0.88,
+            0.88,
+            0.88,
+            -1.02,
+            -1.24,
+            -1.24,
+            0.88,
+            -1.24,
+            -1.24,
+            0.88,
+            0.88
+          ],
+          "successes": 7,
+          "task_return_mean": -0.16428571428571428,
+          "task_return_sum": -2.3,
+          "tasks": 14
+        },
+        "FrozenOrdinal": {
+          "diagnostic_calls": 10,
+          "diagnostic_edit_attempts": 9,
+          "diagnostic_transactions": 9,
+          "outcomes": [
+            "TIMEOUT",
+            "TIMEOUT",
+            "TIMEOUT",
+            "TIMEOUT",
+            "TIMEOUT",
+            "SUCCESS",
+            "TRAP",
+            "TIMEOUT",
+            "TIMEOUT",
+            "SUCCESS",
+            "TIMEOUT",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "retention_banks": [
+            {
+              "completed_tasks": 0,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 2,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 4,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.76
+                }
+              ]
+            },
+            {
+              "completed_tasks": 6,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.76
+                }
+              ]
+            },
+            {
+              "completed_tasks": 9,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.76
+                }
+              ]
+            },
+            {
+              "completed_tasks": 14,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.76
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.76
+                }
+              ]
+            }
+          ],
+          "returns": [
+            -1.24,
+            -1.24,
+            -1.24,
+            -1.24,
+            -1.24,
+            0.76,
+            -1.02,
+            -1.24,
+            -1.24,
+            0.76,
+            -1.24,
+            -1.24,
+            0.76,
+            0.76
+          ],
+          "successes": 4,
+          "task_return_mean": -0.6528571428571429,
+          "task_return_sum": -9.14,
+          "tasks": 14
+        },
+        "TaskTD": {
+          "diagnostic_calls": 0,
+          "diagnostic_edit_attempts": 0,
+          "diagnostic_transactions": 0,
+          "outcomes": [
+            "TIMEOUT",
+            "TIMEOUT",
+            "TIMEOUT",
+            "TIMEOUT",
+            "TIMEOUT",
+            "SUCCESS",
+            "TRAP",
+            "TIMEOUT",
+            "TIMEOUT",
+            "SUCCESS",
+            "TIMEOUT",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "retention_banks": [
+            {
+              "completed_tasks": 0,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 2,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 4,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.76
+                }
+              ]
+            },
+            {
+              "completed_tasks": 6,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.76
+                }
+              ]
+            },
+            {
+              "completed_tasks": 9,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.76
+                }
+              ]
+            },
+            {
+              "completed_tasks": 14,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.76
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.76
+                }
+              ]
+            }
+          ],
+          "returns": [
+            -1.24,
+            -1.24,
+            -1.24,
+            -1.24,
+            -1.24,
+            0.76,
+            -1.02,
+            -1.24,
+            -1.24,
+            0.76,
+            -1.24,
+            -1.24,
+            0.76,
+            0.76
+          ],
+          "successes": 4,
+          "task_return_mean": -0.6528571428571429,
+          "task_return_sum": -9.14,
+          "tasks": 14
+        }
+      },
+      "mode": "dq"
+    },
+    {
+      "arms": {
+        "AlwaysClear": {
+          "diagnostic_calls": 3,
+          "diagnostic_edit_attempts": 25,
+          "diagnostic_transactions": 3,
+          "outcomes": [
+            "TIMEOUT",
+            "SUCCESS",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "TRAP",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "retention_banks": [
+            {
+              "completed_tasks": 0,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 2,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 4,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                }
+              ]
+            },
+            {
+              "completed_tasks": 6,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                }
+              ]
+            },
+            {
+              "completed_tasks": 9,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                }
+              ]
+            },
+            {
+              "completed_tasks": 14,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                }
+              ]
+            }
+          ],
+          "returns": [
+            -1.24,
+            0.88,
+            -1.24,
+            0.88,
+            0.88,
+            0.88,
+            -1.02,
+            0.86,
+            0.86,
+            0.88,
+            0.86,
+            0.86,
+            0.88,
+            0.88
+          ],
+          "successes": 11,
+          "task_return_mean": 0.43571428571428567,
+          "task_return_sum": 6.1,
+          "tasks": 14
+        },
+        "EvidenceValue": {
+          "diagnostic_calls": 3,
+          "diagnostic_edit_attempts": 0,
+          "diagnostic_transactions": 0,
+          "outcomes": [
+            "TIMEOUT",
+            "SUCCESS",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "TRAP",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "retention_banks": [
+            {
+              "completed_tasks": 0,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 2,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 4,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                }
+              ]
+            },
+            {
+              "completed_tasks": 6,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                }
+              ]
+            },
+            {
+              "completed_tasks": 9,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                }
+              ]
+            },
+            {
+              "completed_tasks": 14,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                }
+              ]
+            }
+          ],
+          "returns": [
+            -1.24,
+            0.88,
+            -1.24,
+            0.88,
+            0.88,
+            0.88,
+            -1.02,
+            0.86,
+            0.86,
+            0.88,
+            0.86,
+            0.86,
+            0.88,
+            0.88
+          ],
+          "successes": 11,
+          "task_return_mean": 0.43571428571428567,
+          "task_return_sum": 6.1,
+          "tasks": 14
+        },
+        "FrozenOrdinal": {
+          "diagnostic_calls": 3,
+          "diagnostic_edit_attempts": 0,
+          "diagnostic_transactions": 0,
+          "outcomes": [
+            "TIMEOUT",
+            "SUCCESS",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "TRAP",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "retention_banks": [
+            {
+              "completed_tasks": 0,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 2,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 4,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                }
+              ]
+            },
+            {
+              "completed_tasks": 6,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                }
+              ]
+            },
+            {
+              "completed_tasks": 9,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                }
+              ]
+            },
+            {
+              "completed_tasks": 14,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                }
+              ]
+            }
+          ],
+          "returns": [
+            -1.24,
+            0.88,
+            -1.24,
+            0.88,
+            0.88,
+            0.88,
+            -1.02,
+            0.86,
+            0.86,
+            0.88,
+            0.86,
+            0.86,
+            0.88,
+            0.88
+          ],
+          "successes": 11,
+          "task_return_mean": 0.43571428571428567,
+          "task_return_sum": 6.1,
+          "tasks": 14
+        },
+        "TaskTD": {
+          "diagnostic_calls": 0,
+          "diagnostic_edit_attempts": 0,
+          "diagnostic_transactions": 0,
+          "outcomes": [
+            "TIMEOUT",
+            "SUCCESS",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "TRAP",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "retention_banks": [
+            {
+              "completed_tasks": 0,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 2,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "TIMEOUT",
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 4,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                }
+              ]
+            },
+            {
+              "completed_tasks": 6,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                }
+              ]
+            },
+            {
+              "completed_tasks": 9,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                }
+              ]
+            },
+            {
+              "completed_tasks": 14,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "return": 0.86
+                },
+                {
+                  "kappa": 1,
+                  "outcome": "SUCCESS",
+                  "return": 0.88
+                }
+              ]
+            }
+          ],
+          "returns": [
+            -1.24,
+            0.88,
+            -1.24,
+            0.88,
+            0.88,
+            0.88,
+            -1.02,
+            0.86,
+            0.86,
+            0.88,
+            0.86,
+            0.86,
+            0.88,
+            0.88
+          ],
+          "successes": 11,
+          "task_return_mean": 0.43571428571428567,
+          "task_return_sum": 6.1,
+          "tasks": 14
+        }
+      },
+      "mode": "patch-adaptive"
+    }
+  ],
+  "stream_roles": 8,
+  "stream_steps": 890,
+  "success_diagnostics": 0,
+  "tasks_per_role": 14
+}

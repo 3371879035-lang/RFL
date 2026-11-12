@@ -1,0 +1,860 @@
+{
+  "role": "EXTERNAL_ENGINEERING32_SECOND16_PARALLEL_START_OBSERVATION_NOT_NATIVE_CONTROLLER_RECEIPT",
+  "observed_at": "2026-10-09T10:08:46.5530762Z",
+  "root": "D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009",
+  "current_processes": [
+    {
+      "pid": 9924,
+      "parent_pid": 24856,
+      "command_line": "\"C:\\Users\\huani\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe\" -NoProfile -NonInteractive -WindowStyle Hidden -File \"D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009\\scripts\\launch_a96_pipeline.ps1\"",
+      "start_utc": "2026-10-09T07:48:59.3389540Z",
+      "start_utc_ticks": "639271289393389540",
+      "cpu_seconds": 5.234375,
+      "working_set_bytes": 90451968
+    },
+    {
+      "pid": 26592,
+      "parent_pid": 9924,
+      "command_line": "\"D:\\python\\python.exe\" -u -B -X utf8 \"D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009\\scripts\\run_a96_pipeline.py\"",
+      "start_utc": "2026-10-09T07:49:01.3910189Z",
+      "start_utc_ticks": "639271289413910189",
+      "cpu_seconds": 1.9375,
+      "working_set_bytes": 18894848
+    },
+    {
+      "pid": 38332,
+      "parent_pid": 26592,
+      "command_line": "D:\\python\\python.exe -u -B -X utf8 scripts/benchmark_f0_runtime.py --output-dir D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009\\experiments\\v03r\\a96_dense\\f0_runtime",
+      "start_utc": "2026-10-09T08:07:27.3567858Z",
+      "start_utc_ticks": "639271300473567858",
+      "cpu_seconds": 1.015625,
+      "working_set_bytes": 26365952
+    },
+    {
+      "pid": 40828,
+      "parent_pid": 38332,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=38332, pipe_handle=540)\" \"--multiprocessing-fork\"",
+      "start_utc": "2026-10-09T08:52:53.2244870Z",
+      "start_utc_ticks": "639271327732244870",
+      "cpu_seconds": 2665,
+      "working_set_bytes": 71872512
+    },
+    {
+      "pid": 30184,
+      "parent_pid": 38332,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=38332, pipe_handle=536)\" \"--multiprocessing-fork\"",
+      "start_utc": "2026-10-09T08:52:53.2412139Z",
+      "start_utc_ticks": "639271327732412139",
+      "cpu_seconds": 2682.3125,
+      "working_set_bytes": 73891840
+    },
+    {
+      "pid": 41772,
+      "parent_pid": 38332,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=38332, pipe_handle=432)\" \"--multiprocessing-fork\"",
+      "start_utc": "2026-10-09T08:52:53.2515784Z",
+      "start_utc_ticks": "639271327732515784",
+      "cpu_seconds": 2671.5625,
+      "working_set_bytes": 72765440
+    },
+    {
+      "pid": 39448,
+      "parent_pid": 38332,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=38332, pipe_handle=476)\" \"--multiprocessing-fork\"",
+      "start_utc": "2026-10-09T08:52:53.2614249Z",
+      "start_utc_ticks": "639271327732614249",
+      "cpu_seconds": 2685.84375,
+      "working_set_bytes": 70676480
+    },
+    {
+      "pid": 14716,
+      "parent_pid": 38332,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=38332, pipe_handle=488)\" \"--multiprocessing-fork\"",
+      "start_utc": "2026-10-09T08:52:53.2746363Z",
+      "start_utc_ticks": "639271327732746363",
+      "cpu_seconds": 2675.921875,
+      "working_set_bytes": 72355840
+    },
+    {
+      "pid": 25000,
+      "parent_pid": 38332,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=38332, pipe_handle=392)\" \"--multiprocessing-fork\"",
+      "start_utc": "2026-10-09T08:52:53.2835576Z",
+      "start_utc_ticks": "639271327732835576",
+      "cpu_seconds": 2688.640625,
+      "working_set_bytes": 71983104
+    },
+    {
+      "pid": 41640,
+      "parent_pid": 38332,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=38332, pipe_handle=344)\" \"--multiprocessing-fork\"",
+      "start_utc": "2026-10-09T08:52:53.2961197Z",
+      "start_utc_ticks": "639271327732961197",
+      "cpu_seconds": 2672.203125,
+      "working_set_bytes": 72269824
+    },
+    {
+      "pid": 9088,
+      "parent_pid": 38332,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=38332, pipe_handle=584)\" \"--multiprocessing-fork\"",
+      "start_utc": "2026-10-09T08:52:53.3056148Z",
+      "start_utc_ticks": "639271327733056148",
+      "cpu_seconds": 2682.75,
+      "working_set_bytes": 72245248
+    },
+    {
+      "pid": 39808,
+      "parent_pid": 38332,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=38332, pipe_handle=460)\" \"--multiprocessing-fork\"",
+      "start_utc": "2026-10-09T08:52:53.3152093Z",
+      "start_utc_ticks": "639271327733152093",
+      "cpu_seconds": 2671.953125,
+      "working_set_bytes": 71782400
+    },
+    {
+      "pid": 42032,
+      "parent_pid": 38332,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=38332, pipe_handle=684)\" \"--multiprocessing-fork\"",
+      "start_utc": "2026-10-09T08:52:53.3253946Z",
+      "start_utc_ticks": "639271327733253946",
+      "cpu_seconds": 2679.25,
+      "working_set_bytes": 71606272
+    },
+    {
+      "pid": 42036,
+      "parent_pid": 38332,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=38332, pipe_handle=712)\" \"--multiprocessing-fork\"",
+      "start_utc": "2026-10-09T08:52:53.3364610Z",
+      "start_utc_ticks": "639271327733364610",
+      "cpu_seconds": 2672.078125,
+      "working_set_bytes": 71413760
+    },
+    {
+      "pid": 38476,
+      "parent_pid": 38332,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=38332, pipe_handle=692)\" \"--multiprocessing-fork\"",
+      "start_utc": "2026-10-09T08:52:53.3477049Z",
+      "start_utc_ticks": "639271327733477049",
+      "cpu_seconds": 2681.296875,
+      "working_set_bytes": 72396800
+    },
+    {
+      "pid": 34548,
+      "parent_pid": 38332,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=38332, pipe_handle=616)\" \"--multiprocessing-fork\"",
+      "start_utc": "2026-10-09T08:52:53.3572442Z",
+      "start_utc_ticks": "639271327733572442",
+      "cpu_seconds": 2673.28125,
+      "working_set_bytes": 71385088
+    },
+    {
+      "pid": 31960,
+      "parent_pid": 38332,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=38332, pipe_handle=756)\" \"--multiprocessing-fork\"",
+      "start_utc": "2026-10-09T08:52:53.3676458Z",
+      "start_utc_ticks": "639271327733676458",
+      "cpu_seconds": 2683.0625,
+      "working_set_bytes": 72654848
+    },
+    {
+      "pid": 14972,
+      "parent_pid": 38332,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=38332, pipe_handle=760)\" \"--multiprocessing-fork\"",
+      "start_utc": "2026-10-09T08:52:53.3761664Z",
+      "start_utc_ticks": "639271327733761664",
+      "cpu_seconds": 2673.515625,
+      "working_set_bytes": 72359936
+    },
+    {
+      "pid": 15744,
+      "parent_pid": 38332,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=38332, pipe_handle=820)\" \"--multiprocessing-fork\"",
+      "start_utc": "2026-10-09T08:52:53.3855528Z",
+      "start_utc_ticks": "639271327733855528",
+      "cpu_seconds": 2688.5625,
+      "working_set_bytes": 72642560
+    }
+  ],
+  "native_runtime_stdout": [
+    "gate 1/6 exit=0: python -m pytest -q",
+    "gate 2/6 exit=0: python scripts/spec_audit.py",
+    "gate 3/6 exit=0: python scripts/b2_view_gate_selfcheck.py",
+    "gate 4/6 exit=0: python scripts/a91_training_gate_selfcheck.py",
+    "gate 5/6 exit=0: python scripts/run_calibration.py",
+    "gate 6/6 exit=0: python scripts/f0_manifest_selfcheck.py",
+    "SEED_STARTED seed=2026101200 pid=44100",
+    "SEED_STARTED seed=2026101201 pid=25440",
+    "SEED_STARTED seed=2026101202 pid=7944",
+    "SEED_STARTED seed=2026101203 pid=43360",
+    "SEED_STARTED seed=2026101204 pid=38348",
+    "SEED_COMPLETED seed=2026101203 pid=43360 records=577",
+    "SEED_COMPLETED seed=2026101202 pid=7944 records=577",
+    "SEED_COMPLETED seed=2026101204 pid=38348 records=577",
+    "SEED_COMPLETED seed=2026101201 pid=25440 records=577",
+    "SEED_COMPLETED seed=2026101200 pid=44100 records=577",
+    "SEED_STARTED seed=2026101205 pid=9088",
+    "SEED_STARTED seed=2026101206 pid=40828",
+    "SEED_STARTED seed=2026101207 pid=42032",
+    "SEED_STARTED seed=2026101208 pid=15744",
+    "SEED_STARTED seed=2026101209 pid=41772",
+    "SEED_STARTED seed=2026101210 pid=38476",
+    "SEED_STARTED seed=2026101211 pid=41640",
+    "SEED_STARTED seed=2026101212 pid=31960",
+    "SEED_STARTED seed=2026101213 pid=25000",
+    "SEED_STARTED seed=2026101214 pid=14972",
+    "SEED_STARTED seed=2026101215 pid=39808",
+    "SEED_STARTED seed=2026101216 pid=34548",
+    "SEED_STARTED seed=2026101217 pid=14716",
+    "SEED_STARTED seed=2026101218 pid=39448",
+    "SEED_STARTED seed=2026101219 pid=30184",
+    "SEED_STARTED seed=2026101220 pid=42036",
+    "SEED_COMPLETED seed=2026101218 pid=39448 records=577",
+    "SEED_STARTED seed=2026101221 pid=39448",
+    "SEED_COMPLETED seed=2026101213 pid=25000 records=577",
+    "SEED_STARTED seed=2026101222 pid=25000",
+    "SEED_COMPLETED seed=2026101207 pid=42032 records=577",
+    "SEED_STARTED seed=2026101223 pid=42032",
+    "SEED_COMPLETED seed=2026101208 pid=15744 records=577",
+    "SEED_STARTED seed=2026101224 pid=15744",
+    "SEED_COMPLETED seed=2026101205 pid=9088 records=577",
+    "SEED_STARTED seed=2026101225 pid=9088",
+    "SEED_COMPLETED seed=2026101216 pid=34548 records=577",
+    "SEED_STARTED seed=2026101226 pid=34548",
+    "SEED_COMPLETED seed=2026101217 pid=14716 records=577",
+    "SEED_STARTED seed=2026101227 pid=14716",
+    "SEED_COMPLETED seed=2026101219 pid=30184 records=577",
+    "SEED_STARTED seed=2026101228 pid=30184",
+    "SEED_COMPLETED seed=2026101206 pid=40828 records=577",
+    "SEED_STARTED seed=2026101229 pid=40828",
+    "SEED_COMPLETED seed=2026101211 pid=41640 records=577",
+    "SEED_STARTED seed=2026101230 pid=41640",
+    "SEED_COMPLETED seed=2026101212 pid=31960 records=577",
+    "SEED_STARTED seed=2026101231 pid=31960",
+    "SEED_COMPLETED seed=2026101215 pid=39808 records=577",
+    "SEED_STARTED seed=2026101232 pid=39808",
+    "SEED_COMPLETED seed=2026101210 pid=38476 records=577",
+    "SEED_STARTED seed=2026101233 pid=38476",
+    "SEED_COMPLETED seed=2026101220 pid=42036 records=577",
+    "SEED_STARTED seed=2026101234 pid=42036",
+    "SEED_COMPLETED seed=2026101214 pid=14972 records=577",
+    "SEED_STARTED seed=2026101235 pid=14972",
+    "SEED_COMPLETED seed=2026101209 pid=41772 records=577",
+    "SEED_STARTED seed=2026101236 pid=41772"
+  ],
+  "native_seed_starts": [
+    {
+      "seed": 2026101200,
+      "pid": 44100
+    },
+    {
+      "seed": 2026101201,
+      "pid": 25440
+    },
+    {
+      "seed": 2026101202,
+      "pid": 7944
+    },
+    {
+      "seed": 2026101203,
+      "pid": 43360
+    },
+    {
+      "seed": 2026101204,
+      "pid": 38348
+    },
+    {
+      "seed": 2026101205,
+      "pid": 9088
+    },
+    {
+      "seed": 2026101206,
+      "pid": 40828
+    },
+    {
+      "seed": 2026101207,
+      "pid": 42032
+    },
+    {
+      "seed": 2026101208,
+      "pid": 15744
+    },
+    {
+      "seed": 2026101209,
+      "pid": 41772
+    },
+    {
+      "seed": 2026101210,
+      "pid": 38476
+    },
+    {
+      "seed": 2026101211,
+      "pid": 41640
+    },
+    {
+      "seed": 2026101212,
+      "pid": 31960
+    },
+    {
+      "seed": 2026101213,
+      "pid": 25000
+    },
+    {
+      "seed": 2026101214,
+      "pid": 14972
+    },
+    {
+      "seed": 2026101215,
+      "pid": 39808
+    },
+    {
+      "seed": 2026101216,
+      "pid": 34548
+    },
+    {
+      "seed": 2026101217,
+      "pid": 14716
+    },
+    {
+      "seed": 2026101218,
+      "pid": 39448
+    },
+    {
+      "seed": 2026101219,
+      "pid": 30184
+    },
+    {
+      "seed": 2026101220,
+      "pid": 42036
+    },
+    {
+      "seed": 2026101221,
+      "pid": 39448
+    },
+    {
+      "seed": 2026101222,
+      "pid": 25000
+    },
+    {
+      "seed": 2026101223,
+      "pid": 42032
+    },
+    {
+      "seed": 2026101224,
+      "pid": 15744
+    },
+    {
+      "seed": 2026101225,
+      "pid": 9088
+    },
+    {
+      "seed": 2026101226,
+      "pid": 34548
+    },
+    {
+      "seed": 2026101227,
+      "pid": 14716
+    },
+    {
+      "seed": 2026101228,
+      "pid": 30184
+    },
+    {
+      "seed": 2026101229,
+      "pid": 40828
+    },
+    {
+      "seed": 2026101230,
+      "pid": 41640
+    },
+    {
+      "seed": 2026101231,
+      "pid": 31960
+    },
+    {
+      "seed": 2026101232,
+      "pid": 39808
+    },
+    {
+      "seed": 2026101233,
+      "pid": 38476
+    },
+    {
+      "seed": 2026101234,
+      "pid": 42036
+    },
+    {
+      "seed": 2026101235,
+      "pid": 14972
+    },
+    {
+      "seed": 2026101236,
+      "pid": 41772
+    }
+  ],
+  "native_worker_completions": [
+    {
+      "seed": 2026101203,
+      "pid": 43360,
+      "records": 577
+    },
+    {
+      "seed": 2026101202,
+      "pid": 7944,
+      "records": 577
+    },
+    {
+      "seed": 2026101204,
+      "pid": 38348,
+      "records": 577
+    },
+    {
+      "seed": 2026101201,
+      "pid": 25440,
+      "records": 577
+    },
+    {
+      "seed": 2026101200,
+      "pid": 44100,
+      "records": 577
+    },
+    {
+      "seed": 2026101218,
+      "pid": 39448,
+      "records": 577
+    },
+    {
+      "seed": 2026101213,
+      "pid": 25000,
+      "records": 577
+    },
+    {
+      "seed": 2026101207,
+      "pid": 42032,
+      "records": 577
+    },
+    {
+      "seed": 2026101208,
+      "pid": 15744,
+      "records": 577
+    },
+    {
+      "seed": 2026101205,
+      "pid": 9088,
+      "records": 577
+    },
+    {
+      "seed": 2026101216,
+      "pid": 34548,
+      "records": 577
+    },
+    {
+      "seed": 2026101217,
+      "pid": 14716,
+      "records": 577
+    },
+    {
+      "seed": 2026101219,
+      "pid": 30184,
+      "records": 577
+    },
+    {
+      "seed": 2026101206,
+      "pid": 40828,
+      "records": 577
+    },
+    {
+      "seed": 2026101211,
+      "pid": 41640,
+      "records": 577
+    },
+    {
+      "seed": 2026101212,
+      "pid": 31960,
+      "records": 577
+    },
+    {
+      "seed": 2026101215,
+      "pid": 39808,
+      "records": 577
+    },
+    {
+      "seed": 2026101210,
+      "pid": 38476,
+      "records": 577
+    },
+    {
+      "seed": 2026101220,
+      "pid": 42036,
+      "records": 577
+    },
+    {
+      "seed": 2026101214,
+      "pid": 14972,
+      "records": 577
+    },
+    {
+      "seed": 2026101209,
+      "pid": 41772,
+      "records": 577
+    }
+  ],
+  "control_sha256": {
+    "controller": "bb9a1989d8e7f67b3dca6065a51f518e72dd87806501f3547c71c7b792673f4d",
+    "launcher": "5d49fe0752cc95caa7dcf1d814f6706a5e927771eac6eebaa3c081adb0a90d17",
+    "benchmark": "79891a6f52084fba060bb07fc2e68956ae5b1ccb0a7fa05a9549f256cb8182a6"
+  },
+  "terminal_presence": [
+    {
+      "name": "full_runtime.receipt.json",
+      "exists": false
+    },
+    {
+      "name": "pipeline_result.json",
+      "exists": false
+    },
+    {
+      "name": "pipeline_failure.json",
+      "exists": false
+    },
+    {
+      "name": "pipeline_exit.json",
+      "exists": false
+    }
+  ],
+  "pipeline_stderr": null,
+  "runtime_stderr": null,
+  "stable_boundary_verification": {
+    "role": "READ_ONLY_STABLE_BOUNDARY_CHECK_NOT_NATIVE_RECEIPT",
+    "observed_at": "2026-10-09T10:09:27.699775+00:00",
+    "source_count": 313,
+    "source_digest": "1dfd80ce49255231998b70fca2b7bcd72e0940822a1bf9d4a8e731603ccc4838",
+    "committed_bytes_match": true,
+    "registration_valid": true,
+    "parent_bytes_unchanged": true,
+    "old_compressed_shards": 32,
+    "old_native_files": 11,
+    "review_sha256": "76ae46a93edb46779fea4b23b8fc1e9efc3c7301e72af5dd900488fd22e1df09",
+    "gates": [
+      {
+        "path": "experiments/v03r/a96_dense/pipeline/acceptance_gates/gate-01.receipt.json",
+        "sha256": "82207b7003483e0e2c41e0c6cd3da1154104b32ab1071ef29bd0bc994205fb98",
+        "native_exit_code": 0,
+        "receipt_origin": "native_subprocess_wait"
+      },
+      {
+        "path": "experiments/v03r/a96_dense/pipeline/acceptance_gates/gate-02.receipt.json",
+        "sha256": "153b9b34c63e60a57900d08c845261fe2c42c03517f1dd11c5bb82206d87306c",
+        "native_exit_code": 0,
+        "receipt_origin": "native_subprocess_wait"
+      },
+      {
+        "path": "experiments/v03r/a96_dense/pipeline/acceptance_gates/gate-03.receipt.json",
+        "sha256": "a12073e655a06f6cf25436c6953999cd30d6d3e2e5c91f5b4d034259b5f34d43",
+        "native_exit_code": 0,
+        "receipt_origin": "native_subprocess_wait"
+      },
+      {
+        "path": "experiments/v03r/a96_dense/pipeline/acceptance_gates/gate-04.receipt.json",
+        "sha256": "7124c1572de1eceffb73eebf03be00498ec9522d1dc826749ed049ddc373a101",
+        "native_exit_code": 0,
+        "receipt_origin": "native_subprocess_wait"
+      },
+      {
+        "path": "experiments/v03r/a96_dense/pipeline/acceptance_gates/gate-05.receipt.json",
+        "sha256": "f2ba00adce3abdf096b065cab8cc5ce4a0fa07e4115230464396e2b5b48c0bb6",
+        "native_exit_code": 0,
+        "receipt_origin": "native_subprocess_wait"
+      },
+      {
+        "path": "experiments/v03r/a96_dense/pipeline/acceptance_gates/gate-06.receipt.json",
+        "sha256": "c951a51cdaf5e3af12a7ce3175d050eddc01ecdd9063d1cfd70f9760177b2da8",
+        "native_exit_code": 0,
+        "receipt_origin": "native_subprocess_wait"
+      },
+      {
+        "path": "experiments/v03r/a96_dense/f0_runtime/gates/gate-01.receipt.json",
+        "sha256": "bbaa7d20dc1640b151c42c41d48f4c56a3961fc81624fdd00085e7768bf491c5",
+        "native_exit_code": 0,
+        "receipt_origin": "native_subprocess_wait"
+      },
+      {
+        "path": "experiments/v03r/a96_dense/f0_runtime/gates/gate-02.receipt.json",
+        "sha256": "1a5875b2b2644b963d9d8902251f963cd8cff39fb29e2d7aea9e7dea6f610617",
+        "native_exit_code": 0,
+        "receipt_origin": "native_subprocess_wait"
+      },
+      {
+        "path": "experiments/v03r/a96_dense/f0_runtime/gates/gate-03.receipt.json",
+        "sha256": "b8f98bb2494ce22eb6cd7d8c29b9c967f003baa01e9ee7629bed1de4d88bb8e6",
+        "native_exit_code": 0,
+        "receipt_origin": "native_subprocess_wait"
+      },
+      {
+        "path": "experiments/v03r/a96_dense/f0_runtime/gates/gate-04.receipt.json",
+        "sha256": "be01e9a826c6af14e8e1474eff6603006b051f0233dfcd9684887017dc151296",
+        "native_exit_code": 0,
+        "receipt_origin": "native_subprocess_wait"
+      },
+      {
+        "path": "experiments/v03r/a96_dense/f0_runtime/gates/gate-05.receipt.json",
+        "sha256": "1853530d265bf7ed07df68d5549549e4dd81423092d10966e4eb7b1e02cd7e91",
+        "native_exit_code": 0,
+        "receipt_origin": "native_subprocess_wait"
+      },
+      {
+        "path": "experiments/v03r/a96_dense/f0_runtime/gates/gate-06.receipt.json",
+        "sha256": "a1181cfec7276aa52ce42a64036d906ff6e2776b7151283e508d2775afd79560",
+        "native_exit_code": 0,
+        "receipt_origin": "native_subprocess_wait"
+      }
+    ],
+    "regressions": [
+      {
+        "path": "experiments/v03r/a96_dense/pipeline/acceptance_gates",
+        "counts": {
+          "tests": 1624,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 1,
+          "passed": 1623,
+          "skipped_cases": [
+            {
+              "classname": "tests.rebuild.test_b2_acquisition",
+              "name": "test_12_a_site_no_episode_consults_shares_the_generic_value[P]"
+            }
+          ]
+        }
+      },
+      {
+        "path": "experiments/v03r/a96_dense/f0_runtime/gates",
+        "counts": {
+          "tests": 1624,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 1,
+          "passed": 1623,
+          "skipped_cases": [
+            {
+              "classname": "tests.rebuild.test_b2_acquisition",
+              "name": "test_12_a_site_no_episode_consults_shares_the_generic_value[P]"
+            }
+          ]
+        }
+      }
+    ],
+    "gate_logs": [
+      {
+        "path": "experiments/v03r/a96_dense/pipeline/acceptance_gates/gate-01.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "experiments/v03r/a96_dense/pipeline/acceptance_gates/gate-01.stdout.log",
+        "sha256": "e27b2886e67442f224eab8410e446af1a4082da5118878d2017155b478efee8e",
+        "bytes": 1863
+      },
+      {
+        "path": "experiments/v03r/a96_dense/pipeline/acceptance_gates/gate-02.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "experiments/v03r/a96_dense/pipeline/acceptance_gates/gate-02.stdout.log",
+        "sha256": "a9096eb3091f1c0ef23d9c7f1aee912052981ab2d6ac5698e0d9e30b6c4e47ea",
+        "bytes": 1890
+      },
+      {
+        "path": "experiments/v03r/a96_dense/pipeline/acceptance_gates/gate-03.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "experiments/v03r/a96_dense/pipeline/acceptance_gates/gate-03.stdout.log",
+        "sha256": "8a8e7b6b2920657f87c209ee7f0f2862c40d4a20faebfa885a7091cd1592176f",
+        "bytes": 5607
+      },
+      {
+        "path": "experiments/v03r/a96_dense/pipeline/acceptance_gates/gate-04.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "experiments/v03r/a96_dense/pipeline/acceptance_gates/gate-04.stdout.log",
+        "sha256": "21b912ee2b48330a9a814ef1a47c5387952042642a1a6628aa19d2f0d65a0d5c",
+        "bytes": 949
+      },
+      {
+        "path": "experiments/v03r/a96_dense/pipeline/acceptance_gates/gate-05.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "experiments/v03r/a96_dense/pipeline/acceptance_gates/gate-05.stdout.log",
+        "sha256": "144f9825d84ab80117d8903abc7bc6b4365254aacfb8d238fd846e7d98f25db5",
+        "bytes": 1570
+      },
+      {
+        "path": "experiments/v03r/a96_dense/pipeline/acceptance_gates/gate-06.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "experiments/v03r/a96_dense/pipeline/acceptance_gates/gate-06.stdout.log",
+        "sha256": "dd2504a3c011d0c9cf9d56064366f5264b8f8b70182c79be4b5a62b0f8398ee8",
+        "bytes": 216
+      },
+      {
+        "path": "experiments/v03r/a96_dense/f0_runtime/gates/gate-01.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "experiments/v03r/a96_dense/f0_runtime/gates/gate-01.stdout.log",
+        "sha256": "e27b2886e67442f224eab8410e446af1a4082da5118878d2017155b478efee8e",
+        "bytes": 1863
+      },
+      {
+        "path": "experiments/v03r/a96_dense/f0_runtime/gates/gate-02.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "experiments/v03r/a96_dense/f0_runtime/gates/gate-02.stdout.log",
+        "sha256": "a9096eb3091f1c0ef23d9c7f1aee912052981ab2d6ac5698e0d9e30b6c4e47ea",
+        "bytes": 1890
+      },
+      {
+        "path": "experiments/v03r/a96_dense/f0_runtime/gates/gate-03.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "experiments/v03r/a96_dense/f0_runtime/gates/gate-03.stdout.log",
+        "sha256": "8a8e7b6b2920657f87c209ee7f0f2862c40d4a20faebfa885a7091cd1592176f",
+        "bytes": 5607
+      },
+      {
+        "path": "experiments/v03r/a96_dense/f0_runtime/gates/gate-04.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "experiments/v03r/a96_dense/f0_runtime/gates/gate-04.stdout.log",
+        "sha256": "21b912ee2b48330a9a814ef1a47c5387952042642a1a6628aa19d2f0d65a0d5c",
+        "bytes": 949
+      },
+      {
+        "path": "experiments/v03r/a96_dense/f0_runtime/gates/gate-05.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "experiments/v03r/a96_dense/f0_runtime/gates/gate-05.stdout.log",
+        "sha256": "144f9825d84ab80117d8903abc7bc6b4365254aacfb8d238fd846e7d98f25db5",
+        "bytes": 1570
+      },
+      {
+        "path": "experiments/v03r/a96_dense/f0_runtime/gates/gate-06.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "experiments/v03r/a96_dense/f0_runtime/gates/gate-06.stdout.log",
+        "sha256": "dd2504a3c011d0c9cf9d56064366f5264b8f8b70182c79be4b5a62b0f8398ee8",
+        "bytes": 216
+      }
+    ],
+    "terminal": {
+      "pipeline_result.json": null,
+      "pipeline_failure.json": null,
+      "pipeline_exit.json": null,
+      "full_runtime.receipt.json": null
+    },
+    "head": "fa5849744e32cabbe94dc0a9e0ad0658e39cdcbc"
+  },
+  "prior_milestone": "experiments/v03r/a96_dense/pipeline/parallel_engineering32_start_observation.json",
+  "engineering32_first16_completed_count": 16,
+  "engineering32_first16_records_from_native_worker_logs": 9232,
+  "current_engineering32_second16_worker_keys": [
+    {
+      "seed": 2026101221,
+      "pid": 39448
+    },
+    {
+      "seed": 2026101222,
+      "pid": 25000
+    },
+    {
+      "seed": 2026101223,
+      "pid": 42032
+    },
+    {
+      "seed": 2026101224,
+      "pid": 15744
+    },
+    {
+      "seed": 2026101225,
+      "pid": 9088
+    },
+    {
+      "seed": 2026101226,
+      "pid": 34548
+    },
+    {
+      "seed": 2026101227,
+      "pid": 14716
+    },
+    {
+      "seed": 2026101228,
+      "pid": 30184
+    },
+    {
+      "seed": 2026101229,
+      "pid": 40828
+    },
+    {
+      "seed": 2026101230,
+      "pid": 41640
+    },
+    {
+      "seed": 2026101231,
+      "pid": 31960
+    },
+    {
+      "seed": 2026101232,
+      "pid": 39808
+    },
+    {
+      "seed": 2026101233,
+      "pid": 38476
+    },
+    {
+      "seed": 2026101234,
+      "pid": 42036
+    },
+    {
+      "seed": 2026101235,
+      "pid": 14972
+    },
+    {
+      "seed": 2026101236,
+      "pid": 41772
+    }
+  ],
+  "interpretation": {
+    "maximum_spawn_workers": 16,
+    "currently_authenticated_spawn_workers": 16,
+    "current_execution_level": "ENGINEERING32_ACQUISITION_SECOND16_LIVE_SPAWN_WORKERS_FIRST16_NATIVE_LOG_COMPLETED_NOT_FORMAL_SCIENCE",
+    "all32_engineering_shards_complete": false,
+    "complete_37_key_native_receipt": false,
+    "fresh_engineering_full_shard_validation_complete": false,
+    "committed_F0_created": false,
+    "formal_scientific_smoke_started": false,
+    "scientific_development_started": false,
+    "treatment_or_confirmation_collected": false,
+    "research_complete": false,
+    "note": "Pooled worker processes were reused without restart. Their actual process StartTime predates their second seed. Native logs identify all16 first-batch completions (577 each) and all16 second-batch starts. This external observation is not a native controller exit or a full validation PASS; no partial compressed curve is used for design."
+  },
+  "automatic_retry": false,
+  "external_publish": false
+}

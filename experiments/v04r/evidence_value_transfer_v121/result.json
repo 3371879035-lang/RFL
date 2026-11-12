@@ -1,0 +1,395 @@
+{
+  "schema": "V121_LOCAL_EVIDENCE_VALUE_RELOCATION_RESULT",
+  "date_asia_shanghai": "2026-11-06",
+  "parent_commit": "3f1fe2c7fcdf1ff9eae026d5827a97e4ed43f2a3",
+  "status": "FINITE_MIXED_LOCATION_TRAIN_FREEZE_TRANSFER_COMPLETE",
+  "design": {
+    "new_representation": "Candidate type/action, previous same-cell+action repetition, next visible cell relation, conditioned on mode/actual terminal/command-execution mismatch. No absolute coordinate/time/kappa/source-prefix or ordinal identity in the scoring key. Human-designed representation; actual consequences learn values.",
+    "historical_data": "42 actual developmental branches/84 continuation returns from v119, read-only exact reuse; no held-out training labels.",
+    "new_development": "prefix1,2, kappa0/phase2/rank6, both modes,4genuine factuals/56candidate branches/112actual probes.",
+    "held_out": "prefix3,5 at kappa1/phase2/rank7, locations absent from new training. Prefix3 had known old-policy failure; prefix5 new. SharedQ* covers both contexts, not blind population inference.",
+    "arms": [
+      "TaskTD",
+      "AlwaysClear",
+      "FrozenOrdinal",
+      "EvidenceValue"
+    ],
+    "ordinary_task_learning_in_every_arm": true,
+    "ordinary_only_followups": 2,
+    "parameters_frozen_before_holdout": true
+  },
+  "training": {
+    "historical_branches": 42,
+    "historical_probe_cost": 84,
+    "new_branches": 56,
+    "new_probe_cost": 112,
+    "total_return_observations": 196,
+    "pooled_feature_rows": 28,
+    "held_out_updates": 0
+  },
+  "execution": {
+    "first_native_exit": 0,
+    "first_new_stored_check_exit_observed": 0,
+    "rollout": 164,
+    "step": 1380,
+    "transaction": 302,
+    "records": 1063,
+    "ordinary_full_R_L_updates_checked": 164,
+    "input_pins_before_after_unchanged": 330,
+    "instrumented_wall_seconds": 12.375,
+    "automatic_retry": false,
+    "new_keys": 0,
+    "formal_collection": false
+  },
+  "descriptive_fixed_case_aggregates": [
+    {
+      "arms": {
+        "AlwaysClear": {
+          "descriptive_mean_future_return_over_two_fixed_cases": 0.88,
+          "future_successes": 4,
+          "future_tasks": 4,
+          "online_diagnostic_address_edit_attempts": 24,
+          "online_diagnostic_transactions": 2
+        },
+        "EvidenceValue": {
+          "descriptive_mean_future_return_over_two_fixed_cases": 0.88,
+          "future_successes": 4,
+          "future_tasks": 4,
+          "online_diagnostic_address_edit_attempts": 2,
+          "online_diagnostic_transactions": 2
+        },
+        "FrozenOrdinal": {
+          "descriptive_mean_future_return_over_two_fixed_cases": -0.74,
+          "future_successes": 1,
+          "future_tasks": 4,
+          "online_diagnostic_address_edit_attempts": 2,
+          "online_diagnostic_transactions": 2
+        },
+        "TaskTD": {
+          "descriptive_mean_future_return_over_two_fixed_cases": -0.74,
+          "future_successes": 1,
+          "future_tasks": 4,
+          "online_diagnostic_address_edit_attempts": 0,
+          "online_diagnostic_transactions": 0
+        }
+      },
+      "mode": "dq"
+    },
+    {
+      "arms": {
+        "AlwaysClear": {
+          "descriptive_mean_future_return_over_two_fixed_cases": 0.88,
+          "future_successes": 4,
+          "future_tasks": 4,
+          "online_diagnostic_address_edit_attempts": 24,
+          "online_diagnostic_transactions": 2
+        },
+        "EvidenceValue": {
+          "descriptive_mean_future_return_over_two_fixed_cases": 0.88,
+          "future_successes": 4,
+          "future_tasks": 4,
+          "online_diagnostic_address_edit_attempts": 0,
+          "online_diagnostic_transactions": 0
+        },
+        "FrozenOrdinal": {
+          "descriptive_mean_future_return_over_two_fixed_cases": 0.88,
+          "future_successes": 4,
+          "future_tasks": 4,
+          "online_diagnostic_address_edit_attempts": 0,
+          "online_diagnostic_transactions": 0
+        },
+        "TaskTD": {
+          "descriptive_mean_future_return_over_two_fixed_cases": 0.88,
+          "future_successes": 4,
+          "future_tasks": 4,
+          "online_diagnostic_address_edit_attempts": 0,
+          "online_diagnostic_transactions": 0
+        }
+      },
+      "mode": "patch-adaptive"
+    }
+  ],
+  "paired_cases": [
+    {
+      "arms": {
+        "AlwaysClear": {
+          "address_edit_attempts": 12,
+          "candidate": "clear_factual",
+          "diagnostic_content_changed": true,
+          "future_outcomes": [
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "future_returns": [
+            0.88,
+            0.88
+          ]
+        },
+        "EvidenceValue": {
+          "address_edit_attempts": 1,
+          "candidate": "single:3",
+          "diagnostic_content_changed": true,
+          "future_outcomes": [
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "future_returns": [
+            0.88,
+            0.88
+          ]
+        },
+        "FrozenOrdinal": {
+          "address_edit_attempts": 1,
+          "candidate": "single:0",
+          "diagnostic_content_changed": false,
+          "future_outcomes": [
+            "TIMEOUT",
+            "TIMEOUT"
+          ],
+          "future_returns": [
+            -1.24,
+            -1.24
+          ]
+        },
+        "TaskTD": {
+          "address_edit_attempts": 0,
+          "candidate": null,
+          "diagnostic_content_changed": false,
+          "future_outcomes": [
+            "TIMEOUT",
+            "TIMEOUT"
+          ],
+          "future_returns": [
+            -1.24,
+            -1.24
+          ]
+        }
+      },
+      "case": "prefix3",
+      "factual_steps": 12,
+      "factual_terminal": "TIMEOUT",
+      "mode": "dq"
+    },
+    {
+      "arms": {
+        "AlwaysClear": {
+          "address_edit_attempts": 12,
+          "candidate": "clear_factual",
+          "diagnostic_content_changed": true,
+          "future_outcomes": [
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "future_returns": [
+            0.88,
+            0.88
+          ]
+        },
+        "EvidenceValue": {
+          "address_edit_attempts": 1,
+          "candidate": "single:5",
+          "diagnostic_content_changed": true,
+          "future_outcomes": [
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "future_returns": [
+            0.88,
+            0.88
+          ]
+        },
+        "FrozenOrdinal": {
+          "address_edit_attempts": 1,
+          "candidate": "single:0",
+          "diagnostic_content_changed": false,
+          "future_outcomes": [
+            "TIMEOUT",
+            "SUCCESS"
+          ],
+          "future_returns": [
+            -1.24,
+            0.76
+          ]
+        },
+        "TaskTD": {
+          "address_edit_attempts": 0,
+          "candidate": null,
+          "diagnostic_content_changed": false,
+          "future_outcomes": [
+            "TIMEOUT",
+            "SUCCESS"
+          ],
+          "future_returns": [
+            -1.24,
+            0.76
+          ]
+        }
+      },
+      "case": "prefix5",
+      "factual_steps": 12,
+      "factual_terminal": "TIMEOUT",
+      "mode": "dq"
+    },
+    {
+      "arms": {
+        "AlwaysClear": {
+          "address_edit_attempts": 12,
+          "candidate": "clear_factual",
+          "diagnostic_content_changed": true,
+          "future_outcomes": [
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "future_returns": [
+            0.88,
+            0.88
+          ]
+        },
+        "EvidenceValue": {
+          "address_edit_attempts": 0,
+          "candidate": "keep",
+          "diagnostic_content_changed": false,
+          "future_outcomes": [
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "future_returns": [
+            0.88,
+            0.88
+          ]
+        },
+        "FrozenOrdinal": {
+          "address_edit_attempts": 0,
+          "candidate": "keep",
+          "diagnostic_content_changed": false,
+          "future_outcomes": [
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "future_returns": [
+            0.88,
+            0.88
+          ]
+        },
+        "TaskTD": {
+          "address_edit_attempts": 0,
+          "candidate": null,
+          "diagnostic_content_changed": false,
+          "future_outcomes": [
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "future_returns": [
+            0.88,
+            0.88
+          ]
+        }
+      },
+      "case": "prefix3",
+      "factual_steps": 12,
+      "factual_terminal": "TIMEOUT",
+      "mode": "patch-adaptive"
+    },
+    {
+      "arms": {
+        "AlwaysClear": {
+          "address_edit_attempts": 12,
+          "candidate": "clear_factual",
+          "diagnostic_content_changed": true,
+          "future_outcomes": [
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "future_returns": [
+            0.88,
+            0.88
+          ]
+        },
+        "EvidenceValue": {
+          "address_edit_attempts": 0,
+          "candidate": "keep",
+          "diagnostic_content_changed": false,
+          "future_outcomes": [
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "future_returns": [
+            0.88,
+            0.88
+          ]
+        },
+        "FrozenOrdinal": {
+          "address_edit_attempts": 0,
+          "candidate": "keep",
+          "diagnostic_content_changed": false,
+          "future_outcomes": [
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "future_returns": [
+            0.88,
+            0.88
+          ]
+        },
+        "TaskTD": {
+          "address_edit_attempts": 0,
+          "candidate": null,
+          "diagnostic_content_changed": false,
+          "future_outcomes": [
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "future_returns": [
+            0.88,
+            0.88
+          ]
+        }
+      },
+      "case": "prefix5",
+      "factual_steps": 12,
+      "factual_terminal": "TIMEOUT",
+      "mode": "patch-adaptive"
+    }
+  ],
+  "coverage": {
+    "unknown_candidate_counts_per_evidence_call": [
+      0,
+      1,
+      0,
+      1
+    ],
+    "unknown_detail": "prefix5, both modes: single:3 has unseen(DOWN,not previously repeated,move) feature. Recorded and excluded under prospective rule; no value fabricated. Keep/clear-all/selected candidate have observed value support. Full candidate optimality not established."
+  },
+  "findings": [
+    "DQ selected single:3 and single:5 at unseen training locations. Both pairs of followups [0.88,0.88];2actual content-changing single edits.",
+    "DQ ordinal and ordinary-only mean-0.74 with1/4successes; evidence model and clear-all mean0.88 with4/4successes. Clear-all attempts24address edits, evidence model2. This is an actual new same-case comparison, not borrowing prior results.",
+    "Ordinary DQ recovery remains visible: prefix5 baseline [-1.24,0.76], not frozen. New selection improves both followups to[0.88,0.88].",
+    "Revised patch all arms mean0.88 and4/4successes. New model keep0edits; clear-all24attempts. Zero extra reward gain retained."
+  ],
+  "learned_DQ_TIMEOUT_examples": {
+    "keep": -1.24,
+    "clear_all": 0.88,
+    "single_WAIT_onset_stay": 0.88,
+    "single_WAIT_repeated_stay": 0.12666666666666668,
+    "single_WAIT_repeated_end": -1.24
+  },
+  "limits": [
+    "Only two fixed held-out locations per mode/two continuations, not independent-seed inference, architecture ranking, general causal attribution or original V04R PASS.",
+    "Representation change and additional mixed-location training data change together; this run does not isolate representation-only causal effect. Neither feature discovery nor cause posterior is learned here.",
+    "SharedQ*/reset-to-prior and revised patch ordinary policy improvement remain. Single deletion can bypass other bad overrides, not certify all residual knowledge safe.",
+    "New112probe tasks plus historical84probe tasks are actual training cost; online fewer edits do not establish net total compute/time saving.",
+    "Unknown candidates excluded with disclosure, not given implicit low/zero scores; no all-candidate optimality or autonomous exploration claim.",
+    "Only first failure event corrected, subsequent two tasks ordinary-only. Full recurrent diagnostic policy and false-feedback robustness not tested."
+  ],
+  "V03_local_stage_complete": true,
+  "V04_full_learned_causal_pipeline_complete": false,
+  "preservation": {
+    "old59_ledger_values": true,
+    "old266_provenance": true,
+    "frozen313": true,
+    "old_executed_source_modified": false,
+    "v120_failure_unchanged": true,
+    "automation_inspected_or_modified": false
+  },
+  "next_work": "Use this frozen local-evidence value model in one compact sequential task-stream comparison with repeated failure-only routing and preservation of learned correct behavior; retain unknown support and costs explicitly. Do not rerun this completed batch or the v120 failure."
+}

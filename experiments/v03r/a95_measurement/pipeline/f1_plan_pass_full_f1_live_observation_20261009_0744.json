@@ -1,0 +1,331 @@
+{
+  "schema": "rfl-a95-external-live-audit-v1",
+  "role": "EXTERNAL_LIVE_AUDIT_NOT_NATIVE_EXECUTION_RECEIPT",
+  "root": "D:/强化反馈学习/RFL-CausalChase-v0.3-measurement-20261008",
+  "branch": "study/v03r-measurement-revision-20261008",
+  "current_head": "e3da58a005878d5b84142227d82d9ccc286a803b",
+  "instrument_commit": "fd4d4f52eb49274174e02db548a6b64cbf0663ba",
+  "execution_level": "F1_PLAN_VALID_FULL_F1_FIRST_FULL_VALIDATION_COMPLETE_SECOND_FULL_VALIDATION_RUNNING",
+  "native_evidence_references": {
+    "f1_plan_receipt": "experiments/v03r/a95_measurement/pipeline/f1_plan.receipt.json",
+    "f1_plan_result": "experiments/v03r/a95_measurement/f1_plan_result.json",
+    "full_f1_launch": "experiments/v03r/a95_measurement/pipeline/full_f1.launch.json",
+    "completed_plan_validation": "experiments/v03r/a95_measurement/f1_plan/validation-pass-001/completed.json",
+    "completed_full_f1_prepare_validation": "experiments/v03r/a95_measurement/f1_execution/validation-pass-001/completed.json",
+    "current_full_f1_input_validation_reservation": "experiments/v03r/a95_measurement/f1_execution/validation-pass-002/reservation.json"
+  },
+  "authenticated_process_count": 19,
+  "authenticated_spawn_workers": 16,
+  "current_controller_full_command_actual_ticks_match_launch": true,
+  "current_launcher_full_command_actual_ticks_match_claim": true,
+  "current_full_f1_runner_complete_command_and_parent_match_launch": true,
+  "current_spawn_worker_full_commands_parent_and_start_times_authenticated": true,
+  "full_f1_progress_advanced_from_records_125_to_375_on_first16_inputs": true,
+  "independent_agent_or_external_expert_review": false,
+  "research_complete": false,
+  "audit_boundaries": [
+    "External observation only; no controller, stage or worker receipt was synthesized, overwritten or replaced.",
+    "Both completed validation passes were audited against all 32 individual native worker receipts, ordered seed coverage, descriptor canonical JSONL hashes, record and pair totals, current index SHA and current compressed-byte SHA inventory.",
+    "Canonical JSONL hashes are verified parser outputs bound to index descriptors, not compressed-byte hashes; no redundant validation/acquisition job was launched.",
+    "PLAN_VALID with native zero authorizes the controller to enter full F1, not a design lock or measured learning benefit.",
+    "Full F1's second fresh full-input validation is still running. No current F1 result, lock or native full-F1 completion existed at this snapshot.",
+    "All 309 frozen source/spec/test/control files match exactly at a stable boundary; F0 and smoke hashes are unchanged. No executing source, protocol, parameters, gates, reservations or seeds were edited.",
+    "Only this external observation and the prospective ledger were updated. No test, mutation gate, retry, duplicate process, power operation, external publication or paid resource use was started."
+  ],
+  "completed_native_evidence_audit": {
+    "source_count": 309,
+    "sources_digest": "4d8a4bc3a0afc2c0335decafa559af44e2cd9028ccd3c4776189fc8c11dffd79",
+    "all_sources_equal_frozen": true,
+    "index_sha256": "843751287eaf8021a850ea266ecfcb7d01ad80327d4cfba90f9995137ca7094f",
+    "full_validation_passes": [
+      {
+        "path": "experiments\\v03r\\a95_measurement\\f1_plan\\validation-pass-001",
+        "completed_sha256": "c7df480a3aae11f403515e65c524322f38bf1777421201f81a3d67dd2e36bb30",
+        "status": "ALL_SHARDS_VERIFIED",
+        "max_workers": 16,
+        "worker_count": 32,
+        "unique_seeds": 32,
+        "records": 18464,
+        "pairs": 240959684,
+        "ordered_seeds_equal_index": true,
+        "complete_workers_equal_native_receipts": true,
+        "workers_equal_index_records_pairs_canonical_sha": true,
+        "compressed_sha_equal_current": true,
+        "index_sha_equal_current": true,
+        "validation_reduced": false,
+        "declared_total_matches_workers": true,
+        "latest_native_worker_finished_at": "2026-10-08T23:34:08.556042+00:00"
+      },
+      {
+        "path": "experiments\\v03r\\a95_measurement\\f1_execution\\validation-pass-001",
+        "completed_sha256": "990c8dd82b75c63e579d9f7ca1b1edd71720ba86c7390853a7434bad77cfa7d8",
+        "status": "ALL_SHARDS_VERIFIED",
+        "max_workers": 16,
+        "worker_count": 32,
+        "unique_seeds": 32,
+        "records": 18464,
+        "pairs": 240959684,
+        "ordered_seeds_equal_index": true,
+        "complete_workers_equal_native_receipts": true,
+        "workers_equal_index_records_pairs_canonical_sha": true,
+        "compressed_sha_equal_current": true,
+        "index_sha_equal_current": true,
+        "validation_reduced": false,
+        "declared_total_matches_workers": true,
+        "latest_native_worker_finished_at": "2026-10-08T23:41:45.318711+00:00"
+      }
+    ],
+    "f1_plan_result": {
+      "index_sha256": "843751287eaf8021a850ea266ecfcb7d01ad80327d4cfba90f9995137ca7094f",
+      "metrics_computed": false,
+      "records": 18464,
+      "status": "PLAN_VALID",
+      "written": false
+    },
+    "f1_plan_native_receipt": {
+      "argv": [
+        "D:\\python\\python.exe",
+        "-u",
+        "-B",
+        "-X",
+        "utf8",
+        "scripts/run_dev_lock.py",
+        "--design",
+        "D:\\强化反馈学习\\RFL-CausalChase-v0.3-measurement-20261008\\experiments\\v03r\\a95_measurement\\dev_baseline.json",
+        "--plan"
+      ],
+      "finished_at": "2026-10-08T23:34:11.516304+00:00",
+      "native_exit_code": 0,
+      "pid": 37388,
+      "receipt_origin": "native_subprocess_wait",
+      "started_at": "2026-10-08T23:26:30.004306+00:00"
+    },
+    "file_sha256": {
+      "scripts/run_a95_pipeline.py": "e7da5b957d5638ba9cf9dbb7f5f0e6ec5ce25e076ba949e1492926247266915e",
+      "scripts/launch_a95_pipeline.ps1": "af45c8537d7d55ad394f29d6095834c92d86da503185e7a8970f7a42cb3992b0",
+      "scripts/run_dev_lock.py": "9336339622d98dcf6282b1e3c395ae474cf0f09bed03cf8fb35d6ffcac53e0fc",
+      "src/rfl_rebuild/b2/parallel_validation.py": "4b21d9a6a769ced47a4fe1f8048cfd1fd92c302a2a9db31fb26e91b3aea45ccd",
+      "src/rfl_rebuild/b2/parallel_design.py": "23987a6d924e034b12a6a4b4f2159afcd40ee780a77e3a35c869c1095b8432ab",
+      "experiments/v03r/a95_measurement/f0_manifest.json": "7050dedac3eb23ca1d6b84b2ddb63d510f5de54f4eff6c495845edac0601af1b",
+      "experiments/v03r/a95_measurement/smoke_report.json": "3a94014badcfe8b1804bfde79896575d5ddcebf4fc601fb376750b06288d99a1",
+      "experiments/v03r/a95_measurement/pipeline/frozen_inputs.json": "cd2de09d50dea508517a5cbc85b176c6a333b5ede604b178c9f48eb06d09f0db",
+      "experiments/v03r/a95_measurement/pipeline/f1_plan.receipt.json": "dcef2a03e2ef91dc1997b464348c5551121135d57718e7e3d2ff64cd2b7ebb5c",
+      "experiments/v03r/a95_measurement/f1_plan_result.json": "9b1937f6c8e1bce686647161d4ab8c0fbd3fec93ebe452a6c14681cd9acd43b5"
+    },
+    "full_f1_complete": false,
+    "f1_result_exists": false,
+    "dev_lock_exists": false,
+    "pipeline_failure_exists": false
+  },
+  "observed_at_utc": "2026-10-08T23:44:19.4046408Z",
+  "actual_processes": [
+    {
+      "pid": 23516,
+      "parent_pid": 8032,
+      "command_line": "\"C:\\Users\\huani\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe\" -NoProfile -NonInteractive -WindowStyle Hidden -File \"D:\\强化反馈学习\\RFL-CausalChase-v0.3-measurement-20261008\\scripts\\launch_a95_pipeline.ps1\"",
+      "creation_utc": "2026-10-08T16:54:22.7165530Z",
+      "actual_start_utc": "2026-10-08T16:54:22.7165537Z",
+      "actual_start_utc_ticks": "639270752627165537",
+      "cpu_seconds": 5.703125
+    },
+    {
+      "pid": 26732,
+      "parent_pid": 23516,
+      "command_line": "\"D:\\python\\python.exe\" -u -B -X utf8 \"D:\\强化反馈学习\\RFL-CausalChase-v0.3-measurement-20261008\\scripts\\run_a95_pipeline.py\"",
+      "creation_utc": "2026-10-08T16:54:23.8521670Z",
+      "actual_start_utc": "2026-10-08T16:54:23.8521679Z",
+      "actual_start_utc_ticks": "639270752638521679",
+      "cpu_seconds": 5.75
+    },
+    {
+      "pid": 35392,
+      "parent_pid": 26732,
+      "command_line": "D:\\python\\python.exe -u -B -X utf8 scripts/run_dev_lock.py --design D:\\强化反馈学习\\RFL-CausalChase-v0.3-measurement-20261008\\experiments\\v03r\\a95_measurement\\dev_baseline.json",
+      "creation_utc": "2026-10-08T23:34:11.5273000Z",
+      "actual_start_utc": "2026-10-08T23:34:11.5273000Z",
+      "actual_start_utc_ticks": "639270992515273000",
+      "cpu_seconds": 7.9375
+    },
+    {
+      "pid": 31588,
+      "parent_pid": 35392,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=35392, pipe_handle=720)\" \"--multiprocessing-fork\"",
+      "creation_utc": "2026-10-08T23:41:52.9628420Z",
+      "actual_start_utc": "2026-10-08T23:41:52.9628422Z",
+      "actual_start_utc_ticks": "639270997129628422",
+      "cpu_seconds": 89.34375
+    },
+    {
+      "pid": 37184,
+      "parent_pid": 35392,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=35392, pipe_handle=616)\" \"--multiprocessing-fork\"",
+      "creation_utc": "2026-10-08T23:41:52.9885140Z",
+      "actual_start_utc": "2026-10-08T23:41:52.9885146Z",
+      "actual_start_utc_ticks": "639270997129885146",
+      "cpu_seconds": 88.71875
+    },
+    {
+      "pid": 38808,
+      "parent_pid": 35392,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=35392, pipe_handle=540)\" \"--multiprocessing-fork\"",
+      "creation_utc": "2026-10-08T23:41:53.0001610Z",
+      "actual_start_utc": "2026-10-08T23:41:53.0001619Z",
+      "actual_start_utc_ticks": "639270997130001619",
+      "cpu_seconds": 87.328125
+    },
+    {
+      "pid": 26988,
+      "parent_pid": 35392,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=35392, pipe_handle=764)\" \"--multiprocessing-fork\"",
+      "creation_utc": "2026-10-08T23:41:53.0103190Z",
+      "actual_start_utc": "2026-10-08T23:41:53.0103192Z",
+      "actual_start_utc_ticks": "639270997130103192",
+      "cpu_seconds": 88.875
+    },
+    {
+      "pid": 38040,
+      "parent_pid": 35392,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=35392, pipe_handle=804)\" \"--multiprocessing-fork\"",
+      "creation_utc": "2026-10-08T23:41:53.0163750Z",
+      "actual_start_utc": "2026-10-08T23:41:53.0163756Z",
+      "actual_start_utc_ticks": "639270997130163756",
+      "cpu_seconds": 88.328125
+    },
+    {
+      "pid": 29328,
+      "parent_pid": 35392,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=35392, pipe_handle=632)\" \"--multiprocessing-fork\"",
+      "creation_utc": "2026-10-08T23:41:53.0294150Z",
+      "actual_start_utc": "2026-10-08T23:41:53.0294159Z",
+      "actual_start_utc_ticks": "639270997130294159",
+      "cpu_seconds": 88.859375
+    },
+    {
+      "pid": 3208,
+      "parent_pid": 35392,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=35392, pipe_handle=460)\" \"--multiprocessing-fork\"",
+      "creation_utc": "2026-10-08T23:41:53.0385770Z",
+      "actual_start_utc": "2026-10-08T23:41:53.0385779Z",
+      "actual_start_utc_ticks": "639270997130385779",
+      "cpu_seconds": 88.109375
+    },
+    {
+      "pid": 2412,
+      "parent_pid": 35392,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=35392, pipe_handle=648)\" \"--multiprocessing-fork\"",
+      "creation_utc": "2026-10-08T23:41:53.0435050Z",
+      "actual_start_utc": "2026-10-08T23:41:53.0435056Z",
+      "actual_start_utc_ticks": "639270997130435056",
+      "cpu_seconds": 88.671875
+    },
+    {
+      "pid": 3552,
+      "parent_pid": 35392,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=35392, pipe_handle=172)\" \"--multiprocessing-fork\"",
+      "creation_utc": "2026-10-08T23:41:53.0534440Z",
+      "actual_start_utc": "2026-10-08T23:41:53.0534442Z",
+      "actual_start_utc_ticks": "639270997130534442",
+      "cpu_seconds": 86.140625
+    },
+    {
+      "pid": 35384,
+      "parent_pid": 35392,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=35392, pipe_handle=704)\" \"--multiprocessing-fork\"",
+      "creation_utc": "2026-10-08T23:41:53.0619790Z",
+      "actual_start_utc": "2026-10-08T23:41:53.0619798Z",
+      "actual_start_utc_ticks": "639270997130619798",
+      "cpu_seconds": 87.96875
+    },
+    {
+      "pid": 15216,
+      "parent_pid": 35392,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=35392, pipe_handle=684)\" \"--multiprocessing-fork\"",
+      "creation_utc": "2026-10-08T23:41:53.0716990Z",
+      "actual_start_utc": "2026-10-08T23:41:53.0716992Z",
+      "actual_start_utc_ticks": "639270997130716992",
+      "cpu_seconds": 88.609375
+    },
+    {
+      "pid": 37644,
+      "parent_pid": 35392,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=35392, pipe_handle=516)\" \"--multiprocessing-fork\"",
+      "creation_utc": "2026-10-08T23:41:53.0811840Z",
+      "actual_start_utc": "2026-10-08T23:41:53.0811844Z",
+      "actual_start_utc_ticks": "639270997130811844",
+      "cpu_seconds": 89.625
+    },
+    {
+      "pid": 3048,
+      "parent_pid": 35392,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=35392, pipe_handle=504)\" \"--multiprocessing-fork\"",
+      "creation_utc": "2026-10-08T23:41:53.0913680Z",
+      "actual_start_utc": "2026-10-08T23:41:53.0913688Z",
+      "actual_start_utc_ticks": "639270997130913688",
+      "cpu_seconds": 88.46875
+    },
+    {
+      "pid": 22024,
+      "parent_pid": 35392,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=35392, pipe_handle=560)\" \"--multiprocessing-fork\"",
+      "creation_utc": "2026-10-08T23:41:53.1014860Z",
+      "actual_start_utc": "2026-10-08T23:41:53.1014861Z",
+      "actual_start_utc_ticks": "639270997131014861",
+      "cpu_seconds": 88.8125
+    },
+    {
+      "pid": 20288,
+      "parent_pid": 35392,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=35392, pipe_handle=420)\" \"--multiprocessing-fork\"",
+      "creation_utc": "2026-10-08T23:41:53.1120220Z",
+      "actual_start_utc": "2026-10-08T23:41:53.1120225Z",
+      "actual_start_utc_ticks": "639270997131120225",
+      "cpu_seconds": 87.25
+    },
+    {
+      "pid": 3852,
+      "parent_pid": 35392,
+      "command_line": "\"D:\\python\\python.exe\" \"-B\" \"-X\" \"utf8\" \"-c\" \"from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=35392, pipe_handle=824)\" \"--multiprocessing-fork\"",
+      "creation_utc": "2026-10-08T23:41:53.1230300Z",
+      "actual_start_utc": "2026-10-08T23:41:53.1230304Z",
+      "actual_start_utc_ticks": "639270997131230304",
+      "cpu_seconds": 89.09375
+    }
+  ],
+  "full_f1_native_launch": {
+    "argv": [
+      "D:\\python\\python.exe",
+      "-u",
+      "-B",
+      "-X",
+      "utf8",
+      "scripts/run_dev_lock.py",
+      "--design",
+      "D:\\强化反馈学习\\RFL-CausalChase-v0.3-measurement-20261008\\experiments\\v03r\\a95_measurement\\dev_baseline.json"
+    ],
+    "automatic_retry": false,
+    "pid": 35392,
+    "role": "START_RECORD_NOT_COMPLETION",
+    "started_at": "2026-10-09T07:34:11.52254+08:00"
+  },
+  "full_f1_progress": [
+    "VERIFY_PROGRESS seed=2026100920 pid=37644 records=375",
+    "VERIFY_PROGRESS seed=2026100919 pid=35384 records=375",
+    "VERIFY_PROGRESS seed=2026100916 pid=2412 records=375",
+    "VERIFY_PROGRESS seed=2026100915 pid=29328 records=375",
+    "VERIFY_PROGRESS seed=2026100910 pid=31588 records=375",
+    "VERIFY_PROGRESS seed=2026100923 pid=22024 records=375",
+    "VERIFY_PROGRESS seed=2026100922 pid=3048 records=375",
+    "VERIFY_PROGRESS seed=2026100921 pid=15216 records=375",
+    "VERIFY_PROGRESS seed=2026100917 pid=3208 records=375",
+    "VERIFY_PROGRESS seed=2026100925 pid=20288 records=375",
+    "VERIFY_PROGRESS seed=2026100912 pid=38808 records=375",
+    "VERIFY_PROGRESS seed=2026100914 pid=38040 records=375"
+  ],
+  "full_f1_native_completion_exists": false,
+  "second_full_validation_completed_exists": false,
+  "f1_result_exists": false,
+  "dev_lock_exists": false,
+  "pipeline_failure_exists": false,
+  "pipeline_exit_exists": false,
+  "stderr_bytes": 0
+}

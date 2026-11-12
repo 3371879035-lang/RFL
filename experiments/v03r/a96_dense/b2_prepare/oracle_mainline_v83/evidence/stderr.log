@@ -1,0 +1,30 @@
+setUpClass (__main__.RegisteredGeneralBankTests) ... ERROR
+
+======================================================================
+ERROR: setUpClass (__main__.RegisteredGeneralBankTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v03r\a96_dense\b2_prepare\oracle_mainline_v83\test_new_integration.py", line 107, in setUpClass
+    pair=owner.run_pair(src,architecture=architecture,tier=tier,law_name=law)
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v03r\a96_dense\b2_prepare\oracle_mainline_v75.py", line 130, in run_pair
+    native = base.run_oracle_pair(d.native, architecture=architecture, tier=tier,
+                                 law_name=law_name, assisted=assisted)
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v03r\a96_dense\b2_prepare\oracle_mainline_v74.py", line 471, in run_oracle_pair
+    collected.append(_apply_original(law, clone, d, projected, architecture, assisted))
+                     ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v03r\a96_dense\b2_prepare\oracle_mainline_v74.py", line 423, in _apply_original
+    return native_b1.run_dq_law(law, clone, projected.addresses, rows, source.reference)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\src\rfl_rebuild\b1\runner.py", line 538, in run_dq_law
+    law, tier = _law_contract(law, spec)
+                ~~~~~~~~~~~~~^^^^^^^^^^^
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\src\rfl_rebuild\b1\runner.py", line 261, in _law_contract
+    raise ProtocolError(
+    ...<2 lines>...
+        "snapshot or any other learner-state view (A76 §63.1, §63.10)")
+rfl_rebuild.b1.errors.ProtocolError: law 'NoWrite' plans with parameters ('addresses', 'delivery'), but the law API is exactly ('addresses', 'targets'); a law is not handed the store, a snapshot or any other learner-state view (A76 §63.1, §63.10)
+
+----------------------------------------------------------------------
+Ran 0 tests in 2.582s
+
+FAILED (errors=1)

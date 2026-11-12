@@ -1,0 +1,87 @@
+{
+  "schema": "V125_EQUAL_EXTRA_ROLLOUT_RESULT_BINDING",
+  "parent_commit": "be96224901ea12b83f92781d9aebd691461d307d",
+  "source_and_evidence": [
+    {
+      "path": "experiments/v04r/extra_learning_control_v125/contract.json",
+      "bytes": 7721,
+      "sha256": "2647b1d747602ec26a928dc1deef7ed57c88b7b715281518e4603c47caa9df75"
+    },
+    {
+      "path": "experiments/v04r/extra_learning_control_v125/parameters.json",
+      "bytes": 15691,
+      "sha256": "bb5926359c43d32c0996361b06029e9ad4d9b08e34772d18a36808705a5954af"
+    },
+    {
+      "path": "experiments/v04r/extra_learning_control_v125/practice_policy.py",
+      "bytes": 719,
+      "sha256": "9d62726d30e7479bfd4590d45febdac56a344caac6dcd9aebef5a5b47b655b13"
+    },
+    {
+      "path": "experiments/v04r/extra_learning_control_v125/workload.py",
+      "bytes": 16562,
+      "sha256": "deae66535d738e2d5e3646399ab2a67d618d7210c4835f2a1ab039960eff43cd"
+    },
+    {
+      "path": "experiments/v04r/extra_learning_control_v125/execute.py",
+      "bytes": 4188,
+      "sha256": "35cbbd30695c8d0d07b6203c4b88929a1e162c3f427247a4775d1cd423c6d744"
+    },
+    {
+      "path": "experiments/v04r/extra_learning_control_v125/audit_stored.py",
+      "bytes": 33701,
+      "sha256": "bc0c7a186aa65392ab3bca78b0107bb3fb521654ef1a30685ea220449b60f4d6"
+    },
+    {
+      "path": "experiments/v04r/extra_learning_control_v125/evidence/claim.json",
+      "bytes": 42603,
+      "sha256": "5d606bfc6a128d6665e285ccbf82daba512e7f9603bad87dac09a1cfcbf773d8"
+    },
+    {
+      "path": "experiments/v04r/extra_learning_control_v125/evidence/exit.json",
+      "bytes": 42737,
+      "sha256": "69131fd8ad44ebac060be93b6bdec4af0daa3ac6c06c56ccaa665b5553215dac"
+    },
+    {
+      "path": "experiments/v04r/extra_learning_control_v125/evidence/raw.jsonl",
+      "bytes": 9256604,
+      "sha256": "8d29e07d337a903d449f181c14c7196ee467992b18c85dab69a9944bc9579aac"
+    },
+    {
+      "path": "experiments/v04r/extra_learning_control_v125/evidence/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "experiments/v04r/extra_learning_control_v125/evidence/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "experiments/v04r/extra_learning_control_v125/stored_audit_result.json",
+      "bytes": 36187,
+      "sha256": "22cc4f3a60e371f431c8213711651ddba738d73898b283cdaca103ba921496b9"
+    },
+    {
+      "path": "experiments/v04r/extra_learning_control_v125/evidence_audit/claim.json",
+      "bytes": 341,
+      "sha256": "9d1a31fc3215f6cc18eb906b632eda2c010612cd97bbad376060d1e2ea638976"
+    },
+    {
+      "path": "experiments/v04r/extra_learning_control_v125/evidence_audit/exit.json",
+      "bytes": 201,
+      "sha256": "ebd1250760e58e5d7568ab4944bb071593c658f5f33fec4041c2ca30ee7c0108"
+    }
+  ],
+  "native_inputs_before_after_unchanged": 332,
+  "ledger_before": {
+    "keys": 63,
+    "provenance": 266,
+    "bytes": 1535519,
+    "sha256": "49af2a4de7a0c950bc1198fe14c28bd67169d2e1a31694118bd5027842e62280"
+  },
+  "dataflow": "Explicit live auxiliary ordinary learner -> all actual finalR+L -> same main learner after completed task, preserving mainI and clock. No serialized handle, fake B1/Proposal or old API modification.",
+  "old_experiments_or_checkers_reexecuted": false,
+  "independent_expert_or_sciencegate": false,
+  "whole_repository_audit_claimed": false
+}

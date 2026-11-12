@@ -1,0 +1,2194 @@
+{
+  "schema": "V133_SEQUENTIAL_INTERVENTION_VERIFICATION_RESULT",
+  "date_asia_shanghai": "2026-11-07",
+  "parent_commit": "78b14ee18e9b2533126af1ae18832a8ddb533fb5",
+  "status": "EXTENSION_COMPLETE_ACTUAL_SEQUENTIAL_PROBE_AND_TWO_CASE_COST_RESULT",
+  "question": "Can a finite single-episode keep-versus-model intervention probe prevent knownbad writes, preserving measured taskquality withless practice than the twoepisodes/fullmenu procedure?",
+  "execution": {
+    "native_first_exit": 0,
+    "new_stored_review_first_exit_observed": 0,
+    "rollout": 111,
+    "step": 1168,
+    "transaction": 104,
+    "records": 550,
+    "input_pins_unchanged": 339,
+    "main_tasks": 64,
+    "practice_tasks_all_arms": 23,
+    "read_only_rollouts": 24,
+    "ordinary_full_R_L_updates_checked": 87,
+    "main_steps": 673,
+    "practice_steps": 231,
+    "read_only_steps": 264,
+    "source_install_transactions": 2,
+    "source_install_addresses_by_case": {
+      "compatible": 28,
+      "reversal": 16
+    },
+    "ordinary_numeric_transactions": 87,
+    "ordinary_policy_transactions": 0,
+    "live_diagnostic_transactions": 6,
+    "practice_candidate_transactions": 9,
+    "instrumented_wall_seconds": 5.687999999965541,
+    "diagnostic_model_parameter_updates": 0,
+    "base_model_parameter_updates": 0,
+    "observed_failed_prediction_reviews": 1,
+    "success_diagnostics": 0,
+    "new_keys": 0,
+    "formal_collection": false,
+    "automatic_retry": false,
+    "patch_executed": false
+  },
+  "per_case_summary": [
+    {
+      "arm": "compatible:Direct",
+      "case": "compatible",
+      "policy": "direct",
+      "tasks": 8,
+      "successes": 7,
+      "task_return_sum": 4.64,
+      "task_return_mean": 0.58,
+      "practice_events": 0,
+      "practice_rollouts": 0,
+      "memory_retrievals": 1,
+      "diagnostic_calls": 1,
+      "diagnostic_transactions": 1,
+      "diagnostic_edit_attempts": 1
+    },
+    {
+      "arm": "compatible:Full",
+      "case": "compatible",
+      "policy": "full",
+      "tasks": 8,
+      "successes": 7,
+      "task_return_sum": 4.64,
+      "task_return_mean": 0.58,
+      "practice_events": 1,
+      "practice_rollouts": 6,
+      "memory_retrievals": 0,
+      "diagnostic_calls": 1,
+      "diagnostic_transactions": 1,
+      "diagnostic_edit_attempts": 1
+    },
+    {
+      "arm": "compatible:TaskTD",
+      "case": "compatible",
+      "policy": "task",
+      "tasks": 8,
+      "successes": 0,
+      "task_return_sum": -9.92,
+      "task_return_mean": -1.24,
+      "practice_events": 0,
+      "practice_rollouts": 0,
+      "memory_retrievals": 0,
+      "diagnostic_calls": 0,
+      "diagnostic_transactions": 0,
+      "diagnostic_edit_attempts": 0
+    },
+    {
+      "arm": "compatible:Verified",
+      "case": "compatible",
+      "policy": "verify",
+      "tasks": 8,
+      "successes": 7,
+      "task_return_sum": 4.64,
+      "task_return_mean": 0.58,
+      "practice_events": 1,
+      "practice_rollouts": 2,
+      "memory_retrievals": 1,
+      "diagnostic_calls": 1,
+      "diagnostic_transactions": 1,
+      "diagnostic_edit_attempts": 1
+    },
+    {
+      "arm": "reversal:Direct",
+      "case": "reversal",
+      "policy": "direct",
+      "tasks": 8,
+      "successes": 5,
+      "task_return_sum": 0.30000000000000004,
+      "task_return_mean": 0.037500000000000006,
+      "practice_events": 1,
+      "practice_rollouts": 6,
+      "memory_retrievals": 1,
+      "diagnostic_calls": 3,
+      "diagnostic_transactions": 1,
+      "diagnostic_edit_attempts": 1
+    },
+    {
+      "arm": "reversal:Full",
+      "case": "reversal",
+      "policy": "full",
+      "tasks": 8,
+      "successes": 7,
+      "task_return_sum": 4.08,
+      "task_return_mean": 0.51,
+      "practice_events": 1,
+      "practice_rollouts": 6,
+      "memory_retrievals": 0,
+      "diagnostic_calls": 1,
+      "diagnostic_transactions": 1,
+      "diagnostic_edit_attempts": 1
+    },
+    {
+      "arm": "reversal:TaskTD",
+      "case": "reversal",
+      "policy": "task",
+      "tasks": 8,
+      "successes": 6,
+      "task_return_sum": 2.08,
+      "task_return_mean": 0.26,
+      "practice_events": 0,
+      "practice_rollouts": 0,
+      "memory_retrievals": 0,
+      "diagnostic_calls": 0,
+      "diagnostic_transactions": 0,
+      "diagnostic_edit_attempts": 0
+    },
+    {
+      "arm": "reversal:Verified",
+      "case": "reversal",
+      "policy": "verify",
+      "tasks": 8,
+      "successes": 7,
+      "task_return_sum": 4.08,
+      "task_return_mean": 0.51,
+      "practice_events": 1,
+      "practice_rollouts": 3,
+      "memory_retrievals": 1,
+      "diagnostic_calls": 1,
+      "diagnostic_transactions": 1,
+      "diagnostic_edit_attempts": 1
+    }
+  ],
+  "descriptive_balanced_aggregate": [
+    {
+      "policy": "task",
+      "cases": 2,
+      "main_tasks": 16,
+      "successes": 6,
+      "return_sum": -7.84,
+      "practice_rollouts": 0,
+      "return_mean": -0.49
+    },
+    {
+      "policy": "direct",
+      "cases": 2,
+      "main_tasks": 16,
+      "successes": 12,
+      "return_sum": 4.9399999999999995,
+      "practice_rollouts": 6,
+      "return_mean": 0.30874999999999997
+    },
+    {
+      "policy": "full",
+      "cases": 2,
+      "main_tasks": 16,
+      "successes": 14,
+      "return_sum": 8.719999999999999,
+      "practice_rollouts": 12,
+      "return_mean": 0.5449999999999999
+    },
+    {
+      "policy": "verify",
+      "cases": 2,
+      "main_tasks": 16,
+      "successes": 14,
+      "return_sum": 8.719999999999999,
+      "practice_rollouts": 5,
+      "return_mean": 0.5449999999999999
+    }
+  ],
+  "complete_stream_metrics": [
+    {
+      "arms": {
+        "compatible:Direct": {
+          "contested_keys": [],
+          "diagnostic_calls": 1,
+          "diagnostic_edit_attempts": 1,
+          "diagnostic_transactions": 1,
+          "final_diagnostic_memory": [
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "keep",
+                "run-span",
+                0
+              ],
+              4,
+              {
+                "binary64_hex": "-0x1.eb851eb851eb8p-3"
+              }
+            ],
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                1
+              ],
+              4,
+              {
+                "binary64_hex": "-0x1.999999999999ap-3"
+              }
+            ],
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                2
+              ],
+              2,
+              {
+                "binary64_hex": "-0x1.0a3d70a3d70a4p-3"
+              }
+            ],
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                8
+              ],
+              2,
+              {
+                "binary64_hex": "0x1.b851eb851eb85p-1"
+              }
+            ]
+          ],
+          "memory_retrievals": 1,
+          "needs_retest": [],
+          "outcomes": [
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "pending_recall": null,
+          "practice_events": 0,
+          "practice_rollouts": 0,
+          "retention_banks": [
+            {
+              "completed_tasks": 0,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "phi": 1,
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 4,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.84
+                }
+              ]
+            },
+            {
+              "completed_tasks": 8,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.84
+                }
+              ]
+            }
+          ],
+          "returns": [
+            -1.24,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84
+          ],
+          "successes": 7,
+          "task_return_mean": 0.58,
+          "task_return_sum": 4.64,
+          "tasks": 8
+        },
+        "compatible:Full": {
+          "contested_keys": [],
+          "diagnostic_calls": 1,
+          "diagnostic_edit_attempts": 1,
+          "diagnostic_transactions": 1,
+          "final_diagnostic_memory": [],
+          "memory_retrievals": 0,
+          "needs_retest": [],
+          "outcomes": [
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "pending_recall": null,
+          "practice_events": 1,
+          "practice_rollouts": 6,
+          "retention_banks": [
+            {
+              "completed_tasks": 0,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "phi": 1,
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 4,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.84
+                }
+              ]
+            },
+            {
+              "completed_tasks": 8,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.84
+                }
+              ]
+            }
+          ],
+          "returns": [
+            -1.24,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84
+          ],
+          "successes": 7,
+          "task_return_mean": 0.58,
+          "task_return_sum": 4.64,
+          "tasks": 8
+        },
+        "compatible:TaskTD": {
+          "contested_keys": [],
+          "diagnostic_calls": 0,
+          "diagnostic_edit_attempts": 0,
+          "diagnostic_transactions": 0,
+          "final_diagnostic_memory": [],
+          "memory_retrievals": 0,
+          "needs_retest": [],
+          "outcomes": [
+            "TIMEOUT",
+            "TIMEOUT",
+            "TIMEOUT",
+            "TIMEOUT",
+            "TIMEOUT",
+            "TIMEOUT",
+            "TIMEOUT",
+            "TIMEOUT"
+          ],
+          "pending_recall": null,
+          "practice_events": 0,
+          "practice_rollouts": 0,
+          "retention_banks": [
+            {
+              "completed_tasks": 0,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "phi": 1,
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 4,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "phi": 1,
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 8,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "phi": 1,
+                  "return": -1.24
+                }
+              ]
+            }
+          ],
+          "returns": [
+            -1.24,
+            -1.24,
+            -1.24,
+            -1.24,
+            -1.24,
+            -1.24,
+            -1.24,
+            -1.24
+          ],
+          "successes": 0,
+          "task_return_mean": -1.24,
+          "task_return_sum": -9.92,
+          "tasks": 8
+        },
+        "compatible:Verified": {
+          "contested_keys": [],
+          "diagnostic_calls": 1,
+          "diagnostic_edit_attempts": 1,
+          "diagnostic_transactions": 1,
+          "final_diagnostic_memory": [
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "keep",
+                "run-span",
+                0
+              ],
+              4,
+              {
+                "binary64_hex": "-0x1.eb851eb851eb8p-3"
+              }
+            ],
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                1
+              ],
+              4,
+              {
+                "binary64_hex": "-0x1.999999999999ap-3"
+              }
+            ],
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                2
+              ],
+              2,
+              {
+                "binary64_hex": "-0x1.0a3d70a3d70a4p-3"
+              }
+            ],
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                8
+              ],
+              2,
+              {
+                "binary64_hex": "0x1.b851eb851eb85p-1"
+              }
+            ]
+          ],
+          "memory_retrievals": 1,
+          "needs_retest": [],
+          "outcomes": [
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "pending_recall": null,
+          "practice_events": 1,
+          "practice_rollouts": 2,
+          "retention_banks": [
+            {
+              "completed_tasks": 0,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "phi": 1,
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 4,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.84
+                }
+              ]
+            },
+            {
+              "completed_tasks": 8,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.84
+                }
+              ]
+            }
+          ],
+          "returns": [
+            -1.24,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84,
+            0.84
+          ],
+          "successes": 7,
+          "task_return_mean": 0.58,
+          "task_return_sum": 4.64,
+          "tasks": 8
+        },
+        "reversal:Direct": {
+          "contested_keys": [],
+          "diagnostic_calls": 3,
+          "diagnostic_edit_attempts": 1,
+          "diagnostic_transactions": 1,
+          "final_diagnostic_memory": [
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "keep",
+                "run-span",
+                0
+              ],
+              4,
+              {
+                "binary64_hex": "-0x1.eb851eb851eb8p-3"
+              }
+            ],
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                1
+              ],
+              4,
+              {
+                "binary64_hex": "-0x1.999999999999ap-3"
+              }
+            ],
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                2
+              ],
+              2,
+              {
+                "binary64_hex": "-0x1.0a3d70a3d70a4p-3"
+              }
+            ],
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                8
+              ],
+              2,
+              {
+                "binary64_hex": "0x1.b851eb851eb85p-1"
+              }
+            ]
+          ],
+          "memory_retrievals": 1,
+          "needs_retest": [],
+          "outcomes": [
+            "TIMEOUT",
+            "TRAP",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "pending_recall": null,
+          "practice_events": 1,
+          "practice_rollouts": 6,
+          "retention_banks": [
+            {
+              "completed_tasks": 0,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "phi": 1,
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 4,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.76
+                }
+              ]
+            },
+            {
+              "completed_tasks": 8,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.76
+                }
+              ]
+            }
+          ],
+          "returns": [
+            -1.24,
+            -1.02,
+            -1.24,
+            0.76,
+            0.76,
+            0.76,
+            0.76,
+            0.76
+          ],
+          "successes": 5,
+          "task_return_mean": 0.037500000000000006,
+          "task_return_sum": 0.30000000000000004,
+          "tasks": 8
+        },
+        "reversal:Full": {
+          "contested_keys": [],
+          "diagnostic_calls": 1,
+          "diagnostic_edit_attempts": 1,
+          "diagnostic_transactions": 1,
+          "final_diagnostic_memory": [],
+          "memory_retrievals": 0,
+          "needs_retest": [],
+          "outcomes": [
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "pending_recall": null,
+          "practice_events": 1,
+          "practice_rollouts": 6,
+          "retention_banks": [
+            {
+              "completed_tasks": 0,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "phi": 1,
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 4,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.76
+                }
+              ]
+            },
+            {
+              "completed_tasks": 8,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.76
+                }
+              ]
+            }
+          ],
+          "returns": [
+            -1.24,
+            0.76,
+            0.76,
+            0.76,
+            0.76,
+            0.76,
+            0.76,
+            0.76
+          ],
+          "successes": 7,
+          "task_return_mean": 0.51,
+          "task_return_sum": 4.08,
+          "tasks": 8
+        },
+        "reversal:TaskTD": {
+          "contested_keys": [],
+          "diagnostic_calls": 0,
+          "diagnostic_edit_attempts": 0,
+          "diagnostic_transactions": 0,
+          "final_diagnostic_memory": [],
+          "memory_retrievals": 0,
+          "needs_retest": [],
+          "outcomes": [
+            "TIMEOUT",
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "pending_recall": null,
+          "practice_events": 0,
+          "practice_rollouts": 0,
+          "retention_banks": [
+            {
+              "completed_tasks": 0,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "phi": 1,
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 4,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.76
+                }
+              ]
+            },
+            {
+              "completed_tasks": 8,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.76
+                }
+              ]
+            }
+          ],
+          "returns": [
+            -1.24,
+            -1.24,
+            0.76,
+            0.76,
+            0.76,
+            0.76,
+            0.76,
+            0.76
+          ],
+          "successes": 6,
+          "task_return_mean": 0.26,
+          "task_return_sum": 2.08,
+          "tasks": 8
+        },
+        "reversal:Verified": {
+          "contested_keys": [],
+          "diagnostic_calls": 1,
+          "diagnostic_edit_attempts": 1,
+          "diagnostic_transactions": 1,
+          "final_diagnostic_memory": [
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "keep",
+                "run-span",
+                0
+              ],
+              4,
+              {
+                "binary64_hex": "-0x1.eb851eb851eb8p-3"
+              }
+            ],
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                1
+              ],
+              4,
+              {
+                "binary64_hex": "-0x1.999999999999ap-3"
+              }
+            ],
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                2
+              ],
+              2,
+              {
+                "binary64_hex": "-0x1.0a3d70a3d70a4p-3"
+              }
+            ],
+            [
+              [
+                "dq",
+                "TIMEOUT",
+                false,
+                "single",
+                4,
+                false,
+                "stay",
+                "run-span",
+                8
+              ],
+              2,
+              {
+                "binary64_hex": "0x1.b851eb851eb85p-1"
+              }
+            ]
+          ],
+          "memory_retrievals": 1,
+          "needs_retest": [],
+          "outcomes": [
+            "TIMEOUT",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "pending_recall": null,
+          "practice_events": 1,
+          "practice_rollouts": 3,
+          "retention_banks": [
+            {
+              "completed_tasks": 0,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "TIMEOUT",
+                  "phi": 1,
+                  "return": -1.24
+                }
+              ]
+            },
+            {
+              "completed_tasks": 4,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.76
+                }
+              ]
+            },
+            {
+              "completed_tasks": 8,
+              "results": [
+                {
+                  "kappa": 0,
+                  "outcome": "SUCCESS",
+                  "phi": 1,
+                  "return": 0.76
+                }
+              ]
+            }
+          ],
+          "returns": [
+            -1.24,
+            0.76,
+            0.76,
+            0.76,
+            0.76,
+            0.76,
+            0.76,
+            0.76
+          ],
+          "successes": 7,
+          "task_return_mean": 0.51,
+          "task_return_sum": 4.08,
+          "tasks": 8
+        }
+      },
+      "mode": "dq"
+    }
+  ],
+  "per_role_native_work": [
+    {
+      "arm": "compatible:TaskTD",
+      "case": "compatible",
+      "policy": "task",
+      "readonly_rollout": 3,
+      "readonly_step": 36,
+      "stream_rollout": 8,
+      "stream_step": 96,
+      "stream_trap": 0,
+      "ordinary_numeric_tx": 8,
+      "ordinary_policy_tx": 0,
+      "total_rollout": 11,
+      "total_step": 132,
+      "total_transaction_excluding_common_source": 8
+    },
+    {
+      "arm": "compatible:Direct",
+      "case": "compatible",
+      "policy": "direct",
+      "readonly_rollout": 3,
+      "readonly_step": 28,
+      "stream_rollout": 8,
+      "stream_step": 68,
+      "stream_trap": 0,
+      "ordinary_numeric_tx": 8,
+      "ordinary_policy_tx": 0,
+      "live_diagnostic_tx": 1,
+      "total_rollout": 11,
+      "total_step": 96,
+      "total_transaction_excluding_common_source": 9
+    },
+    {
+      "arm": "compatible:Full",
+      "case": "compatible",
+      "policy": "full",
+      "readonly_rollout": 3,
+      "readonly_step": 28,
+      "stream_rollout": 8,
+      "stream_step": 68,
+      "stream_trap": 0,
+      "ordinary_numeric_tx": 14,
+      "ordinary_policy_tx": 0,
+      "practice_rollout": 6,
+      "practice_step": 53,
+      "practice_trap": 1,
+      "practice_candidate_tx": 2,
+      "live_diagnostic_tx": 1,
+      "total_rollout": 17,
+      "total_step": 149,
+      "total_transaction_excluding_common_source": 17
+    },
+    {
+      "arm": "compatible:Verified",
+      "case": "compatible",
+      "policy": "verify",
+      "readonly_rollout": 3,
+      "readonly_step": 28,
+      "stream_rollout": 8,
+      "stream_step": 68,
+      "stream_trap": 0,
+      "ordinary_numeric_tx": 10,
+      "ordinary_policy_tx": 0,
+      "practice_rollout": 2,
+      "practice_step": 20,
+      "practice_trap": 0,
+      "practice_candidate_tx": 1,
+      "live_diagnostic_tx": 1,
+      "total_rollout": 13,
+      "total_step": 116,
+      "total_transaction_excluding_common_source": 12
+    },
+    {
+      "arm": "reversal:TaskTD",
+      "case": "reversal",
+      "policy": "task",
+      "readonly_rollout": 3,
+      "readonly_step": 36,
+      "stream_rollout": 8,
+      "stream_step": 96,
+      "stream_trap": 0,
+      "ordinary_numeric_tx": 8,
+      "ordinary_policy_tx": 0,
+      "total_rollout": 11,
+      "total_step": 132,
+      "total_transaction_excluding_common_source": 8
+    },
+    {
+      "arm": "reversal:Direct",
+      "case": "reversal",
+      "policy": "direct",
+      "readonly_rollout": 3,
+      "readonly_step": 36,
+      "stream_rollout": 8,
+      "stream_step": 85,
+      "stream_trap": 1,
+      "ordinary_numeric_tx": 14,
+      "ordinary_policy_tx": 0,
+      "live_diagnostic_tx": 1,
+      "practice_rollout": 6,
+      "practice_step": 72,
+      "practice_trap": 0,
+      "practice_candidate_tx": 2,
+      "total_rollout": 17,
+      "total_step": 193,
+      "total_transaction_excluding_common_source": 17
+    },
+    {
+      "arm": "reversal:Full",
+      "case": "reversal",
+      "policy": "full",
+      "readonly_rollout": 3,
+      "readonly_step": 36,
+      "stream_rollout": 8,
+      "stream_step": 96,
+      "stream_trap": 0,
+      "ordinary_numeric_tx": 14,
+      "ordinary_policy_tx": 0,
+      "practice_rollout": 6,
+      "practice_step": 61,
+      "practice_trap": 1,
+      "practice_candidate_tx": 2,
+      "live_diagnostic_tx": 1,
+      "total_rollout": 17,
+      "total_step": 193,
+      "total_transaction_excluding_common_source": 17
+    },
+    {
+      "arm": "reversal:Verified",
+      "case": "reversal",
+      "policy": "verify",
+      "readonly_rollout": 3,
+      "readonly_step": 36,
+      "stream_rollout": 8,
+      "stream_step": 96,
+      "stream_trap": 0,
+      "ordinary_numeric_tx": 11,
+      "ordinary_policy_tx": 0,
+      "practice_rollout": 3,
+      "practice_step": 25,
+      "practice_trap": 1,
+      "practice_candidate_tx": 2,
+      "live_diagnostic_tx": 1,
+      "total_rollout": 14,
+      "total_step": 157,
+      "total_transaction_excluding_common_source": 14
+    }
+  ],
+  "per_policy_native_work": {
+    "task": {
+      "readonly_rollout": 6,
+      "readonly_step": 72,
+      "stream_rollout": 16,
+      "stream_step": 192,
+      "stream_trap": 0,
+      "ordinary_numeric_tx": 16,
+      "ordinary_policy_tx": 0,
+      "total_rollout": 22,
+      "total_step": 264,
+      "total_transaction_excluding_common_source": 16
+    },
+    "direct": {
+      "readonly_rollout": 6,
+      "readonly_step": 64,
+      "stream_rollout": 16,
+      "stream_step": 153,
+      "stream_trap": 1,
+      "ordinary_numeric_tx": 22,
+      "ordinary_policy_tx": 0,
+      "live_diagnostic_tx": 2,
+      "total_rollout": 28,
+      "total_step": 289,
+      "total_transaction_excluding_common_source": 26,
+      "practice_rollout": 6,
+      "practice_step": 72,
+      "practice_trap": 0,
+      "practice_candidate_tx": 2
+    },
+    "full": {
+      "readonly_rollout": 6,
+      "readonly_step": 64,
+      "stream_rollout": 16,
+      "stream_step": 164,
+      "stream_trap": 0,
+      "ordinary_numeric_tx": 28,
+      "ordinary_policy_tx": 0,
+      "practice_rollout": 12,
+      "practice_step": 114,
+      "practice_trap": 2,
+      "practice_candidate_tx": 4,
+      "live_diagnostic_tx": 2,
+      "total_rollout": 34,
+      "total_step": 342,
+      "total_transaction_excluding_common_source": 34
+    },
+    "verify": {
+      "readonly_rollout": 6,
+      "readonly_step": 64,
+      "stream_rollout": 16,
+      "stream_step": 164,
+      "stream_trap": 0,
+      "ordinary_numeric_tx": 21,
+      "ordinary_policy_tx": 0,
+      "practice_rollout": 5,
+      "practice_step": 45,
+      "practice_trap": 1,
+      "practice_candidate_tx": 3,
+      "live_diagnostic_tx": 2,
+      "total_rollout": 27,
+      "total_step": 273,
+      "total_transaction_excluding_common_source": 26
+    }
+  },
+  "matched_initial_roots": [
+    {
+      "case": "compatible",
+      "epoch": 0,
+      "arms": [
+        "TaskTD",
+        "Direct"
+      ],
+      "actual_raw_identical": true,
+      "ordinary_after_R_L_I_identical": true
+    },
+    {
+      "case": "compatible",
+      "epoch": 0,
+      "arms": [
+        "TaskTD",
+        "Full"
+      ],
+      "actual_raw_identical": true,
+      "ordinary_after_R_L_I_identical": true
+    },
+    {
+      "case": "compatible",
+      "epoch": 0,
+      "arms": [
+        "TaskTD",
+        "Verified"
+      ],
+      "actual_raw_identical": true,
+      "ordinary_after_R_L_I_identical": true
+    },
+    {
+      "case": "reversal",
+      "epoch": 0,
+      "arms": [
+        "TaskTD",
+        "Direct"
+      ],
+      "actual_raw_identical": true,
+      "ordinary_after_R_L_I_identical": true
+    },
+    {
+      "case": "reversal",
+      "epoch": 0,
+      "arms": [
+        "TaskTD",
+        "Full"
+      ],
+      "actual_raw_identical": true,
+      "ordinary_after_R_L_I_identical": true
+    },
+    {
+      "case": "reversal",
+      "epoch": 0,
+      "arms": [
+        "TaskTD",
+        "Verified"
+      ],
+      "actual_raw_identical": true,
+      "ordinary_after_R_L_I_identical": true
+    }
+  ],
+  "matched_full_verified_mainstreams": [
+    {
+      "case": "compatible",
+      "main_tasks": 8,
+      "full_vs_verified_all_main_raw_identical": true,
+      "full_vs_verified_all_post_task_R_L_I_identical": true
+    },
+    {
+      "case": "reversal",
+      "main_tasks": 8,
+      "full_vs_verified_all_main_raw_identical": true,
+      "full_vs_verified_all_post_task_R_L_I_identical": true
+    }
+  ],
+  "actual_practice_events": [
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:3"
+      ],
+      "arm": "compatible:Full",
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:3": 1
+      },
+      "epoch": 0,
+      "means": {
+        "keep": -1.24,
+        "single:0": -1.13,
+        "single:3": 0.84
+      },
+      "menu": [
+        "keep",
+        "single:0",
+        "single:3"
+      ],
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.24,
+          -1.24
+        ],
+        "single:0": [
+          -1.02,
+          -1.24
+        ],
+        "single:3": [
+          0.84,
+          0.84
+        ]
+      },
+      "selected": "single:3",
+      "strategy": "full-two",
+      "unprobed": []
+    },
+    {
+      "actions": [
+        "keep",
+        "single:3"
+      ],
+      "arm": "compatible:Verified",
+      "costs": {
+        "keep": 0,
+        "single:3": 1
+      },
+      "epoch": 0,
+      "means": {
+        "keep": -1.24,
+        "single:3": 0.84
+      },
+      "menu": [
+        "keep",
+        "single:0",
+        "single:3"
+      ],
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.24
+        ],
+        "single:3": [
+          0.84
+        ]
+      },
+      "selected": "single:3",
+      "strategy": "verify-one",
+      "unprobed": [
+        "single:0"
+      ]
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "reversal:Direct",
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:7": 1
+      },
+      "epoch": 2,
+      "means": {
+        "keep": 0.76,
+        "single:0": 0.76,
+        "single:7": 0.76
+      },
+      "menu": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          0.76,
+          0.76
+        ],
+        "single:0": [
+          0.76,
+          0.76
+        ],
+        "single:7": [
+          0.76,
+          0.76
+        ]
+      },
+      "selected": "keep",
+      "strategy": "full-two",
+      "unprobed": []
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "reversal:Full",
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:7": 1
+      },
+      "epoch": 0,
+      "means": {
+        "keep": -0.24,
+        "single:0": -1.13,
+        "single:7": 0.76
+      },
+      "menu": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.24,
+          0.76
+        ],
+        "single:0": [
+          -1.02,
+          -1.24
+        ],
+        "single:7": [
+          0.76,
+          0.76
+        ]
+      },
+      "selected": "single:7",
+      "strategy": "full-two",
+      "unprobed": []
+    },
+    {
+      "actions": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "arm": "reversal:Verified",
+      "costs": {
+        "keep": 0,
+        "single:0": 1,
+        "single:7": 1
+      },
+      "epoch": 0,
+      "means": {
+        "keep": -1.24,
+        "single:0": -1.02,
+        "single:7": 0.76
+      },
+      "menu": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "mode": "dq",
+      "returns": {
+        "keep": [
+          -1.24
+        ],
+        "single:0": [
+          -1.02
+        ],
+        "single:7": [
+          0.76
+        ]
+      },
+      "selected": "single:7",
+      "strategy": "verify-one",
+      "unprobed": []
+    }
+  ],
+  "raw_context_bound_reviews": [
+    {
+      "seq": 302,
+      "arm": "reversal:Direct",
+      "after": [
+        [
+          "dq",
+          "TIMEOUT",
+          false,
+          "single",
+          4,
+          false,
+          "stay",
+          "run-span",
+          6
+        ]
+      ],
+      "before": [],
+      "context": [
+        0,
+        1
+      ],
+      "epoch": 1,
+      "memory_unchanged": [
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "keep",
+            "run-span",
+            0
+          ],
+          4,
+          {
+            "binary64_hex": "-0x1.eb851eb851eb8p-3"
+          }
+        ],
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            1
+          ],
+          4,
+          {
+            "binary64_hex": "-0x1.999999999999ap-3"
+          }
+        ],
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            2
+          ],
+          2,
+          {
+            "binary64_hex": "-0x1.0a3d70a3d70a4p-3"
+          }
+        ],
+        [
+          [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay",
+            "run-span",
+            8
+          ],
+          2,
+          {
+            "binary64_hex": "0x1.b851eb851eb85p-1"
+          }
+        ]
+      ],
+      "pending": {
+        "candidate": "single:0",
+        "context": [
+          0,
+          1
+        ],
+        "epoch": 0,
+        "key": [
+          "dq",
+          "TIMEOUT",
+          false,
+          "single",
+          4,
+          false,
+          "stay",
+          "run-span",
+          6
+        ],
+        "predicted_mean": {
+          "binary64_hex": "0x1.b851eb851eb85p-1"
+        }
+      },
+      "requires_retest": true,
+      "terminal": "TRAP"
+    }
+  ],
+  "verified_actual_selections": [
+    {
+      "seq": 206,
+      "arm": "compatible:Verified",
+      "candidate": "single:3",
+      "candidate_count": 14,
+      "decision": {
+        "address_costs": {
+          "clear_factual": 12,
+          "keep": 0,
+          "single:0": 1,
+          "single:1": 1,
+          "single:10": 1,
+          "single:11": 1,
+          "single:2": 1,
+          "single:3": 1,
+          "single:4": 1,
+          "single:5": 1,
+          "single:6": 1,
+          "single:7": 1,
+          "single:8": 1,
+          "single:9": 1
+        },
+        "eligible": [
+          "single:0",
+          "single:3"
+        ],
+        "frozen_choice": "single:0",
+        "keep_unknown": false,
+        "keys": {
+          "clear_factual": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "clear_factual"
+          ],
+          "keep": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "keep"
+          ],
+          "single:0": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay"
+          ],
+          "single:1": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            true,
+            "stay"
+          ],
+          "single:10": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            true,
+            "stay"
+          ],
+          "single:11": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            true,
+            "end"
+          ],
+          "single:2": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            3,
+            false,
+            "move"
+          ],
+          "single:3": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay"
+          ],
+          "single:4": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            true,
+            "stay"
+          ],
+          "single:5": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            true,
+            "stay"
+          ],
+          "single:6": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            true,
+            "stay"
+          ],
+          "single:7": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            true,
+            "stay"
+          ],
+          "single:8": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            true,
+            "stay"
+          ],
+          "single:9": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            true,
+            "stay"
+          ]
+        },
+        "practice_actions": [
+          "keep",
+          "single:3"
+        ],
+        "practice_means": {
+          "keep": {
+            "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+          },
+          "single:3": {
+            "binary64_hex": "0x1.ae147ae147ae1p-1"
+          }
+        },
+        "practice_menu": [
+          "keep",
+          "single:0",
+          "single:3"
+        ],
+        "practice_status": "completed",
+        "scores": {
+          "clear_factual": {
+            "binary64_hex": "0x1.c28f5c28f5c29p-1"
+          },
+          "keep": {
+            "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+          },
+          "single:0": {
+            "binary64_hex": "0x1.c28f5c28f5c29p-1"
+          },
+          "single:1": {
+            "binary64_hex": "0x1.0369d0369d037p-3"
+          },
+          "single:10": {
+            "binary64_hex": "0x1.0369d0369d037p-3"
+          },
+          "single:11": {
+            "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+          },
+          "single:2": {
+            "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+          },
+          "single:3": {
+            "binary64_hex": "0x1.c28f5c28f5c29p-1"
+          },
+          "single:4": {
+            "binary64_hex": "0x1.0369d0369d037p-3"
+          },
+          "single:5": {
+            "binary64_hex": "0x1.0369d0369d037p-3"
+          },
+          "single:6": {
+            "binary64_hex": "0x1.0369d0369d037p-3"
+          },
+          "single:7": {
+            "binary64_hex": "0x1.0369d0369d037p-3"
+          },
+          "single:8": {
+            "binary64_hex": "0x1.0369d0369d037p-3"
+          },
+          "single:9": {
+            "binary64_hex": "0x1.0369d0369d037p-3"
+          }
+        },
+        "unknown_candidates": [],
+        "unprobed": [
+          "single:0"
+        ]
+      },
+      "proposal": {
+        "action": "apply",
+        "edits": [
+          {
+            "address": {
+              "a": 4,
+              "m": 0,
+              "state": {
+                "kappa": 0,
+                "phi": 1,
+                "t": 3,
+                "x": 1,
+                "y": 2
+              },
+              "z": 1
+            },
+            "store": "q",
+            "value": null
+          }
+        ]
+      }
+    },
+    {
+      "seq": 504,
+      "arm": "reversal:Verified",
+      "candidate": "single:7",
+      "candidate_count": 14,
+      "decision": {
+        "address_costs": {
+          "clear_factual": 12,
+          "keep": 0,
+          "single:0": 1,
+          "single:1": 1,
+          "single:10": 1,
+          "single:11": 1,
+          "single:2": 1,
+          "single:3": 1,
+          "single:4": 1,
+          "single:5": 1,
+          "single:6": 1,
+          "single:7": 1,
+          "single:8": 1,
+          "single:9": 1
+        },
+        "eligible": [
+          "single:0",
+          "single:7"
+        ],
+        "frozen_choice": "single:0",
+        "keep_unknown": false,
+        "keys": {
+          "clear_factual": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "clear_factual"
+          ],
+          "keep": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "keep"
+          ],
+          "single:0": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay"
+          ],
+          "single:1": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            true,
+            "stay"
+          ],
+          "single:10": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            0,
+            false,
+            "move"
+          ],
+          "single:11": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            1,
+            false,
+            "end"
+          ],
+          "single:2": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            true,
+            "stay"
+          ],
+          "single:3": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            true,
+            "stay"
+          ],
+          "single:4": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            true,
+            "stay"
+          ],
+          "single:5": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            true,
+            "stay"
+          ],
+          "single:6": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            3,
+            false,
+            "move"
+          ],
+          "single:7": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            4,
+            false,
+            "stay"
+          ],
+          "single:8": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            0,
+            false,
+            "move"
+          ],
+          "single:9": [
+            "dq",
+            "TIMEOUT",
+            false,
+            "single",
+            1,
+            false,
+            "move"
+          ]
+        },
+        "practice_actions": [
+          "keep",
+          "single:0",
+          "single:7"
+        ],
+        "practice_means": {
+          "keep": {
+            "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+          },
+          "single:0": {
+            "binary64_hex": "-0x1.051eb851eb852p+0"
+          },
+          "single:7": {
+            "binary64_hex": "0x1.851eb851eb852p-1"
+          }
+        },
+        "practice_menu": [
+          "keep",
+          "single:0",
+          "single:7"
+        ],
+        "practice_status": "completed",
+        "scores": {
+          "clear_factual": {
+            "binary64_hex": "0x1.c28f5c28f5c29p-1"
+          },
+          "keep": {
+            "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+          },
+          "single:0": {
+            "binary64_hex": "0x1.c28f5c28f5c29p-1"
+          },
+          "single:1": {
+            "binary64_hex": "0x1.0369d0369d037p-3"
+          },
+          "single:10": {
+            "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+          },
+          "single:2": {
+            "binary64_hex": "0x1.0369d0369d037p-3"
+          },
+          "single:3": {
+            "binary64_hex": "0x1.0369d0369d037p-3"
+          },
+          "single:4": {
+            "binary64_hex": "0x1.0369d0369d037p-3"
+          },
+          "single:5": {
+            "binary64_hex": "0x1.0369d0369d037p-3"
+          },
+          "single:6": {
+            "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+          },
+          "single:7": {
+            "binary64_hex": "0x1.c28f5c28f5c29p-1"
+          },
+          "single:8": {
+            "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+          }
+        },
+        "unknown_candidates": [
+          "single:9",
+          "single:11"
+        ],
+        "unprobed": []
+      },
+      "proposal": {
+        "action": "apply",
+        "edits": [
+          {
+            "address": {
+              "a": 4,
+              "m": 0,
+              "state": {
+                "kappa": 0,
+                "phi": 1,
+                "t": 7,
+                "x": 1,
+                "y": 2
+              },
+              "z": 1
+            },
+            "store": "q",
+            "value": null
+          }
+        ]
+      }
+    }
+  ],
+  "posthoc_first_episode_decomposition": {
+    "not_a_separately_executed_arm": true,
+    "rows": [
+      {
+        "case": "compatible",
+        "actual_full_first_episode_returns": {
+          "keep": -1.24,
+          "single:0": -1.02,
+          "single:3": 0.84
+        },
+        "offline_one_round_full_menu_choice": "single:3",
+        "actual_verified_choice": "single:3",
+        "common_first_probe_actual_raw_identical": true,
+        "not_an_executed_extra_control_arm": true,
+        "no_new_future_handle_claimed": true
+      },
+      {
+        "case": "reversal",
+        "actual_full_first_episode_returns": {
+          "keep": -1.24,
+          "single:0": -1.02,
+          "single:7": 0.76
+        },
+        "offline_one_round_full_menu_choice": "single:7",
+        "actual_verified_choice": "single:7",
+        "common_first_probe_actual_raw_identical": true,
+        "not_an_executed_extra_control_arm": true,
+        "no_new_future_handle_claimed": true
+      }
+    ],
+    "full_two_episode_tasks": 12,
+    "first_episode_fullmenu_tasks_if_reused": 6,
+    "actual_verified_tasks": 5,
+    "six_removed_second_learning_episodes": 6,
+    "one_removed_untested_candidate": 1,
+    "not_original_two_episode_metric_equivalence": true
+  },
+  "findings": [
+    "Newfinite sequentialprobe component genuinelyruns before actualmainwrite, not anofflineposthoc rejection. Keep andmodelproposal getoneactualcurrent-conditiontrial; failedorunderperformingproposal triggersremainingcandidate. Allbranches independentfullpostTD R+L clones, origincurrent/Iunchanged.",
+    "Two-case descriptiveaggregate: TaskTD6/16/mean-0.49/trials0; Direct12/16/mean0.30875/trials6; Full14/16/mean0.545/trials12; Verified14/16/mean0.545/trials5. Not a populationweightedestimate.",
+    "Full/Verified all16main raw/outcome/return andpost-taskR+L+I exactlyidentical inbothcases. Verified has7fewerpractice rollouts/69fewer nativeKsteps overall(273vs342),8fewer storetransactions excludingcommoninstallation(26vs34). CPU/modellookupoverhead not separatelymeasured.",
+    "Compatible: Verified keepTIMEOUT-1.24, predictedlatereditSUCCESS0.84, stopsafter2probes, explicitfirstcandidateunprobed. Directalso succeeds7/8 with0probes; verification has a real2trial overhead whenmodelright.",
+    "Reversal: frozen5.0model stillproposesfirstedit. Verified actuallyobservesitsTRAP-1.02 onisolatedtrial thenprobeslatereditSUCCESS0.76 andchooseslaterbeforemainwrite. Itgets7/8vsDirect5/8 anduses3trialsvsDirectlatefallback6. Wrongprediction retrievedbutneverbecomesactualpendingmainintervention.",
+    "Riskmovesintopractice, not magicallyremoved: Verified hasoneactualprivateTRAP, mainTRAP0; DirectmainTRAP1. Full hastwoprivateTRAP/main0. Allfailuretraces/costs retained; cannotassume free/safeclones inrealhazardoustasks.",
+    "Savingssource isnotalladaptiveallocation: Fulluses2chronologicallearningepisodes foreach3branches; Verifieduses1andmaystop. Storedfirst-episodeanalysis showsfullone-roundmenuswoulduse6totalprobes vsactualverified5 withsamechoices onthese data. Sixofthe7rolloutdifferencecome fromnotrunningsecondlearningepisodes; onefromearlystop. Thisisoffline decomposition, notanexecutedthirdcontrol ornewfuturecurve.",
+    "Wholemainfuture quality matches here, butone-episode objective/proxy isnot proved equivalenttooriginaltwo-episodemean. Unprobedalternativecanbebetterandstochastictrials canmislead; nofullmenuoptimality orcalibratedconfidenceclaim.",
+    "Bothcases knownmechanism-inspired, before-runfixed. v132negativeandv131positive resultspreserved; predictoritselfnotfixed, onlyinterventionverificationnew. DQonly, notpatchqualification/generalRFL/oldsciencePASS."
+  ],
+  "limits": [
+    "Two fixedcase sources,8main tasks perrole, no independentseed/population/familyconfirmation. Aggregationexplicitlybalanceddescriptive; no newscienceweights/thresholdadoption.",
+    "Protocolchangesbothobservationlengthandconditionalallocation. Do notattributeall7savedtasks exclusivelytolearnedchoiceorsequentialorder; single-roundfullmenu notactuallyexecuted asnewrole.",
+    "Probe uses actualcurrent-condition simulatorcapability unavailableinmanyrealworldtasks. Privatefailuresstillcost/possiblyharm; do notdeployprobe onhazardousrealworld tasks assumingresettableworld.",
+    "OneepisodeSUCCESS isweakerevidencethanlongerlearningcurve/multitrialstochasticdata. NoformalF1/newentry6mutation/dense465/N100 orpartial/exceptiontotalityqualification claimed.",
+    "Modelparams5.0frozen, rawpredictionsremainwrongonreversal. No refitfromthisrun, penaltylabel, permanentban orsuccess-mainattribution. AllordinaryDQ updatescontinue, NoWritebaseline notfrozen.",
+    "Onlykeep+first2eligible singles/cap1event; skippedactionexplicit, no boundedrejectionresampling, retry, outputselection, expandedmenu orfuturemaskaccess. Mainε/Q*/alpha/rewards unchanged.",
+    "Allnativeworkcounted.5.688s is wholeinstrumentedrun, not productiontiming. Differentprocedure/extraretrievalCPU/RAM/clone/IOoverhead notmatched; Kworkonlynot totalcompute.",
+    "Original313/API/guard/law/registry/oldexecutedbytes/oldpositivezero/adverseevidence/266prov preserved. No oldchecker/nativefixture rerun, newkeys/RNG/keyderive/DP/calibration/collector/automationchange. Internalreviewnot independentexpert/sciencegate."
+  ],
+  "patch_this_round": "NOT_MEASURED",
+  "prior_v131_positive_and_v132_negative_preserved": true,
+  "original_full_V04R_qualified": false,
+  "preservation": {
+    "old71_ledger_values_preserved": true,
+    "old266_provenance_preserved": true,
+    "old_executed_bytes_edited": false,
+    "old_checker_native_reruns": 0,
+    "automation_inspected_or_modified": false
+  }
+}

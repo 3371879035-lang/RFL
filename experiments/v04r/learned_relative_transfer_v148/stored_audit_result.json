@@ -1,0 +1,577 @@
+{
+  "schema": "V148_STDLIB_LEARNED_RELATIVE_TRANSFER_REVIEW",
+  "complete": true,
+  "native_counts": {
+    "rollout": 94,
+    "step": 348,
+    "transaction": 220
+  },
+  "records": 714,
+  "input_pins": 338,
+  "training_examples": [
+    {
+      "id": "broken",
+      "x": [
+        0,
+        1
+      ],
+      "y": 0.94,
+      "paired_returns": {
+        "keep": [
+          -1.02,
+          -1.02
+        ],
+        "controller-delete": [
+          -1.02,
+          0.86
+        ]
+      },
+      "context": [
+        0,
+        3
+      ],
+      "raw_sha256": "bfeea98c8d3b0d9eb91727eec0f183840167ab83227ab6f85d7f8615b1b9c8a2",
+      "factual_seq": 164
+    },
+    {
+      "id": "plant",
+      "x": [
+        0,
+        0
+      ],
+      "y": 0.0,
+      "paired_returns": {
+        "keep": [
+          -1.02,
+          -1.02
+        ],
+        "controller-delete": [
+          -1.02,
+          -1.02
+        ]
+      },
+      "context": [
+        0,
+        3
+      ],
+      "raw_sha256": "bfeea98c8d3b0d9eb91727eec0f183840167ab83227ab6f85d7f8615b1b9c8a2",
+      "factual_seq": 382
+    },
+    {
+      "id": "protective",
+      "x": [
+        2,
+        1
+      ],
+      "y": -0.94,
+      "paired_returns": {
+        "keep": [
+          0.86,
+          0.86
+        ],
+        "controller-delete": [
+          -1.02,
+          0.86
+        ]
+      },
+      "context": [
+        0,
+        3
+      ],
+      "raw_sha256": "3ab0bac30d7d06f280c5fb451999a9d19370d31dad5916610f1ab0037c769771",
+      "factual_seq": 83
+    }
+  ],
+  "frozen_tree": {
+    "feature": 0,
+    "left": {
+      "feature": 1,
+      "left": {
+        "mean": 0.0,
+        "n": 1
+      },
+      "right": {
+        "mean": 0.94,
+        "n": 1
+      },
+      "threshold": 0.5
+    },
+    "right": {
+      "mean": -0.94,
+      "n": 1
+    },
+    "threshold": 1.0
+  },
+  "frozen_digest": "099580b76f86e5d2bd537bd5da3640782a6cc17180515edfb31d424bbb9985f8",
+  "train_context": [
+    0,
+    3
+  ],
+  "test_context": [
+    1,
+    0
+  ],
+  "new_test_labels_used_to_fit_frozen_model": 0,
+  "summaries": [
+    {
+      "case": "broken",
+      "arm": "NoWrite",
+      "successes": 0,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02
+      ],
+      "outcomes": [
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP"
+      ],
+      "mean_return": -1.02,
+      "external_updates": 1
+    },
+    {
+      "case": "broken",
+      "arm": "DirectSite",
+      "successes": 5,
+      "returns": [
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "outcomes": [
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.5466666666666666,
+      "external_updates": 1
+    },
+    {
+      "case": "broken",
+      "arm": "FrozenLearned",
+      "successes": 5,
+      "returns": [
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "outcomes": [
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.5466666666666666,
+      "external_updates": 1
+    },
+    {
+      "case": "broken",
+      "arm": "Validated",
+      "successes": 5,
+      "returns": [
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "outcomes": [
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.5466666666666666,
+      "external_updates": 1
+    },
+    {
+      "case": "plant",
+      "arm": "NoWrite",
+      "successes": 0,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02
+      ],
+      "outcomes": [
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP"
+      ],
+      "mean_return": -1.02,
+      "external_updates": 1
+    },
+    {
+      "case": "plant",
+      "arm": "DirectSite",
+      "successes": 0,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02
+      ],
+      "outcomes": [
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP"
+      ],
+      "mean_return": -1.02,
+      "external_updates": 1
+    },
+    {
+      "case": "plant",
+      "arm": "FrozenLearned",
+      "successes": 0,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02
+      ],
+      "outcomes": [
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP"
+      ],
+      "mean_return": -1.02,
+      "external_updates": 1
+    },
+    {
+      "case": "plant",
+      "arm": "Validated",
+      "successes": 0,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02
+      ],
+      "outcomes": [
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP"
+      ],
+      "mean_return": -1.02,
+      "external_updates": 1
+    },
+    {
+      "case": "protective",
+      "arm": "NoWrite",
+      "successes": 5,
+      "returns": [
+        -1.06,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "outcomes": [
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.5399999999999999,
+      "external_updates": 1
+    },
+    {
+      "case": "protective",
+      "arm": "DirectSite",
+      "successes": 4,
+      "returns": [
+        -1.06,
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "outcomes": [
+        "COLLISION",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.22666666666666666,
+      "external_updates": 0
+    },
+    {
+      "case": "protective",
+      "arm": "FrozenLearned",
+      "successes": 5,
+      "returns": [
+        -1.06,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "outcomes": [
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.5399999999999999,
+      "external_updates": 1
+    },
+    {
+      "case": "protective",
+      "arm": "Validated",
+      "successes": 5,
+      "returns": [
+        -1.06,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "outcomes": [
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.5399999999999999,
+      "external_updates": 1
+    }
+  ],
+  "predictions": {
+    "broken": {
+      "features": [
+        0,
+        1
+      ],
+      "predicted_delta": 0.94,
+      "proposal": {
+        "action": "apply",
+        "edits": [
+          {
+            "store": "controller",
+            "address": {
+              "state": {
+                "x": 0,
+                "y": 2,
+                "t": 0,
+                "kappa": 1,
+                "phi": 0
+              },
+              "cmd": 4
+            },
+            "value": null
+          }
+        ]
+      },
+      "pattern_seen": true
+    },
+    "plant": {
+      "features": [
+        0,
+        0
+      ],
+      "predicted_delta": 0.0,
+      "proposal": {
+        "action": "keep",
+        "edits": []
+      },
+      "pattern_seen": true
+    },
+    "protective": {
+      "features": [
+        2,
+        1
+      ],
+      "predicted_delta": -0.94,
+      "proposal": {
+        "action": "keep",
+        "edits": []
+      },
+      "pattern_seen": true
+    }
+  },
+  "actual_paired": {
+    "broken": {
+      "values": {
+        "keep": -1.02,
+        "controller-delete": -0.08000000000000002
+      },
+      "delta": 0.94,
+      "choice": "controller-delete"
+    },
+    "plant": {
+      "values": {
+        "keep": -1.02,
+        "controller-delete": -1.02
+      },
+      "delta": 0.0,
+      "choice": "keep"
+    },
+    "protective": {
+      "values": {
+        "keep": 0.86,
+        "controller-delete": -0.08000000000000002
+      },
+      "delta": -0.94,
+      "choice": "keep"
+    }
+  },
+  "matched_main_comparisons": [
+    {
+      "case": "broken",
+      "predicted_delta": 0.94,
+      "actual_current_paired_delta": 0.94,
+      "feature_pattern_seen_in_training": true,
+      "decision_agrees": true,
+      "all6_main_raw_identical": true,
+      "all6_post_R_L_I_identical": true
+    },
+    {
+      "case": "plant",
+      "predicted_delta": 0.0,
+      "actual_current_paired_delta": 0.0,
+      "feature_pattern_seen_in_training": true,
+      "decision_agrees": true,
+      "all6_main_raw_identical": true,
+      "all6_post_R_L_I_identical": true
+    },
+    {
+      "case": "protective",
+      "predicted_delta": -0.94,
+      "actual_current_paired_delta": -0.94,
+      "feature_pattern_seen_in_training": true,
+      "decision_agrees": true,
+      "all6_main_raw_identical": true,
+      "all6_post_R_L_I_identical": true
+    }
+  ],
+  "observation_transfers": [
+    {
+      "case": "broken",
+      "arm": "NoWrite",
+      "applied": true
+    },
+    {
+      "case": "broken",
+      "arm": "DirectSite",
+      "applied": true
+    },
+    {
+      "case": "broken",
+      "arm": "FrozenLearned",
+      "applied": true
+    },
+    {
+      "case": "broken",
+      "arm": "Validated",
+      "applied": true
+    },
+    {
+      "case": "plant",
+      "arm": "NoWrite",
+      "applied": true
+    },
+    {
+      "case": "plant",
+      "arm": "DirectSite",
+      "applied": true
+    },
+    {
+      "case": "plant",
+      "arm": "FrozenLearned",
+      "applied": true
+    },
+    {
+      "case": "plant",
+      "arm": "Validated",
+      "applied": true
+    },
+    {
+      "case": "protective",
+      "arm": "NoWrite",
+      "applied": true
+    },
+    {
+      "case": "protective",
+      "arm": "DirectSite",
+      "applied": false
+    },
+    {
+      "case": "protective",
+      "arm": "FrozenLearned",
+      "applied": true
+    },
+    {
+      "case": "protective",
+      "arm": "Validated",
+      "applied": true
+    }
+  ],
+  "native_ordinary_updates": 94,
+  "ordinary_policy_TX": 94,
+  "external_ordinary_updates": 11,
+  "external_policy_TX": 11,
+  "source_seed_TX": 1,
+  "case_source_TX": 2,
+  "private_candidate_X_TX": 3,
+  "main_feedback_X_TX": 4,
+  "actual_explore_events": 9,
+  "success_diagnosis": 0,
+  "guard_rejections": 1,
+  "old_native_checker_bank_reruns": 0,
+  "new_keys_RNG_DP_calibration_collection": 0,
+  "formal_B1_or_science_qualification": false
+}

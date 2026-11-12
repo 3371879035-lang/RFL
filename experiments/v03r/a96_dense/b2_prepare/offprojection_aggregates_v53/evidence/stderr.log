@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v03r\a96_dense\b2_prepare\offprojection_aggregates_v53\candidate.py", line 171, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v03r\a96_dense\b2_prepare\offprojection_aggregates_v53\candidate.py", line 165, in main
+    stats['world_unread_target_slices_identity_zero']=sum(s['unread_legal_targets_retained'] for w in worlds for s in w['original']['six_support_slices'])
+                                                      ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v03r\a96_dense\b2_prepare\offprojection_aggregates_v53\candidate.py", line 165, in <genexpr>
+    stats['world_unread_target_slices_identity_zero']=sum(s['unread_legal_targets_retained'] for w in worlds for s in w['original']['six_support_slices'])
+                                                                                                                      ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+TypeError: 'NoneType' object is not iterable

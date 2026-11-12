@@ -1,0 +1,142 @@
+{
+  "status": "COMPLETE_CONDITIONAL_LOCAL_FACT_TO_ACTION_STUDY",
+  "authority": "执行完成这个V0.7",
+  "plan": "experiments/v07r/plan_v173.json",
+  "actual": {
+    "source_instances": 1156,
+    "source_mapping_initializations": 4624,
+    "policy_calls": 80652,
+    "planning_edge_expansions": 53760,
+    "tie_readout_candidate_scores": 215088,
+    "shadow_readout_calls": 49160,
+    "shadow_candidate_scores": 294944,
+    "rollouts": 1846672,
+    "train_rollouts": 73736,
+    "steps": 4489909,
+    "train_steps": 187245,
+    "observations_consumed": 73736,
+    "history_appends": 73736,
+    "ordinary_backups": 165130,
+    "replay_backups": 188253,
+    "model_backups": 566700,
+    "numeric_changes": 730280,
+    "fact_count_updates": 148684,
+    "eval_rollouts": 1772936,
+    "eval_steps": 4302664,
+    "environment_PRNG_draws": 110592,
+    "exploration_PRNG_draws": 24576
+  },
+  "matrix_streams": 1152,
+  "independent_seed_blocks": 32,
+  "per_stream_train": 64,
+  "frozen_checkpoints": [
+    0,
+    8,
+    16,
+    32,
+    48,
+    64
+  ],
+  "noisy_eval_each": 512,
+  "first_receipts": {
+    "wiring": {
+      "native_exit": 0,
+      "stored_review_exit": 0
+    },
+    "matrix": {
+      "native_exit": 0,
+      "stored_review_exit": 0
+    }
+  },
+  "first_predeclared_analysis_exit": 0,
+  "first_posthoc_reporting_analysis_exit": 0,
+  "requirements": {
+    "all9_learning_paths_actual": true,
+    "inherited_updates_runtime_identical_and_stored_rebuilt": true,
+    "fact_tie_actually_changes_actions": true,
+    "count_tie_alternative_kept": true,
+    "all32_paired_seeds_complete": true,
+    "complete_frozen_isolation": true,
+    "truth_only_external_evaluation": true,
+    "full_costs_zeros_adverse_nulls_retained": true,
+    "no_result_chasing_or_retry": true,
+    "mechanism_empty_coverage_not_misreported_as_measured_zero": true
+  },
+  "primary_comparisons": [
+    {
+      "p": 0.1,
+      "left": "F-R-FT",
+      "right": "F-R",
+      "primary": true,
+      "paired_seeds": 32,
+      "mean_early_AUC_delta": 0.2647285461425781,
+      "median_early_AUC_delta": 0.3135986328125,
+      "bootstrap95_low": 0.22469959259033204,
+      "bootstrap95_high": 0.30008697509765625,
+      "positive_seeds": 28,
+      "zero_seeds": 4,
+      "negative_seeds": 0,
+      "mean_exact_early_AUC_delta": 0.266255859375,
+      "mean_train32_success_delta_per_mirror": 7.859375
+    },
+    {
+      "p": 0.1,
+      "left": "F-R-FT",
+      "right": "F-R-CT",
+      "primary": true,
+      "paired_seeds": 32,
+      "mean_early_AUC_delta": 0.0027923583984375,
+      "median_early_AUC_delta": 0.0,
+      "bootstrap95_low": 0.0,
+      "bootstrap95_high": 0.0083770751953125,
+      "positive_seeds": 1,
+      "zero_seeds": 31,
+      "negative_seeds": 0,
+      "mean_exact_early_AUC_delta": 0.0028476562500000004,
+      "mean_train32_success_delta_per_mirror": 0.40625
+    }
+  ],
+  "matched_costs": [
+    {
+      "left": "F-R-FT",
+      "right": "F-R",
+      "common_train_steps_sum": 7959,
+      "left_successes": 1399,
+      "right_successes": 1038
+    },
+    {
+      "left": "F-R-FT",
+      "right": "F-R-CT",
+      "common_train_steps_sum": 10446,
+      "left_successes": 2010,
+      "right_successes": 2008
+    },
+    {
+      "left": "F-R-FT",
+      "right": "RL-R",
+      "common_train_steps_sum": 7818,
+      "left_successes": 1363,
+      "right_successes": 938
+    }
+  ],
+  "scope": "Completed local tie-readout mechanism study; not all factual use solved. Strict wrong Q ranking remains. FT vs CT extra value small; no equivalence inference.",
+  "observed_exact_first_target_disagreements": 0,
+  "native_local_PRNG_random_calls": 135168,
+  "review_reconstruction_random_calls": 135168,
+  "analysis_bootstrap_randrange_calls": 320000,
+  "source_binding": {
+    "path": "experiments/v07r/fact_action_matrix_v174/source_binding.json",
+    "bytes": 10097,
+    "sha256": "13856460283231452f6bbed8a90b1f917a0242a74b9d4d94d70eb22b5df8c556"
+  },
+  "old_runner_fixture_checker_or_formal_collector_runs": 0,
+  "automation_changes": 0,
+  "qualification": false,
+  "maintenance": {
+    "default_staged_diff_check_exit": 2,
+    "warning": "stored_semantics.py has one new blank line at EOF",
+    "executed_source_bytes_preserved_not_formatted": true,
+    "explicit_core_whitespace_minus_blank_at_eof_check_exit": 0,
+    "default_configuration_not_modified": true
+  }
+}

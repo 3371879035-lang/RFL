@@ -1,0 +1,106 @@
+{
+  "version": "V203.0 scoped actual evidence and conditional memory age",
+  "created_utc": "2026-11-09T16:25:42.021470+00:00",
+  "authority": "Continue improving weight-space programming, with no game adaptation or gradient training.",
+  "hypotheses": [
+    "Local actual improvement should not require global significance or overwrite unrelated conditions.",
+    "New evidence from similar conditions is a more relevant age unit than unrelated global interactions; may trade stability for adaptability."
+  ],
+  "construction": "New separately authored initial neural weights. All V202 shared parameters are reproduced exactly by the original analytic writer; only new decay/local readouts added. No parameters change during episodes.",
+  "old_source": "experiments/v09r/weight_programmed_feedback_v202/model.py",
+  "old_checkpoint": "experiments/v09r/weight_programmed_feedback_v202/evidence/initial_written.pt",
+  "families": [
+    "delayed_choice",
+    "joint_sequence",
+    "stochastic_stationary",
+    "stochastic_reversal"
+  ],
+  "variants": [
+    "v203_full",
+    "v203_global_gate",
+    "v203_global_age",
+    "v203_no_gate",
+    "v202_original"
+  ],
+  "seeds": [
+    203001,
+    203002,
+    203003,
+    203004,
+    203005,
+    203006,
+    203007,
+    203008,
+    203009,
+    203010,
+    203011,
+    203012,
+    203013,
+    203014,
+    203015,
+    203016
+  ],
+  "cycles": 16,
+  "per_cycle": {
+    "discovery": 4,
+    "candidate_real_trials": 8,
+    "incumbent_real_trials": 8,
+    "evaluation_after": 8,
+    "evaluation_before_shadow": 8
+  },
+  "interface": {
+    "context_dim": 6,
+    "action_dim": 6,
+    "fact_dim": 3,
+    "capacity": 384,
+    "planning_depth": 6,
+    "goal": [
+      1,
+      0,
+      0
+    ],
+    "actions": 2,
+    "initial_condition_scope": "exact public observation identity; no generalization of adoption to untested starting conditions"
+  },
+  "fixed_new_program": {
+    "conditional_age": "sum of similarity of newer records to the current query",
+    "half_life_matching_evidence": 8,
+    "scope_effect_estimate": "sum paired realized differences / (1+matching_pair_count)",
+    "local_adoption": "matching_pair_count>=2 and estimated_difference>0; ties and negative differences retain prior route",
+    "uncertainty": "sample standard error reported, not a hard global significance veto; no statistical correctness certificate"
+  },
+  "unchanged_v202_program": {
+    "kernel_beta": 20,
+    "global_age_penalty_in_controls": 0.002,
+    "moment_transport": "first and joint second moments",
+    "exploration_bonus": [
+      0.5,
+      0.1
+    ],
+    "global_gate": "n>=8 and paired mean-2SE>0",
+    "discovery_epsilon": 0.1
+  },
+  "chronology": "Real discovery -> freeze candidate and incumbent routes -> fresh paired actual trials -> local/global adoption -> add actual trial transitions to future working memory -> paired heldout after/before evaluations with no memory writes. Route chooses one frozen whole policy at episode start; no mid-episode mixing.",
+  "evaluation": "Report all 16 seeds and all five controls on same new task instances and exogenous tapes. Equal total and role-specific environment costs. First/last four cycles, reversal early window, whole evaluation, and independent paired adoption wins/losses. Shadow results cannot enter decisions.",
+  "budget": {
+    "wall_seconds": 900,
+    "workers": 4,
+    "intraop_threads_per_worker": 1,
+    "max_episodes": 184320,
+    "max_environment_transitions": 921600,
+    "per_seed_max_transitions": 57600,
+    "GPU": false,
+    "cloud": false,
+    "gradient_updates": 0,
+    "game_calls": 0
+  },
+  "preservation": "Exclusive evidence namespace, preserve first failure/partial/timeout, no automatic retry or post-result tuning; no old fixtures rerun or executed source edits. Original V202 model runs only as declared control on new instances.",
+  "limitations": [
+    "These are mechanism controls, not historical four reward/penalty training arms.",
+    "Conditional decay is not automatic causal change identification.",
+    "Exact repeated initial conditions limit scope; no raw semantic/vision encoder.",
+    "Small-pair local selection can overfit chance and is evaluated honestly.",
+    "No independent expert certification, no SLEEP consolidation, no trained-baseline superiority claim."
+  ],
+  "adoption": "Standalone prototype checkpoint and report only; no deployment in prior learner and no automation."
+}

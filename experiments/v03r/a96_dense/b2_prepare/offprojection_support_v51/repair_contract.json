@@ -1,0 +1,22 @@
+{
+  "schema": "a96-v51-precomputation-name-only-repair",
+  "role": "ORIGINAL_NATIVE1_RETAINED_NO_RFL_OR_SUPPORT_COMPUTATION",
+  "parent_commit": "b0f63130c70039d4cdf387b4a6a7dde6367ed4ef",
+  "reason": "Local main variable read assigned a read-site list shadows global read helper and raises UnboundLocalError at first contract load, before any input binding/output/support computation or RFL execution. Rename local read to read_sites only; separate capture path and augmented binding/self AST changes. Original source/capture immutable; original checker never executed.",
+  "immutable_original_inputs": {
+    "contract.json": "06347cbf078f4f987fa23adfff6b25916c9aeb7bc955da7e12fd6c3b1761666e",
+    "candidate.py": "dbc568e0342bd7668391b6ed096c11c1c157518a1ab963d7a9498b9596846dc1",
+    "check_stored.py": "43817efc0142ecddcdc7fa014645e9aef7fd373d425a799d8d28ba2553d0cf65",
+    "execute.py": "b4c66b2c6afe3e4bd279893ca415889c82fbde10f686107d8be3a5cd03a70eee",
+    "evidence/claim.json": "a90de0af21339e118c3b02de38e4a76e6c79b0b91b2249d102f345d3ca60600a",
+    "evidence/exit.json": "d53d71e29b9b375baac481daaed41e3c4ddd8a7a5d7cb49139cc69dcfe57bc61",
+    "evidence/stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/stderr.log": "c63e39c893938e9489cb9180b872b7056d208239fccf7960132c6995ed112d2f"
+  },
+  "original_checker_executed": false,
+  "original_completed_support_computation": false,
+  "native_RFL_executed": false,
+  "support_targets_grammar_measure_changed": false,
+  "scientific_rules_adopted": false,
+  "collection_authorized": false
+}

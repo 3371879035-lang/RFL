@@ -1,0 +1,37 @@
+{
+  "schema": "V04_LOCAL_FAILURE_ONLY_ORCHESTRATION_RESULT",
+  "date_asia_shanghai": "2026-10-14",
+  "parent_commit": "382b439b23cb443320651690990e8a130f7e687a",
+  "status": "ENGINEERING_SEAM_IMPLEMENTED_AND_UNIT_VERIFIED",
+  "tests": {
+    "count": 5,
+    "failures": 0,
+    "errors": 0,
+    "command": "python -X utf8 -B -m unittest discover -s experiments/v04r/failure_only_orchestration -p test_*.py"
+  },
+  "routes": {
+    "success": "ordinary_update_only; diagnostic_calls=0; query_spend=0; write_spend=0",
+    "failures": [
+      "COLLISION",
+      "TRAP",
+      "TIMEOUT"
+    ],
+    "failure_action": [
+      "apply",
+      "keep"
+    ],
+    "invalid": [
+      "missing",
+      "nonterminal",
+      "unknown -> ProtocolError before ordinary or diagnostic callback"
+    ]
+  },
+  "truth_boundary": "Evaluator metadata is carried only as audit data and does not route; diagnostic receives learner evidence only.",
+  "budget_boundary": "Explicit query/write budgets reject overspend; keep is legal and no edit is forced.",
+  "new_keys": 0,
+  "formal_collection": false,
+  "legacy_v03_source_modified": false,
+  "old_checker_or_native_execution": 0,
+  "scientific_qualification": false,
+  "scope_limit": "This is a typed outer orchestration seam, not end-to-end V04 learned RFL, candidate scoring, formal collection, or learner feedback-value selection."
+}

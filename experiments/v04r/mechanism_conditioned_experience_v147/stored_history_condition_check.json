@@ -1,0 +1,66 @@
+{
+  "schema": "V147_TARGETED_STORED_PX_CONDITION_ONLY",
+  "checks": [
+    {
+      "version": "controller_horizon_value_v144",
+      "observations_checked": 6,
+      "conflicts_found": 0,
+      "details": [
+        {
+          "observation_id": "controller:ExperienceNoWrite:observation:1",
+          "consulted_own_PX_changes": []
+        },
+        {
+          "observation_id": "controller:OneStepValue:observation:1",
+          "consulted_own_PX_changes": []
+        },
+        {
+          "observation_id": "controller:TwoStepValue:observation:1",
+          "consulted_own_PX_changes": []
+        },
+        {
+          "observation_id": "plant:ExperienceNoWrite:observation:1",
+          "consulted_own_PX_changes": []
+        },
+        {
+          "observation_id": "plant:OneStepValue:observation:1",
+          "consulted_own_PX_changes": []
+        },
+        {
+          "observation_id": "plant:TwoStepValue:observation:1",
+          "consulted_own_PX_changes": []
+        }
+      ]
+    },
+    {
+      "version": "direct_controller_control_v145",
+      "observations_checked": 2,
+      "conflicts_found": 0,
+      "details": [
+        {
+          "observation_id": "controller:DirectSitePlusExperience:observation:1",
+          "consulted_own_PX_changes": []
+        },
+        {
+          "observation_id": "plant:DirectSitePlusExperience:observation:1",
+          "consulted_own_PX_changes": []
+        }
+      ]
+    }
+  ],
+  "input_pins": [
+    {
+      "path": "experiments/v04r/controller_horizon_value_v144/evidence/raw.jsonl",
+      "bytes": 4046821,
+      "sha256": "bfeea98c8d3b0d9eb91727eec0f183840167ab83227ab6f85d7f8615b1b9c8a2"
+    },
+    {
+      "path": "experiments/v04r/direct_controller_control_v145/evidence/raw.jsonl",
+      "bytes": 1796121,
+      "sha256": "0748cc27f26ce3938175eb2bf578f6f72deec8296f53117d0fe82bc36f4d0606"
+    }
+  ],
+  "old_native_checker_or_handle_restoration": false,
+  "not_requalification": true,
+  "not_external_dynamics_totality": true
+}

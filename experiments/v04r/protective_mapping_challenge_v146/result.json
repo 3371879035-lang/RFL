@@ -1,0 +1,206 @@
+{
+  "schema": "V146_PROTECTIVE_MAPPING_CHALLENGE_RESULT",
+  "date_asia_shanghai": "2026-11-07",
+  "parent_commit": "0075d41e81e18179e76f5544fb07374cd41ddc14",
+  "status": "DIRECT_DELETION_REMOVES_PROTECTION_PAIRED_VALUE_KEEPS_BUT_DOES_NOT_BEAT_NO_WRITE",
+  "execution": {
+    "native_first_exit": 0,
+    "new_stored_auditor_first_exit": 0,
+    "native_counts": {
+      "rollout": 22,
+      "step": 130,
+      "transaction": 50
+    },
+    "records": 138,
+    "input_pins_native_before_after_equal": 338,
+    "main_tasks": 18,
+    "private_tasks": 4,
+    "native_ordinary_updates": 22,
+    "ordinary_numeric_TX": 22,
+    "ordinary_visited_D_policy_TX": 22,
+    "checkpoint_restore_TX": 3,
+    "extra_source_install_TX": 1,
+    "source_install_edits": 3,
+    "private_candidate_X_TX": 1,
+    "main_controller_delete_TX": 1,
+    "model_fit_events": 1,
+    "external_observation_ingestions": 0,
+    "actual_exploration_events": 5,
+    "main_diagnostic_calls": 4,
+    "success_diagnostic_calls": 0,
+    "terminal_counts": {
+      "stream": {
+        "COLLISION": 3,
+        "SUCCESS": 14,
+        "TRAP": 1
+      },
+      "trial": {
+        "SUCCESS": 3,
+        "TRAP": 1
+      }
+    },
+    "old_native_checker_bank_or_prefix_reruns": 0,
+    "new_keys_RNG_keyderive_DP_calibration_formal_collection": 0,
+    "automatic_retry": false,
+    "started_at_utc": "2026-11-06T19:06:55.804150+00:00",
+    "completed_at_utc": "2026-11-06T19:06:58.450982+00:00",
+    "instrumented_wall_seconds": 2.64000000001397
+  },
+  "per_arm": [
+    {
+      "arm": "NoWrite",
+      "successes": 5,
+      "outcomes": [
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "returns": [
+        -1.06,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.5399999999999999,
+      "rollout": 6,
+      "Kstep": 38,
+      "private_rollouts": 0,
+      "numeric_ordinary_TX": 6,
+      "policy_TX": 6,
+      "private_X_TX": 0,
+      "main_X_TX": 0,
+      "TX_excluding_shared_bootstrap": 12
+    },
+    {
+      "arm": "DirectSite",
+      "successes": 4,
+      "outcomes": [
+        "COLLISION",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "returns": [
+        -1.06,
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.22666666666666666,
+      "rollout": 6,
+      "Kstep": 32,
+      "private_rollouts": 0,
+      "numeric_ordinary_TX": 6,
+      "policy_TX": 6,
+      "private_X_TX": 0,
+      "main_X_TX": 1,
+      "TX_excluding_shared_bootstrap": 13
+    },
+    {
+      "arm": "PairedValue",
+      "successes": 5,
+      "outcomes": [
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "returns": [
+        -1.06,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.5399999999999999,
+      "rollout": 10,
+      "Kstep": 60,
+      "private_rollouts": 4,
+      "numeric_ordinary_TX": 10,
+      "policy_TX": 10,
+      "private_X_TX": 1,
+      "main_X_TX": 0,
+      "TX_excluding_shared_bootstrap": 21
+    }
+  ],
+  "candidate_value_actual_samples": {
+    "samples": {
+      "keep": [
+        0.86,
+        0.86
+      ],
+      "controller-delete": [
+        -1.02,
+        0.86
+      ]
+    },
+    "values": {
+      "keep": 0.86,
+      "controller-delete": -0.08000000000000002
+    },
+    "choice": "keep"
+  },
+  "historical_same_absolute_value_contrast": {
+    "old_broken_controller_values": {
+      "keep": -1.02,
+      "controller-delete": -0.08000000000000002
+    },
+    "new_protective_values": {
+      "keep": 0.86,
+      "controller-delete": -0.08000000000000002
+    },
+    "same_delete_absolute_value": true,
+    "old_choice": "controller-delete",
+    "new_choice": "keep"
+  },
+  "relative_values": {
+    "old_broken_controller_delete_minus_keep": 0.94,
+    "new_protective_delete_minus_keep": -0.94
+  },
+  "comparisons": {
+    "first_factual_fullraw_equal_all_arms": true,
+    "NoWrite_PairedValue_all6main_raw_and_R_L_I_exact": {
+      "all6main_raw_identical": true,
+      "all6post_R_L_I_identical": true
+    },
+    "ordinary_learning_already_corrects_actual_late_D_fault_to_UP": true,
+    "ordinary_improvement_source": "Visited-existing-D improvement from common Q* prior; not new numeric value knowledge at that late D address.",
+    "trial_cost_not_matched": true,
+    "main_exploration_values_same_all_arms": true,
+    "no_truth_routing": true
+  },
+  "findings": [
+    "The first mismatch was protective: commanded RIGHT was executed WAIT, avoiding a step0 trap. A different installed D override later commanded RIGHT into the hazard at postt3 and caused actual COLLISION/-1.06.",
+    "Ordinary learning already restored that late D entry to UP before diagnosis. NoWrite recovered5/6,mean.5399999999999999. DirectSite deleted the protective X and suffered an additional planned ordinary-exploration TRAP,4/6,mean.22666666666666666.",
+    "Frozen v144 two-step value with actual current trials measured keep[.86,.86] versus delete[-1.02,.86], chosekeep. It exactly matched all NoWrite mainraw and posttaskR+L/I but paid4 private tasks; it did not beat NoWrite.",
+    "Deletion absolute score is exactly-.08000000000000002 in both the old broken-controller example and this new protective example. The paired gain reverses from+.94 to-.94 because keep changes from-1.02 to+.86. Relative future consequence, not the candidate absolute score or mismatch alone, determines whether the local edit helps.",
+    "No private observations were ingested in any arm: those sample returns can depend on the actuator mapping being considered for change. Full dynamics-aware sample-transfer qualification is not inferred from prior L-root/issuer checks."
+  ],
+  "limits": [
+    "One prospective informed protective-controller engineering challenge from a real recorded ordinary checkpoint, not blind independent seeds/population or broad causal capability.",
+    "One main start exploratory coin is deliberately predeclared across all roles; private first-start coin matches its literal value. This is not sampled epsilon=.1 frequency, formal Xi epoch equivalence, or adaptive exploration.",
+    "PairedValue uses the existing empirical mean estimator unchanged, not learned feature discovery. Candidate generation remains first visible mismatch; its safety comes from actual finite comparison here, not a proven general attribution model.",
+    "NoWrite is the cheapest successful method in this challenge. Paired comparison avoids DirectSite harm, but no claim of globally optimal testing/CPU efficiency or a necessary experiment for every failure.",
+    "Local controller executor remains v144 unchanged; original B1 whole-law/backend/ownerreceipt qualification, complete keyed/partial totality/Retention/Collateral/fullfamily are not granted. All unexecuted original formal confirmation work remains unclaimed."
+  ],
+  "preservation": {
+    "old_ledger_values": 84,
+    "old_provenance": 266,
+    "original313_current_hash_match": true,
+    "frozen_v144_value_policy_mechanism_loop_and_v145_direct_policy_unchanged": true,
+    "not_full_repository_audit": true
+  },
+  "next_actual_gap": "The observation consumer currently binds issuer/consumer/L but does not in general qualify reuse after changes to the actuator mapping actually consulted by the observation. This run deliberately ingests none; a needed future mechanism-aware transfer must reject affected samples or justify a new semantics, without replaying completed banks."
+}

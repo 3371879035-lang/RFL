@@ -1,0 +1,24 @@
+{
+  "version": "V222_REMAINING_CHECKS_ONLY",
+  "actual_environment_calls": 0,
+  "optimizer_steps": 0,
+  "automatic_retry": false,
+  "wall_budget_seconds": 300,
+  "torch_threads": 1,
+  "excluded_completed_checks": [
+    "persistent sequence likelihood",
+    "same-batch exact sampling / cross-batch numerical diagnosis"
+  ],
+  "six_checks": [
+    "same-row candidate-code causal isolation",
+    "thought topology",
+    "saved noise replay",
+    "actual sequence mask",
+    "thought/adoption boundary",
+    "world/policy gradients"
+  ],
+  "reason": "Both failed bitwise assumptions compare different batch extents/rows, not a causal code intervention. Same-row code intervention is the correct isolation check. Preserve both first failures. Run previously unreached tests once; report each failure.",
+  "float_boundary": "Stored initial thought observations equal explicit float32 conversion of public float64 input, not its unconverted bytes.",
+  "old_actual_calls_replayed": 0,
+  "no_network_source_edits": true
+}

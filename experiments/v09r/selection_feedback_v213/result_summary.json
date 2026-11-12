@@ -1,0 +1,220 @@
+{
+  "schema": "v213-final-summary-with-semantic-count-correction",
+  "utc": "2026-11-10T14:46:23.394227+00:00",
+  "head": "d0edad11137a117f45ab94f5f10cf6f045a61ac3",
+  "checks_passed": 9,
+  "checks_failed": 0,
+  "stages": [
+    {
+      "stage": "check",
+      "started_utc": "2026-11-10T14:38:52.188301+00:00",
+      "finished_utc": "2026-11-10T14:38:55.393141+00:00",
+      "exit_code": 0,
+      "timed_out": false,
+      "wall_seconds": 3.205618100007996
+    },
+    {
+      "stage": "native",
+      "started_utc": "2026-11-10T14:38:55.394141+00:00",
+      "finished_utc": "2026-11-10T14:39:48.862046+00:00",
+      "exit_code": 0,
+      "timed_out": false,
+      "wall_seconds": 53.4686623000016
+    },
+    {
+      "stage": "review",
+      "started_utc": "2026-11-10T14:39:48.863530+00:00",
+      "finished_utc": "2026-11-10T14:39:51.469936+00:00",
+      "exit_code": 0,
+      "timed_out": false,
+      "wall_seconds": 2.6058233000221662
+    }
+  ],
+  "actual_single_step_interactions": 55296,
+  "input_field_observations": 221184,
+  "original_reported_steps": 221184,
+  "original_step_label_correct": false,
+  "count_correction_file": "execution_semantics_correction.json",
+  "independent_seeds_per_family": 16,
+  "runs": 192,
+  "records_full_eof": 64066,
+  "inputs_unchanged": true,
+  "gradient_updates": 0,
+  "permanent_adoptions": 0,
+  "old_native_reruns": 0,
+  "constructor_facts_are_synthetic": true,
+  "main_comparison": "feedback_mix vs locked_ips; uniform is an explicit weak no-selection ablation",
+  "table": [
+    {
+      "family": "single",
+      "arm": "locked_ips",
+      "independent_seeds": 16,
+      "trial_success_rate": 0.6591796875,
+      "proposal_evaluation_success_rate": 0.80712890625,
+      "proposal_expected_posthoc": 0.8,
+      "mean_tv_spent": 25.99999999999997,
+      "mean_cpu_seconds": 0.119140625
+    },
+    {
+      "family": "single",
+      "arm": "uniform_mix",
+      "independent_seeds": 16,
+      "trial_success_rate": 0.52099609375,
+      "proposal_evaluation_success_rate": 0.474609375,
+      "proposal_expected_posthoc": 0.5,
+      "mean_tv_spent": 22.791666666666618,
+      "mean_cpu_seconds": 0.2548828125
+    },
+    {
+      "family": "single",
+      "arm": "feedback_mix",
+      "independent_seeds": 16,
+      "trial_success_rate": 0.57275390625,
+      "proposal_evaluation_success_rate": 0.826171875,
+      "proposal_expected_posthoc": 0.8200000000000001,
+      "mean_tv_spent": 23.791827829826254,
+      "mean_cpu_seconds": 0.33984375
+    },
+    {
+      "family": "triple",
+      "arm": "locked_ips",
+      "independent_seeds": 16,
+      "trial_success_rate": 0.63818359375,
+      "proposal_evaluation_success_rate": 0.771484375,
+      "proposal_expected_posthoc": 0.76,
+      "mean_tv_spent": 22.399999999999977,
+      "mean_cpu_seconds": 0.115234375
+    },
+    {
+      "family": "triple",
+      "arm": "uniform_mix",
+      "independent_seeds": 16,
+      "trial_success_rate": 0.509765625,
+      "proposal_evaluation_success_rate": 0.4970703125,
+      "proposal_expected_posthoc": 0.5,
+      "mean_tv_spent": 22.73888888888884,
+      "mean_cpu_seconds": 0.25390625
+    },
+    {
+      "family": "triple",
+      "arm": "feedback_mix",
+      "independent_seeds": 16,
+      "trial_success_rate": 0.56689453125,
+      "proposal_evaluation_success_rate": 0.8291015625,
+      "proposal_expected_posthoc": 0.8200000000000001,
+      "mean_tv_spent": 23.74277556546156,
+      "mean_cpu_seconds": 0.3583984375
+    },
+    {
+      "family": "small_gap",
+      "arm": "locked_ips",
+      "independent_seeds": 16,
+      "trial_success_rate": 0.51025390625,
+      "proposal_evaluation_success_rate": 0.51416015625,
+      "proposal_expected_posthoc": 0.516,
+      "mean_tv_spent": 18.92499999999998,
+      "mean_cpu_seconds": 0.1416015625
+    },
+    {
+      "family": "small_gap",
+      "arm": "uniform_mix",
+      "independent_seeds": 16,
+      "trial_success_rate": 0.50634765625,
+      "proposal_evaluation_success_rate": 0.4990234375,
+      "proposal_expected_posthoc": 0.5,
+      "mean_tv_spent": 22.605555555555508,
+      "mean_cpu_seconds": 0.302734375
+    },
+    {
+      "family": "small_gap",
+      "arm": "feedback_mix",
+      "independent_seeds": 16,
+      "trial_success_rate": 0.50927734375,
+      "proposal_evaluation_success_rate": 0.521484375,
+      "proposal_expected_posthoc": 0.528,
+      "mean_tv_spent": 23.04689516053179,
+      "mean_cpu_seconds": 0.4169921875
+    },
+    {
+      "family": "noise",
+      "arm": "locked_ips",
+      "independent_seeds": 16,
+      "trial_success_rate": 0.5107421875,
+      "proposal_evaluation_success_rate": 0.4892578125,
+      "proposal_expected_posthoc": 0.5,
+      "mean_tv_spent": 18.874999999999982,
+      "mean_cpu_seconds": 0.138671875
+    },
+    {
+      "family": "noise",
+      "arm": "uniform_mix",
+      "independent_seeds": 16,
+      "trial_success_rate": 0.5107421875,
+      "proposal_evaluation_success_rate": 0.4892578125,
+      "proposal_expected_posthoc": 0.5,
+      "mean_tv_spent": 22.84999999999995,
+      "mean_cpu_seconds": 0.2861328125
+    },
+    {
+      "family": "noise",
+      "arm": "feedback_mix",
+      "independent_seeds": 16,
+      "trial_success_rate": 0.5107421875,
+      "proposal_evaluation_success_rate": 0.4892578125,
+      "proposal_expected_posthoc": 0.5,
+      "mean_tv_spent": 23.12554649163874,
+      "mean_cpu_seconds": 0.3994140625
+    }
+  ],
+  "tradeoff": [
+    {
+      "family": "single",
+      "new_minus_lock_actual_trial_successes_per_run": -11.0625,
+      "new_minus_lock_predictable_trial_utility_per_run": -10.813369847181663,
+      "new_minus_lock_selected_policy_expected_value": 0.020000000000000004,
+      "new_minus_lock_actual_total_288_successes_per_run": -8.625,
+      "posthoc_payback_future_episodes": 540.6684923590831,
+      "selected_best_count_out_of_16": {
+        "locked_ips": 15,
+        "feedback_mix": 16
+      }
+    },
+    {
+      "family": "triple",
+      "new_minus_lock_actual_trial_successes_per_run": -9.125,
+      "new_minus_lock_predictable_trial_utility_per_run": -8.003567609535352,
+      "new_minus_lock_selected_policy_expected_value": 0.06000000000000001,
+      "new_minus_lock_actual_total_288_successes_per_run": -1.75,
+      "posthoc_payback_future_episodes": 133.39279349225583,
+      "selected_best_count_out_of_16": {
+        "locked_ips": 13,
+        "feedback_mix": 16
+      }
+    },
+    {
+      "family": "small_gap",
+      "new_minus_lock_actual_trial_successes_per_run": -0.125,
+      "new_minus_lock_predictable_trial_utility_per_run": -0.36200892612448454,
+      "new_minus_lock_selected_policy_expected_value": 0.01200000000000001,
+      "new_minus_lock_actual_total_288_successes_per_run": 0.8125,
+      "posthoc_payback_future_episodes": 30.167410510373685,
+      "selected_best_count_out_of_16": {
+        "locked_ips": 4,
+        "feedback_mix": 7
+      }
+    },
+    {
+      "family": "noise",
+      "new_minus_lock_actual_trial_successes_per_run": 0,
+      "new_minus_lock_predictable_trial_utility_per_run": 0.0,
+      "new_minus_lock_selected_policy_expected_value": 0.0,
+      "new_minus_lock_actual_total_288_successes_per_run": 0,
+      "posthoc_payback_future_episodes": null,
+      "selected_best_count_out_of_16": {
+        "locked_ips": 16,
+        "feedback_mix": 16
+      }
+    }
+  ],
+  "conclusion": "Better final candidate selection in these cases, but not better whole-budget efficiency on single/triple tasks. No complete-learning or pure-RL superiority claim."
+}

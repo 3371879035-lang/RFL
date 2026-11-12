@@ -1,0 +1,114 @@
+{
+  "version": 225,
+  "status": "UNTRAINED_ONLINE_FILTER_CHECKED",
+  "utc": "2026-11-11T16:11:37.663778+00:00",
+  "local_date": "2026-11-12",
+  "head": "d0edad11137a117f45ab94f5f10cf6f045a61ac3",
+  "preferred_class": "feedback_program_v225.FilteredFeedbackNet",
+  "parameters": 20469653,
+  "parameter_tensors": 249,
+  "new_parameters_over_v224": 0,
+  "actual_counts": {
+    "actual_events": 75,
+    "actual_filter_updates": 75,
+    "main_steps": 72,
+    "trials": 3,
+    "post_successes": 4,
+    "imagined_nodes": 94,
+    "particle_rows": 256,
+    "diagnostic_imagined_nodes": 30,
+    "diagnostic_particle_rows": 128,
+    "decisions": 85
+  },
+  "runtime_counters": {
+    "task_steps": 72,
+    "trial_steps": 3,
+    "baseline_trials": 1,
+    "candidate_trials": 2,
+    "failure_sessions": 4,
+    "adoptions": 1
+  },
+  "alignment": {
+    "137": {
+      "passed": true,
+      "actual_events_compared": 36,
+      "complete_episode_count": 6,
+      "nll_online_vs_training_max": 1.4210854715202004e-14,
+      "joint_vs_filtering_nll_max": 1.4210854715202004e-14,
+      "conditional_middle_nll_max": 2.842170943040401e-14,
+      "online_vs_rebuilt_prediction_max": 0.0,
+      "log_posterior_max": 0.0,
+      "exact_pre_state_h_matches": 36,
+      "actual_filter_updates": 36
+    },
+    "149": {
+      "passed": true,
+      "actual_events_compared": 39,
+      "complete_episode_count": 9,
+      "nll_online_vs_training_max": 1.4210854715202004e-14,
+      "joint_vs_filtering_nll_max": 1.4210854715202004e-14,
+      "conditional_middle_nll_max": 1.4210854715202004e-14,
+      "online_vs_rebuilt_prediction_max": 0.0,
+      "log_posterior_max": 0.0,
+      "exact_pre_state_h_matches": 39,
+      "actual_filter_updates": 39
+    }
+  },
+  "legacy_reset_formula_next_prediction_gaps": {
+    "137": 0.007987720891833305,
+    "149": 0.008632842451334
+  },
+  "gradient_counts": {
+    "137": {
+      "world": 155,
+      "policy": 78,
+      "critic": 5
+    },
+    "149": {
+      "world": 155,
+      "policy": 89,
+      "critic": 5
+    }
+  },
+  "cross_route_gradient_leaks": 0,
+  "actual_entropy_increases": 2,
+  "actual_entropy_decreases": 73,
+  "checks": 10,
+  "checks_all_passed": true,
+  "exit": {
+    "first_run_exit": 0,
+    "audit_exit": 0,
+    "timeout": false,
+    "automatic_retries": 0,
+    "wall_seconds": 159.21196580000105,
+    "input_count": 732,
+    "changed_inputs": [],
+    "utc": "2026-11-11T16:06:03.458914+00:00"
+  },
+  "previous_preserved_inputs": 717,
+  "optimizer_steps": 0,
+  "old_native_reruns": 0,
+  "automatic_tasks_changed": 0,
+  "git_commit_created": false,
+  "warning": {
+    "file": "capture/probe.py.stderr.txt",
+    "bytes": 454,
+    "kind": "Diagnostic assertion scalar conversion of requires_grad tensor; preserved, no source edits/retry"
+  },
+  "untrained_checkpoints": [
+    "experiments/v09r/online_filter_v225/capture/untrained_seed137.pt",
+    "experiments/v09r/online_filter_v225/capture/untrained_seed149.pt"
+  ],
+  "math": "docs/feedback_math/online_filter_v225/MATHEMATICAL_MODEL_V17.md",
+  "report": "experiments/v09r/online_filter_v225/RESULTS.md",
+  "usage": "experiments/v09r/online_filter_v225/USAGE.md",
+  "limits": [
+    "Untrained conditioning/gradient consistency, not calibrated performance or causal discovery",
+    "Fixed latent component within an episode; learned prior over earlier histories",
+    "Continuation requires stable goal and no interleaved events",
+    "Seed137 chose no real trials; zero adoption/evidence paths were not fabricated",
+    "Full-history reader and differentiable prefix reconstruction remain computational costs",
+    "No trained SLEEP consolidation or behavioral improvement claim",
+    "Goal/cost policy objectives are RL-style if optimized, not automatic strict reward-free feedback"
+  ]
+}

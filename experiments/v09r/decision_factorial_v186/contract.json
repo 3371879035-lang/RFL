@@ -1,0 +1,43 @@
+{
+  "schema": "V09_FROZEN_DECISION_FACTORIAL_V186",
+  "utc": "2026-11-08T08:04:12.840479+00:00",
+  "authority": "那你解决吧；隔离学习耦合后继续修反馈选择",
+  "scope": "Frozen existingV185models.3newreadouts permodel plus stored originalfull/Q controls. No training or extra learnedheads.",
+  "variants": [
+    "H1_only",
+    "no_empirical_override",
+    "H1_no_empirical_override"
+  ],
+  "meaning": {
+    "H1_only": "Onlyone-stepfactualreadout, no deepplanning; historicalfeaturesandempiricalscoreoverrideunchanged.",
+    "no_empirical_override": "Keep learnedhistoricalfeatures/retrieval and deepplanning; suppressonlyadditiveempiricalcorrectionin_root.",
+    "H1_no_empirical_override": "Both toggles; other codeunchanged."
+  },
+  "matrix": {
+    "seeds": [
+      93001,
+      93002,
+      93003,
+      93004
+    ],
+    "arms": [
+      "F-RP",
+      "F-R"
+    ],
+    "models": 8,
+    "variants_each": 3,
+    "episodes_each": 128,
+    "total_new_evaluation_episodes": 3072,
+    "environment_steps_upper": 786432,
+    "optimizer_steps": 0,
+    "training_steps": 0
+  },
+  "resources": {
+    "workers": 4,
+    "wall_seconds": 600,
+    "RAM_GiB": 20,
+    "compressed_artifact_GiB": 2
+  },
+  "inference": "Samej0..127scenarios as storedV185full/Q. Fourtrainedseeds, not3072independentmodels. Frozenexecutioncausalityonly, notfreshtrainingorfinalalgorithmadoption. No oldevaluation/checker/native rerun.",
+  "failure": "Exclusivecapture, retainfirsterrors/partials; noautomaticretry or bestvariantextraevaluation."
+}

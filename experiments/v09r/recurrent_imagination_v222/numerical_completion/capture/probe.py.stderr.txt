@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v09r\recurrent_imagination_v222\numerical_completion\probe.py", line 29, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v09r\recurrent_imagination_v222\numerical_completion\probe.py", line 21, in main
+    checks=run_checks(agent,record)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v09r\recurrent_imagination_v222\numerical_completion\checks.py", line 66, in run_checks
+    check('candidate_has_no_direct_physics_shortcut',causal_code)
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v09r\recurrent_imagination_v222\numerical_completion\checks.py", line 25, in check
+    detail=fn();result[name]=detail;record({'kind':'check','name':name,'passed':True,'details':detail})
+           ^^^^
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v09r\recurrent_imagination_v222\numerical_completion\checks.py", line 63, in causal_code
+    assert (a.observation,a.next_observation,a.feedback,a.next_variance)==(b.observation,b.next_observation,b.feedback,b.next_variance)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

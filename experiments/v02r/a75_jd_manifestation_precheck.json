@@ -1,0 +1,121 @@
+{
+ "tie_audit": {
+  "n_entries_with_admissible_set": 13824,
+  "n_entries_with_ties": 5191,
+  "n_D_domain_candidates": 24912,
+  "n_D_domain_candidates_that_are_tied_optimal": 8548,
+  "tie_examples": [
+   {
+    "state": "State(x=0, y=2, t=11, kappa=0, phi=0)",
+    "z": 1,
+    "m": 0,
+    "optimal": [
+     3,
+     4
+    ],
+    "policy": 3
+   },
+   {
+    "state": "State(x=0, y=2, t=11, kappa=0, phi=0)",
+    "z": 1,
+    "m": 1,
+    "optimal": [
+     3,
+     4
+    ],
+    "policy": 3
+   },
+   {
+    "state": "State(x=0, y=2, t=11, kappa=0, phi=0)",
+    "z": 2,
+    "m": 0,
+    "optimal": [
+     3,
+     4
+    ],
+    "policy": 3
+   },
+   {
+    "state": "State(x=0, y=2, t=11, kappa=0, phi=0)",
+    "z": 2,
+    "m": 1,
+    "optimal": [
+     3,
+     4
+    ],
+    "policy": 3
+   },
+   {
+    "state": "State(x=0, y=2, t=11, kappa=0, phi=0)",
+    "z": 3,
+    "m": 0,
+    "optimal": [
+     3,
+     4
+    ],
+    "policy": 3
+   }
+  ],
+  "n_contexts_scanned_for_canonical_slots": 5760,
+  "n_canonical_D_slots": 8640,
+  "n_canonical_D_slots_that_are_tied_optimal": 720,
+  "reading": "the frozen D fault domain excludes the tie-broken best_action but INCLUDES tied alternatives, so a share of catalogued 'decision faults' carry no value loss. 'a decision fault happened' is therefore weaker than 'a bad decision happened'. Recorded against V0.1R/V0.2R, not changed"
+ },
+ "frozen_semantics": {
+  "witness": {
+   "kappa": "0",
+   "phi": "0",
+   "z": "1",
+   "state": "State(x=0, y=2, t=0, kappa=0, phi=0)",
+   "m": "0",
+   "a_minus": "4",
+   "a_cmd": "3",
+   "adm": "(3, 4)",
+   "opt": "(3,)"
+  },
+  "fired_mechanisms_Z_D": 0,
+  "fired_mechanisms_all": {
+   "Z_P": 0,
+   "Z_D": 0,
+   "Z_X": 0,
+   "Z_E": 0,
+   "Z_U": 0
+  },
+  "J_D_L": 1
+ },
+ "mask_semantics": {
+  "strict_suboptimal_override": {
+   "override": "t=0 action=4",
+   "fired_mechanisms_Z_D": 1,
+   "J_D_L": 1,
+   "value_optimal": false
+  },
+  "tied_optimal_override": {
+   "override": "t=1 action=3",
+   "fired_mechanisms_Z_D": 1,
+   "J_D_L": 0,
+   "value_optimal": true
+  }
+ },
+ "architecture_neutral_reproduction": {
+  "witness": "s=State(x=0, y=2, t=0, kappa=0, phi=0) z=1 m=0 a^-=4",
+  "q_backed_first_command": 4,
+  "patch_backed_first_command": 4,
+  "commands_identical": true,
+  "J_D_L_q_backed": 1,
+  "J_D_L_patch_backed": 1,
+  "J_D_L_identical": true,
+  "note": "both stores were built independently: the Q store was corrupted at one value, the patch store got one override entry; neither was translated into the other"
+ },
+ "J_D_L_definition": "J_D^L = 1[exists t : a^cmd_t not in A_D^*(s_t,z_t,m_t)] with A_D^* the whole argmax SET, not the tie-broken best_action",
+ "why_not_replace_Z_D": "Z_D^fire answers 'did the injected DecisionOverride mechanism execute', which is V0.1R's closed target. Replacing it with a behavioural predicate would reopen that semantics; A75 adds J_D^L instead",
+ "checks": {
+  "1_learner_defect_is_invisible_to_frozen_Z_D": true,
+  "1_learner_defect_is_visible_to_J_D_L": true,
+  "2_mask_override_sets_Z_D_fire": true,
+  "2_tied_override_fires_Z_D_but_is_not_a_defect": true,
+  "4_two_architectures_reproduce_the_same_defect": true,
+  "4_the_defect_is_visible_to_J_D_L_in_both": true
+ },
+ "status": "PASS"
+}

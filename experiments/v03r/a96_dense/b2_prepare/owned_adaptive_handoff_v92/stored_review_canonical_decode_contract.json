@@ -1,0 +1,17 @@
+{
+  "schema": "V92_SEPARATE_STORED_FAILURE_REVIEW_CANONICAL_DECODE_CORRECTION",
+  "native_child_stays_failed": true,
+  "native_or_old_checker_retry": false,
+  "initial_success_only_stored_audit_draft": "owned_adaptive_handoff_v92_stored_audit.py retained unexecuted because native child failed",
+  "first_failure_content_audit": "owned_adaptive_handoff_v92_failure_stored_audit.py retained unchanged after its first actual exit1",
+  "failure_observation": {
+    "command": "python -X utf8 -B experiments/v03r/a96_dense/b2_prepare/owned_adaptive_handoff_v92_failure_stored_audit.py",
+    "tool_exit_code": 1,
+    "combined_output": "Traceback (most recent call last):\n  File \"D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009\\experiments\\v03r\\a96_dense\\b2_prepare\\owned_adaptive_handoff_v92_failure_stored_audit.py\", line 302, in <module>\n    main()\n    ~~~~^^\n  File \"D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009\\experiments\\v03r\\a96_dense\\b2_prepare\\owned_adaptive_handoff_v92_failure_stored_audit.py\", line 194, in main\n    mode = p['mode']; audit = p['audit']; assert digest(audit['payload']) == audit['payload_sha256']\n                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+    "cause": "New capture A.wire represents native float tolerance by {binary64_hex}; the original v75/v74 source seals hash the native float. The first stored reviewer incorrectly hashed the encoded marker as the original float. Not learner/source drift and not scientific FAIL."
+  },
+  "new_separate_audit": "owned_adaptive_handoff_v92_failure_decoded_audit.py",
+  "only_correction": "Decode the native source truth whole_optimal_set_tolerance marker to float.fromhex for its original seal, including that same field inside bound-source origin. Do NOT decode intentional full-composite Q value wire markers; do not change input, target, truth, receipt, episode, output or native verdict.",
+  "verification_scope": "All original failure capture bytes/input seals, whole-B1 source/role/residual/nonowner, all raw steps and rollouts, original TD/canonical outputs and actual empty L are checked from stored contents. No native execution, old checker execution or runtime identity reconstruction.",
+  "execution": "One new stdlib-only review with exclusive failed_capture_decoded_audit_result.json; record failure unchanged if it fails, no automatic retry. Review is main-agent implementation arithmetic, not expert/science qualification."
+}

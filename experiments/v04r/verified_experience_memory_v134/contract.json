@@ -1,0 +1,347 @@
+{
+  "schema": "V134_PROSPECTIVE_VERIFIED_EXPERIENCE_MEMORY",
+  "date_asia_shanghai": "2026-11-07",
+  "parent_commit": "08128ca49bba9117cc728eb998521bf6540ae932",
+  "question": "Can actual intervention-verification outcomes improve later diagnostic proposals and reduce trialwork across a persistent contextstream, rather than repeatedly overriding a frozen inaccurate model?",
+  "modes": [
+    "dq"
+  ],
+  "arms": [
+    "TaskTD",
+    "Frozen",
+    "Online",
+    "Anchored"
+  ],
+  "source_rule": "OnegenuineinitialDQsource installs allthreecontextsphi1/3/5 together,14edits each(6prefixWAITtimes bothm +singleWAIT1,2t7 bothm),plusunreadk0phi4RIGHT/Psentinel:44edits/oneTX. All4rolesclone exactlysamefullstores. No resets/injectionsbetweencontexts, no newsourcebasedonobservedeffect.",
+  "schedule": [
+    {
+      "kappa": 0,
+      "phi": 1,
+      "trap": true
+    },
+    {
+      "kappa": 0,
+      "phi": 1,
+      "trap": true
+    },
+    {
+      "kappa": 0,
+      "phi": 1,
+      "trap": true
+    },
+    {
+      "kappa": 0,
+      "phi": 1,
+      "trap": true
+    },
+    {
+      "kappa": 0,
+      "phi": 1,
+      "trap": true
+    },
+    {
+      "kappa": 0,
+      "phi": 1,
+      "trap": true
+    },
+    {
+      "kappa": 0,
+      "phi": 3,
+      "trap": true
+    },
+    {
+      "kappa": 0,
+      "phi": 3,
+      "trap": true
+    },
+    {
+      "kappa": 0,
+      "phi": 3,
+      "trap": true
+    },
+    {
+      "kappa": 0,
+      "phi": 3,
+      "trap": true
+    },
+    {
+      "kappa": 0,
+      "phi": 3,
+      "trap": true
+    },
+    {
+      "kappa": 0,
+      "phi": 3,
+      "trap": true
+    },
+    {
+      "kappa": 0,
+      "phi": 5,
+      "trap": true
+    },
+    {
+      "kappa": 0,
+      "phi": 5,
+      "trap": true
+    },
+    {
+      "kappa": 0,
+      "phi": 5,
+      "trap": true
+    },
+    {
+      "kappa": 0,
+      "phi": 5,
+      "trap": true
+    },
+    {
+      "kappa": 0,
+      "phi": 5,
+      "trap": true
+    },
+    {
+      "kappa": 0,
+      "phi": 5,
+      "trap": true
+    },
+    {
+      "kappa": 0,
+      "phi": 1,
+      "trap": true
+    },
+    {
+      "kappa": 0,
+      "phi": 1,
+      "trap": true
+    }
+  ],
+  "episode_inputs": "20persistentmain tasks perrole: sixeachatphi1,3,5 then tworevisitphi1; allk0/rank12/error0/base1/MAXcoins,trapstep0. OrdinaryR+L anddiagnosticM carry acrossphases. No world/roleID as memoryfeature.",
+  "model": "Allthreeverified policies start fromsame12priorv131actualreturns anduseidenticalv133one-roundsequentialprobe. Frozen retainsold5.0coefficients. Online refitsonecut perbase fromactualnewprobes. Anchored uses empiricalmean at anobservedfullspan key andstump onlyforunseenfullkey. Exactanchor is anestimate, notcertifiedtruth; samplesallretained.",
+  "diagnostic": "Onlyactualmainfailure afterordinaryTD caninvestigate. Allthreecorrectedroles useidenticalverify-one/one-roundfallback probeorder, samehybridguards/menus/budgets. Onlymemoryprediction/update differs. Successmain ordinaryonly. Negativeprobe isobservedinterventionconsequence, not globalmodelpunishment orcausalblamefrommainfailure.",
+  "retention_checkpoints_completed_tasks": [
+    0,
+    6,
+    12,
+    18,
+    20
+  ],
+  "retention_protocol": "Threeclean(noTRAP)single-scene readonlybanks perrole; noTD/draw/diagnosis, fullR+L+I preserved. This is not a generalCollateral or retentionqualification.",
+  "metrics": "Full20task quality, per6taskphase/revisit, actualMupdates andsubsequentlookup provenance, allprivateprobe costs. Firstphase2lookup compareOnline/Anchored atsameR+L+I andsamepriorverifieddataset; laterpolicyacquireddata maydiffer, do notclaimalltrainingdataidentical.",
+  "reference": {
+    "path": "experiments/v03r/a96_dense/b2_prepare/grammar_catalog_v31/evidence/stdout.log",
+    "sha256": "d0aafb6dc20b1cc0c872ac4c48497d94feb707ffe14448bd1c2f3ddd1bbb467b",
+    "q_digest": "d9078b5b5b823df56f998e8c28eb6a3e388bd3ae216f41a21acdb5202d2ec05a"
+  },
+  "budget": {
+    "rollout": 192,
+    "step": 2304,
+    "transaction": 512,
+    "raw_bytes": 50331648,
+    "seconds": 120
+  },
+  "expected_extent_not_effect_gate": {
+    "main_tasks": 80,
+    "read_only_rollouts": 60,
+    "practice_rollouts_upper_bound": 27,
+    "total_rollouts_upper_bound": 167
+  },
+  "capture": "New exclusive bounded capture and source pins before first execution. Old code/positive/negative/partial results unchanged, no old checker/native rerun, no automatic retry or replacing adverse/unknown outcomes.",
+  "limits": "OnefixedthreephasepersistentDQstream, not blindpopulation/independentseedconfirmation. Phases1/3/5retain sameprotective-first-step trapmechanism, not arbitraryworldknowledge. Newfeatures notdiscovered, branchsimulatorrepeatability assumed, notfreesafephysicalexperiments. Allone-episodeverification weaknesses remain. OriginalQ*/alpha1/2/epsilon1/10/rewards/API unchanged, no newkeys/RNG/keyderive/DP/calibration/collector/automationchanges. Nativebudget/resourcecounts includeallnewwork, no outcomeconditionedretryornewsource.",
+  "practice": {
+    "trigger": "OnlyafteractualmainfailureandordinaryTD. NewVerified doesnotdirectlycommitapplymemoryhit: itexecutesactualprobesfirst. Current-condition simulatorcapability runnerprivate, completepostTD R+L clones/nonalias/protectedI. No learner-directedmainactionexploration ornewRNG.",
+    "cap": "Threepracticeevents/role across3declaredcontexts, consumedbeforebranch. Sameone-episode probes/allarms, max3actions per event. Samekeep+2singles menu, no extraexperimentalreplication or retry. Unprobedactionsretained.",
+    "execution": "Exactly1fresh chronological ordinarytask perprobedbranch, explicitone-episode EngineeringPlan, no branchdiagnostics. Clone fullcurrentpostTD R+L andseparateI, samecurrentcondition privatecapability; no futuremask; originR+L+I unchanged duringinvestigation. Onlycompleted actualprobe labels maytrainonlineM once.",
+    "decision": "Choose highestactualmean amongprobedactions, tie loweraddresscost thenoriginalcanonicalmenuorder. Positivefirstprobe allowsboundedearlystop, not claimuntestedalternativeoptimal. Ifhypothesisfailsorunderperformskeep, plannedremainingcandidateprobe happens; no permanentban or punitiveMlabel.",
+    "cost": "All branch rollouts/steps/ordinary transactions and candidate writes counted separately; task and retention comparison shares task schedule but NOT total compute. No net efficiency or full-menu optimality claim. Standard query API remains0; these new practice operations are not claimed free or nonexistent.",
+    "event_cap": 3
+  },
+  "online_memory": {
+    "state": "Frozen nominalimmutableparams; Online/Anchored explicitnewAdaptiveMemory samplemaps persistacrossphases. Bothstartsame12priorreturns, not oldsource/issuedidentity. TaskTD noMdiagnosis. FullordinaryR+L protectedI unchanged semantics.",
+    "training": "Onlyaftercompleteactualverification event appendprobedkey/returns once, recordbefore/after table andsourceevent. No mainfailurepenaltylabel, no success-mainattribution; successfulprivatebranchvalue ispartof failure-triggered hypothesis test.",
+    "features": "Sameprovidedvisiblebasekey +fullcontiguouscommandrunlength. No absolutecoordinate/ordinal/context/role/faulttruth invaluefeature. Learnedstumpcode literalv131fit function reused, no newthreshold ormanualcorrectaddress.",
+    "anchor": "Whenfullkeyhasactualsamples, empirical-anchor predictionuses allitsobservedreturns mean; otherwiseusestumpgeneralization. This mayoverfitfew/outlierorconfounded samples andcanbe wrong; validationstillmandatorybeforeapply.",
+    "comparison": "OnlineandAnchored have identicalfeaturedata/pureverification initially, differpoint-residualversuscompressedstump representation. Frozen controlsabsenceofmodellearning. Laterdifferentprobeorderingchangesacquiredlabels; actualwork/datarecorded, no counterfactualdataset equalityclaim."
+  },
+  "failure_review": "Pending recall recorded only after actual remembered proposal is executed and complete main receipt exists; next failure is observed by native task loop before ordinary TD and then reviewed during diagnosis after ordinary TD. Only same observed kappa/phi and consecutive epoch qualify. A success or context switch expires the token without a diagnosis. Marking a key for investigation is not proof the prior intervention caused failure, a permanent action ban, or global punishment. Actual re-practice budget consumed once before branch start; no reset or retry.",
+  "retention_scenes": [
+    {
+      "kappa": 0,
+      "phi": 1
+    },
+    {
+      "kappa": 0,
+      "phi": 3
+    },
+    {
+      "kappa": 0,
+      "phi": 5
+    }
+  ],
+  "cases": {
+    "persistent": {
+      "sources": [],
+      "prefix_wait_source": {
+        "kappa": 0,
+        "phi": 1,
+        "cell": [
+          0,
+          2
+        ],
+        "times": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "scripted_source": {
+        "kappa": 0,
+        "phi": 1,
+        "entries": [
+          {
+            "x": 1,
+            "y": 2,
+            "t": 7,
+            "action": 4
+          },
+          {
+            "x": 0,
+            "y": 2,
+            "t": 0,
+            "action": 4,
+            "kappa": 0,
+            "phi": 3
+          },
+          {
+            "x": 0,
+            "y": 2,
+            "t": 1,
+            "action": 4,
+            "kappa": 0,
+            "phi": 3
+          },
+          {
+            "x": 0,
+            "y": 2,
+            "t": 2,
+            "action": 4,
+            "kappa": 0,
+            "phi": 3
+          },
+          {
+            "x": 0,
+            "y": 2,
+            "t": 3,
+            "action": 4,
+            "kappa": 0,
+            "phi": 3
+          },
+          {
+            "x": 0,
+            "y": 2,
+            "t": 4,
+            "action": 4,
+            "kappa": 0,
+            "phi": 3
+          },
+          {
+            "x": 0,
+            "y": 2,
+            "t": 5,
+            "action": 4,
+            "kappa": 0,
+            "phi": 3
+          },
+          {
+            "x": 1,
+            "y": 2,
+            "t": 7,
+            "action": 4,
+            "kappa": 0,
+            "phi": 3
+          },
+          {
+            "x": 0,
+            "y": 2,
+            "t": 0,
+            "action": 4,
+            "kappa": 0,
+            "phi": 5
+          },
+          {
+            "x": 0,
+            "y": 2,
+            "t": 1,
+            "action": 4,
+            "kappa": 0,
+            "phi": 5
+          },
+          {
+            "x": 0,
+            "y": 2,
+            "t": 2,
+            "action": 4,
+            "kappa": 0,
+            "phi": 5
+          },
+          {
+            "x": 0,
+            "y": 2,
+            "t": 3,
+            "action": 4,
+            "kappa": 0,
+            "phi": 5
+          },
+          {
+            "x": 0,
+            "y": 2,
+            "t": 4,
+            "action": 4,
+            "kappa": 0,
+            "phi": 5
+          },
+          {
+            "x": 0,
+            "y": 2,
+            "t": 5,
+            "action": 4,
+            "kappa": 0,
+            "phi": 5
+          },
+          {
+            "x": 1,
+            "y": 2,
+            "t": 7,
+            "action": 4,
+            "kappa": 0,
+            "phi": 5
+          }
+        ]
+      }
+    }
+  },
+  "roles": {
+    "TaskTD": {
+      "case": "persistent",
+      "policy": "task",
+      "memory": "none"
+    },
+    "Frozen": {
+      "case": "persistent",
+      "policy": "verify",
+      "memory": "frozen"
+    },
+    "Online": {
+      "case": "persistent",
+      "policy": "verify",
+      "memory": "online-stump"
+    },
+    "Anchored": {
+      "case": "persistent",
+      "policy": "verify",
+      "memory": "empirical-anchor"
+    }
+  }
+}

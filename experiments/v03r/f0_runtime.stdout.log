@@ -1,0 +1,11 @@
+gate 1/6 exit=0: python -m pytest -q
+gate 2/6 exit=0: python scripts/spec_audit.py
+gate 3/6 exit=0: python scripts/b2_view_gate_selfcheck.py
+gate 4/6 exit=0: python scripts/a91_training_gate_selfcheck.py
+gate 5/6 exit=0: python scripts/run_calibration.py
+gate 6/6 exit=0: python scripts/f0_manifest_selfcheck.py
+{
+  "status": "MEASURED",
+  "f0_valid": false,
+  "path": "D:\\\u5f3a\u5316\u53cd\u9988\u5b66\u4e60\\RFL-CausalChase-v0.3\\experiments\\v03r\\f0_runtime\\runtime.json"
+}

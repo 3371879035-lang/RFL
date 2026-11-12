@@ -1,0 +1,184 @@
+{
+  "utc": "2026-11-08T16:56:50.768470+00:00",
+  "smoke_native_exit": {
+    "exit_code": 0,
+    "interruption": null,
+    "wall_seconds": 85.2787782000014,
+    "peak_tree_rss": 4680409088,
+    "last_artifact_bytes": 105652925,
+    "finished_utc": "2026-11-08T16:55:02.307223+00:00"
+  },
+  "smoke_analysis_exit": {
+    "exit_code": 0
+  },
+  "common_blocks": 2,
+  "charged_steps_per_job": 32768,
+  "optimizer_steps_per_job": 256,
+  "total_actual_environment_steps": 177025,
+  "total_actual_optimizer_steps": 1280,
+  "mechanisms": [
+    {
+      "group": "RL-plain",
+      "complete_blocks": 2,
+      "mechanism_events": {
+        "optimizer": 256,
+        "episode": 364,
+        "ordinary_partial": 2
+      },
+      "optimizer_roles": {
+        "ordinary_online": 256
+      },
+      "environment_step_roles": {
+        "ordinary": 32768,
+        "interim_report": 1673
+      },
+      "history_suggestions": 0,
+      "teachers_tested": 0,
+      "teachers_qualified": 0,
+      "students_adopted": 0,
+      "ordinary_no_qualifying_failure": 0
+    },
+    {
+      "group": "RL-outer",
+      "complete_blocks": 2,
+      "mechanism_events": {
+        "optimizer": 256,
+        "episode": 375,
+        "fit": 2,
+        "dream": 2,
+        "adopt": 2,
+        "ordinary_partial": 2
+      },
+      "optimizer_roles": {
+        "ordinary_online": 240,
+        "ordinary": 16
+      },
+      "environment_step_roles": {
+        "ordinary": 32303,
+        "source": 465,
+        "interim_report": 1655
+      },
+      "history_suggestions": 0,
+      "teachers_tested": 0,
+      "teachers_qualified": 0,
+      "students_adopted": 0,
+      "ordinary_no_qualifying_failure": 2
+    },
+    {
+      "group": "F0",
+      "complete_blocks": 2,
+      "mechanism_events": {
+        "episode": 1241,
+        "optimizer": 256,
+        "history_proposal": 2,
+        "intervention": 2,
+        "fit": 6,
+        "dream": 2,
+        "adopt": 2,
+        "ordinary_partial": 2
+      },
+      "optimizer_roles": {
+        "ordinary_online": 208,
+        "ordinary": 16,
+        "weak": 16,
+        "strong": 16
+      },
+      "environment_step_roles": {
+        "ordinary": 32272,
+        "source": 75,
+        "trial": 102,
+        "reference_probe": 125,
+        "teacher_probe": 194,
+        "interim_report": 548
+      },
+      "history_suggestions": 1,
+      "teachers_tested": 4,
+      "teachers_qualified": 0,
+      "students_adopted": 0,
+      "ordinary_no_qualifying_failure": 0
+    },
+    {
+      "group": "F-RP",
+      "complete_blocks": 2,
+      "mechanism_events": {
+        "optimizer": 256,
+        "episode": 375,
+        "fit": 2,
+        "dream": 2,
+        "adopt": 2,
+        "ordinary_partial": 2
+      },
+      "optimizer_roles": {
+        "ordinary_online": 240,
+        "ordinary": 16
+      },
+      "environment_step_roles": {
+        "ordinary": 32303,
+        "source": 465,
+        "interim_report": 1655
+      },
+      "history_suggestions": 0,
+      "teachers_tested": 0,
+      "teachers_qualified": 0,
+      "students_adopted": 0,
+      "ordinary_no_qualifying_failure": 2
+    },
+    {
+      "group": "F-R",
+      "complete_blocks": 2,
+      "mechanism_events": {
+        "episode": 560,
+        "optimizer": 256,
+        "history_proposal": 2,
+        "intervention": 2,
+        "fit": 6,
+        "dream": 2,
+        "adopt": 2,
+        "ordinary_partial": 2
+      },
+      "optimizer_roles": {
+        "ordinary_online": 208,
+        "ordinary": 16,
+        "weak": 16,
+        "strong": 16
+      },
+      "environment_step_roles": {
+        "ordinary": 31511,
+        "source": 184,
+        "trial": 56,
+        "reference_probe": 339,
+        "teacher_probe": 678,
+        "interim_report": 1520
+      },
+      "history_suggestions": 0,
+      "teachers_tested": 4,
+      "teachers_qualified": 0,
+      "students_adopted": 0,
+      "ordinary_no_qualifying_failure": 0
+    }
+  ],
+  "note": "V198 smoke exercised actual historical proposal reuse. No teacher qualified in its tiny development banks, so Sleep was correctly skipped, not falsely reported as executed. Runtime assertions require actual student/ordinary updates and gates whenever a teacher qualifies. V197 original smoke remains untouched.",
+  "v197_actual_outer_outcomes": [
+    [
+      "RL-outer",
+      null,
+      false
+    ],
+    [
+      "F-R",
+      null,
+      false
+    ],
+    [
+      "F-RP",
+      null,
+      false
+    ],
+    [
+      "F0",
+      null,
+      false
+    ]
+  ],
+  "source_head": "fefcda1c918757b006ebc4a9ce5c85fe95c4112e"
+}

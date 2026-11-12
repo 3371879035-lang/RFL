@@ -1,0 +1,871 @@
+{
+  "schema": "V164_INTEGRATED_VALUE_BUDGET_ACTUAL_RESULT",
+  "parent_commit": "74b5ec48031e8af4b5cad6cff42d5774f23e9564",
+  "status": "FIRST_NATIVE_REVIEW0_COMPLETE_LEARNED_GATE_INTEGRATION21OF26_EXTRA_PROTECTION_TRIALS_NO_EXTRA_MAIN_GAIN",
+  "native_first_exit": 0,
+  "stored_review_first_exit": 0,
+  "wall_seconds_instrumented": 5.561999999976251,
+  "review_wall_seconds": 0.4369999999762513,
+  "native_counts": {
+    "public_geometry": 234,
+    "query_features": 2,
+    "rollout": 89,
+    "step": 495,
+    "transaction": 172
+  },
+  "records": 666,
+  "input_pins": 355,
+  "native_inputs_unchanged": true,
+  "summaries": [
+    {
+      "arm": "TaskTD",
+      "successes": 16,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.08,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.08,
+        0.86,
+        0.86,
+        -1.08,
+        0.86,
+        0.86,
+        -1.06,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.02,
+        -1.02
+      ],
+      "outcomes": [
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TRAP",
+        "TRAP"
+      ],
+      "mean_return": 0.12846153846153843,
+      "external_updates": 0,
+      "diagnostic_account": {
+        "algorithm": "TaskTD",
+        "base_queries": 0,
+        "expanded_queries": 0,
+        "trial_task_budget": 0,
+        "trial_tasks_used": 0
+      }
+    },
+    {
+      "arm": "UngatedUnified",
+      "successes": 21,
+      "returns": [
+        -1.02,
+        -1.02,
+        0.86,
+        0.86,
+        -1.08,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.08,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.06,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "outcomes": [
+        "TRAP",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.4923076923076923,
+      "external_updates": 3,
+      "diagnostic_account": {
+        "algorithm": "UngatedUnified",
+        "base_queries": 3,
+        "expanded_queries": 1,
+        "trial_task_budget": 6,
+        "trial_tasks_used": 5
+      }
+    },
+    {
+      "arm": "PolicyUnified",
+      "successes": 21,
+      "returns": [
+        -1.02,
+        -1.02,
+        0.86,
+        0.86,
+        -1.08,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.08,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.06,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "outcomes": [
+        "TRAP",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.4923076923076923,
+      "external_updates": 3,
+      "diagnostic_account": {
+        "algorithm": "PolicyUnified",
+        "base_queries": 3,
+        "expanded_queries": 1,
+        "trial_task_budget": 6,
+        "trial_tasks_used": 6
+      }
+    }
+  ],
+  "online_costs": [
+    {
+      "arm": "TaskTD",
+      "main_tasks": 26,
+      "private_tasks": 0,
+      "rollout": 26,
+      "step": 133,
+      "transaction": 43,
+      "shared4TX_excluded": true,
+      "public_geometry": 0
+    },
+    {
+      "arm": "UngatedUnified",
+      "main_tasks": 26,
+      "private_tasks": 5,
+      "rollout": 31,
+      "step": 179,
+      "transaction": 61,
+      "shared4TX_excluded": true,
+      "public_geometry": 117
+    },
+    {
+      "arm": "PolicyUnified",
+      "main_tasks": 26,
+      "private_tasks": 6,
+      "rollout": 32,
+      "step": 183,
+      "transaction": 64,
+      "shared4TX_excluded": true,
+      "public_geometry": 117
+    }
+  ],
+  "phase_results": [
+    {
+      "arm": "TaskTD",
+      "stage": "A_compound_execution",
+      "start_epoch": 0,
+      "tasks": 4,
+      "successes": 0,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02
+      ],
+      "mean_return": -1.02,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "TaskTD",
+      "stage": "B_correct_ordinary_policy",
+      "start_epoch": 4,
+      "tasks": 6,
+      "successes": 5,
+      "returns": [
+        -1.08,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.5366666666666666,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "TaskTD",
+      "stage": "C_shifted_ordinary_policy",
+      "start_epoch": 10,
+      "tasks": 6,
+      "successes": 4,
+      "returns": [
+        -1.08,
+        0.86,
+        0.86,
+        -1.08,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.2133333333333333,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "TaskTD",
+      "stage": "C_protective_controller",
+      "start_epoch": 16,
+      "tasks": 4,
+      "successes": 3,
+      "returns": [
+        -1.06,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.38,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "TaskTD",
+      "stage": "C_revisit",
+      "start_epoch": 20,
+      "tasks": 2,
+      "successes": 2,
+      "returns": [
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.86,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "TaskTD",
+      "stage": "B_revisit",
+      "start_epoch": 22,
+      "tasks": 2,
+      "successes": 2,
+      "returns": [
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.86,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "TaskTD",
+      "stage": "A_return",
+      "start_epoch": 24,
+      "tasks": 2,
+      "successes": 0,
+      "returns": [
+        -1.02,
+        -1.02
+      ],
+      "mean_return": -1.02,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "UngatedUnified",
+      "stage": "A_compound_execution",
+      "start_epoch": 0,
+      "tasks": 4,
+      "successes": 2,
+      "returns": [
+        -1.02,
+        -1.02,
+        0.86,
+        0.86
+      ],
+      "mean_return": -0.08000000000000002,
+      "base_query_epochs": [
+        0
+      ],
+      "expanded_query_epochs": [
+        0
+      ]
+    },
+    {
+      "arm": "UngatedUnified",
+      "stage": "B_correct_ordinary_policy",
+      "start_epoch": 4,
+      "tasks": 6,
+      "successes": 5,
+      "returns": [
+        -1.08,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.5366666666666666,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "UngatedUnified",
+      "stage": "C_shifted_ordinary_policy",
+      "start_epoch": 10,
+      "tasks": 6,
+      "successes": 5,
+      "returns": [
+        -1.08,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.5366666666666666,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "UngatedUnified",
+      "stage": "C_protective_controller",
+      "start_epoch": 16,
+      "tasks": 4,
+      "successes": 3,
+      "returns": [
+        -1.06,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.38,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "UngatedUnified",
+      "stage": "C_revisit",
+      "start_epoch": 20,
+      "tasks": 2,
+      "successes": 2,
+      "returns": [
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.86,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "UngatedUnified",
+      "stage": "B_revisit",
+      "start_epoch": 22,
+      "tasks": 2,
+      "successes": 2,
+      "returns": [
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.86,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "UngatedUnified",
+      "stage": "A_return",
+      "start_epoch": 24,
+      "tasks": 2,
+      "successes": 2,
+      "returns": [
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.86,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "PolicyUnified",
+      "stage": "A_compound_execution",
+      "start_epoch": 0,
+      "tasks": 4,
+      "successes": 2,
+      "returns": [
+        -1.02,
+        -1.02,
+        0.86,
+        0.86
+      ],
+      "mean_return": -0.08000000000000002,
+      "base_query_epochs": [
+        0
+      ],
+      "expanded_query_epochs": [
+        0
+      ]
+    },
+    {
+      "arm": "PolicyUnified",
+      "stage": "B_correct_ordinary_policy",
+      "start_epoch": 4,
+      "tasks": 6,
+      "successes": 5,
+      "returns": [
+        -1.08,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.5366666666666666,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "PolicyUnified",
+      "stage": "C_shifted_ordinary_policy",
+      "start_epoch": 10,
+      "tasks": 6,
+      "successes": 5,
+      "returns": [
+        -1.08,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.5366666666666666,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "PolicyUnified",
+      "stage": "C_protective_controller",
+      "start_epoch": 16,
+      "tasks": 4,
+      "successes": 3,
+      "returns": [
+        -1.06,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.38,
+      "base_query_epochs": [
+        16
+      ],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "PolicyUnified",
+      "stage": "C_revisit",
+      "start_epoch": 20,
+      "tasks": 2,
+      "successes": 2,
+      "returns": [
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.86,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "PolicyUnified",
+      "stage": "B_revisit",
+      "start_epoch": 22,
+      "tasks": 2,
+      "successes": 2,
+      "returns": [
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.86,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    },
+    {
+      "arm": "PolicyUnified",
+      "stage": "A_return",
+      "start_epoch": 24,
+      "tasks": 2,
+      "successes": 2,
+      "returns": [
+        0.86,
+        0.86
+      ],
+      "mean_return": 0.86,
+      "base_query_epochs": [],
+      "expanded_query_epochs": []
+    }
+  ],
+  "query_value_decisions": [
+    {
+      "arm": "PolicyUnified",
+      "epoch": 4,
+      "stage": "B_correct_ordinary_policy",
+      "x": [
+        0.040000000000000036,
+        0.0,
+        0.0
+      ],
+      "prediction": 0.0,
+      "decision": "supported_skip",
+      "trial_tasks_used_before": 3
+    },
+    {
+      "arm": "PolicyUnified",
+      "epoch": 10,
+      "stage": "C_shifted_ordinary_policy",
+      "x": [
+        0.040000000000000036,
+        0.0,
+        0.040000000000000036
+      ],
+      "prediction": 1.94,
+      "decision": "supported_probe",
+      "trial_tasks_used_before": 3
+    }
+  ],
+  "dispatches": [
+    {
+      "arm": "UngatedUnified",
+      "epoch": 0,
+      "stage": "A_compound_execution",
+      "branch": "execution",
+      "trial_tasks_used_before": 0
+    },
+    {
+      "arm": "UngatedUnified",
+      "epoch": 1,
+      "stage": "A_compound_execution",
+      "branch": "event",
+      "trial_tasks_used_before": 3
+    },
+    {
+      "arm": "UngatedUnified",
+      "epoch": 4,
+      "stage": "B_correct_ordinary_policy",
+      "branch": "event",
+      "trial_tasks_used_before": 3
+    },
+    {
+      "arm": "UngatedUnified",
+      "epoch": 10,
+      "stage": "C_shifted_ordinary_policy",
+      "branch": "event",
+      "trial_tasks_used_before": 4
+    },
+    {
+      "arm": "UngatedUnified",
+      "epoch": 16,
+      "stage": "C_protective_controller",
+      "branch": "execution",
+      "trial_tasks_used_before": 5
+    },
+    {
+      "arm": "PolicyUnified",
+      "epoch": 0,
+      "stage": "A_compound_execution",
+      "branch": "execution",
+      "trial_tasks_used_before": 0
+    },
+    {
+      "arm": "PolicyUnified",
+      "epoch": 1,
+      "stage": "A_compound_execution",
+      "branch": "event",
+      "trial_tasks_used_before": 3
+    },
+    {
+      "arm": "PolicyUnified",
+      "epoch": 4,
+      "stage": "B_correct_ordinary_policy",
+      "branch": "event",
+      "trial_tasks_used_before": 3
+    },
+    {
+      "arm": "PolicyUnified",
+      "epoch": 10,
+      "stage": "C_shifted_ordinary_policy",
+      "branch": "event",
+      "trial_tasks_used_before": 3
+    },
+    {
+      "arm": "PolicyUnified",
+      "epoch": 16,
+      "stage": "C_protective_controller",
+      "branch": "execution",
+      "trial_tasks_used_before": 4
+    }
+  ],
+  "source_ordinals": [
+    {
+      "arm": "TaskTD",
+      "registered": []
+    },
+    {
+      "arm": "UngatedUnified",
+      "registered": [
+        [
+          0,
+          "keep",
+          1
+        ],
+        [
+          0,
+          "first",
+          2
+        ],
+        [
+          0,
+          "joint",
+          3
+        ],
+        [
+          4,
+          "alternate-entry",
+          4
+        ],
+        [
+          10,
+          "alternate-entry",
+          5
+        ]
+      ]
+    },
+    {
+      "arm": "PolicyUnified",
+      "registered": [
+        [
+          0,
+          "keep",
+          1
+        ],
+        [
+          0,
+          "first",
+          2
+        ],
+        [
+          0,
+          "joint",
+          3
+        ],
+        [
+          10,
+          "alternate-entry",
+          4
+        ],
+        [
+          16,
+          "keep",
+          5
+        ],
+        [
+          16,
+          "first",
+          6
+        ]
+      ]
+    }
+  ],
+  "return_views_not_adopted_utility": [
+    {
+      "arm": "TaskTD",
+      "main_sum": 3.3399999999999994,
+      "private_sum": 0.0,
+      "simple_all_interaction_return_not_adopted_utility": 3.3399999999999994,
+      "all_interaction_failures": 10
+    },
+    {
+      "arm": "UngatedUnified",
+      "main_sum": 12.799999999999999,
+      "private_sum": -3.379999999999999,
+      "simple_all_interaction_return_not_adopted_utility": 9.42,
+      "all_interaction_failures": 9
+    },
+    {
+      "arm": "PolicyUnified",
+      "main_sum": 12.799999999999999,
+      "private_sum": -2.459999999999999,
+      "simple_all_interaction_return_not_adopted_utility": 10.34,
+      "all_interaction_failures": 9
+    }
+  ],
+  "preservation": [
+    {
+      "arm": "TaskTD",
+      "all26_I_preserved": true,
+      "protective_X_retained": true,
+      "unread_sentinel_retained": true,
+      "forced_RIGHT_realized_WAIT_at_global17": true,
+      "phase_resets": 0,
+      "single_current_state": true
+    },
+    {
+      "arm": "UngatedUnified",
+      "all26_I_preserved": true,
+      "protective_X_retained": true,
+      "unread_sentinel_retained": true,
+      "forced_RIGHT_realized_WAIT_at_global17": true,
+      "phase_resets": 0,
+      "single_current_state": true
+    },
+    {
+      "arm": "PolicyUnified",
+      "all26_I_preserved": true,
+      "protective_X_retained": true,
+      "unread_sentinel_retained": true,
+      "forced_RIGHT_realized_WAIT_at_global17": true,
+      "phase_resets": 0,
+      "single_current_state": true
+    }
+  ],
+  "budget_keeps": 1,
+  "main_write_addresses": [
+    {
+      "arm": "UngatedUnified",
+      "epoch": 0,
+      "addresses": 2,
+      "atomic_TX": 1
+    },
+    {
+      "arm": "PolicyUnified",
+      "epoch": 0,
+      "addresses": 2,
+      "atomic_TX": 1
+    }
+  ],
+  "native_ordinary_updates": 89,
+  "ordinary_policy_TX": 60,
+  "external_ordinary_updates": 6,
+  "external_policy_TX": 6,
+  "private_candidate_X_TX": 5,
+  "main_feedback_X_TX": 2,
+  "issued_observations": 11,
+  "consumed_observations": 11,
+  "new_model_fits": 0,
+  "source_install_TX": 1,
+  "source_edits": 9,
+  "checkpoint_TX": 3,
+  "actual_conclusions": [
+    "One fullR+L/I state, monotone genuine source registry/once collection and total6privatebudget persisted across26tasks, allmechanism phases and revisits, no perbranch budget/reset.",
+    "Gate actually skippedB knownzero/probedC positive; controller repair stayed same and original protectiveX/sentinel survived, fixedRIGHT challenge realizedWAIT.",
+    "Ungated used5trials then couldnotfit2trial protective menu; gateused4 thenperformed2. Added protection evidence didnotchange any of26 mainoutcomes vs ungated; both21success vs ordinary16.",
+    "Local event-query saving didnotimply overall fewerinteractions: gate32roll183steps64TX vs ungated31roll179steps61TX. Public117same.",
+    "Protection keeptrialSUCCESS.86 vs deletetrialTRAP-1.02 so chosekeep. Ungated budgetkeep also preservedmapping, no extra mainperformance benefit.",
+    "Simple main+trialraw reward is10.34gate vs9.42ungated vs3.34ordinary; descriptiveviews not newly adopted globalcostutility or independentpopulationresult."
+  ],
+  "remaining_specific_gap": "Learned value currently gates only event questions, not whether the fixed execution keep/first menu still adds value after ordinaryTD has already repaired policy. Spare budget alone is not evidence of useful investigation. Do not patch a protection-specific exception or repeat thisbank.",
+  "limits": [
+    "Fixed informed mixedworkload not independentseed population or allcontextcoverage",
+    "Feature/question grammar handengineered, policytree6historicalpoints frozen, no selftrainedworldmodel/generalquerysynthesis",
+    "Originalepsilon threshold retained; engineeringliteral coordinates, no formalXi/randomfrequencyclaim",
+    "No F1/B1/science qualification migration or fullV04completion"
+  ],
+  "old_native_checker_bank_reruns": 0,
+  "new_keys_RNG_keyderive_DP_calibration_formalcollection": 0,
+  "automation_changes": 0,
+  "qualification": false
+}

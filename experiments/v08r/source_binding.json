@@ -1,0 +1,96 @@
+{
+  "schema": "V08_PREPARATION_BINDING_V175",
+  "recorded_utc": "2026-11-07T11:36:57.658811+00:00",
+  "parent_commit": "15ec752c3a87a5cbcd4e681136603fd83865f741",
+  "status": "PLAN_AND_PURE_READOUT_PROTOTYPE_NO_NATIVE_EXPERIMENT",
+  "historical_inputs": [
+    {
+      "path": "experiments/v06r/stochastic_matrix_v172/experiment.py",
+      "bytes": 26647,
+      "sha256": "cedbb8d154b77f5fe0e7caca2d27024191745c9e2492a2de33f09b0c4feed595",
+      "physical_equals_parent_git_blob": true
+    },
+    {
+      "path": "experiments/v07r/README.md",
+      "bytes": 14530,
+      "sha256": "9f111c0494aab7506839f408913c214d0fd61ed155d6ae4e4414bdc7ab7bfce0",
+      "physical_equals_parent_git_blob": true
+    },
+    {
+      "path": "experiments/v07r/plan_v173.json",
+      "bytes": 22326,
+      "sha256": "8926e7f092c460dee1b11680d12c83c8d2125940633b20e65b9936fd1a22263e",
+      "physical_equals_parent_git_blob": true
+    },
+    {
+      "path": "experiments/v07r/fact_action_matrix_v174/experiment.py",
+      "bytes": 18257,
+      "sha256": "f0a3f31857d81e76fd3fa831b1fff5bb56035f5b079da349ca551a0cdeb26f0f",
+      "physical_equals_parent_git_blob": true
+    },
+    {
+      "path": "experiments/v07r/fact_action_matrix_v174/result_interpretation.md",
+      "bytes": 4118,
+      "sha256": "7b260102cdd585407e1cec1af58d3522e25457c3b42ba957a13690d3668c152a",
+      "physical_equals_parent_git_blob": true
+    },
+    {
+      "path": "experiments/v07r/fact_action_matrix_v174/mechanism_examples.json",
+      "bytes": 2589,
+      "sha256": "1eee234e99e622c1293a45e1e9d6d02f979dbe21e579286100d8aec1befd5055",
+      "physical_equals_parent_git_blob": true
+    },
+    {
+      "path": "experiments/v07r/fact_action_matrix_v174/completion.json",
+      "bytes": 4344,
+      "sha256": "022944a3897a1a70d260a7c688f699b9f3cb2fe111381a4e3a4621479777cb3a",
+      "physical_equals_parent_git_blob": true
+    }
+  ],
+  "new_artifacts_before_binding": [
+    {
+      "path": "experiments/v08r/.gitattributes",
+      "bytes": 8,
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
+    },
+    {
+      "path": "experiments/v08r/decision_readout_v175/design_check.py",
+      "bytes": 7672,
+      "sha256": "3b64679c8c2cee1e6b2509c737bdf470f8e008e0310d5df069009a05112bc869"
+    },
+    {
+      "path": "experiments/v08r/decision_readout_v175/design_check_result.json",
+      "bytes": 3912,
+      "sha256": "0f890af070776bc6c809775e89ae61a983fbb0ee6648cbe2cdf11c6364f31a3a"
+    },
+    {
+      "path": "experiments/v08r/decision_readout_v175/readout.py",
+      "bytes": 1505,
+      "sha256": "2d4fa026fa78ad164602fbb89453a1502210e68d0f107b8a97906bb801558dee"
+    },
+    {
+      "path": "experiments/v08r/plan_v175.json",
+      "bytes": 11524,
+      "sha256": "172cb6cdb5eb004b6fcfc2ba20876a1c88b4f593da91b5f0be5f58b027669453"
+    },
+    {
+      "path": "experiments/v08r/README.md",
+      "bytes": 12877,
+      "sha256": "8932346406f6d5ff69534828b37da459b4a357791225a29393f99a69772bae62"
+    }
+  ],
+  "pure_check": {
+    "command": "python -X utf8 -B design_check.py",
+    "first_exit_code": 0,
+    "actual_new_native_rollouts": 0,
+    "actual_RNG_draws": 0,
+    "scope": "Read-only stored V0.7 numerical example plus explicit synthetic arithmetic and plan-budget checks; no RFL or old checker imports."
+  },
+  "limits": [
+    "No new training effectiveness measured.",
+    "No runtime source/receipt identity reconstructed.",
+    "Only seven historical input files matched to parent Git, not a whole repository audit.",
+    "New graph runtime and complete learning integration are not yet implemented.",
+    "No automation changes."
+  ]
+}

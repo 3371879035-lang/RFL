@@ -1,0 +1,107 @@
+{
+  "status": "REMAINING_CHECKS_COMPLETE",
+  "checks": {
+    "candidate_code_causal_isolation_same_rows": {
+      "passed": true,
+      "details": {
+        "fixed_action_common_noise_nodes": 96,
+        "changed_codes_same_physical_rows_exact": true,
+        "cross_row_float_roundoff_max": 1.1920928955078125e-07,
+        "old_cross_row_exact_assertion_failure_preserved": true,
+        "new_environment_calls": 0
+      }
+    },
+    "thought_memory_topology_and_no_duplicate_facts": {
+      "passed": true,
+      "details": {
+        "parent_links": 64,
+        "same_action_across_hypotheses": true,
+        "new_fact_count": 0,
+        "unchanged_original_weights": true
+      }
+    },
+    "exact_internal_noise_replay": {
+      "passed": true,
+      "details": {
+        "saved_noise_replay_exact": true,
+        "real_environment_calls": 0
+      }
+    },
+    "actual_chronology_and_observation_mask": {
+      "passed": true,
+      "details": {
+        "missing_feedback_value_change_nll_difference": 0.0,
+        "skipped_and_repeated_targets_rejected": true
+      }
+    },
+    "thought_influences_practice_not_eligibility": {
+      "passed": true,
+      "details": {
+        "summary_perturbation_changes_trial_logit_max": 0.10273231565952301,
+        "untested_candidate_adoption_allowed": false,
+        "dream_only_does_not_create_real_receipt": true
+      }
+    },
+    "actual_sequence_and_thought_gradient_routes": {
+      "passed": true,
+      "details": {
+        "trainable_parameters": 11649859,
+        "parameter_tensors": 219,
+        "world_parameters": 7761212,
+        "policy_parameters": 3888647,
+        "world_finite_nonzero_gradient_tensors": 147,
+        "policy_finite_nonzero_gradient_tensors": 72,
+        "world_to_policy_gradient_leak_tensors": 0,
+        "policy_to_world_gradient_leak_tensors": 0,
+        "optimizer_steps": 0,
+        "synthetic_policy_objective_not_efficacy_training": true,
+        "by_module": {
+          "null_memory": 256,
+          "hypothesis_embeddings": 2048,
+          "base_code": 256,
+          "proposal_keys": 768,
+          "work_nodes": 16384,
+          "evidence_null": 256,
+          "event_encoder": 285440,
+          "source_embedding": 768,
+          "parent_merge": 393984,
+          "memory_blocks": 4741632,
+          "query_encoder": 72192,
+          "action_encoder": 68096,
+          "reader": 459777,
+          "context_fusion": 393984,
+          "action_fusion": 525056,
+          "mixture_head": 67848,
+          "world_decoder": 157234,
+          "actor": 265216,
+          "proposal_net": 398592,
+          "trial_score": 265217,
+          "trial_keep": 132097,
+          "adoption_score": 264192,
+          "evidence_query": 197120,
+          "evidence_reader": 459777,
+          "evidence_fusion": 525568,
+          "contrast_mean": 132096,
+          "contrast_scale": 132097,
+          "comparison_factor": 135680,
+          "belief_init": 131584,
+          "belief_adapter": 131584,
+          "belief_update": 247296,
+          "terminal_head": 66049,
+          "evidence_adapter": 131584,
+          "thought_init": 197120,
+          "thought_update": 254976,
+          "thought_continue": 131841,
+          "thought_trial": 132097,
+          "thought_stop": 132097
+        }
+      }
+    }
+  },
+  "model_before": "c0feab659c4c95677fe6a1fc70bb45c57ac7a5c266f0206f1fa2ecab1f516f5a",
+  "model_after": "c0feab659c4c95677fe6a1fc70bb45c57ac7a5c266f0206f1fa2ecab1f516f5a",
+  "actual_environment_calls": 0,
+  "optimizer_steps": 0,
+  "first_failed_native_not_relabelled": true,
+  "wall_seconds": 2.5956271000031848
+}

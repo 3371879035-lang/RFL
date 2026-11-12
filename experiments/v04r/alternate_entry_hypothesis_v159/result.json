@@ -1,0 +1,359 @@
+{
+  "schema": "V159_ALTERNATE_ENTRY_HYPOTHESIS_RESULT",
+  "date_asia_shanghai": "2026-11-07",
+  "parent_commit": "f7ec8b5cfcc091567bcc38273d18f4552f9af332",
+  "status": "FIRST_NATIVE_AND_FIRST_REVIEW_EXIT0_MAIN10OF12_WITH_TWO_FAILED_PROBES_COST_TRADEOFF_RETAINED",
+  "actual": {
+    "native_first_exit": 0,
+    "stored_review_first_exit": 0,
+    "native_counts": {
+      "public_geometry": 72,
+      "rollout": 14,
+      "step": 84,
+      "transaction": 19
+    },
+    "records": 111,
+    "wall_seconds_instrumented": 0.9059999999590218,
+    "input_pins": 353,
+    "input_bytes_unchanged": true,
+    "matched_common_learner_source_pins": 102,
+    "summary": {
+      "arm": "EventProbe",
+      "successes": 10,
+      "mean_return": 0.5383333333333333,
+      "returns": [
+        -1.06,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.08,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "outcomes": [
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "external_updates": 2,
+      "diagnostic_account": {
+        "algorithm": "EventProbe",
+        "base_queries": 2,
+        "expanded_queries": 0,
+        "trial_task_budget": 12,
+        "trial_tasks_used": 2
+      }
+    },
+    "recorded_controls": [
+      {
+        "arm": "TaskTD",
+        "successes": 9,
+        "mean_return": 0.37833333333333335,
+        "returns": [
+          -1.06,
+          0.86,
+          -1.06,
+          0.86,
+          0.86,
+          0.86,
+          -1.08,
+          0.86,
+          0.86,
+          0.86,
+          0.86,
+          0.86
+        ],
+        "cost": {
+          "arm": "TaskTD",
+          "main_tasks": 12,
+          "private_tasks": 0,
+          "rollout": 12,
+          "step": 73,
+          "transaction": 12,
+          "shared3TX_excluded": true
+        },
+        "same_full_start_RLI_and_literal_main_inputs": true
+      },
+      {
+        "arm": "GreedyPractice",
+        "successes": 9,
+        "mean_return": 0.37833333333333335,
+        "returns": [
+          -1.06,
+          -1.06,
+          0.86,
+          0.86,
+          0.86,
+          0.86,
+          -1.08,
+          0.86,
+          0.86,
+          0.86,
+          0.86,
+          0.86
+        ],
+        "cost": {
+          "arm": "GreedyPractice",
+          "main_tasks": 12,
+          "private_tasks": 3,
+          "rollout": 15,
+          "step": 94,
+          "transaction": 18,
+          "shared3TX_excluded": true
+        },
+        "same_full_start_RLI_and_literal_main_inputs": true
+      },
+      {
+        "arm": "TargetedPractice",
+        "successes": 9,
+        "mean_return": 0.37833333333333335,
+        "returns": [
+          -1.06,
+          -1.06,
+          0.86,
+          0.86,
+          0.86,
+          0.86,
+          -1.08,
+          0.86,
+          0.86,
+          0.86,
+          0.86,
+          0.86
+        ],
+        "cost": {
+          "arm": "TargetedPractice",
+          "main_tasks": 12,
+          "private_tasks": 3,
+          "rollout": 15,
+          "step": 94,
+          "transaction": 18,
+          "shared3TX_excluded": true
+        },
+        "same_full_start_RLI_and_literal_main_inputs": true
+      }
+    ],
+    "online_cost": {
+      "arm": "EventProbe",
+      "main_tasks": 12,
+      "private_tasks": 2,
+      "rollout": 14,
+      "step": 84,
+      "transaction": 16,
+      "shared3TX_excluded": true,
+      "additional_public_geometry_transitions": 72
+    },
+    "phase_results": [
+      {
+        "stage": "A_late_upper_trap",
+        "successes": 5,
+        "returns": [
+          -1.06,
+          0.86,
+          0.86,
+          0.86,
+          0.86,
+          0.86
+        ],
+        "mean_return": 0.5399999999999999,
+        "private_tasks": 1
+      },
+      {
+        "stage": "B_deeper_upper_trap",
+        "successes": 5,
+        "returns": [
+          -1.08,
+          0.86,
+          0.86,
+          0.86,
+          0.86,
+          0.86
+        ],
+        "mean_return": 0.5366666666666666,
+        "private_tasks": 1
+      }
+    ],
+    "A_descriptive_timing": [
+      {
+        "arm": "TaskTD",
+        "A_first_success_main_1based": 2,
+        "A_observed_tail_success_start_main_1based": 4,
+        "A_same_start_total_interactions_1based": 4,
+        "descriptive_not_formal_recovery_threshold": true
+      },
+      {
+        "arm": "GreedyPractice",
+        "A_first_success_main_1based": 3,
+        "A_observed_tail_success_start_main_1based": 3,
+        "A_same_start_total_interactions_1based": 5,
+        "descriptive_not_formal_recovery_threshold": true
+      },
+      {
+        "arm": "TargetedPractice",
+        "A_first_success_main_1based": 3,
+        "A_observed_tail_success_start_main_1based": 3,
+        "A_same_start_total_interactions_1based": 5,
+        "descriptive_not_formal_recovery_threshold": true
+      },
+      {
+        "arm": "EventProbe",
+        "A_first_success_main_1based": 2,
+        "A_observed_tail_success_start_main_1based": 2,
+        "A_same_start_total_interactions_1based": 3,
+        "descriptive_not_formal_recovery_threshold": true
+      }
+    ],
+    "same_price_environment_return_views_not_adopted_utility": [
+      {
+        "arm": "TaskTD",
+        "main_return_sum": 4.54,
+        "private_return_sum": 0,
+        "simple_same_price_total_return": 4.54,
+        "all_interaction_failures": 3,
+        "private_failures": 0,
+        "not_an_adopted_aggregate_utility_metric": true
+      },
+      {
+        "arm": "GreedyPractice",
+        "main_return_sum": 4.54,
+        "private_return_sum": 2.58,
+        "simple_same_price_total_return": 7.12,
+        "all_interaction_failures": 3,
+        "private_failures": 0,
+        "not_an_adopted_aggregate_utility_metric": true
+      },
+      {
+        "arm": "TargetedPractice",
+        "main_return_sum": 4.54,
+        "private_return_sum": 2.58,
+        "simple_same_price_total_return": 7.12,
+        "all_interaction_failures": 3,
+        "private_failures": 0,
+        "not_an_adopted_aggregate_utility_metric": true
+      },
+      {
+        "arm": "EventProbe",
+        "main_return_sum": 6.46,
+        "private_return_sum": -2.14,
+        "simple_same_price_total_return": 4.32,
+        "all_interaction_failures": 4,
+        "private_failures": 2,
+        "not_an_adopted_aggregate_utility_metric": true
+      }
+    ],
+    "hypothesis_assessments": [
+      {
+        "checked_steps": 3,
+        "reason": "actual_target_TRAP",
+        "status": "consistent_on_tested_alternate"
+      },
+      {
+        "checked_steps": 4,
+        "reason": "actual_target_TRAP",
+        "status": "consistent_on_tested_alternate"
+      }
+    ],
+    "native_ordinary_updates": 14,
+    "external_ordinary_updates": 2,
+    "accepted": [
+      {
+        "arm": "EventProbe",
+        "epoch": 0,
+        "terminal": "TRAP",
+        "numeric_content_changed": true
+      },
+      {
+        "arm": "EventProbe",
+        "epoch": 6,
+        "terminal": "TRAP",
+        "numeric_content_changed": true
+      }
+    ],
+    "feedback_TX": 0,
+    "source_install_TX": 0,
+    "checkpoint_TX": 3,
+    "control_native_checker_reruns": 0,
+    "preserved_v157_native_exit": 1,
+    "new_keys_RNG_DP_calibration_collection": 0,
+    "automation_changes": 0
+  },
+  "interpretation": "Current failures propose an untested arrival event ingress; actual failed probes teach original ordinary Q, not manual bans. One extra main success versus frozen controls, not net all-interaction utility win or unique general causal identification.",
+  "remaining": "Cost/value-based query choice and unified execution-mismatch/event-hypothesis continuous agent; no wholeV04 completion claim.",
+  "artifacts": [
+    {
+      "path": "experiments/v04r/alternate_entry_hypothesis_v159/contract.json",
+      "bytes": 7749,
+      "sha256": "97cc4f64a1323b67a0467f12191f2c6bd255becceb14fd1b8904f231489d605c"
+    },
+    {
+      "path": "experiments/v04r/alternate_entry_hypothesis_v159/arrival_query.py",
+      "bytes": 3579,
+      "sha256": "ab88fa9f1592977e9c9a9db9faa94c71002541b8165b5f98ea669715212c793f"
+    },
+    {
+      "path": "experiments/v04r/alternate_entry_hypothesis_v159/event_agent.py",
+      "bytes": 2377,
+      "sha256": "a787d6855e960e787245d4f7c018c8fdd0028f767eebefa877170cc60ae6d91c"
+    },
+    {
+      "path": "experiments/v04r/alternate_entry_hypothesis_v159/workload.py",
+      "bytes": 8467,
+      "sha256": "41451f36eeaf24975f47d73164456aac0a6eb3a15f09e3c7a28247265e3b971d"
+    },
+    {
+      "path": "experiments/v04r/alternate_entry_hypothesis_v159/execute.py",
+      "bytes": 4434,
+      "sha256": "fe0a1ff5bc7ca85e7ea498d468254e1dbdb3dc1361496f2f78100ebd263c576b"
+    },
+    {
+      "path": "experiments/v04r/alternate_entry_hypothesis_v159/audit_stored.py",
+      "bytes": 28498,
+      "sha256": "eba5ac3475a18900656d9797c2fe73aa23f3218c3b91892d45fa98f38178e36e"
+    },
+    {
+      "path": "experiments/v04r/alternate_entry_hypothesis_v159/evidence/claim.json",
+      "bytes": 45998,
+      "sha256": "e5ba44923162b384ff7828f6e394bda9a9b694594e2e2180ac7088af3aeabe4b"
+    },
+    {
+      "path": "experiments/v04r/alternate_entry_hypothesis_v159/evidence/exit.json",
+      "bytes": 46127,
+      "sha256": "87aaf686da98c9de8a01c0e0345bca0dcbfc1f9b922bd93b2121dce8c2359b3d"
+    },
+    {
+      "path": "experiments/v04r/alternate_entry_hypothesis_v159/evidence/raw.jsonl",
+      "bytes": 284055,
+      "sha256": "1a62944b626a3c30e9ae51415104cacb33308cb501694afdac89297c8cf9ef87"
+    },
+    {
+      "path": "experiments/v04r/alternate_entry_hypothesis_v159/stored_audit_result.json",
+      "bytes": 7920,
+      "sha256": "c46bdff681b7b5a5256ded58d9a5f125e133f6cab34d746f5590ad8b6f8cbd0b"
+    },
+    {
+      "path": "experiments/v04r/alternate_entry_hypothesis_v159/audit_process_exit.json",
+      "bytes": 41,
+      "sha256": "2d542270094b4386662714961f173cd557ff986f1fd9b53b37d3c802589e58c3"
+    },
+    {
+      "path": "experiments/v04r/alternate_entry_hypothesis_v159/result.md",
+      "bytes": 6732,
+      "sha256": "11f997495ef0176add99af10185b2efae8920acef5e1d81e07e986f266abfa5a"
+    }
+  ],
+  "qualification": false
+}

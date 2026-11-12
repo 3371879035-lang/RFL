@@ -1,0 +1,26 @@
+schema_version: "0.3.0"
+environment:
+  horizon: 8
+  gamma: 1.0
+  width: 5
+  lanes: 2
+  p_hazard: 0.25
+learning:
+  alpha_low: 0.10
+  alpha_high: 0.10
+  epsilon_start: 0.30
+  epsilon_end: 0.05
+  epsilon_decay_fraction: 0.80
+# structural success ceiling is 1 - environment.p_hazard = 0.75 and is derived,
+# not configured: hazard episodes are unwinnable, so no policy can exceed it.
+gate:
+  min_auc_gap: 0.005
+  min_family_events: 400
+experiment:
+  name: v03_alpha
+  seeds: 12
+  seed_base: 4000000
+  episodes: 10000
+  eval_every: 250
+  eval_episodes: 200
+  arms: [traditional, positive_only]

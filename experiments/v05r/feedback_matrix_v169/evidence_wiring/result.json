@@ -1,0 +1,355 @@
+{
+  "counts": {
+    "source_instances": 3,
+    "source_mapping_initializations": 12,
+    "rollouts": 6,
+    "steps": 6,
+    "fact_field_updates": 12,
+    "history_appends": 6,
+    "td_updates": 4,
+    "numeric_changes": 3,
+    "controller_transactions": 3,
+    "controller_entries_removed": 3
+  },
+  "streams": [
+    {
+      "case": "wiring_d1_m0",
+      "decision_points": 1,
+      "arm": "S-RP",
+      "prefix_successes": {
+        "12": 0,
+        "24": 0,
+        "48": 0
+      },
+      "main_tasks": 1,
+      "main_successes": 0,
+      "main_failures": 1,
+      "cold_successes": 0,
+      "continued_successes": 0,
+      "trial_rollouts": 1,
+      "cache_hits": 0,
+      "counts": {
+        "rollouts": 2,
+        "steps": 2,
+        "controller_transactions": 1,
+        "controller_entries_removed": 1,
+        "source_instances": 1,
+        "source_mapping_initializations": 4,
+        "fact_field_updates": 4,
+        "history_appends": 2,
+        "td_updates": 2,
+        "numeric_changes": 2
+      },
+      "target": {
+        "status": "NOT_REACHED_RIGHT_CENSORED",
+        "main_index_1based": null,
+        "cost": null
+      },
+      "later_failures": null,
+      "final_learner": {
+        "type": "RewardLearner",
+        "edges": {
+          "[0,1]": {
+            "next_room": 0,
+            "outcome": "COLLISION",
+            "count": 1
+          },
+          "[0,0]": {
+            "next_room": 1,
+            "outcome": "SUCCESS",
+            "count": 1
+          }
+        },
+        "commands": {
+          "[0,\"initial\",0]": 1,
+          "[0,\"a0ca0f970c5c33c102d111237fa4b9f6ad34eb25e779ed4a03a426c435724b29\",0]": 0
+        },
+        "history": [
+          1,
+          2
+        ],
+        "fact_updates": 2,
+        "q": {
+          "[0,1]": -0.5,
+          "[0,0]": 0.5
+        },
+        "numeric_changes": 2,
+        "td_updates": 2
+      },
+      "final_controller": {
+        "mappings": [
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            4,
+            0,
+            1
+          ],
+          [
+            5,
+            1,
+            0
+          ]
+        ],
+        "protected": [
+          [
+            4,
+            0
+          ],
+          [
+            5,
+            1
+          ]
+        ],
+        "revisions": [
+          [
+            0,
+            "a0ca0f970c5c33c102d111237fa4b9f6ad34eb25e779ed4a03a426c435724b29"
+          ]
+        ]
+      },
+      "curve": [
+        {
+          "episode": 0,
+          "uid": 1,
+          "terminal": "COLLISION",
+          "reached": 0,
+          "trial_delta": 1,
+          "trials_so_far": 1,
+          "rollouts": 2,
+          "steps": 2,
+          "wall_seconds": 0.0023327000089921057,
+          "cpu_seconds": 0.0,
+          "controller_transactions": 1
+        }
+      ]
+    },
+    {
+      "case": "wiring_d1_m0",
+      "decision_points": 1,
+      "arm": "S-R",
+      "prefix_successes": {
+        "12": 0,
+        "24": 0,
+        "48": 0
+      },
+      "main_tasks": 1,
+      "main_successes": 0,
+      "main_failures": 1,
+      "cold_successes": 0,
+      "continued_successes": 0,
+      "trial_rollouts": 1,
+      "cache_hits": 0,
+      "counts": {
+        "rollouts": 2,
+        "steps": 2,
+        "controller_transactions": 1,
+        "controller_entries_removed": 1,
+        "source_instances": 1,
+        "source_mapping_initializations": 4,
+        "fact_field_updates": 4,
+        "history_appends": 2,
+        "td_updates": 2,
+        "numeric_changes": 1
+      },
+      "target": {
+        "status": "NOT_REACHED_RIGHT_CENSORED",
+        "main_index_1based": null,
+        "cost": null
+      },
+      "later_failures": null,
+      "final_learner": {
+        "type": "RewardLearner",
+        "edges": {
+          "[0,1]": {
+            "next_room": 0,
+            "outcome": "COLLISION",
+            "count": 1
+          },
+          "[0,0]": {
+            "next_room": 1,
+            "outcome": "SUCCESS",
+            "count": 1
+          }
+        },
+        "commands": {
+          "[0,\"initial\",0]": 1,
+          "[0,\"a0ca0f970c5c33c102d111237fa4b9f6ad34eb25e779ed4a03a426c435724b29\",0]": 0
+        },
+        "history": [
+          3,
+          4
+        ],
+        "fact_updates": 2,
+        "q": {
+          "[0,1]": 0.0,
+          "[0,0]": 0.5
+        },
+        "numeric_changes": 1,
+        "td_updates": 2
+      },
+      "final_controller": {
+        "mappings": [
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            4,
+            0,
+            1
+          ],
+          [
+            5,
+            1,
+            0
+          ]
+        ],
+        "protected": [
+          [
+            4,
+            0
+          ],
+          [
+            5,
+            1
+          ]
+        ],
+        "revisions": [
+          [
+            0,
+            "a0ca0f970c5c33c102d111237fa4b9f6ad34eb25e779ed4a03a426c435724b29"
+          ]
+        ]
+      },
+      "curve": [
+        {
+          "episode": 0,
+          "uid": 3,
+          "terminal": "COLLISION",
+          "reached": 0,
+          "trial_delta": 1,
+          "trials_so_far": 1,
+          "rollouts": 2,
+          "steps": 2,
+          "wall_seconds": 0.0024409000179730356,
+          "cpu_seconds": 0.0,
+          "controller_transactions": 1
+        }
+      ]
+    },
+    {
+      "case": "wiring_d1_m0",
+      "decision_points": 1,
+      "arm": "S-F",
+      "prefix_successes": {
+        "12": 0,
+        "24": 0,
+        "48": 0
+      },
+      "main_tasks": 1,
+      "main_successes": 0,
+      "main_failures": 1,
+      "cold_successes": 0,
+      "continued_successes": 0,
+      "trial_rollouts": 1,
+      "cache_hits": 0,
+      "counts": {
+        "rollouts": 2,
+        "steps": 2,
+        "controller_transactions": 1,
+        "controller_entries_removed": 1,
+        "source_instances": 1,
+        "source_mapping_initializations": 4,
+        "fact_field_updates": 4,
+        "history_appends": 2,
+        "td_updates": 0,
+        "numeric_changes": 0
+      },
+      "target": {
+        "status": "NOT_REACHED_RIGHT_CENSORED",
+        "main_index_1based": null,
+        "cost": null
+      },
+      "later_failures": null,
+      "final_learner": {
+        "type": "FactLearner",
+        "edges": {
+          "[0,1]": {
+            "next_room": 0,
+            "outcome": "COLLISION",
+            "count": 1
+          },
+          "[0,0]": {
+            "next_room": 1,
+            "outcome": "SUCCESS",
+            "count": 1
+          }
+        },
+        "commands": {
+          "[0,\"initial\",0]": 1,
+          "[0,\"a0ca0f970c5c33c102d111237fa4b9f6ad34eb25e779ed4a03a426c435724b29\",0]": 0
+        },
+        "history": [
+          5,
+          6
+        ],
+        "fact_updates": 2
+      },
+      "final_controller": {
+        "mappings": [
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            4,
+            0,
+            1
+          ],
+          [
+            5,
+            1,
+            0
+          ]
+        ],
+        "protected": [
+          [
+            4,
+            0
+          ],
+          [
+            5,
+            1
+          ]
+        ],
+        "revisions": [
+          [
+            0,
+            "a0ca0f970c5c33c102d111237fa4b9f6ad34eb25e779ed4a03a426c435724b29"
+          ]
+        ]
+      },
+      "curve": [
+        {
+          "episode": 0,
+          "uid": 5,
+          "terminal": "COLLISION",
+          "reached": 0,
+          "trial_delta": 1,
+          "trials_so_far": 1,
+          "rollouts": 2,
+          "steps": 2,
+          "wall_seconds": 0.0016777999699115753,
+          "cpu_seconds": 0.0,
+          "controller_transactions": 1
+        }
+      ]
+    }
+  ]
+}

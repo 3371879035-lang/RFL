@@ -1,0 +1,38 @@
+{
+ "n_contexts": 5760,
+ "n_options": 4,
+ "n_dgp_live_contexts": 5760,
+ "raw_mismatches": 0,
+ "canonical_mismatches": 0,
+ "canonical_size_mismatches": 0,
+ "assign_mismatches": 0,
+ "candidate_enumeration_mismatches": 0,
+ "canonical_structural_wrapper_mismatches": 0,
+ "trap_guard_activations": 0,
+ "candidate_assignments_total": 1166400,
+ "candidate_assignments_per_context": 202.5,
+ "structural_schema": {
+  "P": "option_id",
+  "D": "(t, action)",
+  "X": "(x, y, t, kappa, phi, cmd, realized)",
+  "E": "(t, realized)",
+  "U": "(t, x, y)"
+ },
+ "checks": {
+  "raw_legal_domains_identical_on_all_contexts": true,
+  "canonical_domains_identical_on_all_contexts": true,
+  "canonical_domain_sizes_identical": true,
+  "assign_matches_build_case_rule": true,
+  "candidate_enumeration_identical": true,
+  "canonical_structural_wrapper_consistent": true,
+  "context_count_matches_kappa_x_tape_x_option": true
+ },
+ "informational": {
+  "trap_guard_never_fires_on_frozen_map": true
+ },
+ "status": "PASS",
+ "verdict": "extraction EXACT: the public grammar may replace the historical call sites",
+ "truth_source": "gate_stage2._domains + identifiability_gate.canonicalise, the path support_build.py uses to build DenseSupport",
+ "corrected_claim": "the tuple-valued identifiability_gate.legal_fault_domains lacks the Trap ValueError guard, but the guard NEVER fires on the frozen map/horizon (0 activations over all 5,760 contexts), so on the current SCM the two enumerations are behaviourally IDENTICAL. It is not the truth source because support_build.py does not use it -- not because it is observably broken. An earlier statement that it 'would raise' was an overstatement and is corrected here.",
+ "note": "historical call sites are NOT re-pointed by this script; that is a separate step gated on this regression"
+}

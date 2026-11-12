@@ -1,0 +1,196 @@
+r"""Mutation self-check for the four B1 interface hardenings.
+
+$$\boxed{\text{a gate that passes is not evidence; it is evidence only that the gate
+did not look}}$$
+
+The four interface holes closed before the $D_Q$ draft each have a gate. A gate that
+was written *after* the fix and passes on the fixed code proves nothing on its own: it
+would pass identically if the fix were cosmetic and the hole still open. So each gate is
+re-run against a **deliberately reverted** source tree, one mutation at a time, and must
+go **red**. A gate whose mutation leaves it green is reported as `NOT_A_GATE`.
+
+The mutations are textual, must match exactly once, and are always reverted in a
+``finally`` block; the script re-hashes every touched file at the end and reports
+whether the tree is byte-identical to how it started.
+
+| # | hole | mutation | gate that must catch it |
+|---|---|---|---|
+| 1 | undeclared tier inherited `False` | base sentinel `None` -> `False` | `test_8h` |
+| 2 | tier coerced instead of typed | `type(tier) is not bool` -> `tier is None` | `test_8i` |
+| 3 | law could re-acquire a store handle | signature check disabled | `test_8j` |
+| 4 | envelope was a superset, not exact | `keys != credited` -> `credited - keys` | `test_17e` |
+| 5 | `targets=None` crashed as `TypeError` | mapping guard disabled | `test_17f` |
+| 6 | `factual_command` unchecked | action-id guard disabled | `test_17g` |
+| 7 | unhashable credit unit crashed | type check moved after the duplicate guard | `test_16c` |
+| 8 | the snapshot was still constructed | snapshot call restored in the runner | `test_8l` |
+
+Usage::
+
+    python scripts/b1_interface_gate_selfcheck.py [--json PATH]
+"""
+
+from __future__ import annotations
+
+import argparse
+import pathlib
+import sys
+
+ROOT = pathlib.Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
+
+import _mutation_harness as harness  # noqa: E402
+SRC = ROOT / "src" / "rfl_rebuild"
+TESTS = "tests/rebuild/test_b1_patch_slice.py"
+
+LAWS = SRC / "b1" / "laws.py"
+RUNNER = SRC / "b1" / "runner.py"
+TARGETS = SRC / "b1" / "targets.py"
+TIER = SRC / "b1" / "tier.py"
+
+#: (id, hole, path, old, new, pytest node id)
+MUTATIONS: tuple[tuple[str, str, pathlib.Path, str, str, str], ...] = (
+    (
+        "undeclared_tier",
+        "the base tier sentinel falls back to False, so a subclass that forgets its "
+        "tier silently becomes L0",
+        LAWS,
+        "    tier: Tier | None = None                      # None == NOT DECLARED",
+        "    tier: Tier | None = Tier.L0_FACTUAL         # MUTATED to a default",
+        f"{TESTS}::test_8h_a_real_subclass_that_forgets_its_tier_fails_stop",
+    ),
+    (
+        "tier_coerced",
+        "the tier is coerced with truthiness instead of being required to be a bool",
+        RUNNER,
+        "    if type(tier) is not Tier:",
+        "    if tier is None:            # MUTATED: coercion, not typing",
+        f"{TESTS}::test_8i_a_tier_that_is_not_a_real_bool_fails_stop",
+    ),
+    (
+        "ill_typed_cell",
+        "an ill-typed cell is declared as an empty field set, so a law in it is "
+        "accepted as though the cell had a treatment",
+        TIER,
+        # D_patch's own L2 marker, disambiguated from the X slice's by the line above it:
+        # the repair is a locator update, and the guard it points at is unchanged.
+        "        Tier.L1_CORRECTIVE: frozenset({\"alternative\"}),\n"
+        "        Tier.L2_COUNTERFACTUAL: ILL_TYPED,",
+        # The replacement must keep L1 declared. Dropping the anchor's first line made
+        # PATCH_SLICE raise "missing ['L1_CORRECTIVE']" at *import* time, so the gate file
+        # never collected and pytest exited 4 -- a mutation that tested nothing (reported
+        # NODE_NOT_FOUND, not GATE_IS_REAL: the exit-code table caught it).
+        "        Tier.L1_CORRECTIVE: frozenset({\"alternative\"}),\n"
+        "        Tier.L2_COUNTERFACTUAL: frozenset(),        # MUTATED to a legal cell",
+        f"{TESTS}::test_8m_a_law_declared_in_an_ill_typed_cell_is_rejected",
+    ),
+    (
+        "law_signature",
+        "a law may declare plan(self, addresses, targets, snapshot) again",
+        RUNNER,
+        "    if params != _LAW_PLAN_PARAMS:",
+        "    if False:                   # MUTATED: signature check disabled",
+        f"{TESTS}::test_8j_a_law_cannot_re_acquire_a_store_handle",
+    ),
+    (
+        "receipt_first_entry_only",
+        "the receipt tests only the first entry of an address-plan, so a k>1 plan that "
+        "changed the store reports EVALUABLE_NOOP and the ledger invariant kills the run",
+        RUNNER,
+        "        changed = any(\n"
+        "            pre_view.get(e.address, _MISSING) != post_view.get(e.address, _MISSING)\n"
+        "            for e in p.edits)",
+        "        changed = (pre_view.get(p.edits[0].address) !=\n"
+        "                   post_view.get(p.edits[0].address)) if p.edits else False",
+        f"{TESTS}::test_8s_a_multi_entry_address_plan_reports_applied_from_any_entry",
+    ),
+    (
+        "descriptor_extractor_unchecked",
+        "a cell field with no extractor is accepted at construction and blows up as a "
+        "KeyError inside delivery",
+        TIER,
+        "        if missing_extractors:",
+        "        if False:                   # MUTATED: extractor check disabled",
+        f"{TESTS}::test_8t_a_descriptor_missing_an_extractor_fails_at_construction",
+    ),
+    (
+        "cells_left_mutable",
+        "the cell table is left as a plain dict, so the frozen information contract can "
+        "be edited in place at runtime",
+        TIER,
+        '        object.__setattr__(self, "cells", MappingProxyType(dict(self.cells)))',
+        "        pass  # MUTATED: cells left mutable",
+        f"{TESTS}::test_8u_the_cell_table_and_extractors_are_read_only",
+    ),
+    (
+        "tier_truthiness",
+        "Tier keeps a truth value, so `if tier:` silently collapses all four members "
+        "into one branch",
+        TIER,
+        "    def __bool__(self) -> bool:                      # pragma: no cover - always raises\n"
+        "        raise ProtocolError(",
+        "    def __bool__(self) -> bool:                      # MUTATED\n"
+        "        return True\n"
+        "        raise ProtocolError(",
+        f"{TESTS}::test_8v_tier_has_no_truth_value",
+    ),
+    (
+        "envelope_superset",
+        "the envelope is accepted as a superset of the credited set",
+        TARGETS,
+        "    if keys != credited:",
+        "    if credited - keys:         # MUTATED: containment, not exactness",
+        f"{TESTS}::test_17e_an_extra_non_credited_key_fails_stop",
+    ),
+    (
+        "envelope_none",
+        "a None / non-mapping envelope raises TypeError instead of PROTOCOL_ERROR",
+        TARGETS,
+        "    if not isinstance(targets, _Mapping):",
+        "    if False:                   # MUTATED: mapping guard disabled",
+        f"{TESTS}::test_17f_a_none_envelope_is_a_protocol_error_not_a_typeerror",
+    ),
+    (
+        "factual_command",
+        "a record may carry a factual command that is not an action id",
+        TARGETS,
+        "        if not _is_action(rec.factual_command):",
+        "        if False:               # MUTATED: factual command unchecked",
+        f"{TESTS}::test_17g_a_bogus_factual_command_fails_stop",
+    ),
+    (
+        "credit_unit_order",
+        "the duplicate guard hashes an untyped credit unit, so an unhashable one "
+        "crashes with TypeError",
+        TARGETS,
+        "        u = _require_unit(u)\n        if u in seen_units:",
+        "        if u in seen_units:     # MUTATED: type check moved after the guard",
+        f"{TESTS}::test_16c_a_non_string_credit_unit_is_a_protocol_error_not_a_crash",
+    ),
+    (
+        "snapshot_constructed",
+        "the runner still builds the full learner snapshot during a law run",
+        RUNNER,
+        "    pre_view = spec.view(pre_state)\n    fp_pre = fingerprint(pre_state)",
+        "    snapshot = pre_state.snapshot()     # MUTATED\n"
+        "    pre_view = spec.view(pre_state)\n    fp_pre = fingerprint(pre_state)",
+        f"{TESTS}::test_8l_the_snapshot_is_not_even_constructed_for_a_law_run",
+    ),
+)
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--json", default=str(ROOT / "experiments" / "v03r" / "b1_interface_gate_selfcheck.json"))
+    args = ap.parse_args()
+
+    stale = harness.check_nodes(MUTATIONS, ROOT)
+    for key, node, why in stale:
+        print(f"[STALE_NODE_ID       ] {key:34} -> {node} ({why})")
+
+    results, restored = harness.run_mutations(MUTATIONS, ROOT, (LAWS, RUNNER, TARGETS, TIER))
+    return harness.summarise('b1 interface gate mutation self-check', MUTATIONS, results, restored, stale, ROOT,
+                             pathlib.Path(args.json))
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

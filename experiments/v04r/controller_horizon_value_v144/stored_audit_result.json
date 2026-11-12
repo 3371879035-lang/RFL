@@ -1,0 +1,341 @@
+{
+  "schema": "V144_STDLIB_CONTROLLER_HORIZON_REVIEW",
+  "complete": true,
+  "native_counts": {
+    "rollout": 60,
+    "step": 108,
+    "transaction": 143
+  },
+  "records": 457,
+  "input_pins": 333,
+  "summaries": [
+    {
+      "case": "controller",
+      "arm": "ExperienceNoWrite",
+      "successes": 0,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02
+      ],
+      "outcomes": [
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP"
+      ],
+      "mean_return": -1.02,
+      "external_updates": 1
+    },
+    {
+      "case": "controller",
+      "arm": "OneStepValue",
+      "successes": 0,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02
+      ],
+      "outcomes": [
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP"
+      ],
+      "mean_return": -1.02,
+      "external_updates": 1
+    },
+    {
+      "case": "controller",
+      "arm": "TwoStepValue",
+      "successes": 5,
+      "returns": [
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "outcomes": [
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.5466666666666666,
+      "external_updates": 1
+    },
+    {
+      "case": "plant",
+      "arm": "ExperienceNoWrite",
+      "successes": 0,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02
+      ],
+      "outcomes": [
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP"
+      ],
+      "mean_return": -1.02,
+      "external_updates": 1
+    },
+    {
+      "case": "plant",
+      "arm": "OneStepValue",
+      "successes": 0,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02
+      ],
+      "outcomes": [
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP"
+      ],
+      "mean_return": -1.02,
+      "external_updates": 1
+    },
+    {
+      "case": "plant",
+      "arm": "TwoStepValue",
+      "successes": 0,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02
+      ],
+      "outcomes": [
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP"
+      ],
+      "mean_return": -1.02,
+      "external_updates": 1
+    }
+  ],
+  "models": [
+    {
+      "case": "controller",
+      "arm": "ExperienceNoWrite",
+      "horizon": 2,
+      "scores": {
+        "keep": -1.02,
+        "controller-delete": -0.08000000000000002
+      },
+      "choice": "controller-delete",
+      "executed": "keep",
+      "returns": {
+        "keep": [
+          -1.02,
+          -1.02
+        ],
+        "controller-delete": [
+          -1.02,
+          0.86
+        ]
+      }
+    },
+    {
+      "case": "controller",
+      "arm": "OneStepValue",
+      "horizon": 1,
+      "scores": {
+        "keep": -1.02,
+        "controller-delete": -1.02
+      },
+      "choice": "keep",
+      "executed": "keep",
+      "returns": {
+        "keep": [
+          -1.02,
+          -1.02
+        ],
+        "controller-delete": [
+          -1.02,
+          0.86
+        ]
+      }
+    },
+    {
+      "case": "controller",
+      "arm": "TwoStepValue",
+      "horizon": 2,
+      "scores": {
+        "keep": -1.02,
+        "controller-delete": -0.08000000000000002
+      },
+      "choice": "controller-delete",
+      "executed": "controller-delete",
+      "returns": {
+        "keep": [
+          -1.02,
+          -1.02
+        ],
+        "controller-delete": [
+          -1.02,
+          0.86
+        ]
+      }
+    },
+    {
+      "case": "plant",
+      "arm": "ExperienceNoWrite",
+      "horizon": 2,
+      "scores": {
+        "keep": -1.02,
+        "controller-delete": -1.02
+      },
+      "choice": "keep",
+      "executed": "keep",
+      "returns": {
+        "keep": [
+          -1.02,
+          -1.02
+        ],
+        "controller-delete": [
+          -1.02,
+          -1.02
+        ]
+      }
+    },
+    {
+      "case": "plant",
+      "arm": "OneStepValue",
+      "horizon": 1,
+      "scores": {
+        "keep": -1.02,
+        "controller-delete": -1.02
+      },
+      "choice": "keep",
+      "executed": "keep",
+      "returns": {
+        "keep": [
+          -1.02,
+          -1.02
+        ],
+        "controller-delete": [
+          -1.02,
+          -1.02
+        ]
+      }
+    },
+    {
+      "case": "plant",
+      "arm": "TwoStepValue",
+      "horizon": 2,
+      "scores": {
+        "keep": -1.02,
+        "controller-delete": -1.02
+      },
+      "choice": "keep",
+      "executed": "keep",
+      "returns": {
+        "keep": [
+          -1.02,
+          -1.02
+        ],
+        "controller-delete": [
+          -1.02,
+          -1.02
+        ]
+      }
+    }
+  ],
+  "observations": [
+    {
+      "case": "controller",
+      "arm": "ExperienceNoWrite",
+      "observation_id": "controller:ExperienceNoWrite:observation:1",
+      "source_terminal": "TRAP",
+      "numeric_changed": true
+    },
+    {
+      "case": "controller",
+      "arm": "OneStepValue",
+      "observation_id": "controller:OneStepValue:observation:1",
+      "source_terminal": "TRAP",
+      "numeric_changed": true
+    },
+    {
+      "case": "controller",
+      "arm": "TwoStepValue",
+      "observation_id": "controller:TwoStepValue:observation:1",
+      "source_terminal": "TRAP",
+      "numeric_changed": true
+    },
+    {
+      "case": "plant",
+      "arm": "ExperienceNoWrite",
+      "observation_id": "plant:ExperienceNoWrite:observation:1",
+      "source_terminal": "TRAP",
+      "numeric_changed": true
+    },
+    {
+      "case": "plant",
+      "arm": "OneStepValue",
+      "observation_id": "plant:OneStepValue:observation:1",
+      "source_terminal": "TRAP",
+      "numeric_changed": true
+    },
+    {
+      "case": "plant",
+      "arm": "TwoStepValue",
+      "observation_id": "plant:TwoStepValue:observation:1",
+      "source_terminal": "TRAP",
+      "numeric_changed": true
+    }
+  ],
+  "native_ordinary_updates": 60,
+  "ordinary_policy_TX": 60,
+  "external_ordinary_updates": 6,
+  "external_policy_TX": 6,
+  "checkpoint_TX": 3,
+  "source_install_TX": 1,
+  "private_X_TX": 6,
+  "main_X_feedback_TX": 1,
+  "main_tasks": 36,
+  "private_tasks": 24,
+  "main_diagnostic_calls": 31,
+  "success_diagnostic_calls": 0,
+  "same_first_visible_evidence_across_causes": true,
+  "same_actual_trial_data_within_case_all_arms": true,
+  "ordinary_math_AST_exact": true,
+  "old_checker_native_reruns": 0,
+  "new_keys_RNG_DP_calibration_collection": 0,
+  "formal_B1_whole_or_backend_qualification": false
+}

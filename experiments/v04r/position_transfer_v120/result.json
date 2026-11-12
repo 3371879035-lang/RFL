@@ -1,0 +1,423 @@
+{
+  "schema": "V120_MATCHED_EXTENT_FROZEN_POSITION_TRANSFER_RESULT",
+  "date_asia_shanghai": "2026-11-06",
+  "parent_commit": "9a0be1b9b84487845ea7c97cd1587fa2b0176090",
+  "status": "EXPERIMENT_COMPLETE_DQ_FROZEN_POSITION_TRANSFER_FAILED_ON_DECLARED_CASES",
+  "experiment_execution_complete": true,
+  "native_first_exit": 0,
+  "new_stored_review_first_exit_observed": 0,
+  "policy_result_distinct_from_harness_error": true,
+  "design": {
+    "fixed_shifted_locations": [
+      [
+        1,
+        2,
+        1
+      ],
+      [
+        1,
+        1,
+        2
+      ],
+      [
+        2,
+        1,
+        3
+      ]
+    ],
+    "modes": [
+      "dq",
+      "patch-adaptive"
+    ],
+    "arms": [
+      "TaskTD",
+      "AlwaysClear",
+      "FrozenAddress"
+    ],
+    "frozen_parameters": "Actual42 rows from v119 training; unchanged, no new training or candidate probes. Learned parameters only, not runtime-issued identity.",
+    "shared_parameters": "Q*, alpha1/2 epsilon1/10 unchanged; scripted MAX nonexploration coins, kappa1/phase2/errorflag0/rank5/base1.",
+    "ordinary_learning_in_every_arm": true,
+    "diagnosis_only_after_actual_first_failure": true,
+    "ordinary_only_followups": 2
+  },
+  "matched_extent": {
+    "actual_same_TIMEOUT_and_twelve_steps_cases": 6,
+    "frozen_selector_calls": 6,
+    "unknown_coverage_calls": 0
+  },
+  "actual_counts": {
+    "rollout": 54,
+    "step": 504,
+    "transaction": 90,
+    "records": 304,
+    "full_R_L_ordinary_updates_checked": 54,
+    "declared_inputs_before_after_unchanged": 329,
+    "instrumented_wall_seconds": 3.01500000001397
+  },
+  "descriptive_fixed_case_aggregates": [
+    {
+      "arms": {
+        "AlwaysClear": {
+          "descriptive_mean_future_return_over_three_fixed_cases": 0.88,
+          "future_successes": 6,
+          "future_tasks": 6,
+          "online_diagnostic_address_edit_attempts": 36,
+          "online_diagnostic_transactions": 3
+        },
+        "FrozenAddress": {
+          "descriptive_mean_future_return_over_three_fixed_cases": -1.24,
+          "future_successes": 0,
+          "future_tasks": 6,
+          "online_diagnostic_address_edit_attempts": 3,
+          "online_diagnostic_transactions": 3
+        },
+        "TaskTD": {
+          "descriptive_mean_future_return_over_three_fixed_cases": -1.24,
+          "future_successes": 0,
+          "future_tasks": 6,
+          "online_diagnostic_address_edit_attempts": 0,
+          "online_diagnostic_transactions": 0
+        }
+      },
+      "mode": "dq"
+    },
+    {
+      "arms": {
+        "AlwaysClear": {
+          "descriptive_mean_future_return_over_three_fixed_cases": 0.88,
+          "future_successes": 6,
+          "future_tasks": 6,
+          "online_diagnostic_address_edit_attempts": 36,
+          "online_diagnostic_transactions": 3
+        },
+        "FrozenAddress": {
+          "descriptive_mean_future_return_over_three_fixed_cases": 0.88,
+          "future_successes": 6,
+          "future_tasks": 6,
+          "online_diagnostic_address_edit_attempts": 0,
+          "online_diagnostic_transactions": 0
+        },
+        "TaskTD": {
+          "descriptive_mean_future_return_over_three_fixed_cases": 0.88,
+          "future_successes": 6,
+          "future_tasks": 6,
+          "online_diagnostic_address_edit_attempts": 0,
+          "online_diagnostic_transactions": 0
+        }
+      },
+      "mode": "patch-adaptive"
+    }
+  ],
+  "paired_cases": [
+    {
+      "arms": {
+        "AlwaysClear": {
+          "address_edit_attempts": 12,
+          "candidate": "clear_factual",
+          "diagnostic_content_changed": true,
+          "future_outcomes": [
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "future_returns": [
+            0.88,
+            0.88
+          ]
+        },
+        "FrozenAddress": {
+          "address_edit_attempts": 1,
+          "candidate": "single:0",
+          "diagnostic_content_changed": true,
+          "future_outcomes": [
+            "TIMEOUT",
+            "TIMEOUT"
+          ],
+          "future_returns": [
+            -1.24,
+            -1.24
+          ]
+        },
+        "TaskTD": {
+          "address_edit_attempts": 0,
+          "candidate": null,
+          "diagnostic_content_changed": false,
+          "future_outcomes": [
+            "TIMEOUT",
+            "TIMEOUT"
+          ],
+          "future_returns": [
+            -1.24,
+            -1.24
+          ]
+        }
+      },
+      "case": "prefix1",
+      "factual_steps": 12,
+      "factual_terminal": "TIMEOUT",
+      "mode": "dq"
+    },
+    {
+      "arms": {
+        "AlwaysClear": {
+          "address_edit_attempts": 12,
+          "candidate": "clear_factual",
+          "diagnostic_content_changed": true,
+          "future_outcomes": [
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "future_returns": [
+            0.88,
+            0.88
+          ]
+        },
+        "FrozenAddress": {
+          "address_edit_attempts": 1,
+          "candidate": "single:0",
+          "diagnostic_content_changed": false,
+          "future_outcomes": [
+            "TIMEOUT",
+            "TIMEOUT"
+          ],
+          "future_returns": [
+            -1.24,
+            -1.24
+          ]
+        },
+        "TaskTD": {
+          "address_edit_attempts": 0,
+          "candidate": null,
+          "diagnostic_content_changed": false,
+          "future_outcomes": [
+            "TIMEOUT",
+            "TIMEOUT"
+          ],
+          "future_returns": [
+            -1.24,
+            -1.24
+          ]
+        }
+      },
+      "case": "prefix2",
+      "factual_steps": 12,
+      "factual_terminal": "TIMEOUT",
+      "mode": "dq"
+    },
+    {
+      "arms": {
+        "AlwaysClear": {
+          "address_edit_attempts": 12,
+          "candidate": "clear_factual",
+          "diagnostic_content_changed": true,
+          "future_outcomes": [
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "future_returns": [
+            0.88,
+            0.88
+          ]
+        },
+        "FrozenAddress": {
+          "address_edit_attempts": 1,
+          "candidate": "single:0",
+          "diagnostic_content_changed": false,
+          "future_outcomes": [
+            "TIMEOUT",
+            "TIMEOUT"
+          ],
+          "future_returns": [
+            -1.24,
+            -1.24
+          ]
+        },
+        "TaskTD": {
+          "address_edit_attempts": 0,
+          "candidate": null,
+          "diagnostic_content_changed": false,
+          "future_outcomes": [
+            "TIMEOUT",
+            "TIMEOUT"
+          ],
+          "future_returns": [
+            -1.24,
+            -1.24
+          ]
+        }
+      },
+      "case": "prefix3",
+      "factual_steps": 12,
+      "factual_terminal": "TIMEOUT",
+      "mode": "dq"
+    },
+    {
+      "arms": {
+        "AlwaysClear": {
+          "address_edit_attempts": 12,
+          "candidate": "clear_factual",
+          "diagnostic_content_changed": true,
+          "future_outcomes": [
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "future_returns": [
+            0.88,
+            0.88
+          ]
+        },
+        "FrozenAddress": {
+          "address_edit_attempts": 0,
+          "candidate": "keep",
+          "diagnostic_content_changed": false,
+          "future_outcomes": [
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "future_returns": [
+            0.88,
+            0.88
+          ]
+        },
+        "TaskTD": {
+          "address_edit_attempts": 0,
+          "candidate": null,
+          "diagnostic_content_changed": false,
+          "future_outcomes": [
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "future_returns": [
+            0.88,
+            0.88
+          ]
+        }
+      },
+      "case": "prefix1",
+      "factual_steps": 12,
+      "factual_terminal": "TIMEOUT",
+      "mode": "patch-adaptive"
+    },
+    {
+      "arms": {
+        "AlwaysClear": {
+          "address_edit_attempts": 12,
+          "candidate": "clear_factual",
+          "diagnostic_content_changed": true,
+          "future_outcomes": [
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "future_returns": [
+            0.88,
+            0.88
+          ]
+        },
+        "FrozenAddress": {
+          "address_edit_attempts": 0,
+          "candidate": "keep",
+          "diagnostic_content_changed": false,
+          "future_outcomes": [
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "future_returns": [
+            0.88,
+            0.88
+          ]
+        },
+        "TaskTD": {
+          "address_edit_attempts": 0,
+          "candidate": null,
+          "diagnostic_content_changed": false,
+          "future_outcomes": [
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "future_returns": [
+            0.88,
+            0.88
+          ]
+        }
+      },
+      "case": "prefix2",
+      "factual_steps": 12,
+      "factual_terminal": "TIMEOUT",
+      "mode": "patch-adaptive"
+    },
+    {
+      "arms": {
+        "AlwaysClear": {
+          "address_edit_attempts": 12,
+          "candidate": "clear_factual",
+          "diagnostic_content_changed": true,
+          "future_outcomes": [
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "future_returns": [
+            0.88,
+            0.88
+          ]
+        },
+        "FrozenAddress": {
+          "address_edit_attempts": 0,
+          "candidate": "keep",
+          "diagnostic_content_changed": false,
+          "future_outcomes": [
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "future_returns": [
+            0.88,
+            0.88
+          ]
+        },
+        "TaskTD": {
+          "address_edit_attempts": 0,
+          "candidate": null,
+          "diagnostic_content_changed": false,
+          "future_outcomes": [
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "future_returns": [
+            0.88,
+            0.88
+          ]
+        }
+      },
+      "case": "prefix3",
+      "factual_steps": 12,
+      "factual_terminal": "TIMEOUT",
+      "mode": "patch-adaptive"
+    }
+  ],
+  "findings": [
+    "DQ frozen selector chose single:0 on all three shifted cases despite full candidate coverage. All six followups TIMEOUT at return-1.24, equal to TaskTD; AlwaysClear succeeded6/6 at return0.88.",
+    "For prefix2 and prefix3, deleting the first address was a content no-op, still one actual attempted deletion transaction each. Prefix1 changed content but did not fix the relevant WAIT overrides.",
+    "Revised patch ordinary policy improvement already restored these cases; all arms6/6 successes at0.88. Frozen keep avoided36 attempted address edits relative to AlwaysClear, but gave no extra reward gain.",
+    "The earlier v119 fixed-layout benefit remains as measured. This new matched-extent result rejects extending that temporal-position policy to the declared relocated-WAIT cases; it does not refute RFL generally."
+  ],
+  "limits": [
+    "Only three fixed shifted cases per mode, not independent seed or population inference, no architecture ranking.",
+    "Frozen selector has only mode/terminal/mismatch plus ordinal action identities; it was not trained to condition candidate value on state/transition meaning. No claim of a causal responsibility posterior.",
+    "Ordinary same-task learning retains fullR+L; local post-TD diagnostic edits are not original same-pre whole-B1 responsibility transactions.",
+    "Original failure rewards unchanged; not a punishment ablation, newworld training or formal keyed collection."
+  ],
+  "V03_local_stage_complete": true,
+  "V04_full_learned_causal_pipeline_complete": false,
+  "new_training_updates": 0,
+  "new_candidate_probe_rollouts": 0,
+  "automatic_retry": false,
+  "old_native_checker_reruns": 0,
+  "new_keys": 0,
+  "formal_collection": false,
+  "preservation": {
+    "old58_ledger_values": true,
+    "old266_provenance": true,
+    "frozen313": true,
+    "old_executed_source_modified": false,
+    "automation_inspected_or_modified": false
+  },
+  "next_work": "Replace fixed ordinal candidate identities with shared candidate-local visible evidence features (action, repeated position/transition, local progress), train on mixed locations and freeze before a held-out location. Compare against this preserved failing ordinal policy; do not patch or rerun v120 to turn it into a success."
+}

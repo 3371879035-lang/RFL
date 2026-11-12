@@ -1,0 +1,112 @@
+{
+  "checks": [
+    {
+      "name": "local_raw_degenerates_to_V216",
+      "ok": true,
+      "details": {
+        "max_error": 5.551115123125783e-16,
+        "local_raw_matches_V216": true
+      }
+    },
+    {
+      "name": "independent_scalar_equations",
+      "ok": true,
+      "details": {
+        "max_scalar_error": 3.552713678800501e-15,
+        "hypothesis_sequences": 3
+      }
+    },
+    {
+      "name": "shared_likelihood_counts_once",
+      "ok": true,
+      "details": {
+        "observed_log_loss": 45.35798149120585,
+        "negative_log_evidence": 45.35798149120588,
+        "difference": 2.842170943040401e-14
+      }
+    },
+    {
+      "name": "local_likelihood_counts_once",
+      "ok": true,
+      "details": {
+        "observed_log_loss": 46.0978597349348,
+        "negative_log_evidence": 46.097859734934794,
+        "difference": 7.105427357601002e-15
+      }
+    },
+    {
+      "name": "uncertainty_variance_decomposition",
+      "ok": true,
+      "details": {
+        "law_of_total_variance_error": 5.828670879282072e-16,
+        "physical_uncertainty_identification": false
+      }
+    },
+    {
+      "name": "shared_prior_not_shared_local_answers",
+      "ok": true,
+      "details": {
+        "unvisited_cell_counts_unchanged": 19,
+        "hyperparameter_sharing_not_local_fact_fabrication": true
+      }
+    },
+    {
+      "name": "history_identity_not_content_dedup",
+      "ok": true,
+      "details": {
+        "duplicate_removed": true,
+        "new_identical_outcome_preserved": true,
+        "conflict_rejected": true
+      }
+    },
+    {
+      "name": "fact_replay_idempotent_online_duplicate_rejected",
+      "ok": true,
+      "details": {
+        "current_updates": 1,
+        "unique_archive": 33,
+        "replay_updates": 0
+      }
+    },
+    {
+      "name": "trainable_prior_finite_difference",
+      "ok": true,
+      "details": {
+        "analytic_gradient": 0.0438894709648191,
+        "finite_difference": 0.04388947101308104,
+        "optimizer_steps": 0
+      }
+    },
+    {
+      "name": "whole_network_predictive_training_path",
+      "ok": true,
+      "details": {
+        "loss": 0.7400752889853086,
+        "trainable_parameter_scalars": 96,
+        "gradient_l1": 0.021867067309396682,
+        "parameter_updates": 0
+      }
+    },
+    {
+      "name": "prediction_is_readonly",
+      "ok": true,
+      "details": {
+        "repeated_prediction_does_not_increase_evidence": true
+      }
+    },
+    {
+      "name": "analytic_initialization_no_parameter_training",
+      "ok": true,
+      "details": {
+        "trainable_prior_not_yet_trained": true,
+        "rng_unchanged": true,
+        "optimizer_steps": 0
+      }
+    }
+  ],
+  "passed": 12,
+  "failed": 0,
+  "synthetic_only": true,
+  "actual_environment_interactions": 0,
+  "optimizer_steps": 0
+}

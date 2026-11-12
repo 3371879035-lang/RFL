@@ -1,0 +1,587 @@
+{
+  "family": "triple",
+  "seed": 5,
+  "records": 11654,
+  "runs": [
+    {
+      "family": "triple",
+      "seed": 5,
+      "arm": "pooled_history",
+      "evaluation_mean": 0.7421875,
+      "expected_mean": 0.7133333333333333,
+      "evaluation_final": 0.796875,
+      "expected_final": 0.82,
+      "learning_success_rate": 0.6743951612903226,
+      "learning_failures": 646,
+      "cycle_training_success": [
+        0.525,
+        0.5125,
+        0.684375,
+        0.809375,
+        0.73125,
+        0.815625
+      ],
+      "checkpoints": [
+        {
+          "checkpoint": 0,
+          "success": 0.546875,
+          "expected": 0.5
+        },
+        {
+          "checkpoint": 1,
+          "success": 0.53125,
+          "expected": 0.5
+        },
+        {
+          "checkpoint": 2,
+          "success": 0.5390625,
+          "expected": 0.5
+        },
+        {
+          "checkpoint": 3,
+          "success": 0.8984375,
+          "expected": 0.82
+        },
+        {
+          "checkpoint": 4,
+          "success": 0.859375,
+          "expected": 0.82
+        },
+        {
+          "checkpoint": 5,
+          "success": 0.828125,
+          "expected": 0.82
+        },
+        {
+          "checkpoint": 6,
+          "success": 0.796875,
+          "expected": 0.82
+        }
+      ],
+      "decisions": [
+        {
+          "cycle": 0,
+          "status": "unresolved_keep",
+          "pairs": 128,
+          "effect": 0.0,
+          "same_behavior": false,
+          "reference_expected": 0.5,
+          "candidate_expected": 0.5,
+          "adopt": false,
+          "positive_missed": false
+        },
+        {
+          "cycle": 1,
+          "status": "unresolved_keep",
+          "pairs": 128,
+          "effect": 0.0,
+          "same_behavior": false,
+          "reference_expected": 0.5,
+          "candidate_expected": 0.5,
+          "adopt": false,
+          "positive_missed": false
+        },
+        {
+          "cycle": 2,
+          "status": "adopt",
+          "pairs": 83,
+          "effect": 0.32,
+          "same_behavior": false,
+          "reference_expected": 0.5,
+          "candidate_expected": 0.82,
+          "adopt": true,
+          "positive_missed": false
+        },
+        {
+          "cycle": 3,
+          "status": "unresolved_keep",
+          "pairs": 128,
+          "effect": 0.0,
+          "same_behavior": true,
+          "reference_expected": 0.82,
+          "candidate_expected": 0.82,
+          "adopt": false,
+          "positive_missed": false
+        },
+        {
+          "cycle": 4,
+          "status": "not_worth_cost",
+          "pairs": 55,
+          "effect": -0.32,
+          "same_behavior": false,
+          "reference_expected": 0.82,
+          "candidate_expected": 0.5,
+          "adopt": false,
+          "positive_missed": false
+        },
+        {
+          "cycle": 5,
+          "status": "unresolved_keep",
+          "pairs": 128,
+          "effect": 0.0,
+          "same_behavior": true,
+          "reference_expected": 0.82,
+          "candidate_expected": 0.82,
+          "adopt": false,
+          "positive_missed": false
+        }
+      ],
+      "trial_pairs": 650,
+      "same_behavior_pairs": 256,
+      "positive_adoptions": 1,
+      "zero_adoptions": 0,
+      "negative_adoptions": 0,
+      "positive_candidates_missed": 0,
+      "replay_reads": 3520,
+      "cpu_seconds": 7.46875,
+      "wall_seconds": 7.869361499993829,
+      "timings": {
+        "ordinary_observe_seconds": 1.7165912999189459,
+        "paired_update_seconds": 3.6219106004282366,
+        "ranking_seconds": 0.5477773000020534,
+        "response_and_growth_seconds": 0.6567398000042886,
+        "snapshot_seconds": 0.03947710004285909,
+        "world_and_action_seconds": 0.7132055003894493
+      },
+      "final_structures": 15,
+      "buffer_bytes": 2680
+    },
+    {
+      "family": "triple",
+      "seed": 5,
+      "arm": "mean_eight",
+      "evaluation_mean": 0.6822916666666666,
+      "expected_mean": 0.6599999999999999,
+      "evaluation_final": 0.796875,
+      "expected_final": 0.82,
+      "learning_success_rate": 0.6431451612903226,
+      "learning_failures": 708,
+      "cycle_training_success": [
+        0.490625,
+        0.521875,
+        0.515625,
+        0.746875,
+        0.79375,
+        0.815625
+      ],
+      "checkpoints": [
+        {
+          "checkpoint": 0,
+          "success": 0.546875,
+          "expected": 0.5
+        },
+        {
+          "checkpoint": 1,
+          "success": 0.53125,
+          "expected": 0.5
+        },
+        {
+          "checkpoint": 2,
+          "success": 0.5390625,
+          "expected": 0.5
+        },
+        {
+          "checkpoint": 3,
+          "success": 0.5390625,
+          "expected": 0.5
+        },
+        {
+          "checkpoint": 4,
+          "success": 0.859375,
+          "expected": 0.82
+        },
+        {
+          "checkpoint": 5,
+          "success": 0.828125,
+          "expected": 0.82
+        },
+        {
+          "checkpoint": 6,
+          "success": 0.796875,
+          "expected": 0.82
+        }
+      ],
+      "decisions": [
+        {
+          "cycle": 0,
+          "status": "unresolved_keep",
+          "pairs": 8,
+          "effect": 0.0,
+          "same_behavior": false,
+          "reference_expected": 0.5,
+          "candidate_expected": 0.5,
+          "adopt": false,
+          "positive_missed": false
+        },
+        {
+          "cycle": 1,
+          "status": "unresolved_keep",
+          "pairs": 8,
+          "effect": 0.0,
+          "same_behavior": false,
+          "reference_expected": 0.5,
+          "candidate_expected": 0.5,
+          "adopt": false,
+          "positive_missed": false
+        },
+        {
+          "cycle": 2,
+          "status": "unresolved_keep",
+          "pairs": 8,
+          "effect": 0.32,
+          "same_behavior": false,
+          "reference_expected": 0.5,
+          "candidate_expected": 0.82,
+          "adopt": false,
+          "positive_missed": true
+        },
+        {
+          "cycle": 3,
+          "status": "adopt",
+          "pairs": 8,
+          "effect": 0.32,
+          "same_behavior": false,
+          "reference_expected": 0.5,
+          "candidate_expected": 0.82,
+          "adopt": true,
+          "positive_missed": false
+        },
+        {
+          "cycle": 4,
+          "status": "unresolved_keep",
+          "pairs": 8,
+          "effect": -0.32,
+          "same_behavior": false,
+          "reference_expected": 0.82,
+          "candidate_expected": 0.5,
+          "adopt": false,
+          "positive_missed": false
+        },
+        {
+          "cycle": 5,
+          "status": "unresolved_keep",
+          "pairs": 8,
+          "effect": 0.0,
+          "same_behavior": true,
+          "reference_expected": 0.82,
+          "candidate_expected": 0.82,
+          "adopt": false,
+          "positive_missed": false
+        }
+      ],
+      "trial_pairs": 48,
+      "same_behavior_pairs": 8,
+      "positive_adoptions": 1,
+      "zero_adoptions": 0,
+      "negative_adoptions": 0,
+      "positive_candidates_missed": 1,
+      "replay_reads": 2000,
+      "cpu_seconds": 7.828125,
+      "wall_seconds": 8.265746899996884,
+      "timings": {
+        "ordinary_observe_seconds": 5.136533999873791,
+        "paired_update_seconds": 0.28412759987986647,
+        "ranking_seconds": 0.7769175000139512,
+        "response_and_growth_seconds": 0.393302499956917,
+        "snapshot_seconds": 0.03789530001813546,
+        "world_and_action_seconds": 0.8192785990831908
+      },
+      "final_structures": 15,
+      "buffer_bytes": 166160
+    },
+    {
+      "family": "triple",
+      "seed": 5,
+      "arm": "full",
+      "evaluation_mean": 0.7421875,
+      "expected_mean": 0.7133333333333333,
+      "evaluation_final": 0.796875,
+      "expected_final": 0.82,
+      "learning_success_rate": 0.6743951612903226,
+      "learning_failures": 646,
+      "cycle_training_success": [
+        0.525,
+        0.5125,
+        0.684375,
+        0.809375,
+        0.73125,
+        0.815625
+      ],
+      "checkpoints": [
+        {
+          "checkpoint": 0,
+          "success": 0.546875,
+          "expected": 0.5
+        },
+        {
+          "checkpoint": 1,
+          "success": 0.53125,
+          "expected": 0.5
+        },
+        {
+          "checkpoint": 2,
+          "success": 0.5390625,
+          "expected": 0.5
+        },
+        {
+          "checkpoint": 3,
+          "success": 0.8984375,
+          "expected": 0.82
+        },
+        {
+          "checkpoint": 4,
+          "success": 0.859375,
+          "expected": 0.82
+        },
+        {
+          "checkpoint": 5,
+          "success": 0.828125,
+          "expected": 0.82
+        },
+        {
+          "checkpoint": 6,
+          "success": 0.796875,
+          "expected": 0.82
+        }
+      ],
+      "decisions": [
+        {
+          "cycle": 0,
+          "status": "unresolved_keep",
+          "pairs": 128,
+          "effect": 0.0,
+          "same_behavior": false,
+          "reference_expected": 0.5,
+          "candidate_expected": 0.5,
+          "adopt": false,
+          "positive_missed": false
+        },
+        {
+          "cycle": 1,
+          "status": "unresolved_keep",
+          "pairs": 128,
+          "effect": 0.0,
+          "same_behavior": false,
+          "reference_expected": 0.5,
+          "candidate_expected": 0.5,
+          "adopt": false,
+          "positive_missed": false
+        },
+        {
+          "cycle": 2,
+          "status": "adopt",
+          "pairs": 83,
+          "effect": 0.32,
+          "same_behavior": false,
+          "reference_expected": 0.5,
+          "candidate_expected": 0.82,
+          "adopt": true,
+          "positive_missed": false
+        },
+        {
+          "cycle": 3,
+          "status": "unresolved_keep",
+          "pairs": 128,
+          "effect": 0.0,
+          "same_behavior": true,
+          "reference_expected": 0.82,
+          "candidate_expected": 0.82,
+          "adopt": false,
+          "positive_missed": false
+        },
+        {
+          "cycle": 4,
+          "status": "not_worth_cost",
+          "pairs": 55,
+          "effect": -0.32,
+          "same_behavior": false,
+          "reference_expected": 0.82,
+          "candidate_expected": 0.5,
+          "adopt": false,
+          "positive_missed": false
+        },
+        {
+          "cycle": 5,
+          "status": "unresolved_keep",
+          "pairs": 128,
+          "effect": 0.0,
+          "same_behavior": true,
+          "reference_expected": 0.82,
+          "candidate_expected": 0.82,
+          "adopt": false,
+          "positive_missed": false
+        }
+      ],
+      "trial_pairs": 650,
+      "same_behavior_pairs": 256,
+      "positive_adoptions": 1,
+      "zero_adoptions": 0,
+      "negative_adoptions": 0,
+      "positive_candidates_missed": 0,
+      "replay_reads": 3520,
+      "cpu_seconds": 9.78125,
+      "wall_seconds": 10.274569200002588,
+      "timings": {
+        "ordinary_observe_seconds": 2.093652099749306,
+        "paired_update_seconds": 4.55090400003246,
+        "ranking_seconds": 0.8615089000377338,
+        "response_and_growth_seconds": 0.7331029999768361,
+        "snapshot_seconds": 0.03159200004301965,
+        "world_and_action_seconds": 1.0393575009074993
+      },
+      "final_structures": 15,
+      "buffer_bytes": 166160
+    },
+    {
+      "family": "triple",
+      "seed": 5,
+      "arm": "fixed_order",
+      "evaluation_mean": 0.515625,
+      "expected_mean": 0.5,
+      "evaluation_final": 0.515625,
+      "expected_final": 0.5,
+      "learning_success_rate": 0.5141129032258065,
+      "learning_failures": 964,
+      "cycle_training_success": [
+        0.525,
+        0.5125,
+        0.515625,
+        0.496875,
+        0.50625,
+        0.528125
+      ],
+      "checkpoints": [
+        {
+          "checkpoint": 0,
+          "success": 0.546875,
+          "expected": 0.5
+        },
+        {
+          "checkpoint": 1,
+          "success": 0.53125,
+          "expected": 0.5
+        },
+        {
+          "checkpoint": 2,
+          "success": 0.5390625,
+          "expected": 0.5
+        },
+        {
+          "checkpoint": 3,
+          "success": 0.5390625,
+          "expected": 0.5
+        },
+        {
+          "checkpoint": 4,
+          "success": 0.4921875,
+          "expected": 0.5
+        },
+        {
+          "checkpoint": 5,
+          "success": 0.4765625,
+          "expected": 0.5
+        },
+        {
+          "checkpoint": 6,
+          "success": 0.515625,
+          "expected": 0.5
+        }
+      ],
+      "decisions": [
+        {
+          "cycle": 0,
+          "status": "unresolved_keep",
+          "pairs": 128,
+          "effect": 0.0,
+          "same_behavior": false,
+          "reference_expected": 0.5,
+          "candidate_expected": 0.5,
+          "adopt": false,
+          "positive_missed": false
+        },
+        {
+          "cycle": 1,
+          "status": "unresolved_keep",
+          "pairs": 128,
+          "effect": 0.0,
+          "same_behavior": false,
+          "reference_expected": 0.5,
+          "candidate_expected": 0.5,
+          "adopt": false,
+          "positive_missed": false
+        },
+        {
+          "cycle": 2,
+          "status": "unresolved_keep",
+          "pairs": 128,
+          "effect": 0.0,
+          "same_behavior": true,
+          "reference_expected": 0.5,
+          "candidate_expected": 0.5,
+          "adopt": false,
+          "positive_missed": false
+        },
+        {
+          "cycle": 3,
+          "status": "unresolved_keep",
+          "pairs": 128,
+          "effect": 0.0,
+          "same_behavior": false,
+          "reference_expected": 0.5,
+          "candidate_expected": 0.5,
+          "adopt": false,
+          "positive_missed": false
+        },
+        {
+          "cycle": 4,
+          "status": "unresolved_keep",
+          "pairs": 128,
+          "effect": 0.0,
+          "same_behavior": false,
+          "reference_expected": 0.5,
+          "candidate_expected": 0.5,
+          "adopt": false,
+          "positive_missed": false
+        },
+        {
+          "cycle": 5,
+          "status": "unresolved_keep",
+          "pairs": 128,
+          "effect": 0.0,
+          "same_behavior": false,
+          "reference_expected": 0.5,
+          "candidate_expected": 0.5,
+          "adopt": false,
+          "positive_missed": false
+        }
+      ],
+      "trial_pairs": 768,
+      "same_behavior_pairs": 128,
+      "positive_adoptions": 0,
+      "zero_adoptions": 0,
+      "negative_adoptions": 0,
+      "positive_candidates_missed": 0,
+      "replay_reads": 0,
+      "cpu_seconds": 7.140625,
+      "wall_seconds": 7.463800600002287,
+      "timings": {
+        "ordinary_observe_seconds": 0.9877152998524252,
+        "paired_update_seconds": 4.202075099776266,
+        "ranking_seconds": 0.6344913999782875,
+        "response_and_growth_seconds": 0.001405100047122687,
+        "snapshot_seconds": 0.03355059996829368,
+        "world_and_action_seconds": 0.9507383000454865
+      },
+      "final_structures": 10,
+      "buffer_bytes": 68448
+    }
+  ],
+  "diagnostic": {
+    "max_log_weight_error": 8.704148513061227e-14,
+    "max_predictive_error": 6.661338147750939e-16,
+    "floating_tie_action_differences": 0,
+    "policies_verified": 305
+  },
+  "raw_sha256": "ad6c6b87b00a9028a6d3401b0f348466fc01bf7809bd5874c4dadc1a05821fbb",
+  "full_eof": true
+}

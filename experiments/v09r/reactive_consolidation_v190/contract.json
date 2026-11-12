@@ -1,0 +1,105 @@
+{
+  "schema": "V09_REACTIVE_CONSOLIDATION_V190",
+  "utc": "2026-11-08T09:57:49.691858+00:00",
+  "parent_commit": "03e38e165c8e9cf17a438fd88e0004f49db33d0b",
+  "authority": "可以，那你开始做吧，加油codex",
+  "hypothesis": "Use actual within-episode movement failure to revise the next action, then compress completed-episode movement evidence for conditional reuse. Separate immediate reaction from cross-episode memory; no reward change or imaginary outcomes.",
+  "intervention": {
+    "wake": "After at least two consecutive stationary transitions, defer a greedy proposed normal action already observed stationary at this same location/context. Rank the remaining legal actions by the existing learner scores; epsilon exploration is unchanged. Dashes are not given unobserved outcomes.",
+    "sleep": "Store per-completed-episode moved/stalled evidence for each 3x3 observed road pattern, buff status and normal action. Following a captured episode, consolidate a conditional rule only with at least two distinct episodes of stalling, zero episodes of movement for that action, and at least two episodes of movement for some alternative. Any observed movement contradicts/revokes the stalled belief. All arms record/aggregate the same audit memory; only full variants read it for action.",
+    "scope": "Local movement feasibility, not causal attribution of capture or a permanent prohibition. All16 legal actions remain accessible via epsilon; no penalties or changed rewards. Hand-designed correction criterion is an explicit prior, not emergent general reflection.",
+    "sleep_implementation": "External episodic memory consolidation, not Sleep paper weight distillation/MoE/RL reward or full Dream-RSI policy-code search. No new parameter update besides ordinary baseline learning.",
+    "terminal": "Only observed completed episodes are merged. Failure triggers rule construction; success contributes ordinary factual memory and contradiction removal, not diagnostic calls. Partial tails are not treated as terminal.",
+    "evaluation": "Frozen parameters, replay and cross-episode memory. Fresh local working memory may react within each evaluation episode; no evaluation evidence enters later evaluation episodes or training."
+  },
+  "matrix": {
+    "seeds": [
+      93001,
+      93002,
+      93003,
+      93004
+    ],
+    "cells": {
+      "RL-RP": [
+        "base"
+      ],
+      "F0": [
+        "base",
+        "wake",
+        "wake_sleep"
+      ],
+      "F-RP": [
+        "base",
+        "wake_sleep"
+      ],
+      "F-R": [
+        "base",
+        "wake_sleep"
+      ]
+    },
+    "cases": 32,
+    "initial_training_steps": 131072,
+    "additional_training_steps_each": 16384,
+    "total_additional_training_steps": 524288,
+    "checkpoints_additional": [
+      0,
+      8192,
+      16384
+    ],
+    "evaluation_counts": [
+      128,
+      128,
+      256
+    ],
+    "evaluation_episode_ids": "256..383 at first two checkpoints, 256..511 final: disjoint from prior0..255",
+    "evaluation_episodes": 16384,
+    "environment_steps_upper": 3670016,
+    "training_episode_ids": "200000 upward; new unused ordinary training sources after V189 preserved partial attempt",
+    "new_evaluation_episodes": 12288,
+    "recorded_initial_evaluation_episodes": 4096
+  },
+  "initialization": "Load authentic full local checkpoints from V183 RL-RP, V188 F0, V187 hybrids. Preserve weights, optimizer, replay and training counter. Begin fresh unused training episodes; old unfinished tail stays historical and is not falsely completed. No cold-start or fresh independent training claim. V190 allocates zero unused future-label slots only for Q-enabled old replay. F0 original measured arrays untouched. Initial cp0 real banks are read-only transferred, not rerun.",
+  "resources": {
+    "workers": 4,
+    "numeric_threads_each": 1,
+    "wall_seconds": 3600,
+    "aggregate_RAM_GiB": 20,
+    "artifact_GiB": 8,
+    "paid_compute": false,
+    "automation": false
+  },
+  "metrics": [
+    "Paired per-seed task score and checkpoint curve",
+    "Stationary-step and >=8-consecutive-stationary occupancy rates",
+    "Actual response counts and immediately observed movement after correction",
+    "Cross-episode memory decisions and wake_sleep minus wake in F0",
+    "Ordinary optimizer updates, environment steps, runtime and memory size"
+  ],
+  "stopping": "No automatic retry. Only4jobs in flight; after observed failure no further cases dispatched. Preserve all V189 executed bytes and failed/partial evidence.",
+  "limits": [
+    "Same four development training seeds; nested evaluation episodes are not independent training repeats.",
+    "Base checkpoints differ across signal groups: full-system comparison, not isolated reward effect.",
+    "Extra factual control is an engineered prior. Higher scores at additional-step0 are immediate intervention effects, not newly learned knowledge.",
+    "Identical ordinary update and interaction budgets; extra memory/control CPU time measured, not exact equal compute.",
+    "No causal claim that wall/stagnation caused capture; no claimed whole Sleep or Dream-RSI reproduction."
+  ],
+  "references": [
+    {
+      "url": "https://arxiv.org/html/2609.14858v1",
+      "borrowed": "reuse actual history; no invented branch outcomes"
+    },
+    {
+      "url": "https://arxiv.org/html/2606.03979v2",
+      "borrowed": "separate active reaction and offline consolidation; external memory only here"
+    }
+  ],
+  "revision_of": "V189 first native exit1: old Q-enabled Replay missing F0 future slots; no effect-driven policy changes",
+  "previous_attempt_cost": {
+    "raw_environment_steps": 227319,
+    "successful_training_appends": 5504,
+    "initial_eval_episodes": 4096,
+    "native_exit": 1,
+    "wall_seconds": 84.95543520000138,
+    "physical_training_steps": 5524
+  }
+}

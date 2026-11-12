@@ -1,0 +1,406 @@
+{
+  "rows": [
+    {
+      "archive_facts": 512,
+      "arm": "conditional_full_v218",
+      "buffer_bytes": 15728,
+      "cpu_seconds": 1.703125,
+      "evaluation_interactions": 640,
+      "evaluations": [
+        {
+          "checkpoint": 0,
+          "episodes": 128,
+          "state_unchanged": true,
+          "successes": 24
+        },
+        {
+          "checkpoint": 16,
+          "episodes": 128,
+          "state_unchanged": true,
+          "successes": 100
+        },
+        {
+          "checkpoint": 64,
+          "episodes": 128,
+          "state_unchanged": true,
+          "successes": 113
+        },
+        {
+          "checkpoint": 128,
+          "episodes": 128,
+          "state_unchanged": true,
+          "successes": 113
+        },
+        {
+          "checkpoint": 256,
+          "episodes": 128,
+          "state_unchanged": true,
+          "successes": 109
+        }
+      ],
+      "family": "changed_novel",
+      "first16_successes": 12,
+      "first64_successes": 47,
+      "history_unchanged": true,
+      "parameter_scalars": 1364,
+      "parameters_unchanged": true,
+      "return_first16_successes": null,
+      "second_half_successes": 111,
+      "seed": 11,
+      "trainable_calibration_scalars": 80,
+      "training_interactions": 256,
+      "training_successes": 208,
+      "wall_seconds": 1.8700341999938246,
+      "train_metrics": {
+        "log_loss": 0.3398097184686745,
+        "brier": 0.0927581428917391,
+        "kernel_mse": 0.00981625613791975,
+        "base_same_state_kernel_mse": 0.010524592183999195,
+        "calibration_extra_wrong": 0.00390625,
+        "calibration_rescue": 0,
+        "current_correct_final_wrong": 0.01171875,
+        "delta_best_probability": 0.012501404055096739,
+        "best_probability": 0.8774582693661868,
+        "best_base_probability": 0.8649568653110901
+      },
+      "eval_metrics": {
+        "0": {
+          "log_loss": 0.9587309844430044,
+          "brier": 0.37929633303021126,
+          "kernel_mse": 0.28359660578631046,
+          "base_same_state_kernel_mse": 0.28359660578631046,
+          "calibration_extra_wrong": 0,
+          "calibration_rescue": 0,
+          "current_correct_final_wrong": 0.5546875,
+          "delta_best_probability": 0.0,
+          "best_probability": 0.37038125776561165,
+          "best_base_probability": 0.37038125776561165
+        },
+        "16": {
+          "log_loss": 0.5485751306388755,
+          "brier": 0.18166166670101638,
+          "kernel_mse": 0.058111832532193174,
+          "base_same_state_kernel_mse": 0.05786291672831465,
+          "calibration_extra_wrong": 0,
+          "calibration_rescue": 0,
+          "current_correct_final_wrong": 0,
+          "delta_best_probability": 0.008449011534858459,
+          "best_probability": 0.71842306801865,
+          "best_base_probability": 0.7099740564837914
+        },
+        "64": {
+          "log_loss": 0.24460848175859162,
+          "brier": 0.057518582971169206,
+          "kernel_mse": 0.004733169660891152,
+          "base_same_state_kernel_mse": 0.00608723164534476,
+          "calibration_extra_wrong": 0,
+          "calibration_rescue": 0,
+          "current_correct_final_wrong": 0,
+          "delta_best_probability": 0.03145302551866566,
+          "best_probability": 0.8941446311477591,
+          "best_base_probability": 0.8626916056290934
+        },
+        "128": {
+          "log_loss": 0.33996606163361204,
+          "brier": 0.09117922732855958,
+          "kernel_mse": 0.0034060458309843737,
+          "base_same_state_kernel_mse": 0.0038107329095885597,
+          "calibration_extra_wrong": 0,
+          "calibration_rescue": 0,
+          "current_correct_final_wrong": 0,
+          "delta_best_probability": 0.0055463449793125424,
+          "best_probability": 0.8792888278403825,
+          "best_base_probability": 0.87374248286107
+        },
+        "256": {
+          "log_loss": 0.24992925924628526,
+          "brier": 0.06186288649671332,
+          "kernel_mse": 0.0027232985255957807,
+          "base_same_state_kernel_mse": 0.0025326911970053787,
+          "calibration_extra_wrong": 0,
+          "calibration_rescue": 0,
+          "current_correct_final_wrong": 0,
+          "delta_best_probability": 0.01295613625178069,
+          "best_probability": 0.8982005560900528,
+          "best_base_probability": 0.8852444198382721
+        }
+      },
+      "condition_metrics": {
+        "0": {
+          "1": {
+            "log_loss": 0.9587309844430044,
+            "brier": 0.37929633303021126,
+            "kernel_mse": 0.28359660578631046,
+            "base_same_state_kernel_mse": 0.28359660578631046,
+            "calibration_extra_wrong": 0,
+            "calibration_rescue": 0,
+            "current_correct_final_wrong": 0.5546875,
+            "delta_best_probability": 0.0,
+            "best_probability": 0.37038125776561165,
+            "best_base_probability": 0.37038125776561165
+          }
+        },
+        "16": {
+          "1": {
+            "log_loss": 0.5485751306388755,
+            "brier": 0.18166166670101638,
+            "kernel_mse": 0.058111832532193174,
+            "base_same_state_kernel_mse": 0.05786291672831465,
+            "calibration_extra_wrong": 0,
+            "calibration_rescue": 0,
+            "current_correct_final_wrong": 0,
+            "delta_best_probability": 0.008449011534858459,
+            "best_probability": 0.71842306801865,
+            "best_base_probability": 0.7099740564837914
+          }
+        },
+        "64": {
+          "1": {
+            "log_loss": 0.24460848175859162,
+            "brier": 0.057518582971169206,
+            "kernel_mse": 0.004733169660891152,
+            "base_same_state_kernel_mse": 0.00608723164534476,
+            "calibration_extra_wrong": 0,
+            "calibration_rescue": 0,
+            "current_correct_final_wrong": 0,
+            "delta_best_probability": 0.03145302551866566,
+            "best_probability": 0.8941446311477591,
+            "best_base_probability": 0.8626916056290934
+          }
+        },
+        "128": {
+          "1": {
+            "log_loss": 0.33996606163361204,
+            "brier": 0.09117922732855958,
+            "kernel_mse": 0.0034060458309843737,
+            "base_same_state_kernel_mse": 0.0038107329095885597,
+            "calibration_extra_wrong": 0,
+            "calibration_rescue": 0,
+            "current_correct_final_wrong": 0,
+            "delta_best_probability": 0.0055463449793125424,
+            "best_probability": 0.8792888278403825,
+            "best_base_probability": 0.87374248286107
+          }
+        },
+        "256": {
+          "1": {
+            "log_loss": 0.24992925924628526,
+            "brier": 0.06186288649671332,
+            "kernel_mse": 0.0027232985255957807,
+            "base_same_state_kernel_mse": 0.0025326911970053787,
+            "calibration_extra_wrong": 0,
+            "calibration_rescue": 0,
+            "current_correct_final_wrong": 0,
+            "delta_best_probability": 0.01295613625178069,
+            "best_probability": 0.8982005560900528,
+            "best_base_probability": 0.8852444198382721
+          }
+        }
+      },
+      "data_origin": "new_V218_environment_execution"
+    },
+    {
+      "archive_facts": 512,
+      "arm": "conditional_temperature_v218",
+      "buffer_bytes": 14416,
+      "cpu_seconds": 1.953125,
+      "evaluation_interactions": 640,
+      "evaluations": [
+        {
+          "checkpoint": 0,
+          "episodes": 128,
+          "state_unchanged": true,
+          "successes": 24
+        },
+        {
+          "checkpoint": 16,
+          "episodes": 128,
+          "state_unchanged": true,
+          "successes": 100
+        },
+        {
+          "checkpoint": 64,
+          "episodes": 128,
+          "state_unchanged": true,
+          "successes": 113
+        },
+        {
+          "checkpoint": 128,
+          "episodes": 128,
+          "state_unchanged": true,
+          "successes": 113
+        },
+        {
+          "checkpoint": 256,
+          "episodes": 128,
+          "state_unchanged": true,
+          "successes": 109
+        }
+      ],
+      "family": "changed_novel",
+      "first16_successes": 12,
+      "first64_successes": 47,
+      "history_unchanged": true,
+      "parameter_scalars": 1332,
+      "parameters_unchanged": true,
+      "return_first16_successes": null,
+      "second_half_successes": 111,
+      "seed": 11,
+      "trainable_calibration_scalars": 48,
+      "training_interactions": 256,
+      "training_successes": 208,
+      "wall_seconds": 2.1373309999980847,
+      "train_metrics": {
+        "log_loss": 0.338643027487258,
+        "brier": 0.092029301080906,
+        "kernel_mse": 0.009420550984523926,
+        "base_same_state_kernel_mse": 0.010524592183999195,
+        "calibration_extra_wrong": 0,
+        "calibration_rescue": 0,
+        "current_correct_final_wrong": 0.0078125,
+        "delta_best_probability": 0.016191446391133932,
+        "best_probability": 0.881148311702224,
+        "best_base_probability": 0.8649568653110901
+      },
+      "eval_metrics": {
+        "0": {
+          "log_loss": 0.9587309844430044,
+          "brier": 0.37929633303021126,
+          "kernel_mse": 0.28359660578631046,
+          "base_same_state_kernel_mse": 0.28359660578631046,
+          "calibration_extra_wrong": 0,
+          "calibration_rescue": 0,
+          "current_correct_final_wrong": 0.5546875,
+          "delta_best_probability": 0.0,
+          "best_probability": 0.37038125776561165,
+          "best_base_probability": 0.37038125776561165
+        },
+        "16": {
+          "log_loss": 0.5387427074501445,
+          "brier": 0.17765709781959543,
+          "kernel_mse": 0.05507984498741047,
+          "base_same_state_kernel_mse": 0.05786291672831465,
+          "calibration_extra_wrong": 0,
+          "calibration_rescue": 0,
+          "current_correct_final_wrong": 0,
+          "delta_best_probability": 0.01084130455612944,
+          "best_probability": 0.7208153610399209,
+          "best_base_probability": 0.7099740564837914
+        },
+        "64": {
+          "log_loss": 0.23740960241513126,
+          "brier": 0.05499523218676654,
+          "kernel_mse": 0.003923261101012182,
+          "base_same_state_kernel_mse": 0.00608723164534476,
+          "calibration_extra_wrong": 0,
+          "calibration_rescue": 0,
+          "current_correct_final_wrong": 0,
+          "delta_best_probability": 0.040131585146458336,
+          "best_probability": 0.9028231907755517,
+          "best_base_probability": 0.8626916056290934
+        },
+        "128": {
+          "log_loss": 0.33836081772048016,
+          "brier": 0.09087246791657566,
+          "kernel_mse": 0.003340649766944907,
+          "base_same_state_kernel_mse": 0.0038107329095885597,
+          "calibration_extra_wrong": 0,
+          "calibration_rescue": 0,
+          "current_correct_final_wrong": 0,
+          "delta_best_probability": 0.005898074443836367,
+          "best_probability": 0.8796405573049063,
+          "best_base_probability": 0.87374248286107
+        },
+        "256": {
+          "log_loss": 0.24837005204606208,
+          "brier": 0.06169218220819014,
+          "kernel_mse": 0.002990197171155511,
+          "base_same_state_kernel_mse": 0.0025326911970053787,
+          "calibration_extra_wrong": 0,
+          "calibration_rescue": 0,
+          "current_correct_final_wrong": 0,
+          "delta_best_probability": 0.016029769418138128,
+          "best_probability": 0.9012741892564102,
+          "best_base_probability": 0.8852444198382721
+        }
+      },
+      "condition_metrics": {
+        "0": {
+          "1": {
+            "log_loss": 0.9587309844430044,
+            "brier": 0.37929633303021126,
+            "kernel_mse": 0.28359660578631046,
+            "base_same_state_kernel_mse": 0.28359660578631046,
+            "calibration_extra_wrong": 0,
+            "calibration_rescue": 0,
+            "current_correct_final_wrong": 0.5546875,
+            "delta_best_probability": 0.0,
+            "best_probability": 0.37038125776561165,
+            "best_base_probability": 0.37038125776561165
+          }
+        },
+        "16": {
+          "1": {
+            "log_loss": 0.5387427074501445,
+            "brier": 0.17765709781959543,
+            "kernel_mse": 0.05507984498741047,
+            "base_same_state_kernel_mse": 0.05786291672831465,
+            "calibration_extra_wrong": 0,
+            "calibration_rescue": 0,
+            "current_correct_final_wrong": 0,
+            "delta_best_probability": 0.01084130455612944,
+            "best_probability": 0.7208153610399209,
+            "best_base_probability": 0.7099740564837914
+          }
+        },
+        "64": {
+          "1": {
+            "log_loss": 0.23740960241513126,
+            "brier": 0.05499523218676654,
+            "kernel_mse": 0.003923261101012182,
+            "base_same_state_kernel_mse": 0.00608723164534476,
+            "calibration_extra_wrong": 0,
+            "calibration_rescue": 0,
+            "current_correct_final_wrong": 0,
+            "delta_best_probability": 0.040131585146458336,
+            "best_probability": 0.9028231907755517,
+            "best_base_probability": 0.8626916056290934
+          }
+        },
+        "128": {
+          "1": {
+            "log_loss": 0.33836081772048016,
+            "brier": 0.09087246791657566,
+            "kernel_mse": 0.003340649766944907,
+            "base_same_state_kernel_mse": 0.0038107329095885597,
+            "calibration_extra_wrong": 0,
+            "calibration_rescue": 0,
+            "current_correct_final_wrong": 0,
+            "delta_best_probability": 0.005898074443836367,
+            "best_probability": 0.8796405573049063,
+            "best_base_probability": 0.87374248286107
+          }
+        },
+        "256": {
+          "1": {
+            "log_loss": 0.24837005204606208,
+            "brier": 0.06169218220819014,
+            "kernel_mse": 0.002990197171155511,
+            "base_same_state_kernel_mse": 0.0025326911970053787,
+            "calibration_extra_wrong": 0,
+            "calibration_rescue": 0,
+            "current_correct_final_wrong": 0,
+            "delta_best_probability": 0.016029769418138128,
+            "best_probability": 0.9012741892564102,
+            "best_base_probability": 0.8852444198382721
+          }
+        }
+      },
+      "data_origin": "new_V218_environment_execution"
+    }
+  ],
+  "records": 2064,
+  "interactions": 1792,
+  "max_formula_error": 1.2434497875801753e-14,
+  "history_imports": 256
+}

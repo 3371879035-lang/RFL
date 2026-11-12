@@ -1,0 +1,32 @@
+setUpClass (__main__.OwnedBankTests) ... ERROR
+
+======================================================================
+ERROR: setUpClass (__main__.OwnedBankTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v03r\a96_dense\b2_prepare\oracle_mainline_v76\test_new_integration.py", line 93, in setUpClass
+    src=owner.capture_source(state,scene=scene,regime=regime,q_reference=cls.reference,
+                              healthy_reference=cls.healthy,mask=mask)
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v03r\a96_dense\b2_prepare\oracle_mainline_v75.py", line 90, in capture_source
+    native = base.capture_oracle_source(pre_state, scene=scene, regime=regime,
+        q_reference=q_reference, healthy_reference=healthy_reference, mask=mask,
+        option_fault=option_fault, counterfactual=counterfactual)
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\experiments\v03r\a96_dense\b2_prepare\oracle_mainline_v74.py", line 254, in capture_oracle_source
+    provider, controller = learner_channels(snap, q_reference)
+                           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\src\rfl_rebuild\b2\environment.py", line 76, in learner_channels
+    return (snapshot.decision_provider(snapshot.q_decision_provider(q_reference)),
+                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\src\rfl_rebuild\learner\store.py", line 344, in q_decision_provider
+    self._require_decision_store_exclusive()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\强化反馈学习\RFL-CausalChase-v0.3-dense-20261009\src\rfl_rebuild\learner\store.py", line 268, in _require_decision_store_exclusive
+    raise LearnerStateError(
+    ...<3 lines>...
+        "Refused before the adapter is built, not when an address is visited")
+rfl_rebuild.learner.store.LearnerStateError: the persistent state holds both P_D^L and Q_D^L decision overrides; D_patch and D_Q are different architectures and A77 §65.4 defines no priority between them, so this state cannot drive either read path. Refused before the adapter is built, not when an address is visited
+
+----------------------------------------------------------------------
+Ran 0 tests in 1.058s
+
+FAILED (errors=1)

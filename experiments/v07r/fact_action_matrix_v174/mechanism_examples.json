@@ -1,0 +1,145 @@
+{
+  "first_noisy_old_hybrid_repeated_zero_Q_tie": {
+    "arm": "F-R",
+    "mirror": 0,
+    "p": 0.1,
+    "phase": "matrix",
+    "seed": 7001,
+    "stream": "s7001_m0_p0.1_F-R",
+    "epoch": 10,
+    "uid": 14208,
+    "step": {
+      "command": 0,
+      "executed": 1,
+      "next_room": 0,
+      "outcome": "COLLISION",
+      "room": 0
+    },
+    "pre_readout": {
+      "CT": 1,
+      "FT": 1,
+      "argmax": [
+        0,
+        1
+      ],
+      "counts": [
+        [
+          0,
+          8
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "old": 0,
+      "p_hat": [
+        0.1,
+        0.6666666666666666
+      ],
+      "q": [
+        0.0,
+        0.0
+      ],
+      "room": 0
+    },
+    "actual_greedy": 0,
+    "exploration": false,
+    "interpretation": "actual same-state suggestions, not complete counterfactual training"
+  },
+  "first_noisy_FT_actual_tie_change": {
+    "arm": "F-R-FT",
+    "mirror": 0,
+    "p": 0.1,
+    "phase": "matrix",
+    "seed": 7001,
+    "stream": "s7001_m0_p0.1_F-R-FT",
+    "epoch": 2,
+    "uid": 19960,
+    "step": {
+      "command": 1,
+      "executed": 0,
+      "next_room": 1,
+      "outcome": "NEXT",
+      "room": 0
+    },
+    "pre_readout": {
+      "CT": 1,
+      "FT": 1,
+      "argmax": [
+        0,
+        1
+      ],
+      "counts": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "old": 0,
+      "p_hat": [
+        0.3333333333333333,
+        0.5
+      ],
+      "q": [
+        0.0,
+        0.0
+      ],
+      "room": 0
+    },
+    "actual_greedy": 1,
+    "exploration": false,
+    "interpretation": "actual same-state suggestions, not complete counterfactual training"
+  },
+  "first_noisy_FT_strict_Q_overrides_better_factual_probability": {
+    "arm": "F-R-FT",
+    "mirror": 1,
+    "p": 0.1,
+    "phase": "matrix",
+    "seed": 7001,
+    "stream": "s7001_m1_p0.1_F-R-FT",
+    "epoch": 2,
+    "uid": 48814,
+    "step": {
+      "command": 0,
+      "executed": 0,
+      "next_room": 2,
+      "outcome": "COLLISION",
+      "room": 2
+    },
+    "pre_readout": {
+      "CT": 0,
+      "FT": 0,
+      "argmax": [
+        0
+      ],
+      "counts": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "old": 0,
+      "p_hat": [
+        0.3333333333333333,
+        0.5
+      ],
+      "q": [
+        0.16666666666666666,
+        0.0
+      ],
+      "room": 2
+    },
+    "actual_greedy": 0,
+    "exploration": false,
+    "interpretation": "actual same-state suggestions, not complete counterfactual training"
+  }
+}

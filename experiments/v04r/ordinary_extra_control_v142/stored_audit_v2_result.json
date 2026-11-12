@@ -1,0 +1,2985 @@
+{
+  "Mtraining": 0,
+  "candidate_proposals": 0,
+  "comparisons_to_v141": [
+    {
+      "all20main_raw_identical": true,
+      "all20post_extra_R_L_I_identical": true,
+      "all_extra_raw_in_order_identical": true,
+      "case": "stable",
+      "new_arm": "StableOrdinaryExtra",
+      "new_extra_Ksteps": 24,
+      "new_extra_rollouts": 6,
+      "old_mean_return": 0.549,
+      "old_private_Ksteps": 24,
+      "old_private_rollouts": 6,
+      "recorded_arm": "StableExperienceNoWrite"
+    },
+    {
+      "all20main_raw_identical": true,
+      "all20post_extra_R_L_I_identical": true,
+      "all_extra_raw_in_order_identical": true,
+      "case": "stable",
+      "new_arm": "StableOrdinaryExtra",
+      "new_extra_Ksteps": 24,
+      "new_extra_rollouts": 6,
+      "old_mean_return": 0.549,
+      "old_private_Ksteps": 24,
+      "old_private_rollouts": 6,
+      "recorded_arm": "StableExperienceRepair"
+    },
+    {
+      "all20main_raw_identical": true,
+      "all20post_extra_R_L_I_identical": true,
+      "all_extra_raw_in_order_identical": true,
+      "case": "drift",
+      "new_arm": "DriftOrdinaryExtra",
+      "new_extra_Ksteps": 20,
+      "new_extra_rollouts": 4,
+      "old_mean_return": 0.5589999999999999,
+      "old_private_Ksteps": 20,
+      "old_private_rollouts": 4,
+      "recorded_arm": "DriftExperienceNoWrite"
+    },
+    {
+      "all20main_raw_identical": true,
+      "all20post_extra_R_L_I_identical": true,
+      "all_extra_raw_in_order_identical": true,
+      "case": "drift",
+      "new_arm": "DriftOrdinaryExtra",
+      "new_extra_Ksteps": 20,
+      "new_extra_rollouts": 4,
+      "old_mean_return": 0.5589999999999999,
+      "old_private_Ksteps": 20,
+      "old_private_rollouts": 4,
+      "recorded_arm": "DriftExperienceRepair"
+    }
+  ],
+  "complete": true,
+  "diagnostic_calls": 0,
+  "duplicate_rejections": 10,
+  "external_ordinary_updates": 10,
+  "external_policy_TX": 10,
+  "extra_Ksteps": 44,
+  "extra_tasks": 10,
+  "feedback_main_writes": 0,
+  "ingestions": [
+    {
+      "L_Q_after": 1,
+      "L_Q_before": 0,
+      "arm": "StableOrdinaryExtra",
+      "main_epoch": 0,
+      "numeric_changed": true,
+      "observation_id": "ordinary-extra:StableOrdinaryExtra:observation:1",
+      "source_terminal": "TRAP"
+    },
+    {
+      "L_Q_after": 1,
+      "L_Q_before": 1,
+      "arm": "StableOrdinaryExtra",
+      "main_epoch": 0,
+      "numeric_changed": false,
+      "observation_id": "ordinary-extra:StableOrdinaryExtra:observation:2",
+      "source_terminal": "SUCCESS"
+    },
+    {
+      "L_Q_after": 2,
+      "L_Q_before": 1,
+      "arm": "StableOrdinaryExtra",
+      "main_epoch": 6,
+      "numeric_changed": true,
+      "observation_id": "ordinary-extra:StableOrdinaryExtra:observation:3",
+      "source_terminal": "TRAP"
+    },
+    {
+      "L_Q_after": 2,
+      "L_Q_before": 2,
+      "arm": "StableOrdinaryExtra",
+      "main_epoch": 6,
+      "numeric_changed": false,
+      "observation_id": "ordinary-extra:StableOrdinaryExtra:observation:4",
+      "source_terminal": "SUCCESS"
+    },
+    {
+      "L_Q_after": 3,
+      "L_Q_before": 2,
+      "arm": "StableOrdinaryExtra",
+      "main_epoch": 12,
+      "numeric_changed": true,
+      "observation_id": "ordinary-extra:StableOrdinaryExtra:observation:5",
+      "source_terminal": "TRAP"
+    },
+    {
+      "L_Q_after": 3,
+      "L_Q_before": 3,
+      "arm": "StableOrdinaryExtra",
+      "main_epoch": 12,
+      "numeric_changed": false,
+      "observation_id": "ordinary-extra:StableOrdinaryExtra:observation:6",
+      "source_terminal": "SUCCESS"
+    },
+    {
+      "L_Q_after": 1,
+      "L_Q_before": 0,
+      "arm": "DriftOrdinaryExtra",
+      "main_epoch": 0,
+      "numeric_changed": true,
+      "observation_id": "ordinary-extra:DriftOrdinaryExtra:observation:1",
+      "source_terminal": "TRAP"
+    },
+    {
+      "L_Q_after": 1,
+      "L_Q_before": 1,
+      "arm": "DriftOrdinaryExtra",
+      "main_epoch": 0,
+      "numeric_changed": false,
+      "observation_id": "ordinary-extra:DriftOrdinaryExtra:observation:2",
+      "source_terminal": "SUCCESS"
+    },
+    {
+      "L_Q_after": 1,
+      "L_Q_before": 1,
+      "arm": "DriftOrdinaryExtra",
+      "main_epoch": 6,
+      "numeric_changed": false,
+      "observation_id": "ordinary-extra:DriftOrdinaryExtra:observation:3",
+      "source_terminal": "SUCCESS"
+    },
+    {
+      "L_Q_after": 1,
+      "L_Q_before": 1,
+      "arm": "DriftOrdinaryExtra",
+      "main_epoch": 12,
+      "numeric_changed": false,
+      "observation_id": "ordinary-extra:DriftOrdinaryExtra:observation:4",
+      "source_terminal": "SUCCESS"
+    }
+  ],
+  "input_pins": 338,
+  "issued_observations": 10,
+  "main_Ksteps": 292,
+  "main_tasks": 40,
+  "native_counts": {
+    "rollout": 50,
+    "step": 336,
+    "transaction": 122
+  },
+  "native_first_exit": 0,
+  "native_ordinary_updates": 50,
+  "native_policy_TX": 50,
+  "old_checker_or_native_reruns": 0,
+  "original_ordinary_math_AST_exact_except_clock": true,
+  "raw_file": {
+    "bytes": 3225077,
+    "sha256": "d4ceca7cff8eb133f4c7779b7225cfa5f3212ef6828552161d2e94e2dffb1bec"
+  },
+  "records": 321,
+  "schema": "V142_STDLIB_ORDINARY_EXTRA_REVIEW_V2",
+  "scientific_qualification": false,
+  "streams": [
+    {
+      "arm": "StableOrdinaryExtra",
+      "case": "stable",
+      "diagnostic_calls": 0,
+      "external_updates": 6,
+      "extra_episodes": 6,
+      "extra_events": 3,
+      "final_state": {
+        "attempted_epochs": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ],
+        "completed_episodes": 20,
+        "current": {
+          "D": [
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 0,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 0,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 0,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 0,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 0,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 0,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 1,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 3
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 1,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 1,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 3
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 1,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 1,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 3
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 1,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 2,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 3
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 2,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 2,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 3
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 2,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 2,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 3
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 2,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 3,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 3
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 3,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 3,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 3
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 3,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 3,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 3
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 3,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 4,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 3
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 4,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 4,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 3
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 4,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 4,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 3
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 4,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 5,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 3
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 5,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 5,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 3
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 5,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 5,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 3
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 5,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 4,
+                  "t": 1,
+                  "x": 1,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 3
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 7,
+                  "x": 1,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 0
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 7,
+                  "x": 1,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 7,
+                  "x": 1,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 0
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 7,
+                  "x": 1,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 7,
+                  "x": 1,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 0
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 7,
+                  "x": 1,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            }
+          ],
+          "P": [
+            {
+              "address": 3,
+              "value": 2
+            }
+          ],
+          "Q": [],
+          "X": []
+        },
+        "external_updates": 6,
+        "immediate": {
+          "D": [
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 0,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 0,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 0,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 0,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 0,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 0,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 1,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 1,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 1,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 1,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 1,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 1,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 2,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 2,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 2,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 2,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 2,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 2,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 3,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 3,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 3,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 3,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 3,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 3,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 4,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 4,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 4,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 4,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 4,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 4,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 5,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 5,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 5,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 5,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 5,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 5,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 4,
+                  "t": 1,
+                  "x": 1,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 3
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 7,
+                  "x": 1,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 7,
+                  "x": 1,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 7,
+                  "x": 1,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 7,
+                  "x": 1,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 7,
+                  "x": 1,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 7,
+                  "x": 1,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            }
+          ],
+          "P": [
+            {
+              "address": 3,
+              "value": 2
+            }
+          ],
+          "Q": [],
+          "X": []
+        },
+        "learning_values": {
+          "D": [],
+          "P": [],
+          "Q": [
+            {
+              "address": {
+                "a": 3,
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 0,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": {
+                "binary64_hex": "-0x1.1eb851eb851f0p-4"
+              }
+            },
+            {
+              "address": {
+                "a": 3,
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 0,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": {
+                "binary64_hex": "-0x1.1eb851eb851f0p-4"
+              }
+            },
+            {
+              "address": {
+                "a": 3,
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 0,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": {
+                "binary64_hex": "-0x1.1eb851eb851f0p-4"
+              }
+            }
+          ],
+          "X": []
+        },
+        "mode": "patch-adaptive",
+        "observation_revision": "v142-complete-main-supplemental-observation",
+        "reference_digest": "d9078b5b5b823df56f998e8c28eb6a3e388bd3ae216f41a21acdb5202d2ec05a",
+        "revision": "v95-lazy-coordinate-v90-ordinary-semantics",
+        "role": "treatment",
+        "source_label": "ordinary-extra:StableOrdinaryExtra"
+      },
+      "main_tasks": 20,
+      "mode": "patch-adaptive",
+      "outcomes": [
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TIMEOUT",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "return_mean": {
+        "binary64_hex": "0x1.1916872b020c5p-1"
+      },
+      "return_sum": {
+        "binary64_hex": "0x1.5f5c28f5c28f6p+3"
+      },
+      "returns": [
+        {
+          "binary64_hex": "-0x1.2e147ae147ae1p+0"
+        },
+        {
+          "binary64_hex": "0x1.b851eb851eb85p-1"
+        },
+        {
+          "binary64_hex": "0x1.b851eb851eb85p-1"
+        },
+        {
+          "binary64_hex": "0x1.b851eb851eb85p-1"
+        },
+        {
+          "binary64_hex": "0x1.b851eb851eb85p-1"
+        },
+        {
+          "binary64_hex": "0x1.b851eb851eb85p-1"
+        },
+        {
+          "binary64_hex": "-0x1.3851eb851eb85p+0"
+        },
+        {
+          "binary64_hex": "0x1.b851eb851eb85p-1"
+        },
+        {
+          "binary64_hex": "0x1.b851eb851eb85p-1"
+        },
+        {
+          "binary64_hex": "0x1.b851eb851eb85p-1"
+        },
+        {
+          "binary64_hex": "0x1.b851eb851eb85p-1"
+        },
+        {
+          "binary64_hex": "0x1.b851eb851eb85p-1"
+        },
+        {
+          "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+        },
+        {
+          "binary64_hex": "0x1.b851eb851eb85p-1"
+        },
+        {
+          "binary64_hex": "0x1.b851eb851eb85p-1"
+        },
+        {
+          "binary64_hex": "0x1.b851eb851eb85p-1"
+        },
+        {
+          "binary64_hex": "0x1.b851eb851eb85p-1"
+        },
+        {
+          "binary64_hex": "0x1.b851eb851eb85p-1"
+        },
+        {
+          "binary64_hex": "0x1.b851eb851eb85p-1"
+        },
+        {
+          "binary64_hex": "0x1.b851eb851eb85p-1"
+        }
+      ],
+      "successes": 17
+    },
+    {
+      "arm": "DriftOrdinaryExtra",
+      "case": "drift",
+      "diagnostic_calls": 0,
+      "external_updates": 4,
+      "extra_episodes": 4,
+      "extra_events": 3,
+      "final_state": {
+        "attempted_epochs": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ],
+        "completed_episodes": 20,
+        "current": {
+          "D": [
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 0,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 3
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 0,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 0,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 0,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 0,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 3
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 0,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 1,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 3
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 1,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 1,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 3
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 1,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 1,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 3
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 1,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 2,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 3
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 2,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 2,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 3
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 2,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 2,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 3
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 2,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 3,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 3
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 3,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 3,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 3
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 3,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 3,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 3
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 3,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 4,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 3
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 4,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 4,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 3
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 4,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 4,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 3
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 4,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 5,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 3
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 5,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 5,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 3
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 5,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 5,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 3
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 5,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 4,
+                  "t": 1,
+                  "x": 1,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 3
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 7,
+                  "x": 1,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 0
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 7,
+                  "x": 1,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 7,
+                  "x": 1,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 0
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 7,
+                  "x": 1,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 7,
+                  "x": 1,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 0
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 7,
+                  "x": 1,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            }
+          ],
+          "P": [
+            {
+              "address": 3,
+              "value": 2
+            }
+          ],
+          "Q": [],
+          "X": []
+        },
+        "external_updates": 4,
+        "immediate": {
+          "D": [
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 0,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 0,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 0,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 0,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 0,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 0,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 1,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 1,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 1,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 1,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 1,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 1,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 2,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 2,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 2,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 2,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 2,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 2,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 3,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 3,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 3,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 3,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 3,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 3,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 4,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 4,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 4,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 4,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 4,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 4,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 5,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 5,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 5,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 5,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 5,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 5,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 4,
+                  "t": 1,
+                  "x": 1,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 3
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 7,
+                  "x": 1,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 7,
+                  "x": 1,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 7,
+                  "x": 1,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 7,
+                  "x": 1,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 7,
+                  "x": 1,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            },
+            {
+              "address": {
+                "m": 1,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 7,
+                  "x": 1,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": 4
+            }
+          ],
+          "P": [
+            {
+              "address": 3,
+              "value": 2
+            }
+          ],
+          "Q": [],
+          "X": []
+        },
+        "learning_values": {
+          "D": [],
+          "P": [],
+          "Q": [
+            {
+              "address": {
+                "a": 3,
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 0,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "value": {
+                "binary64_hex": "-0x1.1eb851eb851f0p-4"
+              }
+            }
+          ],
+          "X": []
+        },
+        "mode": "patch-adaptive",
+        "observation_revision": "v142-complete-main-supplemental-observation",
+        "reference_digest": "d9078b5b5b823df56f998e8c28eb6a3e388bd3ae216f41a21acdb5202d2ec05a",
+        "revision": "v95-lazy-coordinate-v90-ordinary-semantics",
+        "role": "treatment",
+        "source_label": "ordinary-extra:DriftOrdinaryExtra"
+      },
+      "main_tasks": 20,
+      "mode": "patch-adaptive",
+      "outcomes": [
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "COLLISION",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "TIMEOUT",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "return_mean": {
+        "binary64_hex": "0x1.1e353f7ced916p-1"
+      },
+      "return_sum": {
+        "binary64_hex": "0x1.65c28f5c28f5cp+3"
+      },
+      "returns": [
+        {
+          "binary64_hex": "-0x1.2e147ae147ae1p+0"
+        },
+        {
+          "binary64_hex": "0x1.b851eb851eb85p-1"
+        },
+        {
+          "binary64_hex": "0x1.b851eb851eb85p-1"
+        },
+        {
+          "binary64_hex": "0x1.b851eb851eb85p-1"
+        },
+        {
+          "binary64_hex": "0x1.b851eb851eb85p-1"
+        },
+        {
+          "binary64_hex": "0x1.b851eb851eb85p-1"
+        },
+        {
+          "binary64_hex": "-0x1.3851eb851eb85p+0"
+        },
+        {
+          "binary64_hex": "0x1.c28f5c28f5c29p-1"
+        },
+        {
+          "binary64_hex": "0x1.c28f5c28f5c29p-1"
+        },
+        {
+          "binary64_hex": "0x1.c28f5c28f5c29p-1"
+        },
+        {
+          "binary64_hex": "0x1.c28f5c28f5c29p-1"
+        },
+        {
+          "binary64_hex": "0x1.c28f5c28f5c29p-1"
+        },
+        {
+          "binary64_hex": "-0x1.3d70a3d70a3d7p+0"
+        },
+        {
+          "binary64_hex": "0x1.c28f5c28f5c29p-1"
+        },
+        {
+          "binary64_hex": "0x1.c28f5c28f5c29p-1"
+        },
+        {
+          "binary64_hex": "0x1.c28f5c28f5c29p-1"
+        },
+        {
+          "binary64_hex": "0x1.c28f5c28f5c29p-1"
+        },
+        {
+          "binary64_hex": "0x1.c28f5c28f5c29p-1"
+        },
+        {
+          "binary64_hex": "0x1.b851eb851eb85p-1"
+        },
+        {
+          "binary64_hex": "0x1.b851eb851eb85p-1"
+        }
+      ],
+      "successes": 17
+    }
+  ]
+}

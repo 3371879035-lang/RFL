@@ -1,0 +1,105 @@
+{
+  "schema": "V143_PROSPECTIVE_STALE_EXPERIENCE_ORDINARY_EXPLORATION",
+  "date_asia_shanghai": "2026-11-07",
+  "parent_commit": "5c57adb7cc6722c4804fc69b033e1733f1fc2f4f",
+  "question": "Does original ordinary exploration update a retained false-negative action value when conditions change, and what is the cost if the trap remains? No new attribution/forgetting/feedback-value algorithm.",
+  "checkpoint": {
+    "raw": {
+      "path": "experiments/v04r/ordinary_extra_control_v142/evidence/raw.jsonl",
+      "bytes": 3225077,
+      "sha256": "d4ceca7cff8eb133f4c7779b7225cfa5f3212ef6828552161d2e94e2dffb1bec"
+    },
+    "stored_review": {
+      "path": "experiments/v04r/ordinary_extra_control_v142/stored_audit_v2_result.json",
+      "bytes": 70094,
+      "sha256": "59e37c01425a3c582237c367e9c5eb35642e97d82aa7ccb06bd15fde0d0db3ed"
+    },
+    "contract": {
+      "path": "experiments/v04r/ordinary_extra_control_v142/contract.json",
+      "bytes": 16085,
+      "sha256": "c0133a859f3aedd4e4a683b7de7b9cf6ffa54eafed5a2e0c355307d8c2eaeb8d"
+    },
+    "selector": {
+      "tag": "STREAM_ARM",
+      "arm": "DriftOrdinaryExtra",
+      "field": "final_state"
+    },
+    "recorded_completed_main_tasks": 20,
+    "recorded_external_updates": 4,
+    "restoration": "Explicit recorded ordinary model checkpoint, not source/pair/receipt/issued-observation identity. Rebuild complete I/R/L through original legal store transactions; full wire equality. Fresh task clocks 0..11, never pretend to resume original issued plan/counter/runtime."
+  },
+  "reference": {
+    "path": "experiments/v03r/a96_dense/b2_prepare/grammar_catalog_v31/evidence/stdout.log",
+    "sha256": "d0aafb6dc20b1cc0c872ac4c48497d94feb707ffe14448bd1c2f3ddd1bbb467b",
+    "q_digest": "d9078b5b5b823df56f998e8c28eb6a3e388bd3ae216f41a21acdb5202d2ec05a"
+  },
+  "arms": [
+    {
+      "name": "GoneGreedy",
+      "trap": false,
+      "explore_epochs": []
+    },
+    {
+      "name": "GoneExplore",
+      "trap": false,
+      "explore_epochs": [
+        0,
+        2,
+        4,
+        6,
+        8,
+        10
+      ]
+    },
+    {
+      "name": "PresentGreedy",
+      "trap": true,
+      "explore_epochs": []
+    },
+    {
+      "name": "PresentExplore",
+      "trap": true,
+      "explore_epochs": [
+        0,
+        2,
+        4,
+        6,
+        8,
+        10
+      ]
+    }
+  ],
+  "ordinary_protocol": {
+    "mode": "patch-adaptive",
+    "alpha": "1/2",
+    "epsilon": "1/10",
+    "episodes_each": 12,
+    "kappa": 0,
+    "phi": 3,
+    "proposal": 1,
+    "error_flag": 0,
+    "cause_rank": 12,
+    "coins": "All 12 coordinates MAX except step0 coin0 at predeclared exploration epochs. Step0 rejection tuple(0,) selects RIGHT from actual ordered admissible(3,4). This is a fixed coordinate stress sequence, not random-sampled epsilon frequency, not adaptive exploration or formal keyed qualification.",
+    "exploration_caveat": "Six of twelve task starts are deliberately exploratory to observe the ordinary TD reversal boundary. No claim this is typical epsilon=0.1 performance, optimal exploration rate, or an algorithm recommendation."
+  },
+  "routing": "All main tasks diagnostic_disabled, max_writes0. No private trials, candidate proposals, M, observations ingestion or success diagnosis. Failure retains original ordinary learning and original negative task rewards, no added punishment.",
+  "truth_boundary": "Only runner selects the two fixed native masks. Same checkpoint and exploration schedule under both masks; mask/arm labels are audit only, not policy features. No truth/condition-change signal resets Q or chooses actions.",
+  "analysis": "Before/after full I/R/L per actual episode, true TD targets/canonical values/greedy decisions/actual coordinates, successes/returns/all work. Report both success and failed exploration. Fixed12 never resized after result. No new evaluation/retention/collateral banks.",
+  "predictions_not_acceptance_gate": [
+    "Absent trap: successful RIGHT evidence should gradually raise its stale value above WAIT without forgetting or direct correction; actual crossing time measured, not patched to fit.",
+    "Present trap: the same predeclared ordinary re-tests may cause repeated real failures; keep all of them and measure loss."
+  ],
+  "budget": {
+    "rollout": 48,
+    "step": 576,
+    "transaction": 128,
+    "raw_bytes": 16777216,
+    "seconds": 90
+  },
+  "expected_extent_not_effect_gate": {
+    "new_main_tasks": 48,
+    "checkpoint_materialization_stores": 3,
+    "no_checkpoint_prefix_native_replay": true
+  },
+  "capture": "Exclusive new capture before first native, bounded once, no auto retry. First failure/timeout/partial retained. Original sources and all old captures/checkers/native remain unchanged. No keys/RNG/keyderive/DP/calibration/formal collector/automation."
+}

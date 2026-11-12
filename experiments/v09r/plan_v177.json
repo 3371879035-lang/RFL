@@ -1,0 +1,475 @@
+{
+  "schema": "V09_SPATIAL_CHASE_GRADUAL_FEEDBACK_AUTONOMY_PLAN_V177",
+  "date_asia_shanghai": "2026-11-07",
+  "status": "PLAN_COMPLETE_IMPLEMENTATION_AND_NATIVE_EXPERIMENT_NOT_STARTED",
+  "parent_commit": "099b3dfa1d761b9f5e4d03653ab2942fe6403e5b",
+  "authority": {
+    "direct_user_request": "可以，你自己决定，计划V0.9吧，然后我们需要逐渐放权，以及让反馈更加有效果，以及提高训练次数",
+    "this_turn": "Choose and save a usable research plan, not train.",
+    "normal_implementation_decisions": "Assistant decides within declared scientific and resource scope; no repeated procedural confirmation.",
+    "automation": "Do not restart or create",
+    "old_evidence": "Preserve V0.3-V0.8; no old native, fixture or checker reruns."
+  },
+  "hypothesis": "Conditional own-history use and uncertainty-triggered multi-step factual readout may improve learning efficiency in partially observed spatial pursuit under equal real interaction budgets.",
+  "interpretation": {
+    "unit": "Four complete learning systems, not isolated proof of attribution itself.",
+    "pure_feedback": "No externally supplied scalar reward/penalty training channel; supervised factual prediction plus explicit task-goal planning. Internal goal utility exists and overlaps conceptually with model-based RL.",
+    "autonomy": "Gradual access to retrieval and bounded lookahead; action selection and prediction are model driven. Retrieval metric, scheduler heuristic, external task goals and budgets remain designer specified.",
+    "uncertainties": [
+      "Factual model error and compounding multi-step error",
+      "Wrong downstream Q may remain",
+      "Punishment changes the training objective, not guaranteed same optimal policy",
+      "More difficult maps do not guarantee larger feedback benefits"
+    ]
+  },
+  "environment": {
+    "id": "LOCAL_SPATIAL_CHASE_V09",
+    "official_replica": false,
+    "map_size": [
+      64,
+      64
+    ],
+    "fov": [
+      21,
+      21
+    ],
+    "horizon": 256,
+    "training_map_seeds": [
+      90101,
+      90102,
+      90103,
+      90104,
+      90105,
+      90106,
+      90107,
+      90108
+    ],
+    "heldout_map_seeds": [
+      90109,
+      90110,
+      90111,
+      90112
+    ],
+    "generator": {
+      "junction_grid": [
+        9,
+        9
+      ],
+      "center": "4+7*j for j=0..8",
+      "road_width": 3,
+      "base": "Seeded random spanning tree",
+      "extra_unused_adjacency_probability": 0.25,
+      "boundary": "blocked",
+      "effect_based_rejection": false
+    },
+    "conditions": [
+      {
+        "id": "solo",
+        "monsters": 1,
+        "speed": 1
+      },
+      {
+        "id": "duo",
+        "monsters": 2,
+        "second_spawn_step": 96,
+        "second_spawn": "Actual hero position 10 steps earlier",
+        "speedup_step": 160,
+        "speed_after": 2
+      }
+    ],
+    "mix": "Every block of 16 episode starts covers all 8 train maps x 2 conditions; same initial-source order across arms. Mix does not change with autonomy stage.",
+    "hero_spawn": "Road excluding occupied treasure/buff positions",
+    "monster_spawn": "Road on first hero FOV boundary; if none, roads at Chebyshev distance >=8; one draw from fixed candidate list, not effect search",
+    "treasure_count": 10,
+    "buff_count": 2,
+    "buff_duration": 50,
+    "buff_respawn": 100,
+    "flash_cooldown": 32,
+    "flash_distance_cardinal": 10,
+    "flash_distance_diagonal": 8,
+    "actions": 16,
+    "move_mask": "0-7 always available, not equivalent to collision-free",
+    "flash_mask": "8-15 subject to cooldown",
+    "monster_policy": {
+      "shortest_path_move_probability": 0.9,
+      "random_legal_move_probability": 0.1,
+      "ties": "External coordinate random; no agent kernel query",
+      "no_route": "Stay"
+    },
+    "capture": "Chebyshev distance <=1",
+    "step_order": "Hero motion/path collection, capture check, monsters in ID order with per-substep capture checks, cooldown update and observation.",
+    "flash_capture": "Hero-stage capture at landing only; collect along traversed path; no legal landing still consumes cooldown.",
+    "termination": {
+      "captured": "game failure",
+      "survived_horizon": "completed",
+      "runtime_error": "protocol/engineering error, not game outcome",
+      "training_budget_cut": "administrative partial, not captured"
+    },
+    "external_score": {
+      "survival_step_weight": 1.5,
+      "treasure_weight": 100,
+      "normalizer": 1384,
+      "normalizer_is_attainable_optimum": false
+    },
+    "observation": "Own position, step/remaining time, 21x21 visible terrain/items, visible monster facts, outside-view relative direction/distance buckets, cooldown/speed and 16 legal actions",
+    "prohibited_inputs": [
+      "Full true map",
+      "Hidden absolute monster positions",
+      "Environment BFS/shortest-route oracle",
+      "Future random numbers",
+      "Other arms' history",
+      "Evaluation data",
+      "Hidden map ID/seed as retrieval keys"
+    ],
+    "atlas": "Episode-local, from actual observations only; reset each real/eval episode. Cross-episode reuse via own raw history and learned parameters."
+  },
+  "arms": [
+    {
+      "id": "RL-RP",
+      "name": "纯强化学习",
+      "learning": "Recurrent Double-DQN + real replay and common history interface",
+      "external_reward": true,
+      "capture_penalty": -1,
+      "fact_model": false,
+      "planner": false
+    },
+    {
+      "id": "F0",
+      "name": "纯反馈",
+      "learning": "Supervised factual model + task-goal readout",
+      "external_reward": false,
+      "Q_head": false,
+      "capture_penalty": null,
+      "fact_model": true,
+      "planner": true
+    },
+    {
+      "id": "F-RP",
+      "name": "反馈＋奖惩",
+      "learning": "Common recurrent Q + own factual model and planner readout",
+      "external_reward": true,
+      "capture_penalty": -1,
+      "fact_model": true,
+      "planner": true
+    },
+    {
+      "id": "F-R",
+      "name": "反馈＋仅奖励",
+      "learning": "Same as F-RP except capture penalty",
+      "external_reward": true,
+      "capture_penalty": 0,
+      "fact_model": true,
+      "planner": true
+    }
+  ],
+  "rewards": {
+    "positive": "0.015*new_survival_steps + new_treasures",
+    "RP_capture": -1,
+    "R_capture": 0,
+    "other_shaping": false,
+    "normal_horizon_bonus": 0,
+    "pure_feedback_reward_packet": false
+  },
+  "common_capabilities": {
+    "full_actions_from_step_zero": 16,
+    "history_capacity_transitions": 65536,
+    "working_memory_hidden_size": 64,
+    "all_learn_success_and_failure": true,
+    "extra_success_diagnosis": false,
+    "independent_model_initialization_pairs": "Q components matched across the three Q arms; factual components matched across three factual arms; shared spec, never shared mutable state",
+    "raw_history_access": "Same capacity/interface across all arms; each owns only its own real history; FIFO runtime eviction with original external capture preserved.",
+    "extra_environment_probes": 0,
+    "old_Qstar_or_checkpoint": false
+  },
+  "autonomy_stages": [
+    {
+      "id": "A",
+      "step_from_inclusive": 0,
+      "step_to_exclusive": 16384,
+      "permission": "Full physical action choice; ordinary learning; factual arms H=1",
+      "retrieval": false
+    },
+    {
+      "id": "B",
+      "step_from_inclusive": 16384,
+      "step_to_exclusive": 65536,
+      "permission": "Common conditional own-history retrieval; factual correction need not wait for Q tie",
+      "retrieval": true
+    },
+    {
+      "id": "C",
+      "step_from_inclusive": 65536,
+      "step_to_exclusive": 262144,
+      "permission": "Data-triggered optional H=1/4/8 lookahead in feedback arms",
+      "retrieval": true,
+      "maximum_deep_plans_per_8_real_steps": 1
+    }
+  ],
+  "learning": {
+    "backend": "Small recurrent Double-DQN for Q arms; own factual predictors for F0 and hybrids. New local CPU PyTorch runtime.",
+    "encoder_conv_channels": [
+      16,
+      32
+    ],
+    "projection_dim": 128,
+    "GRU_hidden_size": 64,
+    "Q_action_head": 16,
+    "Q_optimizer": "Adam",
+    "Q_learning_rate": 0.0003,
+    "gamma": 0.99,
+    "replay_capacity": 65536,
+    "warmup_real_steps": 2048,
+    "update_every_real_steps": 128,
+    "batch_sequences": 16,
+    "burn_in": 8,
+    "train_unroll": 16,
+    "target_sync_real_steps": 2048,
+    "factual_update_schedule": "Same real-step schedule and real-sequence batch size; three factual heads trained on self-owned observed targets, not hidden facts. Extra work counted.",
+    "supervised_targets": [
+      "Actual displacement",
+      "Observed relative monster motion",
+      "Treasure pickup",
+      "Capture",
+      "Observed future surviving steps and pickups for F0 tail facts"
+    ],
+    "missing_target_policy": "Mask unobserved monster truth and incomplete future tails; never zero-fill them as failures.",
+    "terminal_bootstrap": "No bootstrap beyond completed finite task horizon or capture; administrative cuts treated separately.",
+    "epsilon": {
+      "start": 1,
+      "end": 0.1,
+      "linear_decay_steps": 65536,
+      "thereafter": 0.1,
+      "evaluation": 0
+    },
+    "no_automatic_teacher_action": true,
+    "network_versions": "Pin actual dependency versions and source before first execution, not claimed installed now."
+  },
+  "feedback": {
+    "retrieval": {
+      "candidate_records": 128,
+      "returned_records_max": 8,
+      "distance": "Fixed observable-context distance; no evaluator labels or effect-selected records",
+      "learned_retrieval_policy_claim": false
+    },
+    "factual_heads": 3,
+    "uncertainty": "Empirical head disagreement and prequential own-outcome error; not a guaranteed calibrated confidence set",
+    "history_policy": "Keep contradictory success/failure observations; no global permanent action bans.",
+    "prequential": "Prediction emitted before actual outcome and before fitting that outcome.",
+    "lookahead_depths": [
+      1,
+      4,
+      8
+    ],
+    "candidate_sequences_max": 16,
+    "first_action_coverage": "Every currently legal command",
+    "suffixes": "Own current policy/prediction, no hardcoded route",
+    "maximum_logical_model_transitions_per_deep_decision": 128,
+    "head_evaluations_per_transition": 3,
+    "prefix_reuse": true,
+    "trigger": "Head argmax disagreement OR top-two score margin below median prequential cumulative-outcome prediction error in the same score units; <64 completed errors means uncertain. Never compare Brier probability error directly with Q margin.",
+    "unknown_terrain": "Stop simulated local branch with unknown marker and own tail estimate, without reading true map or banning real exploration.",
+    "readout_F0": "Task utility of predicted factual survival/pickups; no external scalar-reward loss.",
+    "readout_hybrid": "Predicted rewards for that arm plus tail Q estimate; no current-Q-tie prerequisite.",
+    "meta_policy_limit": "The stopping/retrieval rules are specified heuristics, not a learned general feedback-value allocator."
+  },
+  "matrix": {
+    "independent_training_seed_blocks": 64,
+    "seeds": {
+      "first": 9001,
+      "last": 9064,
+      "count": 64
+    },
+    "arms": 4,
+    "streams": 256,
+    "train_steps_per_stream": 262144,
+    "total_train_steps": 67108864,
+    "minimum_completed_train_episodes_per_stream": 1024,
+    "minimum_completed_train_episodes_total": 262144,
+    "actual_train_episode_count": "Outcome-dependent; report actual rather than asserting a fixed episode count.",
+    "checkpoints": [
+      0,
+      16384,
+      65536,
+      131072,
+      262144
+    ],
+    "early_checkpoints_eval_episodes": 128,
+    "final_eval_episodes": 1024,
+    "evaluation_split": "Half seen, half held-out; inside each split equal solo/duo and map weight.",
+    "evaluation_episodes_total": 393216,
+    "evaluation_steps_upper": 100663296,
+    "eval_common_sources_across_arms_and_checkpoints": true,
+    "eval_sources_independent_of_training": true
+  },
+  "ablations": {
+    "type": "Frozen execution, not retrained systems",
+    "arms": [
+      "F0",
+      "F-RP",
+      "F-R"
+    ],
+    "variants": [
+      "H1_only",
+      "no_cross_episode_history_retrieval"
+    ],
+    "training_seed_blocks": 64,
+    "episodes_per_model_variant": 128,
+    "evaluation_episodes_total": 49152,
+    "steps_upper": 12582912,
+    "source": "Balanced 128-episode subset of each model's final main bank; same coordinates across variants.",
+    "no_retrieval_limit": "Weights may still encode past experience; episode-local observation memory remains usable."
+  },
+  "evaluation": {
+    "freeze": [
+      "Network weights",
+      "Optimizer",
+      "Long-term fact model",
+      "Persistent own-history store"
+    ],
+    "allow_episode_local": [
+      "GRU state",
+      "Visible-terrain atlas",
+      "Current observation working state"
+    ],
+    "discard_after_each_eval": true,
+    "no_train_feedback": true,
+    "primary_condition": "seen train-map duo, macro-average fixed maps within seed",
+    "external_metric": "S/1384, no exact optimum claim",
+    "primary_auc": "Trapezoid over all fixed training-step checkpoints, divide by 262144",
+    "primary_pairs": [
+      [
+        "F-RP",
+        "RL-RP"
+      ],
+      [
+        "F0",
+        "RL-RP"
+      ],
+      [
+        "F-RP",
+        "F-R"
+      ]
+    ],
+    "secondary": [
+      "Early AUC through 65536 steps",
+      "Final score",
+      "Survival steps",
+      "Treasures",
+      "Capture rate",
+      "Held-out maps",
+      "Module-use and miscorrection records",
+      "Compute and memory cost"
+    ],
+    "target": {
+      "mean_survival_at_least": 192,
+      "mean_treasures_at_least": 3,
+      "label": "Auxiliary first observed crossing, interval-uncertain labels and later regressions retained"
+    },
+    "inference_unit": "64 paired independent training seeds; episodes/maps are nested, not independent training replicates",
+    "paired_bootstrap_resamples": 10000,
+    "summary_statistics": [
+      "mean",
+      "IQM",
+      "median",
+      "positive/zero/negative seeds"
+    ],
+    "family_claim": "Descriptive paired intervals, no full-family PASS or equivalence from non-significance",
+    "no_outcome_driven_extension": true,
+    "no_cross_stage_raw_score_subtraction": true
+  },
+  "randomness": {
+    "namespace": "V09",
+    "engines": "Local Python/NumPy/PyTorch, versions pinned on implementation",
+    "phases": [
+      "map",
+      "train_environment",
+      "train_exploration",
+      "network_initialization",
+      "real_replay",
+      "model_candidates",
+      "frozen_evaluation",
+      "analysis_bootstrap"
+    ],
+    "pairing": "Environment coordinate does not contain arm; keyed by scenario episode/step/entity/substep. Arm-dependent second-monster position is a causal consequence, not a forced shared absolute state.",
+    "legacy_science_keys": false,
+    "actual_this_turn_draws_for_experiments": 0
+  },
+  "engineering": {
+    "new_wiring_steps_upper": 8192,
+    "profile_seed_ids": [
+      91001,
+      91002,
+      91003,
+      91004
+    ],
+    "profile_arms": 4,
+    "profile_train_steps_per_stream": 4096,
+    "profile_train_steps_total": 65536,
+    "profile_eval_episodes_per_stream": 8,
+    "profile_eval_episodes_total": 128,
+    "profile_eval_steps_upper": 32768,
+    "scope": "Throughput/interfaces/recording only; no effect-based choice of maps, seeds, reward or algorithm parameters."
+  },
+  "budget": {
+    "main_research_environment_steps_upper": 180355072,
+    "all_environment_steps_upper": 180461568,
+    "native_cumulative_wall_seconds_max": 86400,
+    "aggregate_RAM_gib_max": 20,
+    "new_compressed_capture_gib_max": 25,
+    "max_parallel_seed_units": 12,
+    "numeric_threads_per_unit": 1,
+    "observed_machine": {
+      "CPU": "Intel Core Ultra 9 185H",
+      "physical_cores": 16,
+      "logical_processors": 22,
+      "RAM_gib": 31.61,
+      "display_GPU": "Intel Arc; no usable CUDA device confirmed",
+      "checked_runtime_numpy": true,
+      "checked_runtime_torch": false
+    },
+    "dependency_policy": "Use isolated new local environment, official CPU PyTorch packages; no modification of old runtime. No package installed this turn.",
+    "paid_compute": false,
+    "platform_jobs": false,
+    "automatic_continuation": false,
+    "resource_action": "Profile before main matrix; optimize mathematically equivalent batching/capture. If still over budget, report concrete cost/partial honestly; do not silently shrink N or extend to positive findings.",
+    "capture": "Compact real step actions/events/random coordinates plus complete checkpoints and learning/update references; no full model/map duplication each step.",
+    "failure_resume": "Keep failed/partial capture; version repairs. Resume only unexecuted suffix with complete saved state. Do not silently replay executed prefix."
+  },
+  "completion": "Four paths actually learn and are measured under stated scope, report efficiency, costs and limitations; positive, zero or negative results accepted. No requirement to dominate all maps or show general taste.",
+  "next_implementation": "Local environment and shared observable/history interface, then four real learning paths and finite engineering profile, then fixed main matrix.",
+  "actual_this_turn": {
+    "environment_rollouts": 0,
+    "training_steps": 0,
+    "evaluation_episodes": 0,
+    "old_runner_fixture_checker_calls": 0,
+    "dependency_installs": 0,
+    "platform_jobs": 0,
+    "automation_changes": 0
+  },
+  "references": [
+    {
+      "title": "Project-local V0.8 result interpretation",
+      "path": "experiments/v08r/harder_decisions_v176/result_interpretation.md"
+    },
+    {
+      "title": "Tencent environment review",
+      "path": "experiments/environment_references/tencent_gorge_chase_15_0_1/README.md"
+    },
+    {
+      "title": "DRQN",
+      "url": "https://arxiv.org/abs/1507.06527"
+    },
+    {
+      "title": "Double DQN",
+      "url": "https://arxiv.org/abs/1509.06461"
+    },
+    {
+      "title": "PETS",
+      "url": "https://arxiv.org/abs/1805.12114"
+    },
+    {
+      "title": "Statistical Precipice",
+      "url": "https://proceedings.neurips.cc/paper_files/paper/2021/hash/f514cec81cb148559cf475e7426eed5e-Abstract.html"
+    }
+  ]
+}

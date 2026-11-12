@@ -1,0 +1,86 @@
+{
+  "version": "V202.0 analytic weight-programmed transition feedback",
+  "created_utc": "2026-11-09T15:59:00.937727+00:00",
+  "authority": "User: continue improving weight-space programming; no game adaptation; no gradient parameter updates.",
+  "construction": "New separately written analytic initial weights; V200 unchanged. No pretrained or environment-trained weights. Freeze all parameters during checks and actual episodes.",
+  "families": [
+    "delayed_choice",
+    "joint_sequence",
+    "stochastic_reversal"
+  ],
+  "variants": [
+    "v202_full",
+    "v202_no_gate",
+    "v202_no_successor",
+    "v200_original"
+  ],
+  "seeds": [
+    202001,
+    202002,
+    202003,
+    202004,
+    202005,
+    202006,
+    202007,
+    202008
+  ],
+  "cycles": 16,
+  "per_cycle": {
+    "discovery": 4,
+    "candidate_actual_trials": 8,
+    "incumbent_actual_trials": 8,
+    "heldout_evaluation": 4
+  },
+  "old_source": "experiments/v09r/weight_programmed_feedback_v200/model.py",
+  "old_checkpoint": "experiments/v09r/weight_programmed_feedback_v200/evidence/initial_written.pt",
+  "generic_interface": {
+    "context_dim": 6,
+    "action_dim": 6,
+    "fact_dim": 3,
+    "memory_capacity": 384,
+    "public_goal": [
+      1,
+      0,
+      0
+    ],
+    "actions": 2,
+    "description": "Normalized numerical observations, stable candidate descriptors, actual successors, terminal flag, factual outcomes and known masks. No task identity or hidden table passed to model."
+  },
+  "fixed_program": {
+    "kernel_beta": 20,
+    "record_age_penalty": 0.002,
+    "range_normalization": true,
+    "planning_depth": 6,
+    "value_moments": "first and joint second moments",
+    "prior": "independent Uniform[0,1] outcome prior of mass one",
+    "exploration": "0.5 epistemic proxy + 0.1 unsupported mass, plus 0.1 epsilon during discovery only",
+    "actual_trial_gate": "n >= 8 and paired actual mean difference - 2 * sample standard error > 0; finite engineering heuristic, NOT a calibrated 95% CI"
+  },
+  "chronology": "Real discovery -> freeze candidate/incumbent -> real paired trials -> adoption verdict from actual outcomes only -> add completed trials to future working memory -> heldout evaluation not remembered. No imagined outcome becomes a memory fact.",
+  "costs": "All four controls receive identical actual discovery/trial/evaluation episode budgets and fixed episode lengths. No-gate still pays all trials. No-successor uses the same V202 weights. V200 is original untrained weight-programmed baseline, not a trained pure-RL baseline.",
+  "evaluation": "Report all eight seeds, first/last four cycles, whole 64 heldout evaluation episodes per run, post-reversal early window, adoption counts, exact interactions. Equal exogenous tapes for paired policies and controls; different trajectories remain actual execution.",
+  "budget": {
+    "wall_seconds": 900,
+    "cpu_workers": 4,
+    "intraop_threads_per_worker": 1,
+    "max_episodes": 36864,
+    "max_transitions": 184320,
+    "per_seed_max_transitions": 23040,
+    "GPU": false,
+    "cloud": false,
+    "optimizer_updates": 0,
+    "game_calls": 0
+  },
+  "checks": "12 synthetic algebra/interface checks, counted separately from actual task episodes; no result-dependent rewriting.",
+  "claim_limits": [
+    "finite fully observed numerical tasks only",
+    "no general semantic encoder or arbitrary-feature relevance learning",
+    "observed-successor planning is not proof of causality",
+    "sample mass proxy is not independent sample size",
+    "no SLEEP or parameter consolidation",
+    "no trained-baseline superiority claim",
+    "not the historical four reward/penalty training groups"
+  ],
+  "preservation": "Exclusive new namespace/evidence; first failure or partial preserved; no automatic retry; no edits of executed source bytes; no old test fixture or result matrix rerun. New runtime use of unchanged V200 model on new tasks is declared.",
+  "adoption": "Standalone candidate checkpoint only; not installed into prior game models and no automation."
+}

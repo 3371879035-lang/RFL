@@ -1,0 +1,67 @@
+{
+  "schema": "external-runtime-observation-v1",
+  "status": "INTERRUPTED_DURING_FORMAL_SMOKE_NO_NATIVE_RECEIPT",
+  "receipt_origin": "EXTERNAL_OBSERVER_NOT_PIPELINE_CONTROLLER",
+  "observed_at": "2026-10-08T01:05:03.8793213+08:00",
+  "last_observed_alive_at": "2026-10-08T00:38:20.7616631+08:00",
+  "first_observed_absent_at": "2026-10-08T01:03:48.6381031+08:00",
+  "exact_termination_time": null,
+  "termination_cause": "UNKNOWN",
+  "native_exit_code": null,
+  "controller": {
+    "pid": 28780,
+    "start_utc_ticks": 639269518257297947,
+    "present_in_repeated_live_process_snapshots": false
+  },
+  "formal_smoke": {
+    "pid": 39064,
+    "started_at": "2026-10-07T23:18:26.6232081+08:00",
+    "present_in_repeated_live_process_snapshots": false,
+    "seed_reservation": [0, 1, 2, 3, 4],
+    "reservation_sha256": "ac6b1961ff167b98c2b18a64f9354db72ff59fe3f7ed1e840dd70fd0fd490daf",
+    "report_present": false,
+    "native_completion_receipt_present": false,
+    "gate_state": "NOT_EVALUABLE_INCOMPLETE",
+    "per_seed_progress_unknown": true,
+    "reserved_seeds_must_not_be_reused": true
+  },
+  "completed_preconditions": {
+    "benchmark_native_exit_code": 0,
+    "runtime_all_shards_verified": true,
+    "verified_engineering_baseline_runs": 32,
+    "verified_engineering_baseline_records": 18464,
+    "f0_manifest_status": "VALID",
+    "f0_manifest_commit": "47ef9ae2ebed4e8601e823fb75a1b91436b8e717",
+    "f0_manifest_sha256": "5ee58e923778cef74d7ef988a3442431ab06539ceae7e6fa36a42e72c9565a8b"
+  },
+  "source_integrity": {
+    "source_count": 292,
+    "sources_digest": "be88fc35d70ced51b8cda0a32e9b969eb11a473e22f0a5c70886f182ac01a3ea",
+    "matches_launch_inventory": true,
+    "matches_current_committed_sources": true,
+    "controller_matches_launch_hash": true
+  },
+  "diagnostics": {
+    "windows_last_boot_at": "2026-10-06T13:51:14.5+08:00",
+    "matching_python_application_fault_events_in_checked_interval": 0,
+    "pipeline_stderr_empty": true,
+    "smoke_stderr_empty": true,
+    "diagnostic_absence_does_not_establish_termination_cause": true
+  },
+  "preserved_log_sha256": {
+    "pipeline.stdout.log": "5151228376fac57eccfdd63995ecfb701a1982b5e66ef84406106b1693f11e6c",
+    "pipeline.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "smoke.stdout.log": "2f97cf47e51a65697f8b53c611a91d58e244920aea40f90ed597b733a35ae737",
+    "smoke.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "development_started": false,
+  "f1_locked": false,
+  "treatment_curves_run": false,
+  "confirmatory_run": false,
+  "scientific_result": "NO_RESULT_FROM_INCOMPLETE_SMOKE",
+  "scientific_superiority_claimed": false,
+  "valid_no_admissible_protocol_stop": false,
+  "research_complete": false,
+  "no_automatic_retry": true,
+  "next_action": "Preserve existing evidence and seed reservation. A prospective interruption-restart preregistration and authorization decision are required before any new formal collection. Do not remove or overwrite the spent reservation, edit frozen sources, or fabricate a native completion receipt."
+}

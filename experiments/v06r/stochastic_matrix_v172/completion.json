@@ -1,0 +1,76 @@
+{
+  "status": "COMPLETE_CONDITIONAL_LOCAL_STOCHASTIC_FEEDBACK_STUDY",
+  "authority": "可以，按照这个方案开始实验，继续完成V0.6。",
+  "approved_plan": "experiments/v06r/plan_v171.json",
+  "actual": {
+    "matrix_streams": 80,
+    "matrix_train": 5120,
+    "matrix_eval": 6600,
+    "wiring_train": 10,
+    "wiring_eval": 10,
+    "combined_rollouts": 11740,
+    "combined_steps": 27203,
+    "all_80_streams_have_64_train_and_5_banks": true,
+    "observations_consumed_once": 5130,
+    "eval_observations_not_learned_or_replayed": 6610,
+    "native_local_PRNG_calls": 5376,
+    "review_PRNG_reconstruction_calls": 5376
+  },
+  "first_receipts": {
+    "wiring": {
+      "native_exit": 0,
+      "stored_audit_exit": 0
+    },
+    "matrix": {
+      "native_exit": 0,
+      "stored_audit_exit": 0
+    }
+  },
+  "first_analysis_exit": 0,
+  "requirements": {
+    "all_five_paths_genuinely_use_declared_signals": true,
+    "same_fixed_action_and_no_edit_permissions": true,
+    "legitimate_conflicting_results_retained": true,
+    "full_frozen_eval_no_training_contamination": true,
+    "paired_CRN_four_engineering_seeds_not_episode_N": true,
+    "all_zero_adverse_null_regressions_and_costs_retained": true,
+    "original_threshold_unchanged_unattainable_bank_flag_only": true,
+    "no_result_chasing_or_automatic_retry": true
+  },
+  "summary": {
+    "deterministic_F0_equals_RL_RP_training_raw_traces": 512,
+    "noisy_F0_vs_RL_RP_successes": [
+      318,
+      315
+    ],
+    "noisy_F0_vs_RL_RP_final_frozen_successes": [
+      184,
+      184
+    ],
+    "noisy_F0_vs_RL_RP_AUC_seed_deltas": [
+      0.0,
+      0.0,
+      0.0,
+      0.0859375
+    ],
+    "F_R_equals_RL_R_training_raw_traces_across_both_conditions": 1024,
+    "targets_reached": 61,
+    "targets_not_reached": 19,
+    "unattainable_shared_bank_mapped_stream_flags": 5
+  },
+  "boundaries": [
+    "small stationary synthetic environment",
+    "four paired engineering seed blocks",
+    "handwritten algorithms and priors",
+    "F0 versus hybrid is whole-method contrast",
+    "not a general taste or transfer result"
+  ],
+  "old_runtime_fixture_checker_or_formal_collection_runs": 0,
+  "automation_changes": 0,
+  "source_binding": {
+    "path": "experiments/v06r/stochastic_matrix_v172/source_binding.json",
+    "bytes": 6633,
+    "sha256": "edf66239803ebe8b23f9fc8ffc71bf5f4f874fb4f0c119558a6dfcc71dd2afcd"
+  },
+  "qualification": false
+}

@@ -1,0 +1,84 @@
+{
+  "seed": 93003,
+  "group": "RL-outer",
+  "arm": "RL-RP",
+  "block": 3,
+  "stage": "block003",
+  "status": "COMPLETE",
+  "started_utc": "2026-11-08T17:26:43.493244+00:00",
+  "input_hash": "7bb358ea51a2775f0234403f6f944a815f35ee8ad8844004224398eb6519303f",
+  "initial_parameter_hash": "8eb91253dbe7e4d403759a3b71eac0423a6fbda468ad22d040502df690554d69",
+  "outer": {
+    "cases": {
+      "cases": 0,
+      "preferences": 0,
+      "history_queries": 0,
+      "history_suggestions": 0,
+      "historical_cases_retained": 4
+    },
+    "reference_fit": {
+      "role": "ordinary",
+      "updates": 32,
+      "parent_hash": "a6cbbc7221fba995d0bfe86def4eaa109f3dcdfe2d5d4d2e0988aa1a9b5142d6",
+      "child_hash": "21261c9d1c3e2c0650a065773463f0bd886effb9013264de528ed2c8a6130265",
+      "margins_before": [],
+      "margins_after": []
+    },
+    "reference_probe": null,
+    "dream": {
+      "available_trees": 1,
+      "replay_improvement": {
+        "weak": 104.25,
+        "strong": 0.0
+      },
+      "prior": "weak",
+      "selected": "weak",
+      "budget": "one recorded candidate per parent",
+      "no_unseen_children": true,
+      "skipped_reason": "No qualifying failure; continue ordinary learning, no diagnostic teacher or Sleep."
+    },
+    "teachers": {},
+    "teacher_selected": null,
+    "sleep": null,
+    "matched_reference": null,
+    "reference_gate": null,
+    "student_gate": null,
+    "two_block_gains": [],
+    "adopted": false,
+    "parent_hash": "a6cbbc7221fba995d0bfe86def4eaa109f3dcdfe2d5d4d2e0988aa1a9b5142d6",
+    "deployed_hash": "21261c9d1c3e2c0650a065773463f0bd886effb9013264de528ed2c8a6130265"
+  },
+  "report": null,
+  "parameter_hash": "8cea26ee5c1d2400ab2e4afb766c316f3196f773122364899d4f71d4406dc0d0",
+  "ordinary_training_steps_total": 331800,
+  "charged_environment_total": 393216,
+  "optimizer_total": 3072,
+  "replay_records": 479256,
+  "checkpoint": "D:\\强化反馈学习\\RFL-CausalChase-v0.3-dense-20261009\\experiments\\v09r\\overnight_five_arm_v198\\evidence_long\\seed93003\\RL-outer\\block003\\checkpoint.pt.gz",
+  "checkpoint_sha256": "056187f757bdf17c1f2a58f085be1e42fb2c9668ee4092996bdd569aa3f9d37c",
+  "environment_steps": 131072,
+  "charged_environment_steps": 131072,
+  "step_counts": {
+    "ordinary": 130271,
+    "source": 801
+  },
+  "complete_rollout_segments": 1165,
+  "rollout_segments": 1166,
+  "partial_segments": 1,
+  "optimizer_roles": {
+    "ordinary_online": 992,
+    "ordinary": 32
+  },
+  "mechanism_events": {
+    "optimizer": 1024,
+    "episode": 1165,
+    "fit": 1,
+    "dream": 1,
+    "adopt": 1,
+    "ordinary_partial": 1
+  },
+  "optimizer_updates": 1024,
+  "wall_seconds": 192.201859599998,
+  "cpu_seconds": 189.125,
+  "finished_utc": "2026-11-08T17:29:55.692458+00:00"
+}

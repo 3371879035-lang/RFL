@@ -1,0 +1,27 @@
+{
+  "cause": "Pythonbuiltin_sum differs from native chronological binary64 +=. All actual firstcase ordered sums match; original checker failure preserved.",
+  "checks": [
+    {
+      "field": "model_mse",
+      "builtin_sum_hex": "0x1.3f8ddbdd83000p+3",
+      "ordered_hex": "0x1.3f8ddbdd83000p+3",
+      "native_hex": "0x1.3f8ddbdd83000p+3",
+      "ordered_matches": true
+    },
+    {
+      "field": "identity_mse",
+      "builtin_sum_hex": "0x1.667ed8ee8fe50p+3",
+      "ordered_hex": "0x1.667ed8ee8fe50p+3",
+      "native_hex": "0x1.667ed8ee8fe50p+3",
+      "ordered_matches": true
+    },
+    {
+      "field": "own_Q_successor_MAE",
+      "builtin_sum_hex": "0x1.73a2a36580000p+7",
+      "ordered_hex": "0x1.73a2a36580000p+7",
+      "native_hex": "0x1.73a2a36580000p+7",
+      "ordered_matches": true
+    }
+  ],
+  "new_native_calls": 0
+}

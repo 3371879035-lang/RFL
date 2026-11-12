@@ -1,0 +1,438 @@
+{
+  "all_ordinary_TD_full_R_L_updates_verified": 164,
+  "candidate_branches": 42,
+  "complete": true,
+  "declared_input_pins": 327,
+  "descriptive_fixed_case_aggregates": [
+    {
+      "arms": {
+        "AlwaysClear": {
+          "descriptive_mean_future_return_over_four_fixed_cases": 0.64,
+          "future_successes": 7,
+          "future_tasks": 8,
+          "online_diagnostic_address_edits": 15,
+          "online_diagnostic_transactions": 3
+        },
+        "LearnedAddress": {
+          "descriptive_mean_future_return_over_four_fixed_cases": 0.875,
+          "future_successes": 8,
+          "future_tasks": 8,
+          "online_diagnostic_address_edits": 2,
+          "online_diagnostic_transactions": 2
+        },
+        "TaskTD": {
+          "descriptive_mean_future_return_over_four_fixed_cases": 0.105,
+          "future_successes": 5,
+          "future_tasks": 8,
+          "online_diagnostic_address_edits": 0,
+          "online_diagnostic_transactions": 0
+        }
+      },
+      "mode": "dq"
+    },
+    {
+      "arms": {
+        "AlwaysClear": {
+          "descriptive_mean_future_return_over_four_fixed_cases": 0.875,
+          "future_successes": 8,
+          "future_tasks": 8,
+          "online_diagnostic_address_edits": 15,
+          "online_diagnostic_transactions": 3
+        },
+        "LearnedAddress": {
+          "descriptive_mean_future_return_over_four_fixed_cases": 0.875,
+          "future_successes": 8,
+          "future_tasks": 8,
+          "online_diagnostic_address_edits": 0,
+          "online_diagnostic_transactions": 0
+        },
+        "TaskTD": {
+          "descriptive_mean_future_return_over_four_fixed_cases": 0.875,
+          "future_successes": 8,
+          "future_tasks": 8,
+          "online_diagnostic_address_edits": 0,
+          "online_diagnostic_transactions": 0
+        }
+      },
+      "mode": "patch-adaptive"
+    }
+  ],
+  "development_candidate_address_edits": 60,
+  "development_probe_rollouts": 84,
+  "frozen_before_held_out": true,
+  "helper_source_transport_count": 7,
+  "native_counts": {
+    "rollout": 164,
+    "step": 1080,
+    "transaction": 262
+  },
+  "native_first_exit": 0,
+  "no_held_out_model_updates": true,
+  "notes": "Same simple four-mechanism family reused to isolate address granularity, not independent replication/seeds/population inference; temporal-position value learning, not causal posterior.",
+  "old_checker_RFL_or_native_reruns": 0,
+  "online_diagnostic_address_edits": 32,
+  "paired_cases": [
+    {
+      "LearnedAddress_minus_AlwaysClear": 0.0,
+      "LearnedAddress_minus_TaskTD": 0.96,
+      "case": "collision",
+      "means": {
+        "AlwaysClear": 0.88,
+        "LearnedAddress": 0.88,
+        "TaskTD": -0.08000000000000002
+      },
+      "mode": "dq"
+    },
+    {
+      "LearnedAddress_minus_AlwaysClear": 0.0,
+      "LearnedAddress_minus_TaskTD": 2.12,
+      "case": "timeout",
+      "means": {
+        "AlwaysClear": 0.88,
+        "LearnedAddress": 0.88,
+        "TaskTD": -1.24
+      },
+      "mode": "dq"
+    },
+    {
+      "LearnedAddress_minus_AlwaysClear": 0.94,
+      "LearnedAddress_minus_TaskTD": 0.0,
+      "case": "external_trap",
+      "means": {
+        "AlwaysClear": -0.08000000000000002,
+        "LearnedAddress": 0.86,
+        "TaskTD": 0.86
+      },
+      "mode": "dq"
+    },
+    {
+      "LearnedAddress_minus_AlwaysClear": 0.0,
+      "LearnedAddress_minus_TaskTD": 0.0,
+      "case": "success",
+      "means": {
+        "AlwaysClear": 0.88,
+        "LearnedAddress": 0.88,
+        "TaskTD": 0.88
+      },
+      "mode": "dq"
+    },
+    {
+      "LearnedAddress_minus_AlwaysClear": 0.0,
+      "LearnedAddress_minus_TaskTD": 0.0,
+      "case": "collision",
+      "means": {
+        "AlwaysClear": 0.88,
+        "LearnedAddress": 0.88,
+        "TaskTD": 0.88
+      },
+      "mode": "patch-adaptive"
+    },
+    {
+      "LearnedAddress_minus_AlwaysClear": 0.0,
+      "LearnedAddress_minus_TaskTD": 0.0,
+      "case": "timeout",
+      "means": {
+        "AlwaysClear": 0.88,
+        "LearnedAddress": 0.88,
+        "TaskTD": 0.88
+      },
+      "mode": "patch-adaptive"
+    },
+    {
+      "LearnedAddress_minus_AlwaysClear": 0.0,
+      "LearnedAddress_minus_TaskTD": 0.0,
+      "case": "external_trap",
+      "means": {
+        "AlwaysClear": 0.86,
+        "LearnedAddress": 0.86,
+        "TaskTD": 0.86
+      },
+      "mode": "patch-adaptive"
+    },
+    {
+      "LearnedAddress_minus_AlwaysClear": 0.0,
+      "LearnedAddress_minus_TaskTD": 0.0,
+      "case": "success",
+      "means": {
+        "AlwaysClear": 0.88,
+        "LearnedAddress": 0.88,
+        "TaskTD": 0.88
+      },
+      "mode": "patch-adaptive"
+    }
+  ],
+  "raw_file": {
+    "bytes": 4573915,
+    "sha256": "ba5c88e8cb6af41943e9810581b164ba7b49bb4fa2dfc5719fde259ed7a36c2c"
+  },
+  "records": 976,
+  "schema": "V119_NEW_STDLIB_STORED_LEARNED_SELECTION_REVIEW",
+  "scientific_qualification": false,
+  "selected_candidates": [
+    {
+      "address_edits": 0,
+      "arm": "TaskTD",
+      "candidate": null,
+      "case": "collision",
+      "future_returns": [
+        -1.04,
+        0.88
+      ],
+      "mode": "dq"
+    },
+    {
+      "address_edits": 2,
+      "arm": "AlwaysClear",
+      "candidate": "clear_factual",
+      "case": "collision",
+      "future_returns": [
+        0.88,
+        0.88
+      ],
+      "mode": "dq"
+    },
+    {
+      "address_edits": 1,
+      "arm": "LearnedAddress",
+      "candidate": "single:1",
+      "case": "collision",
+      "future_returns": [
+        0.88,
+        0.88
+      ],
+      "mode": "dq"
+    },
+    {
+      "address_edits": 0,
+      "arm": "TaskTD",
+      "candidate": null,
+      "case": "timeout",
+      "future_returns": [
+        -1.24,
+        -1.24
+      ],
+      "mode": "dq"
+    },
+    {
+      "address_edits": 12,
+      "arm": "AlwaysClear",
+      "candidate": "clear_factual",
+      "case": "timeout",
+      "future_returns": [
+        0.88,
+        0.88
+      ],
+      "mode": "dq"
+    },
+    {
+      "address_edits": 1,
+      "arm": "LearnedAddress",
+      "candidate": "single:0",
+      "case": "timeout",
+      "future_returns": [
+        0.88,
+        0.88
+      ],
+      "mode": "dq"
+    },
+    {
+      "address_edits": 0,
+      "arm": "TaskTD",
+      "candidate": null,
+      "case": "external_trap",
+      "future_returns": [
+        0.86,
+        0.86
+      ],
+      "mode": "dq"
+    },
+    {
+      "address_edits": 1,
+      "arm": "AlwaysClear",
+      "candidate": "clear_factual",
+      "case": "external_trap",
+      "future_returns": [
+        -1.02,
+        0.86
+      ],
+      "mode": "dq"
+    },
+    {
+      "address_edits": 0,
+      "arm": "LearnedAddress",
+      "candidate": "keep",
+      "case": "external_trap",
+      "future_returns": [
+        0.86,
+        0.86
+      ],
+      "mode": "dq"
+    },
+    {
+      "address_edits": 0,
+      "arm": "TaskTD",
+      "candidate": null,
+      "case": "success",
+      "future_returns": [
+        0.88,
+        0.88
+      ],
+      "mode": "dq"
+    },
+    {
+      "address_edits": 0,
+      "arm": "AlwaysClear",
+      "candidate": null,
+      "case": "success",
+      "future_returns": [
+        0.88,
+        0.88
+      ],
+      "mode": "dq"
+    },
+    {
+      "address_edits": 0,
+      "arm": "LearnedAddress",
+      "candidate": null,
+      "case": "success",
+      "future_returns": [
+        0.88,
+        0.88
+      ],
+      "mode": "dq"
+    },
+    {
+      "address_edits": 0,
+      "arm": "TaskTD",
+      "candidate": null,
+      "case": "collision",
+      "future_returns": [
+        0.88,
+        0.88
+      ],
+      "mode": "patch-adaptive"
+    },
+    {
+      "address_edits": 2,
+      "arm": "AlwaysClear",
+      "candidate": "clear_factual",
+      "case": "collision",
+      "future_returns": [
+        0.88,
+        0.88
+      ],
+      "mode": "patch-adaptive"
+    },
+    {
+      "address_edits": 0,
+      "arm": "LearnedAddress",
+      "candidate": "keep",
+      "case": "collision",
+      "future_returns": [
+        0.88,
+        0.88
+      ],
+      "mode": "patch-adaptive"
+    },
+    {
+      "address_edits": 0,
+      "arm": "TaskTD",
+      "candidate": null,
+      "case": "timeout",
+      "future_returns": [
+        0.88,
+        0.88
+      ],
+      "mode": "patch-adaptive"
+    },
+    {
+      "address_edits": 12,
+      "arm": "AlwaysClear",
+      "candidate": "clear_factual",
+      "case": "timeout",
+      "future_returns": [
+        0.88,
+        0.88
+      ],
+      "mode": "patch-adaptive"
+    },
+    {
+      "address_edits": 0,
+      "arm": "LearnedAddress",
+      "candidate": "keep",
+      "case": "timeout",
+      "future_returns": [
+        0.88,
+        0.88
+      ],
+      "mode": "patch-adaptive"
+    },
+    {
+      "address_edits": 0,
+      "arm": "TaskTD",
+      "candidate": null,
+      "case": "external_trap",
+      "future_returns": [
+        0.86,
+        0.86
+      ],
+      "mode": "patch-adaptive"
+    },
+    {
+      "address_edits": 1,
+      "arm": "AlwaysClear",
+      "candidate": "clear_factual",
+      "case": "external_trap",
+      "future_returns": [
+        0.86,
+        0.86
+      ],
+      "mode": "patch-adaptive"
+    },
+    {
+      "address_edits": 0,
+      "arm": "LearnedAddress",
+      "candidate": "keep",
+      "case": "external_trap",
+      "future_returns": [
+        0.86,
+        0.86
+      ],
+      "mode": "patch-adaptive"
+    },
+    {
+      "address_edits": 0,
+      "arm": "TaskTD",
+      "candidate": null,
+      "case": "success",
+      "future_returns": [
+        0.88,
+        0.88
+      ],
+      "mode": "patch-adaptive"
+    },
+    {
+      "address_edits": 0,
+      "arm": "AlwaysClear",
+      "candidate": null,
+      "case": "success",
+      "future_returns": [
+        0.88,
+        0.88
+      ],
+      "mode": "patch-adaptive"
+    },
+    {
+      "address_edits": 0,
+      "arm": "LearnedAddress",
+      "candidate": null,
+      "case": "success",
+      "future_returns": [
+        0.88,
+        0.88
+      ],
+      "mode": "patch-adaptive"
+    }
+  ],
+  "training_samples": 42
+}

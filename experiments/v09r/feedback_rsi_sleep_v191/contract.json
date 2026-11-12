@@ -1,0 +1,74 @@
+{
+  "version": "V191 feedback-directed replay policy search and parametric sleep",
+  "authority": "Latest direct user: put DreamRSI and Sleep into the learner loop; preserve four groups; one small pilot.",
+  "created_utc": "2026-11-08T12:31:56.003718+00:00",
+  "parent_git": "052dd39212eb311c9253721fc9b1b3f722922f3f",
+  "matrix": {
+    "seeds": [
+      93001,
+      93002,
+      93003,
+      93004
+    ],
+    "arms": [
+      "RL-RP",
+      "F0",
+      "F-RP",
+      "F-R"
+    ],
+    "variants": [
+      "matched_replay",
+      "adaptive_sleep"
+    ],
+    "cycles": 3,
+    "wake_steps_per_cycle": 4096,
+    "initial_training_steps": 147456
+  },
+  "mechanism": {
+    "new_action_override_rules": 0,
+    "initial_source": "Each genuine V190 base checkpoint; old condition memory retained for provenance but never read by action selection.",
+    "dream_inspiration": "Learn a 3-parameter rehearsal-allocation policy. Actual temporary learner branches on observed history produce probe-loss feedback. Reuse all recorded branch outcomes to propose the next policy, retain the selected policy, then deploy its parameter update in actual new tasks. Not an original coding-agent Dream-RSI reproduction or an invented counterfactual world simulator.",
+    "sampling_features": [
+      "current own supervised or TD error",
+      "recency",
+      "action rarity"
+    ],
+    "policy_proposals": 4,
+    "gradient_steps_per_proposal": 4,
+    "sleep_student_steps": 8,
+    "control_extra_direct_replay_steps": 24,
+    "sleep": "Fast teacher selected using training-history probe feedback; student starts from pre-sleep parameters and learns real labels plus 0.5 masked teacher distillation on actually observed actions. Teacher predictions are soft targets, not fabricated observations. No MoE or architecture growth.",
+    "ordinary_learning": "Original 1 update per 128 actual steps remains active for all groups.",
+    "probe": "64 real recorded windows, disjoint by absolute-record block from sleep fitting windows. Used as meta-training feedback, not evaluation. Q probe targets fixed at round entry; factual labels fixed actual outcomes. No final evaluation feedback.",
+    "F0": "No external scalar reward packets, no Q head or Q updates; factual prediction error controls rehearsal and factual teacher outputs are distilled. Existing public goal readout unchanged.",
+    "RL": "Only its original reward/Q objective supplies replay/sleep feedback, no factual auxiliary head or movement rule. Both variants remain RL algorithms.",
+    "retention": "Old real replay included; fixed seen-map versus heldout-map evaluation reported, not a full continual-task forgetting benchmark."
+  },
+  "evaluation": {
+    "new_episode_start": 1024,
+    "initial_episodes": 128,
+    "intermediate_episodes": 64,
+    "final_episodes": 256,
+    "pre_last_sleep_episodes": 64,
+    "initial_bank": "One actual bank per seed/arm, exact parameter/action equality shared by both variants. No old evaluation bank rerun.",
+    "frozen": "No network, replay, curator, persistent memory or reward updates in evaluation."
+  },
+  "budget": {
+    "workers": 4,
+    "train_steps": 393216,
+    "ordinary_optimizer_updates": 3072,
+    "extra_optimizer_updates": 2304,
+    "new_eval_episodes": 16384,
+    "max_eval_steps": 4194304,
+    "wall_seconds": 2400,
+    "ram_bytes": 17179869184,
+    "artifact_bytes": 4294967296
+  },
+  "interpretation": [
+    "Same additional interaction and total gradient-update count; candidate/probe forward compute and wall-time measured, not claimed equal.",
+    "A combined-method pilot, not separate causal proof of Dream and Sleep.",
+    "Four existing development seeds, not independent new-from-scratch training.",
+    "Positive, zero, negative accepted; no outcome-based input changes or automatic retry.",
+    "Original completed and failed sources remain unchanged; old 64-seed job and automation remain off."
+  ]
+}

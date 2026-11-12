@@ -1,0 +1,25 @@
+{
+  "schema": "V08_NATIVE_CONTRACT_V176",
+  "authority": "Direct user: 来吧，开始执行V0.8",
+  "plan": "experiments/v08r/plan_v175.json",
+  "parent_commit": "9ecc0f9b55916867d530edd9ff86008b3e86f9b5",
+  "scope": "Execute the fixed nine-arm, 32-seed, two-mirror, three-condition plan. No automatic retuning, seed selection, extra rollout or legacy experiment execution.",
+  "implementation_resolution": "New explicit DAG interfaces port the existing equations to per-command public successors. Terminal COLLISION does not disclose hidden cause. Public topological layers determine model-backup ordering. Current Q is retained for TD; M1 is read-only and uses frozen v175 code.",
+  "exclusive_capture": true,
+  "first_failure_or_partial_preserved": true,
+  "automatic_retry": false,
+  "phase_limits": {
+    "wiring": {"rollouts": 36, "steps": 72, "wall_seconds": 30, "compressed_bytes": 1048576},
+    "matrix": {"rollouts": 6635520, "steps": 42024960, "wall_seconds": 5370, "compressed_bytes": 4293918720}
+  },
+  "inputs": [
+    "experiments/v08r/plan_v175.json",
+    "experiments/v08r/decision_readout_v175/readout.py",
+    "experiments/v08r/harder_decisions_v176/world.py",
+    "experiments/v08r/harder_decisions_v176/learning.py",
+    "experiments/v08r/harder_decisions_v176/experiment.py",
+    "experiments/v08r/harder_decisions_v176/contract.json"
+  ],
+  "resource_scope": "Local CPU, toy PRNG as planned; no GPU, paid resource, automation or old formal collector/keys.",
+  "reporting_scope": "Internal arithmetic/raw review is not independent expert qualification. Wall time includes instrumentation; reported working set is not a production benchmark or full-finalization peak."
+}

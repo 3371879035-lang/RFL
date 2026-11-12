@@ -1,0 +1,529 @@
+{
+  "schema": "V149_STDLIB_TARGETED_PROBE_CHALLENGE_REVIEW",
+  "complete": true,
+  "native_counts": {
+    "rollout": 79,
+    "step": 322,
+    "transaction": 186
+  },
+  "records": 618,
+  "input_pins": 336,
+  "frozen_tree": {
+    "feature": 0,
+    "left": {
+      "feature": 1,
+      "left": {
+        "mean": 0.0,
+        "n": 1
+      },
+      "right": {
+        "mean": 0.94,
+        "n": 1
+      },
+      "threshold": 0.5
+    },
+    "right": {
+      "mean": -0.94,
+      "n": 1
+    },
+    "threshold": 1.0
+  },
+  "frozen_digest": "099580b76f86e5d2bd537bd5da3640782a6cc17180515edfb31d424bbb9985f8",
+  "new_test_labels_used_to_fit_frozen_model": 0,
+  "summaries": [
+    {
+      "case": "delayed_damage",
+      "arm": "NoWrite",
+      "successes": 5,
+      "returns": [
+        -1.08,
+        0.84,
+        0.84,
+        0.84,
+        0.84,
+        0.84
+      ],
+      "outcomes": [
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.5199999999999999,
+      "external_updates": 1
+    },
+    {
+      "case": "delayed_damage",
+      "arm": "DirectSite",
+      "successes": 5,
+      "returns": [
+        -1.08,
+        0.88,
+        0.84,
+        0.84,
+        0.84,
+        0.84
+      ],
+      "outcomes": [
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.5266666666666666,
+      "external_updates": 0
+    },
+    {
+      "case": "delayed_damage",
+      "arm": "FrozenLearned",
+      "successes": 5,
+      "returns": [
+        -1.08,
+        0.84,
+        0.84,
+        0.84,
+        0.84,
+        0.84
+      ],
+      "outcomes": [
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.5199999999999999,
+      "external_updates": 1
+    },
+    {
+      "case": "delayed_damage",
+      "arm": "TargetedProbe",
+      "successes": 5,
+      "returns": [
+        -1.08,
+        0.88,
+        0.84,
+        0.84,
+        0.84,
+        0.84
+      ],
+      "outcomes": [
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.5266666666666666,
+      "external_updates": 0
+    },
+    {
+      "case": "delayed_damage",
+      "arm": "Validated",
+      "successes": 5,
+      "returns": [
+        -1.08,
+        0.88,
+        0.84,
+        0.84,
+        0.84,
+        0.84
+      ],
+      "outcomes": [
+        "TRAP",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "mean_return": 0.5266666666666666,
+      "external_updates": 0
+    },
+    {
+      "case": "shadowed",
+      "arm": "NoWrite",
+      "successes": 0,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02
+      ],
+      "outcomes": [
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP"
+      ],
+      "mean_return": -1.02,
+      "external_updates": 1
+    },
+    {
+      "case": "shadowed",
+      "arm": "DirectSite",
+      "successes": 0,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02
+      ],
+      "outcomes": [
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP"
+      ],
+      "mean_return": -1.02,
+      "external_updates": 1
+    },
+    {
+      "case": "shadowed",
+      "arm": "FrozenLearned",
+      "successes": 0,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02
+      ],
+      "outcomes": [
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP"
+      ],
+      "mean_return": -1.02,
+      "external_updates": 1
+    },
+    {
+      "case": "shadowed",
+      "arm": "TargetedProbe",
+      "successes": 0,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02
+      ],
+      "outcomes": [
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP"
+      ],
+      "mean_return": -1.02,
+      "external_updates": 1
+    },
+    {
+      "case": "shadowed",
+      "arm": "Validated",
+      "successes": 0,
+      "returns": [
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02,
+        -1.02
+      ],
+      "outcomes": [
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP",
+        "TRAP"
+      ],
+      "mean_return": -1.02,
+      "external_updates": 1
+    }
+  ],
+  "predictions": {
+    "delayed_damage": {
+      "features": [
+        3,
+        1
+      ],
+      "predicted_delta": -0.94,
+      "proposal": {
+        "action": "keep",
+        "edits": []
+      },
+      "pattern_seen": false
+    },
+    "shadowed": {
+      "features": [
+        0,
+        1
+      ],
+      "predicted_delta": 0.94,
+      "proposal": {
+        "action": "apply",
+        "edits": [
+          {
+            "store": "controller",
+            "address": {
+              "state": {
+                "x": 0,
+                "y": 2,
+                "t": 0,
+                "kappa": 1,
+                "phi": 0
+              },
+              "cmd": 4
+            },
+            "value": null
+          }
+        ]
+      },
+      "pattern_seen": true
+    }
+  },
+  "actual_paired": {
+    "delayed_damage": {
+      "values": {
+        "keep": 0.84,
+        "controller-delete": 0.86
+      },
+      "delta": 0.020000000000000018,
+      "choice": "controller-delete"
+    },
+    "shadowed": {
+      "values": {
+        "keep": -1.02,
+        "controller-delete": -1.02
+      },
+      "delta": 0.0,
+      "choice": "keep"
+    }
+  },
+  "targeted_probes": {
+    "delayed_damage": {
+      "keep_return": 0.84,
+      "delete_return": 0.88,
+      "delta": 0.040000000000000036,
+      "choice": "controller-delete",
+      "live_keep_reused": true
+    },
+    "shadowed": {
+      "keep_return": -1.02,
+      "delete_return": -1.02,
+      "delta": 0.0,
+      "choice": "keep",
+      "live_keep_reused": false
+    }
+  },
+  "frozen_vs_validated": [
+    {
+      "case": "delayed_damage",
+      "predicted_delta": -0.94,
+      "actual_current_paired_delta": 0.020000000000000018,
+      "feature_pattern_seen_in_training": false,
+      "decision_agrees": false,
+      "all6_main_raw_identical": false,
+      "all6_post_R_L_I_identical": false
+    },
+    {
+      "case": "shadowed",
+      "predicted_delta": 0.94,
+      "actual_current_paired_delta": 0.0,
+      "feature_pattern_seen_in_training": true,
+      "decision_agrees": false,
+      "all6_main_raw_identical": false,
+      "all6_post_R_L_I_identical": false
+    }
+  ],
+  "targeted_vs_validated": [
+    {
+      "case": "delayed_damage",
+      "decision_agrees": true,
+      "all6_main_raw_identical": true,
+      "all6_post_R_L_I_identical": true
+    },
+    {
+      "case": "shadowed",
+      "decision_agrees": true,
+      "all6_main_raw_identical": true,
+      "all6_post_R_L_I_identical": true
+    }
+  ],
+  "online_costs": [
+    {
+      "case": "delayed_damage",
+      "arm": "NoWrite",
+      "rollout": 7,
+      "step": 52,
+      "transaction": 16,
+      "shared_checkpoint_source_TX_excluded": 5
+    },
+    {
+      "case": "delayed_damage",
+      "arm": "DirectSite",
+      "rollout": 7,
+      "step": 50,
+      "transaction": 15,
+      "shared_checkpoint_source_TX_excluded": 5
+    },
+    {
+      "case": "delayed_damage",
+      "arm": "FrozenLearned",
+      "rollout": 7,
+      "step": 52,
+      "transaction": 16,
+      "shared_checkpoint_source_TX_excluded": 5
+    },
+    {
+      "case": "delayed_damage",
+      "arm": "TargetedProbe",
+      "rollout": 8,
+      "step": 56,
+      "transaction": 18,
+      "shared_checkpoint_source_TX_excluded": 5
+    },
+    {
+      "case": "delayed_damage",
+      "arm": "Validated",
+      "rollout": 10,
+      "step": 72,
+      "transaction": 22,
+      "shared_checkpoint_source_TX_excluded": 5
+    },
+    {
+      "case": "shadowed",
+      "arm": "NoWrite",
+      "rollout": 7,
+      "step": 7,
+      "transaction": 16,
+      "shared_checkpoint_source_TX_excluded": 5
+    },
+    {
+      "case": "shadowed",
+      "arm": "DirectSite",
+      "rollout": 7,
+      "step": 7,
+      "transaction": 17,
+      "shared_checkpoint_source_TX_excluded": 5
+    },
+    {
+      "case": "shadowed",
+      "arm": "FrozenLearned",
+      "rollout": 7,
+      "step": 7,
+      "transaction": 17,
+      "shared_checkpoint_source_TX_excluded": 5
+    },
+    {
+      "case": "shadowed",
+      "arm": "TargetedProbe",
+      "rollout": 9,
+      "step": 9,
+      "transaction": 21,
+      "shared_checkpoint_source_TX_excluded": 5
+    },
+    {
+      "case": "shadowed",
+      "arm": "Validated",
+      "rollout": 10,
+      "step": 10,
+      "transaction": 23,
+      "shared_checkpoint_source_TX_excluded": 5
+    }
+  ],
+  "old_new_observation_alias": {
+    "features_identical": true,
+    "visible_evidence_identical": true,
+    "own_full_post_TD_identical": true,
+    "task_trace_except_auditmask_identical": true
+  },
+  "observation_transfers": [
+    {
+      "case": "delayed_damage",
+      "arm": "NoWrite",
+      "applied": true
+    },
+    {
+      "case": "delayed_damage",
+      "arm": "DirectSite",
+      "applied": false
+    },
+    {
+      "case": "delayed_damage",
+      "arm": "FrozenLearned",
+      "applied": true
+    },
+    {
+      "case": "delayed_damage",
+      "arm": "TargetedProbe",
+      "applied": false
+    },
+    {
+      "case": "delayed_damage",
+      "arm": "Validated",
+      "applied": false
+    },
+    {
+      "case": "shadowed",
+      "arm": "NoWrite",
+      "applied": true
+    },
+    {
+      "case": "shadowed",
+      "arm": "DirectSite",
+      "applied": true
+    },
+    {
+      "case": "shadowed",
+      "arm": "FrozenLearned",
+      "applied": true
+    },
+    {
+      "case": "shadowed",
+      "arm": "TargetedProbe",
+      "applied": true
+    },
+    {
+      "case": "shadowed",
+      "arm": "Validated",
+      "applied": true
+    }
+  ],
+  "native_ordinary_updates": 79,
+  "ordinary_policy_TX": 79,
+  "external_ordinary_updates": 7,
+  "external_policy_TX": 7,
+  "checkpoint_TX": 3,
+  "case_source_TX": 2,
+  "private_candidate_X_TX": 4,
+  "main_feedback_X_TX": 5,
+  "actual_explore_events": 14,
+  "success_diagnosis": 0,
+  "guard_rejections": 3,
+  "live_keep_reuses": 1,
+  "old_native_checker_bank_reruns": 0,
+  "new_keys_RNG_DP_calibration_collection": 0,
+  "formal_B1_or_science_qualification": false
+}

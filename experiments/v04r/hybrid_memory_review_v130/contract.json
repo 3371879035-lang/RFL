@@ -1,0 +1,406 @@
+{
+  "schema": "V130_PROSPECTIVE_HYBRID_MEMORY_REVIEW",
+  "date_asia_shanghai": "2026-11-06",
+  "parent_commit": "55dc6827eabd1b308344364dd076f3357c04155a",
+  "question": "Can one actual hybridagent retain cheap prior memory checks and use later observed failures to investigate a uniquely top-scored but invalid recall, compared with either review mechanism alone?",
+  "modes": [
+    "dq",
+    "patch-adaptive"
+  ],
+  "arms": [
+    "FreshPractice",
+    "AwareMemory",
+    "FailureRefresh",
+    "HybridMemory"
+  ],
+  "sources": [
+    {
+      "kappa": 0,
+      "phi": 2,
+      "prefix": 3,
+      "cell": [
+        2,
+        1
+      ]
+    },
+    {
+      "kappa": 1,
+      "phi": 1,
+      "prefix": 1,
+      "cell": [
+        1,
+        2
+      ]
+    },
+    {
+      "kappa": 1,
+      "phi": 4,
+      "prefix": 1,
+      "cell": [
+        1,
+        2
+      ]
+    }
+  ],
+  "source_rule": "Single genuine installation per mode contains three base contexts: A(k0phi2) longWAIT at(2,1)t>=3; B(k1phi1) longWAIT at(1,2)t>=1; C(k1phi4) same longWAIT plus STARTWAITt0,1. Bothm,z1. C and B have the same modulo3 hazard phase but independent literal context addresses; only C gets prefixWAIT. Retain unrelatedk0phi4RIGHT and process3->2 sentinels. These68base edits are fixed by mechanism, not selected by new effects. Add independent D(k1phi2) with12declared action-time entries at bothm: protective STARTWAITt0,1, singleWAIT delays at1,2t3/1,1t5/2,1t7/3,2t10 and explicit connecting actions/finalLEFTdetour. Total92edits permode, all fixed before native. Existingk0phi4 unreadRIGHT andP sentinel remain. NewD is not chosen by observedneweffect.",
+  "schedule": [
+    {
+      "kappa": 0,
+      "phi": 2,
+      "trap": false
+    },
+    {
+      "kappa": 0,
+      "phi": 2,
+      "trap": false
+    },
+    {
+      "kappa": 0,
+      "phi": 2,
+      "trap": true
+    },
+    {
+      "kappa": 0,
+      "phi": 2,
+      "trap": true
+    },
+    {
+      "kappa": 0,
+      "phi": 2,
+      "trap": true
+    },
+    {
+      "kappa": 0,
+      "phi": 2,
+      "trap": false
+    },
+    {
+      "kappa": 0,
+      "phi": 2,
+      "trap": false
+    },
+    {
+      "kappa": 0,
+      "phi": 2,
+      "trap": false
+    },
+    {
+      "kappa": 1,
+      "phi": 1,
+      "trap": false
+    },
+    {
+      "kappa": 1,
+      "phi": 1,
+      "trap": false
+    },
+    {
+      "kappa": 1,
+      "phi": 1,
+      "trap": true
+    },
+    {
+      "kappa": 1,
+      "phi": 1,
+      "trap": true
+    },
+    {
+      "kappa": 1,
+      "phi": 1,
+      "trap": true
+    },
+    {
+      "kappa": 1,
+      "phi": 1,
+      "trap": false
+    },
+    {
+      "kappa": 1,
+      "phi": 1,
+      "trap": false
+    },
+    {
+      "kappa": 1,
+      "phi": 1,
+      "trap": false
+    },
+    {
+      "kappa": 1,
+      "phi": 2,
+      "trap": true
+    },
+    {
+      "kappa": 1,
+      "phi": 2,
+      "trap": true
+    },
+    {
+      "kappa": 1,
+      "phi": 2,
+      "trap": true
+    },
+    {
+      "kappa": 1,
+      "phi": 2,
+      "trap": true
+    },
+    {
+      "kappa": 1,
+      "phi": 2,
+      "trap": true
+    },
+    {
+      "kappa": 1,
+      "phi": 2,
+      "trap": true
+    },
+    {
+      "kappa": 1,
+      "phi": 2,
+      "trap": true
+    },
+    {
+      "kappa": 1,
+      "phi": 2,
+      "trap": true
+    },
+    {
+      "kappa": 1,
+      "phi": 2,
+      "trap": true
+    },
+    {
+      "kappa": 1,
+      "phi": 2,
+      "trap": true
+    },
+    {
+      "kappa": 1,
+      "phi": 2,
+      "trap": true
+    },
+    {
+      "kappa": 1,
+      "phi": 2,
+      "trap": true
+    },
+    {
+      "kappa": 1,
+      "phi": 4,
+      "trap": true
+    },
+    {
+      "kappa": 1,
+      "phi": 4,
+      "trap": true
+    },
+    {
+      "kappa": 1,
+      "phi": 4,
+      "trap": true
+    },
+    {
+      "kappa": 1,
+      "phi": 4,
+      "trap": true
+    },
+    {
+      "kappa": 1,
+      "phi": 4,
+      "trap": true
+    },
+    {
+      "kappa": 1,
+      "phi": 4,
+      "trap": true
+    },
+    {
+      "kappa": 1,
+      "phi": 4,
+      "trap": true
+    },
+    {
+      "kappa": 1,
+      "phi": 4,
+      "trap": true
+    },
+    {
+      "kappa": 0,
+      "phi": 2,
+      "trap": false
+    },
+    {
+      "kappa": 1,
+      "phi": 1,
+      "trap": false
+    },
+    {
+      "kappa": 0,
+      "phi": 2,
+      "trap": false
+    },
+    {
+      "kappa": 1,
+      "phi": 1,
+      "trap": false
+    }
+  ],
+  "episode_inputs": "One40task persistent A8/B8/Dunique12/Cduplicate8/returnAB4 stream. Atrap e2..4,Btrap e10..12,allD e16..27 andC e28..35 trap(1,2,step0); returnABclean. D exposed BEFORE C, so prior duplicate-keyconflict cannot preemptively flagD. No reset. errorflag0/rank12/base1/MAXcoins; exactsame scriptallarms, no hiddenfault/future access by policy.",
+  "model": "Shared frozen base28row model and ordinary learner unchanged. Additional online diagnostic memory is explicit new learned component; no neural-weight/self-RSI claim.",
+  "diagnostic": "Allarms ordinaryTD/policy update every main task. Only actualfailure triggers diagnosis. FreshPractice testseligible ambiguities. AwareMemory uses localduplicate/contested rule. FailureRefresh uses actualsuccessor failure review. HybridMemory implements BOTH with explicit states in oneagent: same priorcheck first, then existing needs-retest check, no oracle switch. Max12addresses/0queries; successes0diagnosis.",
+  "retention_checkpoints_completed_tasks": [
+    0,
+    16,
+    28,
+    36,
+    40
+  ],
+  "retention_protocol": "Five clean4scene readonlybanks perrole at0/16/28/36/40. FullR+L+I preserved,0draw/TD/diagnosis/Mtraining; not independent scientificN.",
+  "metrics": "Full40task quality and allpracticecosts; predeclared A8/B8/D12/C8/returnAB4 phases. Verify actualunique-highest acceptance before later observedfailure, actualreview/retest and ordinaryfuture; compare hybridvsbothsinglemechanisms. Also preserve anymenuinsufficiency/noop/adverse/zero. No hypothesizedeffectrequired.",
+  "reference": {
+    "path": "experiments/v03r/a96_dense/b2_prepare/grammar_catalog_v31/evidence/stdout.log",
+    "sha256": "d0aafb6dc20b1cc0c872ac4c48497d94feb707ffe14448bd1c2f3ddd1bbb467b",
+    "q_digest": "d9078b5b5b823df56f998e8c28eb6a3e388bd3ae216f41a21acdb5202d2ec05a"
+  },
+  "budget": {
+    "rollout": 704,
+    "step": 8448,
+    "transaction": 3072,
+    "raw_bytes": 167772160,
+    "seconds": 240
+  },
+  "expected_extent_not_effect_gate": {
+    "main_tasks": 320,
+    "read_only_rollouts": 160,
+    "practice_rollouts_upper_bound": 192,
+    "total_rollouts_upper_bound": 672
+  },
+  "capture": "New exclusive bounded capture and source pins before first execution. Old code/positive/negative/partial results unchanged, no old checker/native rerun, no automatic retry or replacing adverse/unknown outcomes.",
+  "limits": "Fixed scripted stream, not blind population/seeds/general causal posterior. Same sharedQ*, alpha1/2 epsilon1/10 and original rewards. Legal local edits on post-TD current, not original same-pre wholeB1. Trap phases are deliberate environmental changes; compare same-schedule arms, do not label changing-environment return as general collateral. No new science/workload keys, RNG/keyderive, DP/calibration/formal collection. Automation off, not inspected or changed. This is a new action-intervention practice capability in the revised V04 experiment, not an assertion that v122 already had it. Only the tested aliased candidates are adjudicated; no total compute matching or universal attribution claim. Three sequential context exposures in one fixed stream, not independent statistical seeds. Any practice saving is simulator-work saving in this run, not an exact total-compute or generic real-world memory benefit. v124 local closure and all prior positive/negative evidence remain unchanged. Targeted alias stress case motivated by earlier favorable transfer, not a blind generalization rate. Same-key reuse can be invalid; any local guard benefit need not generalize or save compute. New post-failure review is a supplied local temporal rule, not learned causal attribution or statistical surprise calibration. Same-context consecutive failure can still have an unrelated cause. No automatic rollback, artificial restoration of a deleted address, hidden cause label, or future-state read. If deletion-only candidates cannot recover, retain that actual limitation; do not expand menu or retry after result. The known first8 condition prefix is necessary fresh online training for this new comparison, not old checker/native rerun. This new mixed workload is targeted and inspired by v126-v128, not independent confirmation or unbiased frequency of transfer/error. Three contexts share a deterministic simulator and Q*prior. Report actualsuccessful/failed memoryhits and all costs, not hand-combine previous favorable/adverse runs into a synthetic result. No new corelearner/scorer or rewardweights, sciencekeys, DP/calibration or collector. Automated task remains untouched. NewD is a prospectively constructed adversarial itinerary from known environment geometry; unique-key reversal is a hypothesis until actualraw confirms it. No assumption candidate1 or4 mustwork; all40main outcomes and unprobedmenu retained. Hybridintegration itself is new executedcode, not previousv129 impliedcapability. No alteration ofoldbackend/API or additionalcausescore/neuraltraining.",
+  "practice": {
+    "trigger": "Same originalbase-feature ambiguity condition. FreshPractice alwayspractices; memoryarms recallonlycoveredM. Hybrid first uses originalv127 applicabilitycheck, then originalv128 observedfailed-successor flag, otherwise actualrecall. Unique highestcoarsekey doesnot imply correct intervention; failurereviewmay still lackeligiblemenu.",
+    "cap": "Uniform4practiceevents/role for4contexts, consumed before firstbranch; keep+atmost2eligible singles in canonicalorder,2ordinarytasks/branch. Extraeligible singles retained but untested; no outcomebased menuexpansion/automaticretry.",
+    "execution": "Runner-private current-task environment capability binds current observed kappa/phase and current actual mask, never future masks. Clone actual complete live post-TD R+L into separate branches; candidate edits on branch,2repeat-current-condition tasks, no diagnostics inside branches. Origin and its I stay unchanged. New typed data/branches, not restored issuedB1handles.",
+    "decision": "Choose highest actual two-task mean from keep/tested singles, exact ties fewer edits then declared order. Apply chosen proposal once to live post-TD state. Base28row scores frozen; own actual practice returns update diagnostic M, separate from ordinary R+L. No hidden cause or manually prescribed winner.",
+    "cost": "All branch rollouts/steps/ordinary transactions and candidate writes counted separately; task and retention comparison shares task schedule but NOT total compute. No net efficiency or full-menu optimality claim. Standard query API remains0; these new practice operations are not claimed free or nonexistent.",
+    "event_cap": 4
+  },
+  "online_memory": {
+    "state": "Allarms ordinaryR+L persist. FreshPractice retains noM. Otherthree learnM from ownrealpractice. Aware has contestedkeys, FailureRefresh has needs-retest/pending, Hybrid hasboth. Base28row frozen; no claim of neural/RSIweight learning or originalA91unchanged.",
+    "features": "Base visible candidate feature plus whether the contiguous same-cell/same-action run containing it spans multiple observed steps. No absolute x/y/t/kappa/phi, ordinal identity or fault truth stored. Representation supplied; empirical values learned.",
+    "training": "All M samples are realfailure-triggered practice returns. Failedmain successor only flagsinvestigation; never an automaticnegativeMsample or proof priorinterventioncausedfailure. Actualretest clears testedreviewflags; samekeyconflict recordedseparately only fromactualbranchmeans. Allsamplesretained.",
+    "recall": "Hybrid genuinely applies reconsider() then failureflagdecline in samecallback, and genuinely records both localconflicts and failed-successor evidence. Otherarms expose correspondingone rule; no new meanpenalty or humanchosenwinner. Successfulfuture task only expirespendingtoken, no successattribution.",
+    "comparison": "Fouractual40taskroles per mode, same4eventcap/keep+2singlemenu/2tasksperbranch. Same initialfullstores/script. Earlierfavorabletransfer used only as necessarytrainingwithinthisnewcomparison; no oldfixture/checker/native rerun. No independentseed/statisticalpopulation claim.",
+    "hypothesis_not_effect_gate": "Memory may or may not transfer; preserve fallback probes, failures and imperfect value predictions. Second context differs in kappa/phase, installed error position and possible healthy route; not a blind population or universal invariance test.",
+    "conflict_learning": "AwareMemory records a key as contested only after two tested actions in the same actual event map to that key and have different actual two-task means. Full samples retained, no erasing/collapsing conflicts into a confident mean. This is a local representation-ambiguity flag, not statistical uncertainty calibration."
+  },
+  "prefix_wait_source": {
+    "kappa": 1,
+    "phi": 4,
+    "cell": [
+      0,
+      2
+    ],
+    "times": [
+      0,
+      1
+    ]
+  },
+  "failure_review": "Pending recall recorded only after actual remembered proposal is executed and complete main receipt exists; next failure is observed by native task loop before ordinary TD and then reviewed during diagnosis after ordinary TD. Only same observed kappa/phi and consecutive epoch qualify. A success or context switch expires the token without a diagnosis. Marking a key for investigation is not proof the prior intervention caused failure, a permanent action ban, or global punishment. Actual re-practice budget consumed once before branch start; no reset or retry.",
+  "retention_scenes": [
+    {
+      "kappa": 0,
+      "phi": 2
+    },
+    {
+      "kappa": 1,
+      "phi": 1
+    },
+    {
+      "kappa": 1,
+      "phi": 2
+    },
+    {
+      "kappa": 1,
+      "phi": 4
+    }
+  ],
+  "scripted_source": {
+    "kappa": 1,
+    "phi": 2,
+    "entries": [
+      {
+        "x": 0,
+        "y": 2,
+        "t": 0,
+        "action": 4
+      },
+      {
+        "x": 0,
+        "y": 2,
+        "t": 1,
+        "action": 4
+      },
+      {
+        "x": 0,
+        "y": 2,
+        "t": 2,
+        "action": 3
+      },
+      {
+        "x": 1,
+        "y": 2,
+        "t": 3,
+        "action": 4
+      },
+      {
+        "x": 1,
+        "y": 2,
+        "t": 4,
+        "action": 0
+      },
+      {
+        "x": 1,
+        "y": 1,
+        "t": 5,
+        "action": 4
+      },
+      {
+        "x": 1,
+        "y": 1,
+        "t": 6,
+        "action": 3
+      },
+      {
+        "x": 2,
+        "y": 1,
+        "t": 7,
+        "action": 4
+      },
+      {
+        "x": 2,
+        "y": 1,
+        "t": 8,
+        "action": 1
+      },
+      {
+        "x": 2,
+        "y": 2,
+        "t": 9,
+        "action": 3
+      },
+      {
+        "x": 3,
+        "y": 2,
+        "t": 10,
+        "action": 4
+      },
+      {
+        "x": 3,
+        "y": 2,
+        "t": 11,
+        "action": 2
+      }
+    ]
+  }
+}

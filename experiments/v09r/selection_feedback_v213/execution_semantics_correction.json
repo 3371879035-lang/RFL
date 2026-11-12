@@ -1,0 +1,12 @@
+{
+  "schema": "v213-execution-semantics-clarification",
+  "original_declared_and_reported_steps": 221184,
+  "actual_action_outcome_interactions": 55296,
+  "context_field_observations": 221184,
+  "reason": "experiment.execute samples one action and one outcome per episode. Four categorical input fields are not four sequential environment transitions.",
+  "correct_interpretation": "55296 one-step contextual decisions, each observing four fields. Not 221184 environment transitions.",
+  "original_sources_and_results_preserved": true,
+  "effect_on_success_rates_and_paired_results": "none; only the step/feature cost label was wrong",
+  "review_limitation": "initial stored review verified hardcoded 4x counters, not the sequential-step semantics",
+  "new_environment_runs": 0
+}

@@ -1,0 +1,53 @@
+{
+  "schema": "rfl-v03r-a96-one-shot-pipeline-preregistration-v1",
+  "role": "PROSPECTIVE_EXCLUSIVE_EXECUTION_RESERVATION_NOT_COMPLETION",
+  "client_date_local": "2026-10-09",
+  "timezone": "Asia/Shanghai",
+  "root": "D:/强化反馈学习/RFL-CausalChase-v0.3-dense-20261009",
+  "branch": "study/v03r-dense-measurement-20261009",
+  "parent_commit": "28b1c3cc77269fe2b8012fed596e44b3600657f9",
+  "parent_root": "D:/强化反馈学习/RFL-CausalChase-v0.3-measurement-20261008",
+  "parent_result": "CLOSED_VALID_STOP_NO_ADMISSIBLE_GRID",
+  "authorization": "Human reply 继续完成 directly confirmed the exact fixed every-episode measurement change after explanation; no other scientific change authorized.",
+  "measurement_contract": "docs/rebuild/a96_dense_measurement_contract.json",
+  "seed_registry": "docs/rebuild/a96_seed_registry.json",
+  "measurement_profile": "v03r-a96-dense-measurement-v1",
+  "output_namespace": "experiments/v03r/a96_dense",
+  "bound_instrument": "All source/spec/tests/launcher/contracts/seeds, preregistration and parent snapshot are committed and source-inventoried before one-shot launch.",
+  "pipeline_order": [
+    "fresh_full_regression_and_six_serial_gates",
+    "source_bound_internal_review_and_local_evidence_commit",
+    "fresh_full_37_key_engineering_timing",
+    "fresh_full_32_engineering_shard_validation",
+    "fresh_committed_F0",
+    "fresh_formal_smoke5",
+    "separate_smoke_evaluator",
+    "fresh_development32",
+    "fresh_F1_plan_full_validation",
+    "fresh_complete_indivisible_F1",
+    "explicit_local_native_evidence_commit"
+  ],
+  "maximum_spawn_workers": 16,
+  "scientific_seed_reuse": false,
+  "automatic_retry": false,
+  "unapproved_actions": [
+    "cap_expansion",
+    "initializer_change",
+    "threshold_tuning",
+    "sparse_fallback_or_outcome_grid_search",
+    "partial_lock",
+    "automatic_retry",
+    "external_push_or_publication",
+    "paid_resources"
+  ],
+  "stage_stop_rules": {
+    "operational_invalid": "native2; retain reservations; not science FAIL",
+    "valid_no_admissible": "native F1/controller3; no lock; mechanism and valid stop report then stop followup",
+    "locked": "Full committed F1 then audit; separate B2 and final analysis collection gates still required"
+  },
+  "review_scope": "INTERNAL_SOURCE_BOUND_NOT_INDEPENDENT_AGENT_OR_EXTERNAL_EXPERT",
+  "scientific_execution_started": false,
+  "treatment_or_confirmatory_authorized": false,
+  "treatment_or_confirmatory_collected": false,
+  "research_complete": false
+}

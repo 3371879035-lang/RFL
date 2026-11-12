@@ -1,0 +1,117 @@
+{
+  "version": "V198 twelve-hour five-arm continuation with actual historical intervention proposals",
+  "authority": "Latest user: change to12hours; no continuous assistant monitoring; ensure feedback attribution, history, DreamRSI and Sleep operate, and every change is settled by real practice.",
+  "parent_git": "2cb6ff066119b05a157e597fbad8a2c362b28d0e",
+  "created_utc": "2026-11-08T16:48:05.097844+00:00",
+  "groups": {
+    "RL-plain": "Reward/punishment TD and ordinary real replay only; NO diagnostic branches, candidate search, teacher selection or KL.",
+    "RL-outer": "Same initial RL checkpoint as plain, plus actual branches, candidate selection and behavioral Sleep; no feedback preference loss.",
+    "F0": "No reward packet or Q; real factual measurements plus explicit goal-conditioned preferences and outer loop.",
+    "F-RP": "Q with reward and capture penalty, factual heads, tested preferences, outer loop.",
+    "F-R": "Q with reward and no added capture penalty, factual heads, tested preferences, outer loop."
+  },
+  "seeds": [
+    93001,
+    93002,
+    93003,
+    93004
+  ],
+  "source": "Same16genuineV190basecheckpoints, not postselected V196 students. Four pretrained seed clusters, not fresh from-scratch N20.",
+  "resource_matching": {
+    "charged_environment_steps_per_block": 131072,
+    "total_optimizer_steps_per_block": 1024,
+    "ordinary_warm_steps_minimum": 32768,
+    "workers": 8,
+    "max_blocks": 256,
+    "hard_wall_seconds": 43200,
+    "final_report_reserve_seconds": 900,
+    "ram_bytes": 25769803776,
+    "artifact_bytes": 51539607552,
+    "rule": "ALL live training, source/trial, candidate probe, student collection and adoption gate environment calls charged. ALL optimizer calls including rejected candidates/ordinary references charged. Remaining budget goes to ordinary practice/replay. Common report evaluations counted separately and equal in planned episodes. Equal calls/updates is not equal FLOPs or elapsed time; report those separately."
+  },
+  "outer": {
+    "sources": 8,
+    "max_cases": 2,
+    "case_selection": "First two captured episodes ending<=96 with stationary actions in last8; earliest such action. No outcome-based replacement.",
+    "replicates": 3,
+    "alternatives": "original plus directional rotations+2/-2; first replicate original environment/action noise; other replicates resample ONLY future exogenous and exploration uniforms, paired across alternatives.",
+    "preference": "Need >=2/3 real paired effects agreeing in sign with nonzero mean; all zero/adverse/uncertain outcomes retained. No cause probability network.",
+    "teacher_updates": 32,
+    "reference_updates": 32,
+    "candidate_strengths": {
+      "weak": 0.25,
+      "strong": 1.0
+    },
+    "probe_episodes": 64,
+    "student_wake_episodes": 8,
+    "sleep_updates": 32,
+    "gate_episodes": 64,
+    "adoption": "Both fresh32episode blocks have positive paired mean score and overall captures<=reference; ordinary reference and student have same real wake data, update count and minibatch RNG. Not statistical confirmation.",
+    "ordinary_data": "Main ordinary experience enters each agent own real circular replay and retrieval. Diagnostic actual traces held separately for candidate updates, max128complete traces. Reused prefixes not charged as new interactions.",
+    "target": "Ordinary target synchronization and epsilon schedule retained; Q train/eval both actual ownQ; F0 actual measurement readout; no extra evaluation-only residual override.",
+    "dream": "Two history levels: actual action-intervention histories influence candidate actions; actual parent-child learning histories determine weak/strong proposal order. No unseen outcomes invented, no model-generated natural-language causal proof.",
+    "history_action_proposals": "Retrieve up to8 nearest previously executed intervention contexts from max128case records using only visible scalar[2:28] and central5x5observation images; propose highest positive weighted historical better action when legal, otherwise canonical alternatives. All historical claims, including zero/adverse, preserved. Up to2alternatives still actually rerun with3new paired futures; history is a proposal, never direct adoption.",
+    "failure_only": "No qualifying failure: no diagnostic candidate search, task probe or Sleep; retain actual data and continue ordinary updates. No qualifying teacher: no forced Sleep. Each conditional decision and count is recorded."
+  },
+  "evaluation": {
+    "initial_episodes": 128,
+    "report_block_indices": [
+      1,
+      2,
+      4,
+      8,
+      16,
+      32,
+      64,
+      128,
+      256
+    ],
+    "interim_episodes": 128,
+    "final_episodes": 512,
+    "ordinary_maps": [
+      90101,
+      90102,
+      90103,
+      90104,
+      90105,
+      90106,
+      90107,
+      90108
+    ],
+    "development_only_maps": [
+      90109,
+      90110
+    ],
+    "report_only_maps": [
+      90111,
+      90112
+    ],
+    "strata": "Each dev/report bank half ordinary-map, half respective reserved-map, balanced pursuit mode. These are existing maps, reserved within this run, not globally never observed by researchers.",
+    "selection": "No report result returns to candidate selection. Budget/time stopping independent of performance; final endpoint is last fully completed common block for all20jobs.",
+    "analysis": "Pair RL-outer vs RL-plain by source seed and fixed charged budget; report each other full method vs plain, cold baseline, trajectories, late coverage and overhead. Four seed clusters, not thousands of independent models. More training plus repaired design, not pure one-factor training-dose study."
+  },
+  "smoke": {
+    "seeds": [
+      93002
+    ],
+    "groups": "all5",
+    "blocks": 2,
+    "charged_steps": 16384,
+    "optimizer_steps": 128,
+    "warm_steps": 512,
+    "sources": 2,
+    "max_cases": 1,
+    "replicates": 2,
+    "probe_episodes": 4,
+    "wake_episodes": 2,
+    "gate_episodes": 4,
+    "fit_updates": 8,
+    "report_episodes": 8,
+    "max_wall_seconds": 900,
+    "max_environment_steps": 230000,
+    "first_failure": "Preserve; no retry or silent source edit after execution."
+  },
+  "preservation": "All V196 and earlier bytes untouched. New block logs and checkpoints immutable; volatile live status separate. No automation/cloud jobs, no old fixture/native rerun, no automatic retry.",
+  "process": "Detached local hidden process; process-scoped Windows system-awake request permits display sleep and releases on exit. Automatic checkpoints, resource limits, mechanism counters and final report, no chat automation/periodic assistant polling.",
+  "wiring_reuse": "V197 original five-arm smoke firstnative0 already completed:93390actual steps/81920charged/640updates. Never rerun it. V198 new targeted two-block seed93002smoke additionally exercises historical proposal flow and12h wrapper."
+}

@@ -1,0 +1,68 @@
+{
+  "schema": "V120_PROSPECTIVE_MATCHED_EXTENT_POSITION_TRANSFER",
+  "date_asia_shanghai": "2026-11-06",
+  "parent_commit": "9a0be1b9b84487845ea7c97cd1587fa2b0176090",
+  "question": "Does the already-frozen v119 temporal-position value selector transfer when WAIT errors start after a correct task prefix, with the same visible TIMEOUT class and twelve factual candidates?",
+  "frozen_parameters": {
+    "path": "frozen_parameters.json",
+    "table_rows": 42,
+    "training_or_online_parameter_updates": 0,
+    "interpretation": "Parameters of an actual previously trained value table, not serialized sources, owners, receipts or issued handles."
+  },
+  "modes": [
+    "dq",
+    "patch-adaptive"
+  ],
+  "cases": [
+    {
+      "prefix": 1,
+      "cell": [
+        1,
+        2
+      ]
+    },
+    {
+      "prefix": 2,
+      "cell": [
+        1,
+        1
+      ]
+    },
+    {
+      "prefix": 3,
+      "cell": [
+        2,
+        1
+      ]
+    }
+  ],
+  "source_rule": "At the specified cell install WAIT for all times prefix..11 and m0,1, z1, kappa1/phi2; DQ value6.0 or independent literal patch WAIT. Correct prefix follows existing Q*. Also retain the opposite-kappa wrong RIGHT sentinel at(1,2,t1,phi2,z1,m0) and unread process3->2. Fresh real source installation is counted. No new hidden environment fault.",
+  "case_selection": "Three fixed successive cells of the already-stored healthy route, read before execution. No input optimization based on new results; if actual terminal/extent differs, keep it and limit the position-transfer interpretation.",
+  "arms": [
+    "TaskTD",
+    "AlwaysClear",
+    "FrozenAddress"
+  ],
+  "protocol": "Six fresh equal-initial-state case sources, independently cloned into three arms. Three actual tasks per arm, ordinary TD/policy learning in every task for all arms. Only first-task actual failure may diagnose. Next two tasks are ordinary-only for all arms. Same kappa1/phase2/errorflag0/rank5/base1, MAX nonexploration coins. Frozen selector sees only original mode/terminal/command-execution mismatch and actual candidate extent; no source descriptor, error cell/prefix, evaluator truth or Q* target. No retraining, no new candidate probes, no retry.",
+  "reference": {
+    "path": "experiments/v03r/a96_dense/b2_prepare/grammar_catalog_v31/evidence/stdout.log",
+    "sha256": "d0aafb6dc20b1cc0c872ac4c48497d94feb707ffe14448bd1c2f3ddd1bbb467b",
+    "q_digest": "d9078b5b5b823df56f998e8c28eb6a3e388bd3ae216f41a21acdb5202d2ec05a"
+  },
+  "budget": {
+    "rollout": 80,
+    "step": 960,
+    "transaction": 300,
+    "raw_bytes": 8388608,
+    "seconds": 90
+  },
+  "expected_structural_extent_not_effect_gate": {
+    "source_cases": 6,
+    "arms": 3,
+    "tasks_per_arm": 3,
+    "total_tasks": 54
+  },
+  "capture": "New exclusive evidence, prospective contract/source/parameter/old-component pins before first native; preserve complete raw, every R+L update, local edits and all positive/zero/adverse outcomes. New stdlib stored audit only; old fixtures, checker or native not rerun.",
+  "limits": "Fixed shifted-error cases, not independent seeds or general architecture ranking. Successes get ordinary learning only. Original reward, shared Q*, alpha1/2 epsilon1/10 unchanged; not punishment ablation, formal Xi, new keys, calibration or formal collector. Matching twelve candidates must be measured, not inferred. A policy transfer failure is not an original RFL mechanism refutation.",
+  "automation": "User scheduling stays off, not inspected or modified."
+}

@@ -1,0 +1,753 @@
+{
+  "schema": "V140_TRIAL_GENERATED_LITERAL_REPLAY_RESULT",
+  "date_asia_shanghai": "2026-11-07",
+  "parent_commit": "7a8c2c3feaa84467972a6f65959a78af0909dd90",
+  "status": "EXTENSION_COMPLETE_VALIDATED_LITERAL_GAIN_OVERRIDDEN_BY_ORDINARY_POLICY_WITH_ZERO_NET_MAIN_GAIN",
+  "execution": {
+    "native_first_exit": 0,
+    "new_stored_review_first_exit": 0,
+    "rollout": 50,
+    "step": 312,
+    "transaction": 110,
+    "records": 367,
+    "declared_input_pins_unchanged": 349,
+    "main_tasks": 40,
+    "practice_tasks": 10,
+    "readonly_rollouts": 0,
+    "main_steps": 268,
+    "practice_steps": 44,
+    "ordinary_numeric_TX": 50,
+    "ordinary_policy_TX": 50,
+    "source_install_TX": 2,
+    "source_install_edits": 88,
+    "live_literal_D_TX": 4,
+    "practice_literal_D_TX": 4,
+    "Mtraining_events": 6,
+    "actual_M_samples": 10,
+    "new_trial_generated_candidates": 4,
+    "actual_successful_replay_trials": 4,
+    "subsequently_overwritten_feedback_actions": 4,
+    "memory_numeric_lookups": 0,
+    "success_diagnostics": 0,
+    "new_keys": 0,
+    "formal_collection": false,
+    "automatic_retry": false,
+    "old_checker_native_or_bank_reruns": 0,
+    "instrumented_wall_seconds": 7.421999999962281
+  },
+  "summary": [
+    {
+      "arm": "StableReplay",
+      "successes": 14,
+      "mean_return": 0.267,
+      "recorded_control_successes": 14,
+      "recorded_control_mean_return": 0.267,
+      "main_returns": [
+        -1.18,
+        0.86,
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        -1.22,
+        0.86,
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        -1.24,
+        0.86,
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "control_returns": [
+        -1.18,
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.22,
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.24,
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        0.86
+      ],
+      "practice_rollouts": 6,
+      "Mtraining_events": 3
+    },
+    {
+      "arm": "DriftReplay",
+      "successes": 16,
+      "mean_return": 0.465,
+      "recorded_control_successes": 16,
+      "recorded_control_mean_return": 0.465,
+      "main_returns": [
+        -1.18,
+        0.86,
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        -1.22,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        -1.24,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        0.86,
+        0.86
+      ],
+      "control_returns": [
+        -1.18,
+        -1.02,
+        0.86,
+        0.86,
+        0.86,
+        0.86,
+        -1.22,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        -1.24,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        0.88,
+        0.86,
+        0.86
+      ],
+      "practice_rollouts": 4,
+      "Mtraining_events": 3
+    }
+  ],
+  "per_arm_work": {
+    "StableReplay": {
+      "stream_rollout": 20,
+      "stream_step": 133,
+      "ORDINARY_UPDATE": 26,
+      "policy_TX": 26,
+      "practice_rollout": 6,
+      "practice_step": 24,
+      "PRACTICE_TX_END": 3,
+      "DIAGNOSTIC_TX_END": 3,
+      "total_rollouts": 26,
+      "total_Ksteps": 157,
+      "TX_excluding_source": 58
+    },
+    "DriftReplay": {
+      "stream_rollout": 20,
+      "stream_step": 135,
+      "ORDINARY_UPDATE": 24,
+      "policy_TX": 24,
+      "practice_rollout": 4,
+      "practice_step": 20,
+      "PRACTICE_TX_END": 1,
+      "DIAGNOSTIC_TX_END": 1,
+      "total_rollouts": 24,
+      "total_Ksteps": 155,
+      "TX_excluding_source": 50
+    }
+  },
+  "first_success_by_phase": [
+    {
+      "arm": "StableReplay",
+      "phase_start": 0,
+      "control_first_success_epoch": 2,
+      "new_first_success_epoch": 1
+    },
+    {
+      "arm": "StableReplay",
+      "phase_start": 6,
+      "control_first_success_epoch": 8,
+      "new_first_success_epoch": 7
+    },
+    {
+      "arm": "StableReplay",
+      "phase_start": 12,
+      "control_first_success_epoch": 14,
+      "new_first_success_epoch": 13
+    },
+    {
+      "arm": "DriftReplay",
+      "phase_start": 0,
+      "control_first_success_epoch": 2,
+      "new_first_success_epoch": 1
+    },
+    {
+      "arm": "DriftReplay",
+      "phase_start": 6,
+      "control_first_success_epoch": 7,
+      "new_first_success_epoch": 7
+    },
+    {
+      "arm": "DriftReplay",
+      "phase_start": 12,
+      "control_first_success_epoch": 13,
+      "new_first_success_epoch": 13
+    }
+  ],
+  "actual_feedback_overwrites_and_recurrence": [
+    {
+      "arm": "StableReplay",
+      "proposal_epoch": 0,
+      "validated_trial_return": 0.86,
+      "main_success_epoch": 1,
+      "ordinary_policy_overwrite_epoch": 1,
+      "literal_command_after_feedback": 4,
+      "literal_command_after_successful_ordinary_update": 3,
+      "recurring_TRAP_epoch": 2,
+      "L_Q_count_before_recurrence": 0,
+      "L_Q_count_after_recurrence": 1
+    },
+    {
+      "arm": "StableReplay",
+      "proposal_epoch": 6,
+      "validated_trial_return": 0.86,
+      "main_success_epoch": 7,
+      "ordinary_policy_overwrite_epoch": 7,
+      "literal_command_after_feedback": 4,
+      "literal_command_after_successful_ordinary_update": 3,
+      "recurring_TRAP_epoch": 8,
+      "L_Q_count_before_recurrence": 1,
+      "L_Q_count_after_recurrence": 2
+    },
+    {
+      "arm": "StableReplay",
+      "proposal_epoch": 12,
+      "validated_trial_return": 0.86,
+      "main_success_epoch": 13,
+      "ordinary_policy_overwrite_epoch": 13,
+      "literal_command_after_feedback": 4,
+      "literal_command_after_successful_ordinary_update": 3,
+      "recurring_TRAP_epoch": 14,
+      "L_Q_count_before_recurrence": 2,
+      "L_Q_count_after_recurrence": 3
+    },
+    {
+      "arm": "DriftReplay",
+      "proposal_epoch": 0,
+      "validated_trial_return": 0.86,
+      "main_success_epoch": 1,
+      "ordinary_policy_overwrite_epoch": 1,
+      "literal_command_after_feedback": 4,
+      "literal_command_after_successful_ordinary_update": 3,
+      "recurring_TRAP_epoch": 2,
+      "L_Q_count_before_recurrence": 0,
+      "L_Q_count_after_recurrence": 1
+    }
+  ],
+  "post_phase_R_L_I_rejoins": [
+    {
+      "arm": "StableReplay",
+      "after_main_epoch": 2,
+      "full_R_L_I_matches_control": true
+    },
+    {
+      "arm": "StableReplay",
+      "after_main_epoch": 8,
+      "full_R_L_I_matches_control": true
+    },
+    {
+      "arm": "StableReplay",
+      "after_main_epoch": 14,
+      "full_R_L_I_matches_control": true
+    },
+    {
+      "arm": "StableReplay",
+      "after_main_epoch": 19,
+      "full_R_L_I_matches_control": true
+    },
+    {
+      "arm": "DriftReplay",
+      "after_main_epoch": 2,
+      "full_R_L_I_matches_control": true
+    },
+    {
+      "arm": "DriftReplay",
+      "after_main_epoch": 8,
+      "full_R_L_I_matches_control": true
+    },
+    {
+      "arm": "DriftReplay",
+      "after_main_epoch": 14,
+      "full_R_L_I_matches_control": true
+    },
+    {
+      "arm": "DriftReplay",
+      "after_main_epoch": 19,
+      "full_R_L_I_matches_control": true
+    }
+  ],
+  "trial_generated_replay_events": [
+    {
+      "actual_keep_terminal": "TRAP",
+      "arm": "StableReplay",
+      "candidate": {
+        "action": "replay:0:0",
+        "affected": {
+          "m": 0,
+          "state": {
+            "kappa": 0,
+            "phi": 3,
+            "t": 0,
+            "x": 0,
+            "y": 2
+          },
+          "z": 1
+        },
+        "factual_index": 0,
+        "failed_trial_command": 3,
+        "proposal": {
+          "action": "apply",
+          "edits": [
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 0,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "store": "decision",
+              "value": 4
+            }
+          ]
+        },
+        "trial_index": 0,
+        "witnessed_command": 4
+      },
+      "epoch": 0,
+      "mode": "patch-adaptive",
+      "unsupported_delete_proof": true
+    },
+    {
+      "actual_keep_terminal": "TRAP",
+      "arm": "StableReplay",
+      "candidate": {
+        "action": "replay:0:0",
+        "affected": {
+          "m": 0,
+          "state": {
+            "kappa": 0,
+            "phi": 5,
+            "t": 0,
+            "x": 0,
+            "y": 2
+          },
+          "z": 1
+        },
+        "factual_index": 0,
+        "failed_trial_command": 3,
+        "proposal": {
+          "action": "apply",
+          "edits": [
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 5,
+                  "t": 0,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "store": "decision",
+              "value": 4
+            }
+          ]
+        },
+        "trial_index": 0,
+        "witnessed_command": 4
+      },
+      "epoch": 6,
+      "mode": "patch-adaptive",
+      "unsupported_delete_proof": true
+    },
+    {
+      "actual_keep_terminal": "TRAP",
+      "arm": "StableReplay",
+      "candidate": {
+        "action": "replay:0:0",
+        "affected": {
+          "m": 0,
+          "state": {
+            "kappa": 0,
+            "phi": 1,
+            "t": 0,
+            "x": 0,
+            "y": 2
+          },
+          "z": 1
+        },
+        "factual_index": 0,
+        "failed_trial_command": 3,
+        "proposal": {
+          "action": "apply",
+          "edits": [
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 1,
+                  "t": 0,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "store": "decision",
+              "value": 4
+            }
+          ]
+        },
+        "trial_index": 0,
+        "witnessed_command": 4
+      },
+      "epoch": 12,
+      "mode": "patch-adaptive",
+      "unsupported_delete_proof": true
+    },
+    {
+      "actual_keep_terminal": "TRAP",
+      "arm": "DriftReplay",
+      "candidate": {
+        "action": "replay:0:0",
+        "affected": {
+          "m": 0,
+          "state": {
+            "kappa": 0,
+            "phi": 3,
+            "t": 0,
+            "x": 0,
+            "y": 2
+          },
+          "z": 1
+        },
+        "factual_index": 0,
+        "failed_trial_command": 3,
+        "proposal": {
+          "action": "apply",
+          "edits": [
+            {
+              "address": {
+                "m": 0,
+                "state": {
+                  "kappa": 0,
+                  "phi": 3,
+                  "t": 0,
+                  "x": 0,
+                  "y": 2
+                },
+                "z": 1
+              },
+              "store": "decision",
+              "value": 4
+            }
+          ]
+        },
+        "trial_index": 0,
+        "witnessed_command": 4
+      },
+      "epoch": 0,
+      "mode": "patch-adaptive",
+      "unsupported_delete_proof": true
+    }
+  ],
+  "actual_practice_events": [
+    {
+      "actions": [
+        "keep",
+        "replay:0:0"
+      ],
+      "arm": "StableReplay",
+      "comparison_candidate": null,
+      "costs": {
+        "keep": 0,
+        "replay:0:0": 1
+      },
+      "epoch": 0,
+      "means": {
+        "keep": -1.02,
+        "replay:0:0": 0.86
+      },
+      "menu": [
+        "keep",
+        "single:0",
+        "single:7",
+        "replay:0:0"
+      ],
+      "mode": "patch-adaptive",
+      "policy_pruned": [
+        "single:0",
+        "single:7"
+      ],
+      "returns": {
+        "keep": [
+          -1.02
+        ],
+        "replay:0:0": [
+          0.86
+        ]
+      },
+      "selected": "replay:0:0",
+      "strategy": "keep-equivalence-plus-trial-replay",
+      "unprobed": [
+        "single:0",
+        "single:7"
+      ]
+    },
+    {
+      "actions": [
+        "keep",
+        "replay:0:0"
+      ],
+      "arm": "StableReplay",
+      "comparison_candidate": null,
+      "costs": {
+        "keep": 0,
+        "replay:0:0": 1
+      },
+      "epoch": 6,
+      "means": {
+        "keep": -1.02,
+        "replay:0:0": 0.86
+      },
+      "menu": [
+        "keep",
+        "single:0",
+        "single:7",
+        "replay:0:0"
+      ],
+      "mode": "patch-adaptive",
+      "policy_pruned": [
+        "single:0",
+        "single:7"
+      ],
+      "returns": {
+        "keep": [
+          -1.02
+        ],
+        "replay:0:0": [
+          0.86
+        ]
+      },
+      "selected": "replay:0:0",
+      "strategy": "keep-equivalence-plus-trial-replay",
+      "unprobed": [
+        "single:0",
+        "single:7"
+      ]
+    },
+    {
+      "actions": [
+        "keep",
+        "replay:0:0"
+      ],
+      "arm": "StableReplay",
+      "comparison_candidate": null,
+      "costs": {
+        "keep": 0,
+        "replay:0:0": 1
+      },
+      "epoch": 12,
+      "means": {
+        "keep": -1.02,
+        "replay:0:0": 0.86
+      },
+      "menu": [
+        "keep",
+        "single:0",
+        "single:7",
+        "replay:0:0"
+      ],
+      "mode": "patch-adaptive",
+      "policy_pruned": [
+        "single:0",
+        "single:7"
+      ],
+      "returns": {
+        "keep": [
+          -1.02
+        ],
+        "replay:0:0": [
+          0.86
+        ]
+      },
+      "selected": "replay:0:0",
+      "strategy": "keep-equivalence-plus-trial-replay",
+      "unprobed": [
+        "single:0",
+        "single:7"
+      ]
+    },
+    {
+      "actions": [
+        "keep",
+        "replay:0:0"
+      ],
+      "arm": "DriftReplay",
+      "comparison_candidate": null,
+      "costs": {
+        "keep": 0,
+        "replay:0:0": 1
+      },
+      "epoch": 0,
+      "means": {
+        "keep": -1.02,
+        "replay:0:0": 0.86
+      },
+      "menu": [
+        "keep",
+        "single:0",
+        "single:7",
+        "replay:0:0"
+      ],
+      "mode": "patch-adaptive",
+      "policy_pruned": [
+        "single:0",
+        "single:7"
+      ],
+      "returns": {
+        "keep": [
+          -1.02
+        ],
+        "replay:0:0": [
+          0.86
+        ]
+      },
+      "selected": "replay:0:0",
+      "strategy": "keep-equivalence-plus-trial-replay",
+      "unprobed": [
+        "single:0",
+        "single:7"
+      ]
+    },
+    {
+      "actions": [
+        "keep"
+      ],
+      "arm": "DriftReplay",
+      "comparison_candidate": null,
+      "costs": {
+        "keep": 0
+      },
+      "epoch": 6,
+      "means": {
+        "keep": 0.88
+      },
+      "menu": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "mode": "patch-adaptive",
+      "policy_pruned": [
+        "single:0",
+        "single:7"
+      ],
+      "returns": {
+        "keep": [
+          0.88
+        ]
+      },
+      "selected": "keep",
+      "strategy": "keep-equivalence-plus-trial-replay",
+      "unprobed": [
+        "single:0",
+        "single:7"
+      ]
+    },
+    {
+      "actions": [
+        "keep"
+      ],
+      "arm": "DriftReplay",
+      "comparison_candidate": null,
+      "costs": {
+        "keep": 0
+      },
+      "epoch": 12,
+      "means": {
+        "keep": 0.88
+      },
+      "menu": [
+        "keep",
+        "single:0",
+        "single:7"
+      ],
+      "mode": "patch-adaptive",
+      "policy_pruned": [
+        "single:0",
+        "single:7"
+      ],
+      "returns": {
+        "keep": [
+          0.88
+        ]
+      },
+      "selected": "keep",
+      "strategy": "keep-equivalence-plus-trial-replay",
+      "unprobed": [
+        "single:0",
+        "single:7"
+      ]
+    }
+  ],
+  "findings": [
+    "Newliteral-replay-v1candidate genuinelyconstructedafteractualfailedprivatekeep, notprelabelled/oraclechosen: lasttrialdecisionowner matchesoriginalvisitedfactualownerbutcommandchanged; previousactuallywitnessedcommandbecomeshypothesis. LiteralDsetoriginalexecutorvalidatesvisitation/legality. Newnominalcandidate/keynamespace, notfakeoldsingle/delete.",
+    "FouractualkeepTRAP-1.02observationsgenerate4literalreplays; eachnewactualtrialSUCCESS.86, eachselectedandcommittedonce. SuccessfulkeepinDriftlaterphasesdoesnotgenerateadditionalcandidate. Fixedmax1extension/event, no recursivebranchdiagnosis/retry.",
+    "Allfourfollowingmainfirstsuccessesoccur1episodeearlierthancontrol (Stablee1/7/13versus2/8/14; Driftfirstphasee1versus2). But successfulordinaryepisodeupdatesDWAIT4backtoRIGHT3, mainLstillhasnolearnedtrapvalueforthecontext; nextepisodeTRAP-1.02recurs.",
+    "Actualoldcontrolfailure/successswapratherthannetgain: Stable14/20mean.267andDrift16/20mean.465 exactlyunchanged; final/phase-endfullR+L/Irejoinscontrolaftere2/8/14/19. Extra4trials28Ksteps/16TX, notefficiencyimprovement. Mainordinarypolicywasnotfrozen/filteredtopreservefeedback.",
+    "Privatetrialnewinformationexistsbutmainlearningintegrationincomplete: experimentdatarecordedinM(newtrueversionedlabels) andliteralDaction, privateTD/LupdatesNOTcopiedintomain. AfterrealmainTRAP, ordinaryLupdatesandDprotectionbecomesstable; newtrialhypothesisaloneisoverwrittenwithoutthatnumericexperience.",
+    "Failuredoesnotdiscreditfeedbackdirection: thisisarealrepresentational/dataflowlimitofpolicy-onlyrepairwithanordinarylearnerthatoverwritesit. Nextshouldtestlegitimateownedexperimentexperienceasexplicitordinaryinputwithsameextraexperiencecontrol, notpinimmutablepolicy/freezebaseline/globalpunishment.",
+    "PrivateSOURCE/actualobservedterminal/visibleevidence flowauditedfromnativekeepcompletion; hiddenmask/faulttruthnotcandidateinput. SourcefirstfullR+L/I/olddeleteproofsalwayspreserved. Allnewliteralunsupportedbyunit-deleteproofactuallyexecuted, no prunedfakeobservation."
+  ],
+  "limits": [
+    "Knownpatchdevelopmentcases, oldv139controlsbyteboundnotconcurrentnewroles. No blindseed/population/architecturegeneralization; DQnumericanalogue deliberatelynotfabricated.",
+    "Literalproposalusespreviouswitnessedactionnotcausal/safetyguarantee. EverycandidateactuallytestedbutoneprivateSUCCESSdoesnotensurefuturelearningretention.",
+    "No newordinaryexternaltraceingestion implementedhere; privatelearningdoesnotchangeconsumermain. Mnumericretrieval0, no claimthatMreturnsinfluencemainpolicybeyondactualselectedliteral.",
+    "No oldAPI/guard/law/source edits, nonewLwriteordiagnosticnumericpenalty, nofreezeofordinaryvisited-Dupdates. NoRet/Collateral/fullkeyed/dense/exceptionqualificationoroldV04RPASS.",
+    "Instrumented7.422s notproductiontime/CPU/RAM/IOprofile. Newexplicitcap4candidateactionsincludesoriginalkeep+2singles+atmost1trialreplay; stillfinitehandEngineeringPlan, notformalXi activation."
+  ],
+  "preservation": {
+    "old78_ledger_values": true,
+    "old266_provenance": true,
+    "original313_current_sha_match": 313,
+    "current_nonledger_input_pins_match": 348,
+    "old_checker_native_reruns": 0,
+    "automation_inspected_or_modified": false,
+    "whole_repository_audit_claimed": false,
+    "independent_expert_or_sciencegate": false
+  },
+  "next_actual_gap": "Nativeownedtrialexperience routingintomainordinarylearnerwith explicitclock/source/once/typeandunchangedI, testedagainstsameextraexperienceNoWritecontrol. Notcopyingserialized/privateLstateorfreezingordinarypolicy. No implementationofthisnextpiececlaimed."
+}

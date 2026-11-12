@@ -1,0 +1,82 @@
+{
+  "schema": "V09_FACT_MEASUREMENT_CONTROL_V188",
+  "utc": "2026-11-08T08:38:05.431494+00:00",
+  "parent_commit": "ced92be1a0ac777f9058c0eb50763503cea814b9",
+  "authority": "那就继续做好",
+  "hypothesis": "F0 action ranking can improve by predicting directly observed multi-horizon task measurements, rather than rolling out unreliable latent successors. Preserve factual history and all outcome/transition learning; protect the decision representation from auxiliary-head losses.",
+  "intervention": {
+    "F0_only": true,
+    "horizons": [
+      1,
+      4,
+      16,
+      64
+    ],
+    "labels": "Number of actually executed task transitions and collected items within each horizon, starting with the source action. Only mature windows or real terminal tails are labeled; unfinished budget tails remain masked.",
+    "learner": "3 zero-initialized dueling vector measurement heads on same64GRU; supervised smoothL1 with bootstrapped real-record masks. Core trained by measurement loss; old outcome/latent heads continue learning on detached core.",
+    "readout": "Mean3 predictions of next64 steps/counts, clipped to physical bounds; .015*predicted steps + predicted pickups used only to choose action. No Q, rewardpacket, scalar-return optimization, TD bootstrap, imagined rollout, hidden truth, or extra capture penalty.",
+    "goal_change": "64step lookahead replaces old remaining-episode/deep prediction. Explicit finite-horizon method revision; not unchanged objective over arbitrarily delayed outcomes.",
+    "history": "Original storage, retrieval features, all16legalactions, epsilon schedule remain. Root empirical additive removed, not historical features.",
+    "cost": "Additional3measurement heads and supervised losses counted, not equal compute or attribution-only isolation."
+  },
+  "matrix": {
+    "seeds": [
+      93001,
+      93002,
+      93003,
+      93004
+    ],
+    "arms": [
+      "F0"
+    ],
+    "models": 4,
+    "training_steps_each": 131072,
+    "total_train_steps": 524288,
+    "checkpoints": [
+      0,
+      16384,
+      65536,
+      131072
+    ],
+    "evaluation_counts": [
+      128,
+      128,
+      128,
+      256
+    ],
+    "evaluation_episodes": 2560,
+    "environment_steps_upper": 1179648
+  },
+  "resources": {
+    "workers": 4,
+    "numeric_threads_each": 1,
+    "wall_seconds": 3600,
+    "aggregate_RAM_GiB": 20,
+    "artifact_GiB": 6,
+    "paid_compute": false,
+    "automation": false
+  },
+  "comparisons": "Same known4pairedseed oldF0 controls. Other3corearms shown from existing closed data on matchedfinal128scenes; no false fresh4-arm experiment claim. Report curves and perseed, not just finalmean.",
+  "stopping": "One fixed candidate, no effect-driven tuning or extra seeds; firsterror/partial retained noautomaticretry. No old64seed restart.",
+  "limits": [
+    "Direct future prediction is an existing approach; not claimed newly invented.",
+    "Purefeedback means no external scalarreward training/Q; it still has a publicgoal and numericpredictionloss.",
+    "Factual futures are policy-dependent, not causal answers for untried actions or guaranteed accurate counterfactuals.",
+    "Four known seeds are development evidence, not confirmation; 128/256nested evalepisodes are not independenttrainingN."
+  ],
+  "reference": {
+    "title": "Learning to Act by Predicting the Future",
+    "authors": [
+      "Alexey Dosovitskiy",
+      "Vladlen Koltun"
+    ],
+    "url": "https://arxiv.org/abs/1611.01779",
+    "adaptation": "Small task-specific implementation, not original code/results reproduction"
+  },
+  "preflight": {
+    "environment_steps": 0,
+    "synthetic_Agent_instances": 1,
+    "synthetic_optimizer_updates": 2,
+    "checks": "Exhaustive label chronology on fixed hand episodes/unfinished prefixes; noQ/reward; actual learn shapes/finite updates with reward array filled NaN. These synthetic updates are not environment training data."
+  }
+}

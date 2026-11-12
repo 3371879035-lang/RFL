@@ -1,0 +1,550 @@
+{
+  "schema": "V166_PROSPECTIVE_CONTINUOUS_DUAL_VALUE_SHARED_BUDGET",
+  "date_asia_shanghai": "2026-11-07",
+  "parent_commit": "72a882f30d7ab09f5df0489aebe4ae4f14d662ec",
+  "reference": {
+    "path": "experiments/v03r/a96_dense/b2_prepare/grammar_catalog_v31/evidence/stdout.log",
+    "sha256": "d0aafb6dc20b1cc0c872ac4c48497d94feb707ffe14448bd1c2f3ddd1bbb467b",
+    "q_digest": "d9078b5b5b823df56f998e8c28eb6a3e388bd3ae216f41a21acdb5202d2ec05a"
+  },
+  "ordinary_checkpoint": {
+    "raw": {
+      "path": "experiments/v04r/learned_relative_transfer_v148/evidence/raw.jsonl",
+      "bytes": 1382529,
+      "sha256": "de3796632d9eb8223053d435af5e1f7eeefbf1f87babd0f7557691d102306fd6"
+    },
+    "exit": {
+      "path": "experiments/v04r/learned_relative_transfer_v148/evidence/exit.json",
+      "bytes": 43758,
+      "sha256": "cf14ca352b6469071c65b493964225502bc801f7c302248d3645ded441612513"
+    },
+    "review": {
+      "path": "experiments/v04r/learned_relative_transfer_v148/stored_audit_result.json",
+      "bytes": 10702,
+      "sha256": "14def5237c7a6744c83b4788fff6d2bbfeeef3aa92c89a967f21dacb1efedade"
+    },
+    "selector": {
+      "tag": "PREPARATION_COMPLETE",
+      "field": "state"
+    },
+    "recorded_completed_tasks": 1,
+    "recorded_external_updates": 0,
+    "type": "Construct existing RecordedOrdinaryCheckpoint as explicit ordinary-state DATA only; exact fullI/R/L materialization by original legal3TX. No old source/pair/receipt/issuedidentity restore and no repeat of finished preparatory rollout."
+  },
+  "question": "Execute both already learned gates in a genuinely continuous34-main-task agent with a shared6-trial budget. Does skipping early zero-gain execution/event inquiries preserve resources for a later unseen recurrent failure and retain learned repairs on revisits? Not isolated-source score addition, no new fit or global value ranking.",
+  "arms": [
+    "TaskTD",
+    "UngatedUnified",
+    "EventOnlyGate",
+    "AllQueryGate"
+  ],
+  "main_tasks_each": 34,
+  "trial_task_budget_each_feedback_arm": 6,
+  "public_transitions_per_proposal": 4096,
+  "schedule": [
+    {
+      "label": "A_compound_execution",
+      "kappa": 0,
+      "phi": 3,
+      "count": 4,
+      "trap": {
+        "cell": [
+          1,
+          2
+        ],
+        "t": 0
+      },
+      "force_start_right_at_local_epoch": null
+    },
+    {
+      "label": "P_early_protection",
+      "kappa": 1,
+      "phi": 0,
+      "count": 4,
+      "trap": {
+        "cell": [
+          1,
+          2
+        ],
+        "t": 0
+      },
+      "force_start_right_at_local_epoch": 1
+    },
+    {
+      "label": "B_zero_gain_event",
+      "kappa": 0,
+      "phi": 4,
+      "count": 6,
+      "trap": {
+        "cell": [
+          3,
+          1
+        ],
+        "t": 3
+      },
+      "force_start_right_at_local_epoch": null
+    },
+    {
+      "label": "C_useful_event",
+      "kappa": 1,
+      "phi": 1,
+      "count": 6,
+      "trap": {
+        "cell": [
+          3,
+          1
+        ],
+        "t": 3
+      },
+      "force_start_right_at_local_epoch": null
+    },
+    {
+      "label": "W_late_unseen_wait",
+      "kappa": 0,
+      "phi": 0,
+      "count": 6,
+      "trap": {
+        "cell": [
+          3,
+          4
+        ],
+        "t": 10
+      },
+      "force_start_right_at_local_epoch": null
+    },
+    {
+      "label": "A_revisit",
+      "kappa": 0,
+      "phi": 3,
+      "count": 2,
+      "trap": {
+        "cell": [
+          1,
+          2
+        ],
+        "t": 0
+      },
+      "force_start_right_at_local_epoch": null
+    },
+    {
+      "label": "B_revisit",
+      "kappa": 0,
+      "phi": 4,
+      "count": 2,
+      "trap": {
+        "cell": [
+          3,
+          1
+        ],
+        "t": 3
+      },
+      "force_start_right_at_local_epoch": null
+    },
+    {
+      "label": "C_revisit",
+      "kappa": 1,
+      "phi": 1,
+      "count": 2,
+      "trap": {
+        "cell": [
+          3,
+          1
+        ],
+        "t": 3
+      },
+      "force_start_right_at_local_epoch": null
+    },
+    {
+      "label": "W_revisit",
+      "kappa": 0,
+      "phi": 0,
+      "count": 2,
+      "trap": {
+        "cell": [
+          3,
+          4
+        ],
+        "t": 10
+      },
+      "force_start_right_at_local_epoch": null
+    }
+  ],
+  "source": "Single fresh original22editTX, after unchangedordinarycheckpoint3TX, before4fullroles. Anewk0phi3 compound3edits; earlyprotectivek1phi0 3edits; BcorrectcentreUP/CwrongcentreRIGHT2edits; unreadsentinelXk1phi5one; W DSTART plus12START-time controllerRIGHT->WAIT13edits. Fresh combinedfullsource and NEW34episodeorder/digest, not old v16426 or v165 isolated6 banks. Eachrole oneI/current/L acrossallcontexts and revisits, no reset/no additional componentbudget.",
+  "constructor": "Exact frozen v165 ExecutionQueryAgent extends v162PolicyQueryAgent/v160Unified. Existingevent parameterDATA fromv162, execution parameterDATA fromv165; oldv163 RecordedQueryModelPair onlymaterializesimmutablelearnednumbers, not oldissuedidentities. Ungated disablesbothgates; EventOnly enableseventonly; AllQuery enablesboth. Shared trialcounter/registry/once/executor, fullcloneallroles; TaskTDno diagnostic butsameordinarylearner.",
+  "dispatch": "Only actualvisible taskfailure and existingmismatch/eventroutes. AllQuery learnedexecution gate can skipP zero; eventgate canskipB zero butprobeC useful; actualWpreviouslyunseen count12 mustgetunknown or actualcontraryresult honestlyretained, never manually labelWpositive. No case/role/source/truth/ledger read in onlinefeatures. Success ordinarylearning only.",
+  "learning": "CommonQ*/alpha1/2epsilon1/10/fullR+L/protectedI unchanged. All4roles normally learn across34main episodes, no phase-specificorB1owner-filteredordinarylearning. Typed originalatomicstore/strict genuine source/protocol/context/once unchanged. No privateLcopy/old receipt identityrestore or oldF1qualificationmigration.",
+  "coordinates": "34literalMAX maincoins except earlyprotectionlocal1/global5firstcoin0rejection0 RIGHT actualprotectionchallenge, sameallroles. Private nominalEngineeringPlan sameobservedprefix/eventroute APIs, no adaptiveexploration/keyedqualification/RNG.",
+  "budget_rule": "Retain same original shared6private-task cap per feedbackrole acrossbothmechanisms. Menus still require2 andcompoundextension1. Finite resourcepressure is predeclared beforeeffects, not an optimized utilitythreshold. No budgetrefill/reservation/refund or role-specificcap; inaccessible menu ->originalhonestkeep, not fake0measurement. No repeated finishedbank/fixture/native/checker.",
+  "expected_extent_not_effect_gate": {
+    "new_main_tasks": 136,
+    "new_private_tasks_max": 18,
+    "checkpoint_TX": 3,
+    "fresh_source_install_TX": 1,
+    "source_edits": 22,
+    "new_model_fits": 0,
+    "old_native_checker_bank_reruns": 0
+  },
+  "budget": {
+    "rollout": 154,
+    "step": 1848,
+    "transaction": 600,
+    "public_geometry": 80000,
+    "query_features": 40,
+    "execution_features": 40,
+    "query_model_fit": 0,
+    "raw_bytes": 134217728,
+    "seconds": 180
+  },
+  "capture": "First new exclusive capture; freeze executed sources, retain failure/partial/zero/adverse and ALL costs. Same-thread direct work, no automation changes. Internal native0/review0 not independent expert/sciencegate/generalRFL or whole study completion.",
+  "recorded_models": {
+    "raw": {
+      "path": "experiments/v04r/policy_conditioned_query_v162/evidence/raw.jsonl",
+      "bytes": 2533080,
+      "sha256": "9907ee1103a20231dc485288f7ec7b298e4131901a8d8c5e297cdf648aeec754"
+    },
+    "exit": {
+      "path": "experiments/v04r/policy_conditioned_query_v162/evidence/exit.json",
+      "bytes": 47505,
+      "sha256": "70ccfeee96afaffc176192eb9e642ebdfcdb02fbc2933f5e41203cab5ed97096"
+    },
+    "review": {
+      "path": "experiments/v04r/policy_conditioned_query_v162/stored_audit_result.json",
+      "bytes": 64032,
+      "sha256": "d8e443a268bf2b9b27c402f033de7313d04a2dbc2ab953c4baa84403e373636b"
+    }
+  },
+  "model_limits": "No new fit: bothmodels frozen beforefirstnewK. Eventtrained6questions/future5; executiontrained2questions/future3. Do not compare their numbers for crossbranchranking/utility; only separate positive/zero/unknown gate on chronologicalactualfailures. CurrentL-before/after own DATA and actualvisibleprefix only. Unknown remains actualbudgetedprobe. Features/grammar handengineered, informed integration/resource-stress workload not blindpopulation or independentseedN.",
+  "recorded_execution_model": {
+    "raw": {
+      "path": "experiments/v04r/learned_execution_value_v165/evidence/raw.jsonl",
+      "bytes": 2236312,
+      "sha256": "7576c702c1bb473e7647dc9ad0275265b85adc8c20a0eee4d352758a8ad5a495"
+    },
+    "exit": {
+      "path": "experiments/v04r/learned_execution_value_v165/evidence/exit.json",
+      "bytes": 47180,
+      "sha256": "69d2f7d85eeb452f2e320b9261343287f98c4e125e3787a063548b877820a8ff"
+    },
+    "review": {
+      "path": "experiments/v04r/learned_execution_value_v165/stored_audit_result.json",
+      "bytes": 73604,
+      "sha256": "2fde34abf91c8f29ce20d721b452c1f468bb112882dcba6e346658552dfcd70e"
+    }
+  },
+  "source_edits": [
+    {
+      "store": "decision",
+      "address": {
+        "state": {
+          "x": 0,
+          "y": 2,
+          "t": 0,
+          "kappa": 0,
+          "phi": 3
+        },
+        "z": 1,
+        "m": 0
+      },
+      "value": 4
+    },
+    {
+      "store": "controller",
+      "address": {
+        "state": {
+          "x": 0,
+          "y": 2,
+          "t": 0,
+          "kappa": 0,
+          "phi": 3
+        },
+        "cmd": 4
+      },
+      "value": 3
+    },
+    {
+      "store": "controller",
+      "address": {
+        "state": {
+          "x": 1,
+          "y": 2,
+          "t": 2,
+          "kappa": 0,
+          "phi": 3
+        },
+        "cmd": 0
+      },
+      "value": 3
+    },
+    {
+      "store": "decision",
+      "address": {
+        "state": {
+          "x": 0,
+          "y": 2,
+          "t": 0,
+          "kappa": 1,
+          "phi": 0
+        },
+        "z": 1,
+        "m": 0
+      },
+      "value": 3
+    },
+    {
+      "store": "controller",
+      "address": {
+        "state": {
+          "x": 0,
+          "y": 2,
+          "t": 0,
+          "kappa": 1,
+          "phi": 0
+        },
+        "cmd": 3
+      },
+      "value": 4
+    },
+    {
+      "store": "decision",
+      "address": {
+        "state": {
+          "x": 1,
+          "y": 2,
+          "t": 2,
+          "kappa": 1,
+          "phi": 0
+        },
+        "z": 1,
+        "m": 0
+      },
+      "value": 3
+    },
+    {
+      "store": "decision",
+      "address": {
+        "state": {
+          "x": 2,
+          "y": 2,
+          "t": 2,
+          "kappa": 0,
+          "phi": 4
+        },
+        "z": 1,
+        "m": 0
+      },
+      "value": 0
+    },
+    {
+      "store": "decision",
+      "address": {
+        "state": {
+          "x": 2,
+          "y": 2,
+          "t": 2,
+          "kappa": 1,
+          "phi": 1
+        },
+        "z": 1,
+        "m": 0
+      },
+      "value": 3
+    },
+    {
+      "store": "controller",
+      "address": {
+        "state": {
+          "x": 3,
+          "y": 4,
+          "t": 10,
+          "kappa": 1,
+          "phi": 5
+        },
+        "cmd": 4
+      },
+      "value": 0
+    },
+    {
+      "store": "decision",
+      "address": {
+        "state": {
+          "x": 0,
+          "y": 2,
+          "t": 0,
+          "kappa": 0,
+          "phi": 0
+        },
+        "z": 1,
+        "m": 0
+      },
+      "value": 3
+    },
+    {
+      "store": "controller",
+      "address": {
+        "state": {
+          "x": 0,
+          "y": 2,
+          "t": 0,
+          "kappa": 0,
+          "phi": 0
+        },
+        "cmd": 3
+      },
+      "value": 4
+    },
+    {
+      "store": "controller",
+      "address": {
+        "state": {
+          "x": 0,
+          "y": 2,
+          "t": 1,
+          "kappa": 0,
+          "phi": 0
+        },
+        "cmd": 3
+      },
+      "value": 4
+    },
+    {
+      "store": "controller",
+      "address": {
+        "state": {
+          "x": 0,
+          "y": 2,
+          "t": 2,
+          "kappa": 0,
+          "phi": 0
+        },
+        "cmd": 3
+      },
+      "value": 4
+    },
+    {
+      "store": "controller",
+      "address": {
+        "state": {
+          "x": 0,
+          "y": 2,
+          "t": 3,
+          "kappa": 0,
+          "phi": 0
+        },
+        "cmd": 3
+      },
+      "value": 4
+    },
+    {
+      "store": "controller",
+      "address": {
+        "state": {
+          "x": 0,
+          "y": 2,
+          "t": 4,
+          "kappa": 0,
+          "phi": 0
+        },
+        "cmd": 3
+      },
+      "value": 4
+    },
+    {
+      "store": "controller",
+      "address": {
+        "state": {
+          "x": 0,
+          "y": 2,
+          "t": 5,
+          "kappa": 0,
+          "phi": 0
+        },
+        "cmd": 3
+      },
+      "value": 4
+    },
+    {
+      "store": "controller",
+      "address": {
+        "state": {
+          "x": 0,
+          "y": 2,
+          "t": 6,
+          "kappa": 0,
+          "phi": 0
+        },
+        "cmd": 3
+      },
+      "value": 4
+    },
+    {
+      "store": "controller",
+      "address": {
+        "state": {
+          "x": 0,
+          "y": 2,
+          "t": 7,
+          "kappa": 0,
+          "phi": 0
+        },
+        "cmd": 3
+      },
+      "value": 4
+    },
+    {
+      "store": "controller",
+      "address": {
+        "state": {
+          "x": 0,
+          "y": 2,
+          "t": 8,
+          "kappa": 0,
+          "phi": 0
+        },
+        "cmd": 3
+      },
+      "value": 4
+    },
+    {
+      "store": "controller",
+      "address": {
+        "state": {
+          "x": 0,
+          "y": 2,
+          "t": 9,
+          "kappa": 0,
+          "phi": 0
+        },
+        "cmd": 3
+      },
+      "value": 4
+    },
+    {
+      "store": "controller",
+      "address": {
+        "state": {
+          "x": 0,
+          "y": 2,
+          "t": 10,
+          "kappa": 0,
+          "phi": 0
+        },
+        "cmd": 3
+      },
+      "value": 4
+    },
+    {
+      "store": "controller",
+      "address": {
+        "state": {
+          "x": 0,
+          "y": 2,
+          "t": 11,
+          "kappa": 0,
+          "phi": 0
+        },
+        "cmd": 3
+      },
+      "value": 4
+    }
+  ]
+}

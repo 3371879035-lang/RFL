@@ -1,0 +1,21 @@
+{
+ "n_entries_with_admissible_set": 13824,
+ "n_entries_admissible_equals_legal": 9504,
+ "n_entries_with_outside_legal_action": 4320,
+ "n_entries_outside_reaches_closer_cell": 576,
+ "closer_by_option": {
+  "2": 288,
+  "1": 144,
+  "3": 144
+ },
+ "dp_defines_outside_action_value": false,
+ "checks": {
+  "dp_was_readable": true,
+  "no_legal_action_outside_the_option_reaches_a_closer_cell": false
+ },
+ "status": "FAIL",
+ "verdict": "ROUTING ADVANTAGE EXISTS: at some (s,z,m) a legal action outside A_z reaches a strictly closer cell, and the controller channel would let a learner write it in unchecked",
+ "why_it_matters": "rollout checks a_cmd against option_actions but never checks the controller channel's output u, which becomes a_realized. A V0.3R learner-owned persistent C_X^L would be injected through exactly that channel",
+ "proxy_caveat": "the closer-cell test is a routing proxy, not a value computation: it asks whether the option ever forces a longer route, and does not claim what a deviation would be worth. It is used because the exact DP cannot score an outside action at all",
+ "note": "no caller in the repository passes a non-None controller mapping today; the channel is a latent extension point"
+}

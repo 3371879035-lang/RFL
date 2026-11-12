@@ -1,0 +1,265 @@
+"""Full-byte, bounded JSONL history evidence. Never an unused-key certificate.
+
+No historical program is executed, no outcomes are analyzed, no keys are drawn.
+Large ordinary JSON is fully hashed but remains explicitly semantically unparsed.
+One malformed/oversized JSONL record invalidates ALL identity claims from its file.
+"""
+from __future__ import annotations
+
+import hashlib
+import json
+from pathlib import Path, PurePosixPath
+
+import history_seed_audit_candidate as history
+import readiness as ready
+
+_FOLDER = Path(__file__).resolve().parent
+_SNAPSHOT = _FOLDER / "evidence_v15/retained_snapshot_final.stdout.log"
+_SNAPSHOT_SHA = "0d396ef4dd175a22e2084ac483a9a1f0c8241eb1d4d521e43d928e327bfc364c"
+_PAYLOAD_SHA = "a1c355d63abd10f2ec397f6010b9e509fd17e6790eec43faac6024b1a2b57306"
+_CONTRACT = _FOLDER / "stream_contract_candidate_v17.json"
+_CHUNK = 64 * 1024
+_LINE_LIMIT = 16 * 1024 * 1024
+_FILE_LIMIT = 512 * 1024 * 1024
+_SCOPE_LIMIT = 1024 * 1024 * 1024
+_CLAIM_LIMIT = 8192
+_BINDINGS = (Path(__file__), Path(history.__file__), Path(ready.__file__),
+             _SNAPSHOT, _CONTRACT)
+_BOUND = tuple(ready.file_hash(p) for p in _BINDINGS)
+
+
+def _canonical(value):
+    return json.dumps(value, ensure_ascii=True, sort_keys=True,
+                      separators=(",", ":"), allow_nan=False).encode("ascii")
+
+
+def _sha(blob):
+    return hashlib.sha256(blob).hexdigest()
+
+
+def _guard():
+    base, roots = history._scope_guard()
+    ready.require(tuple(ready.file_hash(p) for p in _BINDINGS) == _BOUND and
+                  ready.file_hash(_SNAPSHOT) == _SNAPSHOT_SHA,
+                  "stream code/contract/parent snapshot/dependency drift")
+    return base, roots
+
+
+def _chunks(handle):
+    while True:
+        blob = handle.read(_CHUNK)
+        if not blob:
+            return
+        yield blob
+
+
+def hash_chunks(chunks):
+    """Every actual byte, constant chunk storage; never descriptor/payload SHA."""
+    digest, size = hashlib.sha256(), 0
+    for blob in chunks:
+        ready.require(type(blob) is bytes, "stream chunks must be native bytes")
+        digest.update(blob)
+        size += len(blob)
+    return {"bytes": size, "sha256": digest.hexdigest()}
+
+
+def inspect_jsonl_chunks(chunks):
+    """Seed-identity-only extraction with complete-file refusal and exact ints.
+
+    LF separates records; CRLF is accepted. A last nonempty unterminated record
+    is allowed. Empty files/blank records are refused. A UTF8 BOM is allowed only
+    at the beginning of the first physical record. Each record must be an object.
+    Repetition/record count is NOT a count of independent seeds or scientific N.
+    All integer identities are exported as decimal strings to avoid JS rounding.
+    """
+    digest = hashlib.sha256()
+    size = line_size = records = valid = invalid = maximum = 0
+    buffer = bytearray()
+    claims, issues, intervals = {}, {}, []
+    refused = False
+
+    def issue(reason, line, occurrences=1, pointer=""):
+        row = issues.setdefault(reason, {"reason": reason, "occurrences": 0,
+                                         "first_record": line, "example_pointer": pointer})
+        row["occurrences"] += occurrences
+
+    def refuse(reason, line):
+        nonlocal refused
+        refused = True
+        claims.clear()
+        intervals.clear()
+        issue(reason, line)
+
+    def record():
+        nonlocal records, valid, invalid, maximum, line_size, buffer
+        records += 1
+        maximum = max(maximum, line_size)
+        if line_size > _LINE_LIMIT:
+            invalid += 1
+            refuse("record-over16MiB-entire-file-identities-discarded", records)
+        else:
+            raw = bytes(buffer)
+            if records == 1 and raw.startswith(b"\xef\xbb\xbf"):
+                raw = raw[3:]
+            if not raw.strip():
+                invalid += 1
+                refuse("blank-record-entire-file-identities-discarded", records)
+            elif not raw.lstrip().startswith(b"{"):
+                invalid += 1
+                refuse("non-object-or-later-BOM-record-entire-file-identities-discarded", records)
+            else:
+                parsed = history.inspect_json_bytes(raw)
+                if not parsed["parse_complete"]:
+                    invalid += 1
+                    refuse("malformed-record-entire-file-identities-discarded", records)
+                else:
+                    valid += 1
+                    for row in parsed["issues"]:
+                        issue(row["reason"], records, row["occurrences"], row["example_pointer"])
+                    if not refused:
+                        for row in parsed["claims"]:
+                            key = (row["field"], row["original_integer"])
+                            if key not in claims and len(claims) >= _CLAIM_LIMIT:
+                                refuse("unique-claim-resource-limit-entire-file-identities-discarded", records)
+                                break
+                            found = claims.setdefault(key, {"field": row["field"],
+                                "original_integer_decimal": str(row["original_integer"]),
+                                "canonical_modulo64_exclusion_decimal": str(row["canonical_modulo64_exclusion"]),
+                                "original_is_canonical_uint64": row["original_is_canonical_uint64"],
+                                "occurrences": 0, "first_record": records,
+                                "example_pointer": row["example_pointer"]})
+                            found["occurrences"] += row["occurrences"]
+                        if not refused:
+                            intervals.extend(parsed["intervals_inclusive"])
+                            intervals[:] = history.merge_intervals(intervals)
+                            if len(intervals) > _CLAIM_LIMIT:
+                                refuse("interval-resource-limit-entire-file-identities-discarded", records)
+        line_size = 0
+        buffer = bytearray()
+
+    for blob in chunks:
+        ready.require(type(blob) is bytes, "stream chunks must be native bytes")
+        digest.update(blob)
+        size += len(blob)
+        if size > _FILE_LIMIT and "file-over512MiB-entire-file-identities-discarded" not in issues:
+            refuse("file-over512MiB-entire-file-identities-discarded", records + 1)
+        # Only LF separates physical records; CR and other bytes are not guessed.
+        start = 0
+        while True:
+            end = blob.find(b"\n", start)
+            part = blob[start:] if end < 0 else blob[start:end]
+            line_size += len(part)
+            if line_size <= _LINE_LIMIT:
+                buffer.extend(part)
+            else:
+                buffer.clear()
+            if end < 0:
+                break
+            record()
+            start = end + 1
+    if line_size:
+        record()
+    if not records:
+        refuse("empty-file-entire-file-identities-discarded", 0)
+    ready.require(valid + invalid == records, "JSONL record accounting differs")
+    union = history.merge_intervals(intervals + [
+        [int(row["canonical_modulo64_exclusion_decimal"])] * 2 for row in claims.values()])
+    return {"bytes": size, "sha256": digest.hexdigest(),
+        "parse_complete": not refused, "physical_record_count": records,
+        "valid_object_record_count": valid, "invalid_record_count": invalid,
+        "maximum_record_bytes_without_LF": maximum,
+        "claims": [claims[k] for k in sorted(claims)],
+        "conservative_exclusion_intervals_decimal_inclusive": [[str(a), str(b)] for a, b in union],
+        "issues": [issues[k] for k in sorted(issues)],
+        "identity_role": "CONSERVATIVE_HISTORICAL_DECLARATIONS_NOT_VALID_RUN_OR_STATISTICAL_N"}
+
+
+def _safe_path(base, name, relative):
+    ready.require(type(relative) is str and relative and "\\" not in relative and
+                  ":" not in relative, "canonical relative POSIX path required")
+    rel = PurePosixPath(relative)
+    ready.require(not rel.is_absolute() and rel.as_posix() == relative and
+                  all(p not in ("", ".", "..") for p in relative.split("/")),
+                  "unsafe or noncanonical history path")
+    root = base / name
+    ready.require(root.is_dir() and not history._reparse(root) and
+                  root.resolve().parent == base.resolve(), "unsafe retained root")
+    here = root
+    for part in rel.parts:
+        here = here / part
+        ready.require(not history._reparse(here), "reparse/symlink history input refused")
+    ready.require(here.is_file() and here.resolve().is_relative_to(root.resolve()),
+                  "input must be regular file within bound retained root")
+    return here
+
+
+def snapshot_stream_history():
+    """No caller path/key/root/output override; no allocator/generator/trainer."""
+    base, roots = _guard()
+    snapshot = history._strict_json(_SNAPSHOT.read_bytes())
+    ready.require(snapshot["payload_sha256"] == _PAYLOAD_SHA and
+                  _sha(history._canonical(snapshot["payload"])) == _PAYLOAD_SHA,
+                  "bound history snapshot payload differs")
+    targets = []
+    for group in snapshot["payload"]["file_evidence"]:
+        ready.require(group["root"] in roots, "snapshot root outside fixed scope")
+        for row in group["records"]:
+            if PurePosixPath(row["path"]).suffix.lower() == ".jsonl" or row.get("gap") == "over16MiB":
+                targets.append((group["root"], row))
+    targets.sort(key=lambda pair: (pair[0], pair[1]["path"]))
+    ready.require(len(targets) == 100 and len({(n, r["path"]) for n, r in targets}) == 100 and
+                  sum(r["bytes"] for _, r in targets) == 915316767 and
+                  sum(PurePosixPath(r["path"]).suffix.lower() == ".jsonl" for _, r in targets) == 98,
+                  "closed v15 stream target inventory differs")
+    ready.require(sum(r["bytes"] for _, r in targets) <= _SCOPE_LIMIT and
+                  all(r["bytes"] <= _FILE_LIMIT for _, r in targets),
+                  "static history scope resource bound exceeded")
+    checked, results, union = [], [], []
+    for name, old in targets:
+        path = _safe_path(base, name, old["path"])
+        ready.require(path.stat().st_size == old["bytes"], "historical byte count changed")
+        is_jsonl = path.suffix.lower() == ".jsonl"
+        with path.open("rb") as handle:
+            result = inspect_jsonl_chunks(_chunks(handle)) if is_jsonl else hash_chunks(_chunks(handle))
+        ready.require(result["bytes"] == old["bytes"] and
+                      (old["sha256"] is None or result["sha256"] == old["sha256"]),
+                      "historical actual file SHA/size differs from bound v15 input")
+        if not is_jsonl:
+            result.update(parse_complete=False, claims=[],
+                conservative_exclusion_intervals_decimal_inclusive=[],
+                issues=[{"reason": "large-ordinary-JSON-complete-bytes-bound-semantic-parse-not-implemented"}])
+        union.extend([[int(a), int(b)] for a, b in result["conservative_exclusion_intervals_decimal_inclusive"]])
+        results.append({"root": name, "path": old["path"], "previous_v15_sha256": old["sha256"],
+                        "previous_v15_byte_count": old["bytes"], **result})
+        checked.append((name, old["path"], result["sha256"], result["bytes"]))
+    # Full-scope stable boundary, not merely adjacent reads or file existence.
+    for name, relative, expected_hash, expected_size in checked:
+        path = _safe_path(base, name, relative)
+        with path.open("rb") as handle:
+            after = hash_chunks(_chunks(handle))
+        ready.require(after == {"sha256": expected_hash, "bytes": expected_size},
+                      "history input changed at complete scope boundary")
+    _guard()
+    intervals = history.merge_intervals(union)
+    payload = {"fixed_v15_target_count": len(targets), "total_actual_bytes": sum(r["bytes"] for r in results),
+        "full_scope_before_after_actual_SHA_match": True, "file_evidence": results,
+        "conservative_exclusion_intervals_decimal_inclusive": [[str(a), str(b)] for a, b in intervals],
+        "semantic_scope_gaps": ["two large ordinary JSON bodies unparsed",
+            "unknown/dynamic seed fields and roles not resolved", "PS/log/MD/TOML/unreferenced TXT unparsed",
+            "archive/opaque/bare Git/other workspace/history scopes unscanned",
+            "v16/v17 and future preparation fixtures not part of this fixed v15 snapshot",
+            "declared identity is not authenticated execution or role association"]}
+    return {"schema": "a96-history-stream-snapshot-candidate-v17",
+        "role": "FULL_BOUND_STREAM_INPUTS_PARTIAL_SEMANTICS_NOT_FRESHNESS_GATE",
+        "payload": payload, "payload_sha256": _sha(_canonical(payload)),
+        "parent_sources_digest": "1dfd80ce49255231998b70fca2b7bcd72e0940822a1bf9d4a8e731603ccc4838",
+        "lock_sha256": "7d43ee9ae33a218e1266ab3cd2351e07d7e30922302e4527c65facbddaa3472f",
+        "complete_historical_usage_freshness_audit": False,
+        "seed_plan_v14_exclusions_automatically_extended": False,
+        "keys_allocated_or_reserved": False, "environment_key_draws": 0,
+        "native_protocol_or_training_started": False, "collection_authorized": False,
+        "scientific_claim_authorized": False, "research_complete": False}
+
+
+if __name__ == "__main__":
+    print(_canonical(snapshot_stream_history()).decode("ascii"))

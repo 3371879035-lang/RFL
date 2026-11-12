@@ -1,0 +1,77 @@
+{
+ "checks": {
+  "A_queryonly_prior_is_global_and_truth_independent": true,
+  "B_sequence_and_seqthenquery_same_rows_belief": true,
+  "C_feedback_absent_from_sequence_belief": true,
+  "D_sample_to_support_bijection": "BLOCKED_NOT_IMPLEMENTED"
+ },
+ "detail": {
+  "A": {
+   "fp": "((0, 2, 0, 0, 0, 0, 0, 3, 3, -0.02), (1, 2, 1, 0",
+   "n_blocks": 89,
+   "true_a_class": "((0, 2, 0, 0, 0, 0, 0, 3",
+   "true_b_class": "((0, 2, 0, 0, 0, 0, 0, 3",
+   "priors_identical": true
+  },
+  "B": {
+   "active_blocks": 1,
+   "block_is_the_rows_block": true
+  },
+  "C": {
+   "same_rows": true,
+   "different_feedback": true,
+   "beliefs_identical": true
+  },
+  "D": {
+   "sampled": 200,
+   "judged": 44,
+   "mapped_to_one": 2,
+   "mapped_to_zero": 42,
+   "mapped_to_many": 0,
+   "unsupported_by_bounded_support": 156,
+   "bounded_support_coverage_of_dgp": 0.21999999999999997,
+   "miss_examples": [
+    {
+     "Z": [
+      1,
+      0,
+      0,
+      0,
+      0
+     ],
+     "kappa": 0,
+     "phase": 0
+    },
+    {
+     "Z": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "kappa": 0,
+     "phase": 1
+    },
+    {
+     "Z": [
+      1,
+      1,
+      0,
+      1,
+      0
+     ],
+     "kappa": 0,
+     "phase": 0
+    }
+   ],
+   "note": "Among scenes the BOUNDED support can judge, the mapping must be exactly one. The coverage figure is the real finding: a 400-class support covers only a sliver of DGP mass, so the run harness needs the FULL global support, or a DGP explicitly restricted to the supported region.",
+   "status": "BLOCKED_NOT_IMPLEMENTED",
+   "why_blocked": "world_key includes error_flag and cause_rank; the bounded support holds only a slice of classes, so most sampled worlds have no counterpart BY CONSTRUCTION rather than through drift. The run harness must build the FULL global support, and this assertion must then be re-run against it."
+  }
+ },
+ "n_worlds": 6222,
+ "n_blocks": 89,
+ "status": "INCOMPLETE",
+ "scope": "Bounded global support (first 400 classes). The full global support arrives with the run harness."
+}

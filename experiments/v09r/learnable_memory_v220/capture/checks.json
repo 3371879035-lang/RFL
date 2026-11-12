@@ -1,0 +1,130 @@
+{
+  "parameterized_capacity": {
+    "total": 2870271,
+    "trainable": 2870271,
+    "by_module": {
+      "null_memory": 192,
+      "hypothesis_embeddings": 1536,
+      "base_code": 192,
+      "proposal_keys": 576,
+      "event_encoder": 164928,
+      "source_embedding": 576,
+      "parent_merge": 221760,
+      "memory_blocks": 889728,
+      "query_encoder": 41856,
+      "action_encoder": 38784,
+      "reader": 258817,
+      "context_fusion": 221760,
+      "action_fusion": 295488,
+      "mixture_head": 38600,
+      "world_decoder": 93362,
+      "actor": 149760,
+      "proposal_net": 225216,
+      "trial_score": 74497,
+      "trial_keep": 37633,
+      "adoption_score": 77761,
+      "adoption_keep": 37249
+    }
+  },
+  "joint_action_uncertainty": {
+    "same_marginal_variances": [
+      1.1,
+      1.1
+    ],
+    "positive_correlation_gap_variance": 0.2,
+    "negative_correlation_gap_variance": 4.2,
+    "naive_marginal_sum": 2.2,
+    "comparison_diagonal": "0.5 tie convention, not strict self-comparison probability"
+  },
+  "variable_schema_actions_empty_memory": {
+    "alternative_schema": [
+      5,
+      3,
+      2,
+      4
+    ],
+    "legal_action_counts": [
+      1,
+      3,
+      7
+    ],
+    "empty_memory_supported": true
+  },
+  "identity_not_replay_count": {
+    "identical_reimport_output_bitwise_equal": true,
+    "different_real_ids_preserved": 2
+  },
+  "chronological_replay_without_future": {
+    "target_excluded": true,
+    "future_append_does_not_change_training_prefix": true,
+    "repeated_epochs_new_facts": 0
+  },
+  "raw_memory_restoration_and_immutability": {
+    "raw_roundtrip_exact": true,
+    "prediction_roundtrip_exact": true,
+    "external_list_alias_not_retained": true
+  },
+  "missing_is_not_zero_or_training_label": {
+    "zero_and_missing_inputs_distinct": true,
+    "masked_feedback_target_gradient": 0.0
+  },
+  "proper_joint_mixture_nll": {
+    "batch": 2,
+    "component_sum_after_joint_dimensions": true,
+    "absolute_error": 0.0
+  },
+  "bidirectional_variance_learning_direction": {
+    "small_error_logvariance_gradient": 0.5,
+    "large_error_logvariance_gradient": -1.5,
+    "gradient_descent_can_lower_or_raise_uncertainty": true,
+    "empirical_calibration_established": false
+  },
+  "candidate_changes_actor_not_world": {
+    "world_prediction_bitwise_unchanged": true,
+    "actor_probability_max_change": 0.0007491409778594971
+  },
+  "all_named_parameter_tensors_receive_gradients": {
+    "loss": 16.931636810302734,
+    "parameters_with_finite_nonzero_gradient": 95,
+    "group_l2_norm": {
+      "null_memory": 0.6461091349936796,
+      "hypothesis_embeddings": 0.14256809800306502,
+      "base_code": 0.0012164626658478599,
+      "proposal_keys": 0.009706176547126912,
+      "event_encoder": 0.015971057253065534,
+      "source_embedding": 0.006505815766496013,
+      "parent_merge": 0.2837966127410236,
+      "memory_blocks": 0.2941329665091688,
+      "query_encoder": 0.10330715532845182,
+      "action_encoder": 0.17796205359791925,
+      "reader": 0.12329009418717421,
+      "context_fusion": 0.08518833184382738,
+      "action_fusion": 0.7099745105038898,
+      "mixture_head": 0.008453196901350971,
+      "world_decoder": 2.879346311830788,
+      "actor": 0.04228210244872255,
+      "proposal_net": 0.041539459611690685,
+      "trial_score": 0.13801085303693328,
+      "trial_keep": 0.14708676554081876,
+      "adoption_score": 0.3604010926557525,
+      "adoption_keep": 0.1914716523389571
+    },
+    "optimizer_steps": 0,
+    "synthetic_gradient_targets_not_learning_outcomes": true
+  },
+  "practice_required_and_imagination_separate": {
+    "fixture_external_calls": 2,
+    "fixture_forced_promotion_not_autonomous_selection": true,
+    "untested_and_changed_candidates_rejected": true,
+    "imagined_nodes_added": 0
+  },
+  "success_no_reflection_but_ordinary_learning_available": {
+    "fixture_external_calls": 1,
+    "reflections": 0,
+    "ordinary_replay_event_available": true
+  },
+  "readonly_evaluation_and_frozen_parameters": {
+    "evaluation_fact_writes": 0,
+    "parameter_updates": 0
+  }
+}

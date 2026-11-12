@@ -1,0 +1,81 @@
+{
+  "checks": [
+    {
+      "name": "all_public_context_partitions_match_scalar_indices",
+      "ok": true,
+      "details": {
+        "partitions": 8,
+        "cells": 27,
+        "contexts": 8
+      }
+    },
+    {
+      "name": "learn_conditional_applicability_not_global_truth",
+      "ok": true,
+      "details": {
+        "conditional_history_share": [
+          0.988764204341653,
+          0.011235795658346792
+        ],
+        "global_history_share": [
+          0.10426125098070958,
+          0.10426125098070958
+        ],
+        "synthetic_observations": 128
+      }
+    },
+    {
+      "name": "all_five_modes_prequential_scalar_equations",
+      "ok": true,
+      "details": {
+        "max_scalar_prediction_error": 9.992007221626409e-16,
+        "synthetic_facts_per_mode": 48
+      }
+    },
+    {
+      "name": "gate_before_current_fit_and_no_duplicate_fact",
+      "ok": true,
+      "details": {
+        "history_weight_from_pre_update_predictions": 0.0714557830264518,
+        "expected": 0.07145578302645178
+      }
+    },
+    {
+      "name": "small_prediction_weight_does_not_force_old_action",
+      "ok": true,
+      "details": {
+        "greedy_of_prediction_would_choose": 1,
+        "actual_action_one_probability": 0.108784,
+        "history_share": 0.01098
+      }
+    },
+    {
+      "name": "no_knowledge_of_unobserved_new_world_rule",
+      "ok": true,
+      "details": {
+        "same_visible_information_same_prediction": true,
+        "mean_two_world_success": 0.5
+      }
+    },
+    {
+      "name": "normalized_predictions_readonly_eval_and_actual_behavior",
+      "ok": true,
+      "details": {
+        "read_only_state_unchanged": true,
+        "bad_propensity_rejected_before_update": true
+      }
+    },
+    {
+      "name": "analytic_parameters_and_rng_unchanged",
+      "ok": true,
+      "details": {
+        "gradient_updates": 0,
+        "torch_rng_unchanged": true
+      }
+    }
+  ],
+  "passed": 8,
+  "failed": 0,
+  "facts_are_synthetic": true,
+  "actual_environment_interactions": 0
+}

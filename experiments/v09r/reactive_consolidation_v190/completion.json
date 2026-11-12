@@ -1,0 +1,124 @@
+{
+  "schema": "V09_REACTIVE_CONSOLIDATION_V190_COMPLETION",
+  "utc": "2026-11-08T10:12:45.706898+00:00",
+  "status": "COMPLETE_FINITE_REACTIVE_MEMORY_COMPARISON_NOT_FULL_V09",
+  "source_commit": "5401a1907ceb9d9fcbaa398569868317977863eb",
+  "native": {
+    "exit_code": 0,
+    "status": "COMPLETE",
+    "error": null,
+    "utc": "2026-11-08T10:07:03.275226+00:00",
+    "cases": 32,
+    "wall_seconds": 414.4367263000022,
+    "peak_process_tree_rss": 3685789696,
+    "inputs_unchanged": true
+  },
+  "stored_review": {
+    "exit_code": 0,
+    "cases": 32,
+    "scope": "Stored movement/chronology/decision and memory reconstruction, labels, totals and input pins; no neural numerical replay or native rerun."
+  },
+  "actual": {
+    "cases": 32,
+    "paired_existing_training_seeds": 4,
+    "additional_training_steps": 524288,
+    "ordinary_optimizer_updates": 4096,
+    "new_evaluation_episodes": 12288,
+    "new_evaluation_steps": 803654,
+    "new_environment_steps": 1327942,
+    "reused_initial_evaluation_episodes": 4096,
+    "training_completed_episodes": 11296,
+    "real_future_labels": 785873,
+    "pure_feedback_reward_packets": 0,
+    "previous_failed_attempt_environment_steps": 227319,
+    "total_actual_environment_steps": 1555261,
+    "source_checkpoints": 16,
+    "final_checkpoints": 32,
+    "failed_boundary_checkpoints": 32
+  },
+  "outcomes": {
+    "final256": {
+      "RL_RP_base": 190.51220703125,
+      "F0_base": 51.1435546875,
+      "F0_wake": 47.49755859375,
+      "F0_wake_sleep": 70.0546875,
+      "F_RP_base": 191.32373046875,
+      "F_RP_wake_sleep": 242.62451171875,
+      "F_R_base": 101.58935546875,
+      "F_R_wake_sleep": 142.7177734375
+    },
+    "full_vs_base_positive_training_seeds": {
+      "F0": 4,
+      "F-RP": 4,
+      "F-R": 4
+    },
+    "F0_full_vs_wake_positive_training_seeds": 4,
+    "pure_feedback_exceeds_pure_RL": false,
+    "general_causal_attribution_demonstrated": false,
+    "sleep_parameter_distillation": false,
+    "real_rule_revocations": 0,
+    "hand_designed_local_movement_prior": true
+  },
+  "limits": [
+    "Four known development training seeds, not independent new confirmation",
+    "0-step gains are immediate engineered-control effects, not learning",
+    "Only F0 separates wake and wake_sleep",
+    "RL plus identical memory-controller diagnostic not yet run",
+    "Stable local geometry; stochastic cause resolution and changing-world adaptation not established",
+    "Equal environment/ordinary update budgets, not exact equal compute"
+  ],
+  "files": [
+    {
+      "path": "experiments/v09r/reactive_consolidation_v190/contract.json",
+      "bytes": 5931,
+      "sha256": "c45f33e36076b07f8a11982263624ddc0b2f297121ef5e6e17f131f858a26025"
+    },
+    {
+      "path": "experiments/v09r/reactive_consolidation_v190/source_binding.json",
+      "bytes": 3541,
+      "sha256": "e1a6c708814099a5545666499ab12d339ec7ad8dd83b62324b62bd33025fe2d8"
+    },
+    {
+      "path": "experiments/v09r/reactive_consolidation_v190/checkpoint_binding.json",
+      "bytes": 4592,
+      "sha256": "22226411ad3e05e60a9c9ac2bcd54f670aed0836707b5496e416ead8e74dba5b"
+    },
+    {
+      "path": "experiments/v09r/reactive_consolidation_v190/initial_evaluation_binding.json",
+      "bytes": 24716,
+      "sha256": "5877ee7694f20619c839d1fefdf15f9e0c2a5ab7e1bed496425e111d8cb71189"
+    },
+    {
+      "path": "experiments/v09r/reactive_consolidation_v190/pure_check_result.json",
+      "bytes": 792,
+      "sha256": "892fbdeca31c8041d3249bc7042ec84b09a37f31f287472325bdff34ad304daf"
+    },
+    {
+      "path": "experiments/v09r/reactive_consolidation_v190/stored_review.json",
+      "bytes": 9159,
+      "sha256": "3d71c202c42fd6284b27624d58f17408b0f3158ac5b3b6edccd017ade5745ee7"
+    },
+    {
+      "path": "experiments/v09r/reactive_consolidation_v190/analysis/result.json",
+      "bytes": 13013,
+      "sha256": "677b5e0a4435570ca559fa4d3e4b9a9ae1f6e544db5c6f8a5313b96bc9b2cae4"
+    },
+    {
+      "path": "experiments/v09r/reactive_consolidation_v190/interpretation.md",
+      "bytes": 8448,
+      "sha256": "3e70b59d393a3935308229fa044475ccae75f88bef0a8dba5bdb3942da3d07a6"
+    },
+    {
+      "path": "experiments/v09r/reactive_consolidation_v190/artifact_manifest.json",
+      "bytes": 54238,
+      "sha256": "f5a2822e15b04c4477f42abff834a2793eea10046a4e94a5c289a9d9b1060505"
+    }
+  ],
+  "previous_failure": {
+    "path": "experiments/v09r/reactive_consolidation_v189/failure_summary.json",
+    "bytes": 363,
+    "sha256": "5890a17c8b61bf9ed8f730d9606014eb8058d3a4dca674b82efb008d3d356885"
+  },
+  "old64seed_restarted": false,
+  "automation_changed": false
+}
